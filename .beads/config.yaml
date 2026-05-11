@@ -53,4 +53,4 @@
 # - github.org
 # - github.repo
 
-# sync.remote: "https://github.com/dstengle/shopsystem-product-beads"
+sync.remote: "git+https://github.com/dstengle/shopsystem-product-beads.git"
