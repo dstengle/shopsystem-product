@@ -3,3 +3,14 @@
 .dolt/
 *.db
 .beads-credential-key
+
+# Local sibling clones (BC repos cloned alongside the lead shop for
+# convenience). Each is its own git repo with its own remote; they are
+# not subdirectories of this repo.
+/repos/
+
+# Python venv used for installing the framework CLIs into the lead shop.
+.venv/
+
+# pyproject build artifacts.
+*.egg-info/

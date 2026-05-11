@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "shopsystem-product"
+version = "0.1.0"
+description = "Lead shop of the shopsystem product. This package exists so the lead shop can install the three framework CLIs (shop-msg, scenarios, shop-templates) and dogfood its own discipline."
+requires-python = ">=3.10"
+license = {text = "MIT"}
+authors = [{name = "David Stenglein"}]
+dependencies = [
+    "scenarios @ git+https://github.com/dstengle/shopsystem-scenarios@v0.1.0",
+    "shop-templates @ git+https://github.com/dstengle/shopsystem-templates@v0.1.0",
+    "shopsystem-messaging @ git+https://github.com/dstengle/shopsystem-messaging@v0.1.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/dstengle/shopsystem-product"
+Repository = "https://github.com/dstengle/shopsystem-product"
+
+[tool.setuptools]
+packages = []
