@@ -1,0 +1,7 @@
+Scenario: lead-po template carries the structural sections that PO scope-and-vocabulary discipline depends on
+  When I read the lead-po template via "shop-templates show lead-po"
+  Then the content contains a "## Your default posture: COMMIT TO SPECIFICS" section header
+  And the content contains a "## Sufficiency check — authoring a scenario" section header
+  And the content contains a "## Sufficiency check — responding to a `clarify`" section header
+  And the content contains a "## Anti-rationalization" section header
+  And the content contains a "## Reporting back" section header

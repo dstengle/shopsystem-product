@@ -1,0 +1,7 @@
+Scenario: shop-templates show with an unknown template name exits non-zero and names both the bad input and the available list on stderr
+  Given a template name "no-such-template" that is not in the list output by "shop-templates list"
+  When I run "shop-templates show no-such-template"
+  Then the exit code is non-zero
+  And stdout is empty
+  And stderr names the offending input "no-such-template"
+  And stderr cites the list of available templates so the caller can recover
