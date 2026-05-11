@@ -1,0 +1,14 @@
+message_type: assign_scenarios
+work_id: lead-006
+scenarios:
+- hash: b9ed9c63b8ccb208
+  tags:
+  - '@scenario_hash:b9ed9c63b8ccb208'
+  - '@bc:shop-msg'
+  gherkin: "Feature: shop-msg respond \u2014 write a clarify outbox YAML\n\n  @scenario_hash:b9ed9c63b8ccb208\
+    \ @bc:shop-msg\n  Scenario: Reply to lead with a clarify message\n    Given an\
+    \ empty BC at a temporary path\n    When I run shop-msg respond clarify with work-id\
+    \ \"lead-001\" and question \"What about equality?\"\n    Then the BC's outbox\
+    \ contains a file named \"lead-001-clarify.yaml\"\n    And the file parses as\
+    \ a valid Clarify with work_id \"lead-001\" and question \"What about equality?\"\
+    \n"

@@ -1,0 +1,31 @@
+message_type: work_done
+work_id: lead-013
+status: complete
+summary: "BDD 17/17. Probes: (1) shared _build_scenario_payload helper \u2014 refactor\
+  \ preserves behavior, hash is computed pre-wrap so format coupling is harmless;\
+  \ (2) conditional --feature-title/--bc-tag check fires post-parse with clean stderr\
+  \ + exit 2; collision-refuse correctly precedes it (exit 1, file unchanged); (3)\
+  \ description-only YAML emits 'scenarios: []' \u2014 present but valid, lead-013\
+  \ Then asserts equality so behavior is pinned either way; (4) empty --description\
+  \ accepted (no min_length on RequestBugfix.description; catalog-wide deferred);\
+  \ (5) regex shadowing \u2014 new Whens differentiated by 'send request_bugfix' literal\
+  \ and $-anchored, no overlap with prior 5 send/respond Whens; (6) step defs assert\
+  \ rc==0 explicitly, no silent excepts, strict ==[] equality. All 17 hashes echoed."
+scenario_hashes:
+- ed957587a564b1d8
+- 1e7881f9232bc0b1
+- 677d20154e364482
+- 6ab8e9d72c4732a4
+- 42d2d64c4e45ca7d
+- 2580fb1745b16844
+- e8d8c791ce0e0d49
+- 9563c33a653afed7
+- 564632ae9310058c
+- 650e6761d5479ce3
+- 35fece8e1f96e074
+- b6973413b7bfdd12
+- b9ed9c63b8ccb208
+- 6f37b1ccd3826bad
+- d57e1ed181a81e7e
+- c68d62ccae4fc40d
+- 8c763f64d50253dc

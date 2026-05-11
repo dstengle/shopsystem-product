@@ -1,0 +1,25 @@
+message_type: assign_scenarios
+work_id: lead-009
+scenarios:
+- hash: 650e6761d5479ce3
+  tags:
+  - '@scenario_hash:650e6761d5479ce3'
+  - '@bc:shop-msg'
+  gherkin: "Feature: shop-msg respond \u2014 write a work_done outbox YAML\n\n  @scenario_hash:650e6761d5479ce3\
+    \ @bc:shop-msg\n  Scenario: Reply to lead with a work_done message\n    Given\
+    \ an empty BC at a temporary path\n    When I run shop-msg respond work_done with\
+    \ work-id \"lead-001\" and status \"complete\" and scenario-hash \"abc123\"\n\
+    \    Then the BC's outbox contains a file named \"lead-001-work_done.yaml\"\n\
+    \    And the file parses as a valid WorkDone with work_id \"lead-001\" and status\
+    \ \"complete\"\n"
+- hash: 35fece8e1f96e074
+  tags:
+  - '@scenario_hash:35fece8e1f96e074'
+  - '@bc:shop-msg'
+  gherkin: "Feature: shop-msg respond \u2014 write a work_done outbox YAML\n\n  @scenario_hash:35fece8e1f96e074\
+    \ @bc:shop-msg\n  Scenario: Refuse to overwrite an existing work_done for the\
+    \ same work_id\n    Given an empty BC at a temporary path\n    And the BC's outbox\
+    \ already contains a file named \"lead-001-work_done.yaml\"\n    When I run shop-msg\
+    \ respond work_done with work-id \"lead-001\" and status \"complete\"\n    Then\
+    \ the command exits non-zero\n    And the BC's outbox file \"lead-001-work_done.yaml\"\
+    \ is unchanged\n"

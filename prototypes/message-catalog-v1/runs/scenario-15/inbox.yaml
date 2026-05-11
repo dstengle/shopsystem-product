@@ -1,0 +1,44 @@
+message_type: request_bugfix
+work_id: lead-016
+description: "Tighten ScenarioPayload: require gherkin to carry a @bc:<name> tag.\
+  \ Currently a convention enforced only by the lead-side CLI's --bc-tag flag; nothing\
+  \ prevents a hand-constructed ScenarioPayload from reaching a BC without one. Add\
+  \ a Pydantic @model_validator(mode='after') on ScenarioPayload that fails ValidationError\
+  \ when the gherkin string contains no line matching the @bc:<name> pattern. Three\
+  \ additive scenarios: schema-accept happy path, schema-reject missing-tag, integration\
+  \ check that shop-msg send assign_scenarios continues to produce the tag. ADDITIVE\
+  \ \u2014 all 21 prior scenarios + 6 scenarios unit tests + 6 bc-shop tests must\
+  \ continue to pass. Test placement is the Implementer's call (catalog/tests/ for\
+  \ direct schema tests is fine; shop-msg-bc/features/ for integration-flavor scenarios\
+  \ is also fine; mix is fine)."
+scenarios:
+- hash: e02b6616fafa3258
+  tags:
+  - '@scenario_hash:e02b6616fafa3258'
+  - '@bc:shop-msg'
+  gherkin: "Feature: ScenarioPayload @bc: tag schema constraint\n\n  @scenario_hash:e02b6616fafa3258\
+    \ @bc:shop-msg\n  Scenario: ScenarioPayload with @bc tag in gherkin is accepted\n\
+    \    Given a gherkin body file with a line \"@bc:test\" present\n    When I construct\
+    \ a ScenarioPayload from that gherkin via Pydantic\n    Then construction succeeds\
+    \ and the parsed model has the gherkin intact\n"
+- hash: 80db3cb3ff18911e
+  tags:
+  - '@scenario_hash:80db3cb3ff18911e'
+  - '@bc:shop-msg'
+  gherkin: "Feature: ScenarioPayload @bc: tag schema constraint\n\n  @scenario_hash:80db3cb3ff18911e\
+    \ @bc:shop-msg\n  Scenario: ScenarioPayload without @bc tag in gherkin is rejected\n\
+    \    Given a gherkin body file that contains no \"@bc:\" line\n    When I construct\
+    \ a ScenarioPayload from that gherkin via Pydantic\n    Then Pydantic raises ValidationError\
+    \ with a message identifying the missing @bc tag\n"
+- hash: dc1d241fba5d486d
+  tags:
+  - '@scenario_hash:dc1d241fba5d486d'
+  - '@bc:shop-msg'
+  gherkin: "Feature: ScenarioPayload @bc: tag schema constraint\n\n  @scenario_hash:dc1d241fba5d486d\
+    \ @bc:shop-msg\n  Scenario: shop-msg send assign_scenarios produces gherkin with\
+    \ @bc tag\n    Given an empty BC at a temporary path\n    And a scenario body\
+    \ file containing the text \"Scenario: X\\n    Given foo\\n    When bar\\n   \
+    \ Then baz\"\n    When I run shop-msg send assign_scenarios with work-id \"lead-tag-A\"\
+    \ and feature-title \"T\" and bc-tag \"shop-msg\" and that scenario file\n   \
+    \ Then the BC's inbox file contains a gherkin string with a line containing \"\
+    @bc:shop-msg\"\n"

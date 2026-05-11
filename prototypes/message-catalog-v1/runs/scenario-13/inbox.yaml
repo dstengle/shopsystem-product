@@ -1,0 +1,38 @@
+message_type: assign_scenarios
+work_id: lead-013
+scenarios:
+- hash: ed957587a564b1d8
+  tags:
+  - '@scenario_hash:ed957587a564b1d8'
+  - '@bc:shop-msg'
+  gherkin: "Feature: shop-msg send request_bugfix \u2014 lead-side CLI for the bugfix\
+    \ message\n\n  @scenario_hash:ed957587a564b1d8 @bc:shop-msg\n  Scenario: Send\
+    \ request_bugfix with description only\n    Given an empty BC at a temporary path\n\
+    \    When I run shop-msg send request_bugfix with work-id \"lead-A\" and description\
+    \ \"Fix the thing.\"\n    Then the BC's inbox contains a file named \"lead-A.yaml\"\
+    \n    And the file parses as a valid RequestBugfix with work_id \"lead-A\", description\
+    \ \"Fix the thing.\", and no scenarios\n"
+- hash: 1e7881f9232bc0b1
+  tags:
+  - '@scenario_hash:1e7881f9232bc0b1'
+  - '@bc:shop-msg'
+  gherkin: "Feature: shop-msg send request_bugfix \u2014 lead-side CLI for the bugfix\
+    \ message\n\n  @scenario_hash:1e7881f9232bc0b1 @bc:shop-msg\n  Scenario: Send\
+    \ request_bugfix with one tightening scenario\n    Given an empty BC at a temporary\
+    \ path\n    And a scenario body file containing the text \"Scenario: Tightened\\\
+    n    Given a\\n    When b\\n    Then c\"\n    When I run shop-msg send request_bugfix\
+    \ with work-id \"lead-B\", description \"Tighten case.\", feature-title \"Tightening\"\
+    , bc-tag \"test\", and that scenario file\n    Then the BC's inbox file \"lead-B.yaml\"\
+    \ parses as a valid RequestBugfix with description \"Tighten case.\" and one scenario\
+    \ whose hash equals the scenarios-hash of the body\n"
+- hash: 677d20154e364482
+  tags:
+  - '@scenario_hash:677d20154e364482'
+  - '@bc:shop-msg'
+  gherkin: "Feature: shop-msg send request_bugfix \u2014 lead-side CLI for the bugfix\
+    \ message\n\n  @scenario_hash:677d20154e364482 @bc:shop-msg\n  Scenario: Refuse\
+    \ to overwrite an existing inbox file for the same work_id\n    Given an empty\
+    \ BC at a temporary path\n    And the BC's inbox already contains a file named\
+    \ \"lead-C.yaml\"\n    When I run shop-msg send request_bugfix with work-id \"\
+    lead-C\" and description \"second\"\n    Then the command exits non-zero\n   \
+    \ And the BC's inbox file \"lead-C.yaml\" is unchanged\n"

@@ -1,0 +1,41 @@
+message_type: clarify
+work_id: lead-006
+question: |
+  The single assigned scenario (b9ed9c63b8ccb208) pins the happy-path
+  filename convention <work_id>-clarify.yaml on a fresh empty BC, but
+  does not pin behavior when the target outbox file already exists
+  for the same work_id. This collision is not a hypothetical: the
+  §4.4 loop validated in scenario-5b is exactly "BC clarifies → lead
+  request_bugfix → BC may clarify again on the same work_id" — and
+  the CLI is the tool meant to enforce path consistency across that
+  loop. The current implementation silently overwrites, destroying
+  the prior clarify. A reasonable implementation could instead (a)
+  refuse with a non-zero exit, (b) suffix a counter
+  (<work_id>-clarify-2.yaml), or (c) suffix a timestamp. Each is
+  defensible; the scenarios commit to none. A future flip would
+  silently break whichever behavior consumers come to depend on.
+
+  Proposed scenario tightening — please pick the contract you want
+  pinned. Example for the "refuse on collision" reading:
+
+      @scenario_hash:<new>
+      Scenario: Refuse to overwrite an existing clarify for the same work_id
+        Given an empty BC at a temporary path
+        And the BC's outbox already contains a file named "lead-001-clarify.yaml"
+        When I run shop-msg respond clarify with work-id "lead-001" and question "second"
+        Then the command exits non-zero
+        And the BC's outbox file "lead-001-clarify.yaml" is unchanged
+
+  If the intended contract is suffix-on-collision instead, the Then
+  steps would assert <work_id>-clarify-2.yaml exists and the original
+  is unchanged. Either way, please pin one — the path-consistency
+  problem this slice is meant to solve recurs at exactly this
+  boundary.
+
+  Two related boundaries that were probed and dismissed as out of
+  scope for *this* tightening (mention only so they are visible if
+  you want to fold them in): (1) work_id containing "/" or ".."
+  currently lets writes escape the outbox directory — likely worth a
+  separate scenario; (2) Clarify's pydantic schema accepts empty
+  work_id / empty question, so the CLI happily writes "-clarify.yaml"
+  — separate concern, schema-level.

@@ -1,0 +1,45 @@
+message_type: assign_scenarios
+work_id: lead-012
+scenarios:
+- hash: 42d2d64c4e45ca7d
+  tags:
+  - '@scenario_hash:42d2d64c4e45ca7d'
+  - '@bc:shop-msg'
+  gherkin: "Feature: shop-msg send assign_scenarios \u2014 lead-side CLI for assigning\
+    \ scenarios\n\n  @scenario_hash:42d2d64c4e45ca7d @bc:shop-msg\n  Scenario: Send\
+    \ assign_scenarios with one scenario\n    Given an empty BC at a temporary path\n\
+    \    And a scenario body file containing the text \"Scenario: Boiling water in\
+    \ Fahrenheit\\n    Given a temperature of 100 degrees Celsius\\n    When I convert\
+    \ it to Fahrenheit\\n    Then I get 212 degrees Fahrenheit\"\n    When I run shop-msg\
+    \ send assign_scenarios with work-id \"lead-A\" and feature-title \"Temperature\
+    \ conversion\" and bc-tag \"temperature\" and that scenario file\n    Then the\
+    \ BC's inbox contains a file named \"lead-A.yaml\"\n    And the file parses as\
+    \ a valid AssignScenarios with work_id \"lead-A\" and one scenario whose hash\
+    \ equals the scenarios-hash of the body\n"
+- hash: 2580fb1745b16844
+  tags:
+  - '@scenario_hash:2580fb1745b16844'
+  - '@bc:shop-msg'
+  gherkin: "Feature: shop-msg send assign_scenarios \u2014 lead-side CLI for assigning\
+    \ scenarios\n\n  @scenario_hash:2580fb1745b16844 @bc:shop-msg\n  Scenario: --scenario-file\
+    \ is repeatable for multi-scenario messages\n    Given an empty BC at a temporary\
+    \ path\n    And a scenario body file containing the text \"Scenario: First\\n\
+    \    Given a\\n    When b\\n    Then c\"\n    And another scenario body file containing\
+    \ the text \"Scenario: Second\\n    Given d\\n    When e\\n    Then f\"\n    When\
+    \ I run shop-msg send assign_scenarios with work-id \"lead-B\" and feature-title\
+    \ \"Pair\" and bc-tag \"test\" and both scenario files\n    Then the BC's inbox\
+    \ contains a file named \"lead-B.yaml\"\n    And the file parses as a valid AssignScenarios\
+    \ with work_id \"lead-B\" and two scenarios whose hashes are distinct\n"
+- hash: e8d8c791ce0e0d49
+  tags:
+  - '@scenario_hash:e8d8c791ce0e0d49'
+  - '@bc:shop-msg'
+  gherkin: "Feature: shop-msg send assign_scenarios \u2014 lead-side CLI for assigning\
+    \ scenarios\n\n  @scenario_hash:e8d8c791ce0e0d49 @bc:shop-msg\n  Scenario: Refuse\
+    \ to overwrite an existing inbox file for the same work_id\n    Given an empty\
+    \ BC at a temporary path\n    And the BC's inbox already contains a file named\
+    \ \"lead-C.yaml\"\n    And a scenario body file containing the text \"Scenario:\
+    \ Anything\\n    Given x\\n    When y\\n    Then z\"\n    When I run shop-msg\
+    \ send assign_scenarios with work-id \"lead-C\" and feature-title \"X\" and bc-tag\
+    \ \"test\" and that scenario file\n    Then the command exits non-zero\n    And\
+    \ the BC's inbox file \"lead-C.yaml\" is unchanged\n"

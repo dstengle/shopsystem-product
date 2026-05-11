@@ -1,0 +1,10 @@
+message_type: assign_scenarios
+work_id: lead-004
+scenarios:
+- hash: 3f123ba774758ff2
+  tags:
+  - '@scenario_hash:3f123ba774758ff2'
+  - '@bc:temperature'
+  gherkin: "Feature: Temperature conversion\n\n  @scenario_hash:3f123ba774758ff2 @bc:temperature\n\
+    \  Scenario: Boiling water in Fahrenheit\n    Given a temperature of 100 degrees\
+    \ Celsius\n    When I convert it to Fahrenheit\n    Then I get 212 degrees Fahrenheit\n"

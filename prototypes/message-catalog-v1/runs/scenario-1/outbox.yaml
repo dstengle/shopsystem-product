@@ -1,0 +1,7 @@
+message_type: work_done
+work_id: lead-001
+status: complete
+summary: Added `to_kelvin` method to Temperature class using `celsius + 273.15`,
+  plus two tests covering 0 degC (273.15 K) and 100 degC (373.15 K). All 5 tests
+  pass, including the 3 pre-existing ones.
+scenario_hashes: []

@@ -1,0 +1,36 @@
+message_type: clarify
+work_id: lead-005
+question: |
+  Scenario gap on `is_hotter_than` — equality boundary is unpinned.
+
+  The assigned scenario (hash 2b0a32d9d2d7c63d) pins only the strictly-hotter
+  case: 100°C vs 50°C → first is hotter. The current implementation
+  (`self.celsius > other.celsius`) returns False when the two temperatures
+  are equal, but an alternative implementation using `>=` would also pass
+  the assigned scenario while returning True for equal temperatures.
+
+  These two implementations encode different contracts ("strictly hotter"
+  vs "at least as hot as"), and both ship green under the current scenario
+  set. A future refactor could flip the operator without any test failing,
+  silently breaking any consumer that depends on the strict semantics.
+
+  Proposed scenario tightening — please decide which behavior you want
+  pinned and add a scenario like one of the following:
+
+  Scenario: Equal temperatures — neither is hotter
+    Given a temperature of 50 degrees Celsius
+    And another temperature of 50 degrees Celsius
+    When I compare the first to the second
+    Then the first is not hotter than the second
+
+  (The Then phrasing implies a new step definition; if you prefer, the
+  symmetric "the second is not hotter than the first" form works equally
+  well. The key decision is: at equality, is `is_hotter_than` False?)
+
+  A second adjacent gap worth considering — though lower priority — is the
+  reverse case (50 vs 100 → first is NOT hotter), which would catch an
+  inverted-operator bug that the current scenario alone does not.
+
+  BDD re-run on current state: 6 passed, 0 failed. Implementation is
+  internally consistent with the one assigned scenario; this clarify is
+  about scenario coverage, not implementation correctness.

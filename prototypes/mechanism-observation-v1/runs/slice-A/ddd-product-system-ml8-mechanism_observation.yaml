@@ -1,0 +1,15 @@
+message_type: mechanism_observation
+bd_ref: ddd-product-system-ml8
+subject: bc-implementer anti-rationalization is asymmetrically calibrated
+observed_during: lead-A1
+body: "The bc-implementer template's anti-rationalization section guards only the\
+  \ under-asking failure mode (lines ~150-167). There is no symmetric guard against\
+  \ over-asking \u2014 the case where the implementer clarifies when the message is\
+  \ sufficient. Slice B2 of mechanism-observation-v1 will likely surface this asymmetry\
+  \ as a false-positive observation channel unless the template gains parallel over-asking\
+  \ guards before dispatch."
+evidence:
+- shop-templates/src/shop_templates/templates/bc-implementer.md:150-167
+- docs/shop-system/findings-from-prototype-1.md:80-83
+proposed_action: Add parallel over-asking guards to bc-implementer anti-rationalization
+  before slice B2 dispatches.
