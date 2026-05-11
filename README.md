@@ -1,17 +1,55 @@
 # shopsystem-product
 
-Lead shop of the shopsystem product. Owns principles, BC definitions, the
-inter-shop protocol description, work-tracking conventions, ADRs, findings
-docs, and the scenario register.
+Lead shop of the **shopsystem** product, in the DDD sense: the outward face of
+the shop system where stakeholders meet the work and where product-level
+artifacts live. The shopsystem is itself a product built by a lead shop and
+three BC-shops; this repo holds the lead shop's content. Rationale and the
+four-repo split are in [`adr/001-framework-packaging.md`](adr/001-framework-packaging.md).
 
-Empty pending extraction. Until migration step 7 of ADR-001 runs, the
-canonical content lives in the source repo at
-[`docs/shop-system/`](https://github.com/dstengle/ddd-product-system/tree/main/docs/shop-system).
+## What's inside
 
-Framework split rationale and sequencing:
-[ADR-001](https://github.com/dstengle/ddd-product-system/blob/main/docs/shop-system/adr-001-framework-packaging.md).
+Framework spec (read in order):
 
-Sibling repos:
-[shopsystem-messaging](https://github.com/dstengle/shopsystem-messaging) ·
-[shopsystem-scenarios](https://github.com/dstengle/shopsystem-scenarios) ·
-[shopsystem-templates](https://github.com/dstengle/shopsystem-templates).
+- [§1 Principles](01-principles.md) — six principles paired with the anti-pattern each rules out.
+- [§2 Bounded Contexts and Subdomains](02-bounded-contexts-and-subdomains.md) — problem-space vs solution-space; recognised vs drawn.
+- [§3 Lead shop](03-lead-shop.md) — PO and Architect roles, artifacts, and the turn-limited exchange.
+- [§4 BC-shop](04-bc-shop.md) — Implementer and adversarial Reviewer roles, artifacts, the §4.4 loop.
+- [§5 Inter-shop protocol](05-inter-shop-protocol.md) — channel, routing, wire format, message catalogue.
+- [§6 Work tracking](06-work-tracking.md) — hybrid beads model and reconciliation.
+
+Architecture decisions:
+
+- [`adr/001-framework-packaging.md`](adr/001-framework-packaging.md) — split into four BC-aligned repos.
+
+Findings (consolidated per-prototype):
+
+- [`findings/from-prototype-1.md`](findings/from-prototype-1.md) — message-catalog-v1 (14 slices, 2026-05-06 → 2026-05-10).
+- [`findings/from-mechanism-observation-v1.md`](findings/from-mechanism-observation-v1.md) — mechanism-observation-v1.
+
+Prototype evidence (frozen records — design, plan, per-slice runs):
+
+- [`prototypes/message-catalog-v1/`](prototypes/message-catalog-v1/)
+- [`prototypes/mechanism-observation-v1/`](prototypes/mechanism-observation-v1/)
+
+## Sibling BC repos
+
+The other three bounded contexts of the shopsystem live alongside:
+
+- [shopsystem-messaging](https://github.com/dstengle/shopsystem-messaging) — Pydantic schemas, `shop-msg` CLI, messaging scenarios.
+- [shopsystem-scenarios](https://github.com/dstengle/shopsystem-scenarios) — Gherkin canonicalization rule + hash + `scenarios` CLI.
+- [shopsystem-templates](https://github.com/dstengle/shopsystem-templates) — role templates (lead-po, lead-architect, bc-implementer, bc-reviewer) + `shop-templates` CLI.
+
+Dependency direction and per-repo responsibilities are detailed in ADR-001.
+
+## Provenance
+
+This repo originated from
+[`github.com/dstengle/ddd-product-system`](https://github.com/dstengle/ddd-product-system).
+The framework-internal `docs/shop-system/` directory was the lead-shop output
+of the shopsystem under its earlier framing; ADR-001 promotes it into this
+BC-aligned repo. The migration is tracked by ADR-001 in this repo at
+[`adr/001-framework-packaging.md`](adr/001-framework-packaging.md).
+
+## License
+
+MIT. See [LICENSE](LICENSE).
