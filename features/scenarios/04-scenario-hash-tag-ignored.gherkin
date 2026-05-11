@@ -1,0 +1,6 @@
+Scenario: canonicalization drops lines that start with the @scenario_hash tag
+  Given a Gherkin body A
+  And a Gherkin body B that is A with one extra line "@scenario_hash:abcdef0123456789" prepended
+  When I compute the canonical hash of A and of B
+  Then both hashes are identical
+  And embedding the resulting hash back into the body as a "@scenario_hash:" tag line does not change the hash on the next computation

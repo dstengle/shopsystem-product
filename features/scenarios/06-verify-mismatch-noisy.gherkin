@@ -1,0 +1,7 @@
+Scenario: scenarios verify exits non-zero with a diagnostic when the supplied hash does not match
+  Given a Gherkin body on stdin whose canonical hash is some value X
+  And an incorrect hash value Y that differs from X
+  When I run "scenarios verify --hash <Y>"
+  Then the exit code is non-zero
+  And stdout is empty
+  And stderr contains both the supplied Y and the actual canonical hash X

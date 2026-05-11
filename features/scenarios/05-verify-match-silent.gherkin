@@ -1,0 +1,7 @@
+Scenario: scenarios verify exits 0 silently when the supplied hash matches the canonical hash of stdin
+  Given a Gherkin body on stdin
+  And the canonical hash of that body
+  When I run "scenarios verify --hash <canonical-hash>"
+  Then the exit code is 0
+  And stdout is empty
+  And stderr is empty

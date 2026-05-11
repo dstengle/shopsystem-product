@@ -1,0 +1,5 @@
+Scenario: canonicalization drops @scenario_hash only when it starts the line, not when it appears mid-step as substring
+  Given a Gherkin body A containing a step whose text includes the substring "@scenario_hash:" but does not start with it after trimming
+  And a Gherkin body B that is A with that step deleted
+  When I compute the canonical hash of A and of B
+  Then the hashes are different
