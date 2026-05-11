@@ -1,9 +1,0 @@
-○ ddd-product-system-yah · bc-implementer anti-rationalization is asymmetrically calibrated   [● P2 · OPEN]
-Owner: David Stenglein · Type: task
-Created: 2026-05-11 · Updated: 2026-05-11
-
-DESCRIPTION
-Received from BC bead ddd-product-system-ml8 via shop-msg respond mechanism_observation. Outbox file: prototypes/mechanism-observation-v1/runs/slice-A/ddd-product-system-ml8-mechanism_observation.yaml. Drain decision (slice C will formalize labels): act-template — proposed action targets a template change that gates B2's hard-gate test; act before B1.1 dispatch.
-
-LABELS: mechanism-observation, received
-

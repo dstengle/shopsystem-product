@@ -1,3 +1,0 @@
-message_type: clarify
-work_id: lead-002c
-question: The acceptance criteria as given ("works correctly", "doesn't break existing tests", "follows existing style") are not measurable and do not define the new behavior. Please give at least one concrete, testable criterion for the kelvin conversion — e.g., the exact method name on Temperature, and expected outputs for specific inputs such as Temperature(0) and Temperature(100).

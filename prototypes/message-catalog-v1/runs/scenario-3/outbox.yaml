@@ -1,7 +1,0 @@
-message_type: work_done
-work_id: lead-003
-status: complete
-summary: Added Temperature.from_fahrenheit classmethod using celsius = (fahrenheit
-  - 32) * 5 / 9. Added two tests pinning the freezing (32 F -> 0 C) and boiling (212
-  F -> 100 C) acceptance criteria. All 5 tests pass (3 existing + 2 new).
-scenario_hashes: []

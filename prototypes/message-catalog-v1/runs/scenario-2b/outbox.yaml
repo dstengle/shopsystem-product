@@ -1,3 +1,0 @@
-message_type: clarify
-work_id: lead-002
-question: "Please specify the exact API and acceptance criteria for the kelvin conversion. In particular: (1) what is the method/function name, where does it live (a `to_kelvin()` method on `Temperature`, a `from_kelvin()` constructor, standalone functions, or some combination?), (2) what are its inputs and return type, and (3) what concrete, testable acceptance criteria define correct behavior (e.g., specific input/output pairs such as `Temperature(0).to_kelvin() == 273.15`)?"

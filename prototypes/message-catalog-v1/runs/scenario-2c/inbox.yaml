@@ -1,7 +1,0 @@
-message_type: request_maintenance
-work_id: lead-002c
-description: Add a kelvin conversion to the Temperature class.
-acceptance_criteria:
-- Works correctly.
-- Doesn't break existing tests.
-- Follows the existing code style.
