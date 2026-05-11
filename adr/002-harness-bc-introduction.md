@@ -1,0 +1,149 @@
+# ADR-002 — Introducing the harness Bounded Context
+
+**Status:** accepted (2026-05-11)
+**Authors:** dstengle, Claude
+**Depends on:** [`adr/001-framework-packaging.md`](001-framework-packaging.md)
+
+## Decision
+
+Add a fifth repository, `shopsystem-test-harness`, holding a Bounded Context whose
+job is to drive experiments and validate the shopsystem framework against
+itself. Per §2.3, the harness BC belongs to a self-introduced **Platform
+Operations** subdomain — it serves the product itself rather than the
+product's end users.
+
+| Repo | BC | Subdomain | UL focus |
+|---|---|---|---|
+| `shopsystem-product` | (lead shop) | — | product-level artifacts |
+| `shopsystem-messaging` | Messaging | Inter-shop coordination | message, work_id, schema, wire format |
+| `shopsystem-scenarios` | Scenarios | Specification | scenario, canonical, hash, tag |
+| `shopsystem-templates` | Templates | Role discipline | role, template, dispatch, sufficiency check |
+| `shopsystem-test-harness` (new) | Harness | **Platform Operations** | experiment, slice, run, evidence, finding, baseline |
+
+## Why a BC and not just tooling
+
+The harness has a coherent internal model that the other three BCs don't
+share and shouldn't have to learn:
+
+- An **experiment** is a named investigation with a target question.
+- A **slice** is a discrete unit of work within an experiment — inputs,
+  expected outcomes, a name.
+- A **run** is one execution of a slice (a slice can have multiple runs).
+- **Evidence** is the frozen artifacts produced by a run: inboxes,
+  outboxes, dispatch reports, before/after code states.
+- A **finding** is a load-bearing claim that emerges from one or more
+  runs, with evidence pointers.
+- A **baseline** is a known-good state the harness validates against.
+
+This vocabulary doesn't fit cleanly inside any of the other three packages.
+Bundling it into `shopsystem-messaging` or `shopsystem-templates` would mix
+ULs — the exact anti-pattern ADR-001 ruled out for the original split.
+
+## Scope (in)
+
+- Bootstrap an isolated topology: a temporary directory containing fake
+  lead-shop and BC-shop directories with their own inboxes, outboxes, and
+  beads instances.
+- Define and execute slices: invoke role templates against work items,
+  capture stdout/stderr, freeze the resulting filesystem state.
+- Forward + reverse conformance checks against a slice's expected
+  outcomes.
+- Findings aggregation: walk recorded runs, produce a `findings.md`
+  matching the prototype convention.
+
+## Scope (out — explicitly)
+
+- **Not** a scaffolding tool for *production* shop creation. Standing up a
+  new real BC-shop for a consumer product is a separate concern (likely
+  belongs in `shopsystem-templates` or a thin scaffolding CLI).
+- **Not** the inter-shop transport. Slices use the same `shop-msg` /
+  `scenarios` / `shop-templates` surface as production work — the harness
+  composes them, it doesn't replace them.
+- **Not** a CI runner. The harness is invoked manually during framework
+  development; if CI calls it, fine, but the harness has no opinion about
+  CI.
+
+## Dependencies
+
+```
+shopsystem-test-harness → shopsystem-messaging (composes shop-msg)
+                  → shopsystem-scenarios  (composes scenarios)
+                  → shopsystem-templates  (composes shop-templates)
+```
+
+All composition is at the CLI boundary per Prototype-1 Finding 6
+(package boundaries hold under dogfooding pressure).
+
+## Initial CLI surface (proposed)
+
+```
+shop-test-harness init <experiment-name>
+shop-test-harness slice new <slice-name>
+shop-test-harness bootstrap                    # spin up isolated topology
+shop-test-harness dispatch <role> <work-id>    # invoke a role template
+shop-test-harness freeze                       # capture run as evidence
+shop-test-harness verify                       # conformance checks
+shop-test-harness findings list
+```
+
+CLI names are draft — eligible for refinement during initial slices, same
+as `shop-msg` / `scenarios` / `shop-templates` were during prototype-1.
+
+## Initial scenarios (the BC's own pinning, ~8)
+
+1. `bootstrap creates isolated lead-shop directory with beads`
+2. `bootstrap creates isolated BC-shop with inbox + outbox`
+3. `dispatch invokes a role template with the work_item as context`
+4. `dispatch captures stdout, stderr, and exit code as artifacts`
+5. `freeze writes a complete evidence directory for the run`
+6. `verify passes when all assigned scenarios appear in the register`
+7. `verify fails with diff when assigned scenario is missing`
+8. `findings list walks recorded runs and returns load-bearing claims`
+
+These are draft titles. The actual Gherkin gets authored by the lead shop
+(PO role) once the BC exists, and dispatched to `shopsystem-test-harness` via
+`assign_scenarios` — dogfooding the introduction.
+
+## Decided
+
+- **Repo name.** `shopsystem-test-harness`.
+- **CLI name.** `shop-test-harness`.
+- **Evidence storage.** Keep the prototype `runs/N/` convention. Human-
+  readable evidence is more valuable than content-addressing at this scale.
+
+## Deferred
+
+1. **Role-template versioning.** When the harness exercises a template
+   that has since changed, can it pin a template version? Defer until a
+   slice surfaces the need.
+2. **Multi-BC topology slices.** Prototype-1 §8 #1 (cross-BC fan-out) is
+   still unvalidated. The harness should make this *cheap* enough that
+   a slice can stand up N=3+ BCs without ceremony.
+
+## Sequencing relative to other open work
+
+Per the broader plan (this is the third of four threads after beads init
+and scenario backfill):
+
+1. ✅ Beads init across the four existing repos.
+2. ⏳ Backfill scenarios for `shopsystem-scenarios` and `shopsystem-templates`
+   so their behavior is design-pinned before the harness exercises them.
+3. **This ADR**: create `shopsystem-test-harness` repo, scaffold, dispatch its
+   initial scenarios from the lead shop.
+4. Real-domain instantiation: **ecommerce** as the first consumer
+   product. Stands up a non-trivial product BC using the complete
+   framework + harness; will be tracked by a separate ADR (ADR-003)
+   when sequencing reaches that stage.
+
+The harness's own scenarios get dispatched via `assign_scenarios` from
+the lead shop after the repo is created — the harness BC's introduction
+is itself a dogfooding instance.
+
+## What this defers
+
+- The harness's full slice catalogue (built incrementally).
+- Cross-BC fan-out slices (the highest-leverage unvalidated item from
+  prototype-1 §8 #1) — first real workload for the harness once it exists.
+- Real-product validation (ecommerce — ADR-003 when ready). Depends on
+  the harness being stable enough to validate the consumer's first
+  BC-shop end-to-end.
