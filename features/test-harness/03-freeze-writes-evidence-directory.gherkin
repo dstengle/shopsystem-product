@@ -1,0 +1,8 @@
+Scenario: shop-test-harness freeze copies the live topology into an evidence directory under runs/N/
+  Given an experiment target directory <dir> populated by a prior bootstrap (lead-shop + one BC-shop, with at least one inbox YAML and one outbox YAML present in the BC-shop's mailboxes)
+  And an evidence root directory <evidence>
+  When I run "shop-test-harness freeze --target <dir> --evidence <evidence>"
+  Then the exit code is 0
+  And a numbered subdirectory "<evidence>/runs/1/" exists (numbering is the next free integer)
+  And every file under "<dir>/lead/" and "<dir>/bc-foo/" is present under the corresponding path inside "<evidence>/runs/1/", byte-for-byte
+  And the evidence directory is a complete, self-contained copy of the topology at the moment freeze was called

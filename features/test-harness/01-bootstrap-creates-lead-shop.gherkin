@@ -1,0 +1,7 @@
+Scenario: shop-test-harness bootstrap creates an isolated lead-shop directory ready for inter-shop messaging
+  Given an empty target directory for an experiment
+  When I run "shop-test-harness bootstrap --target <dir> --lead-shop lead --bc-shop bc-foo"
+  Then the exit code is 0
+  And a "lead/" subdirectory exists under <dir> with empty "inbox/" and "outbox/" subdirectories
+  And a "lead/.beads/" subdirectory exists with beads metadata sufficient for "bd list" to run cleanly (issue prefix matches the lead-shop name)
+  And stderr is empty
