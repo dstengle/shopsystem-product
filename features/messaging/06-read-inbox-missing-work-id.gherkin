@@ -1,0 +1,6 @@
+@bc:shopsystem-messaging
+Scenario: Reading an inbox message by an unknown work_id fails with a stderr explanation
+  Given an empty BC at a temporary path
+  When I run shop-msg read inbox with work-id "lead-nonexistent"
+  Then the command exits non-zero
+  And stderr explains no inbox message was found for that work_id

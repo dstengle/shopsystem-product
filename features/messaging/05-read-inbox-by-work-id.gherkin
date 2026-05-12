@@ -1,0 +1,8 @@
+@bc:shopsystem-messaging
+Scenario: Reading an inbox message by work_id returns the message contents without the caller inspecting storage
+  Given an empty BC at a temporary path
+  And shop-msg send assign_scenarios was previously used to write an inbox message with work-id "lead-400" containing one ScenarioPayload tagged "@bc:shopsystem-messaging"
+  When I run shop-msg read inbox with work-id "lead-400"
+  Then the command exits zero
+  And stdout includes message_type "assign_scenarios" and work_id "lead-400"
+  And stdout includes the gherkin body of the ScenarioPayload that was sent

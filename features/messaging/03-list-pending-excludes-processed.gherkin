@@ -1,0 +1,8 @@
+@bc:shopsystem-messaging
+Scenario: An inbox message whose work_id already has a matching outbox response is not reported as pending
+  Given an empty BC at a temporary path
+  And shop-msg send request_maintenance was previously used to write an inbox message with work-id "lead-200"
+  And shop-msg respond work_done was previously used to write an outbox response with work-id "lead-200" and status "complete"
+  When I run the shop-msg subcommand that enumerates pending unprocessed inbox messages, with no filter
+  Then the command exits zero
+  And stdout contains no entry for work_id "lead-200"

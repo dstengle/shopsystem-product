@@ -1,0 +1,7 @@
+@bc:shopsystem-messaging
+Scenario: Listing pending messages reports an empty result when no unprocessed inbox messages exist
+  Given an empty BC at a temporary path
+  When I run the shop-msg subcommand that enumerates pending unprocessed inbox messages, with no filter
+  Then the command exits zero
+  And stdout contains no work_id entries
+  And the command did not require the caller to inspect the inbox or outbox directories

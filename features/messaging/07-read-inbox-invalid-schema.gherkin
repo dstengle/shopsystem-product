@@ -1,0 +1,7 @@
+@bc:shopsystem-messaging
+Scenario: Reading an inbox message whose stored content fails schema validation fails with a stderr explanation
+  Given an empty BC at a temporary path
+  And the BC's inbox already contains a file for work-id "lead-499" whose content is valid YAML but does not match any LeadMessage schema
+  When I run shop-msg read inbox with work-id "lead-499"
+  Then the command exits non-zero
+  And stderr explains schema validation failed
