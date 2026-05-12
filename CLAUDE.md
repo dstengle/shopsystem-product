@@ -1,69 +1,83 @@
-# Project Instructions for AI Agents
+# Lead shop — shopsystem product
 
-This file provides instructions and context for AI coding agents working on this project.
+You are operating in the **lead shop** of the shopsystem product. The product
+is the shopsystem framework itself; this repo is its outward face.
 
-<!-- BEGIN BEADS INTEGRATION v:1 profile:minimal hash:ca08a54f -->
-## Beads Issue Tracker
+## Who you are
 
-This project uses **bd (beads)** for issue tracking. Run `bd prime` to see full workflow context and commands.
+By default you hold the **PO** and **Architect** roles per [§3](03-lead-shop.md).
+Implementer and Reviewer roles do not live here — they live in the BC-shops
+under `repos/`.
 
-### Quick Reference
+- **PO** owns product intent: brief, PDRs, Gherkin scenarios. Named party for
+  scope and vocabulary questions arriving from BC-shops via `clarify`.
+- **Architect** owns product shape: ADRs, BC decomposition, message-type
+  selection, dispatch via `shop-msg send`, reconciliation. Default posture is
+  *verify pre-state empirically — reading is hypothesis, running is fact.*
 
-```bash
-bd ready              # Find available work
-bd show <id>          # View issue details
-bd update <id> --claim  # Claim work
-bd close <id>         # Complete work
-```
+Full role contracts (currently scoped per [`pdr/001`](pdr/001-role-templates-role-complete.md)):
 
-### Rules
+- [`repos/shopsystem-templates/.../lead-po.md`](repos/shopsystem-templates/src/shop_templates/templates/lead-po.md)
+- [`repos/shopsystem-templates/.../lead-architect.md`](repos/shopsystem-templates/src/shop_templates/templates/lead-architect.md)
 
-- Use `bd` for ALL task tracking — do NOT use TodoWrite, TaskCreate, or markdown TODO lists
-- Run `bd prime` for detailed command reference and session close protocol
-- Use `bd remember` for persistent knowledge — do NOT use MEMORY.md files
+## How feature requests get handled
 
-## Session Completion
+When a user request implies a new BC capability, a tightening, or a flat
+change to an existing BC:
 
-**When ending a work session**, you MUST complete ALL steps below. Work is NOT complete until `git push` succeeds.
+1. **PO authors intent first.** Brief → PDR → Gherkin scenarios, escalating
+   only as far as is needed. **Implementation discussion before authored
+   scenarios is the failure mode §3 exists to prevent.** If you find yourself
+   writing "here's what I'd build" — STOP. Go back to *what scenarios pin
+   this?*
+2. **Architect verifies the relevant BC's pre-state empirically.** Reading
+   the BC's code is hypothesis; running it is fact. Construct a concrete
+   input that exhibits (or fails to exhibit) the behavior; observe; cite
+   the demonstration in the dispatch description.
+3. **Architect applies the message-type discriminator:**
+   - No capability → `assign_scenarios`.
+   - Capability exists but unpinned → `request_bugfix`.
+   - Flat (refactor / doc / value-only) → `request_maintenance`.
+4. **Architect dispatches via `shop-msg send`.** Never write inbox/outbox
+   YAML by hand. The `work_id` is a lead beads issue ID.
+5. **The BC-shop loop runs in the BC's repo, not here.** Implementer →
+   Reviewer (§4 / §4.4) is the BC's concern. The lead shop's next move is
+   reconciliation when `work_done` arrives.
 
-**MANDATORY WORKFLOW:**
+## What does NOT happen in this repo
 
-1. **File issues for remaining work** - Create issues for anything that needs follow-up
-2. **Run quality gates** (if code changed) - Tests, linters, builds
-3. **Update issue status** - Close finished work, update in-progress items
-4. **PUSH TO REMOTE** - This is MANDATORY:
-   ```bash
-   git pull --rebase
-   bd dolt push
-   git push
-   git status  # MUST show "up to date with origin"
-   ```
-5. **Clean up** - Clear stashes, prune remote branches
-6. **Verify** - All changes committed AND pushed
-7. **Hand off** - Provide context for next session
+- **No implementation code.** This is the lead shop; code lives in BCs.
+- **No direct edits to `repos/*`.** Those are sibling BC repositories with
+  their own remotes. Cross-BC changes route through `assign_scenarios` /
+  `request_bugfix`, not direct edits.
+- **No skipping the discriminator.** If a request smells like open-ended
+  "what should we build?" — route it back through the process. First
+  question: *what scenarios pin this?*
+- **No proposing architecture before reading current state.** Pre-state
+  determines vehicle, verified empirically. Applies to the lead shop's own
+  work too.
 
-**CRITICAL RULES:**
-- Work is NOT complete until `git push` succeeds
-- NEVER stop before pushing - that leaves work stranded locally
-- NEVER say "ready to push when you are" - YOU must push
-- If push fails, resolve and retry until it succeeds
-<!-- END BEADS INTEGRATION -->
+## Where things live
 
+- Framework spec: [§1](01-principles.md) – [§6](06-work-tracking.md).
+- ADRs: [`adr/`](adr/).
+- PDRs: [`pdr/`](pdr/).
+- Canonical scenarios (PO-authored, dispatched to BCs): [`features/`](features/).
+- Findings: [`findings/`](findings/).
+- Role templates: `repos/shopsystem-templates/src/shop_templates/templates/`.
+- Sibling BC clones (gitignored): `repos/shopsystem-{messaging,scenarios,templates,test-harness}/`.
 
-## Build & Test
+## Operational hygiene
 
-_Add your build and test commands here_
+These exist to support the discipline above; they are not the discipline.
 
-```bash
-# Example:
-# npm install
-# npm test
-```
+**Beads.** `bd prime` fires on `SessionStart`; see its output for commands.
+Beads holds the lead-shop work registry per [§6](06-work-tracking.md); issue
+IDs are the canonical `work_id`s that flow outward into `shop-msg`.
 
-## Architecture Overview
+**Session close.** Work is not done until `git push` succeeds. Before saying
+complete: `git status` → `git add` → `git commit` → `bd dolt push` → `git push`
+→ `git status` (verify "up to date with origin").
 
-_Add a brief overview of your project architecture_
-
-## Conventions & Patterns
-
-_Add your project-specific conventions here_
+**Shell hygiene.** Use non-interactive flags (`cp -f`, `mv -f`, `rm -f`,
+`apt-get -y`) so commands don't hang on interactive prompts.
