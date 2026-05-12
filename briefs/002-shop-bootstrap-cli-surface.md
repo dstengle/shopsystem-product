@@ -113,7 +113,14 @@ section).
   for the substitution stance.
 - `.beads/` — initialized via `bd init` (the same operation the
   framework already uses for beads-bootstrap; bootstrap composes it
-  rather than reimplementing).
+  rather than reimplementing). **Composition mechanic committed:**
+  bootstrap shells out to `bd init` as a subprocess; it does NOT
+  import `bd` Python internals. Rationale:
+  [`findings/from-prototype-1.md` finding 6](../findings/from-prototype-1.md)
+  — package CLIs are the integration boundary; production code
+  composes packages by shelling out, not by importing internals.
+  The same posture `shop-msg` takes toward its dependencies applies
+  here.
 - `.gitignore` — standard shop-shape entries. The BC and lead variants
   may differ in detail (the lead-shop gitignore today ignores `/repos/`
   and `.venv/`; a BC shop's gitignore typically ignores its own
@@ -294,6 +301,15 @@ verification or scenario authoring surfaces enough design tension.
 3. **CLAUDE.md is init-only, not managed (per scope item D).** Once
    laid down, the shop owns it. Bootstrap does not re-pour CLAUDE.md
    on update.
+4. **Elevation and bootstrap-consumption ship in ONE dispatch.** The
+   Architect's eventual dispatch for E carries BOTH (a) the elevation
+   step — moving the hand-authored lead-shop and BC-router CLAUDE.md
+   content into `shop_templates.templates/` as canonical templates the
+   BC publishes — AND (b) the bootstrap-CLI step that consumes those
+   canonical templates with substitution. One `assign_scenarios`
+   dispatch to the templates BC, sequenced internally by the BC's
+   Implementer (elevate first, then consume). The brief does NOT split
+   this into a prior maintenance pass on the templates BC.
 
 **Where the residual gap lives:**
 
@@ -317,11 +333,18 @@ architecture, not a scenario-shaped question about bootstrap behaviour.
 **Forward path the brief commits to:** the Architect's pre-state work
 on scope item E (specifically: extracting the canonical primer content
 from the two hand-authored CLAUDE.md files) will surface whether the
-separation is clean. If it is, scenarios pin the substitution and the
-brief is the right vehicle. If the separation is messy enough that
-"CLAUDE.md architecture" becomes a live design question, the Architect
-flags it and a PDR opens before scenarios are authored against this
-scope item. Items A–D are independent of E and can proceed regardless.
+separation is clean. If it is, scenarios pin the substitution AND the
+elevation (one dispatch per PO stance item 4), and the brief is the
+right vehicle. If the separation is messy enough that "CLAUDE.md
+architecture" becomes a live design question, the Architect flags it
+and a PDR opens before scenarios are authored against this scope item.
+
+**The PDR escalation trigger fires AT the Architect's pre-state
+verification on E**, not later. The Architect makes the
+brief-vs-PDR call during pre-state — once scenarios are authored
+against E, escalation is more expensive (the dispatched scenarios
+would need recall). Items A–D are independent of E and can proceed
+regardless of how the E call resolves.
 
 ## Sequencing
 
@@ -391,16 +414,13 @@ Specifically:
   templating-engine syntax? plain string interpolation?) is the
   Architect's call. The brief commits that substitution happens and
   what its minimal parameter set is.
-- **Composition with `bd init` for B.** Whether bootstrap shells out
-  to `bd init` (the same way `shop-msg` shells out to its dependencies)
-  or composes the operation in-process is the Architect's call. The
-  brief commits that bootstrap **produces** an initialised `.beads/`
-  state regardless of mechanism.
 - **PDR-vs-brief escalation for E.** As named in the section, if the
   Architect's extraction of canonical primer content from the two
   hand-authored CLAUDE.md files surfaces a cut that splits CLAUDE.md
   into managed-half and shop-owned-half (rather than a single
   init-only file), a PDR opens before E's scenarios are authored.
+  The escalation call is made AT pre-state verification on E (not
+  later), per the forward path committed in scope item E.
 
 These are vehicle-level and design-tension questions, not intent-level.
 The PO's commit is the invariant + the four scope items + the
