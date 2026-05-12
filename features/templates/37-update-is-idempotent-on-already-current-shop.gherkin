@@ -1,0 +1,7 @@
+Scenario: invoking update against a shop whose bootstrap-managed files are already byte-equal to the current canonical templates leaves every file on disk unchanged
+  Given an existing git repository at a target directory "/tmp/example-shop" that was previously bootstrapped as a "bc" shop named "example-shop"
+  And every file in ".claude/agents/" in the target directory equals the corresponding current canonical template package-data file contents byte-for-byte
+  And I record the on-disk byte contents and modification metadata of every file under the target directory before the invocation
+  When I invoke the "shop-templates" update entry point against the target directory "/tmp/example-shop"
+  Then the exit code is 0
+  And after the invocation every file under the target directory has byte-for-byte the same on-disk contents as before the invocation

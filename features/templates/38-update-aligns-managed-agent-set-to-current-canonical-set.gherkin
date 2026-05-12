@@ -1,0 +1,10 @@
+Scenario: update brings the set of bootstrap-managed agent files in the target directory into alignment with the current canonical role set for the shop type — adding canonical files that are missing and removing managed files whose canonical template no longer exists
+  Given an existing git repository at a target directory "/tmp/example-shop" that was previously bootstrapped as a "bc" shop named "example-shop"
+  And the current canonical role set for shop type "bc" is exactly the names listed by "shop-templates list" filtered to those that the bootstrap surface treats as "bc" roles
+  And the directory ".claude/agents/" in the target directory contains a file named "<former-bc-role>.md" whose name is not in that current canonical role set
+  And the directory ".claude/agents/" in the target directory does not contain a file named "<new-bc-role>.md" whose name is in that current canonical role set
+  When I invoke the "shop-templates" update entry point against the target directory "/tmp/example-shop"
+  Then the exit code is 0
+  And after the invocation the directory ".claude/agents/" in the target directory does not contain a file named "<former-bc-role>.md"
+  And after the invocation the directory ".claude/agents/" in the target directory contains a file named "<new-bc-role>.md" whose content equals the current canonical "<new-bc-role>" template package-data file contents byte-for-byte
+  And after the invocation the set of files in ".claude/agents/" whose names match the canonical role-set naming convention equals the current canonical role set for shop type "bc"

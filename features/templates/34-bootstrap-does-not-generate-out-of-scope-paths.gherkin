@@ -1,0 +1,15 @@
+Scenario Outline: bootstrap does not create any of the explicitly out-of-scope paths in the target directory, regardless of shop type
+  Given an existing git repository at a target directory "<target>" containing none of "inbox/", "outbox/", "features/", "tests/", "pyproject.toml", or "README.md"
+  When I invoke the "shop-templates" bootstrap entry point with shop type "<shop_type>", shop name "<shop_name>", and target directory "<target>"
+  Then the exit code is 0
+  And the target directory contains no directory named "inbox/"
+  And the target directory contains no directory named "outbox/"
+  And the target directory contains no directory named "features/"
+  And the target directory contains no directory named "tests/"
+  And the target directory contains no top-level file named "pyproject.toml"
+  And the target directory contains no top-level file named "README.md"
+
+  Examples:
+    | shop_type | shop_name               | target                       |
+    | bc        | shopsystem-messaging    | /tmp/example-bc-shop         |
+    | lead      | shopsystem-product      | /tmp/example-lead-shop       |

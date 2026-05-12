@@ -1,0 +1,8 @@
+Scenario: bootstrap initializes the ".beads/" directory in the target directory by invoking "bd init" as a subprocess, not by importing or reproducing bd's internal behavior in-process
+  Given an existing git repository at a target directory "/tmp/example-shop" with no ".beads/" directory
+  When I invoke the "shop-templates" bootstrap entry point with shop type "bc", shop name "example-shop", and target directory "/tmp/example-shop"
+  Then the exit code is 0
+  And the target directory contains a ".beads/" directory
+  And during the invocation a subprocess named "bd" was executed with first argument "init"
+  And during the invocation no symbol from a Python module whose top-level package name is "bd" or "beads" was imported into the running "shop-templates" process
+  And during the invocation the contents of the ".beads/" directory were written by that "bd" subprocess and not by file-writes issued directly from the "shop-templates" process

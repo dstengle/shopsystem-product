@@ -1,0 +1,10 @@
+Scenario Outline: shopsystem-templates ships a canonical "CLAUDE.md" primer template for each shop type, accessible through the same package-data surface as the role-prompt templates
+  When I ask the "shop-templates" package for the canonical "CLAUDE.md" primer template for shop type "<shop_type>" through its public template-access surface
+  Then a non-empty template body is returned
+  And the returned body is the source of truth from which the bootstrap entry point generates the target directory's top-level "CLAUDE.md" for a shop of type "<shop_type>"
+  And the returned body is not read from any path under this product's top-level working directory at lookup time
+
+  Examples:
+    | shop_type |
+    | bc        |
+    | lead      |

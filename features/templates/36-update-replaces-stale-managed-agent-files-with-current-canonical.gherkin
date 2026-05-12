@@ -1,0 +1,7 @@
+Scenario: update replaces a stale bootstrap-managed agent file with the current canonical content when the package-data template has changed since the shop was bootstrapped
+  Given an existing git repository at a target directory "/tmp/example-shop" that was previously bootstrapped as a "bc" shop named "example-shop"
+  And the file at ".claude/agents/bc-implementer.md" in the target directory holds an older version of the "bc-implementer" canonical template content
+  And the current canonical "bc-implementer" template package-data file contents differ from that older version
+  When I invoke the "shop-templates" update entry point against the target directory "/tmp/example-shop"
+  Then the exit code is 0
+  And after the invocation the file at ".claude/agents/bc-implementer.md" in the target directory equals the current canonical "bc-implementer" template package-data file contents byte-for-byte

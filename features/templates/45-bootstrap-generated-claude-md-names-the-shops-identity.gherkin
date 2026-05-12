@@ -1,0 +1,13 @@
+Scenario Outline: the top-level "CLAUDE.md" that bootstrap writes into the target directory names the shop's own identity — its shop name and its role set — and is consistent with the canonical primer template for the chosen shop type
+  Given an existing git repository at a target directory "<target>" with no top-level "CLAUDE.md"
+  When I invoke the "shop-templates" bootstrap entry point with shop type "<shop_type>", shop name "<shop_name>", and target directory "<target>"
+  Then the exit code is 0
+  And the target directory contains a top-level file named "CLAUDE.md"
+  And the content of that file contains the literal substring "<shop_name>"
+  And the content of that file names every role in the canonical role set for shop type "<shop_type>" by name
+  And the content of that file does not name any role from the canonical role set of the other shop type
+
+  Examples:
+    | shop_type | shop_name               | target                       |
+    | bc        | shopsystem-messaging    | /tmp/example-bc-shop         |
+    | lead      | shopsystem-product      | /tmp/example-lead-shop       |
