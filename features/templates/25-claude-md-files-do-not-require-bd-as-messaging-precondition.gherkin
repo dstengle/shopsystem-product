@@ -1,0 +1,12 @@
+Scenario Outline: no shop's CLAUDE.md instructs creating or updating a bd issue as a precondition for invoking a shop-msg subcommand
+  Given the file at <path> exists and is the canonical CLAUDE.md for the named shop
+  When I read that file
+  Then the file does not contain any sentence, list item, or numbered step that instructs the reader to create, claim, or update a bd issue as a precondition for invoking any "shop-msg send" or "shop-msg respond" subcommand
+  And every "shop-msg send" invocation example in the file is composable without the reader first running a "bd" subcommand
+  And every "shop-msg respond" invocation example in the file is composable without the reader first running a "bd" subcommand
+  And the file does not contain the literal substring "--bd-ref"
+
+  Examples:
+    | path                                                         | shop                  |
+    | CLAUDE.md                                                    | lead shop             |
+    | repos/shopsystem-templates/CLAUDE.md                         | shopsystem-templates  |

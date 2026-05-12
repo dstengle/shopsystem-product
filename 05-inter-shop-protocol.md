@@ -44,7 +44,15 @@ This applies to structural shape (required fields, type constraints, list cardin
 
 Where an invariant cannot be expressed cleanly at the schema layer — typically because it requires composition with another package's logic, or because it spans messages — the alternative is a tool that validates the invariant at the integration boundary, never a defensive check in producer code.
 
-## 5.7 Cross-references
+## 5.7 Self-contained messages
+
+A message must carry everything the receiving shop needs to act on it. The receiving shop acts on a message without consulting the sending shop's internal artifacts — its beads database, its source files, its working directory, or any other state private to the sender. The schema captures the meaning; the wire payload captures the data. Anything load-bearing for the receiver belongs in the message itself.
+
+This is a sibling invariant to the schema-as-contract principle in §5.6. Schema-level invariants ensure each message is well-formed; the self-contained-messages invariant ensures each message is *complete*. Together they keep the inter-shop boundary clean: a shop reasons about what arrives in its inbox, not about how the sender constructed it. Cross-shop read coupling — receiver inspecting sender's repo to interpret a message — defeats the typed-channel discipline §5.1 and §5.4 establish and tightens the topology to single-host single-process by accident.
+
+References inside a message (e.g., a `bd_ref` on `mechanism_observation` recording the sender's local bead) are provenance for the sender's own reconciliation, not load-bearing for the receiver. The receiver's response logic must work without resolving such references.
+
+## 5.8 Cross-references
 
 - Lead shop: [§3](03-lead-shop.md).
 - BC-shop: [§4](04-bc-shop.md).

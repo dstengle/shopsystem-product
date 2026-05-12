@@ -1,0 +1,7 @@
+Scenario: lead-po template directs the PO to read an inbound clarify via the shop-msg CLI, never by reading mailbox YAML directly
+  When I read the lead-po template via "shop-templates show lead-po"
+  Then the content contains the literal substring "shop-msg read outbox"
+  And the content does not contain the literal substring "read the file directly"
+  And the content does not contain the literal substring "ls inbox"
+  And the content does not contain the literal substring "ls outbox"
+  And the content does not instruct the PO to open, cat, or otherwise inspect any path under "inbox/" or "outbox/" by any non-shop-msg means
