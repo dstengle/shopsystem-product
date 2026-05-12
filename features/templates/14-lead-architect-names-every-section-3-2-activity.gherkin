@@ -1,0 +1,10 @@
+Scenario: lead-architect template names every §3.2 Architect activity by name
+  When I read the lead-architect template via "shop-templates show lead-architect"
+  Then the content names the activity "Write ADRs"
+  And the content names the activity "Maintain structurizr workspace"
+  And the content names the activity "Collaborate with PO on BC decomposition" with the qualifier "turn-limited"
+  And the content names the activity "Assign scenarios to BCs"
+  And the content names the activity "Reconcile scenario registers"
+  And the content names the activity "Send `request_bugfix`" or equivalently mentions both "request_bugfix" and "request_maintenance" as dispatch vehicles
+  And the content names the activity "Read a BC-shop's card via `request_shop_card`"
+  And the content names the activity "Respond to BC `clarify`" with the qualifier "architecture"

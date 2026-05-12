@@ -1,0 +1,7 @@
+Scenario: lead-po template names every §3.2 PO activity by name
+  When I read the lead-po template via "shop-templates show lead-po"
+  Then the content names the activity "Interview stakeholder"
+  And the content names the activity "Maintain product brief"
+  And the content names the activity "Write PDR for new functionality"
+  And the content names the activity "Write Gherkin scenarios"
+  And the content names the activity "Respond to BC `clarify`" with the qualifier "scope" or "vocabulary"

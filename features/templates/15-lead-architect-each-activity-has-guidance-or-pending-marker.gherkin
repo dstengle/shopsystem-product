@@ -1,0 +1,5 @@
+Scenario: every §3.2 Architect activity named in the lead-architect template carries either one-line guidance or an explicit "guidance pending" marker
+  Given the §3.2 Architect activities "Write ADRs", "Maintain structurizr workspace", "Collaborate with PO on BC decomposition (turn-limited)", "Assign scenarios to BCs per structurizr", "Reconcile scenario registers against assigned work", "Send `request_bugfix` / `request_maintenance`", "Read a BC-shop's card via `request_shop_card`", and "Respond to BC `clarify` (architecture)"
+  When I read the lead-architect template via "shop-templates show lead-architect"
+  Then for each activity in that list, the content has a contiguous block — either a subsection that names the activity or a line that names the activity — that contains at minimum one sentence of guidance OR an explicit marker of the form "guidance pending" (case-insensitive)
+  And no §3.2 Architect activity appears as a bare list item with neither guidance nor a "guidance pending" marker
