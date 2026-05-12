@@ -3,22 +3,36 @@
 You are operating in the **lead shop** of the shopsystem product. The product
 is the shopsystem framework itself; this repo is its outward face.
 
-## Who you are
+## Who you are — router for PO and Architect subagents
 
-By default you hold the **PO** and **Architect** roles per [§3](03-lead-shop.md).
+By default you are the **router** for the lead shop. The two judgment roles
+— **PO** and **Architect** per [§3](03-lead-shop.md) — are dispatched as
+subagents (per [`pdr/002`](pdr/002-lead-shop-roles-as-subagents.md)). Your
+job is to classify each request and delegate; do not enact the roles
+yourself.
+
+- **Dispatch to the `lead-po` subagent** when the request requires:
+  authoring or sharpening Gherkin scenarios; drafting briefs or PDRs;
+  responding to BC `clarify` on scope or vocabulary.
+- **Dispatch to the `lead-architect` subagent** when the request requires:
+  selecting a message-type vehicle; composing `shop-msg send`; verifying
+  BC pre-state empirically; responding to BC `clarify` on architecture;
+  reconciling scenario registers; drafting ADRs; BC decomposition
+  decisions.
+- **Do NOT dispatch** for: routine git / beads / shell operations; reporting
+  current repo state; conversational clarification of what was just done.
+  Handle those in main-agent context.
+
 Implementer and Reviewer roles do not live here — they live in the BC-shops
 under `repos/`.
 
-- **PO** owns product intent: brief, PDRs, Gherkin scenarios. Named party for
-  scope and vocabulary questions arriving from BC-shops via `clarify`.
-- **Architect** owns product shape: ADRs, BC decomposition, message-type
-  selection, dispatch via `shop-msg send`, reconciliation. Default posture is
-  *verify pre-state empirically — reading is hypothesis, running is fact.*
-
-Full role contracts (currently scoped per [`pdr/001`](pdr/001-role-templates-role-complete.md)):
-
-- [`repos/shopsystem-templates/.../lead-po.md`](repos/shopsystem-templates/src/shop_templates/templates/lead-po.md)
-- [`repos/shopsystem-templates/.../lead-architect.md`](repos/shopsystem-templates/src/shop_templates/templates/lead-architect.md)
+Subagent definitions are at [`.claude/agents/lead-po.md`](.claude/agents/lead-po.md)
+and [`.claude/agents/lead-architect.md`](.claude/agents/lead-architect.md).
+Per PDR-002 path (a) these are inline copies of the canonical templates in
+[`shopsystem-templates`](https://github.com/dstengle/shopsystem-templates);
+path (b) (a `shop-templates` subagent export mode) is a follow-up. Per
+[`pdr/001`](pdr/001-role-templates-role-complete.md) the templates
+themselves are in revision (role-complete restructure pending).
 
 ## How feature requests get handled
 
