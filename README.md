@@ -20,16 +20,23 @@ Framework spec (read in order):
 Architecture decisions:
 
 - [`adr/001-framework-packaging.md`](adr/001-framework-packaging.md) — split into four BC-aligned repos.
+- [`adr/002-harness-bc-introduction.md`](adr/002-harness-bc-introduction.md) — fifth repo for the harness BC under Platform Operations.
+
+Canonical scenarios (PO-authored, dispatched to each BC):
+
+- [`features/scenarios/`](features/scenarios/) — `shopsystem-scenarios` BC contract.
+- [`features/templates/`](features/templates/) — `shopsystem-templates` BC contract.
+- [`features/test-harness/`](features/test-harness/) — `shopsystem-test-harness` BC contract.
 
 Findings (consolidated per-prototype):
 
 - [`findings/from-prototype-1.md`](findings/from-prototype-1.md) — message-catalog-v1 (14 slices, 2026-05-06 → 2026-05-10).
 - [`findings/from-mechanism-observation-v1.md`](findings/from-mechanism-observation-v1.md) — mechanism-observation-v1.
 
-Prototype evidence (frozen records — design, plan, per-slice runs):
-
-- [`prototypes/message-catalog-v1/`](prototypes/message-catalog-v1/)
-- [`prototypes/mechanism-observation-v1/`](prototypes/mechanism-observation-v1/)
+The frozen prototype evidence that these findings cite lives in the
+predecessor repo
+[`ddd-product-system`](https://github.com/dstengle/ddd-product-system)
+(per ADR-001's provenance note).
 
 ## Sibling BC repos
 
