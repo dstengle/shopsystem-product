@@ -1,0 +1,10 @@
+Scenario Outline: the canonical "CLAUDE.md" primer template for each shop type references the bd (beads) discipline that the shop is expected to follow, naming "bd prime" as the entry point a reader runs to learn the workflow
+  When I ask the "shop-templates" package for the canonical "CLAUDE.md" primer template for shop type "<shop_type>" through its public template-access surface
+  Then a non-empty template body is returned
+  And the returned body contains the literal substring "bd prime"
+  And the returned body contains at least one instruction directing the reader to run a "bd" subcommand as part of the shop's working discipline
+
+  Examples:
+    | shop_type |
+    | bc        |
+    | lead      |
