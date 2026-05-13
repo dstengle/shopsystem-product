@@ -1,0 +1,7 @@
+Scenario: the bootstrap entry point exits with an argparse-style usage error when invoked without --shop-name, with no Python traceback emitted
+  Given an existing git repository at a target directory "/tmp/example-shop"
+  When I invoke the "shop-templates" bootstrap entry point with --shop-type "bc" and --target "/tmp/example-shop" but with no --shop-name argument
+  Then the exit code is 2
+  And stderr names "--shop-name" as a missing required argument
+  And stderr does not contain a Python traceback or the substring "TypeError"
+  And the target directory still contains no ".claude/agents/" directory and no ".beads/" directory and no top-level "CLAUDE.md" and no top-level ".gitignore"
