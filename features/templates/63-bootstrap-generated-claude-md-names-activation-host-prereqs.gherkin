@@ -1,0 +1,14 @@
+Scenario Outline: the top-level "CLAUDE.md" that bootstrap writes names the host-level prereqs the canonical SessionStart activation hook depends on ("inotify-tools" providing "inotifywait", and "coreutils" providing "stdbuf"), so an operator on a host missing those packages has a documented expectation to point at
+  Given an existing git repository at a target directory "<target>" with no top-level "CLAUDE.md"
+  When I invoke the "shop-templates" bootstrap entry point with shop type "<shop_type>", shop name "<shop_name>", and target directory "<target>"
+  Then the exit code is 0
+  And the target directory contains a top-level file named "CLAUDE.md"
+  And the content of that file contains the literal substring "inotify-tools"
+  And the content of that file contains the literal substring "coreutils"
+  And the content of that file contains the literal substring "inotifywait"
+  And the content of that file contains the literal substring "stdbuf"
+
+  Examples:
+    | shop_type | shop_name               | target                       |
+    | bc        | shopsystem-messaging    | /tmp/example-bc-shop         |
+    | lead      | shopsystem-product      | /tmp/example-lead-shop       |

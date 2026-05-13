@@ -1,0 +1,11 @@
+Scenario Outline: bootstrap writes the canonical ".claude/settings.json" for the shop type into the target directory, byte-for-byte equal to the current canonical package-data file
+  Given an existing git repository at a target directory "<target>" with no ".claude/settings.json" file
+  When I invoke the "shop-templates" bootstrap entry point with shop type "<shop_type>", shop name "<shop_name>", and target directory "<target>"
+  Then the exit code is 0
+  And the target directory contains a file at ".claude/settings.json"
+  And the content of that file equals the package-data file contents of the canonical ".claude/settings.json" template for shop type "<shop_type>" byte-for-byte
+
+  Examples:
+    | shop_type | shop_name               | target                       |
+    | bc        | shopsystem-messaging    | /tmp/example-bc-shop         |
+    | lead      | shopsystem-product      | /tmp/example-lead-shop       |

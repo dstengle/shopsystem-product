@@ -1,0 +1,11 @@
+Scenario Outline: the canonical ".claude/settings.json" template for each shop type expresses the SessionStart activation hook so that, on a host where "inotifywait" is not on PATH, the hook surfaces a visible failure rather than silently degrading to a no-watcher state
+  Given a host environment where the executable "inotifywait" is not present on PATH
+  And an existing git repository at a target directory "<target>" that was previously bootstrapped as a "<shop_type>" shop named "<shop_name>"
+  When a Claude Code session starts in the target directory and the "SessionStart" hooks declared by ".claude/settings.json" execute
+  Then the session surfaces a visible diagnostic identifying "inotifywait" or "inotify-tools" as the missing prerequisite
+  And the session does not arrive at the agent's first turn in a state where the activation hook has silently produced no watcher and no diagnostic
+
+  Examples:
+    | shop_type | shop_name               | target                       |
+    | bc        | shopsystem-messaging    | /tmp/example-bc-shop         |
+    | lead      | shopsystem-product      | /tmp/example-lead-shop       |

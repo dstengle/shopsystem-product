@@ -1,0 +1,7 @@
+Scenario: bootstrap of a lead shop installs each sibling BC clone under "repos/" into the product venv in editable mode, so that source-tree edits in a BC clone are immediately reflected in subsequent CLI invocations against the lead shop's venv without an intervening manual reinstall
+  Given a target directory "/tmp/example-lead-shop" containing an existing git repository
+  And the target directory contains a sibling BC clone at "repos/shopsystem-messaging/" with a valid Python package whose installed entry point name is "shop-msg"
+  When I invoke the "shop-templates" bootstrap entry point with shop type "lead", shop name "shopsystem-product", and target directory "/tmp/example-lead-shop"
+  Then the exit code is 0
+  And the product venv reports the installed location of the "shop-msg" distribution as pointing into "repos/shopsystem-messaging/" of the target directory
+  And the "pip show shop-msg" output for the product venv records the install as editable

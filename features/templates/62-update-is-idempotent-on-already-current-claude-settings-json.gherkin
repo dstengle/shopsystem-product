@@ -1,0 +1,11 @@
+Scenario Outline: invoking "shop-templates" update against a target directory whose ".claude/settings.json" already equals the current canonical leaves the file byte-for-byte unchanged
+  Given an existing git repository at a target directory "<target>" that was previously bootstrapped as a "<shop_type>" shop named "<shop_name>"
+  And the file at ".claude/settings.json" in the target directory equals the current canonical ".claude/settings.json" template for shop type "<shop_type>" byte-for-byte
+  When I invoke the "shop-templates" update entry point against the target directory "<target>"
+  Then the exit code is 0
+  And after the invocation the file at ".claude/settings.json" in the target directory still equals the current canonical ".claude/settings.json" template for shop type "<shop_type>" byte-for-byte
+
+  Examples:
+    | shop_type | shop_name               | target                       |
+    | bc        | shopsystem-messaging    | /tmp/example-bc-shop         |
+    | lead      | shopsystem-product      | /tmp/example-lead-shop       |

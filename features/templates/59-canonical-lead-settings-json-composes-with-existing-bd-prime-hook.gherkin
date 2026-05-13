@@ -1,0 +1,6 @@
+Scenario: the canonical lead-shop ".claude/settings.json" template declares both the inotifywait activation hook AND a "bd prime" hook on "SessionStart", so the two hooks compose rather than the activation hook replacing the operational-hygiene hook
+  When I ask the "shop-templates" package for the canonical ".claude/settings.json" template for shop type "lead" through its public template-access surface
+  Then the returned body contains the literal substring "SessionStart"
+  And the returned body contains the literal substring "bd prime"
+  And the returned body contains the literal substring "stdbuf -oL inotifywait"
+  And the returned body declares the "bd prime" invocation and the inotifywait arming as two distinct hook entries under "SessionStart"
