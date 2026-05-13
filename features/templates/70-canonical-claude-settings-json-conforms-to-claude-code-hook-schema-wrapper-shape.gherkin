@@ -1,0 +1,14 @@
+Scenario Outline: the canonical ".claude/settings.json" template for each shop type conforms to Claude Code's hook-schema wrapper shape — every "SessionStart" entry is a matcher+hooks wrapper object, and every inner hook is a command object — so that Claude Code accepts the file at session start instead of rejecting it with a schema-validation error (the brief-003 templates pinned only inner content substrings and shipped a malformed wrapper that Claude Code rejected with "hooks → SessionStart → 0 → hooks: Expected array, but received undefined")
+  When I ask the "shop-templates" package for the canonical ".claude/settings.json" template for shop type "<shop_type>" through its public template-access surface
+  And the returned body is parsed as JSON
+  Then the parsed value at top-level key "hooks" is a JSON object
+  And the parsed value at "hooks.SessionStart" is a JSON array of length at least 1
+  And every element of the "hooks.SessionStart" array is a JSON object with a "matcher" key whose value is a string
+  And every element of the "hooks.SessionStart" array is a JSON object with a "hooks" key whose value is a JSON array of length at least 1
+  And every element of every inner "hooks" array under "hooks.SessionStart" is a JSON object with a "type" key whose value is a string
+  And every element of every inner "hooks" array under "hooks.SessionStart" is a JSON object with a "command" key whose value is a string
+
+  Examples:
+    | shop_type |
+    | bc        |
+    | lead      |
