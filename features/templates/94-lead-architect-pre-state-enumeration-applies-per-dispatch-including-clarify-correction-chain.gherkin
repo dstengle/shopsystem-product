@@ -1,0 +1,6 @@
+Scenario: lead-architect template directs the architect to re-run the BC @scenario_hash enumeration on every dispatch in a clarify-correction chain (not only the initial dispatch), against the BC's full "features/" tree (not only the hashes a prior clarify named)
+  When I read the lead-architect template via "shop-templates show lead-architect"
+  Then the content names a clarify-driven correction (a follow-up dispatch that augments or amends a prior dispatch in response to an Implementer clarify) as a moment that itself requires the BC @scenario_hash pre-state enumeration
+  And the content directs the architect not to limit the re-enumeration to only the @scenario_hash entries a prior clarify named, but to re-run the enumeration against the BC's full "features/" tree
+  And the content frames a prior clarify as evidence that the prior enumeration was incomplete, rather than as a definitive list of every conflicting BC-side @scenario_hash
+  And the content names this per-event discipline as applying independently to each dispatch in a clarify-correction chain, not only to the initial dispatch in such a chain

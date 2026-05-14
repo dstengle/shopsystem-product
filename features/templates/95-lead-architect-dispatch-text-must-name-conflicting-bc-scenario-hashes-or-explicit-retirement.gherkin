@@ -1,0 +1,5 @@
+Scenario: lead-architect template requires the dispatch text resulting from the BC @scenario_hash enumeration to carry observable evidence the discipline ran — every conflicting BC-side hash is either named by ID in the dispatch text or carries an explicit retirement instruction
+  When I read the lead-architect template via "shop-templates show lead-architect"
+  Then the content directs the architect that, for any dispatch that retires, supersedes, or contradicts prior BC-side coverage, the dispatch text must reference each conflicting BC-side @scenario_hash entry by its hash ID, or carry an explicit retirement instruction for that hash
+  And the content frames that requirement as the observable evidence the BC Implementer can use to confirm the architect ran the enumeration step, rather than as optional context for the BC
+  And the content directs the architect to cite the enumeration in the dispatch description (in the same shape that the existing behavior-verification step is cited), so the Implementer does not have to re-run the enumeration to discover conflicts the architect missed

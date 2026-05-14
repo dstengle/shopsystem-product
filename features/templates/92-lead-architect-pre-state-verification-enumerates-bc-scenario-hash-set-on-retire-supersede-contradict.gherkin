@@ -1,0 +1,6 @@
+Scenario: lead-architect template's pre-state-verification discipline directs the architect to empirically enumerate the BC's pinned @scenario_hash set whenever the dispatch retires, supersedes, or contradicts prior BC-side coverage
+  When I read the lead-architect template via "shop-templates show lead-architect"
+  Then the content names "@scenario_hash" as a pre-state surface the architect must verify before composing a dispatch that retires, supersedes, or contradicts prior BC-side coverage
+  And the content directs the architect to enumerate that surface from the BC's "features/" directory rather than from the lead shop's scenario register
+  And the content marks the enumeration as a discrete pre-state step (alongside the existing behavior-verification step), not as optional guidance the architect may skip
+  And the content names at least one of the trigger conditions "retire", "supersede", or "contradict" as the gate that requires the enumeration step
