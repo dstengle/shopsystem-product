@@ -1,0 +1,17 @@
+Scenario Outline: update is idempotent when both the top-level "CLAUDE.md" and ".claude/canonical/<shop_type>-primer.md" already match package data byte-for-byte; the invocation exits zero, emits no diagnostic on stderr, and leaves the on-disk byte contents and mtimes of those two files unchanged
+  Given an existing git repository at a target directory "/tmp/example-shop" that was previously bootstrapped as a "<shop_type>" shop named "<shop_name>"
+  And the file at "CLAUDE.md" in the target directory has byte contents equal to the canonical "CLAUDE.md" body template for shop type "<shop_type>"
+  And the file at ".claude/canonical/<shop_type>-primer.md" in the target directory has byte contents equal to the canonical "CLAUDE.md" primer template for shop type "<shop_type>"
+  And I record the byte contents and mtimes of those two files before the invocation
+  When I invoke the "shop-templates" update entry point against the target directory "/tmp/example-shop"
+  Then the exit code is 0
+  And the stderr output of the invocation is empty
+  And after the invocation the byte contents of the file at "CLAUDE.md" in the target directory equal the recorded byte contents
+  And after the invocation the mtime of the file at "CLAUDE.md" in the target directory equals the recorded mtime
+  And after the invocation the byte contents of the file at ".claude/canonical/<shop_type>-primer.md" in the target directory equal the recorded byte contents
+  And after the invocation the mtime of the file at ".claude/canonical/<shop_type>-primer.md" in the target directory equals the recorded mtime
+
+  Examples:
+    | shop_type | shop_name               |
+    | bc        | shopsystem-messaging    |
+    | lead      | shopsystem-product      |

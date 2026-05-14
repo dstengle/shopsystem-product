@@ -1,0 +1,9 @@
+Scenario: when update runs against a target directory that lacks ".claude/shop/type.md" (a legacy-bootstrap shop predating PDR-003 alternative F), update exits non-zero, writes a diagnostic to stderr naming the migration steps the operator must perform, and touches no files in the target
+  Given an existing git repository at a target directory "/tmp/example-legacy-shop" that contains a top-level "CLAUDE.md" and has no file at ".claude/shop/type.md"
+  And I record the recursive listing of file paths and the byte contents of every file in the target directory before the invocation
+  When I invoke the "shop-templates" update entry point against the target directory "/tmp/example-legacy-shop"
+  Then the exit code is non-zero
+  And the stderr output of the invocation contains the literal substring ".claude/shop/type.md"
+  And the stderr output of the invocation contains the literal substring "migration"
+  And after the invocation the recursive listing of file paths in the target directory equals the recorded listing
+  And after the invocation the byte contents of every file in the target directory equal the corresponding recorded byte contents
