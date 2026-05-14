@@ -1,0 +1,22 @@
+Feature: Canonical "CLAUDE.md" primer per shop type names the router-side Monitor activation instruction
+
+  Supersedes scenario 2a09d13c21d48aa0 (features/templates/58-canonical-claude-settings-json-declares-sessionstart-hook.gherkin, currently pinned in repos/shopsystem-templates/features/brief_003_event_driven_activation_and_settings_json_bootstrap.feature from lead-xkh / brief 003) as hash 679d227f04533ad4.
+
+  Scenario 58 pinned a "SessionStart" hook in ".claude/settings.json" carrying the inotifywait pipeline. Test-harness BC empirically demonstrated a hook-model mismatch: Claude Code awaits SessionStart hooks synchronously, so a foreground "inotifywait -m" never returns and session startup hangs / times out. The schema and the host prereqs are fine; the structural mismatch is that synchronous hook delivery is incompatible with a long-running watcher process. Brief 003 (lead-0h1) commits the invariant that every shop is reactive on session start — the realization revision (lead-o00) shifts the mechanism: instead of the SessionStart hook running the watcher, the canonical "CLAUDE.md" primer instructs the router (Claude session) to arm the in-session "Monitor" tool on the validated pipeline at session start. This scenario carries the new realization-pin: the activation instruction is package-data property of the canonical "CLAUDE.md" primer.
+
+  The Implementer should retire scenario 58's content from repos/shopsystem-templates/features/brief_003_event_driven_activation_and_settings_json_bootstrap.feature (BC-side hash 679d227f04533ad4) when landing this scenario.
+
+  Scenario Outline: the canonical "CLAUDE.md" primer template for each shop type contains an instruction telling the session router to arm the in-session "Monitor" tool, at session start, on a line-buffered "inotifywait" pipeline watching the shop-type's inbound mailbox surface, so the in-session Monitor primitive — not a synchronous SessionStart hook — carries the reactivity invariant
+    When I ask the "shop-templates" package for the canonical "CLAUDE.md" primer template for shop type "<shop_type>" through its public template-access surface
+    Then a non-empty template body is returned
+    And the returned body contains the literal substring "Monitor"
+    And the returned body contains the literal substring "session start"
+    And the returned body contains the literal substring "stdbuf -oL inotifywait"
+    And the returned body contains the literal substring "-m -e create,moved_to"
+    And the returned body contains the literal substring "<watch_target>"
+    And the returned body does not contain any instruction to arm the watcher via a "SessionStart" hook in ".claude/settings.json"
+
+    Examples:
+      | shop_type | watch_target       |
+      | bc        | inbox/             |
+      | lead      | repos/*/outbox/    |

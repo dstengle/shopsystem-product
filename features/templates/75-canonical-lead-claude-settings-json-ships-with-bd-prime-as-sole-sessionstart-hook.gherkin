@@ -1,0 +1,17 @@
+Feature: Canonical lead ".claude/settings.json" ships with "bd prime" as the sole "SessionStart" hook content
+
+  Supersedes scenario 21769e2a22c36bc7 (features/templates/59-canonical-lead-settings-json-composes-with-existing-bd-prime-hook.gherkin, currently pinned in repos/shopsystem-templates/features/brief_003_event_driven_activation_and_settings_json_bootstrap.feature from lead-xkh / brief 003) as hash c1e7f31eeef73e05.
+
+  Scenario 59 pinned a two-hook composition of "bd prime" + inotifywait arming under "SessionStart" in the canonical lead settings.json. Brief 003's realization revision (lead-o00) retires the inotifywait SessionStart hook (see scenario 71 superseding 58); the lead shop's only remaining SessionStart hook is the "bd prime" operational-hygiene hook, which is a legitimate synchronous hook usage (it is short-lived and returns cleanly). This scenario carries the new pin: the canonical lead settings.json's SessionStart array contains exactly one inner-hook entry, "bd prime", and contains no activation hook.
+
+  The Implementer should retire scenario 59's content from repos/shopsystem-templates/features/brief_003_event_driven_activation_and_settings_json_bootstrap.feature (BC-side hash c1e7f31eeef73e05) when landing this scenario.
+
+  Scenario: the canonical ".claude/settings.json" template for shop type "lead" declares "bd prime" as the sole inner-hook command under "SessionStart", carries no activation hook, and conforms to the Claude Code matcher+hooks wrapper schema
+    When I ask the "shop-templates" package for the canonical ".claude/settings.json" template for shop type "lead" through its public template-access surface
+    And the returned body is parsed as JSON
+    Then the parsed value at top-level key "hooks" is a JSON object
+    And the parsed value at "hooks.SessionStart" is a JSON array of length at least 1
+    And exactly one JSON-object element of "hooks.SessionStart" has an inner "hooks" array containing an entry whose "command" string equals "bd prime"
+    And no element of "hooks.SessionStart" has an inner "hooks" array containing an entry whose "command" string contains the substring "inotifywait"
+    And no element of "hooks.SessionStart" has an inner "hooks" array containing an entry whose "command" string contains the substring "stdbuf"
+    And every element of "hooks.SessionStart" is a JSON object with a "matcher" key whose value is a string and a "hooks" key whose value is a JSON array of length at least 1

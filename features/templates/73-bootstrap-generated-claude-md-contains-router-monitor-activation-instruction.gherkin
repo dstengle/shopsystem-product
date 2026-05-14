@@ -1,0 +1,25 @@
+Feature: Bootstrap-generated top-level "CLAUDE.md" contains the router-side Monitor activation instruction
+
+  Supersedes scenario d4b8aac19b34ea8c (features/templates/57-canonical-claude-settings-json-templates-ship-from-shop-templates.gherkin, currently pinned in repos/shopsystem-templates/features/brief_003_event_driven_activation_and_settings_json_bootstrap.feature from lead-xkh / brief 003) as hash 1621b59b0ea8b20b.
+
+  Scenario 57 pinned ".claude/settings.json" as the shipping surface for activation. Brief 003's realization revision (lead-o00) retires that home: ".claude/settings.json" still ships from "shop-templates" (scenarios 74 and 75 pin its new minimal/bd-prime-only content for bc and lead respectively), but it is no longer the activation home. The activation home is the canonical "CLAUDE.md" primer (scenario 71 carries the canonical-side pin). This scenario carries the bootstrap-side pin: the activation instruction must land in the bootstrap output (not only in the canonical package data) so that a freshly-bootstrapped shop is reactive on its first session start.
+
+  Structural parallel: this scenario mirrors scenario 53 (bootstrap-generated CLAUDE.md references bd discipline) for the activation instruction — the canonical content (scenario 71) is the source of truth, and the bootstrap output must reflect it.
+
+  The Implementer should retire scenario 57's content from repos/shopsystem-templates/features/brief_003_event_driven_activation_and_settings_json_bootstrap.feature (BC-side hash 1621b59b0ea8b20b) when landing this scenario. Note that ".claude/settings.json" still ships from the canonical package-data surface — scenarios 74 and 75 pin its new content — so the package-data surface itself does not disappear; only its role as the activation home is retired.
+
+  Scenario Outline: the top-level "CLAUDE.md" that bootstrap writes into the target directory contains the router-side Monitor activation instruction for the shop type, so a freshly-bootstrapped shop is reactive on its first session start without depending on a SessionStart hook
+    Given an existing git repository at a target directory "<target>" with no top-level "CLAUDE.md"
+    When I invoke the "shop-templates" bootstrap entry point with shop type "<shop_type>", shop name "<shop_name>", and target directory "<target>"
+    Then the exit code is 0
+    And the target directory contains a top-level file named "CLAUDE.md"
+    And the content of that file contains the literal substring "Monitor"
+    And the content of that file contains the literal substring "session start"
+    And the content of that file contains the literal substring "stdbuf -oL inotifywait"
+    And the content of that file contains the literal substring "-m -e create,moved_to"
+    And the content of that file contains the literal substring "<watch_target>"
+
+    Examples:
+      | shop_type | shop_name               | target                       | watch_target       |
+      | bc        | shopsystem-messaging    | /tmp/example-bc-shop         | inbox/             |
+      | lead      | shopsystem-product      | /tmp/example-lead-shop       | repos/*/outbox/    |

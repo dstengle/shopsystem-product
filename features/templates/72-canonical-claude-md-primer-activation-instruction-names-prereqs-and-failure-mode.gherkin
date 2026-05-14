@@ -1,0 +1,23 @@
+Feature: Canonical "CLAUDE.md" primer's activation instruction names host prereqs AND the refuse-with-diagnostic failure mode
+
+  Supersedes scenario a9379ab3a162158d (features/templates/65-canonical-sessionstart-fails-loudly-on-missing-inotifywait.gherkin, currently pinned in repos/shopsystem-templates/features/brief_003_event_driven_activation_and_settings_json_bootstrap.feature from lead-xkh / brief 003) as hash a9379ab3a162158d.
+
+  Scenario 65 pinned a loud-fail property of the SessionStart hook on missing "inotifywait". Brief 003's realization revision (lead-o00) retires the SessionStart-hook activation mechanism (see scenario 71 superseding 58) — there is no hook to fail. The loud-fail invariant survives but now lives in the router's hands: the canonical "CLAUDE.md" primer's activation instruction (scenario 71) MUST explicitly tell the router to verify "inotifywait" and "stdbuf" are on PATH and to refuse to arm the Monitor (surfacing a clear diagnostic) if either is missing. The carrying-forward of scenario 65's loud-fail invariant happens here as a substring property of the primer's instruction text — not as a runtime property of a hook script — because the realization is now an instruction the router enforces, not executable hook code.
+
+  This scenario complements scenario 71 (activation-instruction substring presence) by pinning the prereq-check + refuse-on-missing clause of the same instruction. The two scenarios together pin the realization that scenarios 58 and 65 jointly pinned under the prior hook-model realization.
+
+  The Implementer should retire scenario 65's content from repos/shopsystem-templates/features/brief_003_event_driven_activation_and_settings_json_bootstrap.feature (BC-side hash a9379ab3a162158d) when landing this scenario.
+
+  Scenario Outline: the activation instruction in the canonical "CLAUDE.md" primer template for each shop type explicitly names both host prerequisites the router's Monitor invocation depends on AND explicitly instructs the router to refuse to arm the watcher and surface a visible diagnostic when either prerequisite is missing, so that the loud-fail invariant carrying over from the prior hook-realization is preserved as a router-honored instruction
+    When I ask the "shop-templates" package for the canonical "CLAUDE.md" primer template for shop type "<shop_type>" through its public template-access surface
+    Then a non-empty template body is returned
+    And the returned body contains the literal substring "inotifywait"
+    And the returned body contains the literal substring "stdbuf"
+    And the returned body contains an instruction substring directing the router to verify these executables are on PATH before arming the Monitor
+    And the returned body contains an instruction substring directing the router to refuse to arm the Monitor and surface a visible diagnostic when either executable is missing
+    And the returned body does not contain any instruction telling the router to silently fall back to a no-watcher state when a prerequisite is missing
+
+    Examples:
+      | shop_type |
+      | bc        |
+      | lead      |

@@ -1,0 +1,17 @@
+Feature: Canonical BC ".claude/settings.json" ships as a hooks-wrapper with no "SessionStart" entries
+
+  Supersedes scenario a3338bb773fda65e (features/templates/68-canonical-bc-settings-json-does-not-name-lead-watch-target.gherkin, currently pinned in repos/shopsystem-templates/features/brief_003_event_driven_activation_and_settings_json_bootstrap.feature from lead-xkh / brief 003) as hash 287e6a4f31533336.
+
+  Scenario 68 pinned a "do-not-name-other-shop-type's-watch-target" property of bc.json and lead.json under the prior realization where settings.json carried the activation hook. Brief 003's realization revision (lead-o00) retires settings.json as the activation home; bc.json no longer carries a SessionStart inotifywait hook of any shape. PO stance committed (lead-o00): bc.json continues to ship from the canonical package-data surface (preserves the managed-update workflow under scenarios 60 / 61 / 62) but ships as a minimal hooks wrapper carrying no "SessionStart" entries — the BC shop has no operational-hygiene hook analogous to the lead shop's "bd prime" today, and committing speculative non-activation hooks is the speculative-content failure mode. The slot remains available for future BC-side hooks that DO terminate cleanly; this scenario does not foreclose adding them, it only pins the current canonical shape.
+
+  This scenario also implicitly subsumes the "no lead-watch-target in bc.json" property of scenario 68: a settings.json with no SessionStart entries can name no watch target of any kind.
+
+  The Implementer should retire scenario 68's content from repos/shopsystem-templates/features/brief_003_event_driven_activation_and_settings_json_bootstrap.feature (BC-side hash 287e6a4f31533336) when landing this scenario.
+
+  Scenario: the canonical ".claude/settings.json" template for shop type "bc" parses as a JSON object whose "hooks" key maps to a JSON object containing no "SessionStart" entries, so a BC shop's canonical settings.json carries no activation hook and no speculative non-activation hooks today
+    When I ask the "shop-templates" package for the canonical ".claude/settings.json" template for shop type "bc" through its public template-access surface
+    And the returned body is parsed as JSON
+    Then the parsed value at top-level key "hooks" is a JSON object
+    And the parsed value at "hooks" has no key named "SessionStart", or the value at "hooks.SessionStart" is a JSON array of length 0
+    And the returned body does not contain the literal substring "inotifywait"
+    And the returned body does not contain the literal substring "stdbuf"
