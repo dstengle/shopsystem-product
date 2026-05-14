@@ -1,0 +1,18 @@
+Feature: Canonical ".claude/settings.json" conforms to Claude Code's hook-schema wrapper shape when "PreCompact" entries are present
+
+  Adds a new pin parallel to scenario 76 (schema-wrapper conformance for "SessionStart" entries) on the "PreCompact" key. Scenario 76 covers "SessionStart" only; with scenarios 97 and 98 introducing PreCompact entries to both canonical settings.json variants, the same matcher+hooks wrapper schema-conformance property must be pinned for PreCompact entries, on the same rationale: a malformed wrapper is rejected by Claude Code at session start with a schema-validation error, and the only protection against re-introducing that failure mode is to pin the schema-wrapper shape explicitly per hook-key. This scenario is additive (no existing scenario covers PreCompact schema conformance); scenarios 70 and 76 stay scoped to SessionStart.
+
+  Scenario Outline: the canonical ".claude/settings.json" template for each shop type parses as a JSON object whose top-level "hooks" key maps to a JSON object; and IF the "hooks" object declares a "PreCompact" array with one or more entries, every such entry conforms to Claude Code's matcher+hooks wrapper schema (every entry is an object with a string "matcher" key and a "hooks" array whose every element is an object with string "type" and string "command" keys), so the file is accepted at session start instead of rejected with a schema-validation error
+    When I ask the "shop-templates" package for the canonical ".claude/settings.json" template for shop type "<shop_type>" through its public template-access surface
+    And the returned body is parsed as JSON
+    Then the parsed value at top-level key "hooks" is a JSON object
+    And if the "hooks" object has a "PreCompact" key, then the value at "hooks.PreCompact" is a JSON array
+    And every element of "hooks.PreCompact" (if any) is a JSON object with a "matcher" key whose value is a string
+    And every element of "hooks.PreCompact" (if any) is a JSON object with a "hooks" key whose value is a JSON array of length at least 1
+    And every element of every inner "hooks" array under "hooks.PreCompact" (if any) is a JSON object with a "type" key whose value is a string
+    And every element of every inner "hooks" array under "hooks.PreCompact" (if any) is a JSON object with a "command" key whose value is a string
+
+    Examples:
+      | shop_type |
+      | bc        |
+      | lead      |

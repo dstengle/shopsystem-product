@@ -1,0 +1,13 @@
+Feature: Canonical lead ".claude/settings.json" ships with "bd prime" as the sole "PreCompact" hook content
+
+  Adds a new pin parallel to scenario 75: "bd prime" SessionStart for shop type "lead". This scenario pins "bd prime" PreCompact for shop type "lead". No existing scenario currently pins anything under PreCompact, so this scenario is additive rather than superseding. Scenario 75 stays intact (its scope is "sole SessionStart hook," which is preserved — adding PreCompact entries does not touch the SessionStart array).
+
+  The PreCompact hook fires when Claude Code is about to compact conversation history. Running "bd prime" at that moment refreshes the beads registry summary that the next post-compaction context will be primed against, on the same discipline that motivates "bd prime" at SessionStart. The hook is short-lived and returns cleanly, mirroring the SessionStart "bd prime" usage scenario 75 already pins as a legitimate synchronous hook.
+
+  Scenario: the canonical ".claude/settings.json" template for shop type "lead" declares "bd prime" as the sole inner-hook command under "PreCompact" and conforms to the Claude Code matcher+hooks wrapper schema
+    When I ask the "shop-templates" package for the canonical ".claude/settings.json" template for shop type "lead" through its public template-access surface
+    And the returned body is parsed as JSON
+    Then the parsed value at top-level key "hooks" is a JSON object
+    And the parsed value at "hooks.PreCompact" is a JSON array of length at least 1
+    And exactly one JSON-object element of "hooks.PreCompact" has an inner "hooks" array containing an entry whose "command" string equals "bd prime"
+    And every element of "hooks.PreCompact" is a JSON object with a "matcher" key whose value is a string and a "hooks" key whose value is a JSON array of length at least 1
