@@ -52,11 +52,17 @@ change to an existing BC:
    - No capability → `assign_scenarios`.
    - Capability exists but unpinned → `request_bugfix`.
    - Flat (refactor / doc / value-only) → `request_maintenance`.
-4. **Architect dispatches via `shop-msg send`.** Never write inbox/outbox
-   YAML by hand. The `work_id` is a lead beads issue ID.
+4. **Architect dispatches via `shop-msg send`.** All outbound messages
+   to a BC go through `shop-msg send`; never write mailbox YAML by hand.
+   The `work_id` is a lead beads issue ID.
 5. **The BC-shop loop runs in the BC's repo, not here.** Implementer →
-   Reviewer (§4 / §4.4) is the BC's concern. The lead shop's next move is
-   reconciliation when `work_done` arrives.
+   Reviewer (§4 / §4.4) is the BC's concern. The lead shop's next move
+   is reconciliation when `work_done` arrives. To inspect what BCs have
+   in flight, run `shop-msg pending outbox --lead-root .` to list every
+   sibling BC's pending response. To read a specific response, run
+   `shop-msg read outbox --bc-root repos/<bc> --work-id <work_id>`. Both
+   subcommands are how you inspect BC outbox state; you do not reason
+   about mailbox files directly.
 
 ## What does NOT happen in this repo
 
