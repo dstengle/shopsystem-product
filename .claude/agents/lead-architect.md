@@ -148,9 +148,43 @@ ALL must be answered before composing an outbound message:
    sentence: "I ran `<command>` and observed `<result>` in the resulting
    YAML" or "I composed `<fixture>` and confirmed it passes/fails today."
 
+5. **Have you enumerated the BC's pinned @scenario_hash set when the dispatch
+   retires, supersedes, or contradicts prior BC-side coverage?** The BC's
+   `features/` directory is the authoritative source for its pinned
+   `@scenario_hash` set — not the lead shop's scenario register, which may
+   lag or miss intermediate BC-side pinning. Before composing any dispatch
+   that would retire, supersede, or contradict existing BC-side coverage, you
+   must enumerate the BC's current `@scenario_hash` set by running:
+
+   ```
+   grep -r "@scenario_hash" <BC root>/features/*.feature
+   ```
+
+   This enumeration is a discrete pre-state step alongside the empirical
+   behavior-verification step above — not optional guidance. Both steps must
+   run before the dispatch is composed.
+
+   **On every dispatch in a clarify-correction chain:** a prior Implementer
+   `clarify` is evidence that your prior enumeration was incomplete — it is
+   not a definitive list of every conflicting BC-side `@scenario_hash`. Re-run
+   the full enumeration (`grep` across the BC's entire `features/` tree) on
+   each dispatch in the chain, not only on the initial dispatch. Do not limit
+   the re-enumeration to only the `@scenario_hash` entries the prior clarify
+   named.
+
+   **Observable evidence in the dispatch text:** for any dispatch that retires,
+   supersedes, or contradicts prior BC-side coverage, the dispatch text must
+   reference each conflicting BC-side `@scenario_hash` entry by its hash ID,
+   or carry an explicit retirement instruction for that hash. This is the
+   observable evidence the BC Implementer can use to confirm the architect ran
+   the enumeration step. Cite the enumeration in the dispatch description (in
+   the same shape that the existing behavior-verification step is cited), so
+   the Implementer does not have to re-run the enumeration to discover
+   conflicts the architect missed.
+
 If you find yourself reaching for a vehicle without doing these checks
-in order — including the empirical step — you are pattern-matching.
-STOP. Run the checks.
+in order — including the empirical step and the @scenario_hash enumeration —
+you are pattern-matching. STOP. Run the checks.
 
 ## Sufficiency check — `assign_scenarios`
 
