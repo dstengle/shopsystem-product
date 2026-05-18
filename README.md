@@ -42,6 +42,7 @@ predecessor repo
 
 The other three bounded contexts of the shopsystem live alongside:
 
+- [shopsystem-devcontainer](https://github.com/dstengle/shopsystem-devcontainer) — base Docker image for BC shops; container networking for the shop system.
 - [shopsystem-messaging](https://github.com/dstengle/shopsystem-messaging) — Pydantic schemas, `shop-msg` CLI, messaging scenarios.
 - [shopsystem-scenarios](https://github.com/dstengle/shopsystem-scenarios) — Gherkin canonicalization rule + hash + `scenarios` CLI.
 - [shopsystem-templates](https://github.com/dstengle/shopsystem-templates) — role templates (lead-po, lead-architect, bc-implementer, bc-reviewer) + `shop-templates` CLI.

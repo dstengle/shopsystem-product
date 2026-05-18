@@ -146,4 +146,4 @@ naming pattern:
 - `shopsystem-scenarios-beads`
 - `shopsystem-templates-beads`
 - `shopsystem-test-harness-beads`
-- `shopsystem-devcontainer-beads` _(pending)_
+- `shopsystem-devcontainer-beads`
