@@ -1,4 +1,5 @@
 @bc:shopsystem-devcontainer
 Scenario: src/Dockerfile exists in the shopsystem-devcontainer BC repo
   Given the shopsystem-devcontainer BC repository
+  When the repository file tree is inspected
   Then a file named src/Dockerfile exists at the repository root

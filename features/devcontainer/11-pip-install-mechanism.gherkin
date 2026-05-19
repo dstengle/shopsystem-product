@@ -1,6 +1,7 @@
 @bc:shopsystem-devcontainer
 Scenario: Dockerfile installs shop-msg shop-templates and shop-test-harness via pip from GitHub
   Given the shopsystem-devcontainer BC repository
+  When the src/Dockerfile content is read
   Then src/Dockerfile contains a RUN pip install step that installs shopsystem-messaging from git+https://github.com/dstengle/shopsystem-messaging
   And src/Dockerfile contains a RUN pip install step that installs shop-templates from git+https://github.com/dstengle/shopsystem-templates
   And src/Dockerfile contains a RUN pip install step that installs shopsystem-test-harness from git+https://github.com/dstengle/shopsystem-test-harness
