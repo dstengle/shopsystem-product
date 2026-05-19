@@ -1,0 +1,9 @@
+@bc:shopsystem-messaging
+Scenario: Consuming one message_type on a work_id that has multiple outbox rows leaves the other message_types visible in pending outbox
+  Given a lead shop at a temporary path with BC clone "bc-alpha" present as a sibling directory
+  And shop-msg respond clarify was previously used inside "bc-alpha" to write an outbox response with work-id "lead-501" and question "which acceptance criterion applies?"
+  And shop-msg respond work_done was previously used inside "bc-alpha" to write an outbox response with work-id "lead-501" and status "complete"
+  When I run shop-msg consume outbox with --bc-root pointing at "bc-alpha", --work-id "lead-501", and --message-type "work_done"
+  Then the command exits zero
+  And running shop-msg pending outbox --lead-root at the lead path includes an entry for work_id "lead-501" with message_type "clarify" originating from BC "bc-alpha"
+  And running shop-msg pending outbox --lead-root at the lead path contains no entry for work_id "lead-501" with message_type "work_done"
