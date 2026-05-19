@@ -1,0 +1,8 @@
+@bc:shopsystem-messaging
+Scenario: Each line output by shop-msg watch contains the work_id and message_type of the event
+  Given an empty BC at a temporary path
+  And shop-msg send request_maintenance was previously used to write an inbox message with work-id "lead-300"
+  When I run shop-msg watch in the background and it outputs the startup drain line for "lead-300"
+  Then that output line contains the text "lead-300"
+  And that output line contains the text "request_maintenance"
+  And the entire event is contained on a single line of stdout
