@@ -1,0 +1,5 @@
+@bc:shopsystem-devcontainer
+Scenario: GitHub Actions workflow file exists at the expected path
+  Given the shopsystem-devcontainer BC repository
+  When the repository file tree is inspected
+  Then a file named .github/workflows/publish-devcontainer.yml exists at the repository root

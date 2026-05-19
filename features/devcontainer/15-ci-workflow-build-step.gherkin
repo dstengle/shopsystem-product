@@ -1,0 +1,6 @@
+@bc:shopsystem-devcontainer
+Scenario: Workflow build step references .devcontainer/Dockerfile
+  Given the shopsystem-devcontainer BC repository
+  When the content of .github/workflows/publish-devcontainer.yml is read
+  Then a workflow step exists whose configuration sets file or context to .devcontainer/Dockerfile
+  And that step uses an action or run command that performs a docker build

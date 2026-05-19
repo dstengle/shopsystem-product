@@ -1,0 +1,7 @@
+@bc:shopsystem-devcontainer
+Scenario: Workflow push step targets ghcr.io with the correct image name
+  Given the shopsystem-devcontainer BC repository
+  When the content of .github/workflows/publish-devcontainer.yml is read
+  Then a workflow step exists whose configuration targets the registry ghcr.io
+  And that step references the image name ghcr.io/dstengle/shopsystem-devcontainer
+  And that step uses an action or run command that performs a docker push or equivalent registry push

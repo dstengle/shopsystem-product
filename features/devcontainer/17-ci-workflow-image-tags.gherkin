@@ -1,0 +1,6 @@
+@bc:shopsystem-devcontainer
+Scenario: Workflow publishes both a latest tag and a git-SHA tag
+  Given the shopsystem-devcontainer BC repository
+  When the content of .github/workflows/publish-devcontainer.yml is read
+  Then the tags configuration for the build-push step includes ghcr.io/dstengle/shopsystem-devcontainer:latest
+  And the tags configuration includes a git SHA-derived tag of the form ghcr.io/dstengle/shopsystem-devcontainer:sha-<short-sha>
