@@ -1,0 +1,8 @@
+@bc:shopsystem-messaging
+Scenario: A Postgres NOTIFY is fired on the outbox channel after a BC writes a respond work_done message
+  Given an empty BC at a temporary path
+  And a shop-msg watch --lead-root session is LISTEN-ing on the outbox channel for that BC
+  And an inbox message with work-id "lead-300" has been sent to that BC
+  When shop-msg respond work_done is called for work-id "lead-300" at that BC root
+  Then the LISTEN session receives a NOTIFY with payload "lead-300" on the outbox channel
+  And the NOTIFY arrives within 3 seconds of the respond call

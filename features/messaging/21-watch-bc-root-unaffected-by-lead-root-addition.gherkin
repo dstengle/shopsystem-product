@@ -1,0 +1,7 @@
+@bc:shopsystem-messaging
+Scenario: shop-msg watch --bc-root behavior is unchanged after outbox NOTIFY is added
+  Given an empty BC at a temporary path with no unprocessed inbox messages
+  And shop-msg watch --bc-root is running in the background and has completed its startup drain
+  When a new assign_scenarios message with work-id "lead-302" is inserted into the inbox
+  Then shop-msg watch --bc-root outputs exactly one line to stdout for work_id "lead-302"
+  And no additional output line arrives within 2 seconds
