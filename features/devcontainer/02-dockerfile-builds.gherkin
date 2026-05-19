@@ -1,0 +1,7 @@
+@bc:shopsystem-devcontainer
+Scenario: Building src/Dockerfile produces an image with exit code zero
+  Given the shopsystem-devcontainer BC repository
+  And src/Dockerfile extends python:3.12-slim as its base image
+  When docker build is run against src/Dockerfile with no additional arguments
+  Then the build exits zero
+  And a local Docker image tagged shopsystem-devcontainer:test is produced

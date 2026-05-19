@@ -1,0 +1,7 @@
+@bc:shopsystem-devcontainer
+Scenario: bd is on PATH inside the built image
+  Given an image built from src/Dockerfile in the shopsystem-devcontainer BC repo
+  And the Dockerfile downloads the bd binary from github.com/steveyegge/beads releases and installs it to /usr/local/bin/bd
+  When docker run --rm shopsystem-devcontainer:test which bd is executed on the host
+  Then the command exits zero
+  And stdout contains /usr/local/bin/bd

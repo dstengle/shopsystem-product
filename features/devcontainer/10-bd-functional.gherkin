@@ -1,0 +1,6 @@
+@bc:shopsystem-devcontainer
+Scenario: bd --version exits zero inside the built image
+  Given an image built from src/Dockerfile in the shopsystem-devcontainer BC repo
+  When docker run --rm shopsystem-devcontainer:test bd --version is executed on the host
+  Then the command exits zero
+  And stdout contains "bd version"
