@@ -1,0 +1,6 @@
+Scenario: Sending a message using --bc <name> routes to the registered BC without a path flag
+  Given "shopsystem-messaging" is registered in the messaging registry
+  When I run shop-msg send assign_scenarios --bc shopsystem-messaging with a valid payload and work-id "reg-101"
+  Then the command exits zero
+  And shop-msg pending inbox --bc shopsystem-messaging includes work-id "reg-101"
+  And no filesystem path flag was required to address the BC

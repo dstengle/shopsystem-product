@@ -1,0 +1,6 @@
+Scenario: shop-msg watch --lead <name> does not fire when a message arrives addressed to a different shop
+  Given "shopsystem-product" is registered as the lead shop
+  And "shopsystem-messaging" is registered in the messaging registry
+  And shop-msg watch --lead shopsystem-product is running in the background and has completed its startup drain
+  When a message addressed to "shopsystem-messaging" with work-id "bc-601" arrives in "shopsystem-messaging"'s inbox
+  Then shop-msg watch --lead shopsystem-product produces no output within 2 seconds

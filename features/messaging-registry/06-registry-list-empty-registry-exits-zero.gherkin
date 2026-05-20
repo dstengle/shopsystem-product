@@ -1,0 +1,5 @@
+Scenario: Listing an empty registry exits zero with no entries
+  Given no shops are registered in the messaging registry
+  When I run shop-msg registry list
+  Then the command exits zero
+  And stdout contains no canonical name entries

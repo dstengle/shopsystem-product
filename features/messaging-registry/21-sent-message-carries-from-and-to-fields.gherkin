@@ -1,0 +1,8 @@
+Scenario: A message sent via shop-msg carries populated from and to fields in the stored payload
+  Given "shopsystem-product" is registered as the lead shop
+  And "shopsystem-messaging" is registered in the messaging registry
+  When I run shop-msg send assign_scenarios --bc shopsystem-messaging with work-id "reg-401" from "shopsystem-product"
+  And I run shop-msg read inbox --bc shopsystem-messaging with work-id "reg-401"
+  Then the command exits zero
+  And stdout includes a "from" field containing "shopsystem-product"
+  And stdout includes a "to" field containing "shopsystem-messaging"

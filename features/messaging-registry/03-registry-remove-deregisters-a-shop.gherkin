@@ -1,0 +1,5 @@
+Scenario: Removing a registered shop by canonical name makes it no longer resolvable
+  Given "shopsystem-messaging" is registered in the messaging registry
+  When I run shop-msg registry remove with canonical name "shopsystem-messaging"
+  Then the command exits zero
+  And shop-msg registry list does not include an entry for "shopsystem-messaging"

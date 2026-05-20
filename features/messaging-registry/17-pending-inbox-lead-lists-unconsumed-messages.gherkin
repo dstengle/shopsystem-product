@@ -1,0 +1,8 @@
+Scenario: Listing pending messages in the lead inbox returns only unconsumed messages addressed to the lead
+  Given "shopsystem-product" is registered in the messaging registry as the lead shop
+  And two messages addressed to "shopsystem-product" are present in the lead inbox with work-ids "lead-202" and "lead-203"
+  And work-id "lead-202" has been consumed
+  When I run shop-msg pending inbox --lead shopsystem-product
+  Then the command exits zero
+  And stdout includes work-id "lead-203"
+  And stdout does not include work-id "lead-202"

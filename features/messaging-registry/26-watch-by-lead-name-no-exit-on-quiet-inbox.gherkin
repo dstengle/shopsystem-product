@@ -1,0 +1,7 @@
+Scenario: shop-msg watch --lead <name> does not exit when no new messages arrive after startup drain
+  Given "shopsystem-product" is registered as the lead shop
+  And the lead inbox is empty
+  And shop-msg watch --lead shopsystem-product is running in the background and has completed its startup drain
+  When 5 seconds pass with no new messages arriving in the lead inbox
+  Then shop-msg watch --lead shopsystem-product is still running
+  And it has produced no output since completing the startup drain

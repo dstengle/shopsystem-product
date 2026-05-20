@@ -1,0 +1,7 @@
+Scenario: Listing the registry returns one line per registered shop with consistent fields
+  Given "shopsystem-messaging" and "shopsystem-product" are both registered in the messaging registry
+  When I run shop-msg registry list
+  Then the command exits zero
+  And stdout contains one entry for "shopsystem-messaging"
+  And stdout contains one entry for "shopsystem-product"
+  And each entry appears on its own line with the canonical name present in a consistent field position
