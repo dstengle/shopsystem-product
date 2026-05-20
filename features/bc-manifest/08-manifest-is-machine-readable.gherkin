@@ -8,8 +8,7 @@ Scenario: a standard library parser can read the manifest without custom code
 Scenario: the manifest format requires no documentation to parse
   Given the manifest file is present at its well-known path
   When a developer reads the manifest file directly
-  Then the structure of entries (canonical name, GitHub remote, role label) is self-evident
-  from the field names and values in the file without reference to external documentation
+  Then each manifest entry contains only the expected field names and no others
 
 Scenario: a pipeline script can extract all GitHub remote URLs from the manifest
   Given the manifest file contains entries for all six product BCs
