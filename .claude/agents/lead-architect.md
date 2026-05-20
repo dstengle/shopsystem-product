@@ -192,16 +192,35 @@ For each scenario in the outbound message:
 
 1. **Well-formed Gherkin** — Given/When/Then minimum, concrete steps.
    (Same check the BC Implementer applies on receipt; pre-empt it.)
-2. **The scenario carries the right tags** — the CLI's `--bc-tag` flag
+2. **Technical claims are grounded in pre-state findings.** Read each
+   step for technically-specific assertions: environment variable names,
+   CLI flag names, mount types (socket vs volume vs network), network
+   topology, protocol mechanics, file paths, command syntax. For every
+   such claim, verify it against the pre-state findings from Q1
+   verification. If a claim contradicts pre-state or uses terminology not
+   grounded in pre-state verification, return it to the PO with the
+   specific correction before dispatching — do not paper over it with a
+   note in the dispatch description.
+
+   **Why this is the Architect's job, not the PO's:** the Architect is
+   the only party who has done empirical pre-state verification. The PO
+   authors intent; the Architect holds the verified facts about the BC's
+   current state. A dispatched scenario with a wrong env var name (e.g.,
+   `SHOP_MSG_DB_URL` instead of `SHOPMSG_DSN`) or a wrong technical term
+   (e.g., `socket or volume` instead of `Docker network`) costs a BC
+   clarify round trip and produces incorrect implementation guidance.
+   Neither the PO nor the BC Implementer is positioned to catch this
+   before the clarify; the Architect is.
+3. **The scenario carries the right tags** — the CLI's `--bc-tag` flag
    adds `@bc:<name>`; the CLI's hash-computation step adds
    `@scenario_hash:<hash>` via `scenarios hash`. You do not add either
    tag by hand to the body file.
-3. **The work_id is a lead beads issue ID** — see §6 of the spec. Single
+4. **The work_id is a lead beads issue ID** — see §6 of the spec. Single
    source of truth; flows outward from the lead shop.
 
-If a scenario fails the well-formed check, send it back to the PO for
-sharpening; do not paper over the gap by adding context the BC has to
-infer.
+If a scenario fails the well-formed check or the technical-claim check,
+send it back to the PO for sharpening; do not paper over the gap by
+adding context the BC has to infer.
 
 ## Sufficiency check — `request_bugfix`
 
