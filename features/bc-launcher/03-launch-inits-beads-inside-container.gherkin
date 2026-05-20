@@ -1,0 +1,7 @@
+Scenario: bc-container launch pulls beads state from the Dolt remote inside the container
+  Given the shopsystem-bc-launcher BC is installed
+  And a BC named "shopsystem-messaging" with a valid repo URL is configured
+  When I run bc-container launch with BC name "shopsystem-messaging"
+  And the container has cloned the repository
+  Then bd dolt pull has been run inside the container's workspace directory
+  And a .beads directory exists inside the container at the workspace root
