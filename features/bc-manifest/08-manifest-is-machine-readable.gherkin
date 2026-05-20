@@ -1,0 +1,18 @@
+Scenario: a standard library parser can read the manifest without custom code
+  Given the manifest file is present at its well-known path
+  When a script imports only a standard format parsing library (no custom manifest module)
+  And the script reads the manifest file using that library
+  Then the script can extract the canonical name of every declared BC
+  without raising a parse error or requiring manual string manipulation
+
+Scenario: the manifest format requires no documentation to parse
+  Given the manifest file is present at its well-known path
+  When a developer reads the manifest file directly
+  Then the structure of entries (canonical name, GitHub remote, role label) is self-evident
+  from the field names and values in the file without reference to external documentation
+
+Scenario: a pipeline script can extract all GitHub remote URLs from the manifest
+  Given the manifest file contains entries for all six product BCs
+  When a shell or Python script reads the manifest file and extracts all GitHub remote URLs
+  Then the script produces exactly six URLs, one per declared BC
+  And each URL is the full GitHub remote URL for that BC's repository

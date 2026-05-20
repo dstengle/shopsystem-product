@@ -1,0 +1,13 @@
+Scenario: removing a BC from the manifest makes it absent from the list command
+  Given the manifest file contains an entry for "shopsystem-decommissioned-bc"
+  When I remove the entry for "shopsystem-decommissioned-bc" from the manifest file
+  And I run the sync command's list operation
+  Then the output does not include "shopsystem-decommissioned-bc"
+
+Scenario: the sync command reports a repos directory entry that is not in the manifest
+  Given the manifest file does not contain an entry for "shopsystem-decommissioned-bc"
+  And a directory named "shopsystem-decommissioned-bc" is present under the repos directory
+  When the sync command runs the validate operation
+  Then the command exits non-zero
+  And the output reports "shopsystem-decommissioned-bc" as an unexpected entry in the repos directory
+  And the command does not delete the unexpected directory

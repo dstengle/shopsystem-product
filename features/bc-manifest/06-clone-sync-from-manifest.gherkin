@@ -1,0 +1,32 @@
+Scenario: the sync command clones a missing BC repository into the repos directory
+  Given the manifest file declares "shopsystem-messaging" with a valid GitHub remote URL
+  And no directory named "shopsystem-messaging" is present under the repos directory
+  When I run the sync command's clone-sync operation
+  Then a directory named "shopsystem-messaging" is present under the repos directory
+  And the directory is a git repository cloned from the declared remote URL
+  And the command exits zero
+
+Scenario: the sync command skips a BC whose clone already exists with a matching remote
+  Given the manifest file declares "shopsystem-messaging" with a valid GitHub remote URL
+  And a directory named "shopsystem-messaging" is present under the repos directory
+  And its git remote URL matches the remote declared in the manifest
+  When I run the sync command's clone-sync operation
+  Then the "shopsystem-messaging" directory is unchanged
+  And the command exits zero
+  And the output indicates that "shopsystem-messaging" was already present and skipped
+
+Scenario: the clone-sync operation is idempotent
+  Given the manifest file is present at its well-known path
+  And the sync command's clone-sync operation has already run once successfully
+  When I run the sync command's clone-sync operation a second time
+  Then the command exits zero
+  And no new clones are created
+  And no existing clones are modified
+
+Scenario: the sync command warns about a repos directory that is not in the manifest
+  Given the manifest file does not contain an entry for "ddd-product-system"
+  And a directory named "ddd-product-system" is present under the repos directory
+  When I run the sync command's clone-sync operation
+  Then the command exits zero
+  And the output reports "ddd-product-system" as an entry not declared in the manifest
+  And the "ddd-product-system" directory is unchanged

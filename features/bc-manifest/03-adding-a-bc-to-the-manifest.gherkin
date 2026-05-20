@@ -1,0 +1,13 @@
+Scenario: adding a BC to the manifest makes it visible to the list command
+  Given the manifest file contains five BC entries
+  When I add a new BC entry with canonical name "shopsystem-new-bc", a valid GitHub remote URL, and role label "bc"
+  And I run the sync command's list operation
+  Then the output includes "shopsystem-new-bc"
+  And the output includes the GitHub remote URL for "shopsystem-new-bc"
+
+Scenario: the validate command accepts a manifest with a newly added BC entry
+  Given the manifest file contains a new BC entry with all required fields present
+  And the GitHub repository at the declared remote URL exists and is reachable
+  When the sync command runs the validate operation
+  Then the command exits zero
+  And the output reports the new BC entry as valid

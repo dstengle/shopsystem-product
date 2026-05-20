@@ -1,0 +1,24 @@
+Scenario: each BC entry in the manifest has a canonical name field
+  Given the manifest file is present at its well-known path
+  When a script parses the manifest file
+  Then every BC entry has a non-empty canonical name field
+  And every canonical name follows the "shopsystem-<identifier>" pattern
+
+Scenario: each BC entry in the manifest has a GitHub remote URL field
+  Given the manifest file is present at its well-known path
+  When a script parses the manifest file
+  Then every BC entry has a non-empty GitHub remote URL field
+  And every remote URL is a valid GitHub HTTPS or SSH URL
+
+Scenario: each BC entry in the manifest has a role label field
+  Given the manifest file is present at its well-known path
+  When a script parses the manifest file
+  Then every BC entry has a non-empty role label field
+  And the role label for each current product BC is "bc"
+
+Scenario: the validate command rejects a manifest entry missing a required field
+  Given a manifest file where one BC entry is missing its GitHub remote URL field
+  When the sync command runs the validate operation on that manifest
+  Then the command exits non-zero
+  And the output names the BC entry that is missing the required field
+  And the output names the missing field

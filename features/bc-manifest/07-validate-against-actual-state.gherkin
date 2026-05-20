@@ -1,0 +1,28 @@
+Scenario: the validate command passes when GitHub repos exist for all manifest entries
+  Given the manifest file declares six BCs each with a reachable GitHub remote URL
+  When I run the sync command's validate operation
+  Then the command exits zero
+  And the output reports all six BCs as validated
+
+Scenario: the validate command fails when a declared GitHub remote is unreachable
+  Given the manifest file contains a BC entry whose GitHub remote URL points to a non-existent repository
+  When I run the sync command's validate operation
+  Then the command exits non-zero
+  And the output names the BC whose remote URL could not be reached
+  And the output describes the failure (repository not found or connection refused)
+
+Scenario: the validate command reports a missing repos clone as a warning
+  Given the manifest file declares "shopsystem-scenarios"
+  And no directory named "shopsystem-scenarios" is present under the repos directory
+  When I run the sync command's validate operation
+  Then the command exits non-zero
+  And the output reports "shopsystem-scenarios" as a declared BC with no local clone
+
+Scenario: the validate command reports a remote mismatch between manifest and local clone
+  Given the manifest file declares "shopsystem-templates" with remote URL "https://github.com/dstengle/shopsystem-templates.git"
+  And a directory named "shopsystem-templates" is present under the repos directory
+  And its configured git remote URL is a different URL
+  When I run the sync command's validate operation
+  Then the command exits non-zero
+  And the output reports a remote URL mismatch for "shopsystem-templates"
+  And the output shows both the manifest-declared URL and the clone's actual URL

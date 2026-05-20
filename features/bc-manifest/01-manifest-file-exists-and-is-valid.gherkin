@@ -1,0 +1,22 @@
+Scenario: the manifest file exists at the well-known path in the lead repo
+  Given the lead shop repository is checked out
+  When I look for the manifest file at its well-known path in the repo root
+  Then the file is present
+  And the file is not gitignored
+  And the file is committed in version control
+
+Scenario: the manifest file is syntactically valid
+  Given the manifest file is present at its well-known path
+  When the sync command runs the validate operation
+  Then the command exits zero
+  And the output reports the manifest as syntactically valid
+
+Scenario: the manifest file contains entries for all current product BCs
+  Given the manifest file is present at its well-known path
+  When a script parses the manifest file using a standard library parser
+  Then the parsed result contains an entry for "shopsystem-messaging"
+  And the parsed result contains an entry for "shopsystem-scenarios"
+  And the parsed result contains an entry for "shopsystem-templates"
+  And the parsed result contains an entry for "shopsystem-test-harness"
+  And the parsed result contains an entry for "shopsystem-devcontainer"
+  And the parsed result contains an entry for "shopsystem-bc-launcher"
