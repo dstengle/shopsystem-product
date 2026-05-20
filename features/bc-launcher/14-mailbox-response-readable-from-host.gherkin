@@ -1,0 +1,7 @@
+Scenario: shop-msg response written inside the BC container is readable from the host
+  Given the shopsystem-bc-launcher BC is installed
+  And a Docker container named "bc-shopsystem-messaging" is running with its mailbox volume mounted
+  And an inbox message with work-id "lead-500" exists inside the container
+  When shop-msg respond work_done is run inside the container with work-id "lead-500"
+  Then running shop-msg read outbox on the host with bc-root pointing to the container's mailbox mount path and work-id "lead-500" exits zero
+  And stdout includes message_type "work_done"

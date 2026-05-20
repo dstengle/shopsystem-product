@@ -1,0 +1,7 @@
+Scenario: The BC container does not have access to sibling BC source trees or the lead shop workspace
+  Given the shopsystem-bc-launcher BC is installed
+  And bc-container launch is run with BC name "shopsystem-messaging"
+  And the container "bc-shopsystem-messaging" is running
+  When the container's filesystem mounts are inspected
+  Then no mount exists for any path under the lead shop workspace directory
+  And no mount exists for any sibling BC source tree other than "shopsystem-messaging"'s own workspace

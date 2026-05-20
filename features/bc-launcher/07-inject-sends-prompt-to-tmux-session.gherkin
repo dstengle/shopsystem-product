@@ -1,0 +1,7 @@
+Scenario: bc-container inject sends a startup prompt to the BC container's tmux session
+  Given the shopsystem-bc-launcher BC is installed
+  And a Docker container named "bc-shopsystem-messaging" is running
+  And a tmux session named "agent" exists inside the container
+  When I run bc-container inject with BC name "shopsystem-messaging" and prompt text "bd prime"
+  Then the command exits zero
+  And the tmux session named "agent" in container "bc-shopsystem-messaging" has received the text "bd prime" followed by a newline via tmux send-keys

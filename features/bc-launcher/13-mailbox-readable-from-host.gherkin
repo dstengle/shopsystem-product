@@ -1,0 +1,6 @@
+Scenario: shop-msg sent from the host is readable inside the BC container
+  Given the shopsystem-bc-launcher BC is installed
+  And a Docker container named "bc-shopsystem-messaging" is running with its mailbox volume mounted
+  When I run shop-msg send assign_scenarios on the host with bc-root pointing to the container's mailbox mount path and work-id "lead-500"
+  Then the command exits zero
+  And running shop-msg pending inside the container reports work-id "lead-500" as pending

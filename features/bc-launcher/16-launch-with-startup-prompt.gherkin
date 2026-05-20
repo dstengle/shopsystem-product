@@ -1,0 +1,6 @@
+Scenario: bc-container launch accepts an optional startup prompt that is injected after the agent starts
+  Given the shopsystem-bc-launcher BC is installed
+  And no Docker container named "bc-shopsystem-messaging" is running
+  When I run bc-container launch with BC name "shopsystem-messaging" and startup prompt "bd prime"
+  And the container starts and the tmux session is active
+  Then the text "bd prime" followed by a newline has been sent to the tmux session named "agent" in container "bc-shopsystem-messaging"

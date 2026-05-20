@@ -1,0 +1,7 @@
+Scenario: bc-container status reports stopped state for a stopped BC container
+  Given the shopsystem-bc-launcher BC is installed
+  And no Docker container named "bc-shopsystem-messaging" is running
+  When I run bc-container status with BC name "shopsystem-messaging"
+  Then the command exits zero
+  And stdout includes the BC name "shopsystem-messaging"
+  And stdout includes the container state "stopped"

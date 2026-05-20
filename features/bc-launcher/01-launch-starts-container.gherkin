@@ -1,0 +1,6 @@
+Scenario: bc-container launch starts a Docker container for the named BC
+  Given the shopsystem-bc-launcher BC is installed
+  And no Docker container named "bc-shopsystem-messaging" is running
+  When I run bc-container launch with BC name "shopsystem-messaging" and a valid repo URL
+  Then the command exits zero
+  And a Docker container named "bc-shopsystem-messaging" is running
