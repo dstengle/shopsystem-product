@@ -35,9 +35,11 @@ and names the five scope items the invariants imply.
 ### Invariant 1 — `shop-msg` is the sole inter-shop messaging surface
 
 No consumer (template, subagent, runbook, ad-hoc script) inspects
-messaging storage directly. The storage representation (filesystem YAML
-today; SQLite, a daemon, or a queue tomorrow) is a **private
-implementation detail of the messaging BC**.
+messaging storage directly. The storage representation (PostgreSQL —
+migrated from the earlier filesystem-YAML prototype; a different
+backend tomorrow) is a **private implementation detail of the messaging
+BC**. The parenthetical is a completed-migration note, not a
+forward-look: shop-msg already uses PostgreSQL.
 
 **Carve-out for messaging-BC tests.** Tests of `shop-msg`'s own
 implementation may freely inspect messaging storage — they are the

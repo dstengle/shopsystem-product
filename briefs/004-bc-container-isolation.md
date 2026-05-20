@@ -66,22 +66,22 @@ The stakeholder's expressed desire, in PO's own words:
 **Open questions the PO cannot close without stakeholder clarification
 or Architect pre-state verification:**
 
-- **Shared vs. private `shop-msg` mailbox surface.** If each BC runs in
-  its own container, the mailbox directories (`inbox/`, `outbox/`) that
-  the lead shop drops messages into and reads from must be accessible
-  from outside the container. The PO commits that this is solved (the
-  contract works); how it is solved — named volumes, a mounted
-  host directory, a port-forwarded daemon, or something else — is the
-  Architect's call on pre-state.
+- **Docker network name.** The stakeholder has committed that the
+  shared network uses a well-known name. The exact name (e.g.
+  `shopsystem`) is the Architect's call on pre-state verification.
+- **DB connection environment variable.** The Architect determines
+  whether `shop-msg` already honours a `SHOP_MSG_DB_URL` or equivalent
+  env var for its PostgreSQL connection, or whether that support must
+  be added as part of scope item C. Pre-state determines vehicle.
+- **Message ordering across container restarts.** Because shop-msg
+  persists to PostgreSQL (not a filesystem volume), messages sent by
+  the lead before a BC container launches are already present in the
+  DB when the container starts. The PO commits this is the expected
+  behavior; the Architect verifies it holds.
 - **Image tag pinning.** The `bc-container launch` command needs to
   know which image tag to use. Whether this is always `latest`, a
   pinned semver from a config file, or a flag — the PO defers to the
   Architect.
-- **Mailbox seeding.** If the lead drops a message into the BC's inbox
-  before the container has launched, the message must be present when
-  the container starts. How the host-side `shop-msg send` and the
-  container-side `shop-msg read` share state is the key pre-state
-  question for the Architect.
 - **Which repo owns the `bc-container launch` command.** The PO's
   stance: this is a new capability whose home is a new BC
   (`shopsystem-bc-launcher` or similar), OR it is a new subcommand on
@@ -118,10 +118,11 @@ The brief carries **one invariant**, **four scope items**, and an
 
 A BC shop's agent container has no access to the lead shop's working
 directory or to sibling BC source trees. The host may map the BC's own
-repository and its `shop-msg` mailbox volume into the container; nothing
-else from the host workspace is mounted. Any communication between shops
-goes through `shop-msg` — emitting messages on one side, reading them
-on the other.
+repository into the container; nothing else from the host workspace is
+mounted. Any communication between shops goes through `shop-msg` —
+emitting messages on one side, reading them on the other — via the
+shared Docker network that connects both sides to the same PostgreSQL
+backend.
 
 This invariant makes the §4 "no cross-BC code reads" constraint
 **unenforced-by-instruction → enforced-by-mount**. An agent that
@@ -181,25 +182,29 @@ container:
 All three are separate operations (separate flags or subcommands) that
 target an already-running container by BC name.
 
-### C — Mailbox volume sharing
+### C — Shared network connectivity
 
-The `shop-msg` mailbox surface (inbox and outbox) used by the BC inside
-the container must be reachable by the host-side `shop-msg` CLI (used
-by the lead shop to drop messages in and read responses out). The
-committed property:
+The BC agent running inside its container must be able to reach the
+same `shop-msg` PostgreSQL backend as the host-side `shop-msg` CLI.
+The committed property:
 
-- The lead shop can call `shop-msg send ... --bc-root <path>` and have
-  the resulting inbox YAML appear inside the container at the path
-  the BC agent expects.
-- The BC agent can call `shop-msg respond ...` and have the resulting
-  outbox YAML appear at the path the lead shop reads when calling
-  `shop-msg read outbox`.
+- Both the host-side `shop-msg` CLI (used by the lead shop to drop
+  messages and read responses) and the BC agent's container-side
+  `shop-msg` CLI talk to the **same PostgreSQL instance**.
+- This is achieved by placing the BC container and the host (or its
+  devcontainer) on a **shared Docker network with a well-known name**.
+  The exact network name (e.g. `shopsystem`) is the Architect's call;
+  the property (same network, well-known name) is committed by the PO.
+- The BC agent configures its database connection via an environment
+  variable (e.g. `SHOP_MSG_DB_URL` or equivalent) set at container
+  start; the value points to the PostgreSQL service reachable over the
+  shared network.
 
-**Realization is the Architect's call.** A named Docker volume shared
-between host and container is the obvious shape; a bind-mounted host
-directory (`repos/<bc>/`) is another. The brief commits the property
-(reachable from both sides); the storage mechanism is pre-state-
-determined.
+**Realization is still the Architect's call** on the exact network
+name and environment-variable convention. The brief commits the
+property (both sides reach the same DB via a named Docker network);
+filesystem mounts and mailbox volume sharing are not part of this
+scope item.
 
 ### D — Container lifecycle commands
 
@@ -258,11 +263,13 @@ its own existing devcontainer). This brief is BC-container-only.
 - **Scope item B** (attach/inject/monitor) is a pure addition to the
   `bc-container` surface; it depends on A landing first but not on any
   other brief.
-- **Scope item C** (mailbox volume sharing) is the key cross-brief
+- **Scope item C** (shared network connectivity) is the key cross-brief
   dependency: brief 001's invariant 1 (shop-msg as sole messaging
-  surface) constrains how the Architect implements the sharing. The
-  mechanism must not require direct filesystem inspection on either
-  side; it must be expressed through `shop-msg` CLI calls.
+  surface) still applies — both sides must communicate through the
+  `shop-msg` CLI, not by direct PostgreSQL access or filesystem
+  inspection. The Docker-network model satisfies this: both sides call
+  the same CLI, which connects to the same PostgreSQL backend via the
+  shared network. No new filesystem-inspection mechanism is introduced.
 - **Scope item D** (lifecycle commands) is independent of B and C; it
   depends only on A (a container must exist to stop/inspect).
 
@@ -275,11 +282,13 @@ its own existing devcontainer). This brief is BC-container-only.
   (e.g., `shopsystem-templates` or `shopsystem-devcontainer`), the
   vehicle may remain `assign_scenarios` for the new subcommand surface
   even if the BC already exists.
-- Scope item C (mailbox volume sharing) depends on what `shop-msg`
-  already supports. If `shop-msg` can already direct its mailbox root
-  to an arbitrary path via a flag, C may be zero-BC-work (just a
-  mount and a flag). If not, C lands as `assign_scenarios` against
-  `shopsystem-messaging`.
+- Scope item C (shared network connectivity) depends on what `shop-msg`
+  already supports for configuring its PostgreSQL connection. If
+  `shop-msg` already accepts the DB URL via an environment variable,
+  C may be zero-BC-work (just network placement and a documented env
+  var). If `shop-msg` hard-codes its DB connection and needs a new
+  env-var flag, C lands as `assign_scenarios` against
+  `shopsystem-messaging`. Pre-state determines vehicle.
 
 These are hints. The Architect's `PRE-STATE DETERMINES VEHICLE —
 VERIFIED EMPIRICALLY` posture stands.
@@ -307,8 +316,12 @@ Architect verifies BC pre-state and picks vehicles per the discriminator.
   `bc-container launch <bc-name>`, `shop-bc start <bc-name>`,
   `shop-templates bc-launch`, or something else is the Architect's call
   after PDR-004 resolves ownership and pre-state is verified.
-- **Mailbox volume mechanism for C.** Bind-mount vs. named volume vs.
-  something else; the brief commits the property, not the mechanism.
+- **Docker network name for C.** The brief commits that a well-known
+  Docker network name is used; the Architect picks the name after
+  pre-state verification.
+- **DB connection env var for C.** Whether `shop-msg` already supports
+  a `SHOP_MSG_DB_URL` or equivalent; the Architect verifies and names
+  the convention in the dispatched scenarios.
 - **tmux session naming convention.** The brief commits tmux-as-manager;
   the Architect picks the session name (e.g., `bc-<name>-agent` or
   `agent`) in the dispatched scenarios.
