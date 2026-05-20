@@ -3,4 +3,4 @@ Scenario: The BC container does not have access to sibling BC source trees or th
   And bc-container launch is run with BC name "shopsystem-messaging"
   And the container "bc-shopsystem-messaging" is running
   When the container's filesystem mounts are inspected
-  Then the only bind mounts inside the container are the BC's own repository mount and the SHOPMSG_DSN socket or volume
+  Then the only bind mounts inside the container are the BC's own repository mount
