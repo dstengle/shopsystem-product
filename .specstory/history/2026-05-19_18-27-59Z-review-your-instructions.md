@@ -18377,3 +18377,89 @@ Changes not staged for commit:
  1 file changed, 11119 insertions(+)
 ```
 </details></tool-use>
+
+_**Agent (claude-sonnet-4-6 2026-05-20 14:49:27Z)**_
+
+<tool-use data-tool-type="shell" data-tool-name="Bash"><details>
+<summary>Tool use: **Bash**</summary>
+Commit beads and specstory changes
+
+```bash
+git add .beads/issues.jsonl .specstory/history/2026-05-19_18-27-59Z-review-your-instructions.md && git commit -m "$(cat <<'EOF'
+chore: session close — reconcile outbox, dispatch devcontainer + messaging work
+
+Reconciled all pending work_done responses (lead-8yi, 16g, uqv, r48, 3c6,
+ro8, 7yh, 5hy, 5r0, 6jh, vkp, 2kb, q77, mlq, 51u). Diagnosed and fixed
+inotifywait→shop-msg watch --lead-root migration (lead-mlq, lead-51u).
+Dispatched and closed: consume-outbox (lead-38w), devcontainer Dockerfile
+(lead-sbp, lead-3jw), GitHub Actions publish workflow (lead-cnc).
+Authored and dispatched outbox-consumption tracking (lead-38w) and
+devcontainer CLI tools + CI scenarios. Updated specstory session history.
+
+Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>
+EOF
+)" 2>&1
+```
+
+```text
+[main 0a5e7bd] chore: session close — reconcile outbox, dispatch devcontainer + messaging work
+ 2 files changed, 11152 insertions(+), 2 deletions(-)
+```
+</details></tool-use>
+
+_**Agent (claude-sonnet-4-6 2026-05-20 14:49:33Z)**_
+
+<tool-use data-tool-type="shell" data-tool-name="Bash"><details>
+<summary>Tool use: **Bash**</summary>
+Push beads, git, and verify clean state
+
+`bd dolt push 2>&1 && git push 2>&1 && git status 2>&1`
+
+```text
+Pushing to Dolt remote...
+Push complete.
+
+To https://github.com/dstengle/shopsystem-product.git
+   131f2f7..0a5e7bd  main -> main
+On branch main
+Your branch is up to date with 'origin/main'.
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   .specstory/history/2026-05-19_18-27-59Z-review-your-instructions.md
+
+no changes added to commit (use "git add" and/or "git commit -a")
+```
+</details></tool-use>
+
+_**Agent (claude-sonnet-4-6 2026-05-20 14:49:36Z)**_
+
+_**Agent (claude-sonnet-4-6 2026-05-20 14:49:41Z)**_
+
+The specstory file is being written as the session continues — that's expected. Everything substantive is pushed and up to date.
+
+**Session summary:**
+
+| Work | Outcome |
+|---|---|
+| Monitor fix | `inotifywait` → `shop-msg watch --lead-root .` (lead-mlq + lead-51u) |
+| Outbox reconciliation | 13 work_done responses closed across messaging, templates, devcontainer |
+| Clarifies resolved | lead-k98, lead-2oe — both handled, no new dispatches needed |
+| Consume outbox | lead-38w — `shop-msg consume outbox` now live (78 tests) |
+| Devcontainer Dockerfile | lead-sbp + lead-3jw — `.devcontainer/Dockerfile` with canonical base + CLI tools |
+| GitHub Actions workflow | lead-cnc — publishes to `ghcr.io/dstengle/shopsystem-devcontainer` (20 tests) |
+
+**In flight:** `lead-sbp` scenarios for consume-outbox pending outbox cleanup is the only open loop — the `pending outbox` command will now show clean results once all historical rows are consumed.
+
+---
+
+_**User (2026-05-20 14:49:49Z)**_
+
+<task-notification>
+<task-id>bb3pj7nf6</task-id>
+<tool-use-id>toolu_01DdbeJagrzFS4Z1JbcDTxuZ</tool-use-id>
+<output-file>/tmp/claude-1000/-workspaces-shopsystem-product/627159d0-c008-44de-926e-b3a35fa5f712/tasks/bb3pj7nf6.output</output-file>
+<status>killed</status>
+<summary>Monitor "BC outbox watcher — new responses via shop-msg watch --lead-root" stopped</summary>
+</task-notification>
