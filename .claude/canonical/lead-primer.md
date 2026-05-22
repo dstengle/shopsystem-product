@@ -68,10 +68,10 @@ bead IDs are the canonical `work_id` values that flow outward into
 - Use `bd remember` for persistent knowledge that should outlive the
   session.
 
-## Session start: arming the BC-outbox watcher via the in-session Monitor
+## Session start: arming the lead-inbox watcher via the in-session Monitor
 
 This shop is reactive on session start: when a BC drops a response
-into its outbox, the router must learn about it without polling. The
+into the lead shop's inbox, the router must learn about it without polling. The
 activation mechanism is the in-session **Monitor** tool — not a
 `SessionStart` hook in `.claude/settings.json`. (Earlier iterations of
 this template tried the hook path; Claude Code awaits `SessionStart`
@@ -81,10 +81,10 @@ that delivers the streaming-stdout-as-notifications semantic the hook
 was faking, without blocking startup.)
 
 **At session start, the router must arm the in-session Monitor tool on
-`shop-msg watch --lead-root .`** — this is the postgres LISTEN/NOTIFY
-watcher that delivers one notification line per new BC outbox response.
-`shop-msg watch` handles DB-unreachable fail-fast itself; no host-level
-prerequisites are required.
+`shop-msg watch --lead <name>`** — this is the postgres LISTEN/NOTIFY
+watcher that delivers one notification line per new BC response arriving
+in the lead shop's inbox. `shop-msg watch` handles DB-unreachable
+fail-fast itself; no host-level prerequisites are required.
 
 The lead shop's canonical `.claude/settings.json` still declares a
 `SessionStart` hook for `bd prime` (short-lived, returns cleanly — a
