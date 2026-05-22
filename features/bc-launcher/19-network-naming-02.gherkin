@@ -1,0 +1,6 @@
+  Scenario: network name derivation slugifies the product field by lowercasing and replacing spaces with hyphens
+    Given a bc-manifest.yaml exists with product field "My Ecommerce Shop"
+    And no Docker container named "bc-shopsystem-messaging" is running
+    And no explicit "--network" flag is provided
+    When I run bc-container launch with BC name "shopsystem-messaging"
+    Then the FakeDockerDriver records that the docker run command for "bc-shopsystem-messaging" includes the flag "--network my-ecommerce-shop"

@@ -1,0 +1,8 @@
+  Scenario: two BC containers launched under the same product are both attached to the same derived network
+    Given no Docker container named "bc-shopsystem-messaging" is running
+    And no Docker container named "bc-shopsystem-scenarios" is running
+    When I run bc-container launch with BC name "shopsystem-messaging"
+    And I run bc-container launch with BC name "shopsystem-scenarios"
+    Then the command exits zero for both launches
+    And the FakeDockerDriver records that the docker run command for "bc-shopsystem-messaging" includes the flag "--network shopsystem-product"
+    And the FakeDockerDriver records that the docker run command for "bc-shopsystem-scenarios" includes the flag "--network shopsystem-product"

@@ -1,0 +1,7 @@
+  Scenario: network creation is attempted only once when a second BC is launched under the same product network that already exists
+    Given no Docker container named "bc-shopsystem-messaging" is running
+    And no Docker container named "bc-shopsystem-scenarios" is running
+    And no Docker network named "shopsystem-product" exists
+    When I run bc-container launch with BC name "shopsystem-messaging"
+    And I run bc-container launch with BC name "shopsystem-scenarios"
+    Then the FakeDockerDriver records that "docker network create shopsystem-product" was called exactly once across both launches

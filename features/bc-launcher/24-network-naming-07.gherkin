@@ -1,0 +1,8 @@
+  Scenario: explicit --network flag suppresses automatic network creation
+    Given a bc-manifest.yaml exists with product field "shopsystem product"
+    And no Docker network named "custom-net" exists
+    And no Docker container named "bc-shopsystem-messaging" is running
+    When I run bc-container launch with BC name "shopsystem-messaging" and flag "--network custom-net"
+    Then the command exits zero
+    And the FakeDockerDriver records that "docker network create" was NOT called
+    And the FakeDockerDriver records that the docker run command for "bc-shopsystem-messaging" includes the flag "--network custom-net"
