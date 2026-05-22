@@ -90,3 +90,51 @@ The lead shop's canonical `.claude/settings.json` still declares a
 `SessionStart` hook for `bd prime` (short-lived, returns cleanly — a
 legitimate synchronous hook usage); the activation hook itself has
 moved to the router's Monitor invocation described here.
+
+### Standing rule: reacting to Monitor events
+
+`shop-msg watch --lead <name>` emits one line per new BC response, of
+the form `<work_id> <message_type>`. The router's standing reaction for
+each event:
+
+- `<work_id> work_done` → dispatch **lead-architect** (reconciliation:
+  confirm scenario register lands, hashes match, follow-up beads filed).
+- `<work_id> clarify` → dispatch **lead-po** if the clarify is about
+  scope or vocabulary; dispatch **lead-architect** if it is about
+  architecture, contracts, or decomposition. If ambiguous, default to
+  **lead-architect** and note the routing question.
+- `<work_id> mechanism_observation` → dispatch **lead-architect**.
+
+### Session-start drain
+
+After arming Monitor and **before accepting user work**, the router must
+check for pre-existing pending responses that arrived between sessions:
+
+```
+shop-msg pending outbox --lead <name>   # BC responses not yet consumed
+shop-msg pending inbox  --lead <name>   # BC clarifies in the lead inbox
+```
+
+For each pending row, dispatch the appropriate subagent per the standing
+rule above before turning to user requests. This drain prevents pile-up
+across sessions.
+
+## Router operations: inspecting BC responses
+
+Two commands let the router discover and read BC responses without
+touching mailbox storage directly:
+
+- **List pending BC responses** (all BCs, or one filtered by canonical
+  name):
+  ```
+  shop-msg pending outbox --lead <name> [--bc-name <bc>]
+  ```
+
+- **Read a specific BC response** by canonical BC name and work_id:
+  ```
+  shop-msg read outbox --bc <name> --work-id <work_id>
+  ```
+
+Note: `pending outbox` uses `--bc-name` for the optional BC filter;
+`read outbox` uses `--bc`. Do not use the removed `--lead-root` or
+`--bc-root` flags.
