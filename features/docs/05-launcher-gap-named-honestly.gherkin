@@ -1,0 +1,8 @@
+Scenario: The v1 walkthrough names the launcher gap honestly until a host-side lead-launch primitive ships
+  Given the shopsystem-docs adoption walkthrough has a section that describes launching the lead-shop container on the adopter's host
+  And no host-side primitive exists today that launches a lead-shop container (bc-container launch is BC-only; no shop-container, no lead-launcher, no bc-container launch --shop-type lead)
+  When the adopter reads the "launch the lead container" section of the walkthrough
+  Then the section explicitly states that the framework does not yet ship a host-side command for launching the lead-shop container
+  And the section enumerates the manual steps the adopter must perform in the interim to bring the lead container up
+  And the section references the open work that will close the gap (brief 008 slice 1, or its successor) so the adopter knows the manual step is transitional and will be replaced
+  And the section does not present the manual step as if it were the framework's intended steady-state surface

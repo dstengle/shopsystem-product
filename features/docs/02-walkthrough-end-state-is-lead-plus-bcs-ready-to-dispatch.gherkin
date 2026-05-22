@@ -1,0 +1,8 @@
+Scenario: An adopter who follows the documentation end-to-end arrives at a lead-shop container plus per-BC containers running and can dispatch their first scenario
+  Given the shopsystem-docs repository contains an adoption walkthrough (one or more linked markdown files) starting from the entry document
+  And an adopter has executed every step the walkthrough names, in order, on a host with Docker installed
+  When the adopter completes the final step the walkthrough specifies
+  Then the adopter's host has a lead-shop container running for their own product
+  And the adopter's host has one container running per BC the adopter's manifest declares
+  And every running BC container is registered with the messaging registry such that "shop-msg registry list" shows the BC name and its container-side path
+  And the adopter can open a Claude Code session against the lead-shop container and dispatch an assign_scenarios message to one of their BCs without performing any step the walkthrough did not name

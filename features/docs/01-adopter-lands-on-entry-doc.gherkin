@@ -1,0 +1,7 @@
+Scenario: An adopter lands on the shopsystem-docs entry document and identifies framework, prerequisites, and the next step
+  Given the shopsystem-docs BC repository is published at https://github.com/dstengle/shopsystem-docs
+  And an adopter has Docker installed and a GitHub account but no prior knowledge of the shopsystem framework
+  When the adopter opens the repository's entry document (README.md or a designated entry markdown file) in a browser
+  Then the entry document names the shopsystem framework and states in one sentence what it is for
+  And the entry document enumerates the prerequisites the adopter needs (Docker, a GitHub account)
+  And the entry document points to exactly one next step (a named markdown file or a named first command) the adopter takes to begin bootstrapping their own product

@@ -1,0 +1,7 @@
+Scenario: The v1 shopsystem-docs repository publishes plain markdown files and does not ship a documentation site build
+  Given the shopsystem-docs BC repository has been published at its v1 milestone
+  When the repository's tracked files are enumerated at the v1 commit
+  Then every adopter-facing document is a plain ".md" file committed to the repository
+  And no static-site-generator configuration file is present at the repository root or in any documentation directory (no mkdocs.yml, no docusaurus.config.js, no _config.yml for Jekyll, no docusaurus or astro or vitepress directories)
+  And no GitHub Pages workflow is present under .github/workflows/ that builds or publishes rendered HTML for the documentation
+  And no custom rendering pipeline (Makefile target, package.json script, or shell script under scripts/) builds documentation HTML output

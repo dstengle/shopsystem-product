@@ -1,0 +1,7 @@
+Scenario: The adoption walkthrough is structured so a coding agent handed the documentation can execute the bootstrap without inferring intent
+  Given the shopsystem-docs repository contains an adoption walkthrough (one or more linked markdown files)
+  When the walkthrough's markdown is parsed for structural elements
+  Then every step the adopter must execute is presented as a fenced code block whose language tag identifies the command surface (e.g., bash, sh, shell) or as an explicit named instruction inside a numbered list
+  And every command block contains a single concrete invocation with literal arguments (no placeholders left to the reader's judgement; any value the adopter must substitute is named in a preceding sentence with the exact replacement token)
+  And every step that produces an observable side effect (a created repo, a running container, a registered BC) is followed by a verification step (a command to run, an output to check, or a URL to load) whose expected result is stated explicitly
+  And the walkthrough does not contain forks of the form "if you are a human do X, if you are an agent do Y" — the same instructions serve both audiences
