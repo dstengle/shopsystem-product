@@ -7,5 +7,7 @@
          "source=${localEnv:HOME}/.gitconfig,target=/tmp/host-gitconfig,type=bind,readonly"
       ],
      "postCreateCommand": "cp /home/vscode/.claude/.claude.json /home/vscode/ && cp /tmp/host-gitconfig /home/vscode/.gitconfig",
-      "remoteUser": "vscode"
+     "remoteUser": "vscode",
+     "runArgs": ["--network=shopsystem"]
+     
 }
