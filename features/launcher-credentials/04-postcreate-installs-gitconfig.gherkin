@@ -1,0 +1,10 @@
+@bc:shopsystem-bc-launcher
+@scenario_hash:<hash>
+Scenario: bc-container launch copies the staged host gitconfig into the container user's home after start
+  Given the shopsystem-bc-launcher BC is installed
+  And the host file "$HOME/.gitconfig" exists
+  And no Docker container named "bc-shopsystem-messaging" is running
+  When I run bc-container launch with BC name "shopsystem-messaging"
+  Then the command exits zero
+  And the FakeDockerDriver records that an exec_run was issued against "bc-shopsystem-messaging" copying "/tmp/host-gitconfig" to "/home/vscode/.gitconfig"
+  And that exec_run is recorded after the docker run for "bc-shopsystem-messaging" and before the tmux new-session exec_run

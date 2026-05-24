@@ -1,0 +1,9 @@
+@bc:shopsystem-bc-launcher
+@scenario_hash:<hash>
+Scenario: bc-container launch bind-mounts the host's ~/.gitconfig read-only into the launched BC container at a staging path
+  Given the shopsystem-bc-launcher BC is installed
+  And the host file "$HOME/.gitconfig" exists
+  And no Docker container named "bc-shopsystem-messaging" is running
+  When I run bc-container launch with BC name "shopsystem-messaging"
+  Then the command exits zero
+  And the FakeDockerDriver records that the docker run command for "bc-shopsystem-messaging" includes a read-only bind mount with source "$HOME/.gitconfig" and target "/tmp/host-gitconfig"
