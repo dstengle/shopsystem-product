@@ -1,0 +1,9 @@
+Scenario: CWD walk-up resolves the nearest .claude/shop/ ancestor when multiple shop directories are nested
+  Given a lead shop at "/tmp/example-lead" containing ".claude/shop/name.md" "shopsystem-product" and ".claude/shop/type.md" "lead"
+  And a BC shop at "/tmp/example-lead/repos/shopsystem-docs" containing ".claude/shop/name.md" "shopsystem-docs" and ".claude/shop/type.md" "bc"
+  And both "shopsystem-product" and "shopsystem-docs" are registered in the messaging registry
+  And my current working directory is "/tmp/example-lead/repos/shopsystem-docs" or any descendant of it
+  When I run "shop-msg prime" with no addressing flags
+  Then the command exits zero
+  And the command resolves the invoking shop's identity to canonical name "shopsystem-docs" and shop type "bc"
+  And the command does NOT resolve the invoking shop's identity to "shopsystem-product"

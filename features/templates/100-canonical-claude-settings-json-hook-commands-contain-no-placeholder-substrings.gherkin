@@ -1,0 +1,15 @@
+Feature: Canonical ".claude/settings.json" hook commands contain no "{{...}}" placeholder substrings
+
+  Per PDR-003 alt F (scenarios 2b9bd9c82017b0c6 / cad9ccb5b462978d), bootstrap pours ".claude/*" files byte-for-byte from canonical package data with no substitution. A canonical hook command containing a "{{...}}" placeholder substring therefore survives the pour as a literal "{{...}}" sequence in the consumer's ".claude/settings.json", and the Claude Code harness then executes the literal sequence — silently producing a wrong-shop or unrecognized-name error. The canonical template surface must therefore commit, at the package-data level, that no hook command body contains placeholder-shaped content.
+
+  Per PDR-009 (decided 2026-05-27), shop identity is never embedded in canonical content; "shop-msg" resolves the invoking shop's identity from CWD by walking up looking for ".claude/shop/name.md" and ".claude/shop/type.md". This eliminates any architectural reason for a canonical hook command to embed shop identity via placeholder substitution.
+
+  Scenario Outline: every inner-hook "command" string in the canonical ".claude/settings.json" template for "<shop_type>" contains no occurrence of the substring "{{" and no occurrence of the substring "}}"
+    When I ask the "shop-templates" package for the canonical ".claude/settings.json" template for shop type "<shop_type>" through its public template-access surface
+    And the returned body is parsed as JSON
+    Then for every top-level hook-event key under "hooks" (including but not limited to "SessionStart" and "PreCompact"), and for every element of that hook-event's array, and for every entry of that element's inner "hooks" array, the entry's "command" string contains no occurrence of the substring "{{" and no occurrence of the substring "}}"
+
+    Examples:
+      | shop_type |
+      | bc        |
+      | lead      |

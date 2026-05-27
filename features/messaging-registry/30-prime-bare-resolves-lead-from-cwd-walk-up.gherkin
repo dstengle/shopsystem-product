@@ -1,0 +1,8 @@
+Scenario: bare "shop-msg prime" resolves a lead shop's identity by walking up from CWD reading .claude/shop/name.md and type.md
+  Given a lead shop directory tree containing ".claude/shop/name.md" with literal content "shopsystem-product" and ".claude/shop/type.md" with literal content "lead"
+  And "shopsystem-product" is registered in the messaging registry as a lead
+  And my current working directory is the lead shop directory (or any descendant of it that contains no nearer ".claude/shop/" directory)
+  When I run "shop-msg prime" with no addressing flags
+  Then the command exits zero
+  And the command resolves the invoking shop's identity to canonical name "shopsystem-product" and shop type "lead"
+  And the output is the same orientation output that an explicit "shop-msg prime --lead shopsystem-product" invocation from outside the shop directory would produce

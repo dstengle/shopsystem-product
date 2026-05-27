@@ -1,0 +1,9 @@
+Scenario: on "shop-msg send", the CWD-implicit lookup resolves the SENDER's identity only; the recipient remains explicitly named via "--bc <name>" or "--lead <name>"
+  Given a lead shop directory tree containing ".claude/shop/name.md" with literal content "shopsystem-product" and ".claude/shop/type.md" with literal content "lead"
+  And both "shopsystem-product" and "shopsystem-docs" are registered in the messaging registry
+  And my current working directory is the "shopsystem-product" lead shop directory
+  When I run "shop-msg send assign_scenarios --bc shopsystem-docs" with a valid payload and work-id "lead-200" and no flag naming the sender
+  Then the command exits zero
+  And the sent message's "from" identity is canonical name "shopsystem-product" (resolved implicitly from CWD)
+  And the sent message's "to" identity is canonical name "shopsystem-docs" (named explicitly)
+  And the recipient address is NEVER resolved from CWD; running "shop-msg send assign_scenarios" with no "--bc" or "--lead" recipient flag exits non-zero with a diagnostic naming the missing recipient flag

@@ -1,0 +1,18 @@
+Feature: A poured ".claude/settings.json" in a bootstrapped shop contains no "{{...}}" placeholder substrings
+
+  This scenario is the bootstrap-side companion of scenario 100 (canonical-side guard). Scenario 100 pins that canonical package data carries no placeholder substrings; this scenario pins the same property at the consumer end — after "shop-templates init" or "shop-templates update" pours ".claude/settings.json" into a target shop, the resulting file on disk must also be free of "{{...}}" substrings. Together the two scenarios make the absence of placeholder substitution observable both from the publisher side and the consumer side, eliminating the regression class where canonical and poured copies could disagree on the placeholder property.
+
+  Scenario Outline: after "shop-templates init" or "shop-templates update" pours ".claude/settings.json" into a target shop of type "<shop_type>", the poured file contains no occurrence of the substring "{{" and no occurrence of the substring "}}"
+    Given an existing git repository at a target directory "<target>"
+    When I invoke the "shop-templates" "<entry_point>" against target "<target>" with shop type "<shop_type>" and shop name "<shop_name>"
+    Then the exit code is 0
+    And the file at "<target>/.claude/settings.json" exists
+    And the contents of "<target>/.claude/settings.json" contain no occurrence of the substring "{{"
+    And the contents of "<target>/.claude/settings.json" contain no occurrence of the substring "}}"
+
+    Examples:
+      | entry_point | shop_type | shop_name              | target                     |
+      | init        | bc        | shopsystem-docs        | /tmp/example-bc-shop       |
+      | init        | lead      | shopsystem-product     | /tmp/example-lead-shop     |
+      | update      | bc        | shopsystem-docs        | /tmp/example-bc-shop       |
+      | update      | lead      | shopsystem-product     | /tmp/example-lead-shop     |

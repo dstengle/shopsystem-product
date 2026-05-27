@@ -1,0 +1,290 @@
+# PDR-009 — Implicit CWD-based shop resolution in `shop-msg`
+
+**Status:** decided (2026-05-27)
+**Authors:** dstengle, Claude (lead-po)
+**Anchored to:** [PDR-007](007-path-to-name-addressing-migration.md)
+(name-based addressing as the canonical addressing model); user-driver
+observation 2026-05-27: a session opened inside `repos/shopsystem-docs/`
+errored with `shop name '{{SHOP_NAME}}' is not registered`, because the
+canonical BC `.claude/settings.json` template ships
+`shop-msg prime --bc {{SHOP_NAME}}` and the bootstrap surface pours
+`.claude/*` byte-for-byte (per PDR-003 alt F, scenarios
+`2b9bd9c82017b0c6` / `cad9ccb5b462978d`).
+
+## The question
+
+`shop-msg` today requires explicit shop addressing on every invocation
+via the mutually-exclusive `--bc <name>` / `--lead <name>` flag pair. Per
+PDR-007 this addressing is canonically *by name*, with paths gone. The
+canonical BC SessionStart hook needs the shop's own name to pass to
+`shop-msg prime`. The shop's name is already the single source of truth
+on disk at `.claude/shop/name.md` (with `.claude/shop/type.md` next to
+it). How should the hook get the name into the invocation?
+
+Two top-level shapes:
+
+1. **Pour-time substitution.** Bootstrap reads `name.md` (or takes a
+   shop-name argument) and writes the literal name into
+   `settings.json` at pour time — `shop-msg prime --bc shopsystem-docs`.
+2. **Implicit CWD-based resolution.** Bootstrap pours
+   `settings.json` byte-for-byte from the canonical (no substitution);
+   the canonical hook command is bare `shop-msg prime`; `shop-msg`
+   itself, when invoked without addressing flags, discovers the shop
+   identity by walking up from CWD looking for `.claude/shop/name.md`
+   and `.claude/shop/type.md`, the same way `bd` discovers `.beads/`.
+
+## Options considered
+
+### Option A — Pour-time substitution into settings.json
+
+`shop-templates bootstrap` substitutes `{{SHOP_NAME}}` in the canonical
+`settings.json` body at pour time, writing the literal shop name into
+the target's `.claude/settings.json`. The canonical template carries the
+placeholder; the bootstrap pour rule for `.claude/*` becomes
+*byte-for-byte except for `.claude/settings.json`, which substitutes*.
+
+**Pros:**
+
+- No new resolution machinery in `shop-msg`. The CLI continues to take
+  shop addressing explicitly on every invocation, and the hook simply
+  passes a literal name.
+- Substitution mechanism could be reused for any future placeholder
+  needs in `settings.json`.
+
+**Cons:**
+
+- **Duplicates the shop name into a second file.** The name already
+  lives in `.claude/shop/name.md` (per the four-typed-files
+  CLAUDE.md import-graph pinned by scenario 83 in `features/templates/`).
+  After pour, the name lives in *both* `name.md` and the literal
+  `command` string of `settings.json`. If a shop is ever renamed, two
+  files have to change in lockstep; staleness in one of them silently
+  routes to the wrong shop.
+- **Contradicts the explicit pour discipline.** PDR-003 alt F established
+  that `.claude/*` files pour byte-for-byte; the precedent decision
+  ruled against pour-time substitution. Re-introducing substitution
+  for `settings.json` carves out an exception that future contributors
+  will read as license to add more exceptions. The byte-for-byte rule's
+  value is its uniformity.
+- **Does nothing for ad-hoc invocations.** An agent that types
+  `shop-msg pending inbox` (no addressing flags) inside a BC repo
+  still has to type the BC name. The convenience of "knowing what shop
+  you're in" exists nowhere in the CLI.
+- **Latent bug surface persists.** The canonical hook still embeds
+  shop identity; any future caller pouring `settings.json` without
+  going through the substitution path (a copy-paste, a manual edit, a
+  different bootstrap entry point) re-introduces the exact bug this
+  PDR exists to fix.
+
+### Option B — Implicit CWD-based resolution in `shop-msg`
+
+`shop-msg` gains a CWD-based shop discovery mechanism: when invoked
+without `--bc` or `--lead`, it walks up from the current working
+directory looking for `.claude/shop/name.md` and `.claude/shop/type.md`,
+reads the canonical name and shop type from those files, and resolves
+the shop identity via the existing registry as it would for an explicit
+`--bc <name>` / `--lead <name>` invocation. Explicit flags continue to
+work unchanged; they always win over the implicit lookup.
+
+The canonical `.claude/settings.json` hook command becomes bare
+`shop-msg prime`. Bootstrap pours `settings.json` byte-for-byte, no
+substitution.
+
+**Pros:**
+
+- **Eliminates duplication of shop identity.** `name.md` and `type.md`
+  remain the sole on-disk source of truth for shop identity. The hook
+  carries no identity at all — it only carries the intent ("prime this
+  shop, whatever shop this is").
+- **Preserves PDR-003 alt F byte-for-byte pour.** No exception to the
+  pour rule; the bug fix lives entirely in `shop-msg`, not in the
+  pour pipeline.
+- **Mirrors a familiar pattern.** `bd` discovers `.beads/` from CWD via
+  walk-up. Operators and agents already model "tool discovers project
+  identity from CWD" because beads behaves that way. Implicit CWD
+  resolution in `shop-msg` reads as an extension of an established
+  pattern, not as a new concept.
+- **Ad-hoc invocations stop being painful.** An agent that types
+  `shop-msg pending inbox` inside a BC repo gets the right answer for
+  this BC. The "I know what shop I'm in" affordance applies to every
+  subcommand, not just the SessionStart hook.
+- **Closes the latent bug class.** No canonical content embeds shop
+  identity, so no future copy-paste of canonical content can revive the
+  `{{SHOP_NAME}}`-shaped class of bug.
+- **PDR-007 compatible.** Name-based addressing is preserved: `shop-msg`
+  still resolves shops by canonical name via the registry. The implicit
+  lookup *derives* the canonical name from `.claude/shop/name.md` and
+  then enters the same registry-resolution path the explicit flag uses.
+  Path-based addressing remains gone.
+
+**Cons:**
+
+- **New machinery in `shop-msg`.** The CLI grows a CWD-walk-up step
+  before flag parsing's resolution path runs. This is a small surface
+  (mirrors the well-understood `bd` pattern), but it is non-zero.
+- **Two resolution paths.** Explicit-flag and implicit-CWD both exist.
+  The mutual-exclusion / precedence rule (explicit always wins; implicit
+  fires only when neither flag is passed) must be pinned in scenarios
+  and tested. Manageable, but a real test-surface cost.
+- **Implicit failure modes need clear errors.** Running `shop-msg prime`
+  in a directory that is not inside any shop (no walk-up parent contains
+  `.claude/shop/`) must produce a clear, non-zero-exit error that tells
+  the operator which addressing strategy to use. Silent failure (or
+  routing to a wrong shop) would be worse than today.
+
+### Option C — Both: pour-time substitution AND implicit-CWD
+
+Both mechanisms ship: bootstrap substitutes the canonical hook with the
+literal shop name (so the hook works regardless of CWD context), AND
+implicit-CWD ships as a separate affordance for ad-hoc invocations.
+
+**Pros:**
+
+- Defense in depth: the hook works even if the implicit-CWD resolution
+  ever broke; implicit-CWD still helps for ad-hoc commands.
+
+**Cons:**
+
+- Carries both Option A's "duplicate identity into two files" cost and
+  Option B's "new machinery" cost.
+- Two ways for the canonical hook to be correct creates ambiguity about
+  which is *the* convention. Future canonical content has to decide
+  which path to use; precedent gets muddier with every addition.
+- Defense in depth here is solving for a failure mode that does not
+  meaningfully exist — implicit-CWD's failure mode is "directory has no
+  `.claude/shop/`," and that condition is the *bootstrap not having
+  run*, which means substitution would also have nothing to substitute.
+
+## Decision
+
+**Option B — Implicit CWD-based resolution in `shop-msg`.**
+
+Rationale:
+
+1. **Single source of truth for shop identity.** The shop name lives
+   at `.claude/shop/name.md`; the shop type lives at `.claude/shop/type.md`.
+   No other file on disk needs to carry shop identity. The bug that
+   surfaced this PDR is exactly the failure mode of duplicating identity
+   into a second file and letting one go stale (`{{SHOP_NAME}}` literal
+   in the poured hook). Option B closes the bug at the architectural
+   level, not at the pour-pipeline level.
+
+2. **PDR-003 alt F's byte-for-byte rule is preserved.** That rule's
+   value is uniformity — every `.claude/*` file is poured the same way.
+   Carving out an exception for `settings.json` (Option A) creates a
+   precedent for further exceptions, which is precisely what alt F
+   ruled against. The fix lives in `shop-msg`, not in a new pour
+   special-case.
+
+3. **Mirrors `bd`'s established pattern.** Operators and agents already
+   model "tool discovers project identity by walking up from CWD."
+   `bd prime` works that way; `bd ready`, `bd show`, etc. all work
+   that way. Implicit CWD in `shop-msg` extends a pattern that exists
+   uniformly across the project's adjacent tools rather than introducing
+   a novel mechanism. The cognitive load is near-zero for anyone who
+   already uses `bd`.
+
+4. **PDR-007 compatible — extends, does not reverse.** Implicit CWD
+   resolution does not re-introduce path-based addressing. The CWD walk
+   produces a canonical *name* (read from `.claude/shop/name.md`), and
+   that name flows into the existing registry-resolution path that
+   PDR-007 made canonical. Path-based addressing remains removed;
+   the implicit-CWD lookup is a *name-derivation* step in front of
+   the name-based addressing model PDR-007 committed to.
+
+5. **Closes the bug class, not just the bug.** Option A fixes the
+   immediate `{{SHOP_NAME}}` substitution bug, but any future canonical
+   content that needs shop identity revives the same trap. Option B
+   removes the trap: no canonical content has reason to embed shop
+   identity, so no future canonical content can reintroduce the bug.
+
+## Scope of the implicit lookup
+
+The implicit lookup applies to **every `shop-msg` subcommand that
+currently accepts the `--bc <name>` / `--lead <name>` mutually-exclusive
+addressing flag pair** to identify the *invoking* shop. The PO commits
+to bundling rather than scope-tight-to-`prime`:
+
+- `prime`, `pending`, `read`, `respond`, `watch` — implicit lookup
+  resolves the invoking shop's identity when no addressing flag is
+  passed.
+- `send` — `send` carries two identities: the sender (the shop running
+  the command) and the recipient (the addressed `--bc <name>` /
+  `--lead <name>` flag). The implicit lookup applies **only to the
+  sender**. The recipient is always explicit. A `send` invocation
+  inside a lead shop with no flags addresses *no one*; the recipient
+  flag is required.
+
+The "sender is implicit, recipient is explicit" rule is the natural
+extension of PDR-007's invariant (every directional addressing decision
+goes through a canonical name) to the implicit case (the canonical name
+of the sender is *derived* from CWD; the canonical name of the recipient
+is always *named*).
+
+Rationale for bundling rather than scoping tight to `prime`:
+
+- **Uniformity over selective fix.** Tight-to-`prime` papers over the
+  canonical-content fix while leaving the same trap for any agent that
+  types `shop-msg pending inbox` (or any other subcommand) in a BC
+  repo. A uniform rule — "any `shop-msg` invocation without addressing
+  flags resolves the invoking shop from CWD" — is easier to remember
+  and reason about than "implicit only for `prime`; explicit
+  everywhere else."
+- **The mechanism is shared.** The walk-up that reads
+  `.claude/shop/{name,type}.md` is one routine, used identically by
+  every subcommand. Pinning it at one subcommand and not the others
+  creates an asymmetry without a corresponding architectural reason.
+- **The cost is the same.** The test surface for implicit-CWD is the
+  walk-up routine plus the precedence rule. Both exist regardless of
+  how many subcommands honor the implicit lookup.
+
+## Error behavior
+
+When implicit lookup fires (no addressing flags) and the walk-up reaches
+the filesystem root without finding `.claude/shop/name.md` + `type.md`,
+`shop-msg` exits non-zero with a clear diagnostic naming both addressing
+strategies: the operator can either `cd` into a shop directory or pass
+an explicit `--bc <name>` / `--lead <name>` flag.
+
+When implicit lookup fires but the walk-up finds `name.md` but not
+`type.md` (or vice versa), `shop-msg` exits non-zero — the two files
+together name the shop's identity; one without the other is corruption,
+not a partial state to tolerate.
+
+When implicit lookup fires and the resolved name does not appear in
+the registry, the existing "shop not registered" error fires (same
+behavior as explicit `--bc <unregistered-name>`).
+
+## What this leaves open
+
+1. **The walk-up's exact termination condition.** Walk up until
+   `.claude/shop/` is found, or until the filesystem root is reached.
+   Whether the walk also terminates at a git boundary (e.g., a parent
+   `.git/` directory not matching the shop) is the Architect's call.
+   PO leaning: terminate at filesystem root only; let the registry
+   provide the final correctness check. But this is realization detail.
+2. **Whether `shop-msg`'s --help should mention the implicit lookup.**
+   PO commits the behavior; help-text is the Architect's call.
+3. **Whether implicit lookup should also apply to a future
+   `--from <name>` flag on `send` (sender-naming)** if such a flag is
+   ever introduced. Out of scope for this PDR; current `send` has no
+   `--from` flag.
+
+## Cross-references
+
+- [PDR-007](007-path-to-name-addressing-migration.md) — established
+  name-based addressing as canonical; this PDR extends it with a
+  name-*derivation* step that runs in front of the existing
+  name-resolution path.
+- [PDR-003](003-claude-md-update-propagation.md) — established
+  byte-for-byte pour of `.claude/*` files (alt F); this PDR preserves
+  that rule by moving the fix into `shop-msg` instead of into pour.
+- [brief 006](../briefs/006-messaging-name-registry-and-lead-inbox.md)
+  — the registry surface implicit-CWD's resolved name flows into.
+- [brief 003](../briefs/003-event-driven-shop-activation.md) —
+  the SessionStart hook whose canonical content this PDR enables to
+  carry no embedded shop identity. The companion canonical-settings
+  scenarios live alongside this PDR's `shop-msg` scenarios in
+  brief 003's scope.
+- Adjacent pattern: `bd`'s discovery of `.beads/` from CWD via
+  walk-up — the established mirror for this PDR's mechanism.

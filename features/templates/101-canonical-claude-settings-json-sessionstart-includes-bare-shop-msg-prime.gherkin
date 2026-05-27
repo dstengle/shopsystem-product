@@ -1,0 +1,21 @@
+Feature: Canonical ".claude/settings.json" "SessionStart" includes bare "shop-msg prime" with no addressing flags
+
+  Supersedes the "sole inner-hook command" property of scenario 75 (features/templates/75-canonical-lead-claude-settings-json-ships-with-bd-prime-as-sole-sessionstart-hook.gherkin) and scenario 96 (features/templates/96-canonical-bc-claude-settings-json-ships-with-bd-prime-as-sole-sessionstart-hook.gherkin). Those scenarios pinned "bd prime" as the SOLE SessionStart command on the premise that no other short-lived, cleanly-terminating SessionStart hook applied. Per PDR-009, "shop-msg prime" is a second short-lived, cleanly-terminating SessionStart hook that DOES apply (it checks the messaging-DSN reachability and reports pending inbox count — the orientation that lets the router know whether the messaging surface is alive before user work begins). Both hooks now belong; the "sole" qualifier is retired. The Implementer must locate the BC-side hashes of scenarios 75 and 96 in repos/shopsystem-templates/features/ via the grep mechanism pinned by scenarios 92-95 and retire the "sole" pin when landing these new scenarios.
+
+  PO judgment (PDR-009): the canonical hook command is bare "shop-msg prime" — no "--bc" or "--lead" addressing flag, no shop-name placeholder. "shop-msg" resolves the invoking shop's identity from CWD via the walk-up mechanism PDR-009 commits. Canonical content carries no shop identity. The "bare" property is essential — embedding the name (via placeholder or pour-time substitution) would re-introduce the very bug class PDR-009 exists to close.
+
+  Scenario Outline: exactly one inner-hook "command" entry under "hooks.SessionStart" in the canonical ".claude/settings.json" for "<shop_type>" equals the literal string "shop-msg prime"
+    When I ask the "shop-templates" package for the canonical ".claude/settings.json" template for shop type "<shop_type>" through its public template-access surface
+    And the returned body is parsed as JSON
+    Then the parsed value at "hooks.SessionStart" is a JSON array of length at least 1
+    And exactly one inner-hook entry under "hooks.SessionStart" has a "command" string equal to the literal value "shop-msg prime"
+    And no inner-hook entry under "hooks.SessionStart" has a "command" string that starts with "shop-msg prime " followed by additional characters
+    And no inner-hook entry under "hooks.SessionStart" has a "command" string containing the substring "--bc"
+    And no inner-hook entry under "hooks.SessionStart" has a "command" string containing the substring "--lead"
+    And no inner-hook entry under "hooks.SessionStart" has a "command" string containing the substring "--bc-root"
+    And no inner-hook entry under "hooks.SessionStart" has a "command" string containing the substring "--lead-root"
+
+    Examples:
+      | shop_type |
+      | bc        |
+      | lead      |
