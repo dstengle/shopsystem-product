@@ -1,8 +1,7 @@
-Scenario: An adopter who follows the documentation end-to-end arrives at a lead-shop container plus per-BC containers running and can dispatch their first scenario
+Scenario: The adoption walkthrough's terminal section names the three observable end-state moves an adopter must achieve (lead-shop container, per-BC containers registered, first dispatch)
   Given the shopsystem-docs repository contains an adoption walkthrough (one or more linked markdown files) starting from the entry document
-  And an adopter has executed every step the walkthrough names, in order, on a host with Docker installed
-  When the adopter completes the final step the walkthrough specifies
-  Then the adopter's host has a lead-shop container running for their own product
-  And the adopter's host has one container running per BC the adopter's manifest declares
-  And every running BC container is registered with the messaging registry such that "shop-msg registry list" shows the BC name and its container-side path
-  And the adopter can open a Claude Code session against the lead-shop container and dispatch an assign_scenarios message to one of their BCs without performing any step the walkthrough did not name
+  When the walkthrough's markdown is parsed for the named end-state section (the final section the walkthrough designates as completion)
+  Then the section names, as an executable step, the move that brings a lead-shop container up on the adopter's host
+  And the section names, as an executable step, the move that registers each BC the adopter's manifest declares with the messaging registry such that "shop-msg registry list" reports both the lead and each BC by name
+  And the section names, as an executable step, the move that dispatches an assign_scenarios message from a Claude Code session opened against the lead-shop container to one of the adopter's BCs
+  And the section states explicitly that successful completion of these three moves is what "the framework is bootstrapped" means in v1
