@@ -1,0 +1,7 @@
+Scenario: After the pytest session completes, no shop_registry row for any production canonical name has a tmp_path-prefixed shop_root
+  Given the messaging BC's pytest session has run to completion (all session-scoped teardowns have executed)
+  And the production canonical names observed pre-session include at least "shopsystem-messaging", "shopsystem-docs", "shopsystem-product", and "shopsystem product"
+  When I run "shop-msg registry list" against the same shop_registry the test session used
+  Then the command exits zero
+  And no entry whose canonical name was observed as a production entry pre-session has a shop_root that begins with "/tmp/" or matches the pytest tmp_path pattern (e.g., contains "/pytest-of-")
+  And every such production canonical entry resolves to the same shop_root it had pre-session

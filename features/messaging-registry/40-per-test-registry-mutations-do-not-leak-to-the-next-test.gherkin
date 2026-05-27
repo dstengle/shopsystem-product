@@ -1,0 +1,8 @@
+Scenario: A test that mutates a production canonical registry entry sees the registry restored to its pre-test state before the next test runs
+  Given the shop_registry contains a production entry for canonical name "shopsystem-docs" with shop_root "/workspaces/shopsystem-product/repos/shopsystem-docs"
+  And the messaging BC's pytest session is running
+  When a test calls the fixture helper to register "shopsystem-docs" at a tmp_path-rooted shop_root distinct from the production shop_root
+  And that test completes (passes)
+  And the next test in the same pytest session begins
+  Then at the start of the next test, the shop_registry entry for "shopsystem-docs" has the production shop_root "/workspaces/shopsystem-product/repos/shopsystem-docs" — not the prior test's tmp_path value
+  And the restoration is performed by a per-test (function-scoped) teardown, not deferred to session teardown

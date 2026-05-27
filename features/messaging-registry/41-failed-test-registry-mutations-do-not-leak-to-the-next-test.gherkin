@@ -1,0 +1,8 @@
+Scenario: A test that mutates a production canonical registry entry and then fails (raises) sees the registry restored before the next test runs
+  Given the shop_registry contains a production entry for canonical name "shopsystem-messaging" with shop_root "/workspaces/shopsystem-product/repos/shopsystem-messaging"
+  And the messaging BC's pytest session is running
+  When a test calls the fixture helper to register "shopsystem-messaging" at a tmp_path-rooted shop_root distinct from the production shop_root
+  And that test raises an unhandled exception (fails) after the mutation
+  And the next test in the same pytest session begins
+  Then at the start of the next test, the shop_registry entry for "shopsystem-messaging" has the production shop_root "/workspaces/shopsystem-product/repos/shopsystem-messaging" — not the failed test's tmp_path value
+  And the per-test restoration runs regardless of test outcome (pass, fail, or error)
