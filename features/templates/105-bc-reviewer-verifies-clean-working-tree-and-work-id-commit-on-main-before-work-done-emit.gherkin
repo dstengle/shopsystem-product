@@ -1,0 +1,7 @@
+Scenario: bc-reviewer template directs the reviewer to verify the BC's working tree is clean AND the work_id's change is committed to origin/main before emitting work_done (complete)
+  When I read the bc-reviewer template via "shop-templates show bc-reviewer"
+  Then the content names "git status --porcelain" as a pre-emit verification step the reviewer must run before composing a work_done with status complete
+  And the content names "git log" or "git rev-parse" (against the BC's "origin/main" ref) as a pre-emit verification step that confirms the work_id's change is present on the BC's main branch
+  And the content directs the reviewer that when "git status --porcelain" produces any non-empty output the reviewer must NOT emit work_done with status complete, and instead must surface the uncommitted state as a blocker (e.g., emit work_done with status blocked, or stop and report) with the offending paths named in the response summary
+  And the content directs the reviewer that when the BC's "origin/main" HEAD does NOT carry a commit for the dispatched work_id the reviewer must NOT emit work_done with status complete, and instead must surface the missing-commit state as a blocker with the work_id named in the response summary
+  And the content marks both checks as discrete pre-emit steps (alongside the existing BDD-rerun and scenario-hash-presence steps), not as optional guidance the reviewer may skip
