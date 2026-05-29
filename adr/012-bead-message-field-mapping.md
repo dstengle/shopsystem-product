@@ -2,9 +2,9 @@
 
 **Status:** proposed (2026-05-29)
 **Authors:** dstengle, Claude (lead-architect)
-**Anchored to:** [PDR-010](../pdr/010-bd-shop-msg-authority-split.md) (bd is
+**Anchored to:** [PDR-010](../pdr/010-bd-authoritative-shop-msg-transport.md) (bd is
 authoritative for state; shop-msg is authoritative for transmission);
-[ADR-011](011-bd-shop-msg-atomicity-protocol.md) (the atomicity protocol
+[ADR-011](011-outbox-atomicity-bd-first.md) (the atomicity protocol
 that mutates the fields named here as part of `shop-msg send` / `shop-msg
 respond` / reconciliation close).
 **Related beads:** [[lead-cw7]] (commit-reachability check requires

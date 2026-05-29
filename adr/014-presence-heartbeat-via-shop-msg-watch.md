@@ -2,9 +2,9 @@
 
 **Status:** proposed (2026-05-29)
 **Authors:** dstengle, Claude (lead-architect)
-**Anchored to:** [PDR-010](../pdr/010-bc-liveness-and-nudge.md) (BC liveness
+**Anchored to:** [PDR-010](../pdr/010-bd-authoritative-shop-msg-transport.md) (BC liveness
 and proactive-nudge primitive; this ADR realizes the heartbeat half of that
-PDR); [ADR-015](015-operator-nudge-on-offline-bc.md) (operator-triggered
+PDR); [ADR-015](015-nudge-message-type.md) (operator-triggered
 nudge — the response to offline classification this ADR produces).
 **Related beads:** `lead-ji28` (2026-05-29 empirical incident: scenarios-BC
 container down, dispatch sat in inbox unobserved — the failure-mode B

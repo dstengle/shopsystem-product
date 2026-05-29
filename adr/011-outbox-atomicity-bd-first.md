@@ -2,7 +2,7 @@
 
 **Status:** proposed (2026-05-29)
 **Authors:** dstengle, Claude (lead-architect)
-**Anchored to:** PDR-010 (bd as authoritative state store; shop-msg as
+**Anchored to:** [PDR-010](../pdr/010-bd-authoritative-shop-msg-transport.md) (bd as authoritative state store; shop-msg as
 authoritative transmission channel; dual-store reconciliation protocol).
 **Related beads:** `lead-o6tp` (precursor framing of the dual-store
 problem); `lead-2id` (shop-msg respond/consume asymmetry — captured by

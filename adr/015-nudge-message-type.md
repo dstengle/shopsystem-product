@@ -2,9 +2,9 @@
 
 **Status:** proposed (2026-05-29)
 **Authors:** dstengle, Claude (lead-architect)
-**Anchored to:** [PDR-010](../pdr/010-operational-liveness-primitives.md)
+**Anchored to:** [PDR-010](../pdr/010-bd-authoritative-shop-msg-transport.md)
 (operational-liveness primitives: the framework lacks lightweight signaling
-for "I noticed something on your side; what's happening?"); [ADR-014](014-presence-heartbeat.md)
+for "I noticed something on your side; what's happening?"); [ADR-014](014-presence-heartbeat-via-shop-msg-watch.md)
 (presence heartbeat detects offline; `nudge` is the operator-triggered response
 to detected-online-but-stalled); [§4 spec catalog](../04-message-catalog.md)
 (message catalog this ADR extends).

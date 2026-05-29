@@ -2,9 +2,9 @@
 
 **Status:** proposed (2026-05-29)
 **Authors:** dstengle, Claude (lead-architect)
-**Anchored to:** [PDR-010](../pdr/010-bd-as-dispatch-state-of-record.md) (bd is
-authoritative state-of-record for dispatch lifecycle); [ADR-011](011-dispatch-atomicity-protocol.md)
-(atomicity protocol enables the queued-mode write); [ADR-012](012-dispatch-field-mapping.md)
+**Anchored to:** [PDR-010](../pdr/010-bd-authoritative-shop-msg-transport.md) (bd is
+authoritative state-of-record for dispatch lifecycle); [ADR-011](011-outbox-atomicity-bd-first.md)
+(atomicity protocol enables the queued-mode write); [ADR-012](012-bead-message-field-mapping.md)
 (field mapping carries the dependency marker).
 **Related beads:** [[lead-ji28]] (the empirical incident — messaging-side
 re-dispatch was held in agent memory after the scenarios-side leg landed,

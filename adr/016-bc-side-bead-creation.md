@@ -2,13 +2,13 @@
 
 **Status:** proposed (2026-05-29)
 **Authors:** dstengle, Claude (lead-architect)
-**Anchored to:** [PDR-010](../pdr/010-loose-cross-shop-bd-visibility.md)
+**Anchored to:** [PDR-010](../pdr/010-bd-authoritative-shop-msg-transport.md)
 (loose cross-shop visibility constraint: each shop's bd is sovereign; the
-lead does NOT pull BC bd); [ADR-011](011-shop-msg-bd-atomicity.md) (shop-msg
+lead does NOT pull BC bd); [ADR-011](011-outbox-atomicity-bd-first.md) (shop-msg
 + bd atomicity protocol governs side-effect status transitions);
-[ADR-012](012-lead-bd-schema-emission-projection.md) (lead bd schema for
+[ADR-012](012-bead-message-field-mapping.md) (lead bd schema for
 emission projections — the symmetric lead-side picture this ADR mirrors on
-the BC side); [ADR-015](015-nudge-bc-side-handling.md) (nudge handling on
+the BC side); [ADR-015](015-nudge-message-type.md) (nudge handling on
 BC side; informs the message-type → bead-type mapping).
 **Related beads:** `lead-bp3` (lead-side consume-inbox CLI gap — moot under
 bd-authoritative routing); implicit user feedback driving this ADR — **BC
