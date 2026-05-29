@@ -111,15 +111,21 @@ bookkeeping.
    `closed`. The split is intentional: bookkeeping in the CLI, judgment
    in the agent.
 
-4. **Implementation surface — library coupling, not subprocess.** shop-msg
-   SHALL import bd as a Python library (an in-process module call), NOT
-   shell out to `bd` as a subprocess. The coupling is intentional and
-   appropriate: both packages are shop-system-specific (by name and purpose),
-   both live in this monorepo's BC topology, and both are versioned together
-   under the shopsystem release cadence. The bd library surface used by
-   shop-msg MUST be stable and documented; bd-side internal changes that
-   break shop-msg's expectations are a versioning concern handled by the
-   normal BC scenario-pinning process (out of scope for this ADR).
+4. **Implementation surface.** shop-msg invokes bd via subprocess against
+   the bd CLI; the bd CLI (e.g., `bd create --metadata <json>`, `bd update
+   --set-metadata <key>=<value>`, `bd show <id>`, `bd close <id>`) is the
+   stable contract surface. shop-msg internally wraps these calls in a
+   small facade module (e.g., `shop_msg.bd_facade`) for ergonomics,
+   centralized error handling, and JSON-output parsing. The facade is
+   shop-msg's internal design choice, NOT a separate bd library. bd's
+   internals can evolve freely as long as the cited CLI surface remains
+   compatible.
+
+   If at some future point a true library binding becomes operationally
+   motivated (no current driver exists — message dispatches are
+   seconds-to-minutes apart, and subprocess fork overhead is negligible at
+   that cadence), that's a bd-side concern, not a shop-msg architectural
+   decision. ADR-017 does not commit to it.
 
 5. **Atomicity — ADR-011 governs every CLI-side bd write.** ADR-011's
    3-step protocol (bd-first, postgres-second, bd-status-flip-third) SHALL
@@ -159,14 +165,26 @@ exists to provide.
 
 **Option D — Separate bd-shop-msg-sync daemon.** A third process listens on
 postgres NOTIFY and writes bd. Rejected: adds a moving part to supervise;
-introduces eventual consistency for no benefit; the in-process integration
-in option chosen (decision 4) achieves the same coupling without a daemon.
+introduces eventual consistency for no benefit; the CLI-side facade chosen
+(decision 4) achieves the necessary coupling without a daemon.
+
+**Option E — bd Python library binding.** shop-msg imports bd as a Python
+library (in-process module call) instead of invoking the bd CLI via
+subprocess. Rejected for now: no usable bd Python library exists today (bd
+ships as a Go binary, with no `beads` or `bd` package published on PyPI);
+coupling shop-msg to bd's internal API surface would add a versioning
+burden with no operational benefit; message-granularity invocation cadence
+(seconds-to-minutes apart) makes subprocess fork overhead irrelevant. If a
+true library binding ever becomes operationally motivated, that is a
+bd-side concern and a future ADR's scope, not this one's.
 
 ## Consequences
 
-- **shop-msg gains a bd library dependency.** Stated explicitly: shop-msg's
-  package is shop-system-specific (by name and purpose), so the coupling is
-  appropriate and not an architectural smell.
+- **shop-msg invokes bd via subprocess against bd's CLI surface.** The
+  coupling is to bd's published CLI contract (commands, flags, JSON output
+  shapes), not to bd's internal Go API. shop-msg wraps these calls in an
+  internal facade module for ergonomics; the facade is a shop-msg-private
+  design choice and does not constitute a separate library boundary.
 - **Every shop-msg CLI command's help text and reference documentation MUST
   enumerate its bd side effects.** This is now a documentation invariant;
   the command's behavior is no longer "send a message" but "send a message
