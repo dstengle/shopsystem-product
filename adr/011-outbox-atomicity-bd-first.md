@@ -1,0 +1,161 @@
+# ADR-011 — Outbox-pattern atomicity: bd-first writes for shop-msg send/respond
+
+**Status:** proposed (2026-05-29)
+**Authors:** dstengle, Claude (lead-architect)
+**Anchored to:** PDR-010 (bd as authoritative state store; shop-msg as
+authoritative transmission channel; dual-store reconciliation protocol).
+**Related beads:** `lead-o6tp` (precursor framing of the dual-store
+problem); `lead-2id` (shop-msg respond/consume asymmetry — captured by
+the `lead-nn5f` close as the cw7-recovery degraded-emit pattern);
+`lead-tsj` (postgres LISTEN drop / state survival across restarts).
+
+## Context
+
+PDR-010 separates authoritative concerns: **bd** (file-backed, git-tracked)
+owns work-tracking state — what was dispatched, what is in flight, what
+closed; **shop-msg** (postgres-backed) owns the message-in-transit
+substrate — the row that a BC reads from its inbox or that the lead reads
+from its outbox view. Every lead-side `shop-msg send` and every BC-side
+`shop-msg respond` therefore writes to two state stores in sequence. A
+crash, network drop, or human interrupt between the two writes leaves
+half-state.
+
+The dual-store reconciliation problem has already produced observable
+incidents:
+
+- **The cw7-recovery degraded-emit incident (lead-2id pattern, closed by
+  `lead-nn5f`):** a BC's bd row reflected closed-status because the
+  Implementer marked it done locally; the shop-msg row carrying the
+  corrected work_done payload arrived AFTER the bd close, leaving the
+  lead reconciliation step looking at a closed bead and an unread
+  shop-msg row. The asymmetry between "respond" (writes shop-msg) and
+  "consume" (reads shop-msg into bd) was the root; bd close ran ahead of
+  the wire.
+- **The 2026-05-29 post-compact session restart (this evening):** bd
+  carried the strategic state across the compaction boundary cleanly,
+  but the shop-msg row state had to be reconstructed by sweep-equivalent
+  manual `shop-msg pending` reads against each sibling BC. bd survived;
+  shop-msg session knowledge did not. The mechanical recovery worked,
+  but it was hand-driven; a sweeper would have done it automatically.
+- **The lead-tsj postgres LISTEN drop:** the Monitor stream stops
+  delivering events on a transient postgres restart. bd is unaffected;
+  the in-flight shop-msg rows persist; but the lead's *awareness* of
+  them is gone until the next pending-poll. The same sweeper that
+  reconciles half-state on send-side crashes also re-syncs awareness on
+  Monitor drop.
+
+The pattern across all three: **bd is more durable than shop-msg, and bd
+intent is recoverable evidence.** A bd row recording "I intended to
+dispatch X" is enough to retry the postgres write idempotently. A
+postgres row with no bd backing is a phantom — harder to clean than a
+phantom bd intent, because nothing in bd points at it.
+
+## Decision
+
+The canonical write order for every `shop-msg send` (lead-side dispatch)
+and every `shop-msg respond` (BC-side response) is **bd-first**:
+
+1. **(Step 1) Write bd entry with status `outbox_pending`.** The bd
+   record captures the full intent: target shop name, work_id,
+   message_type, payload reference (scenario files, dispatch
+   description). The write SHALL include an `fsync` against the bd
+   storage before proceeding to Step 2 — bd-on-disk must survive a
+   crash between Step 1 and Step 2 for the recovery protocol to work.
+
+2. **(Step 2) Deposit the shop-msg row in postgres.** The deposit uses
+   the existing `shop-msg send`/`respond` postgres transaction. The bd
+   work_id from Step 1 is carried on the row as the correlation key.
+
+3. **(Step 3) Flip the bd status to the terminal-of-this-phase value.**
+   For lead-side `send`: `outbox_pending` → `dispatched`. For BC-side
+   `respond`: `outbox_pending` → `emitted`. The flip is a single bd
+   update; on success, the send/respond operation is complete and
+   reportable to the caller.
+
+The canonical bd status enum for outbox-pattern operations SHALL be:
+
+- `outbox_pending` — Step 1 written, Step 2 not yet confirmed.
+- `dispatched` — lead-side terminal: Step 2 confirmed for an outbound
+  lead dispatch.
+- `emitted` — BC-side terminal: Step 2 confirmed for an outbound BC
+  response.
+- `consumed` — the counterparty has read the shop-msg row; this is the
+  end-to-end terminal status, set by the reconciliation path (lead
+  Architect on work_done landing; BC Implementer on dispatch landing).
+
+A new subcommand SHALL be added to the messaging CLI: `shop-msg sweep
+--shop <name>`. The sweeper:
+
+4. Reads bd for any entry in status `outbox_pending` older than a
+   threshold (default: 60 seconds; configurable via flag).
+5. For each such entry, queries `shop-msg pending` (or the analogous
+   inbox/outbox listing for the entry's direction) to determine whether
+   Step 2 in fact landed.
+   - If the postgres row exists: flip bd to the terminal status
+     (`dispatched` or `emitted` per direction). No postgres write needed.
+   - If the postgres row does NOT exist: retry the Step 2 deposit using
+     the payload reference carried on the bd entry. On success, flip bd
+     to terminal.
+6. The sweeper SHALL be idempotent: multiple invocations on the same
+   bd state leave the same final state. The deposit retry SHALL be
+   safe against double-write — the postgres schema's `(work_id,
+   direction, shop)` uniqueness constraint is the backstop.
+
+The failure mode this protocol explicitly covers: **the postgres write
+succeeds but the bd Step-3 update fails** (possible only if disk i/o
+fails AFTER the network call). In that case bd remains at
+`outbox_pending`; the sweeper queries `shop-msg pending`, sees the row
+already exists, and reconciles bd retroactively to the terminal status.
+No double-deposit occurs.
+
+## Alternatives considered
+
+**Option A — shop-msg-first writes.** Write the postgres row first; on
+success, write the bd entry. Rejected. bd is the more durable store
+(file-backed, git-tracked, survives postgres restarts); phantom postgres
+rows are harder to clean than phantom bd intents because nothing in bd
+points at the orphan. A sweep that runs in the other direction
+("postgres rows with no bd record") requires querying every BC's bd
+state to confirm absence, which is N-way fan-out rather than a single
+local read. bd-first keeps the sweep purely local.
+
+**Option B — Two-phase commit across bd and postgres.** Implement an XA
+or saga-style coordinator that prepares both writes and commits
+atomically. Rejected. bd has no transactional protocol; bolting one on
+would require a new bd extension and a coordinator service. The protocol
+overhead exceeds the benefit at this scale — single-digit dispatches per
+session, recoverable manually in seconds. The sweeper achieves
+eventual-consistency cheaply.
+
+**Option C — Synchronous fsync on bd before postgres call.** This is
+KEPT as a required implementation detail of Step 1 (see Decision §1
+above), not as a standalone alternative. Without fsync, a crash between
+Step 1's logical write and the OS flush would lose the bd intent and
+break the sweeper's recovery premise. fsync is therefore mandatory at
+the Step-1 boundary, not optional.
+
+## Consequences
+
+- **bd schema:** the work-state enum gains four canonical values
+  (`outbox_pending`, `dispatched`, `emitted`, `consumed`). Existing bd
+  states (`open`, `closed`, etc.) remain orthogonal — outbox-pattern
+  status is a separate facet from issue lifecycle.
+- **shop-msg CLI:** a new `sweep` subcommand. Implementation lives in
+  `shopsystem-messaging`; dispatch as a fresh lead bead under PDR-010.
+- **shop-msg send/respond:** both gain bd-write hooks at Steps 1 and 3.
+  The hook surface (where bd is called from inside the CLI) is the
+  subject of a sibling ADR-012; this ADR commits the protocol, not the
+  call-site wiring.
+- **BC primer:** the canonical BC primer in `shopsystem-templates`
+  SHOULD mention that `shop-msg sweep --shop <name>` may be invoked at
+  session start as a safety-net recovery for any half-state left by a
+  prior session's crash. The lead-shop primer SHOULD add the same line
+  for symmetry.
+- **Operational posture:** the standing Monitor-watcher reaction rules
+  remain unchanged; the sweeper is a belt-and-suspenders mechanism for
+  the cases Monitor cannot cover (process death between Steps 1 and 3,
+  postgres LISTEN drop, post-compact session restart).
+- **Backfill:** existing bd entries predating this ADR carry no outbox
+  status. The sweeper SHALL ignore entries without an outbox status
+  field; only entries written under the ADR-011 protocol are eligible
+  for sweep. No migration is required.
