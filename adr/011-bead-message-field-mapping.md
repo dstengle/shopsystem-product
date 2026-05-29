@@ -1,12 +1,14 @@
-# ADR-012 — Bead/message field mapping: lead bd schema for projecting shop-msg lifecycle
+# ADR-011 — Bead/message field mapping: lead bd schema for projecting shop-msg lifecycle
 
 **Status:** proposed (2026-05-29)
 **Authors:** dstengle, Claude (lead-architect)
 **Anchored to:** [PDR-010](../pdr/010-bd-authoritative-shop-msg-transport.md) (bd is
-authoritative for state; shop-msg is authoritative for transmission);
-[ADR-011](011-outbox-atomicity-bd-first.md) (the atomicity protocol
-that mutates the fields named here as part of `shop-msg send` / `shop-msg
-respond` / reconciliation close).
+authoritative for state; shop-msg is authoritative for transmission). The
+atomicity protocol that mutates the fields named here (as part of `shop-msg
+send` / `shop-msg respond` / reconciliation close) is specified by a later
+ADR which references this one for the canonical enum and field set; the
+dispatch-dependency marker (`pending_dependency`, `depends_on_dispatch`)
+defined here is consumed by a later ADR that adds queued-mode dispatch.
 **Related beads:** [[lead-cw7]] (commit-reachability check requires
 `bc_origin_main_commit_*` provenance — the schema makes the check
 queryable rather than ad-hoc), [[lead-plt]] (BC work_done summary
@@ -52,11 +54,11 @@ pending`. This ADR specifies that projection.
 
 ## Decision
 
-**ADR-012 is the canonical holder of both the `dispatch_state` enum and
-the field set named below.** ADR-011 (atomicity protocol) and ADR-013
-(dispatch dependencies) reference this ADR for both; neither redefines
-the enum or the fields. Any future amendment to either the enum or the
-field set lands here.
+**ADR-011 is the canonical holder of both the `dispatch_state` enum and
+the field set named below.** The atomicity-protocol ADR and the
+dispatch-dependency ADR (both later in the sequence) reference this ADR
+for both; neither redefines the enum or the fields. Any future amendment
+to either the enum or the field set lands here.
 
 **The lead bd entry for any outbound dispatch MUST carry the following
 fields**, encoded per the encoding mechanism below.
@@ -66,11 +68,12 @@ fields**, encoded per the encoding mechanism below.
 The `dispatch_state` field takes exactly one of these five values:
 
 1. `outbox_pending` — bd intent recorded; postgres deposit not yet
-   completed. Set transiently by `shop-msg send` per ADR-011 Step 1, and
-   set persistently for queued dispatches per ADR-013 (queued mode,
-   awaiting predecessor closure).
+   completed. Set transiently by `shop-msg send` (per the later atomicity-
+   protocol ADR, Step 1) and set persistently for queued dispatches by
+   the later dispatch-dependency ADR (queued mode, awaiting predecessor
+   closure).
 2. `dispatched` — postgres row deposited; BC has not yet emitted a
-   response. ADR-011's lead-side Step-3 terminal.
+   response. The atomicity-protocol ADR's lead-side Step-3 terminal.
 3. `bc_emitted` — BC has emitted a terminal response (`work_done`,
    `clarify`, or `mechanism_observation`); lead has not yet consumed.
 4. `consumed` — lead has consumed the BC's emission (per `lead-nn5f`'s
@@ -79,13 +82,14 @@ The `dispatch_state` field takes exactly one of these five values:
 
 Rejected / removed variants from earlier drafts:
 
-- `emitted` (former ADR-011 spelling) is renamed to `bc_emitted` for
+- `emitted` (former atomicity-ADR spelling) is renamed to `bc_emitted` for
   clarity; the prior spelling MUST NOT be used.
-- `bc_in_progress` (former ADR-012 draft) is DROPPED. The lead cannot
+- `bc_in_progress` (former field-mapping draft) is DROPPED. The lead cannot
   observe this state without a BC nudge, and it carries no decision
   weight that `dispatched` does not already carry.
-- `outbox_live` (former ADR-013 draft) is REMOVED. ADR-013 uses
-  `dispatched` for "postgres row deposited, BC has not yet emitted."
+- `outbox_live` (former dispatch-dependency-ADR draft) is REMOVED. The
+  dispatch-dependency ADR uses `dispatched` for "postgres row deposited,
+  BC has not yet emitted."
 
 ### Required fields per dispatch bead
 
@@ -94,11 +98,11 @@ Rejected / removed variants from earlier drafts:
 | `dispatched_to_bc` | string \| null | `shop-msg send` | Canonical BC name (e.g., `shopsystem-messaging`); null for lead-internal beads. |
 | `dispatch_message_type` | enum | `shop-msg send` | One of `assign_scenarios`, `request_bugfix`, `request_maintenance`, `nudge`. |
 | `dispatch_state` | enum | `shop-msg send`, then updated by lifecycle events | One of the five canonical values defined above. |
-| `pending_dependency` | work_id \| empty | `shop-msg send --queue-on-dependency` (per ADR-013); cleared on promote | Present (non-empty) when `dispatch_state = outbox_pending` AND the dispatch is queued behind a predecessor per ADR-013. Empty otherwise. |
+| `pending_dependency` | work_id \| empty | `shop-msg send --queue-on-dependency` (per the later dispatch-dependency ADR); cleared on promote | Present (non-empty) when `dispatch_state = outbox_pending` AND the dispatch is queued behind a predecessor per the later dispatch-dependency ADR. Empty otherwise. |
 | `last_response_received_at` | ISO-8601 timestamp \| null | BC emission events (work_done, clarify, mechanism_observation, nudge) | Most recent BC emission against this work_id. |
 | `last_response_message_type` | enum \| null | BC emission events | One of `work_done`, `clarify`, `mechanism_observation`, `nudge`. |
 | `scenario_hashes_pinned` | comma-separated string \| empty | `shop-msg send` | Lead-side desired-state coverage; the canonical-block hashes the dispatch carries. Empty for `request_maintenance` and `nudge`. |
-| `depends_on_dispatch` | work_id \| null | `shop-msg send` (or `bd update`) | Predecessor dispatch this one is queued behind, per ADR-013 carrier pattern. Distinct from `pending_dependency`: `depends_on_dispatch` is the declared cross-BC sequence edge (set whether or not strict mode refused); `pending_dependency` is the live "waiting on" marker active only while the queued bead sits at `outbox_pending`. |
+| `depends_on_dispatch` | work_id \| null | `shop-msg send` (or `bd update`) | Predecessor dispatch this one is queued behind, per the later dispatch-dependency ADR's carrier pattern. Distinct from `pending_dependency`: `depends_on_dispatch` is the declared cross-BC sequence edge (set whether or not strict mode refused); `pending_dependency` is the live "waiting on" marker active only while the queued bead sits at `outbox_pending`. |
 | `bc_origin_main_commit_at_dispatch` | git SHA \| null | `shop-msg send` | The BC's `origin/main` SHA at dispatch time, captured for reachability auditing per [[lead-cw7]]. Null for lead-internal beads. |
 | `bc_origin_main_commit_at_close` | git SHA \| null | reconciliation close | The BC's `origin/main` SHA at the moment the architect transitions `dispatch_state` to `closed`. |
 
@@ -107,7 +111,7 @@ Rejected / removed variants from earlier drafts:
 bd supports structured metadata as a first-class facility (confirmed via
 `bd create --help` and `bd update --help`: `--metadata <json|@file>`,
 `--set-metadata key=value` repeatable, `--unset-metadata key`
-repeatable). The canonical encoding for ADR-012 fields is **structured
+repeatable). The canonical encoding for ADR-011 fields is **structured
 bd metadata via this mechanism** — `bd create --metadata` at dispatch
 time, `bd update --set-metadata key=value` for lifecycle transitions,
 `bd update --unset-metadata key` to clear fields (e.g.,
@@ -154,15 +158,15 @@ canonical and MUST NOT be renamed in-place.
 ### Update points
 
 1. **`shop-msg send`** writes the initial bd metadata atomically with
-   the bd entry per ADR-011's protocol, using `bd create --metadata`. It
-   computes `dispatched_to_bc`, `dispatch_message_type`,
+   the bd entry (per the later atomicity-protocol ADR), using `bd create
+   --metadata`. It computes `dispatched_to_bc`, `dispatch_message_type`,
    `scenario_hashes_pinned` (from the payload), and
    `bc_origin_main_commit_at_dispatch` (by querying the BC's clone), and
    sets `dispatch_state` to `outbox_pending` (transient) or `dispatched`
    (terminal). `depends_on_dispatch` is operator-supplied via a CLI
-   flag. For queued-mode dispatches per ADR-013, `pending_dependency` is
-   set to the predecessor `work_id` and `dispatch_state` remains at
-   `outbox_pending` until promote-scan.
+   flag. For queued-mode dispatches (per the later dispatch-dependency
+   ADR), `pending_dependency` is set to the predecessor `work_id` and
+   `dispatch_state` remains at `outbox_pending` until promote-scan.
 2. **BC-side `shop-msg respond`** does NOT mutate the lead's bd entry.
    Lead-side `shop-msg consume outbox` (or the Monitor-driven
    reconciliation step) uses `bd update --set-metadata` to update
@@ -174,22 +178,23 @@ canonical and MUST NOT be renamed in-place.
    `origin/main` SHA at the moment the reconciliation grep against
    `features/` runs (per ADR-010), and transitions `dispatch_state` to
    `closed`.
-4. **Promote scan (ADR-013)** uses `bd update --set-metadata
-   dispatch_state=dispatched` and `bd update --unset-metadata
-   pending_dependency` to flip a queued bead from `outbox_pending` to
-   `dispatched` at the moment the postgres row is deposited.
+4. **Promote scan (defined by the later dispatch-dependency ADR)** uses
+   `bd update --set-metadata dispatch_state=dispatched` and `bd update
+   --unset-metadata pending_dependency` to flip a queued bead from
+   `outbox_pending` to `dispatched` at the moment the postgres row is
+   deposited.
 
-### Contract with ADR-011 (atomicity)
+### Contract with the atomicity-protocol ADR
 
-ADR-011 governs the atomicity of bd-entry write + shop-msg outbox row
-write. ADR-012 specifies what the bd entry MUST contain at the moment
-ADR-011's atomic boundary closes. The two ADRs are layered: ADR-011's
-"the writes are atomic" combined with ADR-012's "these are the fields
-that get written" closes the gap.
+A later ADR governs the atomicity of bd-entry write + shop-msg outbox row
+write. ADR-011 specifies what the bd entry MUST contain at the moment
+that atomicity boundary closes. The two ADRs are layered: "the writes
+are atomic" combined with ADR-011's "these are the fields that get
+written" closes the gap.
 
 ### Forward-compat
 
-bd entries written before ADR-012 lands do not carry the block; entries
+bd entries written before ADR-011 lands do not carry the block; entries
 written under future ADRs MAY carry additional fields. The strategic-
 query layer MUST treat a missing field as `unknown` rather than block
 the query. New canonical fields are added by ADR amendment; legacy
@@ -237,8 +242,8 @@ the parse-the-prose-block failure mode.
   tracks the CLI surface.
 - **BC-side bd schema differs.** The BC's own bd entry carries a
   different projection — no `bc_origin_main_commit_*`, but it does need
-  `lead_work_id` to thread back. ADR-016 covers the BC-side schema;
-  ADR-012 is lead-only.
+  `lead_work_id` to thread back. A later BC-side-bead ADR covers the
+  BC-side schema; ADR-011 is lead-only.
 - **Post-compact rehydration becomes a query, not a memory dump.** The
   architect can reconstruct in-flight state by scanning `## Dispatch
   state` blocks rather than relying on MEMORY.md checkpoints. The

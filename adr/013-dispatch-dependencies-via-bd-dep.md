@@ -3,9 +3,9 @@
 **Status:** proposed (2026-05-29)
 **Authors:** dstengle, Claude (lead-architect)
 **Anchored to:** [PDR-010](../pdr/010-bd-authoritative-shop-msg-transport.md) (bd is
-authoritative state-of-record for dispatch lifecycle); [ADR-011](011-outbox-atomicity-bd-first.md)
-(atomicity protocol enables the queued-mode write); [ADR-012](012-bead-message-field-mapping.md)
-(field mapping carries the dependency marker).
+authoritative state-of-record for dispatch lifecycle); [ADR-011](011-bead-message-field-mapping.md)
+(field mapping carries the dependency marker); [ADR-012](012-outbox-atomicity-bd-first.md)
+(atomicity protocol enables the queued-mode write).
 **Related beads:** [[lead-ji28]] (the empirical incident — messaging-side
 re-dispatch was held in agent memory after the scenarios-side leg landed,
 and the held dispatch was lost across `/compact` until the user manually
@@ -49,12 +49,12 @@ queryable, on-disk record that BC1 is waiting on BC2.
 
 bd already carries the primitive needed to externalize this sequencing:
 `bd dep add <dependent> <depends-on>` records a queryable depends-on
-edge between two lead beads. Combining ADR-011 (atomicity protocol) and
-ADR-012 (the canonical holder of the `dispatch_state` enum and the
+edge between two lead beads. Combining ADR-012 (atomicity protocol) and
+ADR-011 (the canonical holder of the `dispatch_state` enum and the
 `pending_dependency` field), the dispatch path can consult that graph
 before depositing the postgres row, and the reconciliation path can
 promote queued dispatches when a predecessor closes. ADR-013 does not
-redefine the enum or the field set; both live in ADR-012.
+redefine the enum or the field set; both live in ADR-011.
 
 ## Decision
 
@@ -64,7 +64,7 @@ redefine the enum or the field set; both live in ADR-012.
    alongside the existing payload-schema validation.
 
 2. If the work_id has one or more `depends-on` edges and any predecessor
-   bead is not in `dispatch_state=closed` (per ADR-012's canonical
+   bead is not in `dispatch_state=closed` (per ADR-011's canonical
    enum), `shop-msg send` MUST NOT silently proceed. It SHALL choose
    one of two modes:
 
@@ -75,8 +75,8 @@ redefine the enum or the field set; both live in ADR-012.
    - **Queued mode (`--queue-on-dependency`):** write a bd-side entry
      with `dispatch_state=outbox_pending` and the
      `pending_dependency=<predecessor_work_id>` field set (per
-     ADR-012's canonical field set; encoded as bd structured metadata
-     per ADR-012's encoding mechanism). NO postgres row is written at
+     ADR-011's canonical field set; encoded as bd structured metadata
+     per ADR-011's encoding mechanism). NO postgres row is written at
      this time. The CLI exits zero with a clear message that the
      dispatch is queued.
 
@@ -86,11 +86,11 @@ redefine the enum or the field set; both live in ADR-012.
    recoverable by either (a) waiting for the predecessor to close and
    re-running, or (b) re-running with `--queue-on-dependency`.
 
-4. The queued-mode write protocol piggybacks ADR-011's atomicity
-   protocol and ADR-012's encoding mechanism: the bd-side
+4. The queued-mode write protocol piggybacks ADR-012's atomicity
+   protocol and ADR-011's encoding mechanism: the bd-side
    `outbox_pending` write and the `pending_dependency` field are a
    single atomic unit, written via `bd create --metadata` (or `bd
-   update --set-metadata`) per ADR-012. Per ADR-011, the postgres
+   update --set-metadata`) per ADR-011. Per ADR-012, the postgres
    deposit does not happen until the promote-scan; the bd entry alone
    carries the queued intent across `/compact` and session boundaries.
    A queued dispatch is observable via `bd show` and via a new
@@ -105,7 +105,7 @@ redefine the enum or the field set; both live in ADR-012.
    dispatch whose remaining `depends-on` edges are all `closed`,
    deposits the postgres row and transitions the bd-side
    `dispatch_state` from `outbox_pending` to `dispatched` (per
-   ADR-012's canonical enum), and clears `pending_dependency` (via `bd
+   ADR-011's canonical enum), and clears `pending_dependency` (via `bd
    update --unset-metadata pending_dependency`).
 
 6. The promote action MUST be idempotent. Repeated promote scans on the
@@ -141,7 +141,7 @@ mechanical reasons is not a control; it's a wish.
 native, not bd-backed).** Rejected. PDR-010 names bd as authoritative
 for dispatch state of record; splitting dependency edges into a separate
 postgres table reintroduces the dual-write problem PDR-010 was written
-to eliminate. The `dispatch_state` field (ADR-012) and the `bd dep add`
+to eliminate. The `dispatch_state` field (ADR-011) and the `bd dep add`
 edge are already in the same store; keeping the dependency graph there
 preserves the single-source-of-truth principle.
 
@@ -172,7 +172,7 @@ fanout, a future ADR can flip the default.
   itself deferred (the lead does not yet know what to send), but for
   cases where the dispatch is fully authored and only its firing is
   gated, `bd dep add` plus queued mode replaces the carrier.
-- The reconciliation path (ADR-012's `dispatch_state=closed` transition)
+- The reconciliation path (ADR-011's `dispatch_state=closed` transition)
   acquires a side effect: the promote scan. The scan's cost is bounded
   by the number of queued dispatches naming the closing bead as a
   pending dependency — in practice, single digits per closure event.

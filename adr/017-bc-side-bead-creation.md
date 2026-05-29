@@ -1,16 +1,16 @@
-# ADR-016 — BC-side bead creation on inbox drain; cross-reference via shared work_id
+# ADR-017 — BC-side bead creation on inbox drain; cross-reference via shared work_id
 
 **Status:** proposed (2026-05-29)
 **Authors:** dstengle, Claude (lead-architect)
 **Anchored to:** [PDR-010](../pdr/010-bd-authoritative-shop-msg-transport.md)
 (loose cross-shop visibility constraint: each shop's bd is sovereign; the
-lead does NOT pull BC bd); [ADR-011](011-outbox-atomicity-bd-first.md) (shop-msg
-+ bd atomicity protocol governs side-effect status transitions);
-[ADR-012](012-bead-message-field-mapping.md) (lead bd schema for
-emission projections — the symmetric lead-side picture this ADR mirrors on
-the BC side); [ADR-015](015-nudge-message-type.md) (nudge handling on
+lead does NOT pull BC bd); [ADR-011](011-bead-message-field-mapping.md)
+(lead bd schema for emission projections — the symmetric lead-side picture
+this ADR mirrors on the BC side); [ADR-012](012-outbox-atomicity-bd-first.md)
+(shop-msg + bd atomicity protocol governs side-effect status transitions);
+[ADR-015](015-nudge-message-type.md) (nudge handling on
 BC side; informs the message-type → bead-type mapping);
-[ADR-017](017-shop-msg-owns-bd-integration.md) (the mechanism layer that
+[ADR-016](016-shop-msg-owns-bd-integration.md) (the mechanism layer that
 realizes this ADR's bead-creation and status-transition contracts as
 CLI-layer side effects rather than agent-enforced steps).
 **Related beads:** `lead-bp3` (lead-side consume-inbox CLI gap — moot under
@@ -24,7 +24,7 @@ PDR-010 commits the shopsystem to a loose cross-shop visibility model:
 each shop's bd is sovereign, the lead does NOT pull BC bd, and the only
 contract between shops is the shared `work_id` carried in `shop-msg`
 emissions. The lead's bd tracks the lead's own desired state plus the
-projection of BC emissions (per ADR-012); the BC's bd tracks the BC's
+projection of BC emissions (per ADR-011); the BC's bd tracks the BC's
 internal work tracking.
 
 The contract leaves a coordination question open: when the lead dispatches
@@ -67,7 +67,7 @@ mode the shopsystem keeps re-encountering (cf. `lead-cw7-reviewer-recovery`,
 itself — the same CLI command the BC was already going to run to observe
 the inbox row also creates the paired bead as a side effect. The agent
 no longer needs to remember; the CLI does it. The mechanism layer for this
-revision is ADR-017.
+revision is ADR-016.
 
 ## Decision
 
@@ -77,7 +77,7 @@ revision is ADR-017.
    effect, not an agent-enforced step. Subsequent observations of the same
    row are idempotent (no duplicate bead). The exact integration mechanism
    — which shop-msg commands fire which bd writes, and under what
-   transactional discipline — is defined in ADR-017. The bead exists so
+   transactional discipline — is defined in ADR-016. The bead exists so
    the BC's own queue (`bd ready`, `bd list`, `bd show`) accurately
    reflects inbound work; with creation in the CLI, the queue is now
    correct by construction rather than by agent diligence.
@@ -108,8 +108,8 @@ revision is ADR-017.
    is by lead's `work_id` (carried in the bead's `notes`), NOT by BC
    bd ID. The lead never learns the BC bead ID and never needs to.
 
-4. **Status-transition contract on shop-msg respond.** Per ADR-011's
-   atomicity protocol and ADR-017 (shop-msg owns bd integration),
+4. **Status-transition contract on shop-msg respond.** Per ADR-012's
+   atomicity protocol and ADR-016 (shop-msg owns bd integration),
    `shop-msg respond` on the BC side SHALL update the BC bead's status
    as a CLI-layer side effect of the same transactional boundary as the
    outbound emission — not as a separate agent step:
@@ -164,7 +164,7 @@ mechanism as BC-internal work is the simpler, cheaper invariant.
   in decision (4) embed into the BC implementer and reviewer templates:
   on every `shop-msg respond` invocation, the bd status transition is
   part of the same activity, not a separate step.
-- **BC-side sweeper.** ADR-011's atomicity sweeper on the BC side
+- **BC-side sweeper.** ADR-012's atomicity sweeper on the BC side
   handles partial states (bead created but no inbound message acted on,
   or message responded to but bead status not transitioned). The
   sweeper's BC-side rules inherit from this ADR's status-transition
@@ -172,7 +172,7 @@ mechanism as BC-internal work is the simpler, cheaper invariant.
 - **Cross-shop visibility stays loose.** The lead's role discipline does
   not change: lead-architect and lead-po never query BC bd; the lead's
   view of BC work continues to be exactly the BC's `shop-msg`
-  emissions, projected into the lead's own bd per ADR-012.
+  emissions, projected into the lead's own bd per ADR-011.
 - **Reconciliation surface.** A BC's failure to create a drain-time
   bead is privately observable to the BC but invisible to the lead
   (correctly — it's a BC-internal hygiene matter). The lead sees only

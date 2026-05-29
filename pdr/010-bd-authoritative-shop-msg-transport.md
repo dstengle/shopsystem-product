@@ -83,7 +83,7 @@ ADRs cross-referenced below.
 3. **When bd and shop-msg disagree, the reconciliation rule is:**
    shop-msg wins for "was the message sent / received / consumed"; bd
    wins for everything else (status, priority, dependencies, notes). The
-   ADRs operationalize this — notably ADR-011's bd-first / outbox-pattern
+   ADRs operationalize this — notably ADR-012's bd-first / outbox-pattern
    atomicity and the sweeper that reconciles the two when a write
    partially failed.
 
@@ -91,7 +91,7 @@ ADRs cross-referenced below.
    sovereign; **the lead never pulls BC bd**. The lead infers BC state
    from two surfaces: (a) shop-msg emissions back from the BC (work_done,
    clarify, mechanism_observation, and the new `nudge` of ADR-015), and
-   (b) git-level observation of BC sibling clones at `repos/<bc>/`. ADR-016
+   (b) git-level observation of BC sibling clones at `repos/<bc>/`. ADR-017
    pins the BC-side contract: when a BC drains its inbox, it creates its
    own bead, and the only cross-shop linkage is the shared `work_id`.
 
@@ -116,7 +116,7 @@ ADRs cross-referenced below.
 
 - **Messaging BC (`shopsystem-messaging`):** message-type catalog gains
   `nudge` (ADR-015). `shop-msg send`, `shop-msg respond`, and `shop-msg
-  consume` gain bd-write hooks per ADR-011 — the outbox pattern means a
+  consume` gain bd-write hooks per ADR-012 — the outbox pattern means a
   send first writes the bead intent, then the message; the sweeper
   reconciles partial failures. `shop-msg watch` becomes the presence
   heartbeat (ADR-014); the long-running watcher IS the liveness signal,
@@ -126,7 +126,7 @@ ADRs cross-referenced below.
   lead-architect, bc-implementer, bc-reviewer) gain prose for "consult
   bd for stalls before idling." The standing reaction to a Monitor
   `nudge` event is added to the lead-router primer. BC role templates
-  gain the ADR-016 bead-creation contract.
+  gain the ADR-017 bead-creation contract.
 
 Both BCs receive `assign_scenarios` and `request_bugfix` follow-ups
 authored by the PO once this PDR is accepted; the ADRs above are the
@@ -134,7 +134,7 @@ authoritative design inputs for those scenarios.
 
 ## What this leaves open
 
-- **Cost of the bd-first atomicity protocol (ADR-011).** Every send,
+- **Cost of the bd-first atomicity protocol (ADR-012).** Every send,
   respond, and consume gains a bd write. Throughput and latency under
   load are unvalidated. The sweeper's reconciliation interval is
   similarly open. Defer to the first few weeks of operation.
@@ -143,7 +143,7 @@ authoritative design inputs for those scenarios.
   shape and the wakeup semantic; the *receiving-role posture* (which
   template owns the reaction, what the reply commitment is) is left to
   the templates BC's revision.
-- **BC-side bead naming convention (ADR-016).** Whether BC beads embed
+- **BC-side bead naming convention (ADR-017).** Whether BC beads embed
   the shared `work_id` in their ID, in a field, or only as a note is
   pending; the BC retains naming sovereignty regardless.
 - **`bd ready --shop-system` packaging.** Whether the cross-store query
@@ -151,11 +151,11 @@ authoritative design inputs for those scenarios.
   deferred to follow-up after the data plumbing of (1)–(3) is in place.
 ## Cross-references
 
-- **ADR-011** — Outbox-pattern atomicity: bd-first writes, sweeper
-  recovery for partial failures across the bd / shop-msg boundary.
-- **ADR-012** — Bead/message field mapping: the lead bd schema for
+- **ADR-011** — Bead/message field mapping: the lead bd schema for
   projecting shop-msg state (work_id, message_type, peer BC, last
   emission).
+- **ADR-012** — Outbox-pattern atomicity: bd-first writes, sweeper
+  recovery for partial failures across the bd / shop-msg boundary.
 - **ADR-013** — Dispatch dependencies via `bd dep add` honored by
   `shop-msg send`: send refuses while dependencies are open; dependency
   intent is durable in bd.
@@ -164,7 +164,10 @@ authoritative design inputs for those scenarios.
 - **ADR-015** — `nudge` message type: operational liveness ping,
   distinct from clarify and mechanism_observation; the lead's lever for
   converging desired with actual state.
-- **ADR-016** — BC-side bead creation contract: BC creates its own bead
+- **ADR-016** — shop-msg owns bd integration: every shop-msg CLI command
+  with a bd correlate fires the bd write as a transactional side effect,
+  not as a separate agent step.
+- **ADR-017** — BC-side bead creation contract: BC creates its own bead
   on `shop-msg pending inbox` drain; lead never sees BC bd;
   cross-reference is the shared `work_id`.
 - [[lead-o6tp]] — earlier ADR-candidate framed as "pre-emit-checks-via-CLI";

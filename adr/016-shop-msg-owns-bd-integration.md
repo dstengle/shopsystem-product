@@ -1,16 +1,14 @@
-# ADR-017 — shop-msg owns bd integration; state changes via CLI, not agent
+# ADR-016 — shop-msg owns bd integration; state changes via CLI, not agent
 
 **Status:** proposed (2026-05-29)
 **Authors:** dstengle, Claude (lead-architect)
 **Anchored to:** [PDR-010](../pdr/010-bd-authoritative-shop-msg-transport.md)
 (bd authoritative for state, shop-msg authoritative for transmission — this ADR
 pins where the integration between the two LIVES);
-[ADR-011](011-outbox-atomicity-bd-first.md) (the bd-first / postgres-second /
-bd-status-flip-third atomicity protocol every CLI-side bd write must follow);
-[ADR-012](012-bead-message-field-mapping.md) (the lead bd schema this ADR's
+[ADR-011](011-bead-message-field-mapping.md) (the lead bd schema this ADR's
 side effects must populate consistently);
-[ADR-016](016-bc-side-bead-creation.md) (BC-side bead-creation and
-status-transition contract whose mechanism this ADR realizes).
+[ADR-012](012-outbox-atomicity-bd-first.md) (the bd-first / postgres-second /
+bd-status-flip-third atomicity protocol every CLI-side bd write must follow).
 **Related beads:** `lead-o6tp` (precursor: moved procedural enforcement of an
 earlier integration step from prose into mechanism; this ADR generalizes that
 lesson); `lead-cw7-reviewer-recovery` (the role-discipline brittleness this
@@ -27,14 +25,15 @@ shop-msg is authoritative for *transmission* (what crosses shop boundaries,
 when, and with what payload). The PDR does not, however, pin WHERE the
 integration between the two lives — i.e., who is responsible for ensuring that
 a `shop-msg send` is followed by the corresponding bd status transition, and
-that a `shop-msg respond` is paired with the BC-side bead update ADR-016
-requires.
+that a `shop-msg respond` is paired with the corresponding BC-side bead
+update.
 
 The current implicit pattern: agents run `shop-msg send` and `bd update
 --status=in_progress` as two separate commands, sequenced by prose in the
 relevant role primer. The same pattern holds on the BC side: agents are
-instructed to `bd create` the paired bead on inbox drain (per ADR-016 as
-originally drafted), then run `shop-msg respond` and `bd update --status=...`
+instructed to `bd create` the paired bead on inbox drain (per the BC-side
+bead-creation contract as originally drafted in prose), then run `shop-msg
+respond` and `bd update --status=...`
 on completion. Each of these is a separate command. An agent that forgets the
 second step leaves bd drifting from the actual transmission state. This is the
 convention-not-mechanism failure mode that recurs across the shopsystem.
@@ -52,13 +51,13 @@ BC role discipline under adversarial review is brittle precisely because
 integration is convention; the BC sent a degraded test work_done and could
 not amend, with the consume mechanism failing to release the lead-inbox slot.
 The `lead-nn5f` fix landed that asymmetry in *code*, not in role-discipline
-prose. ADR-017 generalizes the lesson: when an integration step is correctness-
+prose. ADR-016 generalizes the lesson: when an integration step is correctness-
 critical and the agent has no structural backstop, the step belongs in the
 mechanism, not the convention.
 
 The decision this ADR pins: **integration logic lives in the shop-msg CLI**,
 not in agent procedure. Every shop-msg CLI command that has a bd correlate
-fires the bd write as a transactional side effect (per ADR-011 atomicity). The
+fires the bd write as a transactional side effect (per ADR-012 atomicity). The
 agent's role on shop-msg events becomes substantive — verify hashes, decide
 vehicles, reconcile work, close the work_id once verified — rather than
 bookkeeping.
@@ -69,7 +68,7 @@ bookkeeping.
    shop-msg events SHALL happen as CLI-layer side effects of the shop-msg
    command itself, NOT as separate agent steps. The agent invokes one CLI
    command; the CLI performs both the messaging action and the paired bd
-   update under ADR-011's atomicity protocol.
+   update under ADR-012's atomicity protocol.
 
 2. **Documented bd side effects per shop-msg command.** The following
    shop-msg commands have the documented bd side effects below; this list
@@ -77,27 +76,30 @@ bookkeeping.
    command addition MUST declare its bd side effects (or explicit lack
    thereof) as part of the addition (decision 6 below):
    - `shop-msg send --bc <name> --work-id <id> ...` (lead side): creates or
-     updates the lead bd entry per ADR-012's field-mapping rules; transitions
-     `dispatch_state` through `outbox_pending` → `dispatched` per ADR-011's
+     updates the lead bd entry per ADR-011's field-mapping rules; transitions
+     `dispatch_state` through `outbox_pending` → `dispatched` per ADR-012's
      3-step protocol.
    - `shop-msg pending inbox --bc <name>` (BC side): on FIRST observation of
-     an unprocessed row, creates the paired BC-side bead per ADR-016's
-     field-derivation rules; idempotent on subsequent observations of the
-     same row (no duplicate bead created).
+     an unprocessed row, creates the paired BC-side bead from the inbox
+     payload's `work_id`, `message_type`, and description fields; idempotent
+     on subsequent observations of the same row (no duplicate bead created).
+     The detailed BC-side field-derivation rule is specified by a later ADR
+     whose mechanism layer this ADR provides.
    - `shop-msg respond {clarify,work_done,mechanism_observation,nudge} ...`
-     (BC side): updates the BC bead status per ADR-016's status-transition
-     table (`clarify` → `blocked`; `work_done(complete)` → `closed`;
+     (BC side): updates the BC bead status per the status-transition table
+     (`clarify` → `blocked`; `work_done(complete)` → `closed`;
      `work_done(blocked)` → `blocked`; `mechanism_observation` → note
-     appended, status unchanged); transactional with the outbound emission
-     per ADR-011.
+     appended, status unchanged) — the BC-side bead's status-transition
+     contract is specified by the later BC-side bead-creation ADR;
+     transactional with the outbound emission per ADR-012.
    - `shop-msg consume outbox --bc <name> --work-id <id>` (lead side):
      updates the lead bd entry's `dispatch_state` to `consumed`; transactional
-     per ADR-011.
+     per ADR-012.
    - `shop-msg nudge ...` (either side): per ADR-015, appends a note to both
      the local-side bead and (via the emitted message) the remote-side bead;
      no status change on either bead.
    - `shop-msg sweep --shop <name>` (recovery): reconciles bd
-     `outbox_pending` entries against postgres state per ADR-011's recovery
+     `outbox_pending` entries against postgres state per ADR-012's recovery
      contract; intended for crash recovery, not steady-state operation.
 
 3. **Lead-architect's substantive reconciliation remains agent-territory.**
@@ -125,9 +127,9 @@ bookkeeping.
    motivated (no current driver exists — message dispatches are
    seconds-to-minutes apart, and subprocess fork overhead is negligible at
    that cadence), that's a bd-side concern, not a shop-msg architectural
-   decision. ADR-017 does not commit to it.
+   decision. ADR-016 does not commit to it.
 
-5. **Atomicity — ADR-011 governs every CLI-side bd write.** ADR-011's
+5. **Atomicity — ADR-012 governs every CLI-side bd write.** ADR-012's
    3-step protocol (bd-first, postgres-second, bd-status-flip-third) SHALL
    apply to every shop-msg command with bd side effects, including the
    BC-side bead creation on first inbox observation. The sweeper handles
@@ -156,7 +158,7 @@ Rejected: inverts the dependency (bd should not know about shop-msg); bd's
 hook surface is general-purpose and would have to grow shop-msg-specific
 knowledge to be useful here, polluting the bd abstraction.
 
-**Option C — Sweeper-only.** Defer all bd updates to ADR-011's sweeper as
+**Option C — Sweeper-only.** Defer all bd updates to ADR-012's sweeper as
 the steady-state path. Rejected: introduces latency between message events
 and bd state; complicates strategic queries (`bd ready --stale-since` would
 be perpetually inaccurate); makes the sweeper load-bearing for normal
@@ -199,13 +201,14 @@ bd-side concern and a future ADR's scope, not this one's.
 - **Lead-architect's reconciliation discipline remains substantive.** The
   bookkeeping moves into the CLI; the judgment work (verification, closing)
   stays with the architect. The architect's role is sharpened, not eroded.
-- **The sweeper (ADR-011) becomes recovery-only, not steady-state.** Its
+- **The sweeper (ADR-012) becomes recovery-only, not steady-state.** Its
   load is reduced to crash recovery; it stops being a backstop for missed
   agent steps because there are no missed agent steps to backstop.
-- **ADR-016's bead-creation and status-transition contracts become
-  mechanically enforced.** The ADR's prose contracts are now realized in
-  code, not in agent diligence. A BC that misses a bead creation is no
-  longer possible without a CLI bug.
+- **BC-side bead-creation and status-transition contracts become
+  mechanically enforced.** The later BC-side bead-creation ADR's prose
+  contracts are realized in code by the integration this ADR establishes,
+  not in agent diligence. A BC that misses a bead creation is no longer
+  possible without a CLI bug.
 - **Future shop-msg CLI additions must declare bd side effects.** This is
   decision 6 above; restated here as a consequence for the review/design
   process around shop-msg evolution.

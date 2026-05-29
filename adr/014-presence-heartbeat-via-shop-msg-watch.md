@@ -5,11 +5,6 @@
 **Anchored to:** [PDR-010](../pdr/010-bd-authoritative-shop-msg-transport.md) (BC liveness
 and proactive-nudge primitive; this ADR realizes the heartbeat half of that
 PDR).
-**Related ADRs:** [ADR-015](015-nudge-message-type.md) defines the
-operator-triggered response to offline classification this ADR produces;
-the two ADRs are paired but ADR-014 is the producer (detect) and ADR-015
-the consumer (decide), so the anchoring is one-directional from ADR-015 →
-ADR-014 only.
 **Related beads:** `lead-ji28` (2026-05-29 empirical incident: scenarios-BC
 container down, dispatch sat in inbox unobserved — the failure-mode B
 instance this ADR cures); `lead-tsj` (postgres LISTEN drop and watch
@@ -155,12 +150,6 @@ up but the watch process has wedged.
   carrying Gherkin for each behavior: tick-on-cadence, UPSERT-on-bc-name,
   classify-by-threshold, multi-watcher-shared-row, reconnect-resumes-
   ticking.
-
-- **ADR-015 (nudge) consumes this ADR's output.** ADR-015 defines the
-  operator-triggered response when `bc-status` reports `offline`: the
-  nudge UX, the launcher restart pathway, the retry-on-dispatch rule.
-  ADR-014 stops at "the lead can classify"; ADR-015 picks up at "what
-  the lead does about it."
 
 - **No backwards-compat concern.** `bc_presence` is a fresh table; the
   `shop-msg watch` command's pre-ADR behavior (LISTEN, emit events on

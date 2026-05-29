@@ -1,9 +1,11 @@
-# ADR-011 — Outbox-pattern atomicity: bd-first writes for shop-msg send/respond
+# ADR-012 — Outbox-pattern atomicity: bd-first writes for shop-msg send/respond
 
 **Status:** proposed (2026-05-29)
 **Authors:** dstengle, Claude (lead-architect)
 **Anchored to:** [PDR-010](../pdr/010-bd-authoritative-shop-msg-transport.md) (bd as authoritative state store; shop-msg as
-authoritative transmission channel; dual-store reconciliation protocol).
+authoritative transmission channel; dual-store reconciliation protocol);
+[ADR-011](011-bead-message-field-mapping.md) (the canonical holder of the
+`dispatch_state` enum and the field set this atomicity protocol mutates).
 **Related beads:** `lead-o6tp` (precursor framing of the dual-store
 problem); `lead-2id` (shop-msg respond/consume asymmetry — captured by
 the `lead-nn5f` close as the cw7-recovery degraded-emit pattern);
@@ -73,11 +75,11 @@ and every `shop-msg respond` (BC-side response) is **bd-first**:
    reportable to the caller.
 
 The canonical `dispatch_state` enum is defined in
-[ADR-012](012-bead-message-field-mapping.md) under "Canonical
-`dispatch_state` enum". ADR-011's atomicity protocol uses the values
+[ADR-011](011-bead-message-field-mapping.md) under "Canonical
+`dispatch_state` enum". ADR-012's atomicity protocol uses the values
 `outbox_pending`, `dispatched`, `bc_emitted`, and `consumed` for its
 3-step transitions; the full five-value enum (which adds `closed`) is
-ADR-012's, and ADR-011 does not redefine it.
+ADR-011's, and ADR-012 does not redefine it.
 
 A new subcommand SHALL be added to the messaging CLI: `shop-msg sweep
 --shop <name>`. The sweeper:
@@ -134,7 +136,7 @@ the Step-1 boundary, not optional.
 ## Consequences
 
 - **bd schema:** the canonical `dispatch_state` enum is defined in
-  ADR-012; ADR-011's atomicity protocol uses `outbox_pending`,
+  ADR-011; ADR-012's atomicity protocol uses `outbox_pending`,
   `dispatched`, `bc_emitted`, and `consumed`. Existing bd issue states
   (`open`, `closed`, etc.) remain orthogonal — `dispatch_state` is a
   separate facet from issue lifecycle.
@@ -142,7 +144,7 @@ the Step-1 boundary, not optional.
   `shopsystem-messaging`; dispatch as a fresh lead bead under PDR-010.
 - **shop-msg send/respond:** both gain bd-write hooks at Steps 1 and 3.
   The hook surface (where bd is called from inside the CLI) is the
-  subject of a sibling ADR-012; this ADR commits the protocol, not the
+  subject of a sibling ADR-011; this ADR commits the protocol, not the
   call-site wiring.
 - **BC primer:** the canonical BC primer in `shopsystem-templates`
   SHOULD mention that `shop-msg sweep --shop <name>` may be invoked at
@@ -155,5 +157,5 @@ the Step-1 boundary, not optional.
   postgres LISTEN drop, post-compact session restart).
 - **Backfill:** existing bd entries predating this ADR carry no outbox
   status. The sweeper SHALL ignore entries without an outbox status
-  field; only entries written under the ADR-011 protocol are eligible
+  field; only entries written under the ADR-012 protocol are eligible
   for sweep. No migration is required.
