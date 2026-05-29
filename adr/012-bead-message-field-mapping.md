@@ -52,8 +52,40 @@ pending`. This ADR specifies that projection.
 
 ## Decision
 
+**ADR-012 is the canonical holder of both the `dispatch_state` enum and
+the field set named below.** ADR-011 (atomicity protocol) and ADR-013
+(dispatch dependencies) reference this ADR for both; neither redefines
+the enum or the fields. Any future amendment to either the enum or the
+field set lands here.
+
 **The lead bd entry for any outbound dispatch MUST carry the following
 fields**, encoded per the encoding mechanism below.
+
+### Canonical `dispatch_state` enum
+
+The `dispatch_state` field takes exactly one of these five values:
+
+1. `outbox_pending` — bd intent recorded; postgres deposit not yet
+   completed. Set transiently by `shop-msg send` per ADR-011 Step 1, and
+   set persistently for queued dispatches per ADR-013 (queued mode,
+   awaiting predecessor closure).
+2. `dispatched` — postgres row deposited; BC has not yet emitted a
+   response. ADR-011's lead-side Step-3 terminal.
+3. `bc_emitted` — BC has emitted a terminal response (`work_done`,
+   `clarify`, or `mechanism_observation`); lead has not yet consumed.
+4. `consumed` — lead has consumed the BC's emission (per `lead-nn5f`'s
+   consume-releases-lead-inbox-slot mechanism).
+5. `closed` — lead-architect has reconciled and closed the bead.
+
+Rejected / removed variants from earlier drafts:
+
+- `emitted` (former ADR-011 spelling) is renamed to `bc_emitted` for
+  clarity; the prior spelling MUST NOT be used.
+- `bc_in_progress` (former ADR-012 draft) is DROPPED. The lead cannot
+  observe this state without a BC nudge, and it carries no decision
+  weight that `dispatched` does not already carry.
+- `outbox_live` (former ADR-013 draft) is REMOVED. ADR-013 uses
+  `dispatched` for "postgres row deposited, BC has not yet emitted."
 
 ### Required fields per dispatch bead
 
@@ -61,39 +93,57 @@ fields**, encoded per the encoding mechanism below.
 |---|---|---|---|
 | `dispatched_to_bc` | string \| null | `shop-msg send` | Canonical BC name (e.g., `shopsystem-messaging`); null for lead-internal beads. |
 | `dispatch_message_type` | enum | `shop-msg send` | One of `assign_scenarios`, `request_bugfix`, `request_maintenance`, `nudge`. |
-| `dispatch_state` | enum | `shop-msg send`, then updated by lifecycle events | Subset of ADR-011's atomicity statuses: `outbox_pending`, `dispatched`, `bc_in_progress`, `bc_emitted`, `consumed`, `closed`. |
+| `dispatch_state` | enum | `shop-msg send`, then updated by lifecycle events | One of the five canonical values defined above. |
+| `pending_dependency` | work_id \| empty | `shop-msg send --queue-on-dependency` (per ADR-013); cleared on promote | Present (non-empty) when `dispatch_state = outbox_pending` AND the dispatch is queued behind a predecessor per ADR-013. Empty otherwise. |
 | `last_response_received_at` | ISO-8601 timestamp \| null | BC emission events (work_done, clarify, mechanism_observation, nudge) | Most recent BC emission against this work_id. |
 | `last_response_message_type` | enum \| null | BC emission events | One of `work_done`, `clarify`, `mechanism_observation`, `nudge`. |
 | `scenario_hashes_pinned` | comma-separated string \| empty | `shop-msg send` | Lead-side desired-state coverage; the canonical-block hashes the dispatch carries. Empty for `request_maintenance` and `nudge`. |
-| `depends_on_dispatch` | work_id \| null | `shop-msg send` (or `bd update`) | Predecessor dispatch this one is queued behind, per ADR-013 carrier pattern. |
+| `depends_on_dispatch` | work_id \| null | `shop-msg send` (or `bd update`) | Predecessor dispatch this one is queued behind, per ADR-013 carrier pattern. Distinct from `pending_dependency`: `depends_on_dispatch` is the declared cross-BC sequence edge (set whether or not strict mode refused); `pending_dependency` is the live "waiting on" marker active only while the queued bead sits at `outbox_pending`. |
 | `bc_origin_main_commit_at_dispatch` | git SHA \| null | `shop-msg send` | The BC's `origin/main` SHA at dispatch time, captured for reachability auditing per [[lead-cw7]]. Null for lead-internal beads. |
 | `bc_origin_main_commit_at_close` | git SHA \| null | reconciliation close | The BC's `origin/main` SHA at the moment the architect transitions `dispatch_state` to `closed`. |
 
 ### Encoding mechanism
 
-bd does not enforce a structured schema for arbitrary fields. The
-encoding lands in the bd entry's **`--notes` block under a canonical
-`## Dispatch state` header**, with one line per field of the form
-`key: value`. Example:
+bd supports structured metadata as a first-class facility (confirmed via
+`bd create --help` and `bd update --help`: `--metadata <json|@file>`,
+`--set-metadata key=value` repeatable, `--unset-metadata key`
+repeatable). The canonical encoding for ADR-012 fields is **structured
+bd metadata via this mechanism** — `bd create --metadata` at dispatch
+time, `bd update --set-metadata key=value` for lifecycle transitions,
+`bd update --unset-metadata key` to clear fields (e.g.,
+`pending_dependency` on promote).
+
+Implementations SHOULD use the exact CLI surface above when it remains
+the canonical bd metadata API. If bd's metadata surface evolves
+(renaming, JSON-schema enforcement, or a more structured CLI), the
+canonical key names and value shapes named in this ADR survive the
+migration; only the wire form of `--set-metadata` / `--metadata` would
+change. The authoritative reference is `bd --help` at the time of
+implementation.
+
+A typical dispatch creates the bead with all initial fields in one
+`--metadata` JSON payload; subsequent lifecycle transitions use
+`--set-metadata` / `--unset-metadata` to mutate one field at a time.
+Example initial-dispatch payload (illustrative shape, not normative
+wire syntax):
 
 ```
-## Dispatch state
-dispatched_to_bc: shopsystem-messaging
-dispatch_message_type: request_bugfix
-dispatch_state: bc_emitted
-last_response_received_at: 2026-05-29T14:22:08Z
-last_response_message_type: work_done
-scenario_hashes_pinned: 9457dfff7e3f9e90,2b5d558d548b0606
-depends_on_dispatch: lead-767
-bc_origin_main_commit_at_dispatch: b14b0ba
-bc_origin_main_commit_at_close:
+{
+  "dispatched_to_bc": "shopsystem-messaging",
+  "dispatch_message_type": "request_bugfix",
+  "dispatch_state": "dispatched",
+  "pending_dependency": "",
+  "scenario_hashes_pinned": "9457dfff7e3f9e90,2b5d558d548b0606",
+  "depends_on_dispatch": "lead-767",
+  "bc_origin_main_commit_at_dispatch": "b14b0ba"
+}
 ```
 
-The `## Dispatch state` block is canonical; bd entries MAY carry
-additional prose notes before or after the block, but the block itself
-is the projection surface for strategic queries. A bd entry that carries
-the block MUST keep it as the first H2 heading in `--notes`, so
-`bd show <id> | head` reliably surfaces it.
+The free-form prose `## Dispatch state` notes block is NOT canonical.
+Earlier drafts of this ADR proposed it as a fallback in case bd lacked
+structured metadata; bd does support it, so the prose block is
+explicitly out of scope and SHOULD NOT be written by tooling that
+implements this ADR.
 
 ### Canonical key names
 
@@ -103,23 +153,31 @@ canonical and MUST NOT be renamed in-place.
 
 ### Update points
 
-1. **`shop-msg send`** writes the initial block atomically with the bd
-   entry per ADR-011's protocol. It computes `dispatched_to_bc`,
-   `dispatch_message_type`, `scenario_hashes_pinned` (from the payload),
-   and `bc_origin_main_commit_at_dispatch` (by querying the BC's clone),
-   and sets `dispatch_state` to `outbox_pending` (transient) or
-   `dispatched` (terminal). `depends_on_dispatch` is operator-supplied
-   via a CLI flag.
+1. **`shop-msg send`** writes the initial bd metadata atomically with
+   the bd entry per ADR-011's protocol, using `bd create --metadata`. It
+   computes `dispatched_to_bc`, `dispatch_message_type`,
+   `scenario_hashes_pinned` (from the payload), and
+   `bc_origin_main_commit_at_dispatch` (by querying the BC's clone), and
+   sets `dispatch_state` to `outbox_pending` (transient) or `dispatched`
+   (terminal). `depends_on_dispatch` is operator-supplied via a CLI
+   flag. For queued-mode dispatches per ADR-013, `pending_dependency` is
+   set to the predecessor `work_id` and `dispatch_state` remains at
+   `outbox_pending` until promote-scan.
 2. **BC-side `shop-msg respond`** does NOT mutate the lead's bd entry.
    Lead-side `shop-msg consume outbox` (or the Monitor-driven
-   reconciliation step) updates `last_response_received_at`,
-   `last_response_message_type`, and transitions `dispatch_state` to
-   `bc_emitted` (first emission), `consumed` (lead consume), or `closed`
-   (reconciliation close).
-3. **Lead-architect reconciliation close** sets
-   `bc_origin_main_commit_at_close` to the BC's `origin/main` SHA at the
-   moment the reconciliation grep against `features/` runs (per
-   ADR-010), and transitions `dispatch_state` to `closed`.
+   reconciliation step) uses `bd update --set-metadata` to update
+   `last_response_received_at`, `last_response_message_type`, and
+   transitions `dispatch_state` to `bc_emitted` (first emission) or
+   `consumed` (lead consume).
+3. **Lead-architect reconciliation close** uses `bd update
+   --set-metadata` to set `bc_origin_main_commit_at_close` to the BC's
+   `origin/main` SHA at the moment the reconciliation grep against
+   `features/` runs (per ADR-010), and transitions `dispatch_state` to
+   `closed`.
+4. **Promote scan (ADR-013)** uses `bd update --set-metadata
+   dispatch_state=dispatched` and `bd update --unset-metadata
+   pending_dependency` to flip a queued bead from `outbox_pending` to
+   `dispatched` at the moment the postgres row is deposited.
 
 ### Contract with ADR-011 (atomicity)
 
@@ -139,24 +197,25 @@ entries default to `unknown` until backfilled.
 
 ## Alternatives considered
 
-**Option A — Opaque JSON in a single bd note.** Rejected. The point of
-the projection is that strategic queries grep or scan without parsing
-structured data. JSON in a `--notes` field requires `jq` plus
-prose-parsing of the surrounding entry, re-introducing the prose-parsing
-problem this ADR exists to solve. The `## Dispatch state` block with
-`key: value` lines is greppable, diffable, and human-readable.
+**Option A — Opaque JSON in a single bd `--notes` block.** Rejected.
+JSON in `--notes` requires `jq` plus prose-parsing of the surrounding
+entry to find the JSON region; strategic queries should not need a
+two-stage parse. bd's structured `--metadata` surface is the
+single-stage equivalent.
 
 **Option B — Store the projection in shop-msg row metadata.** Rejected.
 PDR-010 puts state in bd; shop-msg owns transmission artefacts. Pinning
 the projection in shop-msg inverts the authority and forces strategic
 queries to read shop-msg as the source of truth.
 
-**Option C — Use bd's structured `--metadata` if it supports it.** Kept
-as **preferred** if bd grows a structured metadata facility before the
-strategic-query layer ships. The `## Dispatch state` block is the
-fallback that works today. Canonical key names hold regardless of
-encoding; a migration step would copy block contents into structured
-fields without renaming.
+**Option C — Free-form `## Dispatch state` notes block under
+`--notes`.** Rejected (and explicitly removed from the Decision
+section). An earlier draft of this ADR kept the prose block as a
+fallback for the case where bd had no structured metadata facility. bd
+does support `--metadata` / `--set-metadata` / `--unset-metadata`, so
+the fallback is not needed. Carrying both would split tooling between
+two encodings; committing to the structured form is cheaper and avoids
+the parse-the-prose-block failure mode.
 
 ## Consequences
 

@@ -68,20 +68,16 @@ and every `shop-msg respond` (BC-side response) is **bd-first**:
 
 3. **(Step 3) Flip the bd status to the terminal-of-this-phase value.**
    For lead-side `send`: `outbox_pending` → `dispatched`. For BC-side
-   `respond`: `outbox_pending` → `emitted`. The flip is a single bd
+   `respond`: `outbox_pending` → `bc_emitted`. The flip is a single bd
    update; on success, the send/respond operation is complete and
    reportable to the caller.
 
-The canonical bd status enum for outbox-pattern operations SHALL be:
-
-- `outbox_pending` — Step 1 written, Step 2 not yet confirmed.
-- `dispatched` — lead-side terminal: Step 2 confirmed for an outbound
-  lead dispatch.
-- `emitted` — BC-side terminal: Step 2 confirmed for an outbound BC
-  response.
-- `consumed` — the counterparty has read the shop-msg row; this is the
-  end-to-end terminal status, set by the reconciliation path (lead
-  Architect on work_done landing; BC Implementer on dispatch landing).
+The canonical `dispatch_state` enum is defined in
+[ADR-012](012-bead-message-field-mapping.md) under "Canonical
+`dispatch_state` enum". ADR-011's atomicity protocol uses the values
+`outbox_pending`, `dispatched`, `bc_emitted`, and `consumed` for its
+3-step transitions; the full five-value enum (which adds `closed`) is
+ADR-012's, and ADR-011 does not redefine it.
 
 A new subcommand SHALL be added to the messaging CLI: `shop-msg sweep
 --shop <name>`. The sweeper:
@@ -92,7 +88,8 @@ A new subcommand SHALL be added to the messaging CLI: `shop-msg sweep
    inbox/outbox listing for the entry's direction) to determine whether
    Step 2 in fact landed.
    - If the postgres row exists: flip bd to the terminal status
-     (`dispatched` or `emitted` per direction). No postgres write needed.
+     (`dispatched` or `bc_emitted` per direction). No postgres write
+     needed.
    - If the postgres row does NOT exist: retry the Step 2 deposit using
      the payload reference carried on the bd entry. On success, flip bd
      to terminal.
@@ -136,10 +133,11 @@ the Step-1 boundary, not optional.
 
 ## Consequences
 
-- **bd schema:** the work-state enum gains four canonical values
-  (`outbox_pending`, `dispatched`, `emitted`, `consumed`). Existing bd
-  states (`open`, `closed`, etc.) remain orthogonal — outbox-pattern
-  status is a separate facet from issue lifecycle.
+- **bd schema:** the canonical `dispatch_state` enum is defined in
+  ADR-012; ADR-011's atomicity protocol uses `outbox_pending`,
+  `dispatched`, `bc_emitted`, and `consumed`. Existing bd issue states
+  (`open`, `closed`, etc.) remain orthogonal — `dispatch_state` is a
+  separate facet from issue lifecycle.
 - **shop-msg CLI:** a new `sweep` subcommand. Implementation lives in
   `shopsystem-messaging`; dispatch as a fresh lead bead under PDR-010.
 - **shop-msg send/respond:** both gain bd-write hooks at Steps 1 and 3.

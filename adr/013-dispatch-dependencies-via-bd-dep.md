@@ -50,9 +50,11 @@ queryable, on-disk record that BC1 is waiting on BC2.
 bd already carries the primitive needed to externalize this sequencing:
 `bd dep add <dependent> <depends-on>` records a queryable depends-on
 edge between two lead beads. Combining ADR-011 (atomicity protocol) and
-ADR-012 (field mapping), the dispatch path can consult that graph
+ADR-012 (the canonical holder of the `dispatch_state` enum and the
+`pending_dependency` field), the dispatch path can consult that graph
 before depositing the postgres row, and the reconciliation path can
-promote queued dispatches when a predecessor closes.
+promote queued dispatches when a predecessor closes. ADR-013 does not
+redefine the enum or the field set; both live in ADR-012.
 
 ## Decision
 
@@ -62,19 +64,21 @@ promote queued dispatches when a predecessor closes.
    alongside the existing payload-schema validation.
 
 2. If the work_id has one or more `depends-on` edges and any predecessor
-   bead is not in `dispatch_state=closed` (per ADR-012's field mapping),
-   `shop-msg send` MUST NOT silently proceed. It SHALL choose one of two
-   modes:
+   bead is not in `dispatch_state=closed` (per ADR-012's canonical
+   enum), `shop-msg send` MUST NOT silently proceed. It SHALL choose
+   one of two modes:
 
    - **Strict mode (default):** refuse the send with a non-zero exit
      code and a clear error citing the unmet dependency (predecessor
      work_id, predecessor's current `dispatch_state`). No postgres row
      is written.
    - **Queued mode (`--queue-on-dependency`):** write a bd-side entry
-     with `dispatch_state=outbox_pending` and a
-     `pending_dependency=<predecessor_work_id>` marker (per ADR-012's
-     field-mapping shape). NO postgres row is written at this time. The
-     CLI exits zero with a clear message that the dispatch is queued.
+     with `dispatch_state=outbox_pending` and the
+     `pending_dependency=<predecessor_work_id>` field set (per
+     ADR-012's canonical field set; encoded as bd structured metadata
+     per ADR-012's encoding mechanism). NO postgres row is written at
+     this time. The CLI exits zero with a clear message that the
+     dispatch is queued.
 
 3. The deposit refusal contract (strict mode) is total: a refused
    `shop-msg send` MUST leave no partial state — no postgres row, no
@@ -83,9 +87,13 @@ promote queued dispatches when a predecessor closes.
    re-running, or (b) re-running with `--queue-on-dependency`.
 
 4. The queued-mode write protocol piggybacks ADR-011's atomicity
-   protocol: the bd-side `outbox_pending` write and the
-   `pending_dependency` marker are a single atomic unit. A queued
-   dispatch is observable via `bd show` and via a new
+   protocol and ADR-012's encoding mechanism: the bd-side
+   `outbox_pending` write and the `pending_dependency` field are a
+   single atomic unit, written via `bd create --metadata` (or `bd
+   update --set-metadata`) per ADR-012. Per ADR-011, the postgres
+   deposit does not happen until the promote-scan; the bd entry alone
+   carries the queued intent across `/compact` and session boundaries.
+   A queued dispatch is observable via `bd show` and via a new
    `shop-msg pending queued --lead <name>` listing (the listing
    surface is a follow-up bead; the underlying bd state is queryable
    today).
@@ -94,9 +102,11 @@ promote queued dispatches when a predecessor closes.
    reconciliation-side mutation of `dispatch_state` to `closed` — MUST
    trigger a promote scan. The scan enumerates all beads with
    `pending_dependency=<closing_work_id>` and, for each such queued
-   dispatch whose remaining `depends-on` edges are all `closed`, deposits
-   the postgres row and transitions the bd-side `dispatch_state` from
-   `outbox_pending` to `outbox_live` (per ADR-012's lifecycle).
+   dispatch whose remaining `depends-on` edges are all `closed`,
+   deposits the postgres row and transitions the bd-side
+   `dispatch_state` from `outbox_pending` to `dispatched` (per
+   ADR-012's canonical enum), and clears `pending_dependency` (via `bd
+   update --unset-metadata pending_dependency`).
 
 6. The promote action MUST be idempotent. Repeated promote scans on the
    same closing bead leave the same final state: each queued dispatch
