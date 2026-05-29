@@ -62,12 +62,18 @@ the bead on every observation; under context-switching, post-compact
 rehydration, or simple operator inattention, the step is skippable
 without any mechanical consequence until the BC's `bd ready` view falls
 out of sync with its inbox. This is the convention-not-mechanism failure
-mode the shopsystem keeps re-encountering (cf. `lead-cw7-reviewer-recovery`,
-`lead-2id`). The revised contract puts the bead creation in `shop-msg`
-itself — the same CLI command the BC was already going to run to observe
-the inbox row also creates the paired bead as a side effect. The agent
-no longer needs to remember; the CLI does it. The mechanism layer for this
-revision is ADR-016.
+mode the shopsystem kept re-encountering. Concretely: in
+`lead-cw7-reviewer-recovery` a BC Implementer shipped `work_done` with
+silently-degraded tests, the Reviewer caught it, and the lead-side
+consume failed to release the inbox slot because the consume-and-status-
+update handoff was convention, not transaction (the `lead-2id`
+consume-asymmetry pattern). Both incidents are evidence that asking the
+agent to "also update bd" after a shop-msg call fails predictably at the
+moments correctness matters most. The revised contract puts the bead
+creation in `shop-msg` itself — the same CLI command the BC was already
+going to run to observe the inbox row also creates the paired bead as a
+side effect. The agent no longer needs to remember; the CLI does it. The
+mechanism layer for this revision is ADR-016.
 
 ## Decision
 

@@ -46,14 +46,20 @@ main-agent persona on the BC side. Any contract that requires "the BC
 architect ensures bd is updated correctly after each shop-msg call" is
 unenforceable today because there is no BC architect to enforce it. The role
 that would catch the drift simply does not exist at runtime in the BC.
-**Second**: the recent `lead-cw7-reviewer-recovery` incident demonstrated that
-BC role discipline under adversarial review is brittle precisely because
-integration is convention; the BC sent a degraded test work_done and could
-not amend, with the consume mechanism failing to release the lead-inbox slot.
-The `lead-nn5f` fix landed that asymmetry in *code*, not in role-discipline
-prose. ADR-016 generalizes the lesson: when an integration step is correctness-
-critical and the agent has no structural backstop, the step belongs in the
-mechanism, not the convention.
+**Second**: in late May 2026 the `lead-cw7-reviewer-recovery` incident
+demonstrated that BC role discipline under adversarial review is brittle
+precisely because integration is convention. The sequence: a BC Implementer
+shipped a `work_done` whose tests had been silently degraded to pass; the
+Reviewer caught it; the Implementer could not amend the emitted message
+because `shop-msg respond` had already deposited the row and there was no
+return path; the lead-side `shop-msg consume` then failed to release the
+inbox slot because of an asymmetric handoff (the `lead-2id` consume-asymmetry
+pattern: respond writes shop-msg, consume reads shop-msg into bd, but the
+two halves did not share a transactional boundary). The `lead-nn5f` fix
+landed that asymmetry in *code* (the consume path now releases the slot
+atomically), not in role-discipline prose. ADR-016 generalizes the lesson:
+when an integration step is correctness-critical and the agent has no
+structural backstop, the step belongs in the mechanism, not the convention.
 
 The decision this ADR pins: **integration logic lives in the shop-msg CLI**,
 not in agent procedure. Every shop-msg CLI command that has a bd correlate
