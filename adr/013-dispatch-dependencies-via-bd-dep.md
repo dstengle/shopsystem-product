@@ -183,3 +183,11 @@ fanout, a future ADR can flip the default.
   against `shopsystem-messaging` (the BC that owns the CLI). The
   `shopsystem-templates` template edit is a separate follow-up; neither
   is dispatched in this ADR.
+- `shop-msg sweep` (ADR-012) MUST skip beads with `pending_dependency`
+  set unless that predecessor is `closed`; the `pending_dependency`
+  field is the discriminator between genuinely-stuck deposits (which
+  sweep recovers) and dependency-gated deferrals (which sweep does
+  NOT promote). Empirically demonstrated as a sufficiency gap during
+  lead-eow5 implementation; scenario `a326c2f50eeceed4`
+  (`features/templates/120-dispatch-dependencies-via-bd-dep.gherkin`)
+  pins the behavior.
