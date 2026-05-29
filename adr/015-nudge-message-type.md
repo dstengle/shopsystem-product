@@ -173,3 +173,15 @@ most. The catalog should grow to cover the gap, not route around it.
   presence heartbeat and ADR-015's operator-triggered nudge are
   complementary: ADR-014 detects offline; ADR-015 is the operator's
   primitive for resuming the conversation.
+
+Implementation of nudge storage uses `direction='nudge'` (distinct from
+`inbox`/`outbox`); the keying preserves the single-row-per-(bc,work_id,direction,message_type)
+invariant for dispatch traffic while allowing multiple nudges to coexist.
+The bd-facade gains `append_note(work_id, text)` wrapping `bd note`; the
+canonical nudge note format is
+`nudge: reason=<reason> work_id=<work_id> at=<iso8601_utc>`. The
+status-check reply standing rule is primer-prose (templates-BC scope),
+not CLI-enforced. Channel-misuse classification is operator discipline,
+not pinned by scenario. (Per lead-1w7r clarify-resolution; ADR-015
+remains `accepted` — the Consequences amendment does not require a
+status flip, analogous to ADR-013's lead-p0ez amendment.)
