@@ -9,7 +9,10 @@ lead does NOT pull BC bd); [ADR-011](011-outbox-atomicity-bd-first.md) (shop-msg
 [ADR-012](012-bead-message-field-mapping.md) (lead bd schema for
 emission projections — the symmetric lead-side picture this ADR mirrors on
 the BC side); [ADR-015](015-nudge-message-type.md) (nudge handling on
-BC side; informs the message-type → bead-type mapping).
+BC side; informs the message-type → bead-type mapping);
+[ADR-017](017-shop-msg-owns-bd-integration.md) (the mechanism layer that
+realizes this ADR's bead-creation and status-transition contracts as
+CLI-layer side effects rather than agent-enforced steps).
 **Related beads:** `lead-bp3` (lead-side consume-inbox CLI gap — moot under
 bd-authoritative routing); implicit user feedback driving this ADR — **BC
 sovereignty must be preserved; the lead's view = BC emissions, not BC
@@ -51,14 +54,33 @@ shop-msg emissions as the contract; the BC must have a deterministic
 bead-creation step on drain so its own queue is reasonable to operate on.
 This ADR pins both halves.
 
+**Revision (2026-05-29) — drain-procedure framing was a weak contract.**
+The original framing of this ADR pinned bead creation to "the BC's
+session-start drain procedure" — i.e., an agent-enforced step in the BC
+primer prose. That framing depends on the BC agent remembering to file
+the bead on every observation; under context-switching, post-compact
+rehydration, or simple operator inattention, the step is skippable
+without any mechanical consequence until the BC's `bd ready` view falls
+out of sync with its inbox. This is the convention-not-mechanism failure
+mode the shopsystem keeps re-encountering (cf. `lead-cw7-reviewer-recovery`,
+`lead-2id`). The revised contract puts the bead creation in `shop-msg`
+itself — the same CLI command the BC was already going to run to observe
+the inbox row also creates the paired bead as a side effect. The agent
+no longer needs to remember; the CLI does it. The mechanism layer for this
+revision is ADR-017.
+
 ## Decision
 
-1. **Drain-time bead creation.** On `shop-msg pending inbox --bc <name>`
-   returning a row the BC has not yet acted on, the BC's session-start
-   drain SHALL create a paired BC-side bead via `bd create` before
-   dispatching the BC subagent that will service the message. The bead
-   exists so the BC's own queue (`bd ready`, `bd list`, `bd show`)
-   accurately reflects inbound work.
+1. **Drain-time bead creation.** `shop-msg` SHALL create the paired BC-side
+   bead on the first observation of an unprocessed inbox row (typically via
+   `shop-msg pending inbox --bc <name>`); the creation is a CLI-layer side
+   effect, not an agent-enforced step. Subsequent observations of the same
+   row are idempotent (no duplicate bead). The exact integration mechanism
+   — which shop-msg commands fire which bd writes, and under what
+   transactional discipline — is defined in ADR-017. The bead exists so
+   the BC's own queue (`bd ready`, `bd list`, `bd show`) accurately
+   reflects inbound work; with creation in the CLI, the queue is now
+   correct by construction rather than by agent diligence.
 
 2. **Default field derivation.** The created bead's fields SHALL be
    derived from the inbox message payload as follows:
@@ -87,9 +109,10 @@ This ADR pins both halves.
    bd ID. The lead never learns the BC bead ID and never needs to.
 
 4. **Status-transition contract on shop-msg respond.** Per ADR-011's
-   atomicity protocol, `shop-msg respond` on the BC side SHALL update
-   the BC bead's status as a side effect of the same transactional
-   boundary as the outbound emission:
+   atomicity protocol and ADR-017 (shop-msg owns bd integration),
+   `shop-msg respond` on the BC side SHALL update the BC bead's status
+   as a CLI-layer side effect of the same transactional boundary as the
+   outbound emission — not as a separate agent step:
    - `clarify` → BC bead status set to `blocked`, with a note appended
      summarizing the question raised.
    - `work_done(complete)` → BC bead status set to `closed`.
