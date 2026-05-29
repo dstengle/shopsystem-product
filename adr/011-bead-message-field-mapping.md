@@ -1,6 +1,6 @@
 # ADR-011 — Bead/message field mapping: lead bd schema for projecting shop-msg lifecycle
 
-**Status:** proposed (2026-05-29)
+**Status:** accepted (2026-05-29)
 **Authors:** dstengle, Claude (lead-architect)
 **Anchored to:** [PDR-010](../pdr/010-bd-authoritative-shop-msg-transport.md) (bd is
 authoritative for state; shop-msg is authoritative for transmission). The

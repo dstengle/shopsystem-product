@@ -1,6 +1,6 @@
 # ADR-014 — Presence heartbeat collapsed into `shop-msg watch`
 
-**Status:** proposed (2026-05-29)
+**Status:** accepted (2026-05-29)
 **Authors:** dstengle, Claude (lead-architect)
 **Anchored to:** [PDR-010](../pdr/010-bd-authoritative-shop-msg-transport.md) (BC liveness
 and proactive-nudge primitive; this ADR realizes the heartbeat half of that

@@ -1,6 +1,6 @@
 # PDR-010 — bd is authoritative for system state; shop-msg is transport + wakeup + liveness
 
-**Status:** draft (2026-05-29)
+**Status:** accepted (2026-05-29)
 **Authors:** dstengle, Claude
 **Anchored to:** PO intent expressed in conversation 2026-05-29:
 *"What if we simply have shop-msg write to beads and nudge the agent with

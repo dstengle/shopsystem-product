@@ -1,6 +1,6 @@
 # ADR-015 — `nudge` message type for operational liveness
 
-**Status:** proposed (2026-05-29)
+**Status:** accepted (2026-05-29)
 **Authors:** dstengle, Claude (lead-architect)
 **Anchored to:** [PDR-010](../pdr/010-bd-authoritative-shop-msg-transport.md)
 (operational-liveness primitives: the framework lacks lightweight signaling

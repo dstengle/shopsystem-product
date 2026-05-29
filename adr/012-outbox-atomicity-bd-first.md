@@ -1,6 +1,6 @@
 # ADR-012 — Outbox-pattern atomicity: bd-first writes for shop-msg send/respond
 
-**Status:** proposed (2026-05-29)
+**Status:** accepted (2026-05-29)
 **Authors:** dstengle, Claude (lead-architect)
 **Anchored to:** [PDR-010](../pdr/010-bd-authoritative-shop-msg-transport.md) (bd as authoritative state store; shop-msg as
 authoritative transmission channel; dual-store reconciliation protocol);

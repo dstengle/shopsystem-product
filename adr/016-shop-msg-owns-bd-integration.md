@@ -1,6 +1,6 @@
 # ADR-016 — shop-msg owns bd integration; state changes via CLI, not agent
 
-**Status:** proposed (2026-05-29)
+**Status:** accepted (2026-05-29)
 **Authors:** dstengle, Claude (lead-architect)
 **Anchored to:** [PDR-010](../pdr/010-bd-authoritative-shop-msg-transport.md)
 (bd authoritative for state, shop-msg authoritative for transmission — this ADR

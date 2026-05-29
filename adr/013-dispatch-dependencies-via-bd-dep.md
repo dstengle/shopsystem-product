@@ -1,6 +1,6 @@
 # ADR-013 — Dispatch dependencies via `bd dep add` honored by `shop-msg send`
 
-**Status:** proposed (2026-05-29)
+**Status:** accepted (2026-05-29)
 **Authors:** dstengle, Claude (lead-architect)
 **Anchored to:** [PDR-010](../pdr/010-bd-authoritative-shop-msg-transport.md) (bd is
 authoritative state-of-record for dispatch lifecycle); [ADR-011](011-bead-message-field-mapping.md)

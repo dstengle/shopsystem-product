@@ -1,6 +1,6 @@
 # ADR-017 — BC-side bead creation on inbox drain; cross-reference via shared work_id
 
-**Status:** proposed (2026-05-29)
+**Status:** accepted (2026-05-29)
 **Authors:** dstengle, Claude (lead-architect)
 **Anchored to:** [PDR-010](../pdr/010-bd-authoritative-shop-msg-transport.md)
 (loose cross-shop visibility constraint: each shop's bd is sovereign; the
