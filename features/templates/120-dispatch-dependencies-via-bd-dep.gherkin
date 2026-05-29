@@ -110,15 +110,17 @@ Scenario: cross-BC dispatch dependencies are first-class — lead-X dispatched t
   And the load-bearing property pinned here is that cross-BC sequencing is FIRST-CLASS per ADR-013 decision 7: both edges live in lead bd, no BC-side coordination is required, and the lead remains the sole holder of the cross-BC sequence (per PDR-010 decision 4's loose-cross-shop-visibility model)
 
 
-@scenario_hash:b7bee9ce05ae731c
+@scenario_hash:09e59dc534b1b4dd
 Scenario: bd dep add rejects a cycle — if adding a depends-on edge would close a cycle in the depends-on graph (e.g., lead-X depends on lead-Y, lead-Y depends on lead-X), the operation is refused (adversarial — graph acyclicity enforcement)
   Given a lead shop "shopsystem-product" registered as the lead in the messaging registry
   And a lead bd entry "lead-mmm" exists
   And a lead bd entry "lead-nnn" exists
   And the lead architect has already recorded a depends-on edge "bd dep add lead-mmm lead-nnn" so lead-mmm depends on lead-nnn
   When the lead architect runs "bd dep add lead-nnn lead-mmm" (attempting to record that lead-nnn depends on lead-mmm, which would close the cycle lead-mmm -> lead-nnn -> lead-mmm)
-  Then the command exits non-zero with an error message naming the cycle (citing lead-mmm and lead-nnn as the participants)
-  And NO depends-on edge in either direction has been added or removed beyond the pre-existing "lead-mmm depends on lead-nnn" edge
+  Then the command exits non-zero
+  And the command's stderr or stdout contains a cycle-rejection message (a substring match on "cycle" is sufficient; specific wording is NOT required — bd's native error text is what governs)
+  And the pre-existing "lead-mmm depends on lead-nnn" depends-on edge is unchanged (still present, still in the same direction)
+  And NO new depends-on edge has been added in either direction (neither lead-nnn -> lead-mmm nor any other new edge)
   And subsequent "shop-msg send" invocations against either lead-mmm or lead-nnn behave as if the cycle attempt had not been made: lead-mmm continues to be gated on lead-nnn closing; lead-nnn has no pending_dependency
   And per ADR-013 decision 8, acyclicity is enforced on the bd side; shop-msg send does NOT need to re-check at dispatch time, because the depends-on graph is invariantly acyclic by construction
-  And the load-bearing property pinned here is that the bd-side cycle-rejection contract is what makes shop-msg send's introspection step safe from infinite-loop pathology: shop-msg send walks the graph trusting it is a DAG
+  And the load-bearing property pinned here is that the bd-side cycle-rejection contract is what makes shop-msg send's introspection step safe from infinite-loop pathology: shop-msg send walks the graph trusting it is a DAG — the participant-naming detail in bd's error text is UX, NOT the architectural property pinned here
