@@ -14,3 +14,4 @@
 
 # pyproject build artifacts.
 *.egg-info/
+.specstory/history/2026-05-27_21-18-56Z-we-need-to-transition.md
