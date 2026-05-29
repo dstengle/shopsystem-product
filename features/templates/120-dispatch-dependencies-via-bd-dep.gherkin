@@ -124,3 +124,12 @@ Scenario: bd dep add rejects a cycle — if adding a depends-on edge would close
   And subsequent "shop-msg send" invocations against either lead-mmm or lead-nnn behave as if the cycle attempt had not been made: lead-mmm continues to be gated on lead-nnn closing; lead-nnn has no pending_dependency
   And per ADR-013 decision 8, acyclicity is enforced on the bd side; shop-msg send does NOT need to re-check at dispatch time, because the depends-on graph is invariantly acyclic by construction
   And the load-bearing property pinned here is that the bd-side cycle-rejection contract is what makes shop-msg send's introspection step safe from infinite-loop pathology: shop-msg send walks the graph trusting it is a DAG — the participant-naming detail in bd's error text is UX, NOT the architectural property pinned here
+
+
+@scenario_hash:a326c2f50eeceed4
+Scenario: shop-msg sweep does NOT promote a queued bead whose predecessor is still open
+  Given a lead bd entry "lead-ppp" at dispatch_state=outbox_pending with pending_dependency="lead-qqq" and an outbox_pending_at older than the sweep threshold
+  And lead-qqq is NOT at dispatch_state=closed
+  When the lead architect runs "shop-msg sweep"
+  Then NO postgres outbox row for lead-ppp is deposited
+  And lead-ppp remains at dispatch_state=outbox_pending with pending_dependency="lead-qqq" unchanged
