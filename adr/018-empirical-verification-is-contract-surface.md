@@ -1,6 +1,6 @@
 # ADR-018 — "Verify pre-state empirically" means the contract/artifact surface; the lead carries no BC code
 
-**Status:** proposed (2026-05-30)
+**Status:** accepted (2026-05-30)
 **Authors:** dstengle, Claude (lead-architect)
 **Pins:** [PDR-011](../pdr/011-empirical-verification-is-contract-surface.md)
 — *"Verify pre-state empirically" = demonstrate the claim against the

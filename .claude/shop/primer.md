@@ -26,29 +26,37 @@ themselves are in revision.
 
 ## BC-shop loop and outbox inspection
 
-The BC-shop loop (Implementer → Reviewer) runs in each BC's repo, not here.
-The lead shop's move is reconciliation when `work_done` arrives. To inspect
-in-flight work:
+The BC-shop loop (Implementer → Reviewer) runs inside each BC container, not
+here. The lead shop's move is reconciliation when `work_done` arrives. To
+inspect in-flight work:
 
-- `shop-msg pending outbox --lead-root .` — list every sibling BC's pending
-  response.
-- `shop-msg read outbox --bc-root repos/<bc> --work-id <work_id>` — read a
-  specific BC response.
+- `shop-msg pending outbox --lead <name>` — list every BC's pending response.
+- `shop-msg read outbox --bc <name> --work-id <work_id>` — read a specific
+  BC response.
 
-Do not reason about mailbox files directly; use these subcommands.
+Do not reason about mailbox files directly; use these subcommands. There is
+no `repos/<bc>` clone path to address — see "What does NOT happen in this
+repo" below.
 
 ## What does NOT happen in this repo
 
 - **No implementation code.** This is the lead shop; code lives in BCs.
-- **No direct edits to `repos/*`.** Those are sibling BC repositories with
-  their own remotes. Cross-BC changes route through `assign_scenarios` /
-  `request_bugfix`, not direct edits.
+- **No BC source on the lead host at all.** Per [ADR-018](adr/018-empirical-verification-is-contract-surface.md)
+  (pinning [PDR-011](pdr/011-empirical-verification-is-contract-surface.md)),
+  the lead carries no `repos/` directory: no reading, running, or
+  git-observing BC code. BCs run as `bc-launcher` containers (cloned inside
+  the container) and report via `shop-msg`. Cross-BC changes route through
+  `assign_scenarios` / `request_bugfix`, not direct edits or reads.
 - **No skipping the discriminator.** If a request smells like open-ended
   "what should we build?" — route it back through the process. First
   question: *what scenarios pin this?*
-- **No proposing architecture before reading current state.** Pre-state
-  determines vehicle, verified empirically. Applies to the lead shop's own
-  work too.
+- **No proposing architecture before verifying current state empirically
+  against the contract/artifact surface** (this repo's `features/`, `adr/`,
+  `pdr/`, scenario hashes via the installed `scenarios hash` CLI, message
+  schemas, `shop-msg` mailbox state, the BC's reported `work_done`
+  demonstration) — per ADR-018 D1/D2. "Empirical" never means reading or
+  running BC code; that proof is the BC's gated-loop job, surfaced via the
+  mailbox. Applies to the lead shop's own work too.
 
 ## Where things live
 
@@ -57,8 +65,12 @@ Do not reason about mailbox files directly; use these subcommands.
 - PDRs: [`pdr/`](pdr/).
 - Canonical scenarios (PO-authored, dispatched to BCs): [`features/`](features/).
 - Findings: [`findings/`](findings/).
-- Role templates: `repos/shopsystem-templates/src/shop_templates/templates/`.
-- Sibling BC clones (gitignored): `repos/shopsystem-{messaging,scenarios,templates,test-harness}/`.
+- Role templates: shipped as package data by the installed `shopsystem-templates`
+  distribution; inspect via `shop-templates show <role>`. There is no
+  `repos/shopsystem-templates/` checkout on the lead host (ADR-018).
+- BC code: never on the lead host. BCs run as `bc-launcher` containers
+  (cloned inside the container) and report via `shop-msg`. To address a BC
+  mailbox use `--bc <name>`, not a `repos/<bc>` path.
 
 ## Operational hygiene
 
