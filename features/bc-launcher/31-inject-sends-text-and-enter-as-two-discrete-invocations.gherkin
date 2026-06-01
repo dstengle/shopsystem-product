@@ -1,0 +1,17 @@
+Feature: bc-container inject commits the prompt to the in-container agent by issuing two discrete tmux send-keys invocations against the container driver — a text-only invocation followed by an Enter-only invocation
+
+  Supersedes scenario 28 (features/bc-launcher/28-inject-submits-prompt-autonomously.gherkin). The Implementer must locate the BC-side hash of scenario 28 in the shopsystem-bc-launcher feature surface and retire that hash when landing this scenario.
+
+  Scenario 28 pinned the user-meaningful behavior ("the agent processes the inject without further input") in terms of the agent's input-loop state, but that pin was satisfied by a single tmux send-keys invocation carrying both the prompt text and the Enter key as discrete argv elements — the same empirically-buggy shape that defeated scenario 27's pin on the launch path. The inject path on bc-launcher's controller.py exhibits the identical bug for the identical reason (tmux concatenates the multi-argv keystream into one pty write(); Claude Code's TUI absorbs the trailing CR into its input buffer rather than treating it as a submit keypress) and the identical fix applies (two separate send-keys invocations produce two discrete pty write() syscalls that the TUI processes as a discrete keypress event).
+
+  This scenario re-grounds the inject-path pin from "the prompt is committed" (which the single-invocation shape spuriously satisfies in the testing layer) to "the BC issues two discrete tmux send-keys invocations against the container driver, in order: a text-only invocation carrying the prompt text and no Enter token, followed by an Enter-only invocation carrying the Enter token and no prompt text". The driver-surface assertion turns red under any single-invocation shape, catching any future regression at the BC's contract surface without requiring a live TUI. The inject-path pin is symmetric with the launch-path pin in scenario 30; the two together close the parallel inject-side bug tracked under lead-hyee.
+
+  Scenario: bc-container inject issues two discrete tmux send-keys invocations against the container driver — first the prompt text alone, then the Enter key alone — and no single invocation carries both
+    Given the shopsystem-bc-launcher BC is installed
+    And a Docker container named "bc-shopsystem-messaging" is running with a tmux session named "agent"
+    When I run "bc-container inject shopsystem-messaging 'bd prime'" and the command exits zero
+    Then the BC has issued exactly two tmux send-keys invocations against the container driver targeting the tmux session named "agent" in container "bc-shopsystem-messaging" as a direct consequence of the inject command
+    And the first of those two invocations carries the prompt text "bd prime" as its key payload and does not carry the Enter key in the same invocation
+    And the second of those two invocations carries the Enter key as its key payload and does not carry the prompt text "bd prime" in the same invocation
+    And no single tmux send-keys invocation issued by the inject command carries both the prompt text "bd prime" and the Enter key together
+    And the two invocations are issued in order: the text-only invocation first, the Enter-only invocation second
