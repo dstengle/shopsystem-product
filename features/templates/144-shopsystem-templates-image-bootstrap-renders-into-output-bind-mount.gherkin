@@ -1,0 +1,10 @@
+Scenario: running "docker run --rm -v <host_dir>:/out ghcr.io/dstengle/shopsystem-templates:latest bootstrap --shop-type lead --shop-name <slug> --target /out" against a host directory containing an empty git repository scaffolds that repository in place — the bootstrap entry point operates on the bind-mounted "/out" path and exits 0, producing the same set of canonical-managed files that an installed "shop-templates" CLI run from the host would produce
+  Given a host directory at "/tmp/example-lead-shop-via-docker" that contains an empty git repository
+  And the image "ghcr.io/dstengle/shopsystem-templates:latest" has been pulled successfully
+  When I run "docker run --rm -v /tmp/example-lead-shop-via-docker:/out ghcr.io/dstengle/shopsystem-templates:latest bootstrap --shop-type lead --shop-name shopsystem-product --target /out"
+  Then the command exits 0
+  And after the invocation the host directory at "/tmp/example-lead-shop-via-docker" contains a top-level file named "CLAUDE.md"
+  And after the invocation the host directory at "/tmp/example-lead-shop-via-docker" contains a file at ".claude/shop/name.md" whose byte contents are exactly the literal string "shopsystem-product" with a single trailing newline
+  And after the invocation the host directory at "/tmp/example-lead-shop-via-docker" contains a file at ".claude/shop/type.md" whose byte contents are exactly the literal string "lead" with a single trailing newline
+  And after the invocation the host directory at "/tmp/example-lead-shop-via-docker" contains a top-level file named "compose.yaml"
+  And after the invocation the host directory at "/tmp/example-lead-shop-via-docker" contains a file at "bin/shop-shell"

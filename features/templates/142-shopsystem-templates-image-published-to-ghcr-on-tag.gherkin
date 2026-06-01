@@ -1,0 +1,6 @@
+Scenario: when a git tag of the form "vMAJOR.MINOR.PATCH" is pushed to the shopsystem-templates repository, an OCI image is built and published to the canonical registry path "ghcr.io/dstengle/shopsystem-templates" with that version string as one of its image tags and "latest" as another tag — establishing the publication contract that bootstrap-via-docker-run depends on
+  Given a tag named "v0.2.0" is pushed to the "main" branch of the shopsystem-templates source repository
+  When the publication workflow associated with that tag push completes successfully
+  Then the registry "ghcr.io" exposes an image manifest at the repository path "dstengle/shopsystem-templates" reachable by the image tag "v0.2.0"
+  And the registry "ghcr.io" exposes an image manifest at the repository path "dstengle/shopsystem-templates" reachable by the image tag "latest" pointing to the same digest as the "v0.2.0" tag
+  And both image tags can be pulled by an unauthenticated "docker pull" client because the package is published with public visibility

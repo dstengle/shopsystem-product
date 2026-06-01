@@ -1,0 +1,8 @@
+Scenario: the ops scaffolding files written by bootstrap for a "lead" shop ("compose.yaml", "bin/shop-shell", "Dockerfile.shopsystem-shell") are shop-owned (in the PDR-003 path F sense) — they are bootstrap-time starter content the operator may freely customize, and they do not sit under ".claude/canonical/" because they are not subject to the canonical-managed re-pour contract that ".claude/canonical/" implies
+  Given an existing git repository at a target directory "/tmp/example-lead-shop"
+  When I invoke the "shop-templates" bootstrap entry point with shop type "lead", shop name "shopsystem-product", and target directory "/tmp/example-lead-shop"
+  Then the exit code is 0
+  And after the invocation the target directory contains a top-level file named "compose.yaml" at the path "/tmp/example-lead-shop/compose.yaml" (not under any ".claude/" subdirectory)
+  And after the invocation the target directory contains a file at "/tmp/example-lead-shop/bin/shop-shell" (not under any ".claude/" subdirectory)
+  And after the invocation the target directory contains a top-level file named "Dockerfile.shopsystem-shell" at the path "/tmp/example-lead-shop/Dockerfile.shopsystem-shell" (not under any ".claude/" subdirectory)
+  And after the invocation the directory at "/tmp/example-lead-shop/.claude/canonical/" does not contain a file named "compose.yaml", "shop-shell", or "Dockerfile.shopsystem-shell"
