@@ -22,9 +22,18 @@ if ! docker ps --format '{{.Names}}' | grep -qx shopsystem-messaging-postgres-1;
     docker compose -f "$ROOT/compose.yaml" up -d postgres
 fi
 
+# The mounted docker socket is mode 660 (root:docker on the host). The shell
+# runs as the non-root vscode user, so it must join the socket's group to use
+# it — otherwise every docker call inside the shell is permission-denied.
+# --group-add takes the numeric GID directly, so this works whether the socket
+# is group-docker or group-root. (stat -L follows the /var/run/docker.sock
+# symlink the devcontainer feature installs.)
+SOCKET_GID="$(stat -L -c '%g' /var/run/docker.sock)"
+
 # Hand off to the shell container.
 exec docker run --rm -it \
     --network shopsystem \
+    --group-add "$SOCKET_GID" \
     --workdir /workspace \
     -v "$ROOT:/workspace" \
     -v /var/run/docker.sock:/var/run/docker.sock \
