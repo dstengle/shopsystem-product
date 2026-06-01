@@ -1,0 +1,11 @@
+Scenario: shop-msg read and pending against --bc <name> succeed when the registered BC's shop_root path does not exist on the lead host
+  Given "shopsystem-messaging" is registered in the messaging registry as a BC whose shop_root column points to a filesystem path that does not exist on the lead host
+  And a message addressed to "shopsystem-messaging" with work-id "reg-mxxm-201" is present in that BC's inbox
+  And a BC response addressed from "shopsystem-messaging" with work-id "reg-mxxm-202" is present in that BC's outbox
+  When I run shop-msg read inbox --bc shopsystem-messaging with work-id "reg-mxxm-201"
+  And I run shop-msg read outbox --bc shopsystem-messaging with work-id "reg-mxxm-202"
+  And I run shop-msg pending inbox --bc shopsystem-messaging
+  And I run shop-msg pending outbox --bc shopsystem-messaging
+  Then every one of those commands exits zero
+  And no command in this scenario writes a "registry entry for ... points to path ... which does not exist on disk" warning to stderr
+  And no command in this scenario writes a "registry may be stale" warning to stderr

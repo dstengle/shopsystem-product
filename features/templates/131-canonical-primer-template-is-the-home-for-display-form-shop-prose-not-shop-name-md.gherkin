@@ -1,0 +1,8 @@
+Scenario: name.md carries only the canonical slug; any human-readable display form of the shop name lives in the shop-owned ".claude/shop/primer.md", not in name.md
+  Given an existing git repository at a target directory "/tmp/example-display-form-target" with no ".claude/shop/" subdirectory
+  When I invoke the "shop-templates" bootstrap entry point with shop type "lead", shop name "shopsystem-product", and target directory "/tmp/example-display-form-target"
+  Then the exit code is 0
+  And the byte contents of ".claude/shop/name.md" in the target directory are exactly the literal string "shopsystem-product" with a single trailing newline and no other content
+  And the file at ".claude/shop/name.md" contains no whitespace character other than the single trailing newline
+  And the bootstrap-written ".claude/shop/primer.md" in the target directory is a shop-owned placeholder whose body may contain prose using either the slug or a display variant; that file is not canonical-managed and its content is the shop's to evolve
+  And no other bootstrap-written file under the target directory contains a display variant of the shop name (i.e. the literal string "shopsystem product" with a space) introduced by the templates package

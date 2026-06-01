@@ -1,0 +1,9 @@
+Scenario: shop-templates update reports an advisory (without modifying ".claude/shop/name.md") when the on-disk name.md content does not match the canonical slug shape — surfacing legacy display-form name.md drift to the operator without violating the shop-owned-file rule
+  Given an existing git repository at a target directory "/tmp/example-update-target" that was previously bootstrapped as a "lead" shop
+  And the file at ".claude/shop/name.md" in the target directory has been edited so that its byte contents are exactly the literal string "shopsystem product" with a single trailing newline (a display form containing a literal space, not a canonical slug)
+  And I record the byte contents of the file at ".claude/shop/name.md" in the target directory before the invocation
+  When I invoke the "shop-templates" update entry point against the target directory "/tmp/example-update-target"
+  Then the exit code is 0
+  And after the invocation the file at ".claude/shop/name.md" in the target directory has byte-for-byte the same on-disk contents as before the invocation
+  And stderr contains an advisory naming the file ".claude/shop/name.md", the on-disk value "shopsystem product", the suggested canonical slug "shopsystem-product", and the instruction to edit name.md to the slug form
+  And the advisory explicitly notes that "shop-templates update" did not modify the shop-owned file

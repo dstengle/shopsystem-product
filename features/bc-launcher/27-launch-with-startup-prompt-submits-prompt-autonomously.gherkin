@@ -1,0 +1,13 @@
+Feature: bc-container launch --startup-prompt commits the prompt to the in-container agent such that the agent processes it without further input
+
+  Supersedes scenario 16 (features/bc-launcher/16-launch-with-startup-prompt.gherkin). The Implementer must locate the BC-side hash of scenario 16 in the shopsystem-bc-launcher feature surface and retire that hash when landing this scenario.
+
+  Scenario 16 pinned that the startup prompt text "followed by a newline has been sent to the tmux session". That pin is satisfied by writing a Line Feed byte into the tmux pane's input buffer, but for an interactive TUI such as Claude Code a buffered LF does not commit the input — only the Enter key (sent as a discrete tmux send-keys key name, not as a literal byte embedded in the text payload) submits the prompt to the agent. The bug under lead-xsmn reproduced exactly this: the launcher reported the prompt as injected, the prompt was visible in the agent's input buffer, and the agent did not engage until an empty inject forced a separate Enter keystroke. The user-meaningful behavior of --startup-prompt is autonomous engagement on launch; this scenario re-grounds the pin from "a newline byte was sent" to "the prompt has been submitted to the agent such that the agent processes it without further input from the host".
+
+  Scenario: bc-container launch with --startup-prompt commits the prompt to the agent's input loop on its own, with no follow-up keystroke from the host required
+    Given the shopsystem-bc-launcher BC is installed
+    And no Docker container named "bc-shopsystem-messaging" is running
+    When I run "bc-container launch shopsystem-messaging --startup-prompt 'bd prime'" and the launch command exits zero
+    Then no subsequent "bc-container inject" invocation (whether with a non-empty prompt or an empty prompt acting as a forced Enter) is required for the in-container agent to begin processing the prompt "bd prime"
+    And the in-container agent's input loop has been committed the prompt "bd prime" as a submitted input, not as an unsubmitted buffer entry awaiting an Enter keystroke
+    And the agent's observable state transitions from idle to actively processing the prompt "bd prime" as a direct consequence of the launch command completing

@@ -1,0 +1,13 @@
+Feature: bc-container inject commits the prompt to the in-container agent such that the agent processes it without further input
+
+  Supersedes scenario 07 (features/bc-launcher/07-inject-sends-prompt-to-tmux-session.gherkin). The Implementer must locate the BC-side hash of scenario 07 in the shopsystem-bc-launcher feature surface and retire that hash when landing this scenario.
+
+  Scenario 07 pinned that "the tmux session ... has received the text 'bd prime' followed by a newline via tmux send-keys". The same defect identified in lead-xsmn for the --startup-prompt path applies here: a Line Feed byte buffered into an interactive TUI's input does not commit; only the Enter key as a discrete tmux send-keys key name submits. The empirical workaround for the startup-prompt bug ("bc-container inject <bc> ''" — an empty inject that apparently sends a bare Enter) only works because the empty-text path happens to route through a different tmux send-keys invocation; a non-empty inject suffers the same latent submission failure as launch. This scenario re-grounds the inject pin from "a newline byte was sent" to "the prompt has been submitted to the agent such that the agent processes it without further input".
+
+  Scenario: bc-container inject commits the prompt to the agent's input loop on its own, with no follow-up keystroke from the host required
+    Given the shopsystem-bc-launcher BC is installed
+    And a Docker container named "bc-shopsystem-messaging" is running with a tmux session named "agent" hosting an interactive agent at its input prompt
+    When I run "bc-container inject shopsystem-messaging 'bd prime'" and the command exits zero
+    Then no subsequent "bc-container inject" invocation (whether with a non-empty prompt or an empty prompt acting as a forced Enter) is required for the in-container agent to begin processing the prompt "bd prime"
+    And the in-container agent's input loop has been committed the prompt "bd prime" as a submitted input, not as an unsubmitted buffer entry awaiting an Enter keystroke
+    And the agent's observable state transitions from idle to actively processing the prompt "bd prime" as a direct consequence of the inject command completing

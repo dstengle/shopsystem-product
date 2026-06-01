@@ -1,0 +1,13 @@
+Feature: bc-container launch --startup-prompt's autonomous-engagement guarantee is observable on the monitor surface within a bounded interval
+
+  Sibling pin to scenario 27 (features/bc-launcher/27-launch-with-startup-prompt-submits-prompt-autonomously.gherkin). Scenario 27 pins the behavior — the prompt is committed such that the agent processes it without further input — by reference to the agent's input-loop state. This scenario pins the *observability* of that behavior on the lead-host-reachable contract surface, so that the prompt-submission regression that reproduced under lead-xsmn (prompt visible in input buffer, agent not engaged) is detectable from the host without attaching into the container.
+
+  The contract surface for observation is "bc-container monitor", which streams the tmux pane's rendered output. "The agent has begun processing the prompt" is operationalized as a visible state-marker line in the streamed output that an idle, unsubmitted-buffer state does not produce — concretely, the agent's working/thinking indicator line (e.g. "Working… (thinking)" or the equivalent rendered by the agent runtime) appearing on the monitor stream after the launch command has exited.
+
+  Scenario: bc-container monitor surfaces an agent-working state-marker within a bounded interval of bc-container launch --startup-prompt exiting, with no human or host-side follow-up keystroke
+    Given the shopsystem-bc-launcher BC is installed
+    And no Docker container named "bc-shopsystem-messaging" is running
+    When I run "bc-container launch shopsystem-messaging --startup-prompt 'bd prime'" and the launch command exits zero
+    And I run "bc-container monitor shopsystem-messaging" and read its streamed output without issuing any further "bc-container inject" or other host-side keystroke
+    Then within 30 seconds of the launch command exiting, the streamed monitor output contains an agent-working state-marker line that is produced only when the agent has committed input and is actively processing it (and not produced when the agent is idle at an unsubmitted input buffer)
+    And the agent-working state-marker appears as a direct consequence of the launch's --startup-prompt being submitted, with no intervening "bc-container inject" invocation
