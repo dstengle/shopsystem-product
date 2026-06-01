@@ -1,0 +1,73 @@
+# shopsystem-shell — prototype daily-driver shell image.
+#
+# Owns: docker CLI for talking to the host daemon, python venv with the four
+# framework CLIs (shop-msg, scenarios, shop-templates, bc-container), bd binary
+# built from source, and tmux. Built and used locally during the BC-ownership
+# transition; canonical Dockerfile will be rendered by shopsystem-templates init
+# / published by shopsystem-bc-launcher once those scenarios land.
+
+# Stage 1: build bd from source (dolthub/beads ships no release binaries).
+FROM golang:1.24-bookworm AS bd-build
+RUN git clone --depth 1 https://github.com/dolthub/beads /src && \
+    cd /src && \
+    CGO_ENABLED=0 go build -trimpath -ldflags="-s -w" -o /out/bd ./cmd/bd
+
+FROM python:3.12-slim
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        ca-certificates \
+        curl \
+        git \
+        gnupg \
+        less \
+        sudo \
+        tmux \
+        vim \
+    && rm -rf /var/lib/apt/lists/*
+
+# Docker CLI + compose plugin — talks to host daemon via mounted /var/run/docker.sock.
+RUN install -m 0755 -d /etc/apt/keyrings && \
+    curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc && \
+    chmod a+r /etc/apt/keyrings/docker.asc && \
+    echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/debian $(. /etc/os-release && echo \"$VERSION_CODENAME\") stable" \
+        > /etc/apt/sources.list.d/docker.list && \
+    apt-get update && \
+    apt-get install -y --no-install-recommends \
+        docker-ce-cli \
+        docker-compose-plugin \
+    && rm -rf /var/lib/apt/lists/*
+
+# bd (beads) — copied from the build stage above.
+COPY --from=bd-build /out/bd /usr/local/bin/bd
+RUN chmod +x /usr/local/bin/bd
+
+# vscode user (uid 1000) to match the BC convention so bind-mounted /workspace
+# perms line up with the host devcontainer's vscode user.
+RUN useradd -m -u 1000 -s /bin/bash vscode && \
+    echo "vscode ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/vscode && \
+    chmod 0440 /etc/sudoers.d/vscode
+
+USER vscode
+WORKDIR /workspace
+
+# Pre-warm the framework venv. Pins mirror the lead repo's pyproject.toml
+# so `shop-msg`, `scenarios`, `shop-templates` are on PATH the moment the shell
+# opens. shop-templates pinned at the post-ADR-018 commit.
+#
+# bc-launcher is INTENTIONALLY OMITTED here — dstengle/shopsystem-bc-launcher is
+# a private repo and git clone needs credentials this image can't carry. Install
+# it at runtime from inside the shell once your gh credentials are available:
+#   pip install "bc-launcher @ git+https://github.com/dstengle/shopsystem-bc-launcher@caf62f5"
+# (Or make the repo public and add it to this layer.)
+RUN python3 -m venv /home/vscode/.venv && \
+    /home/vscode/.venv/bin/pip install --no-cache-dir \
+        "scenarios @ git+https://github.com/dstengle/shopsystem-scenarios@v0.1.0" \
+        "shop-templates @ git+https://github.com/dstengle/shopsystem-templates@ab59ff8" \
+        "shopsystem-messaging @ git+https://github.com/dstengle/shopsystem-messaging@v0.1.0"
+
+ENV PATH="/home/vscode/.venv/bin:$PATH"
+ENV BCLAUNCHER_HOST_HOME=/home/dstengle
+
+CMD ["/bin/bash"]

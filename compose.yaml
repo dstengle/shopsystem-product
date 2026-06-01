@@ -1,0 +1,33 @@
+# shopsystem-product runtime — postgres for shop-msg.
+#
+# Prototype shape during the BC-ownership transition. Canonical form will be
+# rendered by `shopsystem-templates init` per the design pinned in the templates
+# BC dispatch sequence following lead-yi0k.
+#
+# pgdata lives OUTSIDE the repo. Default is $HOME/.local/share/shopsystem/pgdata
+# (XDG-ish). Override via SHOPSYSTEM_DATA env var.
+#
+# The container name and network alias match the host the BCs are configured
+# against (shopsystem-messaging-postgres-1 / postgres), so existing BC
+# containers continue working when this compose takes ownership of postgres.
+
+services:
+  postgres:
+    image: postgres:16
+    container_name: shopsystem-messaging-postgres-1
+    networks:
+      shopsystem:
+        aliases:
+          - postgres
+    volumes:
+      - ${SHOPSYSTEM_DATA:-${HOME}/.local/share/shopsystem}/pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: shopsystem
+    restart: unless-stopped
+
+networks:
+  shopsystem:
+    name: shopsystem

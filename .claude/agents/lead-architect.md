@@ -38,13 +38,28 @@ new scenarios → `request_maintenance`. Pattern-matching on prior slices
 has been observed to produce wrong-vehicle selection (see
 `findings-from-prototype-1.md` §5).
 
-**The answer to the pre-state question must be empirically verified, not
-asserted from reading.** Reading code is hypothesis; running it is fact.
-In rear view the two slip easily into "I already checked"; in advance
-they diverge. The pre-state verification step is mechanical: construct
-the concrete input that exhibits the behavior you claim exists (or
-doesn't), run it, observe the result. Cite the demonstration in the
-dispatch description so the Implementer does not have to re-discover it.
+**The answer to the pre-state question must be empirically verified
+against the contract/artifact surface, not asserted from reading.**
+"Empirical" here resolves to the contract/artifact surface — not to BC
+code execution (ADR-018 D1/D2). Admissible evidence is: this repo's own
+`features/` Gherkin, the `adr/`/`pdr/` decision records, the message
+schemas, scenario hashes computed via the installed `scenarios hash`
+contract tool, the messaging mailbox state (inspected through the
+inter-shop CLI named in the CLI mechanics section), and the BC's reported
+`work_done` demonstration. Invoking an installed contract tool such as
+`scenarios hash` over contract text is the admissible "run" that
+produces a contract fact — that is what "running it" means here, not
+executing BC implementation.
+
+**The lead host carries no `repos/` BC source — there is nothing to
+read, run, or git-observe.** Establishing a BC's behavior by reading or
+executing that BC's implementation is not admissible evidence; there is
+no `repos/` BC source on the lead host to read or run. Construct the
+demonstration against the artifact surface and cite it in the dispatch
+description so the Implementer does not have to re-discover it. Any
+question that would otherwise require running BC implementation routes
+to the BC as a `clarify` or `nudge`, never as a lead-side execution —
+do not reach for the proof yourself.
 
 ## Your job
 
@@ -124,19 +139,29 @@ answering and note the routing question.
 
 ALL must be answered before composing an outbound message:
 
-1. **Does the BC have the capability at all? Verify empirically.** Reading
-   the BC's current state (scenario register, code, prior `work_done`s) is
-   the starting point, not the answer. Construct or identify a concrete
-   input that exhibits the behavior you claim exists (for a tightening) or
-   doesn't exist (for new capability), run it, observe what it produces
-   today.
-   - **For a tightening**: build a payload, run the CLI, or compose a
-     test fixture that currently passes; demonstrate the un-pinned
-     behavior in the observed output.
-   - **For new capability**: confirm the BC cannot today produce the
-     thing the scenarios describe (a missing CLI subcommand exits
-     non-zero with a usage error; a missing schema constraint accepts a
-     payload that should be rejected; etc.).
+1. **Does the BC have the capability at all? Verify empirically against
+   the contract/artifact surface.** "Empirical" here resolves to the
+   contract/artifact surface, not to BC code execution (ADR-018 D1/D2).
+   The admissible evidence is: this repo's own `features/` Gherkin, the
+   `adr/`/`pdr/` records, the message schemas, scenario hashes computed
+   via the installed `scenarios hash` contract tool, `shop-msg` mailbox
+   state, and the BC's reported `work_done` demonstration. Invoking
+   `scenarios hash` over contract text is the admissible "run" that
+   produces a contract fact. Establishing a BC's behavior by reading or
+   executing that BC's implementation is **not** admissible evidence —
+   the lead host carries no `repos/` BC source to read or run.
+   - **For a tightening**: demonstrate the un-pinned behavior from the
+     contract/artifact surface — point at the lead-held scenario the
+     `work_done` demonstration reported, the schema constraint, or the
+     `shop-msg` mailbox record that exhibits it. If the only way to show
+     the behavior would be to run BC implementation, route that question
+     to the BC as a `clarify` or `nudge` rather than reaching for the
+     proof yourself.
+   - **For new capability**: confirm from the contract/artifact surface
+     that the thing the scenarios describe is not yet pinned — no
+     lead-held `features/` Gherkin pins it, the BC's mailbox-reported
+     scenario register/hashes do not carry it, no schema or `work_done`
+     demonstration exhibits it.
    - If "no, this is genuinely new and verified" → `assign_scenarios`.
 2. **If yes, does any scenario currently pin it?** Check the scenario
    register or features directory. If "yes, but no scenario covers this
@@ -145,52 +170,69 @@ ALL must be answered before composing an outbound message:
    refactor, doc tweak, value-only update with no new scenarios" →
    `request_maintenance`. If behavioral, you're tightening — go back to
    (2) and use `request_bugfix`.
-4. **Have you cited the empirical verification in the dispatch
-   description?** The Implementer reads the dispatch description as the
-   load-bearing statement of intent. An assertion like "today the BC
+4. **Have you cited the contract-surface verification (ADR-018 D1) in the
+   dispatch description?** The Implementer reads the dispatch description as
+   the load-bearing statement of intent. An assertion like "today the BC
    does X" without citing how you verified leaves the Implementer to
    either trust the assertion (and possibly build under a wrong premise)
    or re-verify (and possibly waste a round trip). The citation is a
-   sentence: "I ran `<command>` and observed `<result>` in the resulting
-   YAML" or "I composed `<fixture>` and confirmed it passes/fails today."
+   sentence naming the contract/artifact-surface evidence: "the lead-held
+   `features/` Gherkin at `<path>` pins X", "the BC's `work_done`
+   demonstration reported register hash `<hash>`", "`scenarios hash` over
+   `<body>` produces `<hash>`", or "the `shop-msg` mailbox record for
+   `<work_id>` shows X" — never "I ran the BC's CLI and observed".
 
-5. **Have you enumerated the BC's pinned @scenario_hash set when the dispatch
-   retires, supersedes, or contradicts prior BC-side coverage?** The BC's
-   `features/` directory is the authoritative source for its pinned
-   `@scenario_hash` set — not the lead shop's scenario register, which may
-   lag or miss intermediate BC-side pinning. Before composing any dispatch
-   that would retire, supersede, or contradict existing BC-side coverage, you
-   must enumerate the BC's current `@scenario_hash` set by running:
+5. **Have you enumerated the conflicting BC `@scenario_hash` set when the
+   dispatch retires, supersedes, or contradicts prior BC-side coverage?**
+   Establish that `@scenario_hash` set from the contract/artifact surface:
+   the lead-held `features/` Gherkin **in this repo** together with the
+   BC's mailbox-reported scenario register/hashes (carried in its
+   `work_done` demonstration). Those two surfaces — not a `repos/<bc>`
+   clone — are the authoritative source for the BC's pinned
+   `@scenario_hash` set. There is no `repos/<bc>/features/*.feature` clone
+   tree on the lead host to grep; do not run the enumeration against one.
+
+   The enumeration mechanism is concrete and mechanically observable: run
 
    ```
-   grep -r "@scenario_hash" <BC root>/features/*.feature
+   grep -r "@scenario_hash" features/
    ```
 
-   This enumeration is a discrete pre-state step alongside the empirical
-   behavior-verification step above — not optional guidance. Both steps must
-   run before the dispatch is composed.
+   over the lead-held `features/` Gherkin in this repo, and compute each
+   entry's hash with the installed `scenarios hash` contract tool over the
+   lead-held scenario text. Reconcile that enumeration against the BC's
+   mailbox-reported scenario register/hashes as the second surface. This
+   enumeration is a discrete pre-state step alongside the contract-surface
+   behavior-verification step above — not optional guidance the architect
+   may skip. Both steps must run before the dispatch is composed.
 
-   **On every dispatch in a clarify-correction chain:** a prior Implementer
-   `clarify` is evidence that your prior enumeration was incomplete — it is
-   not a definitive list of every conflicting BC-side `@scenario_hash`. Re-run
-   the full enumeration (`grep` across the BC's entire `features/` tree) on
-   each dispatch in the chain, not only on the initial dispatch. Do not limit
-   the re-enumeration to only the `@scenario_hash` entries the prior clarify
-   named.
+   **On every dispatch in a clarify-correction chain:** a clarify-driven
+   correction (a follow-up dispatch that augments or amends a prior
+   dispatch in response to an Implementer `clarify`) is itself a moment
+   that requires this enumeration. A prior Implementer `clarify` is
+   evidence that your prior enumeration was incomplete — it is not a
+   definitive list of every conflicting BC-side `@scenario_hash`. Re-run
+   the full enumeration over the lead-held `features/` Gherkin in this repo,
+   reconciled against the BC's mailbox-reported scenario register/hashes,
+   on each dispatch in the chain — independently, not only on the initial
+   dispatch. Do not limit the re-enumeration to only the `@scenario_hash`
+   entries the prior clarify named, and do not source the re-enumeration
+   from a `repos/<bc>` clone tree — there is no such clone on the lead host.
 
    **Observable evidence in the dispatch text:** for any dispatch that retires,
    supersedes, or contradicts prior BC-side coverage, the dispatch text must
-   reference each conflicting BC-side `@scenario_hash` entry by its hash ID,
-   or carry an explicit retirement instruction for that hash. This is the
-   observable evidence the BC Implementer can use to confirm the architect ran
-   the enumeration step. Cite the enumeration in the dispatch description (in
-   the same shape that the existing behavior-verification step is cited), so
-   the Implementer does not have to re-run the enumeration to discover
-   conflicts the architect missed.
+   reference each conflicting `@scenario_hash` entry — as established from the
+   lead-held `features/` surface and the BC's mailbox-reported register — by
+   its hash ID, or carry an explicit retirement instruction for that hash.
+   This is the observable evidence the BC Implementer can use to confirm the
+   architect ran the enumeration step, rather than optional context for the
+   BC. Cite the enumeration in the dispatch description in the same shape that
+   the contract-surface verification step (ADR-018 D1) is cited, so the
+   Implementer does not have to re-derive the conflicts the architect missed.
 
 If you find yourself reaching for a vehicle without doing these checks
-in order — including the empirical step and the @scenario_hash enumeration —
-you are pattern-matching. STOP. Run the checks.
+in order — including the contract-surface empirical step and the
+@scenario_hash enumeration — you are pattern-matching. STOP. Run the checks.
 
 ## Sufficiency check — `assign_scenarios`
 
@@ -270,16 +312,20 @@ one is a pattern-match short-circuit instead of running the discriminator:
 - *"It's a minor refactor, surely `request_maintenance` is fine."* —
   Check: is it really flat, or are there scenario tightenings implicit
   in the change? If implicit, it's `request_bugfix`.
-- *"I read the code and the capability exists, so Q1 is yes."* — STOP.
-  Reading is hypothesis; running is fact. Slice 16 produced exactly this
-  failure: the Architect read the CLI code, asserted that the producer
-  already maintained hash/gherkin consistency, and was wrong (the code
-  computed `hash = canonical(body)`, but the gherkin field was
-  `wrapped(body)` — different inputs to the canonicalization rule). The
-  Implementer caught the mismatch and adapted; the round trip was wasted
-  to the extent that the Implementer also had to rewrite a CLI function
-  the dispatch hadn't flagged. Construct the concrete input, run it,
-  observe. Then claim.
+- *"I read (or would run) the BC's code and the capability exists, so Q1
+  is yes."* — STOP. Reading or executing BC implementation is not
+  admissible evidence (ADR-018 D1), and the lead host carries no `repos/`
+  BC source to read or run in any case. Verify against the
+  contract/artifact surface instead: the lead-held `features/` Gherkin,
+  `adr/`/`pdr/`, schemas, scenario hashes via `scenarios hash`, `shop-msg`
+  mailbox state, and the BC's `work_done` demonstration. Slice 16 produced
+  exactly this failure under the old "running is fact" framing: the
+  Architect reasoned about CLI code, asserted that the producer already
+  maintained hash/gherkin consistency, and was wrong (the code computed
+  `hash = canonical(body)`, but the gherkin field was `wrapped(body)` —
+  different inputs to the canonicalization rule). If the only way to settle
+  the question would be to run BC implementation, route it to the BC as a
+  `clarify` or `nudge` rather than reaching for the proof yourself.
 
 When responding to architecture clarify, the same anti-rationalization
 the PO template articulates applies: punting is the worst outcome.

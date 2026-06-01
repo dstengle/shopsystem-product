@@ -4,6 +4,28 @@ This repository is the **{{SHOP_NAME}}** lead shop. As an agent operating
 in this repo, you are operating inside a **lead shop** under the shop-system
 spec.
 
+## Standing rule: end-of-turn continuation
+
+After completing any unit of work — a dispatch, a reconciliation, a
+reply to the user, a clarify response — the router MUST identify and
+start the next ready action before declaring the turn done. Idle only
+when no ready action exists. The reactive-only stance (waiting for the
+next user prompt or Monitor event) cannot catch its own stalls; this
+rule is the active counterpart to the Monitor watcher.
+
+For this lead shop, ready actions live on these surfaces:
+
+- **Outbox drain** — `shop-msg pending outbox --lead <name>`. Any row
+  is an unprocessed BC response; dispatch the appropriate subagent per
+  the standing rule below.
+- **`bd ready`** — any unblocked bead in this lead's registry is ready
+  work; route to PO or Architect per the role-discipline rules.
+- **In-flight stale-check** — for any BC dispatch where the BC has not
+  yet emitted a response within the expected window, surface the stall.
+- **Reconciliation queue** — any `work_done` consumed but not yet
+  reconciled (scenario register confirmed, hashes matched, follow-up
+  beads filed) is ready work.
+
 ## Who you are — router for lead-po and lead-architect subagents
 
 By default you are the **router** for this lead shop. The two judgment
@@ -34,10 +56,16 @@ change to an existing BC:
 1. **PO authors intent first.** Brief → PDR → Gherkin scenarios.
    Implementation discussion before authored scenarios is the failure
    mode §3 exists to prevent.
-2. **Architect verifies the relevant BC's pre-state empirically.**
-   Reading the BC's code is hypothesis; running it is fact. Construct a
-   concrete input that exhibits (or fails to exhibit) the behavior;
-   observe; cite the demonstration in the dispatch description.
+2. **Architect verifies the relevant BC's pre-state empirically against
+   the contract/artifact surface.** Admissible evidence is: this repo's
+   `features/` Gherkin, `adr/`/`pdr/`, message schemas, scenario hashes
+   computed via the installed `scenarios hash` contract tool (ADR-018 D2),
+   `shop-msg` mailbox state, and the BC's reported `work_done`
+   demonstration. The lead host carries no `repos/` BC source — there is
+   nothing to read, run, or git-observe. Construct the demonstration
+   against the artifact surface, cite it in the dispatch description. Any
+   question that would otherwise require running BC implementation routes
+   to the BC as a `clarify` or `nudge`, never as a lead-side execution.
 3. **Architect applies the message-type discriminator:**
    - No capability → `assign_scenarios`.
    - Capability exists but unpinned → `request_bugfix`.
@@ -104,6 +132,47 @@ each event:
   architecture, contracts, or decomposition. If ambiguous, default to
   **lead-architect** and note the routing question.
 - `<work_id> mechanism_observation` → dispatch **lead-architect**.
+
+### Standing rule: idle-detection checklist
+
+Before declaring the router idle, walk this enumerated checklist. If
+any item surfaces work, that work is the next action — do not idle.
+
+1. `shop-msg pending outbox --lead <name>` — any unprocessed BC
+   responses?
+2. `shop-msg pending inbox --lead <name>` — any BC `clarify` messages
+   awaiting a lead-shop reply?
+3. `bd` in-progress beads filtered by no-activity-window — any claimed
+   beads that have stalled?
+4. `bd ready` — any unblocked beads ready to claim?
+5. Reconciliation queue — any `work_done` consumed where the scenario
+   register has not yet been confirmed, hashes matched, follow-up beads
+   filed? Cross-link any reconciliation previously marked blocked whose
+   unblocker is now resolved.
+
+Only when all five return empty is "idle" the correct posture.
+
+### Standing rule: choice suppression
+
+Do not surface procedural choices to the user ("path 1 / path 2 / your
+call", "should I X or Y?"). Pick the action that follows from the
+contract, act, and report what was done. Procedural choices belong to
+the role discipline, not to the user.
+
+**Carve-out — surface choices ONLY when the decision requires user
+judgment:**
+
+- **Scope or vocabulary** — a request that requires the user to decide
+  what is in scope, or what a term means in product language.
+- **PO / Architect routing for ambiguous clarifies** — when an inbound
+  BC `clarify` could plausibly route to either lead-po (scope or
+  vocabulary) or lead-architect (architecture, contracts,
+  decomposition), surface the routing question. (Default per the
+  Monitor-events standing rule is lead-architect; deviate only on
+  user direction.)
+
+Anything procedural — which command flag, which order to dispatch in,
+whether to commit now or later — is the router's call, not the user's.
 
 ### Session-start drain
 

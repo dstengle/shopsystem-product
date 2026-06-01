@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+# shop-shell — one-entrypoint shell for working on this shop.
+#
+# Brings up postgres (if not already running) and drops you into the
+# shopsystem-shell container with /workspace bind-mounted to the repo root.
+# Host requirement: docker only.
+#
+# Override the shell image with SHOPSYSTEM_SHELL_IMAGE; defaults to the local
+# prototype tag, which you build with:
+#   docker build -t shopsystem-shell:dev -f Dockerfile.shopsystem-shell .
+
+set -euo pipefail
+
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+DATA="${SHOPSYSTEM_DATA:-$HOME/.local/share/shopsystem}"
+IMAGE="${SHOPSYSTEM_SHELL_IMAGE:-shopsystem-shell:dev}"
+
+mkdir -p "$DATA/pgdata"
+
+# Bring up postgres if it isn't already.
+if ! docker ps --format '{{.Names}}' | grep -qx shopsystem-messaging-postgres-1; then
+    docker compose -f "$ROOT/compose.yaml" up -d postgres
+fi
+
+# Hand off to the shell container.
+exec docker run --rm -it \
+    --network shopsystem \
+    --workdir /workspace \
+    -v "$ROOT:/workspace" \
+    -v /var/run/docker.sock:/var/run/docker.sock \
+    -v "$HOME/.claude:/home/vscode/.claude" \
+    -v "$HOME/.gitconfig:/home/vscode/.gitconfig:ro" \
+    -e SHOPMSG_DSN="postgresql://postgres:postgres@shopsystem-messaging-postgres-1:5432/shopsystem" \
+    "$IMAGE" \
+    bash
