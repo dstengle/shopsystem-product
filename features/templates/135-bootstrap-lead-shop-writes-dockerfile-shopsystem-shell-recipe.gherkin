@@ -3,7 +3,8 @@ Scenario: bootstrap of a "lead" shop writes a top-level "Dockerfile.shopsystem-s
   When I invoke the "shop-templates" bootstrap entry point with shop type "lead", shop name "shopsystem-product", and target directory "/tmp/example-lead-shop"
   Then the exit code is 0
   And after the invocation the target directory contains a top-level file named "Dockerfile.shopsystem-shell"
-  And the file at "Dockerfile.shopsystem-shell" in the target directory contains at least one line beginning with the literal token "FROM "
-  And the file at "Dockerfile.shopsystem-shell" in the target directory contains the literal substring "docker-ce-cli"
+  And the file at "Dockerfile.shopsystem-shell" in the target directory contains a "FROM" instruction whose literal image reference is "ghcr.io/dstengle/devcontainer-python-node-claude:latest", which is the same devcontainer base image the lead host and bc-launcher containers run and which already ships a working docker CLI on PATH for the non-root shell user
+  And the file at "Dockerfile.shopsystem-shell" in the target directory does not contain the literal substring "docker-ce-cli", because the docker CLI is provided by the devcontainer base image rather than by an explicit apt-install layer
+  And the file at "Dockerfile.shopsystem-shell" in the target directory contains a "USER" instruction whose literal token form names a non-root user, so the built image runs the shell as that user and the base image's socket-GID reconciler can make the mounted docker socket reachable
   And the file at "Dockerfile.shopsystem-shell" in the target directory installs at least one of the framework CLIs by literal substring match against the set "shop-msg", "scenarios", or "shop-templates"
   And the file at "Dockerfile.shopsystem-shell" in the target directory contains a "CMD" or "ENTRYPOINT" instruction whose literal token form references "/bin/bash" or "bash"
