@@ -1,0 +1,13 @@
+Feature: the bc-base image is published to ghcr on a bc-launcher version-tag release, with a version tag and latest, public
+
+  Pins ADR-021 D1 (publication contract), mirroring the templates-142 contract
+  applied to the new image path ghcr.io/dstengle/shopsystem-bc-base. The version
+  tag is the bc-launcher release version (the image is bc-launcher's own CI
+  artifact). (Targets shopsystem-bc-launcher.)
+
+  Scenario: when a "vMAJOR.MINOR.PATCH" tag is pushed to the bc-launcher repository, the bc-base image is built and published to ghcr with that version tag and "latest", public
+    Given a tag named "v0.2.0" is pushed to the "main" branch of the shopsystem-bc-launcher source repository
+    When the bc-launcher publish workflow associated with that tag push completes successfully
+    Then the registry "ghcr.io" exposes an image manifest at the repository path "dstengle/shopsystem-bc-base" reachable by the image tag "v0.2.0"
+    And the registry "ghcr.io" exposes an image manifest at the repository path "dstengle/shopsystem-bc-base" reachable by the image tag "latest" pointing to the same digest as the "v0.2.0" tag
+    And both image tags can be pulled by an unauthenticated "docker pull" client because the package is published with public visibility

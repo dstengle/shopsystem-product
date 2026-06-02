@@ -1,0 +1,13 @@
+Feature: the shopsystem-bc-base image recipe is owned by and co-located in the shopsystem-bc-launcher repository
+
+  Pins ADR-021 D1 (ownership). bc-launcher is the sole consumer that hardcodes
+  BC_IMAGE="ghcr.io/dstengle/shopsystem-bc-base:latest"; ownership of the image
+  recipe therefore sits with that consumer. This scenario pins that the
+  Dockerfile that builds bc-base lives in the bc-launcher repo — there is no
+  separate bc-base repo or owner BC. (Targets shopsystem-bc-launcher.)
+
+  Scenario: the bc-launcher repository contains the Dockerfile that builds the bc-base image
+    Given the shopsystem-bc-launcher BC repository
+    When the repository file tree is inspected
+    Then a Dockerfile that builds the shopsystem-bc-base image exists at a tracked path within the bc-launcher repository
+    And that Dockerfile installs the framework utility CLIs from their VCS or published-package version pins in the "github.com/dstengle/<utility> @ vMAJOR.MINOR.PATCH" shape rather than from an editable clone

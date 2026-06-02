@@ -1,0 +1,34 @@
+Feature: on a version-tag release, each framework-utility repo emits a repository_dispatch to the bc-launcher build workflow
+
+  Pins ADR-021 D2 (cross-repo auto-rebuild, trigger-EMIT side). A
+  "framework-utility release" is a version-tag push on a utility repo (the
+  scenario-129 / scenario-142 release convention). On such a release, the utility
+  repo's release workflow fires a "repository_dispatch" event at the
+  shopsystem-bc-launcher repository — the inbound signal scenario 38 rebuilds on.
+  Each utility carries one small emit step; the build authority stays in
+  bc-launcher.
+
+  One Scenario per utility repo so each names a concrete target the Architect can
+  tag and route. bc-launcher's own release is NOT covered here — its own
+  same-repo tag trigger (scenario 37) is its rebuild reason.
+
+  Scenario: on a version-tag release of shopsystem-messaging, its release workflow emits a repository_dispatch to the bc-launcher repository
+    Given the shopsystem-messaging source repository
+    And a tag named "v0.2.0" is pushed to its "main" branch
+    When the shopsystem-messaging release workflow associated with that tag push runs to successful completion
+    Then the workflow performs a "repository_dispatch" API call targeting the "shopsystem-bc-launcher" repository
+    And that dispatch call carries a credential authorized to dispatch to the bc-launcher repository
+
+  Scenario: on a version-tag release of shopsystem-scenarios, its release workflow emits a repository_dispatch to the bc-launcher repository
+    Given the shopsystem-scenarios source repository
+    And a tag named "v0.2.0" is pushed to its "main" branch
+    When the shopsystem-scenarios release workflow associated with that tag push runs to successful completion
+    Then the workflow performs a "repository_dispatch" API call targeting the "shopsystem-bc-launcher" repository
+    And that dispatch call carries a credential authorized to dispatch to the bc-launcher repository
+
+  Scenario: on a version-tag release of shopsystem-templates, its release workflow emits a repository_dispatch to the bc-launcher repository
+    Given the shopsystem-templates source repository
+    And a tag named "v0.2.0" is pushed to its "main" branch
+    When the shopsystem-templates release workflow associated with that tag push runs to successful completion
+    Then the workflow performs a "repository_dispatch" API call targeting the "shopsystem-bc-launcher" repository
+    And that dispatch call carries a credential authorized to dispatch to the bc-launcher repository

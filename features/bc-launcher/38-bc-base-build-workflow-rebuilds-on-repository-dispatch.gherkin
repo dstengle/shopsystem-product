@@ -1,0 +1,15 @@
+Feature: the bc-launcher build workflow also rebuilds bc-base and republishes :latest on an inbound repository_dispatch
+
+  Pins ADR-021 D2 (cross-repo auto-rebuild, BUILD side). The bc-launcher build
+  workflow listens for a "repository_dispatch" event in addition to its same-repo
+  triggers; an inbound dispatch — the cross-repo signal a utility release emits —
+  causes a fresh bc-base build that incorporates the current utility versions and
+  a republish of the floating "latest" tag to the new digest. (Targets
+  shopsystem-bc-launcher.)
+
+  Scenario: an inbound repository_dispatch event to the bc-launcher repository rebuilds bc-base and republishes the latest tag to the new digest
+    Given the shopsystem-bc-launcher BC repository
+    And the image tag "latest" at "ghcr.io/dstengle/shopsystem-bc-base" currently points to a digest "D_old"
+    When a "repository_dispatch" event is delivered to the bc-launcher repository and the bc-launcher build workflow runs to successful completion in response to that event
+    Then a new bc-base image is built that installs the current framework utility versions producing a digest "D_new" distinct from "D_old"
+    And the registry "ghcr.io" exposes the image tag "latest" at the repository path "dstengle/shopsystem-bc-base" pointing to "D_new"

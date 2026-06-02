@@ -1,0 +1,15 @@
+Feature: a bad bc-base release can be rolled back by republishing a prior known-good digest as :latest
+
+  Pins ADR-021 D4 interim mitigation ONLY. Controlled/pinned propagation and rich
+  rollback ergonomics are DEFERRED future work and are deliberately NOT authored
+  here. This scenario pins only the one clean observable: because every prior
+  bc-base build remains pullable by digest on the public ghcr publication
+  (scenario 37), the "latest" tag can be repointed at an earlier known-good
+  digest. (Targets shopsystem-bc-launcher.)
+
+  Scenario: republishing a prior known-good digest as the latest tag makes latest resolve to that earlier digest
+    Given the registry "ghcr.io/dstengle/shopsystem-bc-base" holds a prior known-good build pullable by its digest "D_good"
+    And the "latest" tag currently points to a later digest "D_bad"
+    When the "latest" tag is republished to point at the existing digest "D_good"
+    Then the registry exposes the image tag "latest" at the repository path "dstengle/shopsystem-bc-base" pointing to "D_good"
+    And no new image build is required because "D_good" is an already-published digest re-tagged in place
