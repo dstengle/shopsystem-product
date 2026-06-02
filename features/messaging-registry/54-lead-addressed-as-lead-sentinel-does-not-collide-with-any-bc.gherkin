@@ -1,0 +1,8 @@
+Scenario: A message to the lead routes to the lead sentinel address and does not land in any BC inbox
+  Given "shopsystem-product" is registered as the lead shop with abstract address "shopsystem/lead"
+  And "shopsystem-messaging" is registered in the messaging registry with abstract address "shopsystem/messaging"
+  When a BC sends a response addressed to the lead with work-id "reg-541"
+  Then the command exits zero
+  And the stored message's "to" field is the abstract address "shopsystem/lead"
+  And shop-msg pending inbox --lead shopsystem-product includes work-id "reg-541"
+  And shop-msg pending inbox --bc shopsystem-messaging does not include work-id "reg-541"
