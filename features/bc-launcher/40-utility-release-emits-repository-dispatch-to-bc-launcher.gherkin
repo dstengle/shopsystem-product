@@ -19,12 +19,19 @@ Feature: on a version-tag release, each framework-utility repo emits a repositor
     Then the workflow performs a "repository_dispatch" API call targeting the "shopsystem-bc-launcher" repository
     And that dispatch call carries a credential authorized to dispatch to the bc-launcher repository
 
-  Scenario: on a version-tag release of shopsystem-scenarios, its release workflow emits a repository_dispatch to the bc-launcher repository
-    Given the shopsystem-scenarios source repository
-    And a tag named "v0.2.0" is pushed to its "main" branch
-    When the shopsystem-scenarios release workflow associated with that tag push runs to successful completion
-    Then the workflow performs a "repository_dispatch" API call targeting the "shopsystem-bc-launcher" repository
-    And that dispatch call carries a credential authorized to dispatch to the bc-launcher repository
+  # Declarative-shape pin (per lead-usc7 / 40c precedent, clarify lead-jx4u): a
+  # no-Actions-runner BDD harness cannot exercise a live workflow run, so the
+  # emit behavior is verified by inspecting the release workflow file as a
+  # declarative artifact. Whether BC_LAUNCHER_DISPATCH_TOKEN is actually
+  # configured with dispatch permission in GitHub settings is OUT-OF-BAND and is
+  # NOT asserted in-suite; "the step references the named secret" is the
+  # in-suite proxy for "authorized credential".
+  Scenario: shopsystem-scenarios' release workflow declares a repository_dispatch emit to the bc-launcher repository on a version-tag release
+    Given the shopsystem-scenarios framework-utility source repository
+    When its release workflow file under ".github/workflows/" is inspected
+    Then the workflow declares a trigger on push of tags matching "v*"
+    And the workflow contains a step that performs a "repository_dispatch" targeting the "dstengle/shopsystem-bc-launcher" repository, satisfied by either a REST call to the GitHub repository-dispatches API or a use of the "peter-evans/repository-dispatch" action
+    And that step references the secret "BC_LAUNCHER_DISPATCH_TOKEN" as the dispatch token
 
   Scenario: on a version-tag release of shopsystem-templates, its release workflow emits a repository_dispatch to the bc-launcher repository
     Given the shopsystem-templates source repository
