@@ -1,0 +1,12 @@
+Feature: bc-container launch leaves beads functionally usable inside the container, not merely pulled
+
+  Sibling pin to scenario 03 (features/bc-launcher/03-launch-inits-beads-inside-container.gherkin). Scenario 03 pins the mechanical facts that "bd dolt pull has been run" and "a .beads directory exists". This session reproduced a defect those facts do not catch: launch reported "Ran bd dolt pull" and .beads existed, yet bd create failed inside the shopsystem-messaging container because issue_prefix config was missing. Beads was pulled but not usable. This scenario re-grounds the readiness pin from "the pull command ran" to "beads is functional": the operations the in-container agent actually depends on (bd create, bd ready) succeed.
+
+  Scenario: after bc-container launch, beads is functionally usable inside the container with a configured issue prefix
+    Given the shopsystem-bc-launcher BC is installed
+    And a BC named "shopsystem-messaging" with a valid repo URL is configured
+    When I run bc-container launch with BC name "shopsystem-messaging"
+    And the container has cloned the repository and bd dolt pull has been run inside the workspace directory
+    Then the beads issue_prefix configured inside the container's .beads is non-empty and matches the BC's expected prefix
+    And bd create run inside the container's workspace directory exits zero and yields a new issue id carrying that prefix
+    And bd ready run inside the container's workspace directory exits zero

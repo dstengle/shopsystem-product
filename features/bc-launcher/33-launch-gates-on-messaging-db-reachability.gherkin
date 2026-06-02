@@ -1,0 +1,12 @@
+Feature: bc-container launch verifies the messaging database is reachable before the agent is told to engage
+
+  Distinct from messaging scenario 18 (features/messaging/18-watch-db-unreachable.gherkin). Scenario 18 pins that the shop-msg watch *command* fails fast and names the DSN when its own database is unreachable — a command-level guard that fires only once the agent has already run that command. It is not a launch-time gate. This session reproduced the gap: a container can be launched, reported as ready, and the agent engaged, while the messaging side is broken — the agent then discovers the breakage mid-work (the bd-facade FileNotFoundError when shop-msg respond ran). This scenario pins the readiness gate at launch: launch checks that the SHOPMSG_DSN database is reachable before injecting the startup prompt, and on an unreachable database surfaces a readiness failure instead of presenting an engaged-but-broken agent.
+
+  Scenario: bc-container launch surfaces a readiness failure when the messaging database is unreachable, before the agent engages
+    Given the shopsystem-bc-launcher BC is installed
+    And no Docker container named "bc-shopsystem-messaging" is running
+    And SHOPMSG_DSN for the container points at an address where no reachable database is listening
+    When I run bc-container launch with BC name "shopsystem-messaging" and a startup prompt
+    Then the command exits non-zero
+    And stderr reports a messaging readiness failure that names the SHOPMSG_DSN value
+    And no startup prompt has been sent to the tmux session named "agent" in container "bc-shopsystem-messaging"
