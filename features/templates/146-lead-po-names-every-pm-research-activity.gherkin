@@ -1,0 +1,6 @@
+Scenario: lead-po template names every Product-Manager research flavor with guidance or a "guidance pending" marker
+  Given the four PM research flavors "competitive/market analysis", "domain & DDD discovery", "deep-research investigations", and "requirements elicitation"
+  When I read the lead-po template via "shop-templates show lead-po"
+  Then the content names each of the four research flavors
+  And for each flavor, the content has a contiguous block — either a subsection that names the flavor or a line that names the flavor — that contains at minimum one sentence of guidance OR an explicit marker of the form "guidance pending" (case-insensitive)
+  And no PM research flavor appears as a bare list item with neither guidance nor a "guidance pending" marker
