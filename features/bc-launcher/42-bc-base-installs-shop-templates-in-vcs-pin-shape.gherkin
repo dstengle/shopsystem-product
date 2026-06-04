@@ -1,0 +1,15 @@
+Feature: the bc-base Dockerfile installs shop-templates alongside the other framework utility CLIs in the VCS-pin shape
+
+  Complements scenario 36 (d9909f38), which pins that the bc-base Dockerfile
+  installs the framework utility CLIs in the "github.com/dstengle/<utility> @
+  vMAJOR.MINOR.PATCH" shape rather than from an editable clone. This scenario
+  names shop-templates specifically: the image must carry the shop-templates
+  binary so the launch-time pour has something to run, installed in the same
+  VCS-pin shape (not an editable clone) as shop-msg and beads already are.
+  (Targets shopsystem-bc-launcher.)
+
+  Scenario: the bc-base Dockerfile installs shop-templates from a VCS version pin alongside the other framework utility CLIs
+    Given the shopsystem-bc-launcher BC repository
+    When the bc-base Dockerfile in that repository is inspected
+    Then the Dockerfile installs "shop-templates" from a "github.com/dstengle/shop-templates @ vMAJOR.MINOR.PATCH" version pin rather than from an editable clone
+    And that shop-templates install sits alongside the other framework utility CLIs the Dockerfile installs in the same VCS-pin shape

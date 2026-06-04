@@ -1,0 +1,19 @@
+Feature: bc-container launch pours the shop-templates skill-group into the launched BC shop's .claude/skills/
+
+  The bc-base image carries the shop-templates binary (scenario 42). Carrying
+  the binary is not enough — the launched BC agent reads its skills from the BC
+  shop's .claude/skills/, which a freshly cloned BC repo does not provide. This
+  scenario pins that launch runs the shop-templates pour inside the container so
+  the skill-group lands in the launched BC shop's .claude/skills/, observable
+  after launch, without pinning how the pour is invoked internally. Builds on
+  the in-container launch steps already pinned by scenarios 02 (clone) and 03
+  (beads pull). (Targets shopsystem-bc-launcher.)
+
+  Scenario: bc-container launch pours the shop-templates skill-group into the launched BC shop after cloning
+    Given the shopsystem-bc-launcher BC is installed
+    And a BC named "shopsystem-messaging" with a valid repo URL is configured
+    And the bc-base image carries the shop-templates binary
+    When I run bc-container launch with BC name "shopsystem-messaging"
+    And the container has cloned the repository
+    Then the shop-templates pour has been run inside the container's workspace directory
+    And the workspace's ".claude/skills/" directory is populated with the shop-templates skill-group after launch completes
