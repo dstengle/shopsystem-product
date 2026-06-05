@@ -1,0 +1,25 @@
+# BC manifest — the lead shop's declarative registry of the product's Bounded
+# Contexts (ADR-005, features/bc-manifest). Well-known path: repo root,
+# committed, not gitignored. Consumed by `bc-container manifest list|validate|
+# sync` and as the source of remote URLs when launching BCs.
+#
+# Each entry: name (canonical shopsystem-<id>), remote (GitHub URL), role.
+bcs:
+  - name: shopsystem-messaging
+    remote: https://github.com/dstengle/shopsystem-messaging
+    role: bc
+  - name: shopsystem-scenarios
+    remote: https://github.com/dstengle/shopsystem-scenarios
+    role: bc
+  - name: shopsystem-templates
+    remote: https://github.com/dstengle/shopsystem-templates
+    role: bc
+  - name: shopsystem-test-harness
+    remote: https://github.com/dstengle/shopsystem-test-harness
+    role: bc
+  - name: shopsystem-devcontainer
+    remote: https://github.com/dstengle/shopsystem-devcontainer
+    role: bc
+  - name: shopsystem-bc-launcher
+    remote: https://github.com/dstengle/shopsystem-bc-launcher
+    role: bc

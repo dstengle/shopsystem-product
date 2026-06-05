@@ -54,9 +54,17 @@ scenarios, and is also the candidate the BC template would deliver for the BC
 decomposition discipline (`lead-ir9m`). A later slice adds Discipline 3
 (strategy: `product-strategy-session`, `prioritization-advisor`).
 
+## Lead operations skills (not PM disciplines)
+
+Some skills here are **lead operational** capabilities rather than PM research
+disciplines — same experimental-first status, different lineage.
+
+| Skill | What it does |
+|---|---|
+| [`bring-up-bc`](bring-up-bc/SKILL.md) | Instantiate a BC as a running container via `bc-container` so the lead can dispatch to it (DSN/network, the devcontainer `BCLAUNCHER_HOST_HOME` gotcha, verification). |
+
 ## How a skill graduates
 
-When a skill proves useful in real PO work, its sufficiency contribution is
-pinned by a Gherkin scenario in `features/templates/` and dispatched
-(`assign_scenarios`) to the `shopsystem-templates` BC so the lead-po template
-owns it. Until then it lives here, experimental.
+When a skill proves useful in real lead work, it is pinned by a Gherkin scenario
+in `features/` and dispatched (`assign_scenarios`) to the `shopsystem-templates`
+BC so the canonical lead template owns it. Until then it lives here, experimental.
