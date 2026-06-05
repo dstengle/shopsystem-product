@@ -43,12 +43,16 @@ rules (from PDR-012, carried from the TDD/superpowers precedent):
 | [`problem-framing-canvas`](problem-framing-canvas/SKILL.md) | D1 — Problem discovery & selection | brief/PDR problem statement + "How Might We" |
 | [`opportunity-solution-tree`](opportunity-solution-tree/SKILL.md) | D1 — Problem discovery & selection | PDR (outcome → opportunities → bet); chosen behavior → Gherkin |
 | [`company-research`](company-research/SKILL.md) | D1 — consumer-fork market input | brief market/competitive context |
+| [`work-splitting`](work-splitting/SKILL.md) | D4 — specification (right-sizing) | Epic → scenarios; thin single-behavior scenarios |
 
-These four cluster on **Discipline 1 (problem discovery & selection)** on
+The first four cluster on **Discipline 1 (problem discovery & selection)** on
 purpose — the determination named it "the scarcest good," and it is exactly
-where the current order-taking PO is weakest. Later slices add Discipline 4
-(specification: `user-story-splitting`) and Discipline 3 (strategy:
-`product-strategy-session`, `prioritization-advisor`).
+where the current order-taking PO is weakest. `work-splitting` adds the first
+**Discipline 4** (specification) slice — it imports the splitting *technique*
+(not the user-story artifact) to right-size Epics into thin, single-behavior
+scenarios, and is also the candidate the BC template would deliver for the BC
+decomposition discipline (`lead-ir9m`). A later slice adds Discipline 3
+(strategy: `product-strategy-session`, `prioritization-advisor`).
 
 ## How a skill graduates
 

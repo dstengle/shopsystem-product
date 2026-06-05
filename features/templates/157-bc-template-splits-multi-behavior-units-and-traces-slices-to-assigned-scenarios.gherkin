@@ -1,0 +1,5 @@
+Scenario: bc-implementer template's decomposition discipline splits multi-behavior units and traces thin slices to the assigned scenarios
+  When I read the bc-implementer template via "shop-templates show bc-implementer"
+  Then the decomposition discipline states that a unit carrying multiple distinct When/Then behaviors is split into focused single-behavior units
+  And the decomposition discipline states that each thin slice traces to the assigned scenarios the BC received
+  And the discipline names the multiple-When/Then tell as the signal that a unit must be split, consistent with one unit pinning one behavior

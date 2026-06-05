@@ -1,0 +1,5 @@
+Scenario: bc-implementer template's decomposition discipline defines a well-sized unit as a thin vertical slice that pins one coherent behavior
+  When I read the bc-implementer template via "shop-templates show bc-implementer"
+  Then the decomposition discipline states a sufficiency criterion that a well-sized sub-unit is a thin vertical slice that pins one coherent behavior
+  And the criterion is stated as a measurable property of the unit — it pins a coherent behavior — rather than as a constraint such as "keep files small" or "don't make it too big"
+  And the discipline names "right-sizing" as the discipline by that term

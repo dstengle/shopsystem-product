@@ -1,0 +1,7 @@
+Scenario: bc-implementer template names a decomposition/right-sizing discipline on the existing "break down into sub-issues" activity with guidance or a "guidance pending" marker
+  Given the §4.2 BC-shop activity "break down into sub-issues" already exists in the authoritative activity catalogue
+  When I read the bc-implementer template via "shop-templates show bc-implementer"
+  Then the content names a decomposition or right-sizing discipline attached to the existing breakdown activity rather than introducing breakdown as a new activity
+  And the content states that the discipline develops the quality of an existing §4.2 activity, so its criteria live in the role template and are iterable without spec churn
+  And the discipline has a contiguous block — a subsection or a line that names it — that contains at minimum one sentence of guidance OR an explicit marker of the form "guidance pending" (case-insensitive)
+  And the decomposition discipline does not appear as a bare list item with neither guidance nor a "guidance pending" marker

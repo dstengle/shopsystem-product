@@ -1,0 +1,5 @@
+Scenario: bc-implementer template's decomposition discipline stays agnostic about which BC role owns it and marks the role-split as an architect decision
+  When I read the bc-implementer template via "shop-templates show bc-implementer"
+  Then the decomposition discipline does not assert that the Implementer is the permanent or exclusive owner of the right-sizing discipline
+  And the content states that which BC role owns the decomposition discipline — the Implementer or a future BC-local architect — is a decision owned by the lead Architect and is marked "guidance pending" (case-insensitive)
+  And the content pins the decomposition discipline itself as in scope for the BC role regardless of which role ultimately owns it
