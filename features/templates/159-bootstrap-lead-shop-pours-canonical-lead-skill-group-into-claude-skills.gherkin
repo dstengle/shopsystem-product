@@ -1,0 +1,11 @@
+Scenario Outline: bootstrap for a lead shop pours the canonical lead skill-group into ".claude/skills/", each skill as ".claude/skills/<name>/SKILL.md" byte-for-byte from package data
+  Given an existing git repository at a target directory "<target>" with no ".claude/skills/" directory
+  When I invoke the "shop-templates" bootstrap entry point with shop type "<shop_type>", shop name "<shop_name>", and target directory "<target>"
+  Then the exit code is 0
+  And for every skill "<skill>" in the canonical lead skill-group the target directory contains a file at ".claude/skills/<skill>/SKILL.md"
+  And the content of each such ".claude/skills/<skill>/SKILL.md" file equals the package-data file contents of that canonical lead skill template byte-for-byte
+  And the directory ".claude/skills/" in the target directory contains no skill directories other than the members of the canonical lead skill-group
+
+  Examples:
+    | shop_type | shop_name          | target                 |
+    | lead      | shopsystem-product | /tmp/example-lead-shop |

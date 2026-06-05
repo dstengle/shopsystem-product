@@ -1,0 +1,12 @@
+Scenario Outline: the poured "bring-up-bc" skill is a member of the canonical lead skill-group and its body names launching via bc-container, the BCLAUNCHER_HOST_HOME devcontainer fact, and the shop-msg bc-status online check
+  Given an existing git repository at a target directory "<target>" with no ".claude/skills/" directory
+  When I invoke the "shop-templates" bootstrap entry point with shop type "<shop_type>", shop name "<shop_name>", and target directory "<target>"
+  Then the exit code is 0
+  And the target directory contains a file at ".claude/skills/bring-up-bc/SKILL.md"
+  And the content of ".claude/skills/bring-up-bc/SKILL.md" names launching a BC via "bc-container launch"
+  And the content of ".claude/skills/bring-up-bc/SKILL.md" names setting "BCLAUNCHER_HOST_HOME" for a devcontainer with a bind-mounted home
+  And the content of ".claude/skills/bring-up-bc/SKILL.md" names verifying the BC reaches "online" via "shop-msg bc-status"
+
+  Examples:
+    | shop_type | shop_name          | target                 |
+    | lead      | shopsystem-product | /tmp/example-lead-shop |

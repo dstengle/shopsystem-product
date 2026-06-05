@@ -1,0 +1,6 @@
+Scenario: shop-templates update re-pours every bootstrap-managed skill in the lead skill-group in the target directory from the current canonical package data
+  Given an existing git repository at a target directory "/tmp/example-lead-shop" that was previously bootstrapped as a "lead" shop named "example-lead-shop"
+  And the file at ".claude/skills/bring-up-bc/SKILL.md" in the target directory equals the current canonical "bring-up-bc" lead-skill template package-data file contents byte-for-byte
+  When I invoke the "shop-templates" update entry point against the target directory "/tmp/example-lead-shop"
+  Then the exit code is 0
+  And after the invocation the file at ".claude/skills/bring-up-bc/SKILL.md" in the target directory still equals the current canonical "bring-up-bc" lead-skill template package-data file contents byte-for-byte
