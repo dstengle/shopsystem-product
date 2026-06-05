@@ -1,14 +1,30 @@
-# PDR-012 — Elevate lead-po to Product-Manager-grade research scope; develop lead-architect structurizr-workspace-maintenance
+# PDR-012 — Elevate lead-po to empowered Product-Manager scope; develop lead-architect structurizr-workspace-maintenance
 
-**Status:** draft (2026-06-04)
+**Status:** draft (2026-06-04); **research revision v2 (2026-06-05)** — the
+"four research flavors" hypothesis is retracted by the PO and superseded by a
+research-backed, empowered-PM role structure (deep-research bead lead-8lgi: 27
+sources, 24 adversarially-confirmed claims) plus a durable user steering
+decision that the PM role is **product-general**, not framework-specific.
 **Authors:** dstengle, Claude (lead-po)
 **Anchored to:** PO intent expressed in conversation 2026-06-04:
 *"I want the PO to do more product-manager work vs the straightforward
-product-owner work we currently do"* — covering competitive/market analysis,
-domain & DDD discovery, deep-research investigations, and requirements
-elicitation; with the external skill catalogue at
-`github.com/deanpeters/Product-Manager-Skills` (49 skills) named as
-*"quite a bit of it being useful."*
+product-owner work we currently do"*; **sharpened by the 2026-06-05 steering
+decision and the lead-8lgi determination** below. The v1 framing scoped this to
+"four research flavors" (competitive/market, domain & DDD discovery,
+deep-research, requirements elicitation); that framing was an early hypothesis
+the PO has now explicitly retracted. The external skill catalogue at
+`github.com/deanpeters/Product-Manager-Skills` (49 skills) remains named as
+*"quite a bit of it being useful"* and is re-mapped onto the new disciplines
+below.
+
+## User steering — the PM role is product-general (2026-06-05, durable)
+
+The system's purpose is to build **other products**; the PM template
+instantiates into **every** product lead shop (e.g. a future ecommerce lead
+shop). Therefore **market-facing PM competencies are load-bearing, not
+vestigial.** Framework-as-product (this repo) is the **bootstrap / meta
+instance**, not the defining case. The disciplines below are identical across
+instances; only their *inputs* fork (see "Framework-vs-consumer fork").
 
 ## Point of intent
 
@@ -16,15 +32,22 @@ This PDR records two intent commitments, both of which target §3.2 activities
 that [PDR-001](001-role-templates-role-complete.md) flagged as **uncovered**
 in the current role templates:
 
-1. **Elevate the lead-po role from narrow Product-Owner scope toward
+1. **Elevate the lead-po role from narrow Product-Owner scope to empowered
    Product-Manager scope.** Today the PO template's authored content is
    complete only for *Write Gherkin scenarios* and *Respond to BC clarify*;
    the three upstream activities — *Interview stakeholder*, *Maintain product
-   brief*, *Write PDR* — carry one-line guidance but no research discipline.
-   The PO's upstream work is currently *order-taking* ("a stakeholder said X,
-   write scenarios for X"). The intent is to make it *product-management*:
-   the PO discovers the problem, sizes and frames the opportunity, and
-   investigates the domain *before* committing intent to scenarios.
+   brief*, *Write PDR* — carry one-line guidance but no product-management
+   discipline. The PO's upstream work is currently *order-taking* ("a
+   stakeholder said X, write scenarios for X"). The intent is to make it
+   *empowered product management*: the PO **owns the problem and the
+   outcome** — it discovers and selects which problem is worth solving, owns a
+   measurable behavior change, derives intent from a strategic bet, and treats
+   the specification as the contract — *before* committing intent to scenarios.
+   (Evidence 3-0 from lead-8lgi: "Product Owner" is an administrative subset of
+   Product Manager; empowered teams are assigned problems to solve, not features
+   to build. Cagan/SVPG product operating model; Perri, *Escaping the Build
+   Trap*; Jobs-to-be-Done.) This **sharpens** — does not replace — the existing
+   COMMIT TO SPECIFICS posture.
 
 2. **Develop the lead-architect *Maintain structurizr workspace* activity.**
    §3.2 names "Maintain structurizr workspace (containers, components,
@@ -45,65 +68,134 @@ BC. This PDR names *what the restructured templates must cover* and the
 scenarios (`features/templates/146`–`151`) pin those requirements and the
 Architect dispatches them via `assign_scenarios`.
 
-## The four research flavors (lead-po elevation)
+## The empowered-PM role structure (lead-po elevation)
 
-The PM elevation is scoped to **four research flavors**. Each flavor names the
-discipline the PO must carry, the artifact it produces (mapped onto the §3.3
-artifacts the PO already owns — interview notes, brief, PDR), and the
-sufficiency criterion that distinguishes product-management work from
-order-taking.
+This section supersedes the v1 "four research flavors." The elevation is
+scoped to one **identity/posture**, a **durable four-discipline competency
+core**, one **structural anti-pattern gate**, and a **framework-vs-consumer
+fork** of the discipline inputs. Each discipline names the artifact it
+produces (mapped onto the §3.3 artifacts the PO already owns — interview
+notes, brief, PDR, scenarios) and a sufficiency criterion that distinguishes
+empowered product management from order-taking.
 
-### Flavor 1 — Competitive / market analysis
+### Identity / posture — the empowered PM owns the problem and the outcome
 
-**What it is:** Before committing intent, the PO situates the desired behavior
-against the market — who else solves this, where the product is positioned,
-how large the addressable space is. **Artifact:** brief (a positioning /
-market-context section) and/or a PDR rationale grounded in market facts.
-**Sufficiency criterion:** the analysis names at least one concrete external
-reference point (a competitor, an alternative the user "hires" today, or a
-sized market segment) rather than asserting desirability in a vacuum. A market
-claim with no external reference point is an opinion, not analysis.
+The PO is an **empowered product manager** who **owns the PROBLEM and the
+OUTCOME** — not an order-taker who converts requests into scenarios. A product
+manager is distinguished from an order-taker by *owning the problem*: empowered
+teams are assigned problems to solve, not features to build. (Evidence 3-0,
+lead-8lgi: "Product Owner" is an administrative subset of PM; Cagan/SVPG
+product operating model; Perri, *Escaping the Build Trap*; JTBD.) This
+**sharpens** the existing COMMIT TO SPECIFICS posture — it does not replace it.
+COMMIT TO SPECIFICS says *resolve ambiguity*; the empowered-PM identity says
+*and own the problem whose ambiguity you are resolving*.
 
-### Flavor 2 — Domain & DDD discovery
+### Discipline 1 — Problem discovery & selection (the scarcest good)
 
-**What it is:** The PO discovers the *problem space* — the jobs the user is
-trying to get done, the ubiquitous-language terms, the subdomain boundaries —
-so that the downstream BC decomposition (the Architect's job) rests on a
-genuine domain model rather than on implementation convenience. This is the
-PO's contribution to the §3.4 turn-limited decomposition collaboration.
-**Artifact:** interview notes and brief, expressed in domain language (jobs,
-pains, gains; candidate subdomains; ubiquitous-language glossary).
-**Sufficiency criterion:** the discovery separates *problem* from *solution*
-(names the job-to-be-done distinctly from any proposed feature) and names the
-ubiquitous-language terms a downstream scenario or clarify would otherwise
-have to invent.
+**What it is:** Decide *which problems are worth solving*, anchored on a stable
+job-to-be-done, **before** committing intent. Choosing the problem is the
+scarcest good in product management. **Artifact:** interview notes and brief,
+expressed in problem/job language (jobs, pains, gains; candidate subdomains;
+ubiquitous-language terms). **Sufficiency criterion:** every committed intent
+traces to a *validated problem / job-to-be-done*, not to a stakeholder feature
+request. A committed intent that traces only to "a stakeholder asked for it"
+fails this discipline.
 
-### Flavor 3 — Deep-research investigations
+### Discipline 2 — Outcome ownership (Cagan's four risks)
 
-**What it is:** For a non-obvious intent commitment, the PO runs a bounded
-investigation — gathering external evidence (company/market research, prior
-art, context) and synthesizing it — rather than deciding from intuition.
-**Artifact:** a PDR whose "options considered" and "rationale" sections cite
-the investigation. **Sufficiency criterion:** the investigation is *bounded*
-(it names what question it set out to answer and stops when answered) and its
-synthesis is *cited* (the PDR rationale points at the evidence, not at a
-hunch). An unbounded "research forever" investigation and an uncited "I looked
-into it" are both failures.
+**What it is:** Own a **measurable behavior change**, not an output. The PM
+owns the four product risks — **value** (will they use it), **usability**,
+**viability** (does it work for the business), and **feasibility** (owned *in
+partnership with the Architect*). **Artifact:** brief and PDR, naming the
+outcome and the risks addressed. **Sufficiency criterion:** the intent names
+the *outcome* it targets (an observable behavior change) and addresses at least
+**value** (will they use it) and **viability**. An intent framed as an output
+("ship feature X") with no named outcome fails this discipline.
 
-### Flavor 4 — Requirements elicitation
+### Discipline 3 — Strategy before backlog
 
-**What it is:** The PO turns discovered problems into well-formed requirements
-— framing the problem, splitting epics into right-sized units, and writing the
-Gherkin scenarios that pin behavior. This flavor *connects to* the existing
-*Write Gherkin scenarios* activity rather than replacing it: the scenario
-authoring sufficiency check (already in the template) is the terminal gate;
-this flavor adds the upstream discipline (problem framing, story splitting)
-that feeds well-formed scenarios into that gate. **Artifact:** brief, PDR, and
-scenarios. **Sufficiency criterion:** each elicited requirement traces back to
-a discovered problem (Flavor 2) and forward to at least one testable scenario;
-a requirement that traces to neither is scope drift.
+**What it is:** Strategy must **precede** roadmaps and backlogs (Evidence 3-0).
+The PM derives every PDR and scenario set from a stated strategic bet, not the
+reverse. **Artifact:** brief (the strategy / bets layer) and PDR. **Sufficiency
+criterion:** every PDR / scenario set traces *up* to a strategic bet recorded
+in the brief — **no orphan features**. A scenario set with no strategic bet
+behind it is backlog-without-strategy and fails this discipline.
 
-## Skill-to-activity mapping (experimental-first)
+### Discipline 4 — Specification as the contract (the amplified discipline)
+
+**What it is:** Spec-driven development inverts the artifact hierarchy: the
+**spec declares intent** and code is a *projection* of the spec. In our system
+the **scenarios ARE the contract**, and an AI fleet builds exactly what is
+specified — so **ambiguity is the enemy.** This is the discipline most
+amplified by our execution model: it subsumes the old "requirements
+elicitation" flavor and connects directly to the existing *Write Gherkin
+scenarios* activity and its `Sufficiency check — authoring a scenario`. The
+authoring sufficiency check is the terminal gate; this discipline adds the
+upstream posture (behavior-focused, example-driven specs that leave no gap for
+the fleet to silently infer). **Artifact:** brief, PDR, and scenarios.
+**Sufficiency criterion:** scenarios are **behavior-focused and example-driven**,
+each tracing **back** to a problem (Discipline 1) and **forward** to a testable
+behavior. A scenario that traces to neither, or that specifies an output rather
+than an observable behavior, fails this discipline.
+
+## Structural gate — the BUILD TRAP (the failure mode the role exists to prevent)
+
+The role exists to prevent the **build trap**: measuring *output* / shipping
+features nobody needed. The confirmed inversion (lead-8lgi): **"when shipping
+is cheap, focus is everything"** — choosing *what* to build is the binding
+constraint. Because our build is **~free** and the fleet executes *exactly*
+what is specified, the build trap is **more dangerous here**, not less: there
+is no natural cost-of-build to filter out features nobody needed.
+
+**Sufficiency criterion (the gate):** the PM can and does say **"no / not yet"
+with a recorded reason**; **output volume is never a success measure.** A PO
+that treats "scenarios authored" or "features shipped" as a success measure has
+fallen into the build trap this gate exists to prevent.
+
+## How the four old flavors map (supersession, stated for legibility)
+
+The v1 "four research flavors" are superseded — not deleted but *re-placed* —
+so the supersession is legible to anyone reading both versions:
+
+- **Deep-research** = a **method** used across all four disciplines, not a
+  pillar of its own. (The lead-8lgi investigation that produced *this* PDR is
+  itself an instance of the method.)
+- **Requirements elicitation** = **Discipline 4** (specification as the
+  contract).
+- **Domain / DDD discovery** = **Discipline 1** (problem discovery) **+
+  Discipline 4** (the ubiquitous language that the spec pins).
+- **Competitive / market analysis** = part of **Discipline 1**, and it **forks
+  by scope** (see the framework-vs-consumer fork below): full market analysis
+  in the consumer instance, lighter competing-frameworks analysis in the
+  framework instance.
+
+## Framework-vs-consumer fork (disciplines identical; only inputs differ)
+
+The four disciplines are **identical** across product instances. Only their
+*inputs* fork:
+
+- **Consumer product (the telos):** full market-facing PM — real
+  user/market/JTBD discovery, competitive analysis, positioning, segmentation.
+  **Outcome** = customer behavior change / business metrics.
+- **Framework-as-product (now, this repo):** **platform-as-a-product /
+  developer-experience PM** — the "customers" are adopters / operators / BC
+  shops; the "market" is competing frameworks (lighter, **not absent**); the
+  **outcome** = adoption / developer experience (DX). (Sources:
+  platformengineering.org *platform-as-a-product*; mindtheproduct
+  *developer-experience PM*.)
+
+## Open seam to flag (NOT resolved here)
+
+The **PM / Architect boundary** — who owns **feasibility** and
+**decomposition** versus **problem** and **outcome** — under the §3.4
+turn-limited exchange is an open question for the **Architect / §3.4**, not
+resolved by this PDR. Discipline 2 places feasibility "in partnership with the
+Architect," which sharpens but does not settle the boundary. This is flagged
+for the Architect to take up; the lead-po template marks it **guidance
+pending** rather than asserting a boundary the §3.4 mechanics have not yet
+fixed.
+
+## Skill-to-discipline mapping (experimental-first, re-mapped onto the new core)
 
 The deanpeters PM skill catalogue is **experimentally adopted, not wholesale
 imported.** Per our established discipline (adapt to our process, run
@@ -111,15 +203,17 @@ experimental slices, formalize via the standard process only once proven —
 see the TDD/superpowers precedent), the proven subset is staged as adapted
 `.claude/skills/` in the lead repo first; the template later owns or
 references the subset that survives the experiment. The mapping below is the
-*candidate* set, not a commitment to ship all of it.
+*candidate* set, **re-mapped onto the four disciplines** (the v1 flavor rows
+are retired), not a commitment to ship all of it.
 
-| Flavor | Candidate PM skills (adaptation targets) |
+| Discipline | Candidate PM skills (adaptation targets) |
 |---|---|
-| Competitive / market | company-research, pestel-analysis, tam-sam-som-calculator, positioning-statement, positioning-workshop, acquisition-channel-advisor, organic-growth-advisor |
-| Domain & DDD discovery | jobs-to-be-done, opportunity-solution-tree, problem-framing-canvas, problem-statement, customer-journey-map (+workshop), proto-persona, discovery-process, discovery-interview-prep, user-story-mapping (+workshop) |
-| Deep-research | company-research, context-engineering-advisor (+ essays "The Product Manager as an Orchestrator", "Context Engineering for Product Managers") |
-| Requirements elicitation | prd-development, epic-hypothesis, epic-breakdown-advisor, user-story, user-story-splitting, recommendation-canvas, press-release (working-backwards), lean-ux-canvas |
-| PM-grade strategy / prioritization (supporting) | prioritization-advisor, product-strategy-session, roadmap-planning, altitude-horizon-framework, feature-investment-advisor |
+| **1 — Problem discovery & selection** | jobs-to-be-done, opportunity-solution-tree, problem-framing-canvas, problem-statement, customer-journey-map (+workshop), proto-persona, discovery-process, discovery-interview-prep, user-story-mapping (+workshop) |
+| **1 — Problem discovery, consumer fork** (market-facing inputs) | company-research, pestel-analysis, tam-sam-som-calculator, positioning-statement, positioning-workshop, acquisition-channel-advisor, organic-growth-advisor |
+| **2 — Outcome ownership** | recommendation-canvas, press-release (working-backwards), lean-ux-canvas, feature-investment-advisor |
+| **3 — Strategy before backlog** | prioritization-advisor, product-strategy-session, roadmap-planning, altitude-horizon-framework |
+| **4 — Specification as the contract** | prd-development, epic-hypothesis, epic-breakdown-advisor, user-story, user-story-splitting |
+| **Method (deep-research, used across all disciplines)** | company-research, context-engineering-advisor (+ essays "The Product Manager as an Orchestrator", "Context Engineering for Product Managers") |
 
 **Adaptation constraints** (carried from the TDD precedent so the next slice
 does not re-litigate them):
@@ -164,54 +258,92 @@ naming, at minimum:
   integration); and PDR-001 says template restructure is BC work, not a
   lead-side dump of external content.
 - **(B) Author the elevation as a single monolithic "PM research" activity.**
-  Rejected: the four flavors have distinct sufficiency criteria and distinct
+  Rejected: the disciplines have distinct sufficiency criteria and distinct
   failure modes; collapsing them hides the criteria that make each one
   testable, and the names-every-activity / guidance-or-pending scenario
-  pattern (features/templates 10/11/14/15) wants each activity named.
-- **(C, chosen) Record intent + sufficiency criteria here; pin them with
-  Gherkin scenarios in the existing template-scenario family; mark
-  still-developing areas pending per PDR-001 decision #2; dispatch the
+  pattern (features/templates 10/11/14/15) wants each discipline named.
+- **(B′) Keep the v1 "four research flavors" framing.** Rejected: the PO has
+  explicitly **retracted** the flavors hypothesis, and the lead-8lgi
+  deep-research determination shows the flavors were a method (deep-research),
+  a discipline (elicitation → spec-as-contract), and two facets of problem
+  discovery — not four co-equal pillars. The flavors framing also omitted the
+  *identity* (empowered ownership) and the *structural gate* (build trap) that
+  the research identifies as load-bearing.
+- **(C, chosen) Record the research-backed empowered-PM structure +
+  sufficiency criteria here; pin them with Gherkin scenarios in the existing
+  template-scenario family; mark still-developing areas (PM/Architect seam,
+  per-discipline skill subset) pending per PDR-001 decision #2; dispatch the
   restructure to the templates BC.** Matches PDR-001's division of labor and
   the established experimental-first adoption discipline.
 
 ## Decision
 
-1. The lead-po template SHALL **name each of the four research flavors** as
-   activities (or as named discipline within the upstream §3.2 activities) and
-   carry **either sufficiency criteria or an explicit "guidance pending"
-   marker** for each — same bar PDR-001 decision #2 set for every §3.2
-   activity.
-2. The four flavors' sufficiency criteria are as stated above (one concrete
-   external reference point; problem-separated-from-solution + named ubiquitous
-   language; bounded + cited investigation; each requirement traces back to a
-   problem and forward to a testable scenario).
-3. The PM skill catalogue is **experimentally adopted** — staged as adapted
+1. The lead-po template SHALL carry the **empowered-PM identity/posture** — the
+   PO owns the **problem and the outcome**, not an order-taker — stated as a
+   sharpening of (never a replacement for) COMMIT TO SPECIFICS.
+2. The lead-po template SHALL **name each of the four durable disciplines** —
+   (1) problem discovery & selection, (2) outcome ownership, (3) strategy
+   before backlog, (4) specification as the contract — and carry **either a
+   sufficiency criterion or an explicit "guidance pending" marker** for each —
+   same bar PDR-001 decision #2 set for every §3.2 activity. The disciplines'
+   sufficiency criteria are as stated above (intent traces to a validated
+   problem/job; intent names a measurable outcome addressing value + viability;
+   every PDR/scenario set traces up to a strategic bet, no orphan features;
+   scenarios are behavior-focused/example-driven and trace back to a problem +
+   forward to a testable behavior).
+3. The lead-po template SHALL carry the **anti-build-trap structural gate**:
+   the PM can and does say **"no / not yet" with a recorded reason**, and
+   **output volume is never a success measure**. This gate is load-bearing
+   *because* our build is ~free and the fleet executes exactly what is
+   specified.
+4. The lead-po role SHALL be **product-general**, not framework-specific. The
+   four disciplines are identical across product instances; only their inputs
+   fork (consumer = full market-facing PM; framework-as-product =
+   platform/developer-experience PM). The template SHALL state the fork so the
+   consumer instance is the primary case and framework-as-product is the
+   bootstrap/meta instance.
+5. The PM skill catalogue is **experimentally adopted** — staged as adapted
    `.claude/skills/` first, with the template owning the proven subset later.
-   No wholesale import.
-4. The lead-architect template's *Maintain structurizr workspace* activity
+   No wholesale import. The candidate skills are **re-mapped onto the four
+   disciplines** (the v1 flavor mapping is retired).
+6. The lead-architect template's *Maintain structurizr workspace* activity
    SHALL carry sufficiency criteria covering the three view families
    (containers, components, dynamic), the assign-per-structurizr coupling, and
    ADR↔workspace traceability — or mark any of these "guidance pending."
-5. **Identity-precedes-procedure is preserved.** The elevation adds activity
-   coverage and research discipline; it does not move procedural CLI content
-   above the role identity/posture, and it does not weaken the existing
+7. **Identity-precedes-procedure is preserved.** The elevation adds activity
+   coverage and product-management discipline; it does not move procedural CLI
+   content above the role identity/posture, and it does not weaken the existing
    posture statements (COMMIT TO SPECIFICS; PRE-STATE DETERMINES VEHICLE).
+8. **The four-flavor → discipline supersession is recorded** (see "How the four
+   old flavors map") so both versions read coherently: deep-research is a
+   method, elicitation is Discipline 4, domain/DDD is Disciplines 1 + 4, and
+   competitive/market is part of Discipline 1 (forked by scope).
+
+### Research provenance
+
+This revision is grounded in deep-research bead **lead-8lgi** (27 sources, 24
+adversarially-confirmed claims). Key sources: **svpg.com** (product operating
+model / empowered teams); **strategyn.com** (Jobs-to-be-Done);
+**arxiv 2602.00180** (spec-driven development); **productledalliance** ("when
+shipping is cheap, focus is everything"); **platformengineering.org**
+(platform-as-a-product). Perri, *Escaping the Build Trap* (the build-trap
+failure mode). Do not re-derive; this PDR encodes the reconciled output.
 
 ## What this leaves open (pending, per PDR-001 decision #2)
 
-- **The concrete per-flavor skill subset that ships in the template** is
+- **The PM / Architect boundary** — who owns feasibility and decomposition
+  versus problem and outcome — under the §3.4 turn-limited exchange is **flagged
+  for the Architect / §3.4, not resolved here** (see "Open seam to flag"). The
+  template marks it **guidance pending**.
+- **The concrete per-discipline skill subset that ships in the template** is
   pending the experimental slices — the mapping table above is candidate, not
-  committed. Until a flavor's skill subset is proven, the template marks that
-  flavor's *tooling* "guidance pending" even though the flavor's *sufficiency
-  criterion* is committed here.
-- **Whether the four flavors become four new named template subsections or
+  committed. Until a discipline's skill subset is proven, the template marks
+  that discipline's *tooling* "guidance pending" even though the discipline's
+  *sufficiency criterion* is committed here.
+- **Whether the four disciplines become four new named template subsections or
   enrich the three existing upstream activities** (Interview / Brief / PDR) is
   a template-authoring decision owned by the templates BC; the scenarios pin
   that the names and criteria appear, not the heading structure.
-- **PM-grade strategy/prioritization** (prioritization-advisor,
-  roadmap-planning, altitude-horizon, feature-investment) is named as a
-  *supporting* cluster, not a fifth flavor; whether it earns its own activity
-  is **guidance pending** a later intent commitment.
 - **The structurizr DSL toolchain / rendering** (how the workspace is
   validated or rendered) is out of scope here; this PDR develops the
   *activity discipline*, not the tooling.
@@ -228,3 +360,9 @@ naming, at minimum:
   of labor this PDR follows.
 - The TDD/superpowers integration precedent for experimental-first external
   skill adoption (lead-tgs4 initiative; memory `project_tdd_skill_integration`).
+- **Deep-research bead lead-8lgi** — the 27-source / 24-claim investigation
+  that produced the determination this v2 encodes. Key sources: svpg.com
+  (product operating model), strategyn.com (JTBD), arxiv 2602.00180
+  (spec-driven development), productledalliance ("when shipping is cheap, focus
+  is everything"), platformengineering.org (platform-as-a-product),
+  mindtheproduct (developer-experience PM); Perri, *Escaping the Build Trap*.

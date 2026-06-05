@@ -1,6 +1,0 @@
-Scenario: lead-po template carries a testable sufficiency criterion for the competitive/market and domain-discovery research flavors
-  When I read the lead-po template via "shop-templates show lead-po"
-  Then the competitive/market analysis flavor block states a sufficiency criterion that requires at least one concrete external reference point — a named competitor, an alternative the user "hires" today, or a sized market segment — rather than asserting desirability in a vacuum
-  And the domain & DDD discovery flavor block states a sufficiency criterion that requires the discovery to separate problem from solution — naming the job-to-be-done distinctly from any proposed feature
-  And the domain & DDD discovery flavor block states that the discovery names the ubiquitous-language terms a downstream scenario or clarify would otherwise have to invent
-  And neither flavor's sufficiency criterion is expressed as a constraint ("don't crash", "use judgment") rather than a measurable outcome

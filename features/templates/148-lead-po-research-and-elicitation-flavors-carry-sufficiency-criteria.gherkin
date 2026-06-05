@@ -1,6 +1,0 @@
-Scenario: lead-po template carries a testable sufficiency criterion for the deep-research and requirements-elicitation research flavors
-  When I read the lead-po template via "shop-templates show lead-po"
-  Then the deep-research investigations flavor block states a sufficiency criterion that requires the investigation to be bounded — naming the question it set out to answer and stopping when answered
-  And the deep-research investigations flavor block states a sufficiency criterion that requires the synthesis to be cited — the PDR rationale points at the evidence rather than at a hunch
-  And the requirements-elicitation flavor block states a sufficiency criterion that requires each elicited requirement to trace back to a discovered problem and forward to at least one testable scenario
-  And the requirements-elicitation flavor block does not replace or weaken the existing "Sufficiency check — authoring a scenario" section, but feeds well-formed scenarios into it
