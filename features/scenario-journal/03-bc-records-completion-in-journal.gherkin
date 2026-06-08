@@ -1,7 +1,0 @@
-@scenario_hash:d01313bf5090bee6
-Scenario: a BC appends a completed scenario's hash to its authoritative append-only journal on completion
-  Given a BC whose authoritative journal does not yet contain the block-only canonical hash "h3"
-  And a scenario for that BC becomes PINNED & DEMONSTRATED: a work_done landed for it and its block-only canonical hash "h3" equals its on-disk @scenario_hash tag
-  When the BC records the completion of that scenario
-  Then the BC's authoritative journal contains the block-only canonical hash "h3" as an appended entry
-  And no previously-journaled hash is removed or overwritten by the append

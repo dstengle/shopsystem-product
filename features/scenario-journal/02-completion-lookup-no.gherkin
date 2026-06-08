@@ -1,7 +1,7 @@
-@scenario_hash:528c08b5a0a6d024
-Scenario: the completion lookup answers a definite no for a scenario whose block-only canonical hash is not recorded as completed
-  Given a scenario block whose block-only canonical hash is "h2"
-  And the completion state records no completed scenario with hash "h2"
-  When the completion lookup is queried for the block-only canonical hash "h2"
-  Then the lookup returns a definite "no" answer for "h2"
-  And the answer is keyed on the block-only canonical hash "h2", not on any bead id, scenario title, or dispatch record
+@scenario_hash:cc4c8fcd07b5587c
+Scenario: the scenarios journal-query CLI answers a definite no for a block-only hash absent from the journal file
+  Given a scenario journal stored as a file on disk under the shopsystem-scenarios bounded context
+  And the journal file contains no entry for the block-only canonical hash "h2"
+  When the "scenarios journal query" CLI command is run against that journal file for the block-only canonical hash "h2"
+  Then the command exits with a success status and reports a definite "no" for "h2"
+  And the answer is keyed solely on the block-only canonical hash "h2", not on any bead id, scenario title, dispatch record, or message-bus row
