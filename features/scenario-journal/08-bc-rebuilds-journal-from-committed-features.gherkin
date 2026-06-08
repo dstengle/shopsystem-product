@@ -1,0 +1,7 @@
+@scenario_hash:d1f0cf457019db29
+Scenario: a BC rebuilds its authoritative journal from its as-committed @scenario_hash-tagged features tree
+  Given a BC whose features tree carries a scenario block whose committed @scenario_hash tag is the block-only canonical hash "h8", demonstrated green in the BC's gated commit-time state
+  And the BC's authoritative journal is empty of "h8" because no work_done event drove an append for it
+  When the BC rebuilds its authoritative journal from its as-committed @scenario_hash-tagged features tree
+  Then the BC's authoritative journal contains the block-only canonical hash "h8" as a bootstrapped entry on the as-committed predicate alone, with no work_done required
+  And rebuilding the journal a second time over the same as-committed features tree yields a journal identical entry-by-entry, neither duplicating "h8" nor dropping any previously-journaled hash
