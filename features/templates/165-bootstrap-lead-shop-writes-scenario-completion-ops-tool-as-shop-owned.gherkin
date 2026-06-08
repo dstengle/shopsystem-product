@@ -1,0 +1,7 @@
+Scenario: bootstrap of a "lead" shop writes the lead-side scenario-completion ops tool as shop-owned starter content (in the PDR-003 path F sense) at a top-level "bin/" path — not under ".claude/canonical/" — so every newly-instantiated product lead shop is born with the cross-BC "is-X-done" / "outstanding" reconciliation view and the operator may freely customize it without colliding with the canonical-managed re-pour contract
+  Given an existing git repository at a target directory "/tmp/example-lead-shop"
+  When I invoke the "shop-templates" bootstrap entry point with shop type "lead", shop name "shopsystem-product", and target directory "/tmp/example-lead-shop"
+  Then the exit code is 0
+  And after the invocation the target directory contains an executable file at "/tmp/example-lead-shop/bin/shop-scenario-completion" (not under any ".claude/" subdirectory)
+  And the file at "/tmp/example-lead-shop/bin/shop-scenario-completion" has its owner-execute permission bit set
+  And after the invocation the directory at "/tmp/example-lead-shop/.claude/canonical/" does not contain a file named "shop-scenario-completion", because the scenario-completion ops tool is shop-owned bootstrap-time starter content rather than a canonical-managed file subject to the re-pour contract
