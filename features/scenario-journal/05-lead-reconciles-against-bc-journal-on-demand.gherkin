@@ -1,0 +1,7 @@
+@scenario_hash:d0a74c6e8ecb8eb3
+Scenario: the lead reconciles its snapshot against a BC journal pulled on demand
+  Given a BC whose authoritative journal contains the block-only canonical hash "h5"
+  And a lead snapshot that does not record "h5" as completed for that BC
+  When the lead pulls that BC's journal on demand and reconciles its snapshot against it
+  Then the lead snapshot records the block-only canonical hash "h5" as completed for that BC
+  And the reconciled snapshot matches the BC's authoritative journal for that BC entry by entry

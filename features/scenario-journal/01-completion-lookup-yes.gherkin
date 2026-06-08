@@ -1,0 +1,7 @@
+@scenario_hash:1b21dbb923413455
+Scenario: the completion lookup answers a definite yes for a scenario whose block-only canonical hash is recorded as completed
+  Given a scenario block whose block-only canonical hash is "h1"
+  And the completion state records "h1" as a completed scenario
+  When the completion lookup is queried for the block-only canonical hash "h1"
+  Then the lookup returns a definite "yes" answer for "h1"
+  And the answer is keyed on the block-only canonical hash "h1", not on any bead id, scenario title, or dispatch record
