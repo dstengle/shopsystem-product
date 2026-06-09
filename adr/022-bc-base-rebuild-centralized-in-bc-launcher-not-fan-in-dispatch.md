@@ -1,7 +1,14 @@
 # ADR-022 — `bc-base` rebuilds are CENTRALIZED in `shopsystem-bc-launcher` (version-bump-then-rebuild), not fan-in `repository_dispatch` from each utility repo
 
-**Status:** proposed (2026-06-04)
+**Status:** accepted (2026-06-09)
 **Authors:** dstengle, Claude (lead-architect)
+**Acceptance note (2026-06-09):** ratified by dave. The centralized
+version-bump-then-rebuild path was demonstrated empirically: bc-launcher
+`v0.2.1` (bump `pyproject` → tag `v*` → `publish-bc-base.yml` rebuilds +
+republishes `bc-base:latest`/`:v0.2.1`) — no fan-in `repository_dispatch`.
+This retires the trigger contract of scenarios 38/40 and supersedes the
+40-family beads (lead-tycv/usc7/wq0p/1j1h); `lead-czwo` (scheduled
+poll/pin-bump) is the live successor for *automatic* propagation.
 **Supersedes the trigger mechanism of:** [ADR-021 §D2](021-bc-base-image-owned-by-bc-launcher-auto-rebuilds-on-utility-release.md)
 — the cross-repo `repository_dispatch` fan-in (each utility release emits a
 `repository_dispatch` to bc-launcher, which rebuilds against "the current
