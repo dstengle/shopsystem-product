@@ -1,0 +1,1046 @@
+{
+  "configuration" : { },
+  "description" : "Canonical C4 structural model of the shopsystem framework (lead shop + BC landscape + inter-shop protocol). §3.3 artifact, owned by the Architect.",
+  "documentation" : { },
+  "id" : 1,
+  "lastModifiedDate" : "2026-06-09T19:10:14Z",
+  "model" : {
+    "people" : [ {
+      "description" : "Drives the lead shop: expresses intent, dispatches work, reconciles. §3 'where stakeholders meet the work'.",
+      "id" : "1",
+      "name" : "Operator / Stakeholder",
+      "properties" : {
+        "structurizr.dsl.identifier" : "operator"
+      },
+      "relationships" : [ {
+        "description" : "Expresses intent; dispatches work; reconciles results",
+        "destinationId" : "4",
+        "id" : "25",
+        "sourceId" : "1",
+        "tags" : "Relationship"
+      }, {
+        "description" : "Operates the lead shop (router + PO/Architect subagents)",
+        "destinationId" : "5",
+        "id" : "29",
+        "sourceId" : "1",
+        "tags" : "Relationship"
+      } ],
+      "tags" : "Element,Person"
+    } ],
+    "softwareSystems" : [ {
+      "description" : "Source repos (dstengle/*), Actions CI, releases (version tags). Each BC = one repo (§4).",
+      "documentation" : { },
+      "id" : "2",
+      "name" : "GitHub",
+      "properties" : {
+        "structurizr.dsl.identifier" : "github"
+      },
+      "relationships" : [ {
+        "description" : "Release-tag CI publishes images",
+        "destinationId" : "3",
+        "id" : "28",
+        "sourceId" : "2",
+        "tags" : "Relationship",
+        "technology" : "Actions"
+      } ],
+      "tags" : "Element,Software System,External"
+    }, {
+      "description" : "OCI registry for published images: bc-base, templates, devcontainer (ADR-021/022; features/templates 142, devcontainer 16).",
+      "documentation" : { },
+      "id" : "3",
+      "name" : "GHCR (ghcr.io/dstengle)",
+      "properties" : {
+        "structurizr.dsl.identifier" : "ghcr"
+      },
+      "tags" : "Element,Software System,External"
+    }, {
+      "containers" : [ {
+        "components" : [ {
+          "description" : "Authors intent: brief, PDRs, Gherkin scenarios; answers clarify on scope/vocabulary (§3.1).",
+          "documentation" : { },
+          "id" : "6",
+          "name" : "Product Owner (PO)",
+          "properties" : {
+            "structurizr.dsl.identifier" : "po"
+          },
+          "tags" : "Element,Component",
+          "technology" : "subagent role"
+        }, {
+          "description" : "Owns shape, scenario assignment, reconciliation; sends assign_scenarios/request_bugfix/request_maintenance; answers clarify on architecture; maintains THIS workspace (§3.1/§3.2).",
+          "documentation" : { },
+          "id" : "7",
+          "name" : "Architect",
+          "properties" : {
+            "structurizr.dsl.identifier" : "architect"
+          },
+          "tags" : "Element,Component",
+          "technology" : "subagent role"
+        }, {
+          "description" : "Main-agent: classifies requests, dispatches PO/Architect subagents, arms Monitor on shop-msg watch, drains pending (lead-primer).",
+          "documentation" : { },
+          "id" : "8",
+          "name" : "Router",
+          "properties" : {
+            "structurizr.dsl.identifier" : "router"
+          },
+          "tags" : "Element,Component",
+          "technology" : "main agent"
+        }, {
+          "description" : "Brief, PDRs, ADRs, this structurizr workspace, Domain & Context Map, canonical Gherkin (features/), scenario-to-BC assignment, lead beads (§3.3).",
+          "documentation" : { },
+          "id" : "9",
+          "name" : "Product artifacts",
+          "properties" : {
+            "structurizr.dsl.identifier" : "leadArtifacts"
+          },
+          "tags" : "Element,Component",
+          "technology" : "Markdown / DSL / Gherkin / beads"
+        } ],
+        "description" : "Outward face of the product; owns all product-level artifacts; routes to PO/Architect subagents. Addressed as shopsystem/lead (ADR-020 D1).",
+        "documentation" : { },
+        "id" : "5",
+        "name" : "Lead shop (shopsystem-product)",
+        "properties" : {
+          "structurizr.dsl.identifier" : "lead"
+        },
+        "relationships" : [ {
+          "description" : "assign_scenarios / request_bugfix / request_maintenance / request_scenario_register / request_shop_card; reads work_done/clarify",
+          "destinationId" : "10",
+          "id" : "30",
+          "sourceId" : "5",
+          "tags" : "Relationship",
+          "technology" : "shop-msg over postgres"
+        }, {
+          "description" : "Dispatches scenario work; tightenings (ADR-019)",
+          "destinationId" : "17",
+          "id" : "31",
+          "sourceId" : "5",
+          "tags" : "Relationship",
+          "technology" : "shop-msg over postgres"
+        }, {
+          "description" : "Dispatches role-template / bootstrap / image-publish work",
+          "destinationId" : "18",
+          "id" : "32",
+          "sourceId" : "5",
+          "tags" : "Relationship",
+          "technology" : "shop-msg over postgres"
+        }, {
+          "description" : "Dispatches launch + bc-base rebuild work (ADR-021/022)",
+          "destinationId" : "19",
+          "id" : "33",
+          "sourceId" : "5",
+          "tags" : "Relationship",
+          "technology" : "shop-msg over postgres"
+        }, {
+          "description" : "Dispatches adoption-doc scenarios (ADR-008)",
+          "destinationId" : "20",
+          "id" : "34",
+          "sourceId" : "5",
+          "tags" : "Relationship",
+          "technology" : "shop-msg over postgres"
+        }, {
+          "description" : "Dispatches harness scenarios (ADR-002 dogfooding)",
+          "destinationId" : "21",
+          "id" : "35",
+          "sourceId" : "5",
+          "tags" : "Relationship",
+          "technology" : "shop-msg over postgres"
+        }, {
+          "description" : "Will dispatch product scenarios once instantiated (PLANNED)",
+          "destinationId" : "22",
+          "id" : "36",
+          "sourceId" : "5",
+          "tags" : "Relationship",
+          "technology" : "shop-msg over postgres"
+        }, {
+          "description" : "Reads lead inbox; deposits dispatches (via shop-msg)",
+          "destinationId" : "23",
+          "id" : "43",
+          "sourceId" : "5",
+          "tags" : "Relationship",
+          "technology" : "SHOPMSG_DSN"
+        }, {
+          "description" : "Lead beads = canonical work_id; reconciliation close-out (§6)",
+          "destinationId" : "24",
+          "id" : "51",
+          "sourceId" : "5",
+          "tags" : "Relationship"
+        }, {
+          "description" : "Composes assign_scenarios / request_bugfix / request_maintenance",
+          "destinationId" : "11",
+          "id" : "63",
+          "sourceId" : "5",
+          "tags" : "Relationship"
+        } ],
+        "tags" : "Element,Container,Lead",
+        "technology" : "Claude Code + bd + shop-msg CLI"
+      }, {
+        "components" : [ {
+          "description" : "Outbound vehicles (assign_scenarios, request_bugfix, request_maintenance) and BC responses (work_done, clarify, mechanism_observation, nudge); consume releases lead-inbox slot (§5.3, ADR-009).",
+          "documentation" : { },
+          "id" : "11",
+          "name" : "shop-msg send/respond/consume",
+          "properties" : {
+            "structurizr.dsl.identifier" : "cliSend"
+          },
+          "relationships" : [ {
+            "description" : "Validates message against the catalog contract (§5.6)",
+            "destinationId" : "13",
+            "id" : "64",
+            "sourceId" : "11",
+            "tags" : "Relationship"
+          }, {
+            "description" : "Resolves --bc/--lead name -> <system>/<name> address (ADR-020)",
+            "destinationId" : "14",
+            "id" : "65",
+            "sourceId" : "11",
+            "tags" : "Relationship"
+          }, {
+            "description" : "Deposits the mailbox row (postgres-second, ADR-012)",
+            "destinationId" : "16",
+            "id" : "66",
+            "sourceId" : "11",
+            "tags" : "Relationship"
+          }, {
+            "description" : "Fires paired bd side effect (ADR-016, ADR-012 atomicity)",
+            "destinationId" : "15",
+            "id" : "67",
+            "sourceId" : "11",
+            "tags" : "Relationship"
+          }, {
+            "description" : "Delegates scenario-hash to `scenarios.hash` (in-process; ADR-019 D2)",
+            "destinationId" : "17",
+            "id" : "68",
+            "sourceId" : "11",
+            "tags" : "Relationship"
+          } ],
+          "tags" : "Element,Component",
+          "technology" : "CLI"
+        }, {
+          "description" : "Postgres LISTEN/NOTIFY wakeup on the lead/BC inbox; upserts bc_presence on a tick (ADR-014). bc-status classifies online/stale/offline.",
+          "documentation" : { },
+          "id" : "12",
+          "name" : "shop-msg watch + heartbeat",
+          "properties" : {
+            "structurizr.dsl.identifier" : "cliWatch"
+          },
+          "relationships" : [ {
+            "description" : "LISTEN/NOTIFY on inbox; upserts bc_presence on tick (ADR-014)",
+            "destinationId" : "16",
+            "id" : "70",
+            "sourceId" : "12",
+            "tags" : "Relationship"
+          } ],
+          "tags" : "Element,Component",
+          "technology" : "CLI + LISTEN"
+        }, {
+          "description" : "The 7 message types + ScenarioPayload value object; from/to required; schema is the contract (§5.2/§5.6, ADR-006 §5).",
+          "documentation" : { },
+          "id" : "13",
+          "name" : "Catalog schemas (Pydantic)",
+          "properties" : {
+            "structurizr.dsl.identifier" : "schemas"
+          },
+          "relationships" : [ {
+            "description" : "ScenarioPayload carries a scenario whose hash rule scenarios owns (ADR-019)",
+            "destinationId" : "17",
+            "id" : "73",
+            "sourceId" : "13",
+            "tags" : "Relationship"
+          } ],
+          "tags" : "Element,Component",
+          "technology" : "Pydantic"
+        }, {
+          "description" : "Maps canonical name -> abstract <system>/<name> address; lead is authoritative writer; no filesystem path (ADR-006, ADR-020 D1/D2).",
+          "documentation" : { },
+          "id" : "14",
+          "name" : "Name registry",
+          "properties" : {
+            "structurizr.dsl.identifier" : "registry"
+          },
+          "relationships" : [ {
+            "description" : "Registry + messages co-located in one postgres DB (ADR-006 D1)",
+            "destinationId" : "16",
+            "id" : "72",
+            "sourceId" : "14",
+            "tags" : "Relationship"
+          } ],
+          "tags" : "Element,Component",
+          "technology" : "postgres table"
+        }, {
+          "description" : "Fires the paired bd side effect for every shop-msg command with a bd correlate, under ADR-012 atomicity (ADR-016).",
+          "documentation" : { },
+          "id" : "15",
+          "name" : "bd integration facade",
+          "properties" : {
+            "structurizr.dsl.identifier" : "bdFacade"
+          },
+          "relationships" : [ {
+            "description" : "bd create/update/close via CLI (ADR-016 D4)",
+            "destinationId" : "24",
+            "id" : "71",
+            "sourceId" : "15",
+            "tags" : "Relationship"
+          } ],
+          "tags" : "Element,Component",
+          "technology" : "subprocess -> bd CLI"
+        }, {
+          "description" : "messages table keyed by recipient address; inbox/outbox rows; (work_id,direction,shop) uniqueness; bc_presence table (ADR-006, ADR-012, ADR-014).",
+          "documentation" : { },
+          "id" : "16",
+          "name" : "Mailbox storage",
+          "properties" : {
+            "structurizr.dsl.identifier" : "storage"
+          },
+          "tags" : "Element,Component",
+          "technology" : "postgres"
+        } ],
+        "description" : "The protocol hub. Owns shop-msg, the postgres mailbox, the name registry, bd integration, presence heartbeat. Subdomain: Inter-shop coordination (ADR-002).",
+        "documentation" : { },
+        "id" : "10",
+        "name" : "Messaging BC (shopsystem-messaging)",
+        "properties" : {
+          "structurizr.dsl.identifier" : "messaging"
+        },
+        "relationships" : [ {
+          "description" : "work_done / clarify / mechanism_observation / nudge -> lead inbox",
+          "destinationId" : "5",
+          "id" : "37",
+          "sourceId" : "10",
+          "tags" : "Relationship",
+          "technology" : "shop-msg over postgres"
+        }, {
+          "description" : "Owns + reads/writes messages, shop_registry, bc_presence",
+          "destinationId" : "23",
+          "id" : "45",
+          "sourceId" : "10",
+          "tags" : "Relationship",
+          "technology" : "SHOPMSG_DSN"
+        }, {
+          "description" : "shop-msg owns bd integration: paired side effect per command (ADR-016)",
+          "destinationId" : "24",
+          "id" : "52",
+          "sourceId" : "10",
+          "tags" : "Relationship",
+          "technology" : "subprocess"
+        }, {
+          "description" : "Cuts version-tag releases; CI builds/tests",
+          "destinationId" : "2",
+          "id" : "60",
+          "sourceId" : "10",
+          "tags" : "Relationship",
+          "technology" : "git / Actions"
+        }, {
+          "description" : "Delegates scenario-hash to `scenarios.hash` (in-process; ADR-019 D2)",
+          "destinationId" : "17",
+          "id" : "69",
+          "linkedRelationshipId" : "68",
+          "sourceId" : "10"
+        } ],
+        "tags" : "Element,Container,BC",
+        "technology" : "Python (shop-msg CLI)"
+      }, {
+        "description" : "Owns canonicalization + the `scenarios hash`/`verify` contract tool — the single source of truth for what a scenario hash IS (scenario-block-only). Subdomain: Specification (ADR-002/019).",
+        "documentation" : { },
+        "id" : "17",
+        "name" : "Scenarios BC (shopsystem-scenarios)",
+        "properties" : {
+          "structurizr.dsl.identifier" : "scenarios"
+        },
+        "relationships" : [ {
+          "description" : "work_done / clarify -> lead inbox",
+          "destinationId" : "5",
+          "id" : "38",
+          "sourceId" : "17",
+          "tags" : "Relationship",
+          "technology" : "shop-msg over postgres"
+        }, {
+          "description" : "Reads inbox / writes responses (via shop-msg)",
+          "destinationId" : "23",
+          "id" : "46",
+          "sourceId" : "17",
+          "tags" : "Relationship",
+          "technology" : "SHOPMSG_DSN"
+        }, {
+          "description" : "Cuts version-tag releases; CI builds/tests (scenario 129 convention)",
+          "destinationId" : "2",
+          "id" : "58",
+          "sourceId" : "17",
+          "tags" : "Relationship",
+          "technology" : "git / Actions"
+        } ],
+        "tags" : "Element,Container,BC",
+        "technology" : "Python (scenarios CLI)"
+      }, {
+        "description" : "Owns role templates (shop-templates show/list), shop bootstrap + update, and image publish-on-tag. Subdomain: Role discipline (ADR-002; features/templates).",
+        "documentation" : { },
+        "id" : "18",
+        "name" : "Templates BC (shopsystem-templates)",
+        "properties" : {
+          "structurizr.dsl.identifier" : "templates"
+        },
+        "relationships" : [ {
+          "description" : "work_done / clarify -> lead inbox",
+          "destinationId" : "5",
+          "id" : "39",
+          "sourceId" : "18",
+          "tags" : "Relationship",
+          "technology" : "shop-msg over postgres"
+        }, {
+          "description" : "Reads inbox / writes responses (via shop-msg)",
+          "destinationId" : "23",
+          "id" : "47",
+          "sourceId" : "18",
+          "tags" : "Relationship",
+          "technology" : "SHOPMSG_DSN"
+        }, {
+          "description" : "Publishes templates + devcontainer images on version tag (features/templates 142, devcontainer 16)",
+          "destinationId" : "3",
+          "id" : "57",
+          "sourceId" : "18",
+          "tags" : "Relationship",
+          "technology" : "docker push"
+        }, {
+          "description" : "Cuts version-tag releases; CI builds/tests",
+          "destinationId" : "2",
+          "id" : "59",
+          "sourceId" : "18",
+          "tags" : "Relationship",
+          "technology" : "git / Actions"
+        } ],
+        "tags" : "Element,Container,BC",
+        "technology" : "Python (shop-templates CLI)"
+      }, {
+        "description" : "Owns `bc-container` (launch/attach/inject/monitor/stop/status/list) and the bc-base image (Dockerfile + publish + centralized rebuild). Sets SHOPMSG_DSN in containers. Subdomain: Platform Operations (ADR-004/021/022).",
+        "documentation" : { },
+        "id" : "19",
+        "name" : "BC Launcher (shopsystem-bc-launcher)",
+        "properties" : {
+          "structurizr.dsl.identifier" : "bclauncher"
+        },
+        "relationships" : [ {
+          "description" : "work_done / clarify -> lead inbox",
+          "destinationId" : "5",
+          "id" : "40",
+          "sourceId" : "19",
+          "tags" : "Relationship",
+          "technology" : "shop-msg over postgres"
+        }, {
+          "description" : "Reads inbox / writes responses (via shop-msg)",
+          "destinationId" : "23",
+          "id" : "48",
+          "sourceId" : "19",
+          "tags" : "Relationship",
+          "technology" : "SHOPMSG_DSN"
+        }, {
+          "description" : "Gates launch on messaging DB reachability (features/bc-launcher/33)",
+          "destinationId" : "10",
+          "id" : "53",
+          "sourceId" : "19",
+          "tags" : "Relationship"
+        }, {
+          "description" : "Pulls :latest bc-base at launch; publishes rebuilt bc-base (ADR-021 D3 / ADR-022)",
+          "destinationId" : "3",
+          "id" : "54",
+          "sourceId" : "19",
+          "tags" : "Relationship",
+          "technology" : "docker pull/push"
+        }, {
+          "description" : "Watches releases; bakes `scenarios` CLI into bc-base (ADR-022 D2)",
+          "destinationId" : "17",
+          "id" : "55",
+          "sourceId" : "19",
+          "tags" : "Relationship"
+        }, {
+          "description" : "Watches releases; bakes `shop-templates` into bc-base (ADR-022 D2)",
+          "destinationId" : "18",
+          "id" : "56",
+          "sourceId" : "19",
+          "tags" : "Relationship"
+        }, {
+          "description" : "Polls dep release tags with own GITHUB_TOKEN; hosts bc-base build (ADR-022 D2/D3)",
+          "destinationId" : "2",
+          "id" : "61",
+          "sourceId" : "19",
+          "tags" : "Relationship",
+          "technology" : "git / Actions"
+        }, {
+          "description" : "Scheduled/workflow_dispatch: bump Dockerfile pins, rebuild bc-base if changed (ADR-022 D2/D4)",
+          "destinationId" : "19",
+          "id" : "62",
+          "sourceId" : "19",
+          "tags" : "Relationship",
+          "technology" : "Actions"
+        } ],
+        "tags" : "Element,Container,BC",
+        "technology" : "Python (bc-container CLI) + Docker"
+      }, {
+        "description" : "End-user adoption documentation (v1 plain markdown). Disjoint adopter audience. Subdomain: Platform Operations / adoption (ADR-008; features/docs).",
+        "documentation" : { },
+        "id" : "20",
+        "name" : "Docs BC (shopsystem-docs)",
+        "properties" : {
+          "structurizr.dsl.identifier" : "docs"
+        },
+        "relationships" : [ {
+          "description" : "work_done / clarify -> lead inbox",
+          "destinationId" : "5",
+          "id" : "41",
+          "sourceId" : "20",
+          "tags" : "Relationship",
+          "technology" : "shop-msg over postgres"
+        }, {
+          "description" : "Reads inbox / writes responses (via shop-msg)",
+          "destinationId" : "23",
+          "id" : "49",
+          "sourceId" : "20",
+          "tags" : "Relationship",
+          "technology" : "SHOPMSG_DSN"
+        } ],
+        "tags" : "Element,Container,BC",
+        "technology" : "Markdown"
+      }, {
+        "description" : "Validates the framework against itself: experiment/slice/run/evidence/finding/baseline. Composes shop-msg/scenarios/shop-templates at the CLI boundary. Subdomain: Platform Operations (ADR-002; features/test-harness).",
+        "documentation" : { },
+        "id" : "21",
+        "name" : "Test Harness BC (shopsystem-test-harness)",
+        "properties" : {
+          "structurizr.dsl.identifier" : "harness"
+        },
+        "relationships" : [ {
+          "description" : "work_done / clarify -> lead inbox",
+          "destinationId" : "5",
+          "id" : "42",
+          "sourceId" : "21",
+          "tags" : "Relationship",
+          "technology" : "shop-msg over postgres"
+        }, {
+          "description" : "Reads inbox / writes responses (via shop-msg)",
+          "destinationId" : "23",
+          "id" : "50",
+          "sourceId" : "21",
+          "tags" : "Relationship",
+          "technology" : "SHOPMSG_DSN"
+        } ],
+        "tags" : "Element,Container,BC",
+        "technology" : "Python (shop-test-harness CLI)"
+      }, {
+        "description" : "First real consumer product on the framework; tracked for a future ADR-003. Not yet instantiated (ADR-002 §sequencing).",
+        "documentation" : { },
+        "id" : "22",
+        "name" : "Ecommerce product BC (PLANNED)",
+        "properties" : {
+          "structurizr.dsl.identifier" : "ecommerce"
+        },
+        "tags" : "Element,Container,Planned",
+        "technology" : "TBD"
+      }, {
+        "description" : "The single postgres instance all shops share: messages, shop_registry, bc_presence tables. Reached via SHOPMSG_DSN. The substrate of the inter-shop channel (ADR-006/012/014/020; compose.yaml).",
+        "documentation" : { },
+        "id" : "23",
+        "name" : "Shared Postgres mailbox",
+        "properties" : {
+          "structurizr.dsl.identifier" : "postgres"
+        },
+        "relationships" : [ {
+          "description" : "Delivers inbox notifications to the router's Monitor (LISTEN/NOTIFY; ADR-014)",
+          "destinationId" : "5",
+          "id" : "44",
+          "sourceId" : "23",
+          "tags" : "Relationship",
+          "technology" : "shop-msg watch"
+        } ],
+        "tags" : "Element,Container,Infra",
+        "technology" : "PostgreSQL"
+      }, {
+        "description" : "beads-native work tracking; lead bead IDs are the canonical work_id flowing outward (§6, ADR-011/016). bd is authoritative for state, shop-msg for transport (PDR-010).",
+        "documentation" : { },
+        "id" : "24",
+        "name" : "bd work registry (per shop)",
+        "properties" : {
+          "structurizr.dsl.identifier" : "beadsRegistry"
+        },
+        "tags" : "Element,Container,Infra",
+        "technology" : "beads + dolt"
+      } ],
+      "description" : "One lead shop + N BC-shops coordinating via the typed inter-shop protocol over a shared postgres mailbox (§3, §5).",
+      "documentation" : { },
+      "id" : "4",
+      "name" : "shopsystem framework",
+      "properties" : {
+        "structurizr.dsl.identifier" : "shopsystem"
+      },
+      "relationships" : [ {
+        "description" : "Hosts repos; CI builds/tests; cuts version-tag releases",
+        "destinationId" : "2",
+        "id" : "26",
+        "sourceId" : "4",
+        "tags" : "Relationship",
+        "technology" : "git / Actions"
+      }, {
+        "description" : "Publishes + pulls images (bc-base, templates, devcontainer)",
+        "destinationId" : "3",
+        "id" : "27",
+        "sourceId" : "4",
+        "tags" : "Relationship",
+        "technology" : "OCI / docker"
+      } ],
+      "tags" : "Element,Software System"
+    } ]
+  },
+  "name" : "shopsystem",
+  "properties" : {
+    "structurizr.inspection.error" : "28",
+    "structurizr.dsl" : "d29ya3NwYWNlICJzaG9wc3lzdGVtIiAiQ2Fub25pY2FsIEM0IHN0cnVjdHVyYWwgbW9kZWwgb2YgdGhlIHNob3BzeXN0ZW0gZnJhbWV3b3JrIChsZWFkIHNob3AgKyBCQyBsYW5kc2NhcGUgKyBpbnRlci1zaG9wIHByb3RvY29sKS4gwqczLjMgYXJ0aWZhY3QsIG93bmVkIGJ5IHRoZSBBcmNoaXRlY3QuIiB7CgogICAgIyA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09CiAgICAjIFNPVVJDRSBQUk9WRU5BTkNFIChBRFItMDE4IC8gUERSLTAxMTogYnVpbHQgT05MWSBmcm9tIHRoZSBjb250cmFjdC9hcnRpZmFjdAogICAgIyBzdXJmYWNlIOKAlCB0aGlzIHJlcG8ncyBzcGVjIHNlY3Rpb25zLCBhZHIvLCBwZHIvLCBmZWF0dXJlcy8sIG1lc3NhZ2Ugc2NoZW1hcywKICAgICMgbmFtZSByZWdpc3RyeS4gTk8gQkMgaW1wbGVtZW50YXRpb24gY29kZSB3YXMgcmVhZDsgdGhlIGxlYWQgaG9zdCBjYXJyaWVzCiAgICAjIG5vbmUuIEV2ZXJ5IGVsZW1lbnQvcmVsYXRpb25zaGlwIGJlbG93IGNpdGVzIHRoZSBzdXJmYWNlIHRoYXQgZ3JvdW5kcyBpdC4pCiAgICAjCiAgICAjICAgwqcyICAwMi1ib3VuZGVkLWNvbnRleHRzLWFuZC1zdWJkb21haW5zLm1kICAg4oCUIEJDIHZzIHN1YmRvbWFpbjsgUGxhdGZvcm0gT3BzCiAgICAjICAgwqczICAwMy1sZWFkLXNob3AubWQgICAgICAgICAgICAgICAgICAgICAgICAgIOKAlCByb2xlcywgYWN0aXZpdGllcywgYXJ0aWZhY3RzCiAgICAjICAgwqc0ICAwNC1iYy1zaG9wLm1kICAgICAgICAgICAgICAgICAgICAgICAgICAgIOKAlCBJbXBsZW1lbnRlci9SZXZpZXdlciBnYXRlZCBsb29wCiAgICAjICAgwqc1ICAwNS1pbnRlci1zaG9wLXByb3RvY29sLm1kICAgICAgICAgICAgICAgIOKAlCBodWItYW5kLXNwb2tlLCBtZXNzYWdlIGNhdGFsb2d1ZQogICAgIyAgIMKnNiAgMDYtd29yay10cmFja2luZy5tZCAgICAgICAgICAgICAgICAgICAgICDigJQgYmQgd29ya19pZCBtb2RlbAogICAgIyAgIEFEUi0wMDIgIGhhcm5lc3MgQkMgKFBsYXRmb3JtIE9wZXJhdGlvbnMgc3ViZG9tYWluKQogICAgIyAgIEFEUi0wMDQgIGJjLWxhdW5jaGVyIEJDIG93bnMgYGJjLWNvbnRhaW5lcmA7IHNldHMgU0hPUE1TR19EU04gaW4gY29udGFpbmVyCiAgICAjICAgQURSLTAwNiAgbmFtZSByZWdpc3RyeSBpbiBwb3N0Z3JlczsgbGVhZCBpbmJveDsgZnJvbS90byBvbiBldmVyeSBtZXNzYWdlCiAgICAjICAgQURSLTAwOCAgZG9jcyBCQyAoZW5kLXVzZXIgYWRvcHRpb24gZG9jcykKICAgICMgICBBRFItMDA5ICBjbGFyaWZ5IHJlc29sdXRpb24gPSBhZGRpdGl2ZSByZS1kaXNwYXRjaCBvbiBhIG5ldyBiZWFkCiAgICAjICAgQURSLTAxMiAgb3V0Ym94IGF0b21pY2l0eTogYmQtZmlyc3QgLyBwb3N0Z3Jlcy1zZWNvbmQgLyBzdGF0dXMtZmxpcC10aGlyZAogICAgIyAgIEFEUi0wMTQgIHByZXNlbmNlIGhlYXJ0YmVhdCBjb2xsYXBzZWQgaW50byBgc2hvcC1tc2cgd2F0Y2hgCiAgICAjICAgQURSLTAxNSAgbnVkZ2UgbWVzc2FnZSB0eXBlCiAgICAjICAgQURSLTAxNiAgc2hvcC1tc2cgb3ducyBiZCBpbnRlZ3JhdGlvbiAoQ0xJLXNpZGUgc2lkZSBlZmZlY3RzKQogICAgIyAgIEFEUi0wMTggIGVtcGlyaWNhbCB2ZXJpZmljYXRpb24gPSBjb250cmFjdCBzdXJmYWNlICh0aGUgcnVsZSB0aGlzIG1vZGVsIGhvbm9ycykKICAgICMgICBBRFItMDE5ICBjYW5vbmljYWxpemF0aW9uIG93bmVkIGJ5IHNjZW5hcmlvcyBCQzsgbWVzc2FnaW5nIHRyYW5zcG9ydHMKICAgICMgICBBRFItMDIwICByb3V0aW5nIGlkZW50aXR5ID0gYWJzdHJhY3QgPHN5c3RlbT4vPG5hbWU+OyBsZWFkID0gc2hvcHN5c3RlbS9sZWFkCiAgICAjICAgQURSLTAyMSAgYmMtYmFzZSBpbWFnZSBvd25lZCBieSBiYy1sYXVuY2hlcjsgYXV0by1yZWJ1aWxkIG9uIHV0aWxpdHkgcmVsZWFzZQogICAgIyAgIEFEUi0wMjIgIGJjLWJhc2UgcmVidWlsZHMgQ0VOVFJBTElaRUQgaW4gYmMtbGF1bmNoZXIgKHN1cGVyc2VkZXMgQURSLTAyMSDCp0QyKQogICAgIyAgIGZlYXR1cmVzL21lc3NhZ2luZywgZmVhdHVyZXMvbWVzc2FnaW5nLXJlZ2lzdHJ5ICDigJQgc2hvcC1tc2cgKyByZWdpc3RyeSBiZWhhdmlvcgogICAgIyAgIGZlYXR1cmVzL3NjZW5hcmlvcyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg4oCUIGhhc2gvdmVyaWZ5IGJlaGF2aW9yCiAgICAjICAgZmVhdHVyZXMvdGVtcGxhdGVzICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICDigJQgcm9sZXMsIGJvb3RzdHJhcCwgaW1hZ2UgcHVibGlzaAogICAgIyAgIGZlYXR1cmVzL2JjLWxhdW5jaGVyLCBmZWF0dXJlcy9sYXVuY2hlci1jcmVkZW50aWFscyDigJQgbGF1bmNoICsgY3JlZGVudGlhbHMKICAgICMgICBmZWF0dXJlcy9kb2NzICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIOKAlCBhZG9wdGlvbiBkb2NzCiAgICAjICAgZmVhdHVyZXMvdGVzdC1oYXJuZXNzICAgICAgICAgICAgICAgICAgICAgICAgICAgICDigJQgZXhwZXJpbWVudC9zbGljZS9ydW4vZXZpZGVuY2UKICAgICMgICBmZWF0dXJlcy9iYy1tYW5pZmVzdCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIOKAlCBCQyBtYW5pZmVzdCBzdXJmYWNlCiAgICAjID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0KCiAgICBtb2RlbCB7CgogICAgICAgICMgLS0tLSBFeHRlcm5hbCBhY3RvcnMgLyBzeXN0ZW1zIChTeXN0ZW0gQ29udGV4dCkgLS0tLQogICAgICAgIG9wZXJhdG9yID0gcGVyc29uICJPcGVyYXRvciAvIFN0YWtlaG9sZGVyIiB7CiAgICAgICAgICAgIGRlc2NyaXB0aW9uICJEcml2ZXMgdGhlIGxlYWQgc2hvcDogZXhwcmVzc2VzIGludGVudCwgZGlzcGF0Y2hlcyB3b3JrLCByZWNvbmNpbGVzLiDCpzMgJ3doZXJlIHN0YWtlaG9sZGVycyBtZWV0IHRoZSB3b3JrJy4iCiAgICAgICAgfQoKICAgICAgICBnaXRodWIgPSBzb2Z0d2FyZVN5c3RlbSAiR2l0SHViIiAiU291cmNlIHJlcG9zIChkc3RlbmdsZS8qKSwgQWN0aW9ucyBDSSwgcmVsZWFzZXMgKHZlcnNpb24gdGFncykuIEVhY2ggQkMgPSBvbmUgcmVwbyAowqc0KS4iIHsKICAgICAgICAgICAgdGFncyAiRXh0ZXJuYWwiCiAgICAgICAgfQogICAgICAgIGdoY3IgPSBzb2Z0d2FyZVN5c3RlbSAiR0hDUiAoZ2hjci5pby9kc3RlbmdsZSkiICJPQ0kgcmVnaXN0cnkgZm9yIHB1Ymxpc2hlZCBpbWFnZXM6IGJjLWJhc2UsIHRlbXBsYXRlcywgZGV2Y29udGFpbmVyIChBRFItMDIxLzAyMjsgZmVhdHVyZXMvdGVtcGxhdGVzIDE0MiwgZGV2Y29udGFpbmVyIDE2KS4iIHsKICAgICAgICAgICAgdGFncyAiRXh0ZXJuYWwiCiAgICAgICAgfQoKICAgICAgICAjIC0tLS0gVGhlIHByb2R1Y3QgLS0tLQogICAgICAgIHNob3BzeXN0ZW0gPSBzb2Z0d2FyZVN5c3RlbSAic2hvcHN5c3RlbSBmcmFtZXdvcmsiIHsKICAgICAgICAgICAgZGVzY3JpcHRpb24gIk9uZSBsZWFkIHNob3AgKyBOIEJDLXNob3BzIGNvb3JkaW5hdGluZyB2aWEgdGhlIHR5cGVkIGludGVyLXNob3AgcHJvdG9jb2wgb3ZlciBhIHNoYXJlZCBwb3N0Z3JlcyBtYWlsYm94ICjCpzMsIMKnNSkuIgoKICAgICAgICAgICAgIyA9PT0gTGVhZCBzaG9wICh0aGlzIHJlcG8pID09PQogICAgICAgICAgICBsZWFkID0gY29udGFpbmVyICJMZWFkIHNob3AgKHNob3BzeXN0ZW0tcHJvZHVjdCkiICJPdXR3YXJkIGZhY2Ugb2YgdGhlIHByb2R1Y3Q7IG93bnMgYWxsIHByb2R1Y3QtbGV2ZWwgYXJ0aWZhY3RzOyByb3V0ZXMgdG8gUE8vQXJjaGl0ZWN0IHN1YmFnZW50cy4gQWRkcmVzc2VkIGFzIHNob3BzeXN0ZW0vbGVhZCAoQURSLTAyMCBEMSkuIiAiQ2xhdWRlIENvZGUgKyBiZCArIHNob3AtbXNnIENMSSIgewogICAgICAgICAgICAgICAgdGFncyAiTGVhZCIKCiAgICAgICAgICAgICAgICBwbyA9IGNvbXBvbmVudCAiUHJvZHVjdCBPd25lciAoUE8pIiAiQXV0aG9ycyBpbnRlbnQ6IGJyaWVmLCBQRFJzLCBHaGVya2luIHNjZW5hcmlvczsgYW5zd2VycyBjbGFyaWZ5IG9uIHNjb3BlL3ZvY2FidWxhcnkgKMKnMy4xKS4iICJzdWJhZ2VudCByb2xlIgogICAgICAgICAgICAgICAgYXJjaGl0ZWN0ID0gY29tcG9uZW50ICJBcmNoaXRlY3QiICJPd25zIHNoYXBlLCBzY2VuYXJpbyBhc3NpZ25tZW50LCByZWNvbmNpbGlhdGlvbjsgc2VuZHMgYXNzaWduX3NjZW5hcmlvcy9yZXF1ZXN0X2J1Z2ZpeC9yZXF1ZXN0X21haW50ZW5hbmNlOyBhbnN3ZXJzIGNsYXJpZnkgb24gYXJjaGl0ZWN0dXJlOyBtYWludGFpbnMgVEhJUyB3b3Jrc3BhY2UgKMKnMy4xL8KnMy4yKS4iICJzdWJhZ2VudCByb2xlIgogICAgICAgICAgICAgICAgcm91dGVyID0gY29tcG9uZW50ICJSb3V0ZXIiICJNYWluLWFnZW50OiBjbGFzc2lmaWVzIHJlcXVlc3RzLCBkaXNwYXRjaGVzIFBPL0FyY2hpdGVjdCBzdWJhZ2VudHMsIGFybXMgTW9uaXRvciBvbiBzaG9wLW1zZyB3YXRjaCwgZHJhaW5zIHBlbmRpbmcgKGxlYWQtcHJpbWVyKS4iICJtYWluIGFnZW50IgogICAgICAgICAgICAgICAgbGVhZEFydGlmYWN0cyA9IGNvbXBvbmVudCAiUHJvZHVjdCBhcnRpZmFjdHMiICJCcmllZiwgUERScywgQURScywgdGhpcyBzdHJ1Y3R1cml6ciB3b3Jrc3BhY2UsIERvbWFpbiAmIENvbnRleHQgTWFwLCBjYW5vbmljYWwgR2hlcmtpbiAoZmVhdHVyZXMvKSwgc2NlbmFyaW8tdG8tQkMgYXNzaWdubWVudCwgbGVhZCBiZWFkcyAowqczLjMpLiIgIk1hcmtkb3duIC8gRFNMIC8gR2hlcmtpbiAvIGJlYWRzIgogICAgICAgICAgICB9CgogICAgICAgICAgICAjID09PSBCQy1zaG9wcyAob25lIHJlcG8gPSBvbmUgQkMgPSBvbmUgQm91bmRlZCBDb250ZXh0LCDCpzQpID09PQoKICAgICAgICAgICAgbWVzc2FnaW5nID0gY29udGFpbmVyICJNZXNzYWdpbmcgQkMgKHNob3BzeXN0ZW0tbWVzc2FnaW5nKSIgIlRoZSBwcm90b2NvbCBodWIuIE93bnMgc2hvcC1tc2csIHRoZSBwb3N0Z3JlcyBtYWlsYm94LCB0aGUgbmFtZSByZWdpc3RyeSwgYmQgaW50ZWdyYXRpb24sIHByZXNlbmNlIGhlYXJ0YmVhdC4gU3ViZG9tYWluOiBJbnRlci1zaG9wIGNvb3JkaW5hdGlvbiAoQURSLTAwMikuIiAiUHl0aG9uIChzaG9wLW1zZyBDTEkpIiB7CiAgICAgICAgICAgICAgICB0YWdzICJCQyIKCiAgICAgICAgICAgICAgICAjIENvbXBvbmVudCB2aWV3IGRldGFpbGVkIGJlbG93IOKAlCB0aGlzIGlzIHRoZSBodWIgZXZlcnkgaW50ZXJhY3Rpb24gdG91Y2hlcy4KICAgICAgICAgICAgICAgIGNsaVNlbmQgPSBjb21wb25lbnQgInNob3AtbXNnIHNlbmQvcmVzcG9uZC9jb25zdW1lIiAiT3V0Ym91bmQgdmVoaWNsZXMgKGFzc2lnbl9zY2VuYXJpb3MsIHJlcXVlc3RfYnVnZml4LCByZXF1ZXN0X21haW50ZW5hbmNlKSBhbmQgQkMgcmVzcG9uc2VzICh3b3JrX2RvbmUsIGNsYXJpZnksIG1lY2hhbmlzbV9vYnNlcnZhdGlvbiwgbnVkZ2UpOyBjb25zdW1lIHJlbGVhc2VzIGxlYWQtaW5ib3ggc2xvdCAowqc1LjMsIEFEUi0wMDkpLiIgIkNMSSIKICAgICAgICAgICAgICAgIGNsaVdhdGNoID0gY29tcG9uZW50ICJzaG9wLW1zZyB3YXRjaCArIGhlYXJ0YmVhdCIgIlBvc3RncmVzIExJU1RFTi9OT1RJRlkgd2FrZXVwIG9uIHRoZSBsZWFkL0JDIGluYm94OyB1cHNlcnRzIGJjX3ByZXNlbmNlIG9uIGEgdGljayAoQURSLTAxNCkuIGJjLXN0YXR1cyBjbGFzc2lmaWVzIG9ubGluZS9zdGFsZS9vZmZsaW5lLiIgIkNMSSArIExJU1RFTiIKICAgICAgICAgICAgICAgIHNjaGVtYXMgPSBjb21wb25lbnQgIkNhdGFsb2cgc2NoZW1hcyAoUHlkYW50aWMpIiAiVGhlIDcgbWVzc2FnZSB0eXBlcyArIFNjZW5hcmlvUGF5bG9hZCB2YWx1ZSBvYmplY3Q7IGZyb20vdG8gcmVxdWlyZWQ7IHNjaGVtYSBpcyB0aGUgY29udHJhY3QgKMKnNS4yL8KnNS42LCBBRFItMDA2IMKnNSkuIiAiUHlkYW50aWMiCiAgICAgICAgICAgICAgICByZWdpc3RyeSA9IGNvbXBvbmVudCAiTmFtZSByZWdpc3RyeSIgIk1hcHMgY2Fub25pY2FsIG5hbWUgLT4gYWJzdHJhY3QgPHN5c3RlbT4vPG5hbWU+IGFkZHJlc3M7IGxlYWQgaXMgYXV0aG9yaXRhdGl2ZSB3cml0ZXI7IG5vIGZpbGVzeXN0ZW0gcGF0aCAoQURSLTAwNiwgQURSLTAyMCBEMS9EMikuIiAicG9zdGdyZXMgdGFibGUiCiAgICAgICAgICAgICAgICBiZEZhY2FkZSA9IGNvbXBvbmVudCAiYmQgaW50ZWdyYXRpb24gZmFjYWRlIiAiRmlyZXMgdGhlIHBhaXJlZCBiZCBzaWRlIGVmZmVjdCBmb3IgZXZlcnkgc2hvcC1tc2cgY29tbWFuZCB3aXRoIGEgYmQgY29ycmVsYXRlLCB1bmRlciBBRFItMDEyIGF0b21pY2l0eSAoQURSLTAxNikuIiAic3VicHJvY2VzcyAtPiBiZCBDTEkiCiAgICAgICAgICAgICAgICBzdG9yYWdlID0gY29tcG9uZW50ICJNYWlsYm94IHN0b3JhZ2UiICJtZXNzYWdlcyB0YWJsZSBrZXllZCBieSByZWNpcGllbnQgYWRkcmVzczsgaW5ib3gvb3V0Ym94IHJvd3M7ICh3b3JrX2lkLGRpcmVjdGlvbixzaG9wKSB1bmlxdWVuZXNzOyBiY19wcmVzZW5jZSB0YWJsZSAoQURSLTAwNiwgQURSLTAxMiwgQURSLTAxNCkuIiAicG9zdGdyZXMiCiAgICAgICAgICAgIH0KCiAgICAgICAgICAgIHNjZW5hcmlvcyA9IGNvbnRhaW5lciAiU2NlbmFyaW9zIEJDIChzaG9wc3lzdGVtLXNjZW5hcmlvcykiICJPd25zIGNhbm9uaWNhbGl6YXRpb24gKyB0aGUgYHNjZW5hcmlvcyBoYXNoYC9gdmVyaWZ5YCBjb250cmFjdCB0b29sIOKAlCB0aGUgc2luZ2xlIHNvdXJjZSBvZiB0cnV0aCBmb3Igd2hhdCBhIHNjZW5hcmlvIGhhc2ggSVMgKHNjZW5hcmlvLWJsb2NrLW9ubHkpLiBTdWJkb21haW46IFNwZWNpZmljYXRpb24gKEFEUi0wMDIvMDE5KS4iICJQeXRob24gKHNjZW5hcmlvcyBDTEkpIiB7CiAgICAgICAgICAgICAgICB0YWdzICJCQyIKICAgICAgICAgICAgfQoKICAgICAgICAgICAgdGVtcGxhdGVzID0gY29udGFpbmVyICJUZW1wbGF0ZXMgQkMgKHNob3BzeXN0ZW0tdGVtcGxhdGVzKSIgIk93bnMgcm9sZSB0ZW1wbGF0ZXMgKHNob3AtdGVtcGxhdGVzIHNob3cvbGlzdCksIHNob3AgYm9vdHN0cmFwICsgdXBkYXRlLCBhbmQgaW1hZ2UgcHVibGlzaC1vbi10YWcuIFN1YmRvbWFpbjogUm9sZSBkaXNjaXBsaW5lIChBRFItMDAyOyBmZWF0dXJlcy90ZW1wbGF0ZXMpLiIgIlB5dGhvbiAoc2hvcC10ZW1wbGF0ZXMgQ0xJKSIgewogICAgICAgICAgICAgICAgdGFncyAiQkMiCiAgICAgICAgICAgIH0KCiAgICAgICAgICAgIGJjbGF1bmNoZXIgPSBjb250YWluZXIgIkJDIExhdW5jaGVyIChzaG9wc3lzdGVtLWJjLWxhdW5jaGVyKSIgIk93bnMgYGJjLWNvbnRhaW5lcmAgKGxhdW5jaC9hdHRhY2gvaW5qZWN0L21vbml0b3Ivc3RvcC9zdGF0dXMvbGlzdCkgYW5kIHRoZSBiYy1iYXNlIGltYWdlIChEb2NrZXJmaWxlICsgcHVibGlzaCArIGNlbnRyYWxpemVkIHJlYnVpbGQpLiBTZXRzIFNIT1BNU0dfRFNOIGluIGNvbnRhaW5lcnMuIFN1YmRvbWFpbjogUGxhdGZvcm0gT3BlcmF0aW9ucyAoQURSLTAwNC8wMjEvMDIyKS4iICJQeXRob24gKGJjLWNvbnRhaW5lciBDTEkpICsgRG9ja2VyIiB7CiAgICAgICAgICAgICAgICB0YWdzICJCQyIKICAgICAgICAgICAgfQoKICAgICAgICAgICAgZG9jcyA9IGNvbnRhaW5lciAiRG9jcyBCQyAoc2hvcHN5c3RlbS1kb2NzKSIgIkVuZC11c2VyIGFkb3B0aW9uIGRvY3VtZW50YXRpb24gKHYxIHBsYWluIG1hcmtkb3duKS4gRGlzam9pbnQgYWRvcHRlciBhdWRpZW5jZS4gU3ViZG9tYWluOiBQbGF0Zm9ybSBPcGVyYXRpb25zIC8gYWRvcHRpb24gKEFEUi0wMDg7IGZlYXR1cmVzL2RvY3MpLiIgIk1hcmtkb3duIiB7CiAgICAgICAgICAgICAgICB0YWdzICJCQyIKICAgICAgICAgICAgfQoKICAgICAgICAgICAgaGFybmVzcyA9IGNvbnRhaW5lciAiVGVzdCBIYXJuZXNzIEJDIChzaG9wc3lzdGVtLXRlc3QtaGFybmVzcykiICJWYWxpZGF0ZXMgdGhlIGZyYW1ld29yayBhZ2FpbnN0IGl0c2VsZjogZXhwZXJpbWVudC9zbGljZS9ydW4vZXZpZGVuY2UvZmluZGluZy9iYXNlbGluZS4gQ29tcG9zZXMgc2hvcC1tc2cvc2NlbmFyaW9zL3Nob3AtdGVtcGxhdGVzIGF0IHRoZSBDTEkgYm91bmRhcnkuIFN1YmRvbWFpbjogUGxhdGZvcm0gT3BlcmF0aW9ucyAoQURSLTAwMjsgZmVhdHVyZXMvdGVzdC1oYXJuZXNzKS4iICJQeXRob24gKHNob3AtdGVzdC1oYXJuZXNzIENMSSkiIHsKICAgICAgICAgICAgICAgIHRhZ3MgIkJDIgogICAgICAgICAgICB9CgogICAgICAgICAgICAjID09PSBQbGFubmVkIChub3QgeWV0IGluc3RhbnRpYXRlZCkgPT09CiAgICAgICAgICAgIGVjb21tZXJjZSA9IGNvbnRhaW5lciAiRWNvbW1lcmNlIHByb2R1Y3QgQkMgKFBMQU5ORUQpIiAiRmlyc3QgcmVhbCBjb25zdW1lciBwcm9kdWN0IG9uIHRoZSBmcmFtZXdvcms7IHRyYWNrZWQgZm9yIGEgZnV0dXJlIEFEUi0wMDMuIE5vdCB5ZXQgaW5zdGFudGlhdGVkIChBRFItMDAyIMKnc2VxdWVuY2luZykuIiAiVEJEIiB7CiAgICAgICAgICAgICAgICB0YWdzICJQbGFubmVkIgogICAgICAgICAgICB9CgogICAgICAgICAgICAjID09PSBTaGFyZWQgaW5mcmFzdHJ1Y3R1cmUgY29udGFpbmVycyA9PT0KICAgICAgICAgICAgcG9zdGdyZXMgPSBjb250YWluZXIgIlNoYXJlZCBQb3N0Z3JlcyBtYWlsYm94IiAiVGhlIHNpbmdsZSBwb3N0Z3JlcyBpbnN0YW5jZSBhbGwgc2hvcHMgc2hhcmU6IG1lc3NhZ2VzLCBzaG9wX3JlZ2lzdHJ5LCBiY19wcmVzZW5jZSB0YWJsZXMuIFJlYWNoZWQgdmlhIFNIT1BNU0dfRFNOLiBUaGUgc3Vic3RyYXRlIG9mIHRoZSBpbnRlci1zaG9wIGNoYW5uZWwgKEFEUi0wMDYvMDEyLzAxNC8wMjA7IGNvbXBvc2UueWFtbCkuIiAiUG9zdGdyZVNRTCIgewogICAgICAgICAgICAgICAgdGFncyAiSW5mcmEiCiAgICAgICAgICAgIH0KICAgICAgICAgICAgYmVhZHNSZWdpc3RyeSA9IGNvbnRhaW5lciAiYmQgd29yayByZWdpc3RyeSAocGVyIHNob3ApIiAiYmVhZHMtbmF0aXZlIHdvcmsgdHJhY2tpbmc7IGxlYWQgYmVhZCBJRHMgYXJlIHRoZSBjYW5vbmljYWwgd29ya19pZCBmbG93aW5nIG91dHdhcmQgKMKnNiwgQURSLTAxMS8wMTYpLiBiZCBpcyBhdXRob3JpdGF0aXZlIGZvciBzdGF0ZSwgc2hvcC1tc2cgZm9yIHRyYW5zcG9ydCAoUERSLTAxMCkuIiAiYmVhZHMgKyBkb2x0IiB7CiAgICAgICAgICAgICAgICB0YWdzICJJbmZyYSIKICAgICAgICAgICAgfQogICAgICAgIH0KCiAgICAgICAgIyA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0KICAgICAgICAjIFJFTEFUSU9OU0hJUFMg4oCUIFN5c3RlbSBDb250ZXh0IGxldmVsCiAgICAgICAgIyA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0KICAgICAgICBvcGVyYXRvciAtPiBzaG9wc3lzdGVtICJFeHByZXNzZXMgaW50ZW50OyBkaXNwYXRjaGVzIHdvcms7IHJlY29uY2lsZXMgcmVzdWx0cyIKICAgICAgICBzaG9wc3lzdGVtIC0+IGdpdGh1YiAiSG9zdHMgcmVwb3M7IENJIGJ1aWxkcy90ZXN0czsgY3V0cyB2ZXJzaW9uLXRhZyByZWxlYXNlcyIgImdpdCAvIEFjdGlvbnMiCiAgICAgICAgc2hvcHN5c3RlbSAtPiBnaGNyICJQdWJsaXNoZXMgKyBwdWxscyBpbWFnZXMgKGJjLWJhc2UsIHRlbXBsYXRlcywgZGV2Y29udGFpbmVyKSIgIk9DSSAvIGRvY2tlciIKICAgICAgICBnaXRodWIgLT4gZ2hjciAiUmVsZWFzZS10YWcgQ0kgcHVibGlzaGVzIGltYWdlcyIgIkFjdGlvbnMiCgogICAgICAgICMgPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09CiAgICAgICAgIyBSRUxBVElPTlNISVBTIOKAlCBDb250YWluZXIgbGV2ZWwKICAgICAgICAjID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PQogICAgICAgIG9wZXJhdG9yIC0+IGxlYWQgIk9wZXJhdGVzIHRoZSBsZWFkIHNob3AgKHJvdXRlciArIFBPL0FyY2hpdGVjdCBzdWJhZ2VudHMpIgoKICAgICAgICAjIEh1Yi1hbmQtc3Bva2UgKMKnNS4xKTogb25seSBsZWFkIDwtPiBCQywgbWVkaWF0ZWQgYnkgc2hvcC1tc2cgb3ZlciBwb3N0Z3Jlcy4KICAgICAgICBsZWFkIC0+IG1lc3NhZ2luZyAiYXNzaWduX3NjZW5hcmlvcyAvIHJlcXVlc3RfYnVnZml4IC8gcmVxdWVzdF9tYWludGVuYW5jZSAvIHJlcXVlc3Rfc2NlbmFyaW9fcmVnaXN0ZXIgLyByZXF1ZXN0X3Nob3BfY2FyZDsgcmVhZHMgd29ya19kb25lL2NsYXJpZnkiICJzaG9wLW1zZyBvdmVyIHBvc3RncmVzIgogICAgICAgIGxlYWQgLT4gc2NlbmFyaW9zICJEaXNwYXRjaGVzIHNjZW5hcmlvIHdvcms7IHRpZ2h0ZW5pbmdzIChBRFItMDE5KSIgInNob3AtbXNnIG92ZXIgcG9zdGdyZXMiCiAgICAgICAgbGVhZCAtPiB0ZW1wbGF0ZXMgIkRpc3BhdGNoZXMgcm9sZS10ZW1wbGF0ZSAvIGJvb3RzdHJhcCAvIGltYWdlLXB1Ymxpc2ggd29yayIgInNob3AtbXNnIG92ZXIgcG9zdGdyZXMiCiAgICAgICAgbGVhZCAtPiBiY2xhdW5jaGVyICJEaXNwYXRjaGVzIGxhdW5jaCArIGJjLWJhc2UgcmVidWlsZCB3b3JrIChBRFItMDIxLzAyMikiICJzaG9wLW1zZyBvdmVyIHBvc3RncmVzIgogICAgICAgIGxlYWQgLT4gZG9jcyAiRGlzcGF0Y2hlcyBhZG9wdGlvbi1kb2Mgc2NlbmFyaW9zIChBRFItMDA4KSIgInNob3AtbXNnIG92ZXIgcG9zdGdyZXMiCiAgICAgICAgbGVhZCAtPiBoYXJuZXNzICJEaXNwYXRjaGVzIGhhcm5lc3Mgc2NlbmFyaW9zIChBRFItMDAyIGRvZ2Zvb2RpbmcpIiAic2hvcC1tc2cgb3ZlciBwb3N0Z3JlcyIKICAgICAgICBsZWFkIC0+IGVjb21tZXJjZSAiV2lsbCBkaXNwYXRjaCBwcm9kdWN0IHNjZW5hcmlvcyBvbmNlIGluc3RhbnRpYXRlZCAoUExBTk5FRCkiICJzaG9wLW1zZyBvdmVyIHBvc3RncmVzIgoKICAgICAgICAjIEJDIC0+IGxlYWQgcmVzcG9uc2VzIGFyZSB0aGUgU0FNRSBjaGFubmVsLCBkaWZmZXJpbmcgYnkgY29udGVudCAowqc1LjEpLgogICAgICAgIG1lc3NhZ2luZyAtPiBsZWFkICJ3b3JrX2RvbmUgLyBjbGFyaWZ5IC8gbWVjaGFuaXNtX29ic2VydmF0aW9uIC8gbnVkZ2UgLT4gbGVhZCBpbmJveCIgInNob3AtbXNnIG92ZXIgcG9zdGdyZXMiCiAgICAgICAgc2NlbmFyaW9zIC0+IGxlYWQgIndvcmtfZG9uZSAvIGNsYXJpZnkgLT4gbGVhZCBpbmJveCIgInNob3AtbXNnIG92ZXIgcG9zdGdyZXMiCiAgICAgICAgdGVtcGxhdGVzIC0+IGxlYWQgIndvcmtfZG9uZSAvIGNsYXJpZnkgLT4gbGVhZCBpbmJveCIgInNob3AtbXNnIG92ZXIgcG9zdGdyZXMiCiAgICAgICAgYmNsYXVuY2hlciAtPiBsZWFkICJ3b3JrX2RvbmUgLyBjbGFyaWZ5IC0+IGxlYWQgaW5ib3giICJzaG9wLW1zZyBvdmVyIHBvc3RncmVzIgogICAgICAgIGRvY3MgLT4gbGVhZCAid29ya19kb25lIC8gY2xhcmlmeSAtPiBsZWFkIGluYm94IiAic2hvcC1tc2cgb3ZlciBwb3N0Z3JlcyIKICAgICAgICBoYXJuZXNzIC0+IGxlYWQgIndvcmtfZG9uZSAvIGNsYXJpZnkgLT4gbGVhZCBpbmJveCIgInNob3AtbXNnIG92ZXIgcG9zdGdyZXMiCgogICAgICAgICMgRXZlcnlvbmUgdXNlcyBzaG9wLW1zZywgd2hvc2Ugc3RvcmFnZSBJUyB0aGUgc2hhcmVkIHBvc3RncmVzIChBRFItMDA2KS4KICAgICAgICBsZWFkIC0+IHBvc3RncmVzICJSZWFkcyBsZWFkIGluYm94OyBkZXBvc2l0cyBkaXNwYXRjaGVzICh2aWEgc2hvcC1tc2cpIiAiU0hPUE1TR19EU04iCiAgICAgICAgcG9zdGdyZXMgLT4gbGVhZCAiRGVsaXZlcnMgaW5ib3ggbm90aWZpY2F0aW9ucyB0byB0aGUgcm91dGVyJ3MgTW9uaXRvciAoTElTVEVOL05PVElGWTsgQURSLTAxNCkiICJzaG9wLW1zZyB3YXRjaCIKICAgICAgICBtZXNzYWdpbmcgLT4gcG9zdGdyZXMgIk93bnMgKyByZWFkcy93cml0ZXMgbWVzc2FnZXMsIHNob3BfcmVnaXN0cnksIGJjX3ByZXNlbmNlIiAiU0hPUE1TR19EU04iCiAgICAgICAgc2NlbmFyaW9zIC0+IHBvc3RncmVzICJSZWFkcyBpbmJveCAvIHdyaXRlcyByZXNwb25zZXMgKHZpYSBzaG9wLW1zZykiICJTSE9QTVNHX0RTTiIKICAgICAgICB0ZW1wbGF0ZXMgLT4gcG9zdGdyZXMgIlJlYWRzIGluYm94IC8gd3JpdGVzIHJlc3BvbnNlcyAodmlhIHNob3AtbXNnKSIgIlNIT1BNU0dfRFNOIgogICAgICAgIGJjbGF1bmNoZXIgLT4gcG9zdGdyZXMgIlJlYWRzIGluYm94IC8gd3JpdGVzIHJlc3BvbnNlcyAodmlhIHNob3AtbXNnKSIgIlNIT1BNU0dfRFNOIgogICAgICAgIGRvY3MgLT4gcG9zdGdyZXMgIlJlYWRzIGluYm94IC8gd3JpdGVzIHJlc3BvbnNlcyAodmlhIHNob3AtbXNnKSIgIlNIT1BNU0dfRFNOIgogICAgICAgIGhhcm5lc3MgLT4gcG9zdGdyZXMgIlJlYWRzIGluYm94IC8gd3JpdGVzIHJlc3BvbnNlcyAodmlhIHNob3AtbXNnKSIgIlNIT1BNU0dfRFNOIgoKICAgICAgICAjIGJkIHJlZ2lzdHJ5OiBsZWFkIGJlYWQgSURzIGFyZSB0aGUgd29ya19pZDsgc2hvcC1tc2cgZmlyZXMgYmQgc2lkZSBlZmZlY3RzIChBRFItMDE2KS4KICAgICAgICBsZWFkIC0+IGJlYWRzUmVnaXN0cnkgIkxlYWQgYmVhZHMgPSBjYW5vbmljYWwgd29ya19pZDsgcmVjb25jaWxpYXRpb24gY2xvc2Utb3V0ICjCpzYpIgogICAgICAgIG1lc3NhZ2luZyAtPiBiZWFkc1JlZ2lzdHJ5ICJzaG9wLW1zZyBvd25zIGJkIGludGVncmF0aW9uOiBwYWlyZWQgc2lkZSBlZmZlY3QgcGVyIGNvbW1hbmQgKEFEUi0wMTYpIiAic3VicHJvY2VzcyIKCiAgICAgICAgIyBiYy1sYXVuY2hlciBsYXVuY2hlcyBldmVyeSBCQyBjb250YWluZXIgYW5kIG1hbmFnZXMgdGhlIGJjLWJhc2UgaW1hZ2UuCiAgICAgICAgYmNsYXVuY2hlciAtPiBtZXNzYWdpbmcgIkdhdGVzIGxhdW5jaCBvbiBtZXNzYWdpbmcgREIgcmVhY2hhYmlsaXR5IChmZWF0dXJlcy9iYy1sYXVuY2hlci8zMykiCiAgICAgICAgYmNsYXVuY2hlciAtPiBnaGNyICJQdWxscyA6bGF0ZXN0IGJjLWJhc2UgYXQgbGF1bmNoOyBwdWJsaXNoZXMgcmVidWlsdCBiYy1iYXNlIChBRFItMDIxIEQzIC8gQURSLTAyMikiICJkb2NrZXIgcHVsbC9wdXNoIgogICAgICAgIGJjbGF1bmNoZXIgLT4gc2NlbmFyaW9zICJXYXRjaGVzIHJlbGVhc2VzOyBiYWtlcyBgc2NlbmFyaW9zYCBDTEkgaW50byBiYy1iYXNlIChBRFItMDIyIEQyKSIKICAgICAgICBiY2xhdW5jaGVyIC0+IHRlbXBsYXRlcyAiV2F0Y2hlcyByZWxlYXNlczsgYmFrZXMgYHNob3AtdGVtcGxhdGVzYCBpbnRvIGJjLWJhc2UgKEFEUi0wMjIgRDIpIgogICAgICAgIHRlbXBsYXRlcyAtPiBnaGNyICJQdWJsaXNoZXMgdGVtcGxhdGVzICsgZGV2Y29udGFpbmVyIGltYWdlcyBvbiB2ZXJzaW9uIHRhZyAoZmVhdHVyZXMvdGVtcGxhdGVzIDE0MiwgZGV2Y29udGFpbmVyIDE2KSIgImRvY2tlciBwdXNoIgoKICAgICAgICAjIFJlbGVhc2UvQ0kgZWRnZXMgdG8gR2l0SHViIHVzZWQgYnkgdGhlIGJjLWJhc2UgcmVidWlsZCBmbG93IChBRFItMDIyKS4KICAgICAgICBzY2VuYXJpb3MgLT4gZ2l0aHViICJDdXRzIHZlcnNpb24tdGFnIHJlbGVhc2VzOyBDSSBidWlsZHMvdGVzdHMgKHNjZW5hcmlvIDEyOSBjb252ZW50aW9uKSIgImdpdCAvIEFjdGlvbnMiCiAgICAgICAgdGVtcGxhdGVzIC0+IGdpdGh1YiAiQ3V0cyB2ZXJzaW9uLXRhZyByZWxlYXNlczsgQ0kgYnVpbGRzL3Rlc3RzIiAiZ2l0IC8gQWN0aW9ucyIKICAgICAgICBtZXNzYWdpbmcgLT4gZ2l0aHViICJDdXRzIHZlcnNpb24tdGFnIHJlbGVhc2VzOyBDSSBidWlsZHMvdGVzdHMiICJnaXQgLyBBY3Rpb25zIgogICAgICAgIGJjbGF1bmNoZXIgLT4gZ2l0aHViICJQb2xscyBkZXAgcmVsZWFzZSB0YWdzIHdpdGggb3duIEdJVEhVQl9UT0tFTjsgaG9zdHMgYmMtYmFzZSBidWlsZCAoQURSLTAyMiBEMi9EMykiICJnaXQgLyBBY3Rpb25zIgogICAgICAgIGJjbGF1bmNoZXIgLT4gYmNsYXVuY2hlciAiU2NoZWR1bGVkL3dvcmtmbG93X2Rpc3BhdGNoOiBidW1wIERvY2tlcmZpbGUgcGlucywgcmVidWlsZCBiYy1iYXNlIGlmIGNoYW5nZWQgKEFEUi0wMjIgRDIvRDQpIiAiQWN0aW9ucyIKCiAgICAgICAgIyA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0KICAgICAgICAjIFJFTEFUSU9OU0hJUFMg4oCUIENvbXBvbmVudCBsZXZlbCAobWVzc2FnaW5nIGh1YiBpbnRlcm5hbHMpCiAgICAgICAgIyA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0KICAgICAgICBsZWFkIC0+IGNsaVNlbmQgIkNvbXBvc2VzIGFzc2lnbl9zY2VuYXJpb3MgLyByZXF1ZXN0X2J1Z2ZpeCAvIHJlcXVlc3RfbWFpbnRlbmFuY2UiCiAgICAgICAgY2xpU2VuZCAtPiBzY2hlbWFzICJWYWxpZGF0ZXMgbWVzc2FnZSBhZ2FpbnN0IHRoZSBjYXRhbG9nIGNvbnRyYWN0ICjCpzUuNikiCiAgICAgICAgY2xpU2VuZCAtPiByZWdpc3RyeSAiUmVzb2x2ZXMgLS1iYy8tLWxlYWQgbmFtZSAtPiA8c3lzdGVtPi88bmFtZT4gYWRkcmVzcyAoQURSLTAyMCkiCiAgICAgICAgY2xpU2VuZCAtPiBzdG9yYWdlICJEZXBvc2l0cyB0aGUgbWFpbGJveCByb3cgKHBvc3RncmVzLXNlY29uZCwgQURSLTAxMikiCiAgICAgICAgY2xpU2VuZCAtPiBiZEZhY2FkZSAiRmlyZXMgcGFpcmVkIGJkIHNpZGUgZWZmZWN0IChBRFItMDE2LCBBRFItMDEyIGF0b21pY2l0eSkiCiAgICAgICAgY2xpU2VuZCAtPiBzY2VuYXJpb3MgIkRlbGVnYXRlcyBzY2VuYXJpby1oYXNoIHRvIGBzY2VuYXJpb3MuaGFzaGAgKGluLXByb2Nlc3M7IEFEUi0wMTkgRDIpIgogICAgICAgIGNsaVdhdGNoIC0+IHN0b3JhZ2UgIkxJU1RFTi9OT1RJRlkgb24gaW5ib3g7IHVwc2VydHMgYmNfcHJlc2VuY2Ugb24gdGljayAoQURSLTAxNCkiCiAgICAgICAgYmRGYWNhZGUgLT4gYmVhZHNSZWdpc3RyeSAiYmQgY3JlYXRlL3VwZGF0ZS9jbG9zZSB2aWEgQ0xJIChBRFItMDE2IEQ0KSIKICAgICAgICByZWdpc3RyeSAtPiBzdG9yYWdlICJSZWdpc3RyeSArIG1lc3NhZ2VzIGNvLWxvY2F0ZWQgaW4gb25lIHBvc3RncmVzIERCIChBRFItMDA2IEQxKSIKICAgICAgICBzY2hlbWFzIC0+IHNjZW5hcmlvcyAiU2NlbmFyaW9QYXlsb2FkIGNhcnJpZXMgYSBzY2VuYXJpbyB3aG9zZSBoYXNoIHJ1bGUgc2NlbmFyaW9zIG93bnMgKEFEUi0wMTkpIgogICAgfQoKICAgIHZpZXdzIHsKCiAgICAgICAgc3lzdGVtQ29udGV4dCBzaG9wc3lzdGVtICJTeXN0ZW1Db250ZXh0IiB7CiAgICAgICAgICAgIGluY2x1ZGUgKgogICAgICAgICAgICBhdXRvbGF5b3V0IGxyCiAgICAgICAgICAgIGRlc2NyaXB0aW9uICJUaGUgc2hvcHN5c3RlbSBmcmFtZXdvcmssIHRoZSBvcGVyYXRvciwgYW5kIHRoZSBleHRlcm5hbCBzeXN0ZW1zIGl0IGRlcGVuZHMgb24gKEdpdEh1YiwgR0hDUikuIgogICAgICAgIH0KCiAgICAgICAgY29udGFpbmVyIHNob3BzeXN0ZW0gIkNvbnRhaW5lcnMiIHsKICAgICAgICAgICAgaW5jbHVkZSAqCiAgICAgICAgICAgIGF1dG9sYXlvdXQgbHIKICAgICAgICAgICAgZGVzY3JpcHRpb24gIkxlYWQgc2hvcCArIGVhY2ggQkMgYXMgYSBjb250YWluZXIsIHRoZSBzaGFyZWQgcG9zdGdyZXMgbWFpbGJveCwgYW5kIHRoZSBiZCByZWdpc3RyeS4gRWRnZXMgbGFiZWxsZWQgd2l0aCB0aGUgcHJvdG9jb2wgKHNob3AtbXNnIG92ZXIgcG9zdGdyZXMpLiIKICAgICAgICB9CgogICAgICAgIGNvbXBvbmVudCBtZXNzYWdpbmcgIk1lc3NhZ2luZ0NvbXBvbmVudHMiIHsKICAgICAgICAgICAgaW5jbHVkZSAqCiAgICAgICAgICAgIGF1dG9sYXlvdXQgbHIKICAgICAgICAgICAgZGVzY3JpcHRpb24gIlRoZSBtZXNzYWdpbmcgaHViIGludGVybmFsczogc2VuZC9yZXNwb25kL2NvbnN1bWUsIHdhdGNoK2hlYXJ0YmVhdCwgY2F0YWxvZyBzY2hlbWFzLCBuYW1lIHJlZ2lzdHJ5LCBiZCBmYWNhZGUsIHBvc3RncmVzIHN0b3JhZ2UuIFRvdWNoZWQgYnkgZXZlcnkgaW50ZXItc2hvcCBpbnRlcmFjdGlvbi4iCiAgICAgICAgfQoKICAgICAgICAjIC0tLS0gRHluYW1pYyB2aWV3IChhKTogYXNzaWduX3NjZW5hcmlvcyAtPiBnYXRlZCBsb29wIC0+IHdvcmtfZG9uZSAtPiByZWNvbmNpbGUgLS0tLQogICAgICAgICMgTk9URTogc3lzdGVtLXNjb3BlZCBkeW5hbWljIHZpZXcgLT4gY29udGFpbmVyIGdyYW51bGFyaXR5IG9ubHkgKFN0cnVjdHVyaXpyCiAgICAgICAgIyBydWxlOiBjb21wb25lbnRzIG1heSBub3QgYXBwZWFyIHdoZW4gdGhlIGR5bmFtaWMgc2NvcGUgaXMgYSBzb2Z0d2FyZSBzeXN0ZW0pLgogICAgICAgICMgUm9sZSBkZXRhaWwgKEFyY2hpdGVjdCAvIEltcGxlbWVudGVyIC8gUmV2aWV3ZXIpIGlzIGNhcnJpZWQgaW4gdGhlIHN0ZXAgdGV4dC4KICAgICAgICBkeW5hbWljIHNob3BzeXN0ZW0gIkFzc2lnblNjZW5hcmlvc0Zsb3ciIHsKICAgICAgICAgICAgZGVzY3JpcHRpb24gImFzc2lnbl9zY2VuYXJpb3MgZGlzcGF0Y2ggLT4gQkMgaW50ZXJuYWwgSW1wbGVtZW50ZXItPlJldmlld2VyIGdhdGVkIGxvb3AgLT4gd29ya19kb25lIHdpdGggc2NlbmFyaW9faGFzaGVzIC0+IGxlYWQgcmVjb25jaWxpYXRpb24gKMKnNC4yL8KnNC40LCBBRFItMDEyLzAxNikuIgogICAgICAgICAgICBsZWFkIC0+IG1lc3NhZ2luZyAiMS4gQXJjaGl0ZWN0OiBzaG9wLW1zZyBzZW5kIGFzc2lnbl9zY2VuYXJpb3MgLS1iYyA8bmFtZT4gLS13b3JrLWlkIDxsZWFkLWJlYWQ+IChoYXNoIHZpYSBzY2VuYXJpb3MpIgogICAgICAgICAgICBtZXNzYWdpbmcgLT4gcG9zdGdyZXMgIjIuIGJkLWZpcnN0IHRoZW4gZGVwb3NpdCBpbmJveCByb3cgKEFEUi0wMTIgYXRvbWljaXR5KSIKICAgICAgICAgICAgbWVzc2FnaW5nIC0+IHNjZW5hcmlvcyAiMy4gSW1wbGVtZW50ZXI6IHJ1biBCREQ7IHJlY29tcHV0ZSBzY2VuYXJpbyBoYXNoZXMgKEFEUi0wMTkpIgogICAgICAgICAgICBzY2VuYXJpb3MgLT4gbWVzc2FnaW5nICI0LiBSZXZpZXdlcjogYWR2ZXJzYXJpYWwgZ2F0ZSDigJQgYmxvY2sgd29ya19kb25lIHVudGlsIGhhc2hlcy9jbGVhbi10cmVlIHNhdGlzZmllZCAowqc0LjQpIgogICAgICAgICAgICBtZXNzYWdpbmcgLT4gcG9zdGdyZXMgIjUuIHNob3AtbXNnIHJlc3BvbmQgd29ya19kb25lKGNvbXBsZXRlKSB3aXRoIHBhc3Npbmcgc2NlbmFyaW9faGFzaGVzIC0+IGxlYWQgaW5ib3giCiAgICAgICAgICAgIHBvc3RncmVzIC0+IGxlYWQgIjYuIE1vbml0b3IgZmlyZXMgPHdvcmtfaWQ+IHdvcmtfZG9uZTsgQXJjaGl0ZWN0IHJlY29uY2lsZXMgcmVnaXN0ZXIgKyBoYXNoZXMsIGJkIGNsb3NlIChBRFItMDE2IEQzKSIKICAgICAgICB9CgogICAgICAgICMgLS0tLSBEeW5hbWljIHZpZXcgKGIpOiBjbGFyaWZ5IHJvdW5kLXRyaXAgKGFkZGl0aXZlLWJlYWQgbW9kZWwsIEFEUi0wMDkpIC0tLS0KICAgICAgICBkeW5hbWljIHNob3BzeXN0ZW0gIkNsYXJpZnlSb3VuZFRyaXAiIHsKICAgICAgICAgICAgZGVzY3JpcHRpb24gIkJDIGNsYXJpZnkgLT4gbGVhZCByZXNvbHZlcyBieSBhZGRpdGl2ZSByZS1kaXNwYXRjaCBvbiBhIE5FVyBsZWFkIGJlYWQgKEFEUi0wMDkgbGF5ZXIgYik7IG9yaWdpbmFsIGRpc3BhdGNoIHN0YXlzIGluIGZsaWdodC4iCiAgICAgICAgICAgIG1lc3NhZ2luZyAtPiBwb3N0Z3JlcyAiMS4gQkM6IHNob3AtbXNnIHJlc3BvbmQgY2xhcmlmeSAtLXdvcmstaWQgPG9yaWc+IC0+IGxlYWQgaW5ib3ggKGFza3Mgc2NvcGUvYXJjaGl0ZWN0dXJlKSIKICAgICAgICAgICAgcG9zdGdyZXMgLT4gbGVhZCAiMi4gTW9uaXRvciBmaXJlcyA8d29ya19pZD4gY2xhcmlmeTsgcm91dGVyIHJvdXRlcyBzY29wZS92b2NhYiB0byBQTywgYXJjaGl0ZWN0dXJlIHRvIEFyY2hpdGVjdCIKICAgICAgICAgICAgbGVhZCAtPiBtZXNzYWdpbmcgIjMuIFBPL0FyY2hpdGVjdCBkZWNpZGU7IEFyY2hpdGVjdCBwaWNrcyB2ZWhpY2xlIG9uIGEgTkVXIGJlYWQsIHNlbmQgcmVxdWVzdF9idWdmaXgvYXNzaWduX3NjZW5hcmlvcyAtLXdvcmstaWQgPG5ldy1iZWFkPiwgY2l0aW5nIDxvcmlnPiAoYWRkaXRpdmUsIEFEUi0wMDkpIgogICAgICAgICAgICBtZXNzYWdpbmcgLT4gcG9zdGdyZXMgIjQuIE5ldyBkaXNwYXRjaCBkZXBvc2l0ZWQ7IG9yaWdpbmFsIHJvdyBjb25zdW1lZCBvbmNlIHJlc29sdmluZyBkaXNwYXRjaCBpcyBvbiB0aGUgd2lyZSIKICAgICAgICB9CgogICAgICAgICMgLS0tLSBEeW5hbWljIHZpZXcgKGMpOiBiYy1iYXNlIHJlYnVpbGQgb24gdXRpbGl0eSByZWxlYXNlIChBRFItMDIxLzAyMikgLS0tLQogICAgICAgIGR5bmFtaWMgc2hvcHN5c3RlbSAiQmNCYXNlUmVidWlsZCIgewogICAgICAgICAgICBkZXNjcmlwdGlvbiAiRnJhbWV3b3JrLXV0aWxpdHkgcmVsZWFzZSAtPiBjZW50cmFsaXplZCBiYy1iYXNlIHJlYnVpbGQgaW4gYmMtbGF1bmNoZXIgLT4gcmVwdWJsaXNoIDpsYXRlc3QgLT4gbGF1bmNoIHB1bGxzIGZyZXNoIGRpZ2VzdCAoQURSLTAyMiBEMi9ENTsgQURSLTAyMSBEMykuIgogICAgICAgICAgICBzY2VuYXJpb3MgLT4gZ2l0aHViICIxLiBVdGlsaXR5IGN1dHMgYSB2ZXJzaW9uLXRhZyByZWxlYXNlICh2TUFKT1IuTUlOT1IuUEFUQ0gpIChzY2VuYXJpbyAxMjkgY29udmVudGlvbikiCiAgICAgICAgICAgIGJjbGF1bmNoZXIgLT4gZ2l0aHViICIyLiBiYy1sYXVuY2hlciBzY2hlZHVsZWQvd29ya2Zsb3dfZGlzcGF0Y2ggcG9sbCByZWFkcyBsYXRlc3QgZGVwIHRhZ3Mgd2l0aCBvd24gR0lUSFVCX1RPS0VOIChBRFItMDIyIEQyL0QzKSIKICAgICAgICAgICAgYmNsYXVuY2hlciAtPiBiY2xhdW5jaGVyICIzLiBCdW1wIEB2WC5ZLlogcGluIGluIGJjLWJhc2UgRG9ja2VyZmlsZTsgcmVidWlsZCBvbmx5IGlmIGEgcGluIGNoYW5nZWQgKEFEUi0wMjIgRDIpIgogICAgICAgICAgICBiY2xhdW5jaGVyIC0+IGdoY3IgIjQuIFJlcHVibGlzaCBnaGNyLmlvL2RzdGVuZ2xlL3Nob3BzeXN0ZW0tYmMtYmFzZTpsYXRlc3QgYXQgbmV3IGRpZ2VzdCAoQURSLTAyMSBEMSkiCiAgICAgICAgICAgIGJjbGF1bmNoZXIgLT4gZ2hjciAiNS4gTmV4dCBiYy1jb250YWluZXIgbGF1bmNoIFBVTExTIGN1cnJlbnQgOmxhdGVzdCwgbm90IHN0YWxlIGNhY2hlIChBRFItMDIxIEQzIC8gc2NlbmFyaW8gMzkpIgogICAgICAgIH0KCiAgICAgICAgc3R5bGVzIHsKICAgICAgICAgICAgZWxlbWVudCAiUGVyc29uIiB7CiAgICAgICAgICAgICAgICBzaGFwZSBQZXJzb24KICAgICAgICAgICAgICAgIGJhY2tncm91bmQgIzA4NDI3YgogICAgICAgICAgICAgICAgY29sb3IgI2ZmZmZmZgogICAgICAgICAgICB9CiAgICAgICAgICAgIGVsZW1lbnQgIkxlYWQiIHsKICAgICAgICAgICAgICAgIGJhY2tncm91bmQgIzExNjhiZAogICAgICAgICAgICAgICAgY29sb3IgI2ZmZmZmZgogICAgICAgICAgICB9CiAgICAgICAgICAgIGVsZW1lbnQgIkJDIiB7CiAgICAgICAgICAgICAgICBiYWNrZ3JvdW5kICM0MzhkZDUKICAgICAgICAgICAgICAgIGNvbG9yICNmZmZmZmYKICAgICAgICAgICAgfQogICAgICAgICAgICBlbGVtZW50ICJJbmZyYSIgewogICAgICAgICAgICAgICAgYmFja2dyb3VuZCAjNmI2YjZiCiAgICAgICAgICAgICAgICBjb2xvciAjZmZmZmZmCiAgICAgICAgICAgICAgICBzaGFwZSBDeWxpbmRlcgogICAgICAgICAgICB9CiAgICAgICAgICAgIGVsZW1lbnQgIlBsYW5uZWQiIHsKICAgICAgICAgICAgICAgIGJhY2tncm91bmQgI2NjY2NjYwogICAgICAgICAgICAgICAgY29sb3IgIzAwMDAwMAogICAgICAgICAgICAgICAgYm9yZGVyIERhc2hlZAogICAgICAgICAgICB9CiAgICAgICAgICAgIGVsZW1lbnQgIkV4dGVybmFsIiB7CiAgICAgICAgICAgICAgICBiYWNrZ3JvdW5kICM5OTk5OTkKICAgICAgICAgICAgICAgIGNvbG9yICNmZmZmZmYKICAgICAgICAgICAgfQogICAgICAgICAgICBlbGVtZW50ICJDb21wb25lbnQiIHsKICAgICAgICAgICAgICAgIGJhY2tncm91bmQgIzg1YmJmMAogICAgICAgICAgICAgICAgY29sb3IgIzAwMDAwMAogICAgICAgICAgICB9CiAgICAgICAgfQogICAgfQp9",
+    "structurizr.inspection.info" : "0",
+    "structurizr.inspection.ignore" : "0",
+    "structurizr.inspection.warning" : "0"
+  },
+  "views" : {
+    "componentViews" : [ {
+      "automaticLayout" : {
+        "edgeSeparation" : 50,
+        "nodeSeparation" : 50,
+        "rankDirection" : "LeftRight",
+        "rankSeparation" : 100,
+        "vertices" : true
+      },
+      "containerId" : "10",
+      "description" : "The messaging hub internals: send/respond/consume, watch+heartbeat, catalog schemas, name registry, bd facade, postgres storage. Touched by every inter-shop interaction.",
+      "elements" : [ {
+        "id" : "5",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "11",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "12",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "13",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "14",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "15",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "16",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "17",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "24",
+        "x" : 0,
+        "y" : 0
+      } ],
+      "externalContainerBoundariesVisible" : false,
+      "key" : "MessagingComponents",
+      "name" : "Component View: shopsystem framework - Messaging BC (shopsystem-messaging)",
+      "order" : 3,
+      "relationships" : [ {
+        "id" : "31"
+      }, {
+        "id" : "38"
+      }, {
+        "id" : "51"
+      }, {
+        "id" : "63"
+      }, {
+        "id" : "64"
+      }, {
+        "id" : "65"
+      }, {
+        "id" : "66"
+      }, {
+        "id" : "67"
+      }, {
+        "id" : "68"
+      }, {
+        "id" : "70"
+      }, {
+        "id" : "71"
+      }, {
+        "id" : "72"
+      }, {
+        "id" : "73"
+      } ]
+    } ],
+    "configuration" : {
+      "styles" : {
+        "elements" : [ {
+          "background" : "#438dd5",
+          "color" : "#ffffff",
+          "tag" : "BC"
+        }, {
+          "background" : "#85bbf0",
+          "color" : "#000000",
+          "tag" : "Component"
+        }, {
+          "background" : "#999999",
+          "color" : "#ffffff",
+          "tag" : "External"
+        }, {
+          "background" : "#6b6b6b",
+          "color" : "#ffffff",
+          "shape" : "Cylinder",
+          "tag" : "Infra"
+        }, {
+          "background" : "#1168bd",
+          "color" : "#ffffff",
+          "tag" : "Lead"
+        }, {
+          "background" : "#08427b",
+          "color" : "#ffffff",
+          "shape" : "Person",
+          "tag" : "Person"
+        }, {
+          "background" : "#cccccc",
+          "border" : "Dashed",
+          "color" : "#000000",
+          "tag" : "Planned"
+        } ]
+      },
+      "terminology" : { }
+    },
+    "containerViews" : [ {
+      "automaticLayout" : {
+        "edgeSeparation" : 50,
+        "nodeSeparation" : 50,
+        "rankDirection" : "LeftRight",
+        "rankSeparation" : 100,
+        "vertices" : true
+      },
+      "description" : "Lead shop + each BC as a container, the shared postgres mailbox, and the bd registry. Edges labelled with the protocol (shop-msg over postgres).",
+      "elements" : [ {
+        "id" : "1",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "2",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "3",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "5",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "10",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "17",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "18",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "19",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "20",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "21",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "22",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "23",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "24",
+        "x" : 0,
+        "y" : 0
+      } ],
+      "externalSoftwareSystemBoundariesVisible" : false,
+      "key" : "Containers",
+      "name" : "Container View: shopsystem framework",
+      "order" : 2,
+      "relationships" : [ {
+        "id" : "28"
+      }, {
+        "id" : "29"
+      }, {
+        "id" : "30"
+      }, {
+        "id" : "31"
+      }, {
+        "id" : "32"
+      }, {
+        "id" : "33"
+      }, {
+        "id" : "34"
+      }, {
+        "id" : "35"
+      }, {
+        "id" : "36"
+      }, {
+        "id" : "37"
+      }, {
+        "id" : "38"
+      }, {
+        "id" : "39"
+      }, {
+        "id" : "40"
+      }, {
+        "id" : "41"
+      }, {
+        "id" : "42"
+      }, {
+        "id" : "43"
+      }, {
+        "id" : "44"
+      }, {
+        "id" : "45"
+      }, {
+        "id" : "46"
+      }, {
+        "id" : "47"
+      }, {
+        "id" : "48"
+      }, {
+        "id" : "49"
+      }, {
+        "id" : "50"
+      }, {
+        "id" : "51"
+      }, {
+        "id" : "52"
+      }, {
+        "id" : "53"
+      }, {
+        "id" : "54"
+      }, {
+        "id" : "55"
+      }, {
+        "id" : "56"
+      }, {
+        "id" : "57"
+      }, {
+        "id" : "58"
+      }, {
+        "id" : "59"
+      }, {
+        "id" : "60"
+      }, {
+        "id" : "61"
+      }, {
+        "id" : "62"
+      }, {
+        "id" : "69"
+      } ],
+      "softwareSystemId" : "4"
+    } ],
+    "dynamicViews" : [ {
+      "description" : "assign_scenarios dispatch -> BC internal Implementer->Reviewer gated loop -> work_done with scenario_hashes -> lead reconciliation (§4.2/§4.4, ADR-012/016).",
+      "elementId" : "4",
+      "elements" : [ {
+        "id" : "5",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "10",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "17",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "23",
+        "x" : 0,
+        "y" : 0
+      } ],
+      "externalBoundariesVisible" : false,
+      "key" : "AssignScenariosFlow",
+      "name" : "Dynamic View: shopsystem framework",
+      "order" : 4,
+      "relationships" : [ {
+        "description" : "1. Architect: shop-msg send assign_scenarios --bc <name> --work-id <lead-bead> (hash via scenarios)",
+        "id" : "30",
+        "order" : "1",
+        "response" : false
+      }, {
+        "description" : "2. bd-first then deposit inbox row (ADR-012 atomicity)",
+        "id" : "45",
+        "order" : "2",
+        "response" : false
+      }, {
+        "description" : "3. Implementer: run BDD; recompute scenario hashes (ADR-019)",
+        "id" : "69",
+        "order" : "3",
+        "response" : false
+      }, {
+        "description" : "4. Reviewer: adversarial gate — block work_done until hashes/clean-tree satisfied (§4.4)",
+        "id" : "69",
+        "order" : "4",
+        "response" : true
+      }, {
+        "description" : "5. shop-msg respond work_done(complete) with passing scenario_hashes -> lead inbox",
+        "id" : "45",
+        "order" : "5",
+        "response" : false
+      }, {
+        "description" : "6. Monitor fires <work_id> work_done; Architect reconciles register + hashes, bd close (ADR-016 D3)",
+        "id" : "44",
+        "order" : "6",
+        "response" : false
+      } ]
+    }, {
+      "description" : "BC clarify -> lead resolves by additive re-dispatch on a NEW lead bead (ADR-009 layer b); original dispatch stays in flight.",
+      "elementId" : "4",
+      "elements" : [ {
+        "id" : "5",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "10",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "23",
+        "x" : 0,
+        "y" : 0
+      } ],
+      "externalBoundariesVisible" : false,
+      "key" : "ClarifyRoundTrip",
+      "name" : "Dynamic View: shopsystem framework",
+      "order" : 5,
+      "relationships" : [ {
+        "description" : "1. BC: shop-msg respond clarify --work-id <orig> -> lead inbox (asks scope/architecture)",
+        "id" : "45",
+        "order" : "1",
+        "response" : false
+      }, {
+        "description" : "2. Monitor fires <work_id> clarify; router routes scope/vocab to PO, architecture to Architect",
+        "id" : "44",
+        "order" : "2",
+        "response" : false
+      }, {
+        "description" : "3. PO/Architect decide; Architect picks vehicle on a NEW bead, send request_bugfix/assign_scenarios --work-id <new-bead>, citing <orig> (additive, ADR-009)",
+        "id" : "30",
+        "order" : "3",
+        "response" : false
+      }, {
+        "description" : "4. New dispatch deposited; original row consumed once resolving dispatch is on the wire",
+        "id" : "45",
+        "order" : "4",
+        "response" : false
+      } ]
+    }, {
+      "description" : "Framework-utility release -> centralized bc-base rebuild in bc-launcher -> republish :latest -> launch pulls fresh digest (ADR-022 D2/D5; ADR-021 D3).",
+      "elementId" : "4",
+      "elements" : [ {
+        "id" : "2",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "3",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "17",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "19",
+        "x" : 0,
+        "y" : 0
+      } ],
+      "externalBoundariesVisible" : false,
+      "key" : "BcBaseRebuild",
+      "name" : "Dynamic View: shopsystem framework",
+      "order" : 6,
+      "relationships" : [ {
+        "description" : "1. Utility cuts a version-tag release (vMAJOR.MINOR.PATCH) (scenario 129 convention)",
+        "id" : "58",
+        "order" : "1",
+        "response" : false
+      }, {
+        "description" : "2. bc-launcher scheduled/workflow_dispatch poll reads latest dep tags with own GITHUB_TOKEN (ADR-022 D2/D3)",
+        "id" : "61",
+        "order" : "2",
+        "response" : false
+      }, {
+        "description" : "3. Bump @vX.Y.Z pin in bc-base Dockerfile; rebuild only if a pin changed (ADR-022 D2)",
+        "id" : "62",
+        "order" : "3",
+        "response" : false
+      }, {
+        "description" : "4. Republish ghcr.io/dstengle/shopsystem-bc-base:latest at new digest (ADR-021 D1)",
+        "id" : "54",
+        "order" : "4",
+        "response" : false
+      }, {
+        "description" : "5. Next bc-container launch PULLS current :latest, not stale cache (ADR-021 D3 / scenario 39)",
+        "id" : "54",
+        "order" : "5",
+        "response" : false
+      } ]
+    } ],
+    "systemContextViews" : [ {
+      "automaticLayout" : {
+        "edgeSeparation" : 50,
+        "nodeSeparation" : 50,
+        "rankDirection" : "LeftRight",
+        "rankSeparation" : 100,
+        "vertices" : true
+      },
+      "description" : "The shopsystem framework, the operator, and the external systems it depends on (GitHub, GHCR).",
+      "elements" : [ {
+        "id" : "1",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "2",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "3",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "4",
+        "x" : 0,
+        "y" : 0
+      } ],
+      "enterpriseBoundaryVisible" : true,
+      "key" : "SystemContext",
+      "name" : "System Context View: shopsystem framework",
+      "order" : 1,
+      "relationships" : [ {
+        "id" : "25"
+      }, {
+        "id" : "26"
+      }, {
+        "id" : "27"
+      }, {
+        "id" : "28"
+      } ],
+      "softwareSystemId" : "4"
+    } ]
+  }
+}
