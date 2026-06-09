@@ -144,11 +144,36 @@ fabro remains the baseline to beat; this set does not displace it.
 
 Exactly **one candidate merits a real kill-or-confirm spike: agent-runtime** — the only one whose simplicity is genuinely competitive with (arguably better than) fabro and whose self-host story is a single binary on LLM keys, yet whose seam-b refutation is still *code-read, not constructed*. The spike should (a) attempt to construct ANY config that wakes on a live postgres NOTIFY and re-enters the flow — **kill criterion:** if only a fully-external wrapper works, it is a flow-step library, not a substrate; and (b) confirm whether operating it as a substrate forces `--data-dir` (making the bd-authority leak not merely opt-out).
 
-agentic-lab needs no spike (not-viable, kill confirmed). pipelex / keystone / DKMV do not warrant a spike ahead of agent-runtime — each is equal-or-worse on simplicity and already REFUTED on seam-b by controller-set / DAG-exit evidence. **If the agent-runtime spike confirms the external-reactor kill, the conclusion is firm: keep fabro as the substrate frame and treat the reactive Monitor/loop as a shopsystem-owned primitive that no general substrate fills** — and require a *constructed* (not code-read) external-arrival-wake demonstration before any future substrate's seam-b is rated above PARTIAL.
+agentic-lab needs no spike (not-viable, kill confirmed). pipelex / keystone / DKMV do not warrant a spike ahead of agent-runtime — each is equal-or-worse on simplicity and already REFUTED on seam-b by controller-set / DAG-exit evidence. The agent-runtime spike (lead-fih1) was the sole gate on firming this conclusion.
+
+## Decision (2026-06-09)
+
+The conclusion is **firm** — the agent-runtime gate is resolved. The
+agent-runtime kill-or-confirm spike (lead-fih1) was **closed by decision on
+2026-06-09**: the spike was not run to completion; the user abandoned the
+agent-runtime substrate path and the KILL criterion was met by decision.
+**agent-runtime is REFUTED as a general orchestration substrate.** That
+closure is itself the substrate-eval conclusion for this set.
+
+Recorded decision:
+
+- **agent-runtime is REFUTED** as a general orchestration substrate (by
+  decision, lead-fih1 closed 2026-06-09 — kill criterion met without further
+  spiking; its seam-b refutation stands, code-read evidence not overturned).
+- **The reactive Monitor/loop is a shopsystem-OWNED seam** — no general
+  substrate in this set fills it. It stays shop-owned regardless of which
+  substrate is chosen for seam-a (BC launch) or any other concern.
+- **fabro (lead-f6ta) remains the surviving baseline-to-beat** for the
+  orchestration-substrate question. None of the five candidates displaced it;
+  the Monitor/react seam stays shop-owned even under fabro.
+- **Standing requirement going forward:** any future substrate must produce a
+  *constructed* (not code-read) demonstration of external-arrival-wake (live
+  postgres LISTEN/NOTIFY inbound re-entering the flow) before its seam-b is
+  rated above PARTIAL.
 
 ## Follow-up beads (filed under lead-odqd / lead-8mho)
 
-- **P1** Spike: agent-runtime seam-b kill-or-confirm (external NOTIFY wake)
-- **P2** Spike: agent-runtime durable-store leak — does substrate use force `--data-dir`?
-- **P2** Record substrate-eval conclusion: reactive Monitor/loop is a shopsystem-owned seam no general substrate fills
+- **P1** Spike: agent-runtime seam-b kill-or-confirm (external NOTIFY wake) — **CLOSED 2026-06-09 (lead-fih1), kill criterion met by decision; agent-runtime REFUTED**
+- **P2** Spike: agent-runtime durable-store leak — does substrate use force `--data-dir`? — **moot (agent-runtime path abandoned)**
+- **P2** Record substrate-eval conclusion: reactive Monitor/loop is a shopsystem-owned seam no general substrate fills — **DONE: recorded in Decision (2026-06-09) above**
 - **P3** Note: agentic-lab is not-viable (codegen, no runtime) — kill, no spike
