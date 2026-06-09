@@ -1,6 +1,6 @@
 {
       "name": "Python, node, claude",
-      "image": "ghcr.io/dstengle/shopsystem-bc-base:latest",
+      "image": "ghcr.io/dstengle/devcontainer-python-node-claude:latest",
       "mounts": [
          "source=${localEnv:HOME}/.claude,target=/home/vscode/.claude,type=bind",
          "source=${localEnv:HOME}/.config/gh,target=/home/vscode/.config/gh,type=bind",

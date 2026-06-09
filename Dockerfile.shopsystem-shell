@@ -13,7 +13,7 @@
 # Build with:
 #   docker build -t shopsystem-shell:dev -f Dockerfile.shopsystem-shell .
 
-FROM ghcr.io/dstengle/devcontainer-python-node-claude:latest
+FROM ghcr.io/dstengle/shopsystem-bc-base:latest
 
 USER vscode
 

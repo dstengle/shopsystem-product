@@ -31,3 +31,4 @@ services:
 networks:
   shopsystem:
     name: shopsystem
+    external: true

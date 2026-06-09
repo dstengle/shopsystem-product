@@ -14,6 +14,7 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 DATA="${SHOPSYSTEM_DATA:-$HOME/.local/share/shopsystem}"
 IMAGE="${SHOPSYSTEM_SHELL_IMAGE:-shopsystem-shell:dev}"
+IMAGE="ghcr.io/dstengle/shopsystem-bc-base:latest"
 
 mkdir -p "$DATA/pgdata"
 
