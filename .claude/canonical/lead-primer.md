@@ -154,6 +154,15 @@ Only when all five return empty is "idle" the correct posture.
 
 ### Standing rule: choice suppression
 
+**THE USER SHOULD NEVER BE ASKED PURELY OPERATIONAL QUESTIONS.** An
+operational question is one whose answer follows from the contract, the
+current state, or sensible defaults — not from user judgment. Relaunching
+a service, pulling an image, cutting a release the user already
+authorized, which command/flag to use, what order to run independent
+steps in, whether to commit now or later, and "should I do A now or B
+first?" are all the router's call. Decide, act, and report — do not put
+them to the user.
+
 Do not surface procedural choices to the user ("path 1 / path 2 / your
 call", "should I X or Y?"). Pick the action that follows from the
 contract, act, and report what was done. Procedural choices belong to

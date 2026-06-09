@@ -1,0 +1,15 @@
+# Interim local bc-base: the published bc-launcher Dockerfile (v0.2.1) is
+# FROM devcontainers/python and does NOT install the Claude Code CLI, so the
+# published image cannot run a BC agent (claude: command not found). The last
+# KNOWN-GOOD image (prev-pathkeyed, ~2.7GB) carries claude at
+# /home/vscode/.local/bin/claude but ships the OLD path-keyed shop-msg.
+# This layer = claude-bearing base + current abstract-addressing shop-msg
+# (ADR-020), reinstalled. Interim until the bc-launcher Dockerfile is fixed to
+# bake Claude Code (see the P1 bug). Build + tag :latest locally; launcher uses
+# local :latest (no force-pull).
+FROM ghcr.io/dstengle/shopsystem-bc-base:prev-pathkeyed
+USER root
+RUN pip install --no-cache-dir --force-reinstall --break-system-packages \
+      "shopsystem-messaging @ git+https://github.com/dstengle/shopsystem-messaging.git@v0.2.1" \
+ && shop-msg --help >/dev/null
+USER vscode
