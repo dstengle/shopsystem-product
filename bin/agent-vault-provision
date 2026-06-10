@@ -99,13 +99,16 @@ printf '%s' "$CLAUDE_TOKEN" | av vault credential set CLAUDE_CODE_OAUTH_TOKEN=- 
 unset GH_TOKEN CLAUDE_TOKEN OWNER_PW
 echo "  credentials stored in the vault."
 
-# 5) Agent + proxy token the BCs use. This token is what bc-launcher injects as
-#    AGENT_VAULT_TOKEN — revocable, grants only proxy substitution (ADR-026).
+# 5) Agent + proxy token the BCs use. `agent create` PRINTS the proxy token
+#    (av_agt_...) — THAT is the AGENT_VAULT_TOKEN bc-launcher injects; revocable,
+#    grants only proxy substitution (ADR-026). RECORD the av_agt_ value it prints.
 echo "-- step 5: fleet agent + proxy token --"
+echo "  >>> RECORD the av_agt_... token printed below — it is AGENT_VAULT_TOKEN for launches:"
 av agent create "$AGENT" --vault "$VAULT:proxy" \
-    || echo "  agent create non-zero — assuming it exists; continuing."
-echo "  Minting a vault-scoped token (record it; it is AGENT_VAULT_TOKEN for launches):"
-av vault token --ttl 31536000 || echo "  vault token returned non-zero — mint manually."
+    || echo "  agent create non-zero — agent likely exists; recover the token with: docker exec -i $CONTAINER agent-vault vault token --vault $VAULT --ttl 31536000"
+# NOTE: `vault token` needs --vault (else it opens an interactive vault picker
+# that fails under `docker exec -i` with no TTY). The agent token above is
+# normally sufficient; this is only an alternative session token if you want one.
 
 # 6) CA the BC containers must trust so the MITM proxy's TLS validates.
 #    The vault state lives in the named volume; copy the CA out to a host file
