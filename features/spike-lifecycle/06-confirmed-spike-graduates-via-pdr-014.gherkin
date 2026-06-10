@@ -1,0 +1,18 @@
+Feature: a confirmed spike graduates via the PDR-014 path against a fresh Phase-2 bead
+
+  Lifecycle stage 5a (Graduate) — ADR-029 D4, PDR-016 capability point 6. When a spike
+  reaches a confirm or go-with-caveats verdict carrying implementation-requirements,
+  its finding graduates through the PDR-014 findings-driven path: lead-po authors the
+  scenarios, lead-architect drafts the ADR and picks the discriminator vehicle, and the
+  kept Phase-2 work is filed against its own fresh lead bead — the spike bead's work_id
+  is never reused. This is a LEAD-PROCESS behavior pinning the graduation hand-off; the
+  graduation act itself has no BC addressee (the chosen vehicle later dispatches the
+  kept work to the owning BC, which is a downstream, separate step).
+
+@scenario_hash:929a1819838ea893 @lead_integration:spike-lifecycle
+  Scenario: a spike with a confirm verdict and implementation-requirements is graduated through the PDR-014 path on a fresh bead
+    Given a spike that reached a confirm or go-with-caveats verdict and recorded implementation-requirements in its findings document
+    When the finding is graduated
+    Then lead-po authors the Phase-2 scenarios from the finding's implementation-requirements
+    And lead-architect drafts the ADR and picks the discriminator vehicle for the kept Phase-2 work
+    And the kept Phase-2 work is filed against a fresh lead bead distinct from the spike bead, whose work_id is not reused

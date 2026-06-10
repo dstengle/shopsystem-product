@@ -1,0 +1,17 @@
+Feature: a spike assigns exactly one of the four verdict values, recorded in the findings document
+
+  Lifecycle stage 4 (Verdict) — ADR-029 D2, PDR-016 capability point 1. Every spike
+  assigns exactly one verdict from the closed four-value vocabulary: confirm,
+  go-with-caveats, no-go, or not-viable. The verdict is recorded in the spike's
+  findings document alongside the required sections (problem, what was executed,
+  assertions, findings-beyond-plan, new hazards, "what Phase 2 must cover"). This is
+  a LEAD-PROCESS behavior pinning the lead's findings-doc discipline; there is no BC
+  addressee. A value outside the four, or a missing verdict, is not admissible.
+
+@scenario_hash:645c4c94663eb07b @lead_integration:spike-lifecycle
+  Scenario: a completed spike records exactly one verdict drawn from the four-value vocabulary
+    Given a spike that has exercised its planned assertions and produced a findings document
+    When the spike's verdict is recorded
+    Then the findings document records exactly one verdict whose value is one of confirm, go-with-caveats, no-go, or not-viable
+    And a value outside that closed set, or an absent verdict, is rejected as not admissible
+    And the findings document carries the verdict alongside its required sections, including "what Phase 2 must cover"

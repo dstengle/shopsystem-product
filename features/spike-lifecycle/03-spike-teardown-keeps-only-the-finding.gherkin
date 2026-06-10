@@ -1,0 +1,18 @@
+Feature: spike teardown removes all scratch and keeps only the findings document
+
+  Lifecycle stage 6 (Teardown) — ADR-030 D4, PDR-016 capability point 3. At verdict
+  time all spike scratch is torn down: `spike-`-prefixed containers and volumes
+  removed, `/tmp` dirs cleaned, the throwaway worktree branch deleted. The only
+  durable artifacts that survive are the `findings/<spike>.md` document and, if the
+  spike graduated, its ADR. A leftover `spike-` artifact after teardown is a contract
+  violation. This is a LEAD-PROCESS behavior on the lead host's own scratch; there is
+  no BC addressee. Teardown is auditable by the prefix — "are there any spike-
+  artifacts left?" is a mechanical post-spike check.
+
+@scenario_hash:6158c745ab64dfd4 @lead_integration:spike-lifecycle
+  Scenario: after a spike reaches a verdict, all scratch is torn down and only the findings document remains
+    Given a spike that has reached a verdict after exercising its assertions
+    When the spike completes and teardown runs
+    Then no "spike-"-prefixed container, volume, or worktree branch from the spike remains on the lead host
+    And the findings document for the spike survives as a durable artifact, together with its ADR only if the spike graduated
+    And no throwaway scratch from the spike has leaked into lead or BC source

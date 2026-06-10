@@ -1,0 +1,115 @@
+# ADR-032 — Spikes execute via Workflow and return markdown findings, not large array-heavy StructuredOutput
+
+**Status:** accepted (2026-06-10)
+**Authors:** dstengle, Claude (lead-architect)
+**Pins:** [PDR-016](../pdr/016-iterative-experimentation-first-class-lead-capability.md)
+— capability point 5: a spike executes via Workflow and returns markdown
+findings, a reliability requirement not a style note.
+**Anchored to:** [ADR-029](029-spike-vehicle-extend-pdr014-graduation-no-request-spike.md)
+(lifecycle stages 3 *Throwaway execution* and 4 *Verdict* — how the spike runs
+and emits its finding).
+**Related beads:** `lead-jkwo` (agent-vault — finding salvaged from transcript
+after a hung structured-emit), `lead-f6ta` (fabro, agent-run), `lead-8mho`
+(substrate eval, multi-agent Workflow).
+
+## Context
+
+All three proving spikes ran via the **Workflow** multi-agent engine. They
+exposed a hard reliability constraint: **a heavy-context agent emitting a large,
+array-heavy StructuredOutput schema hangs.** The agent-vault findings doc is
+explicitly *salvaged from the agent's transcript* because the structured-emit
+stage hung even though the experiment itself completed — the finding nearly died
+in the emit, not the experiment. This ADR pins the engine and the mitigation so
+the next spike's finding survives.
+
+### Pre-state empirical findings (against the artifact/contract surface, ADR-018)
+
+No BC code read or run; no `repos/` on this host. Established from the three
+findings docs and the operator memory note (`feedback_workflow_large_schema_stuck_emit`):
+
+- **All three spikes ran via Workflow** — the substrate eval as a multi-agent
+  Workflow; the two execution spikes agent-run.
+- **The agent-vault finding was salvaged from the transcript** because a
+  heavy-context agent + a big array-heavy StructuredOutput schema hung retrying
+  on emit, even though the experiment completed. The memory note records the
+  same failure mode independently: *prefer markdown / small schemas; salvage
+  from transcript when the structured emit hangs.*
+- This is the **difference between a completed spike whose finding survives and
+  one whose finding is lost** in a hung emit — a reliability property, not a
+  stylistic preference.
+
+## Decision
+
+### D1 — Spikes execute via Workflow
+
+Spikes run via the **Workflow** multi-agent engine (single-agent or multi-agent
+as the spike warrants — the substrate eval was multi-agent; the two execution
+spikes were agent-run). Workflow is the canonical spike execution engine.
+
+### D2 — Spikes return markdown findings, not large structured output
+
+A spike's durable output is a **markdown `findings/` document** (prose + small
+tables), not a large StructuredOutput emit. This is the form that survives.
+
+### D3 — If structured emit is needed, keep the schema small and flat
+
+When a spike does need a structured emit, the schema MUST be **small and flat —
+no big arrays**. The observed failure was specifically a large, array-heavy
+schema under heavy context. A small flat schema is admissible; an array-heavy
+one is the known hang.
+
+### D4 — Salvage-from-transcript is the recovery path, not a workaround to avoid
+
+If a structured emit hangs despite D3, the finding is **salvaged from the
+agent's transcript** (as agent-vault was) — the experiment's result is not lost
+to an emit failure. This is the standing recovery path, paired with D2's
+preference to avoid the large emit in the first place.
+
+## Alternatives considered
+
+**Option A — Require every spike to emit a rich StructuredOutput schema for
+machine-readability.** Rejected — it is the exact failure mode observed. A
+heavy-context spike agent emitting a large array-heavy schema hangs; the
+machine-readable goal costs the finding itself. Markdown + small flat schema
+(D2/D3) keeps the finding while still allowing structure where it is safe.
+
+**Option B — Leave the engine and output form to the spike author ("prefer
+small schemas" as a soft note).** Rejected. The synthesis is explicit that this
+is a *capability requirement, not a style note* — the one observed failure was
+exactly a large array-heavy schema hang, and a soft note would let the next
+spike repeat it and lose its finding. Pinning Workflow + markdown-return makes
+the reliability property a contract.
+
+**Option C — Forbid StructuredOutput in spikes entirely (markdown only).**
+Rejected as over-broad. Small flat schemas did not exhibit the hang; the failure
+was array-heaviness under heavy context. D3 admits the safe case rather than
+banning a useful tool wholesale.
+
+## Consequences
+
+- **Findings survive emit:** the markdown-return rule plus salvage-from-
+  transcript fallback means a completed spike's finding is not lost to a hung
+  structured emit.
+- **A hard schema cap is named but not yet pinned** (synthesis §(e).6): "no big
+  arrays" is qualitative. Whether to state a hard limit (e.g. *no arrays at all*
+  in spike StructuredOutput, markdown-only return) is left open — D3 pins the
+  decided part (small + flat, no big arrays) and names the harder cap as a
+  follow-up for PO authoring or a future ADR.
+- **Engine coupling:** spikes are coupled to Workflow as the execution engine.
+  If a future substrate decision (e.g. the fabro/substrate track, lead-f6ta)
+  changes the orchestration engine, this ADR's D1 is revisited as a consequence
+  of that decision, not independently.
+
+## Cross-references
+
+- [PDR-016](../pdr/016-iterative-experimentation-first-class-lead-capability.md)
+  — the intent (capability point 5).
+- [ADR-029](029-spike-vehicle-extend-pdr014-graduation-no-request-spike.md) —
+  lifecycle stages 3/4 this ADR's execution + emit form serve.
+- `findings/agent-vault-credential-spike.md` (lead-jkwo) — the salvaged-
+  transcript proving case; `findings/iterative-experimentation-capability.md`
+  §(b) "Execution engine" — the source; §(e).6 the open hard-cap question.
+- Operator memory `feedback_workflow_large_schema_stuck_emit` — the independent
+  record of the same failure mode.
+- Scenario (synthesis §(d) outline 7: "Spike runs via Workflow and returns
+  markdown") is **lead-po's Phase-2 job**.

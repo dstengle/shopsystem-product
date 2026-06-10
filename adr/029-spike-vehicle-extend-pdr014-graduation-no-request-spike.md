@@ -1,0 +1,197 @@
+# ADR-029 — Spike vehicle: extend PDR-014 graduation; reject `request_spike` for now (spike sits upstream of the ADR-018 discriminator)
+
+**Status:** accepted (2026-06-10)
+**Authors:** dstengle, Claude (lead-architect)
+**Pins:** [PDR-016](../pdr/016-iterative-experimentation-first-class-lead-capability.md)
+— the intent that iterative experimentation is a first-class lead capability
+whose durable output is a `findings/` doc + verdict, graduating via the PDR-014
+path with no `request_spike` vehicle now.
+**Anchored to:** [PDR-014](../pdr/014-lead-skill-group-pour-and-graduation-path.md)
+(the findings-driven graduation path this extends from "skill" to "finding");
+[ADR-018](018-empirical-verification-is-contract-surface.md) (the empirical-
+verification line a BC-dispatched experiment would cross);
+[PDR-012](../pdr/012-lead-po-product-manager-scope-and-architect-structurizr-maintenance.md)
+(experimental-first adoption — build a vehicle only once proven).
+**Related beads:** initiative `lead-odqd`; meta-deliverable `lead-gkhk`;
+Phase-2 authoring `lead-95q5`; proving cases `lead-jkwo` (agent-vault),
+`lead-f6ta` (fabro), `lead-8mho` (substrate eval).
+
+## Context
+
+The shopsystem framework ran three real experiments under lead-odqd
+(agent-vault credential spike, fabro 2PC-as-steps spike, substrate comparison)
+but has no first-class notion of a *spike*: a throwaway, time-boxed experiment
+whose only kept output is a finding. The open design question from the synthesis
+(`findings/iterative-experimentation-capability.md` §(a)) was the mechanism: a
+new `request_spike` BC-dispatched message-type vehicle, vs. extending the
+PDR-014 findings-driven graduation path (lead-internal), vs. a hybrid.
+
+### Pre-state empirical findings (against the artifact/contract surface, ADR-018)
+
+No BC code was read or run; no `repos/` exists on this host. The findings below
+are established from this repo's `features/`, `adr/`, `pdr/`, the §5 message
+catalogue, and the three findings docs:
+
+- **The §5.3 message-type catalogue has no throwaway-experiment vehicle.** The
+  vehicles are `assign_scenarios`, `request_bugfix`, `request_maintenance`,
+  `request_scenario_register`, `request_shop_card` — every one assumes the work
+  product is *kept* (new pinned behavior, tightened behavior, a flat kept
+  change, or a read-only query). None models "build real infra, learn, discard,
+  keep only the finding."
+- **PDR-014 already pins a findings-driven graduation path.** A confirmed
+  experimental thing graduates by: finding → lead-po authors scenarios →
+  lead-architect drafts the ADR + picks the discriminator vehicle → dispatch to
+  the **owning** BC. The path exists; what is missing is the *stage before
+  dispatch*.
+- **All three spikes were lead-host-internal infra, by nature not by sampling.**
+  agent-vault is launcher/credential plumbing; fabro is orchestration substrate;
+  the substrate eval is substrate selection. These are lead-host concerns (the
+  launcher, credential brokering, the reactive loop, the orchestration engine) —
+  the carve-out to "no implementation code in the lead repo" the operator
+  already named. In all three cases **there was no BC to dispatch to** because
+  the question was not about a BC's pinned behavior; a `request_spike` vehicle
+  would have had no addressee.
+- **ADR-018 draws the line a BC-dispatched experiment would cross.** The lead's
+  only admissible evidence about a BC is the contract/artifact surface + the
+  BC's `work_done` demonstration (ADR-018 D1). A spike's value is *constructed,
+  observed behavior* on infra. If a BC ran the experiment, the lead would be
+  back to trusting BC-reported experiment results — the exact boundary ADR-018
+  draws.
+
+## Decision
+
+### D1 — A spike is a first-class unit of work with a six-stage lifecycle
+
+A spike runs the following lifecycle (the synthesis §(b) table is the canonical
+body). The lifecycle is identical regardless of verdict; only the tail (5a vs
+5b) differs:
+
+1. **Intent** — a spike bead is filed under the initiative; the question is
+   stated as a *kill-or-confirm* (a falsifiable hypothesis + the assertion(s)
+   that settle it). Vague "evaluate X" is sent back before execution.
+2. **Research** — read docs/schemas/substrate source; for a research-only eval
+   this is the whole body (the substrate comparison stopped here, by design).
+   Either a verdict is firm from research alone (→ stage 6, e.g. not-viable) or
+   a constructed demonstration is required (→ stage 3).
+3. **Throwaway execution** — stand up real infra in isolated scratch (governed
+   by ADR-030). Infra runs; the planned assertions can be exercised.
+4. **Verdict** — run the assertions; record pass/fail; capture findings beyond
+   the plan and any new hazards; assign one of four verdict values.
+5. **Graduate (5a)** for confirm/go-with-caveats — hand the finding's
+   implementation-requirements to the PDR-014 path. **Discard (5b)** for
+   no-go/not-viable — record the negative as a finding + close a kill bead; no
+   dispatch.
+6. **Teardown** — tear down all scratch; keep only the findings doc (+ ADR if
+   graduated). (Governed by ADR-030.)
+
+### D2 — Four-value verdict vocabulary
+
+Every spike assigns exactly one verdict, all four observed in the three runs:
+
+- **confirm** — hypothesis held end-to-end; graduate. (agent-vault.)
+- **go-with-caveats** — held for the common case with mandatory carry-forward
+  constraints and/or a newly surfaced hazard; graduate *with the caveats pinned
+  in the ADR*. (fabro: keep ADR-012's UNIQUE constraint; outcome-conditional
+  edges mandatory.)
+- **no-go** — a constructed experiment refuted the hypothesis; discard + record.
+- **not-viable** — research alone refuted it; no spike warranted. (agentic-lab.)
+
+### D3 — The spike sits UPSTREAM of the ADR-018 discriminator; no `request_spike` vehicle now
+
+A spike does **not** add a message-type vehicle. It produces the verified
+pre-state finding the ADR-018 discriminator consumes, and the *existing* vehicle
+is then chosen for the kept Phase-2 work:
+
+> spike → finding → (PDR-014 graduation) → ADR-018 discriminator → existing
+> vehicle (`assign_scenarios` for new capability, e.g. agent-vault;
+> `request_bugfix` for tightening unpinned behavior, e.g. fabro hardening the
+> outbox protocol).
+
+The spike is the empirical-verification engine that feeds ADR-018's pre-state
+question with *constructed* evidence, on the one surface the lead may construct
+evidence on (its own scratch host), not BC source. **No `request_spike`
+message-type is added in Phase 2.**
+
+### D4 — A confirmed spike graduates via PDR-014, against a fresh bead
+
+Graduation reuses the PDR-014 path verbatim, generalized from "skill" to
+"finding": lead-po authors scenarios, lead-architect drafts the ADR and picks
+the discriminator vehicle, dispatch to the owning BC. The Phase-2 work gets its
+**own fresh lead bead** (e.g. lead-jkwo spike → its own Phase-2 bead); the
+spike bead's `work_id` is never reused. Spikes that surface new spikes file them
+as fresh beads (the substrate eval filed four, including lead-fih1). A
+no-go/not-viable verdict closes the spike bead with the finding linked.
+
+### D5 — The hybrid is deferred with an explicit, watched trigger
+
+A future `request_spike` could dispatch a throwaway experiment whose `work_done`
+carries a verdict + finding rather than a pinned register — genuinely needed
+when an experiment's question can only be answered by a BC constructing
+not-yet-built throwaway behavior the lead cannot stand up on its own host. It is
+**not** built now: none of the three cases needed it, and building a vehicle on
+zero proving cases is the build-trap experimental-first doctrine (PDR-012)
+exists to prevent. **Trigger to revisit:** the first spike whose question can
+only be answered by a BC constructing throwaway behavior the lead cannot stand
+up itself. Tracked as a P3 bead, not Phase-2 scope.
+
+## Alternatives considered
+
+**Option A — Add a new `request_spike` BC-dispatched message-type vehicle.**
+Rejected (now). It would have had **no addressee** in any of the three proving
+cases (all lead-host-internal infra, D3 pre-state), and it would put the lead
+back to **trusting BC-reported experiment results** — the exact boundary ADR-018
+draws. Building it on zero proving cases is the build-trap PDR-012 guards
+against. Reopened only via D5's trigger.
+
+**Option B — Pure PDR-014 with no explicit spike lifecycle.** Rejected. PDR-014
+gives the *graduation tail* but says nothing about the throwaway-experiment
+*stage before dispatch* — no falsifiability gate, no verdict vocabulary, no
+isolation contract, no teardown discipline. The three runs succeeded partly by
+luck of good operators; without a named lifecycle the next spike has no
+discipline to inherit. The capability is precisely the stage PDR-014 omits.
+
+**Option C — Build the hybrid now (PDR-014 path *and* a `request_spike`
+vehicle).** Rejected. It is Option A's cost (the ADR-018 line) plus the
+build-trap, paid up front for a need with zero proving cases. D5 defers it
+correctly with a concrete trigger.
+
+## Consequences
+
+- **The spike lifecycle is a new work-tracking + findings discipline, not a new
+  message type.** §5.3 is unchanged. The discriminator (ADR-018 pre-state) still
+  chooses the Phase-2 vehicle exactly as today.
+- **PDR-014's graduation path is extended in scope** from experimental *skills*
+  to throwaway-experiment *findings*. A natural follow-on: a `run-spike` /
+  `experiment-lifecycle` **lead skill** could itself graduate via PDR-014 into
+  the canonical lead skill-group, with this lifecycle as its body (synthesis
+  §(c)). Not committed here.
+- **bd discipline:** every spike is a bead under its initiative with
+  `blocks`/`depends-on` links; graduation work gets a fresh bead (D4); the
+  hybrid trigger is a standing P3 watch bead (D5).
+- **What this leaves open (for PO authoring / future ADRs):** *where the
+  spike-process scenarios live* (synthesis §(e).1) — some pin lead process with
+  no BC addressee; the discriminator picks per scenario but a lead-process
+  scenario may have no addressee. PO authoring must place the 8 scenarios
+  (synthesis §(d)) and flag any with no BC addressee, so the router can decide
+  whether the lead needs a "lead process" features home or these stay doctrine
+  in primers/ADRs. The hybrid-trigger watch discipline (§(e).2) is deferred to
+  the P3 bead. Time-box enforcement (§(e).5) is named but unmeasured in all
+  three runs — left a soft norm here, not a bd-tracked budget.
+
+## Cross-references
+
+- [PDR-016](../pdr/016-iterative-experimentation-first-class-lead-capability.md)
+  — the intent this ADR pins.
+- [PDR-014](../pdr/014-lead-skill-group-pour-and-graduation-path.md) — the
+  graduation path extended here.
+- [ADR-018](018-empirical-verification-is-contract-surface.md) — the empirical-
+  verification line D3 protects and the discriminator the spike feeds.
+- [ADR-030](030-spike-isolation-contract-scratch-dummy-teardown-to-findings.md)
+  — the isolation/teardown contract for stages 3 and 6.
+- [ADR-031](031-human-in-the-loop-wall-protocol-for-autonomous-spikes.md) — the
+  wall protocol for stage 4 (a spike may reach `confirm` with a recorded wall).
+- [ADR-032](032-spikes-execute-via-workflow-return-markdown-findings.md) — the
+  execution-engine + markdown-return constraint for stage 3/4.
+- `findings/iterative-experimentation-capability.md` §(a),(b),(c) — the source
+  synthesis; §(d) the ADR/scenario skeleton.
+- The 8 Gherkin scenarios (synthesis §(d)) are **lead-po's Phase-2 job**.
