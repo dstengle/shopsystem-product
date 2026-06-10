@@ -67,37 +67,42 @@ fi
 echo "-- step 2: vault '$VAULT' --"
 av vault create "$VAULT" || echo "  vault create returned non-zero — assuming it exists; continuing."
 
-# 3) Services. GitHub is a straightforward bearer service.
-echo "-- step 3a: github service --"
-av vault service add --name github --host api.github.com \
-    --auth-type bearer --token-key GITHUB_TOKEN \
-    || echo "  github service add non-zero — assuming it exists; continuing."
-
-# Claude Code OAuth Bearer hosts. STOP: confirm the right auth-type for OAuth in
-# your build (`agent-vault vault service add --help`). Bearer with a shared
-# token-key works for a static access token; an oauth auth-type (if present) is
-# preferred so the broker refreshes automatically.
-echo "-- step 3b: claude oauth services (api.anthropic.com, platform.claude.com, mcp-proxy.anthropic.com) --"
+# 3) Services (proxy substitution rules). ALL vault subcommands MUST pass
+#    --vault "$VAULT": in agent mode there is no interactive vault picker, and
+#    under `docker exec -i` (no TTY) an omitted --vault fails. Do NOT swallow
+#    these failures — a silently-empty service list makes the broker 405 every
+#    request (the failure mode the canary caught).
+echo "-- step 3: services --"
+# GitHub git-over-https (clone/push to github.com) — Basic auth (username + PAT).
+# NOTE: git hits github.com, NOT api.github.com; a Bearer-on-api.github.com
+# service alone does NOT broker git operations.
+av vault service add --vault "$VAULT" --name github-git --host github.com \
+    --auth-type basic --username-key GITHUB_USERNAME --password-key GITHUB_TOKEN
+# GitHub API (gh CLI) — Bearer to api.github.com.
+av vault service add --vault "$VAULT" --name github-api --host api.github.com \
+    --auth-type bearer --token-key GITHUB_TOKEN
+# Claude Code OAuth Bearer hosts (the built-in 'anthropic' catalog template is
+# x-api-key, NOT the OAuth Bearer flow Claude Code uses — configure manually).
+# CAVEAT: a static accessToken expires; durable operation needs refresh handling
+# (the OPEN ADR-026 D2 question) — re-paste or wire refresh as a follow-up.
 for host in api.anthropic.com platform.claude.com mcp-proxy.anthropic.com; do
-    name="claude-${host%%.*}"
-    av vault service add --name "$name" --host "$host" \
-        --auth-type bearer --token-key CLAUDE_CODE_OAUTH_TOKEN \
-        || echo "  service add for $host non-zero — assuming it exists; continuing."
+    av vault service add --vault "$VAULT" --name "claude-${host%%.*}" --host "$host" \
+        --auth-type bearer --token-key CLAUDE_CODE_OAUTH_TOKEN
 done
+echo "  services:"; av vault service list --vault "$VAULT" 2>&1 | grep -E 'name:|host:' | sed 's/^/    /'
 
 # 4) THE HUMAN-GATED CREDENTIAL PASTE — the only out-of-band step.
 echo "-- step 4: load real credentials (the one human-gated paste) --"
-echo "  GitHub: a token with repo push scope (e.g. from 'gh auth token')."
-GH_TOKEN="$(prompt_secret 'GitHub token')"
+read -r -p "  GitHub username (or x-access-token): " GH_USER
+echo "  GitHub: a PAT with repo push scope (durable — a short-lived 'gh auth token' will expire)."
+GH_TOKEN="$(prompt_secret 'GitHub PAT')"
 echo "  Claude: the accessToken from a logged-in ~/.claude/.credentials.json"
 CLAUDE_TOKEN="$(prompt_secret 'Claude OAuth accessToken')"
-
-printf '%s' "$GH_TOKEN"     | av vault credential set GITHUB_TOKEN=-          2>/dev/null \
-    || av vault credential set "GITHUB_TOKEN=$GH_TOKEN"
-printf '%s' "$CLAUDE_TOKEN" | av vault credential set CLAUDE_CODE_OAUTH_TOKEN=- 2>/dev/null \
-    || av vault credential set "CLAUDE_CODE_OAUTH_TOKEN=$CLAUDE_TOKEN"
-unset GH_TOKEN CLAUDE_TOKEN OWNER_PW
-echo "  credentials stored in the vault."
+# credential set takes key=value args + --vault (no documented stdin form).
+av vault credential set --vault "$VAULT" \
+    "GITHUB_USERNAME=$GH_USER" "GITHUB_TOKEN=$GH_TOKEN" "CLAUDE_CODE_OAUTH_TOKEN=$CLAUDE_TOKEN"
+unset GH_TOKEN CLAUDE_TOKEN GH_USER OWNER_PW
+echo "  credentials stored in vault $VAULT."
 
 # 5) Agent + proxy token the BCs use. `agent create` PRINTS the proxy token
 #    (av_agt_...) — THAT is the AGENT_VAULT_TOKEN bc-launcher injects; revocable,
