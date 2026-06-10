@@ -1,0 +1,23 @@
+Feature: the canonical BC CLAUDE.md primer pins idle-detection so a BC idles only when its inbox is empty and no implementer/reviewer task is in flight
+
+  lead-hdn3 (P1) — BC-side analogue of the lead primer's "Standing rule: idle-detection
+  checklist" (lead-primer.md §166). The reliability symptom (lead-yxsr): a BC finished
+  prior work and parked at its prompt, never returning to its inbox-react loop, so a
+  dispatched item sat unprocessed while bc-status showed "online". The canonical BC
+  primer must pin that idle is a posture the BC earns only after an explicit emptiness
+  check — not a default it falls back to after finishing an item. The observable
+  emptiness check is "shop-msg pending inbox --bc <name>". This is package-data primer
+  prose, not a per-shop hand-edit.
+
+  PRE-AUTHORED — dispatch deferred (BC-reliability serialization behind stranded
+  lead-6669). Architect to compute @scenario_hash and apply @bc / dispatch tag at
+  assignment time; @lead_integration tag below is provisional pending placement decision.
+
+@lead_integration:templates
+  Scenario: the canonical BC primer permits the BC to idle only when shop-msg pending inbox is empty and no in-flight implementer/reviewer task remains
+    Given the "shop-templates" package ships a canonical "CLAUDE.md" primer template for shop type "bc" through its public template-access surface
+    When I ask the package for that canonical primer body for shop type "bc"
+    Then a non-empty template body is returned
+    And the returned body contains the literal substring "shop-msg pending inbox" as the named operation the BC runs to check for unprocessed inbox work
+    And the returned body contains a contiguous block stating the BC idles only when that pending-inbox check is empty AND no implementer or reviewer task is in flight
+    And that block frames idle as a posture earned after the emptiness check rather than a default the BC falls back to after finishing an item
