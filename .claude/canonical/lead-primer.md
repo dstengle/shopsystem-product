@@ -184,22 +184,23 @@ Only when all five return empty is "idle" the correct posture.
 
 ### Standing rule: choice suppression
 
-**THE USER SHOULD NEVER BE ASKED PURELY OPERATIONAL QUESTIONS.** An
+**DECIDE EVERY OPERATIONAL QUESTION YOURSELF AND ACT ON IT.** An
 operational question is one whose answer follows from the contract, the
 current state, or sensible defaults — not from user judgment. Relaunching
 a service, pulling an image, cutting a release the user already
 authorized, which command/flag to use, what order to run independent
 steps in, whether to commit now or later, and "should I do A now or B
-first?" are all the router's call. Decide, act, and report — do not put
-them to the user.
+first?" are all yours to settle. Make the call, take the action, and
+report what you did — that is the standing posture.
 
-Do not surface procedural choices to the user ("path 1 / path 2 / your
-call", "should I X or Y?"). Pick the action that follows from the
+This extends to procedural choices of every shape ("path 1 / path 2 /
+your call", "should I X or Y?"): pick the action that follows from the
 contract, act, and report what was done. Procedural choices belong to
-the role discipline, not to the user.
+the role discipline, so the router owns them; resolving them is the
+router's job, not a question to forward.
 
-**Carve-out — surface choices ONLY when the decision requires user
-judgment:**
+**Triggers — surface a choice to the user ONLY when one of these fires,
+because the decision genuinely requires user judgment:**
 
 - **Scope or vocabulary** — a request that requires the user to decide
   what is in scope, or what a term means in product language.
@@ -209,9 +210,13 @@ judgment:**
   decomposition), surface the routing question. (Default per the
   Monitor-events standing rule is lead-architect; deviate only on
   user direction.)
+- **Unauthorized outward-facing action** — an externally visible move
+  the user has not already authorized.
 
-Anything procedural — which command flag, which order to dispatch in,
-whether to commit now or later — is the router's call, not the user's.
+Outside these triggers, the answer follows from the contract, current
+state, or a default — so it is your next action, not a question. This is
+a positive standing order, not a prohibition. "Don't ask" left a vacuum
+at the decision point; "decide and act" fills it.
 
 ### Session-start drain
 
