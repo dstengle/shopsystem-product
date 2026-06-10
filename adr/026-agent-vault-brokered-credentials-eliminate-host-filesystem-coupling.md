@@ -1,6 +1,6 @@
 # ADR-026 — BC credentials are brokered through an agent-vault server on the shopsystem network; host-filesystem credential coupling is eliminated for both Claude OAuth and GitHub
 
-**Status:** accepted (2026-06-09)
+**Status:** accepted (2026-06-09); D2 open mechanism question RESOLVED (2026-06-10)
 **Authors:** dstengle, Claude (lead-architect)
 **Pins:** the locked scope decision recorded on `lead-v4ih` (dave, 2026-06-09)
 — *eliminate host-filesystem credential coupling FULLY: the agent-vault broker
@@ -124,10 +124,13 @@ state.
   line-level change.
 - **Whether `agent-vault`'s GitHub template brokers `git`/`gh` over the same
   MITM HTTPS_PROXY path** as the Bearer services, or requires a distinct
-  service/transport, is a mechanism question the spike did not exercise (the
-  spike used only the three Anthropic Bearer services). This ADR records a
-  recommendation and marks it OPEN for the BC to confirm at implementation
-  (see D2 / Open mechanism questions).
+  service/transport, was a mechanism question the spike did not exercise (the
+  spike used only the three Anthropic Bearer services). **RESOLVED AFFIRMATIVELY
+  (2026-06-10)** by the live canary — see the D2 resolution note below. Both the
+  GitHub leg (Basic on `github.com`, proven by a brokered `git clone` exit 0) and
+  the Claude leg (Bearer/OAuth on `api.anthropic.com`, proven by an authenticated
+  200 completion with no client `Authorization` header) substitute over the same
+  single MITM `HTTPS_PROXY` listener.
 
 ---
 
@@ -183,6 +186,46 @@ template substitutes on the HTTPS proxy path for `git`/`gh`'s HTTPS traffic to
 adopting a second transport. Scenario 46 pins the *outcome* (an authenticated
 GitHub op succeeds through the broker with no mounted credential) and is
 transport-agnostic, so it holds under either resolution.
+
+**D2 mechanism question — RESOLVED AFFIRMATIVELY (2026-06-10, live canary).**
+The recommendation is confirmed: BOTH legs broker over the SAME single MITM
+`HTTPS_PROXY` listener (the `av_agt_<token>:fleet@agent-vault:14322` path), one
+CA-trust env set, no second transport. Evidence (recorded in full on bead
+`lead-5jbc`, demonstrated from inside `bc-shopsystem-scenarios` relaunched
+brokered on `bc-base:latest` with NO host credential mounts):
+
+- **GitHub leg (Basic on `github.com`).** A brokered `git clone` returned exit 0
+  with the container holding no GitHub credential — the broker substituted the
+  `github-git` Basic credential (`GITHUB_USERNAME`/`GITHUB_TOKEN`) on the
+  outbound HTTPS request to `github.com`. This is the spike's SB-2.
+- **Claude leg (Bearer on `api.anthropic.com`).** A request to
+  `https://api.anthropic.com/v1/messages` with **no client `Authorization`
+  header** returned a real authenticated **200** completion (model
+  `claude-haiku-4-5-20251001`, content "Pong!", usage input=8/output=4). The
+  broker intercepted over the MITM proxy and substituted `Authorization: Bearer
+  CLAUDE_OAUTH`; Anthropic accepted. This is strictly stronger than the spike's
+  SB-3 (which only reached an app-layer 404 = transport/TLS/substitution OK
+  without an auth round-trip): here both substitution AND the credential type
+  are proven by a successful authenticated completion.
+
+Both legs traverse one egress path (one proxy, one trust anchor), confirming the
+"keep the egress story singular" rationale. The Claude credential is the
+**refreshing OAuth credential type** (Token URL
+`https://console.anthropic.com/v1/oauth/token`, Client ID
+`9d1c250a-e61b-44d9-88ed-5944d1962f5e`, access + refresh token), so caveat (b)
+"the static accessToken expires" is solved natively: the running broker
+(`agent-vault 0.32.0`, commit `e01a925` = the pinned commit in agent-vault's
+`docs/guides/oauth-claude-code.mdx`) auto-refreshes the access token within 5 min
+of expiry via the stored refresh token. The static `CLAUDE_CODE_OAUTH_TOKEN`
+credential the throwaway spike used is retired; the vault now holds `CLAUDE_OAUTH`
+of the OAuth type. **Provisioning caveat (D4):** the refreshing OAuth credential
+TYPE is NOT expressible through any agent-vault 0.32.0 CLI surface (`credential
+set` / `proposal create --credential` are flat KEY=value / KEY=description only,
+with no Token-URL / Client-ID / refresh-token / auth-method fields); it is created
+via the dashboard Credentials tab. The *services* that reference it remain fully
+scriptable (`service add --auth-type bearer --token-key CLAUDE_OAUTH`) — the
+OAuth-refresh behavior lives in the credential object, not the service. This
+provisioning split is recorded in `bin/agent-vault-provision`'s Claude step.
 
 ### D3 — Readiness composition: launch gates on the COHERENT readiness of both servers; the startup prompt is withheld if EITHER is down
 
@@ -311,14 +354,14 @@ credentials never are.
 - The `BCLAUNCHER_HOST_HOME` / ZFS-coupling operational footgun is structurally
   removed once 44 lands green (launch no longer resolves any host credential
   path).
-- Two OPEN mechanism questions ride to the BC, each with a recommendation and a
-  transport-agnostic scenario so the dispatch is not blocked on them: (D2) the
-  GitHub brokering wire-mechanism (recommend: same MITM `HTTPS_PROXY` path;
-  scenario 46 is outcome-pinned), and (D5) `agent-vault run --isolation
-  container` vs bc-launcher `docker run` (recommend: keep bc-launcher `docker
-  run`, defer `--isolation container`). If the BC finds the `github` template
-  cannot broker over the HTTPS proxy path, it raises a `clarify` rather than
-  adopting a second transport silently.
+- Of the two mechanism questions that rode to the BC with a recommendation and a
+  transport-agnostic scenario: **(D2) the GitHub/Claude brokering wire-mechanism
+  is now RESOLVED AFFIRMATIVELY** (2026-06-10 live canary — both legs broker over
+  the same MITM `HTTPS_PROXY` listener; see the D2 resolution note), so scenario
+  46's outcome is demonstrated, not merely recommended. **(D5)** `agent-vault run
+  --isolation container` vs bc-launcher `docker run` (recommend: keep bc-launcher
+  `docker run`, defer `--isolation container`) remains the deferred future-work
+  question, not blocking this slice.
 - The agent-vault broker becomes a standing piece of fleet infrastructure on the
   `shopsystem` network, provisioned out of band (D4). Standing up and
   provisioning the broker is an operational precondition of brokered launch,

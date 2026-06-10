@@ -20,10 +20,19 @@
 #
 # NOTE — Claude Code uses an OAuth Bearer flow, NOT the api-key `anthropic`
 # catalog template (spike lead-jkwo, finding 4). The three Bearer hosts below
-# must be configured as custom bearer services. The OAuth access token expires;
-# agent-vault refreshes via the stored refresh token. If `service add` exposes a
-# dedicated OAuth auth-type in your build, prefer it — see the STOP note at the
-# Claude step.
+# must be configured as custom bearer services that reference token-key
+# CLAUDE_OAUTH.
+#
+# CRITICAL — the Claude credential is the REFRESHING OAuth credential TYPE, which
+# is NOT scriptable in agent-vault 0.32.0 (verified live 2026-06-10, lead-5jbc):
+# `credential set` and `proposal create --credential` are flat KEY=value /
+# KEY=description only — no Token-URL / Client-ID / refresh-token / auth-method
+# fields. The OAuth credential TYPE is created in the DASHBOARD Credentials tab
+# (:14321 on the docker host). The refresh behavior lives in the CREDENTIAL
+# object, not the service, so the services below stay fully scriptable; only the
+# Claude credential itself stops for a human dashboard step (step 4b). The old
+# static `CLAUDE_CODE_OAUTH_TOKEN` path expired the lead's creds — do NOT use it.
+# ADR-026 D2 (resolved 2026-06-10) records the live proof.
 
 set -euo pipefail
 
@@ -83,26 +92,69 @@ av vault service add --vault "$VAULT" --name github-api --host api.github.com \
     --auth-type bearer --token-key GITHUB_TOKEN
 # Claude Code OAuth Bearer hosts (the built-in 'anthropic' catalog template is
 # x-api-key, NOT the OAuth Bearer flow Claude Code uses — configure manually).
-# CAVEAT: a static accessToken expires; durable operation needs refresh handling
-# (the OPEN ADR-026 D2 question) — re-paste or wire refresh as a follow-up.
+# These services reference token-key CLAUDE_OAUTH, the refreshing OAuth
+# credential created in the dashboard at step 4b. The service is scriptable; the
+# credential is not (see header NOTE). Refresh is handled natively by the broker
+# (ADR-026 D2, resolved 2026-06-10) — no re-paste needed once the OAuth
+# credential is in place.
 for host in api.anthropic.com platform.claude.com mcp-proxy.anthropic.com; do
     av vault service add --vault "$VAULT" --name "claude-${host%%.*}" --host "$host" \
-        --auth-type bearer --token-key CLAUDE_CODE_OAUTH_TOKEN
+        --auth-type bearer --token-key CLAUDE_OAUTH
 done
 echo "  services:"; av vault service list --vault "$VAULT" 2>&1 | grep -E 'name:|host:' | sed 's/^/    /'
 
-# 4) THE HUMAN-GATED CREDENTIAL PASTE — the only out-of-band step.
-echo "-- step 4: load real credentials (the one human-gated paste) --"
+# 4a) GITHUB CREDENTIALS — scriptable (flat key=value), the human-gated paste.
+#     The GitHub leg is a static Basic-PAT credential; the flat CLI expresses it.
+echo "-- step 4a: load real GitHub credentials (human-gated paste) --"
 read -r -p "  GitHub username (or x-access-token): " GH_USER
 echo "  GitHub: a PAT with repo push scope (durable — a short-lived 'gh auth token' will expire)."
 GH_TOKEN="$(prompt_secret 'GitHub PAT')"
-echo "  Claude: the accessToken from a logged-in ~/.claude/.credentials.json"
-CLAUDE_TOKEN="$(prompt_secret 'Claude OAuth accessToken')"
 # credential set takes key=value args + --vault (no documented stdin form).
 av vault credential set --vault "$VAULT" \
-    "GITHUB_USERNAME=$GH_USER" "GITHUB_TOKEN=$GH_TOKEN" "CLAUDE_CODE_OAUTH_TOKEN=$CLAUDE_TOKEN"
-unset GH_TOKEN CLAUDE_TOKEN GH_USER OWNER_PW
-echo "  credentials stored in vault $VAULT."
+    "GITHUB_USERNAME=$GH_USER" "GITHUB_TOKEN=$GH_TOKEN"
+unset GH_TOKEN GH_USER OWNER_PW
+echo "  GitHub credentials stored in vault $VAULT."
+
+# 4b) CLAUDE OAUTH CREDENTIAL — NOT scriptable; STOP for a human dashboard step.
+#     agent-vault 0.32.0 has NO CLI/API path to create the refreshing OAuth
+#     credential TYPE (verified live 2026-06-10, lead-5jbc). The flat
+#     `credential set CLAUDE_OAUTH=<accessToken>` would store the STATIC type,
+#     which expires (the canary's failure mode). Create the OAuth credential in
+#     the dashboard so the broker can auto-refresh it.
+echo "-- step 4b: Claude OAuth credential (MANUAL — dashboard only) --"
+cat >&2 <<EOF
+
+  >>> STOP. The Claude credential CANNOT be created from this script.
+      agent-vault 0.32.0 has no CLI/API path for the refreshing OAuth
+      credential type (flat 'credential set' would store a STATIC token
+      that expires — the canary's failure mode).
+
+  Create it ONCE in the agent-vault DASHBOARD (Credentials tab):
+      URL:          http://<docker-host>:14321  (log in as the owner)
+      Vault:        $VAULT
+      Key:          CLAUDE_OAUTH
+      Type:         OAuth
+      Token URL:    https://console.anthropic.com/v1/oauth/token
+      Client ID:    9d1c250a-e61b-44d9-88ed-5944d1962f5e
+      Auth Method:  None
+      Access token: the "accessToken"  from ~/.claude/.credentials.json
+      Refresh token:the "refreshToken" from ~/.claude/.credentials.json
+
+  The broker then auto-refreshes the access token within 5 min of expiry
+  via the stored refresh token (ADR-026 D2, proven live 2026-06-10). The
+  three claude-* services above already reference token-key CLAUDE_OAUTH.
+
+EOF
+read -r -p "  Press Enter once the CLAUDE_OAUTH credential exists in the dashboard... " _
+# Verify the human actually created it before proceeding.
+if av vault credential list --vault "$VAULT" 2>&1 | grep -q 'CLAUDE_OAUTH'; then
+    echo "  CLAUDE_OAUTH present in vault $VAULT — continuing."
+else
+    echo "  ERROR: CLAUDE_OAUTH not found in vault $VAULT. Create it in the" >&2
+    echo "         dashboard (see fields above) and re-run, or the brokered" >&2
+    echo "         Claude leg will 405/401 on every request." >&2
+    exit 1
+fi
 
 # 5) Agent + proxy token the BCs use. `agent create` PRINTS the proxy token
 #    (av_agt_...) — THAT is the AGENT_VAULT_TOKEN bc-launcher injects; revocable,
