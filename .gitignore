@@ -13,6 +13,10 @@
 # commit. Template is .env.example.
 .env
 
+# agent-vault broker CA cert, fetched by bin/agent-vault-provision. Generated
+# artifact (regenerable via `agent-vault ca fetch`); goes stale on re-provision.
+agent-vault-ca.pem
+
 # Python venv used for installing the framework CLIs into the lead shop.
 .venv/
 
