@@ -1,0 +1,16 @@
+Feature: the broker survives a restart and re-opens its vault without a human re-paste
+
+  SB-7 restart-survival arm (PDR-017 §3 SB-7; ADR-028 D1, the lead-vycn MVP decision).
+  After a broker container restart, the fleet re-authenticates without re-pasting
+  secrets out of band: the master password is auto-unlocked from the lead .env file, so
+  a restart re-opens the vault rather than becoming a human-gated re-provisioning event.
+  Lead-owned integration check against the real broker.
+
+@scenario_hash:9bf7669e98c01448 @lead_integration:agent-vault-broker
+  Scenario: after a broker restart the vault re-opens from the .env master password and brokered auth resumes with no re-paste
+    Given a provisioned, running agent-vault broker whose master password is set in the lead .env file
+    And a BC's brokered Claude and GitHub operations succeed before the restart
+    When the broker container is restarted
+    Then the broker re-opens its vault using the master password from the lead .env file
+    And the BC's brokered Claude and GitHub operations succeed again after the restart
+    And no human re-paste of any real credential was required to restore brokered auth

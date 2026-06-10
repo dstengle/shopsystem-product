@@ -9,6 +9,10 @@
 # not subdirectories of this repo.
 /repos/
 
+# Local environment — holds the agent-vault broker master password. NEVER
+# commit. Template is .env.example.
+.env
+
 # Python venv used for installing the framework CLIs into the lead shop.
 .venv/
 

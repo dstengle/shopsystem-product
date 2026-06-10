@@ -1,9 +1,15 @@
 #!/usr/bin/env bash
 # shop-shell — one-entrypoint shell for working on this shop.
 #
-# Brings up postgres (if not already running) and drops you into the
-# shopsystem-shell container with /workspace bind-mounted to the repo root.
-# Host requirement: docker only.
+# Brings up BOTH lead-shop supporting services (postgres for shop-msg + the
+# agent-vault credential broker, per ADR-028 D1) if not already running, then
+# drops you into the shopsystem-shell container with /workspace bind-mounted to
+# the repo root. Host requirement: docker only.
+#
+# The agent-vault broker needs a master password in an UNCOMMITTED .env
+# (see .env.example). Until that exists, the broker is skipped with a notice —
+# postgres and the shell still come up. Provision the vault once with
+# bin/agent-vault-provision (the one human-gated credential paste, ADR-026 D4).
 #
 # Override the shell image with SHOPSYSTEM_SHELL_IMAGE; defaults to the local
 # prototype tag, which you build with:
@@ -16,11 +22,25 @@ DATA="${SHOPSYSTEM_DATA:-$HOME/.local/share/shopsystem}"
 IMAGE="${SHOPSYSTEM_SHELL_IMAGE:-shopsystem-shell:dev}"
 IMAGE="ghcr.io/dstengle/shopsystem-bc-base:latest"
 
-mkdir -p "$DATA/pgdata"
+mkdir -p "$DATA/pgdata"  # broker vault uses a named volume, not a host dir
 
-# Bring up postgres if it isn't already.
+# compose reads the broker master password from $ROOT/.env. Pass it explicitly
+# so bring-up is deterministic regardless of the caller's CWD.
+COMPOSE=(docker compose -f "$ROOT/compose.yaml")
+[ -f "$ROOT/.env" ] && COMPOSE+=(--env-file "$ROOT/.env")
+
+# Bring up the supporting services if they aren't already (ADR-028 D1: one
+# entrypoint stands up the coherent two-server fleet).
 if ! docker ps --format '{{.Names}}' | grep -qx shopsystem-messaging-postgres-1; then
-    docker compose -f "$ROOT/compose.yaml" up -d postgres
+    "${COMPOSE[@]}" up -d postgres
+fi
+if ! docker ps --format '{{.Names}}' | grep -qx shopsystem-agent-vault-1; then
+    if [ -f "$ROOT/.env" ] && grep -q '^AGENT_VAULT_MASTER_PASSWORD=' "$ROOT/.env"; then
+        "${COMPOSE[@]}" up -d agent-vault
+    else
+        echo "shop-shell: agent-vault broker NOT started — no AGENT_VAULT_MASTER_PASSWORD in $ROOT/.env" >&2
+        echo "            copy .env.example to .env, set the password, then run bin/agent-vault-provision once." >&2
+    fi
 fi
 
 # The mounted docker socket is mode 660 (root:docker on the host). The shell

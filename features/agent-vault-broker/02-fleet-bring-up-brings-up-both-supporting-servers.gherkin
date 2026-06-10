@@ -1,0 +1,22 @@
+Feature: a single fleet bring-up entrypoint brings up BOTH supporting servers — messaging postgres and the agent-vault broker
+
+  SB-1 coherent-bring-up arm (PDR-017 §3 SB-1; ADR-028 D1). bin/shop-shell today
+  brings up only postgres (docker compose up -d postgres). Under the broker standup it
+  must bring up BOTH supporting servers as one entrypoint, so the coherent two-server
+  fleet is stood up without a separate manual step. Lead-owned integration check
+  against the lead's own bin/shop-shell + compose surface.
+
+  SCOPE (dave 2026-06-10): "fleet bring-up" denotes the two supporting SERVICES the
+  BC containers depend on (postgres + broker). It does NOT denote flipping the
+  lead-shell's own ~/.claude / ~/.gitconfig host mounts — agent-vault broker scope is
+  BC CONTAINERS ONLY; the lead shop's own shell credential mounts are unchanged. That
+  invariant is pinned separately in scenario 03.
+
+@scenario_hash:c33658fddacd00c2 @lead_integration:agent-vault-broker
+  Scenario: the fleet bring-up entrypoint brings up both the messaging postgres and the agent-vault broker
+    Given the agent-vault broker is declared as a supporting service in compose.yaml
+    And neither the messaging postgres nor the agent-vault broker container is currently running
+    When the single fleet bring-up entrypoint is run
+    Then the messaging postgres container is running on the shopsystem network
+    And the agent-vault broker container is running on the shopsystem network
+    And neither supporting server required a separate manual bring-up step

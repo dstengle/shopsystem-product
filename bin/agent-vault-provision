@@ -1,0 +1,130 @@
+#!/usr/bin/env bash
+# agent-vault-provision — the ONE human-gated credential paste (ADR-026 D4 /
+# PDR-017 SB-6), run ONCE to provision the broker vault for the fleet.
+#
+# Everything else about the broker is automated (compose brings it up,
+# .env auto-unlocks it on restart). This is the single out-of-band step:
+# a human reads the real Claude OAuth + GitHub credentials and stores them in
+# the broker vault. No other part of fleet bring-up or BC launch reads, writes,
+# or transports a real credential.
+#
+# Run from the lead host after the broker is up:
+#   cp .env.example .env && edit .env   # set AGENT_VAULT_MASTER_PASSWORD
+#   bin/shop-shell                      # (or: docker compose up -d agent-vault)
+#   bin/agent-vault-provision
+#
+# The agent-vault CLI is invoked INSIDE the running broker container, so no host
+# install is needed. Commands follow agent-vault v0.7.0; if a flag is rejected,
+# confirm against `docker exec shopsystem-agent-vault-1 agent-vault <cmd> --help`
+# (this script prints what it is about to run and stops on error).
+#
+# NOTE — Claude Code uses an OAuth Bearer flow, NOT the api-key `anthropic`
+# catalog template (spike lead-jkwo, finding 4). The three Bearer hosts below
+# must be configured as custom bearer services. The OAuth access token expires;
+# agent-vault refreshes via the stored refresh token. If `service add` exposes a
+# dedicated OAuth auth-type in your build, prefer it — see the STOP note at the
+# Claude step.
+
+set -euo pipefail
+
+CONTAINER="shopsystem-agent-vault-1"
+VAULT="${AGENT_VAULT_VAULT:-fleet}"
+AGENT="${AGENT_VAULT_AGENT:-bc-fleet}"
+
+av() { docker exec -i "$CONTAINER" agent-vault "$@"; }
+
+prompt_secret() {  # $1 = human label; echoes the pasted value
+    local v
+    read -r -s -p "  paste $1 (input hidden), then Enter: " v >&2
+    echo >&2
+    printf '%s' "$v"
+}
+
+if ! docker ps --format '{{.Names}}' | grep -qx "$CONTAINER"; then
+    echo "ERROR: broker container '$CONTAINER' is not running. Bring it up first:" >&2
+    echo "  cp .env.example .env  # set AGENT_VAULT_MASTER_PASSWORD, then:" >&2
+    echo "  docker compose --env-file .env up -d agent-vault" >&2
+    exit 1
+fi
+
+echo "== agent-vault provisioning (one-time) =="
+echo "broker: $CONTAINER   vault: $VAULT   agent: $AGENT"
+echo
+
+# 1) Owner account (first registered user becomes owner). Idempotent-guarded:
+#    skip if registration fails because an owner already exists.
+echo "-- step 1: owner account --"
+read -r -p "  owner email: " OWNER_EMAIL
+echo "  (choose an owner password; stored only in the vault DB)"
+OWNER_PW="$(prompt_secret 'owner password')"
+if printf '%s' "$OWNER_PW" | av auth register --email "$OWNER_EMAIL" --password-stdin; then
+    echo "  owner registered."
+else
+    echo "  auth register returned non-zero — assuming owner already exists; continuing."
+fi
+
+# 2) Vault
+echo "-- step 2: vault '$VAULT' --"
+av vault create "$VAULT" || echo "  vault create returned non-zero — assuming it exists; continuing."
+
+# 3) Services. GitHub is a straightforward bearer service.
+echo "-- step 3a: github service --"
+av vault service add --name github --host api.github.com \
+    --auth-type bearer --token-key GITHUB_TOKEN \
+    || echo "  github service add non-zero — assuming it exists; continuing."
+
+# Claude Code OAuth Bearer hosts. STOP: confirm the right auth-type for OAuth in
+# your build (`agent-vault vault service add --help`). Bearer with a shared
+# token-key works for a static access token; an oauth auth-type (if present) is
+# preferred so the broker refreshes automatically.
+echo "-- step 3b: claude oauth services (api.anthropic.com, platform.claude.com, mcp-proxy.anthropic.com) --"
+for host in api.anthropic.com platform.claude.com mcp-proxy.anthropic.com; do
+    name="claude-${host%%.*}"
+    av vault service add --name "$name" --host "$host" \
+        --auth-type bearer --token-key CLAUDE_CODE_OAUTH_TOKEN \
+        || echo "  service add for $host non-zero — assuming it exists; continuing."
+done
+
+# 4) THE HUMAN-GATED CREDENTIAL PASTE — the only out-of-band step.
+echo "-- step 4: load real credentials (the one human-gated paste) --"
+echo "  GitHub: a token with repo push scope (e.g. from 'gh auth token')."
+GH_TOKEN="$(prompt_secret 'GitHub token')"
+echo "  Claude: the accessToken from a logged-in ~/.claude/.credentials.json"
+CLAUDE_TOKEN="$(prompt_secret 'Claude OAuth accessToken')"
+
+printf '%s' "$GH_TOKEN"     | av vault credential set GITHUB_TOKEN=-          2>/dev/null \
+    || av vault credential set "GITHUB_TOKEN=$GH_TOKEN"
+printf '%s' "$CLAUDE_TOKEN" | av vault credential set CLAUDE_CODE_OAUTH_TOKEN=- 2>/dev/null \
+    || av vault credential set "CLAUDE_CODE_OAUTH_TOKEN=$CLAUDE_TOKEN"
+unset GH_TOKEN CLAUDE_TOKEN OWNER_PW
+echo "  credentials stored in the vault."
+
+# 5) Agent + proxy token the BCs use. This token is what bc-launcher injects as
+#    AGENT_VAULT_TOKEN — revocable, grants only proxy substitution (ADR-026).
+echo "-- step 5: fleet agent + proxy token --"
+av agent create "$AGENT" --vault "$VAULT:proxy" \
+    || echo "  agent create non-zero — assuming it exists; continuing."
+echo "  Minting a vault-scoped token (record it; it is AGENT_VAULT_TOKEN for launches):"
+av vault token --ttl 31536000 || echo "  vault token returned non-zero — mint manually."
+
+# 6) CA the BC containers must trust so the MITM proxy's TLS validates.
+#    The vault state lives in the named volume; copy the CA out to a host file
+#    that bc-launcher can mount into BC containers' trust store.
+echo "-- step 6: fetch CA --"
+CA_OUT="${AGENT_VAULT_CA_OUT:-$PWD/agent-vault-ca.pem}"
+if av ca fetch -o /data/agent-vault-ca.pem \
+   && docker cp "$CONTAINER:/data/agent-vault-ca.pem" "$CA_OUT"; then
+    echo "  CA written to $CA_OUT (mount this into BC containers)."
+else
+    echo "  ca fetch/cp non-zero — fetch manually:" >&2
+    echo "    docker exec $CONTAINER agent-vault ca fetch -o /data/agent-vault-ca.pem" >&2
+    echo "    docker cp $CONTAINER:/data/agent-vault-ca.pem ./agent-vault-ca.pem" >&2
+fi
+
+echo
+echo "== done =="
+echo "Fleet launch config (bc-launcher) must point at:"
+echo "  AGENT_VAULT_ADDR=http://agent-vault:14321"
+echo "  AGENT_VAULT_VAULT=$VAULT"
+echo "  AGENT_VAULT_TOKEN=<the token minted in step 5>"
+echo "  + mount the CA from step 6 into the BC container's trust store."

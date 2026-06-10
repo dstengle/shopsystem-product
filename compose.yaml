@@ -28,7 +28,54 @@ services:
       POSTGRES_DB: shopsystem
     restart: unless-stopped
 
+  # agent-vault — the credential broker, the SECOND lead-shop supporting
+  # service (peer to postgres), per ADR-028 D1. Vendored external tool
+  # (Infisical/agent-vault), operated not authored — the same class as
+  # postgres. The fleet's BC containers reach it by the network alias
+  # `agent-vault`; bc-launcher's `agent_vault_reachable` gate (scenarios
+  # 47/48) targets http://agent-vault:14321 and the MITM proxy at
+  # agent-vault:14322. Real credentials live ONLY in this broker's vault
+  # (ADR-026); they are loaded once by a human (see bin/agent-vault-provision).
+  #
+  # Vault state (encrypted SQLite at /data/.agent-vault/agent-vault.db + CA
+  # material) persists in the named volume `shopsystem-agent-vault-data`,
+  # OUTSIDE the repo. NOTE: this uses a NAMED volume rather than a
+  # SHOPSYSTEM_DATA bind mount like pgdata, because the image runs as the
+  # non-root `agentvault` user (uid 65532) and cannot mkdir inside a host dir
+  # owned by another uid — a bind mount fails with EACCES, verified empirically;
+  # a named volume inherits the right ownership (upstream-recommended).
+  # The master password is read from an UNCOMMITTED .env (see .env.example); it
+  # auto-unlocks the vault on restart (SB-7) without a human re-paste. NEVER
+  # commit the real master password.
+  agent-vault:
+    image: infisical/agent-vault:latest
+    container_name: shopsystem-agent-vault-1
+    networks:
+      shopsystem:
+        aliases:
+          - agent-vault
+    volumes:
+      - agent-vault-data:/data
+    ports:
+      - "14321:14321"
+      - "14322:14322"
+    environment:
+      AGENT_VAULT_MASTER_PASSWORD: ${AGENT_VAULT_MASTER_PASSWORD:?set AGENT_VAULT_MASTER_PASSWORD in .env (see .env.example) before bringing up the broker}
+      AGENT_VAULT_ADDR: ${AGENT_VAULT_ADDR:-http://agent-vault:14321}
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:14321/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
 networks:
   shopsystem:
     name: shopsystem
     external: true
+
+volumes:
+  # Persistent encrypted vault state for the agent-vault broker. Named volume
+  # (not a SHOPSYSTEM_DATA bind mount) — see the agent-vault service comment.
+  agent-vault-data:
+    name: shopsystem-agent-vault-data
