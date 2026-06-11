@@ -10,3 +10,5 @@ Scenario: bootstrap of a "lead" shop writes "bin/shop-shell" as an executable ba
   And the body of "bin/shop-shell" references the environment variable "SHOPSYSTEM_DATA" with a default of "$HOME/.local/share/shopsystem"
   And the body of "bin/shop-shell" references the environment variable "SHOPSYSTEM_SHELL_IMAGE" for the shell image tag
   And the body of "bin/shop-shell" contains the literal substring "/var/run/docker.sock:/var/run/docker.sock"
+  And the body of "bin/shop-shell" contains the literal substring "--user vscode", so the rendered shell launches the agent as the non-root "vscode" user (Claude Code refuses to run when EUID is 0)
+  And the body of "bin/shop-shell" does not contain the literal substring "--user $(id -u):$(id -g)", because mapping to the host UID/GID can land on root and is superseded by the fixed non-root "vscode" user
