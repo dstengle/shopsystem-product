@@ -1,0 +1,24 @@
+Feature: BC session-start heals a recoverable work-tracker wedge, re-validates including a test dolt push, then proceeds
+
+  This pins the observed wedge and its safe recovery: an embedded-Dolt bd backend
+  with an empty working set and no issue_prefix, while the committed
+  .beads/issues.jsonl names a definite prefix (e.g. "tmpl") and carries issues.
+  The health step adopts the committed prefix and imports the committed registry
+  so the working set becomes populated and the tracker writable, then
+  RE-VALIDATES — and per the stakeholder decision (Brief 010 §3) re-validation
+  includes a test dolt push to the configured remote. Only when that push
+  succeeds does the BC proceed. Pinned to the effect (adopted + imported + locally
+  writable + push succeeds), not the exact heal command (which may change once
+  lead-vlsu lands). (lead-80t0 intent (b).)
+
+  Scenario: a BC session starts with an unprovisioned-but-recoverable tracker and the health step heals it, re-validates with a successful test dolt push, then proceeds
+    Given a BC shop whose bd tracker working set is empty and has no issue_prefix configured
+    And the committed registry names a definite issue_prefix and carries at least one issue
+    And the tracker has a configured Dolt remote
+    When the BC agent session starts and runs the work-tracker health step
+    Then the health step adopts the committed issue_prefix as the tracker's configured prefix
+    And the committed registry's issues are imported into the tracker's working set
+    And after the heal bd create run in the BC shop exits zero and yields a new issue id carrying the adopted prefix
+    And after the heal a test dolt push to the configured Dolt remote exits zero
+    And the health step re-validates the tracker as healthy
+    And the BC proceeds to begin its role loop without a startup health failure

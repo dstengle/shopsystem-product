@@ -1,0 +1,23 @@
+Feature: BC session-start treats a locally-writable-but-unpushable work-tracker as unhealthy and hard-blocks all role-work from starting
+
+  Per the stakeholder decision (Brief 010 §3), "healthy" requires a proven remote
+  round-trip: a test dolt push to the configured Dolt remote must succeed. This
+  scenario pins that criterion as its own behavior: a tracker that accepts local
+  writes (bd create / bd ready succeed) but whose test dolt push FAILS is
+  UNHEALTHY. The BC must then HARD-BLOCK ALL role-work AT STARTUP — it does not
+  begin its role loop and does not emit any role work — and surface an explicit,
+  actionable failure naming the failed remote push. This catches the latent
+  fault where work proceeds and issues accrue locally but are unrecoverable
+  downstream because the tracker can never push. (lead-80t0; Brief 010 §3
+  test-dolt-push criterion.)
+
+  Scenario: a BC session starts with a locally-writable tracker whose test dolt push fails and the health step blocks all role-work from starting
+    Given a BC shop whose bd tracker has a definite issue_prefix configured and a populated working set
+    And bd create and bd ready run in the BC shop both exit zero
+    And the tracker has a configured Dolt remote
+    And a test dolt push to the configured Dolt remote exits non-zero
+    When the BC agent session starts and runs the work-tracker health step
+    Then the health step reports the tracker as unhealthy and names the failed test dolt push as the cause
+    And the BC does not begin its role loop
+    And the BC emits no role work
+    And the failure is surfaced at session-start rather than at work_done emission
