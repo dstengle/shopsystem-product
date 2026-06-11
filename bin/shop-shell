@@ -51,9 +51,17 @@ fi
 # symlink the devcontainer feature installs.)
 SOCKET_GID="$(stat -L -c '%g' /var/run/docker.sock)"
 
-# Hand off to the shell container.
+# Hand off to the shell container. Run as the non-root vscode user (uid 1000,
+# provisioned in bc-base with HOME=/home/vscode — the home the .claude/.gitconfig
+# mounts below target). The image's default USER is root, and Claude Code refuses
+# --dangerously-skip-permissions when EUID==0, so without this --user the shell
+# drops into root and `claude` won't start. This mirrors how the launcher runs
+# the BC agent: `docker exec --user vscode` (controller.AGENT_CONTAINER_USER).
+# Named `vscode` (not numeric $(id -u):$(id -g)) so $HOME and a passwd entry
+# resolve — host and image vscode are both 1000:1000, so they coincide anyway.
 exec docker run --rm -it \
     --network shopsystem \
+    --user vscode \
     --group-add "$SOCKET_GID" \
     --workdir /workspace \
     -v "$ROOT:/workspace" \
