@@ -11,16 +11,17 @@
 # postgres and the shell still come up. Provision the vault once with
 # bin/agent-vault-provision (the one human-gated credential paste, ADR-026 D4).
 #
-# Override the shell image with SHOPSYSTEM_SHELL_IMAGE; defaults to the local
-# prototype tag, which you build with:
+# Override the shell image with SHOPSYSTEM_SHELL_IMAGE. Default is the published
+# bc-base image (claude + framework CLIs already baked). To iterate on the shell
+# image locally, build the prototype and point the override at it:
 #   docker build -t shopsystem-shell:dev -f Dockerfile.shopsystem-shell .
+#   SHOPSYSTEM_SHELL_IMAGE=shopsystem-shell:dev bin/shop-shell
 
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 DATA="${SHOPSYSTEM_DATA:-$HOME/.local/share/shopsystem}"
-IMAGE="${SHOPSYSTEM_SHELL_IMAGE:-shopsystem-shell:dev}"
-IMAGE="ghcr.io/dstengle/shopsystem-bc-base:latest"
+IMAGE="${SHOPSYSTEM_SHELL_IMAGE:-ghcr.io/dstengle/shopsystem-bc-base:latest}"
 
 mkdir -p "$DATA/pgdata"  # broker vault uses a named volume, not a host dir
 
