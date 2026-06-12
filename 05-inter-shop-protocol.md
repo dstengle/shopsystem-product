@@ -1,6 +1,6 @@
 # §5 Inter-shop protocol
 
-The inter-shop protocol is the typed message catalogue through which shops coordinate work. It pins seven message types and the discipline around how they move; the routing, wire format, and specialised delivery mechanisms are detailed in the subsections below.
+The inter-shop protocol is the typed message catalogue through which shops coordinate work. It pins eight message types and the discipline around how they move; the routing, wire format, and specialised delivery mechanisms are detailed in the subsections below. Two of the eight (`request_scenario_register`, `request_shop_card`) are spec'd but formally deferred — see §5.3.
 
 ## 5.1 Channel and routing
 
@@ -13,18 +13,21 @@ Messages are YAML, validated by Pydantic schemas. YAML is chosen because it is t
 
 ## 5.3 Message catalogue
 
-The direction column names the originating shop type for the canonical use of each message; symmetric origination is permitted where the message's meaning is symmetric (today, only `request_shop_card` qualifies in principle).
+The direction column names the originating shop type for the canonical use of each message; symmetric origination is permitted where the message's meaning is symmetric. `nudge` is symmetric in practice (either side may originate it, per [ADR-015](adr/015-nudge-message-type.md)); `request_shop_card` qualifies in principle but is deferred.
 
 | Direction | Message | Purpose |
 |---|---|---|
 | lead → BC | `assign_scenarios` | Designated Gherkin scenarios (inline text) with tags + hash + work ID |
 | lead → BC | `request_bugfix` | Defect or scenario tightening, with work ID |
 | lead → BC | `request_maintenance` | Plain-language maintenance work, with work ID |
-| lead → BC | `request_scenario_register` | Full reconciliation pull |
-| lead → BC | `request_shop_card` | Asks for current shop card |
+| lead → BC | `request_scenario_register` | Full reconciliation pull *(deferred — see below)* |
+| lead → BC | `request_shop_card` | Asks for current shop card *(deferred — see below)* |
+| lead ↔ BC | `nudge` | Operational-liveness ping (no scenario state). Carries a `reason` enum (`stuck-on-you` / `status-check` / `predecessor-landed` / `general`), an optional `note`, and an optional `work_id`; it does NOT carry `scenario_hashes`. Auxiliary signaling that does not block, extend, or modify any dispatch lifecycle. Defined in [ADR-015](adr/015-nudge-message-type.md). |
 | BC → lead | `work_done` | Work ID + scenario hashes now passing + status |
 | BC → lead | `clarify` | Question or proposal back to PO/Architect |
 | BC → lead | `mechanism_observation` | BC-originated observation about the shop-system mechanism itself (template, schema, package boundary, spec). Carries a `bd_ref` to a BC-side bead and a `body` with the load-bearing claim; lead drains by creating a corresponding lead-side bead. Distinct from `clarify` (which is about the work item) and `work_done(blocked)` (which is about implementation). Validated end-to-end in [`findings/from-mechanism-observation-v1.md`](findings/from-mechanism-observation-v1.md). |
+
+**Deferred message types.** `request_scenario_register` and `request_shop_card` are pinned in this catalogue but have no schema class and are not implemented in `shopsystem-messaging`; neither has been exercised by the live fleet ([`findings/from-prototype-1.md`](findings/from-prototype-1.md), [`findings/from-mechanism-observation-v1.md`](findings/from-mechanism-observation-v1.md)). Both are **formally deferred**: the conformance loop in production runs on the `work_done`-`scenario_hashes` push (see [§6.4](06-work-tracking.md)), which closes the reconciliation loop without a pull. The on-demand pull is reserved for the scenario-completion journal's journal-pull vehicle ([ADR-023 D2](adr/023-scenario-completion-journal-decomposition.md)); `request_shop_card` remains reserved for authoritative shop-card acquisition (§5.5) if and when a consumer needs it. They are kept in the catalogue as named reservations, not as available vehicles; do not select either as a dispatch vehicle until a schema class lands.
 
 The choice between `assign_scenarios`, `request_bugfix`, and `request_maintenance` follows from the BC-shop's pre-state with respect to the work being requested. If the BC has no capability for what is being asked → `assign_scenarios` (the lead commits to new behavior via Gherkin scenarios that become part of the BC's acceptance contract). If the BC is already exhibiting the behavior in some form but no scenario pins it → `request_bugfix` (the lead tightens unpinned existing behavior, optionally carrying a tightened Gherkin scenario). If the BC has the behavior and scenarios pin it but the lead wants a flat change with no new scenarios — refactor, doc tweak, value-only update — → `request_maintenance`. The discriminator is the BC's pre-state, not the surface impression of the work.
 
@@ -35,6 +38,8 @@ Scenario delivery is inline. Full Gherkin text travels inside the `assign_scenar
 ## 5.5 Shop card delivery
 
 Each shop's card lives at a known path in its repo (e.g. `shop-card.yaml`) — that's where it is maintained. The lead shop acquires BC-shop cards via `request_shop_card`; the BC responds with the card content. Keeping acquisition on the typed channel preserves the uniform inter-shop traffic discipline (no shop reads another shop's repo directly).
+
+`request_shop_card` is currently **formally deferred** (§5.3) — it has no schema class and the live fleet has not needed authoritative card acquisition. This subsection records the intended contract for when a consumer does; it is not an available vehicle today.
 
 ## 5.6 Schema-level invariants
 

@@ -21,13 +21,19 @@ The work ID quoted in inter-shop messages is the lead beads issue ID. Unambiguou
 
 ## 6.4 Reconciliation
 
-Architect's reconciliation activity:
+Reconciliation closes the conformance loop: did the scenarios the Architect assigned actually land in the BC, with the expected hashes? The loop the live fleet runs is **push-based** — it rides the `scenario_hashes` a BC reports on its `work_done`, not a separate pull. When a BC finishes a dispatch, its Reviewer emits `work_done` carrying the set of scenario hashes now passing in the BC's as-committed `features/` tree; that set is the reconciliation input.
 
-1. Pulls the scenario register from a BC via `request_scenario_register`.
-2. Compares hash-sets against open lead beads issues for that BC.
-3. Closes lead beads issues whose scenarios appear in the register.
-4. Flags issues where the scenario was assigned but doesn't appear (forward-conformance gap).
-5. Flags entries in the register whose hashes were not assigned (reverse-conformance gap).
+Architect's reconciliation activity, on consuming a `work_done`:
+
+1. Reads the `scenario_hashes` set the BC reported on the `work_done` for the dispatched `work_id`.
+2. Compares that set against the open lead beads issues for that BC (each `assign_scenarios`-derived issue carries the scenario hash it was dispatched with, per §6.5).
+3. Closes the lead beads issues whose scenario hashes appear in the reported set.
+4. Flags issues where the scenario was assigned but its hash does not appear in the reported set (forward-conformance gap — the BC did not land the work, or the scenario body drifted between receipt and pinning so the hash changed).
+5. Flags hashes in the reported set that were not assigned (reverse-conformance gap).
+
+The `work_done` payload is a sound reconciliation input because it is **gated at the BC**: per [ADR-010 §4](../adr/010-clarify-resolution-work-done-scope.md) the reported `scenario_hashes` MUST be a subset of the hashes actually pinned under `@scenario_hash:` tags in the BC's as-committed `features/` tree, and the BC's Reviewer blocks a `work_done(complete)` emit when the payload carries an orphan hash (one not reachable in `features/`) or omits a hash for a dispatched scenario that is present in `features/`. So the hashes the Architect reconciles against are already confirmed-pinned BC-side before they cross the wire.
+
+**Deferred — pull-based register.** An earlier formulation of this loop had the Architect *pull* a BC's full scenario register via `request_scenario_register` and reconcile against that. That message type is **formally deferred** (§5.3): it has no schema class and the live fleet has never exercised it. The on-demand pull is reserved for the scenario-completion journal's journal-pull vehicle ([ADR-023 D2](../adr/023-scenario-completion-journal-decomposition.md)), which provides full-register reconciliation on demand over a shared store — separate from the incremental `work_done` push described above. Until that vehicle lands, reconciliation is the push loop; the pull is not an available path.
 
 ## 6.5 Intent provenance
 
