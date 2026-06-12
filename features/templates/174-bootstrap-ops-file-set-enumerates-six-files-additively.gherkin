@@ -1,0 +1,17 @@
+@scenario_hash:cb1e585684ff4a14
+Scenario Outline: the ops scaffolding file-set written by bootstrap for a "lead" shop named "<slug>" enumerates exactly six shop-owned files additively (growing the former four-file set) — "compose.yaml", "bin/shop-shell", "Dockerfile.<slug>-shell", "bin/shop-scenario-completion", "bin/agent-vault-provision", and "bin/agent-vault-check" — each at a shop-owned path outside any ".claude/" subdirectory, so the broker-provisioning pair ships alongside the existing ops files
+  Given an existing git repository at a target directory "/tmp/example-lead-shop"
+  When I invoke the "shop-templates" bootstrap entry point with shop type "lead", shop name "<slug>", and target directory "/tmp/example-lead-shop"
+  Then the exit code is 0
+  And after the invocation the target directory contains a top-level file named "compose.yaml" not under any ".claude/" subdirectory
+  And after the invocation the target directory contains a file at "bin/shop-shell" not under any ".claude/" subdirectory
+  And after the invocation the target directory contains a top-level file named "Dockerfile.<slug>-shell" not under any ".claude/" subdirectory
+  And after the invocation the target directory contains a file at "bin/shop-scenario-completion" not under any ".claude/" subdirectory
+  And after the invocation the target directory contains a file at "bin/agent-vault-provision" not under any ".claude/" subdirectory
+  And after the invocation the target directory contains a file at "bin/agent-vault-check" not under any ".claude/" subdirectory
+  And the directory at "/tmp/example-lead-shop/.claude/canonical/" does not contain a file named "compose.yaml", "shop-shell", "Dockerfile.<slug>-shell", "shop-scenario-completion", "agent-vault-provision", or "agent-vault-check"
+
+  Examples:
+    | slug       |
+    | shopsystem |
+    | dummyco    |

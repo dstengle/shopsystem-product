@@ -1,0 +1,14 @@
+@scenario_hash:abe57dcb4d6f6554
+Scenario Outline: the postgres host port published by the bootstrap-rendered "compose.yaml" for a "lead" shop named "<slug>" is collision-free per slug — it is "5432 + crc32(<slug>) % 1000" and is overridable by the slug-parametric "<SLUG_UPPER>_POSTGRES_PORT" environment variable — so two distinct products bootstrapped on one host bind distinct host ports by default while each remains operator-overridable
+  Given an existing git repository at a target directory "/tmp/example-lead-shop"
+  When I invoke the "shop-templates" bootstrap entry point with shop type "lead", shop name "<slug>", and target directory "/tmp/example-lead-shop"
+  Then the exit code is 0
+  And after the invocation the file at "compose.yaml" in the target directory parses as valid YAML
+  And the postgres service's "ports" entry maps a host port whose default value equals "<computed_port>", which is "5432 + crc32(<slug>) % 1000"
+  And that "ports" entry expresses the host port through the "<SLUG_UPPER>_POSTGRES_PORT" environment variable with "<computed_port>" as its default
+  And the rendered host port "<computed_port>" differs from the host port that the same rule yields for any other product slug, so concurrently bootstrapped products do not collide on the postgres host port
+
+  Examples:
+    | slug       | SLUG_UPPER | computed_port |
+    | shopsystem | SHOPSYSTEM | 5829          |
+    | dummyco    | DUMMYCO    | 5714          |

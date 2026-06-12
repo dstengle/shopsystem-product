@@ -1,0 +1,18 @@
+@scenario_hash:5335c39eb06f7493
+Scenario Outline: bootstrap of a "lead" shop named "<slug>" writes "bin/shop-shell" as an executable bash wrapper that is broker-wired (tightening scenario 134) — its body carries the agent-vault broker credentials and the :14322 HTTPS proxy, greps for the <slug>-derived container, errors when no token is present, and invokes "agent-vault-check"; while still preserving the executable bash wrapper, "docker compose up", "docker run", and "--user vscode" guarantees, and mounting no host "~/.claude" or "~/.gitconfig"
+  Given an existing git repository at a target directory "/tmp/example-lead-shop" with no "bin/" subdirectory
+  When I invoke the "shop-templates" bootstrap entry point with shop type "lead", shop name "<slug>", and target directory "/tmp/example-lead-shop"
+  Then the exit code is 0
+  And after the invocation the target directory contains a file at "bin/shop-shell" whose owner-execute permission bit is set and whose first line is exactly "#!/usr/bin/env bash"
+  And the body of "bin/shop-shell" contains the literal substring "docker compose" followed somewhere later in the file by the literal substring "up -d postgres", and contains the literal substring "docker run", and contains the literal substring "--user vscode"
+  And the body of "bin/shop-shell" references the environment variable "AGENT_VAULT_ADDR" and the environment variable "AGENT_VAULT_TOKEN" for broker credentials
+  And the body of "bin/shop-shell" references the proxy endpoint by the literal substring "14322" carried on an "HTTPS_PROXY" assignment
+  And the body of "bin/shop-shell" greps for a container name containing the literal substring "<slug>-postgres" or "<slug>-agent-vault"
+  And the body of "bin/shop-shell" contains a token-presence guard that exits non-zero with a diagnostic when the broker token is empty or unset
+  And the body of "bin/shop-shell" contains the literal substring "agent-vault-check"
+  And the body of "bin/shop-shell" does not contain the literal substring "$HOME/.claude" and does not contain the literal substring "$HOME/.gitconfig" and does not contain the literal substring "~/.claude" and does not contain the literal substring "~/.gitconfig"
+
+  Examples:
+    | slug       |
+    | shopsystem |
+    | dummyco    |
