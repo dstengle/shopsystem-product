@@ -1,0 +1,28 @@
+Feature: the bc-emit work-done wrapper's refusal error directs the BC to self-resolve its OWN bead/commit state and re-emit, and NEVER names the lead as the actor for BC-repo state
+
+  Pins the named-cause error-text posture that lead-vhfa defect 2 identifies, as a
+  behavior of the CLI-layer "bc-emit work-done" wrapper (ADR-036 D1/D2). The defect:
+  a pre-emit gate refusal carried text instructing "Router must commit/push ... and
+  reconcile", improperly punting BC-repo housekeeping to the lead. This is wrong on
+  two counts: (a) per ADR-018 the lead never commits BC repos — there is no
+  lead-side BC source to commit; (b) per BC self-resolve discipline the BC MUST
+  resolve its own clean-tree / commit state before emitting, never punt it to the
+  lead.
+
+  This scenario pins that on ANY refusal (clean-tree, commit-on-origin-main,
+  tag-reachability, or scenario_hashes-match), the wrapper's named-cause error
+  directs the BC to self-resolve its OWN bead/commit/working-tree state and re-emit,
+  and the error text never instructs or implies that the lead (or "router") should
+  commit, push, or otherwise act on BC-repo state. The prose-layer cousin of this
+  self-resolve discipline (bc-implementer/bc-reviewer template prose, lead-oyaj)
+  stays a separate judgment-layer pin (ADR-036 D1) and is not pinned here.
+
+  The wrapper runs inside the BC container against the BC's own tree (ADR-036 D2,
+  ADR-018). "shop-msg respond" stays a pure messaging primitive; the bare "--force"
+  path (scenario 181) remains the escape valve.
+
+  Scenario: on any bc-emit work-done precondition refusal the named-cause error directs the BC to self-resolve its own state and re-emit, and never names the lead or router as the actor for BC-repo state
+    Given the "bc-emit work-done" wrapper refuses an emit on any of its preconditions — clean-working-tree, work_id-commit-on-origin-main, tag-deliverable reachability, or scenario_hashes-match
+    When the BC reads the wrapper's named-cause error text
+    Then the error directs the BC to self-resolve its OWN bead, commit, and working-tree state — committing its own changes or correcting its own hashes — and then to re-invoke "bc-emit work-done"
+    And the error text does NOT instruct, request, or imply that the lead, the router, or any non-BC actor should commit, push, or reconcile the BC's repository state

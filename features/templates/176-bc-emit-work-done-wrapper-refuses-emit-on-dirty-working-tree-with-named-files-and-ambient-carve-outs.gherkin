@@ -1,0 +1,30 @@
+Feature: the bc-emit work-done wrapper refuses the emit on a dirty BC working tree, naming the offending files, while carving out non-idempotent ambient artifacts
+
+  Pins the clean-working-tree precondition of the CLI-layer "bc-emit work-done"
+  wrapper that ADR-036 D1/D2 ratifies. ADR-036 moves the mechanically-checkable
+  pre-emit obligations out of fragile template prose (scenarios 105-116, NOT
+  retired here — land-then-retire, ADR-036 D4) and into a "shop-templates"-package
+  emit wrapper that runs the preflight and refuses the emit on failure. This
+  scenario pins the clean-tree arm: "git status --porcelain" against the BC's own
+  tree must be empty (modulo carve-outs) or the wrapper refuses with a named-file
+  error and does not invoke "shop-msg respond work_done".
+
+  The carve-out set is load-bearing per lead-8lm (".specstory",
+  ".claude/scheduled_tasks.lock") AND per lead-vhfa defect 2 / lead-bdqm
+  (".beads/issues.jsonl" bd-dolt metadata-export churn). The ".beads/issues.jsonl"
+  carve-out is REQUIRED, not merely convenient: that churn is NON-idempotent — a
+  commit re-dirties the file on the next bd-dolt export, so "commit it" cannot
+  make the tree clean, and without the carve-out a verified-COMMITTED fix can never
+  satisfy the gate (lead-vhfa: a false-block on legitimately-complete work).
+
+  The git check runs inside the BC container against the BC's own tree (ADR-036 D2,
+  ADR-018: BC-owned tooling, never lead-side). "shop-msg respond" stays a pure
+  messaging primitive; the bare "--force" path (scenario 181) remains the escape
+  valve.
+
+  Scenario: bc-emit work-done refuses the emit when the BC working tree carries a non-carved-out modified or untracked path, naming the offending path, and does not invoke shop-msg respond
+    Given a BC repository whose "git status --porcelain" output reports at least one modified or untracked path that is NOT one of the ambient carve-outs ".specstory", ".claude/scheduled_tasks.lock", or ".beads/issues.jsonl"
+    When the BC invokes the "bc-emit work-done" wrapper for its dispatched work_id
+    Then the wrapper exits non-zero and does not invoke "shop-msg respond work_done"
+    And the wrapper's error names the clean-working-tree precondition as the cause and lists each offending path verbatim as "git status --porcelain" reported it
+    And a working tree whose ONLY non-empty "git status --porcelain" entries are the carved-out ambient artifacts ".specstory", ".claude/scheduled_tasks.lock", and ".beads/issues.jsonl" is treated as clean, so the wrapper does NOT refuse on those paths alone and proceeds to the remaining preconditions

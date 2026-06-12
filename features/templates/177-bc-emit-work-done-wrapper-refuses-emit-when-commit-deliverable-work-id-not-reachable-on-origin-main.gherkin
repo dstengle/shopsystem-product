@@ -1,0 +1,28 @@
+Feature: the bc-emit work-done wrapper refuses the emit for a COMMIT deliverable when the work_id's change is not reachable on the BC's origin/main
+
+  Pins the work_id-commit-on-origin-main precondition of the CLI-layer
+  "bc-emit work-done" wrapper (ADR-036 D1/D2), mechanizing the obligation that
+  template-prose scenarios 108 and 112 pin today (NOT retired here — land-then-retire,
+  ADR-036 D4). For a deliverable that is a COMMIT attributable to the dispatched
+  work_id, the wrapper verifies that commit is reachable from the BC's "origin/main"
+  HEAD; otherwise it refuses with a missing-commit error and does not invoke
+  "shop-msg respond work_done".
+
+  This is the COMMIT mode. The distinct TAG/release mode — where reachability is
+  satisfied by a tag pointing at the expected lineage rather than by the work_id
+  appearing on origin/main HEAD — is pinned separately as scenario 178 (lead-vhfa
+  defect 1), so release-mechanics maintenance is not false-blocked.
+
+  The git checks run inside the BC container against the BC's own tree (ADR-036 D2,
+  ADR-018), and a "git fetch origin" precedes the reachability check so a stale local
+  view of "origin/main" does not yield a false positive. "shop-msg respond" stays a
+  pure messaging primitive; the bare "--force" path (scenario 181) remains the escape
+  valve.
+
+  Scenario: bc-emit work-done refuses the emit when the COMMIT deliverable for the work_id is not reachable from the BC's origin/main HEAD, naming the work_id and the current origin/main HEAD
+    Given a dispatched work_id whose deliverable is a COMMIT attributable to that work_id
+    And no commit attributable to the work_id is reachable from the BC's "origin/main" HEAD after a "git fetch origin"
+    When the BC invokes the "bc-emit work-done" wrapper for that work_id
+    Then the wrapper exits non-zero and does not invoke "shop-msg respond work_done"
+    And the wrapper's error names the work_id-commit-on-origin-main precondition as the cause and names both the dispatched work_id and the current "origin/main" HEAD short SHA
+    And a commit attributable to the work_id that exists only on a branch other than the BC's main branch (e.g. an un-merged or un-pushed local branch) does NOT satisfy the precondition; only reachability from "origin/main" HEAD satisfies it

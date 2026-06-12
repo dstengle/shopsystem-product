@@ -1,0 +1,31 @@
+Feature: the bc-emit work-done wrapper satisfies the reachability precondition for a TAG/release deliverable by the tag pointing at the expected lineage, NOT by the work_id appearing on origin/main HEAD
+
+  Pins the release/tag-deliverable reachability MODE that lead-vhfa defect 1
+  identifies as missing from the pre-emit gate, as a distinct path in the
+  CLI-layer "bc-emit work-done" wrapper (ADR-036 D1/D2). The defect: the
+  commit-on-origin-main precondition (scenario 177) assumes every deliverable is a
+  work_id-attributed COMMIT reachable from origin/main HEAD. Release-mechanics
+  maintenance produces a TAG (e.g. a vX.Y.Z bump pointing at a commit), and
+  "origin/main" legitimately advances PAST that tag with later commits. So the
+  work_id is correctly NOT on HEAD — the tag IS the deliverable. Without this mode
+  the gate false-blocks legitimately-complete release work (lead-vhfa source:
+  lead-if8q v0.2.5 tag, independently confirmed on the lead artifact surface, yet
+  returned blocked).
+
+  This scenario pins that, for a TAG deliverable, reachability is satisfied by the
+  tag existing and pointing at the expected commit lineage — NOT by requiring the
+  work_id to appear on "origin/main" HEAD. The wrapper must offer this as an
+  explicit mode so a vX.Y.Z bump+tag is not false-blocked.
+
+  The git checks run inside the BC container against the BC's own tree (ADR-036 D2,
+  ADR-018), after a "git fetch origin --tags". "shop-msg respond" stays a pure
+  messaging primitive; the bare "--force" path (scenario 181) remains the escape
+  valve.
+
+  Scenario: bc-emit work-done satisfies reachability for a TAG deliverable when the named tag exists and points at the expected commit lineage, even though origin/main HEAD has advanced past that commit
+    Given a dispatched work_id whose deliverable is a release TAG that names an expected commit lineage
+    And the named tag exists on "origin" after a "git fetch origin --tags" and points at the expected commit lineage
+    And the BC's "origin/main" HEAD has legitimately advanced to a later commit that does NOT carry the work_id
+    When the BC invokes the "bc-emit work-done" wrapper for that work_id in the TAG/release-deliverable mode
+    Then the wrapper treats the reachability precondition as satisfied and does NOT refuse on the ground that the work_id is absent from "origin/main" HEAD
+    And the satisfaction is established by the tag pointing at the expected commit lineage, not by the work_id being reachable from "origin/main" HEAD
