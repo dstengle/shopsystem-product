@@ -24,8 +24,10 @@ exercises the framework's genericity, so a genericity defect never emits a
 `mechanism_observation`.
 
 This PDR pins the intent to **convert that verdict into a checked state** by
-standing up a trivial second product and letting every wall it hits become a
-bead and a fix, validated by re-running. The run *is* the MVP acceptance test:
+standing up a trivial second product — **a trivial app with a real feature
+implemented in a single BC, runnable self-contained in a docker container**
+(user refinement, 2026-06-12) — and letting every wall it hits become a bead and
+a fix, validated by re-running. The run *is* the MVP acceptance test:
 nothing in epic lead-wm2r is "done" until the spike runs clean. The spike is
 the spine — WS-1 (identity constants) and WS-2 (bootstrap path) are
 **discovered and proven by it**, not planned in the abstract.
@@ -56,11 +58,30 @@ Verified against the contract/artifact surface (ADR-018) — no BC code, no
 
 This is the bar the architect later verifies (WS-0's named division of labor:
 **lead-po scopes the gate here; the architect verifies it**). The gate is an
-**observable, re-runnable check**, satisfied only when ALL hold. The bar is the
-**§6.4 reconciliation cycle running generically** — not merely transport: the
-dummy product must survive a real `assign_scenarios → work_done(scenario_hashes)
-→ reconcile` loop under its own slug (conditions 5–7), not just a single typed
-message round-trip (condition 4):
+**observable, re-runnable check**, satisfied only when ALL hold.
+
+Per the user refinement (2026-06-12): **"the framework running" means a trivial
+app with a real feature implemented in a single BC, runnable self-contained in a
+docker container.** Two things follow, and both are load-bearing:
+
+- The single BC must **implement a genuine (trivial) feature** — the assigned
+  scenario is a real behavior the BC builds and passes through its
+  implementer→reviewer→`work_done` loop, **not** a no-op, echo, or
+  plumbing-only round-trip. The §6.4-assigned scenario (conditions 5–7) **is**
+  that one feature; the `work_done` must correspond to a working feature.
+- The resulting dummy app must be **runnable self-contained in a docker
+  container** — the single BC (plus whatever minimal substrate it needs) comes
+  up and serves its one feature in a container, observably, on a docker network
+  and host ports distinct from the live fleet (the user constraint already
+  recorded on bead **lead-l7uz** / WS-2).
+
+So the bar is the **§6.4 reconciliation cycle running generically over a real
+implemented feature in a self-contained containerized app** — not merely
+transport: the dummy product must survive a real
+`assign_scenarios → work_done(scenario_hashes) → reconcile` loop under its own
+slug (conditions 5–7), where that loop pins an actually-implemented feature
+(condition 9) running self-contained in docker (condition 10), not just a single
+typed message round-trip (condition 4):
 
 1. **Empty start, proven empty.** The dummy product begins with empty
    `briefs/`, `adr/`, `pdr/`, `features/` for the new system slug — no carried-
@@ -99,7 +120,8 @@ message round-trip (condition 4):
    completes the assignment and responds with a **`work_done`** whose
    `scenario_hashes` field names the scenario(s) it pinned — the §6.4 evidence
    the lead reconciles against. The lead consumes this from its inbox under the
-   dummy slug.
+   dummy slug. The `work_done` must correspond to a **genuinely implemented
+   trivial feature** (see condition 9), not a no-op acknowledgement.
 
 7. **The lead reconciles the scenario register and matches the hashes.** The
    lead confirms the dummy product's scenario register lands and that the
@@ -112,12 +134,38 @@ message round-trip (condition 4):
 
 8. **Every wall is a bead with a fix, and the fix is validated by re-running.**
    A clean run is not "first try succeeds"; it is "the *final* re-run, after all
-   beaded fixes land, completes 1–7 with no hand-edits and no remaining wall."
+   beaded fixes land, completes 1–10 with no hand-edits and no remaining wall."
    The trail of beads + fixes + the final clean re-run *is* the deliverable.
+
+9. **The single BC implements a real (trivial) feature.** The scenario assigned
+   in #5 names an actual behavior — the BC builds it through its
+   **implementer→reviewer→`work_done`** loop and the feature *works*. The check
+   is observable: the implemented feature is exercisable (its `Then` is
+   demonstrably satisfied by the running BC), not stubbed, echoed, or
+   acknowledged-only. The feature is deliberately the **smallest genuine
+   behavior** that still counts as a feature (see scope discipline for the
+   default bar); triviality is a scope choice, not a license to fake it.
+
+10. **The dummy app runs self-contained in a docker container.** The dummy
+    product's single BC — plus only the minimal substrate it needs — **comes up
+    and serves its one implemented feature inside a container**, observably,
+    from the empty-start documented path. It runs on a **docker network and host
+    ports distinct from the live shopsystem fleet** (the recorded user
+    constraint, bead **lead-l7uz** / WS-2), so it is self-contained and
+    non-colliding. "Self-contained" means the container(s) the documented path
+    stands up are sufficient to demonstrate the feature without reaching into
+    the live fleet.
 
 The gate is **re-runnable**: the architect verifies it by re-executing the
 documented path from empty, not by trusting a one-time narration. A passing
 gate is the empirical definition of "MVP" for epic lead-wm2r.
+
+**What "runs clean" means (made explicit, per the 2026-06-12 refinement):** a
+clean pass is the **trivial app — with its one genuinely implemented feature —
+coming up self-contained in docker (conditions 9–10) AND the §6.4 reconciliation
+cycle closing for that feature's scenario (conditions 5–7)**, all reached from an
+empty start via the documented path with **no hand-edits** (conditions 1–3, 8).
+Transport-only (condition 4) or a no-op `work_done` does **not** clear the bar.
 
 ## Division of labor (as the bead names it)
 
@@ -130,7 +178,9 @@ gate is the empirical definition of "MVP" for epic lead-wm2r.
   `assign_scenarios → work_done(scenario_hashes) → reconcile` loop** (gate
   conditions 5–7) under the dummy slug and confirming hash equality — the §6.4
   reconciliation leg is the architect's to dispatch, verify empirically, and
-  reconcile. Selects how the spike executes against the contract/artifact
+  reconcile — **and confirming that the loop pinned a genuinely implemented
+  trivial feature (condition 9) running self-contained in a docker container on
+  a distinct network/ports (condition 10)**, not a no-op round-trip. Selects how the spike executes against the contract/artifact
   surface (ADR-018), runs the spike under the PDR-016 / ADR-029..032 spike
   contract (throwaway, isolated scratch, markdown findings, human-wall
   protocol), reaches a verdict, and drives the wall→bead→fix→re-run loop. On a `confirm` verdict, the kept fixes graduate via the PDR-014 path
@@ -144,12 +194,20 @@ the final clean re-run — not a maintained second product.
 ## Scope discipline (do not over-commit)
 
 **In scope:** exactly ONE BC; a *trivial* dummy product (the smallest thing
-that exercises identity projection, one typed round-trip, and one full
-`assign_scenarios → work_done(scenario_hashes) → reconcile` cycle); a distinct
+that exercises identity projection, one typed round-trip, one full
+`assign_scenarios → work_done(scenario_hashes) → reconcile` cycle pinning **one
+genuinely implemented trivial feature**, and that feature **running
+self-contained in a docker container** distinct from the live fleet); a distinct
 system slug and org; an empty-start instantiation via skills + templates +
 tools. The PO authors the *minimal* single scenario the assign_scenarios leg
-needs (so the gate has something to hash and reconcile) — that minimal seed is
-not the genericity-fix Gherkin, which stays a WS-1/WS-2 deliverable.
+needs — and it must name a **real behavior the BC can build and pass**, not a
+plumbing echo — so the gate has a genuine feature to hash, run, and reconcile.
+That minimal seed is not the genericity-fix Gherkin, which stays a WS-1/WS-2
+deliverable. The feature stays deliberately trivial: the default bar is **one
+observable behavior with one `Then` the running BC demonstrably satisfies**
+(e.g. a single request the BC answers correctly), which the architect may
+realize as whatever smallest genuine behavior the dummy BC's substrate makes
+cheapest.
 
 **Explicitly out of scope:**
 
