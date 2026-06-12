@@ -250,6 +250,60 @@ infra the lead operates), the same class of thing as `bin/shop-shell` bringing
 up postgres. It does not read, run, or git-observe BC source. It is admissible
 lead-shop work, not a violation of the no-`repos/` doctrine.
 
+### D4 — `bin/shop-shell` joins the zero-host-coupling model: brokered creds, env git-identity, no host `~/.claude`/`~/.gitconfig` mounts; the GitHub PAT's silent-expiry risk is surfaced by a 30-day advisory (2026-06-12 amendment)
+
+The Open question below ("does fleet bring-up include flipping `bin/shop-shell`'s
+own host mounts?") is resolved in the affirmative by user direction (2026-06-12):
+**the lead shell now runs zero-host-coupled, exactly like a BC container.**
+Concretely:
+
+- **No host credential mounts.** The `-v "$HOME/.claude:..."` (rw) and
+  `-v "$HOME/.gitconfig:..."` (ro) mounts (finding 3) are **removed** from
+  `bin/shop-shell`. Claude and git auth now flow through the agent-vault broker
+  via the same env the launcher injects into BCs: `AGENT_VAULT_ADDR`,
+  `AGENT_VAULT_TOKEN`, `AGENT_VAULT_VAULT`, `AGENT_VAULT_CA_PEM`, and the MITM
+  `HTTPS_PROXY=http://<token>:<vault>@agent-vault:14322`. The bc-base entrypoint
+  materializes the CA from `AGENT_VAULT_CA_PEM` and bakes the placeholder
+  `~/.claude` the broker fills — so a shell container with the broker env and NO
+  host mount is fully brokered, the same mechanism that makes BCs creds-free.
+
+- **Git identity, not a credential, via env.** What `~/.gitconfig` supplied
+  (author/committer name + email — identity, not a secret) is passed as
+  `GIT_AUTHOR_NAME`/`GIT_AUTHOR_EMAIL`/`GIT_COMMITTER_NAME`/`GIT_COMMITTER_EMAIL`,
+  read from the host `git config user.name`/`user.email`. No `.gitconfig` and no
+  token leave the host.
+
+- **Broker-cred sourcing, with a hard no-fallback rule.** `bin/shop-shell`
+  sources the proxy token + CA from `$ROOT/.env` if it records
+  `AGENT_VAULT_TOKEN` (the durable operator-recorded source — see
+  `.env.example`), else recovers them from a running BC container's env via
+  `docker inspect` (works today, before the token is persisted). If **neither**
+  source yields a token, the shell **errors out** with provisioning guidance —
+  it does **not** fall back to host creds, because no-host-coupling is the whole
+  point.
+
+- **GitHub PAT silent-expiry advisory (30 days).** Of the broker's three
+  credential kinds, only the GitHub PAT can lapse silently: the agent proxy
+  token (`av_agt_...`) is non-expiring (rotate/revoke via
+  `agent-vault agent rotate`), and `CLAUDE_OAUTH` self-refreshes (D2 / ADR-026
+  D2). `bin/agent-vault-check` (invoked non-fatally at shell startup) makes a
+  brokered request to `api.github.com` and reads the
+  `github-authentication-token-expiration` response header GitHub returns for
+  expiring PATs: it **warns at <=30 days** (or past), reports days-remaining
+  otherwise, and prints "no expiration set" when the header is absent (the
+  honest answer to "can we tell when it expires"). The check is advisory — it
+  never blocks the shell. *Empirically confirmed 2026-06-12: brokered
+  `git ls-remote` to `dstengle/shopsystem-product` succeeds with no host creds;
+  the probe authenticates (X-OAuth-Scopes present) and reports the current
+  fleet PAT as non-expiring.*
+
+This is consistent with D1–D3: D1 makes the broker the lead-shop's own
+supporting service; D4 makes the lead's own **shell** a first-class consumer of
+that broker, closing the last host-FS credential coupling on the lead surface
+(finding 3) rather than leaving it as the launcher-only flip. The smoke
+verification of the brokered GitHub path also exercises, from the lead's own
+surface, the GitHub-substitution behavior D2 homes on the integration surface.
+
 ### D3 — The tautological launcher scenario `f23dfbe84c899968` is RETIRED from the launcher surface and its intent RELOCATED to the lead integration surface (SB-2's broker arm)
 
 `features/bc-launcher/46`'s second scenario, `f23dfbe84c899968` ("the broker
@@ -335,16 +389,25 @@ assumption. The integration surface must actually exercise the substitution.
   broker's *own behavior verification* (D2). One party owns the broker's
   existence and its tests — the property whose absence made the launcher homing
   dishonest.
+- **`bin/shop-shell` is now a brokered consumer (D4, 2026-06-12):** its host
+  `~/.claude`/`~/.gitconfig` mounts are removed; creds arrive via `AGENT_VAULT_*`
+  + the MITM `HTTPS_PROXY`, git identity via `GIT_*` env. A new
+  `bin/agent-vault-check` surfaces the GitHub PAT's expiry as a 30-day advisory
+  (the only broker credential with a silent-expiry risk). `.env.example` gains a
+  documented optional `AGENT_VAULT_TOKEN` the operator records from
+  `bin/agent-vault-provision` (step 5). This closes finding 3 — the last host-FS
+  credential coupling on the lead surface.
 
-### Open question for the PO (scope, not architecture — flagged, not decided here)
+### Open question for the PO (scope, not architecture) — RESOLVED 2026-06-12 by D4
 
 SB-1 ("the fleet bring-up brings up both supporting servers") — does "fleet
 bring-up" include flipping **`bin/shop-shell`'s own** `$HOME/.claude` /
 `$HOME/.gitconfig` mounts (finding 3) off the host, or is SB-1 scoped to BC
-container launch only, with the lead-shell's host mounts a separate (possibly
-out-of-scope) concern? This is a **scope/product-language** judgment (what
-"the fleet" denotes), which routes to the PO, not an architecture call. The
-Architect's structural decisions (D1–D3) hold under either scoping.
+container launch only? **Resolved (D4):** by user direction the lead shell IS
+flipped — `bin/shop-shell` now runs zero-host-coupled (brokered creds, env git
+identity, no host mounts), with the GitHub PAT silent-expiry risk surfaced by a
+30-day advisory. The Architect's structural decisions (D1–D3) held under either
+scoping, as noted; D4 records the scope answer.
 
 ---
 

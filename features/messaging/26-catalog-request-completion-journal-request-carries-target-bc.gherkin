@@ -1,5 +1,4 @@
-@bc:shopsystem-messaging
-@scenario_hash:1a74780383687ce6
+@bc:shopsystem-messaging @scenario_hash:65c85ffce8f88507
 Scenario: A minimal valid request_completion_journal request message can be constructed carrying only the target bounded context
   Given the RequestCompletionJournal request schema from the shop-msg catalog
   When I construct a RequestCompletionJournal request instance supplying only the fields the schema marks as required, naming the target bounded context whose completed scenarios are sought

@@ -1,0 +1,93 @@
+#!/usr/bin/env bash
+# agent-vault-check — advisory health probe for the broker's GitHub PAT expiry.
+#
+# The broker vault holds three credential kinds, and only one can expire
+# SILENTLY:
+#   - The agent proxy token (av_agt_...) is non-expiring — revoke/rotate it via
+#     `agent-vault agent rotate`, it never lapses on its own.
+#   - CLAUDE_OAUTH self-refreshes (the broker renews the access token from the
+#     stored refresh token within ~5 min of expiry, ADR-026 D2).
+#   - The GitHub PAT (GITHUB_TOKEN) is a static credential. If the operator
+#     minted it with an expiration, it lapses silently and every brokered git /
+#     gh operation starts 401-ing with no warning. THIS is the only silent-expiry
+#     risk, so it is the only thing this probe surfaces.
+#
+# Mechanism: GitHub returns a `github-authentication-token-expiration` response
+# header for PATs that carry an expiry. We make a brokered request to
+# api.github.com (so the PAT never leaves the broker — the proxy substitutes it)
+# and read that header. The broker MITM proxy (agent-vault:14322) is only
+# reachable from the `shopsystem` docker network, so the probe runs in a
+# throwaway container joined to that network.
+#
+# Output / exit:
+#   - header present + <=30 days (or past)  -> WARN line, exit 0 (advisory only).
+#   - header present + >30 days             -> OK line, exit 0.
+#   - header absent                         -> INFO "no expiration set", exit 0.
+#   - probe could not run (no token, etc.)  -> NOTICE line, exit 0.
+# This check is ALWAYS non-fatal: it never blocks the shell.
+#
+# Env (normally exported by bin/shop-shell before calling this):
+#   AGENT_VAULT_TOKEN  AGENT_VAULT_VAULT  AGENT_VAULT_CA_PEM
+# Image override: SHOPSYSTEM_SHELL_IMAGE (defaults to the published bc-base).
+
+set -uo pipefail
+
+WARN_DAYS="${AGENT_VAULT_WARN_DAYS:-30}"
+IMAGE="${SHOPSYSTEM_SHELL_IMAGE:-ghcr.io/dstengle/shopsystem-bc-base:latest}"
+VAULT="${AGENT_VAULT_VAULT:-fleet}"
+TOKEN="${AGENT_VAULT_TOKEN:-}"
+
+if [ -z "$TOKEN" ]; then
+    echo "agent-vault-check: no AGENT_VAULT_TOKEN in env — skipping PAT expiry probe." >&2
+    exit 0
+fi
+
+PROXY="http://${TOKEN}:${VAULT}@agent-vault:14322"
+
+# Run the probe in a throwaway container on the shopsystem network. The CA must
+# be trusted for the MITM proxy's TLS to validate; materialize it from
+# AGENT_VAULT_CA_PEM into the container's curl CA path.
+HEADERS="$(docker run --rm --network shopsystem \
+    -e HTTPS_PROXY="$PROXY" \
+    -e AGENT_VAULT_CA_PEM="${AGENT_VAULT_CA_PEM:-}" \
+    "$IMAGE" \
+    sh -c '
+        if [ -n "${AGENT_VAULT_CA_PEM:-}" ]; then
+            printf "%s\n" "$AGENT_VAULT_CA_PEM" > /tmp/av-ca.pem
+            export CURL_CA_BUNDLE=/tmp/av-ca.pem
+        fi
+        curl -sS -D - -o /dev/null https://api.github.com/ 2>/dev/null
+    ' 2>/dev/null)"
+
+EXP_LINE="$(printf '%s\n' "$HEADERS" | grep -i 'github-authentication-token-expiration' | head -n1)"
+
+if [ -z "$EXP_LINE" ]; then
+    # Distinguish "header absent (no expiry)" from "probe failed entirely".
+    if printf '%s\n' "$HEADERS" | grep -qi '^HTTP/'; then
+        echo "agent-vault-check: GitHub PAT — no expiration set (token does not expire)." >&2
+    else
+        echo "agent-vault-check: PAT expiry probe could not reach api.github.com via the broker; skipping (advisory only)." >&2
+    fi
+    exit 0
+fi
+
+# Header form: "github-authentication-token-expiration: 2026-09-01 00:00:00 UTC"
+EXP_RAW="$(printf '%s' "$EXP_LINE" | sed -E 's/^[^:]*:[[:space:]]*//; s/[[:space:]]*$//' | tr -d '\r')"
+
+EXP_EPOCH="$(date -u -d "$EXP_RAW" +%s 2>/dev/null || true)"
+if [ -z "$EXP_EPOCH" ]; then
+    echo "agent-vault-check: GitHub PAT expires '$EXP_RAW' (could not parse to compute days remaining)." >&2
+    exit 0
+fi
+
+NOW_EPOCH="$(date -u +%s)"
+DAYS=$(( (EXP_EPOCH - NOW_EPOCH) / 86400 ))
+
+if [ "$DAYS" -lt 0 ]; then
+    echo "agent-vault-check: WARNING — GitHub PAT EXPIRED ${DAYS#-} day(s) ago ($EXP_RAW). Brokered git/gh will 401. Rotate it: re-run bin/agent-vault-provision (step 4a) with a fresh PAT." >&2
+elif [ "$DAYS" -le "$WARN_DAYS" ]; then
+    echo "agent-vault-check: WARNING — GitHub PAT expires in $DAYS day(s) ($EXP_RAW). Rotate it within the window: re-run bin/agent-vault-provision (step 4a) with a fresh PAT." >&2
+else
+    echo "agent-vault-check: GitHub PAT OK — expires in $DAYS day(s) ($EXP_RAW)." >&2
+fi
+exit 0

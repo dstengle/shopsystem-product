@@ -11,6 +11,16 @@
 # postgres and the shell still come up. Provision the vault once with
 # bin/agent-vault-provision (the one human-gated credential paste, ADR-026 D4).
 #
+# ZERO HOST CREDENTIAL COUPLING (ADR-028, 2026-06-12). The shell container is
+# brokered exactly like a BC: NO host ~/.claude or ~/.gitconfig is mounted.
+# Claude + git auth flow through the agent-vault broker via the same env the
+# launcher injects into BCs (AGENT_VAULT_* + the MITM HTTPS_PROXY). Git IDENTITY
+# (name/email — not a secret) is passed as GIT_* env, read from the host
+# `git config`. The broker proxy token + CA are sourced from $ROOT/.env if it
+# records AGENT_VAULT_TOKEN, else recovered from a running BC container's env.
+# If neither yields a token the shell ERRORS OUT (no host-cred fallback — the
+# whole point is no host creds).
+#
 # Override the shell image with SHOPSYSTEM_SHELL_IMAGE. Default is the published
 # bc-base image (claude + framework CLIs already baked). To iterate on the shell
 # image locally, build the prototype and point the override at it:
@@ -44,6 +54,83 @@ if ! docker ps --format '{{.Names}}' | grep -qx shopsystem-agent-vault-1; then
     fi
 fi
 
+# --- Broker credentials (ADR-028: no host-cred mounts) -----------------------
+# Source the broker proxy token + CA the shell container needs to reach Claude
+# and github.com through the agent-vault MITM proxy. Two sources, in order:
+#   1. $ROOT/.env if it records AGENT_VAULT_TOKEN (the durable, operator-recorded
+#      source — see .env.example).
+#   2. A running BC container's env, recovered via `docker inspect` (works today,
+#      before the token is persisted, since the fleet already carries it).
+# If neither yields a token we ERROR OUT — falling back to host creds would
+# defeat the entire zero-host-coupling posture.
+AGENT_VAULT_ADDR=""
+AGENT_VAULT_TOKEN=""
+AGENT_VAULT_VAULT=""
+AGENT_VAULT_CA_PEM=""
+
+# Source 1: .env (only the AGENT_VAULT_* keys; tolerate other lines).
+if [ -f "$ROOT/.env" ]; then
+    while IFS='=' read -r k v; do
+        case "$k" in
+            AGENT_VAULT_ADDR)  AGENT_VAULT_ADDR="$v" ;;
+            AGENT_VAULT_TOKEN) AGENT_VAULT_TOKEN="$v" ;;
+            AGENT_VAULT_VAULT) AGENT_VAULT_VAULT="$v" ;;
+            AGENT_VAULT_CA_PEM) AGENT_VAULT_CA_PEM="$v" ;;
+        esac
+    done < <(grep -E '^AGENT_VAULT_(ADDR|TOKEN|VAULT|CA_PEM)=' "$ROOT/.env" || true)
+fi
+
+# Source 2: recover from a running BC container's env if .env did not provide a
+# token. The fleet's BCs already carry the brokered env the launcher injected.
+if [ -z "$AGENT_VAULT_TOKEN" ]; then
+    BC_DONOR="${SHOPSYSTEM_BROKER_DONOR_CONTAINER:-}"
+    if [ -z "$BC_DONOR" ]; then
+        BC_DONOR="$(docker ps --format '{{.Names}}' | grep -m1 '^bc-' || true)"
+    fi
+    if [ -n "$BC_DONOR" ]; then
+        # Recover via JSON: AGENT_VAULT_CA_PEM is a multi-line PEM, so the naive
+        # `{{range}}{{println}}` Go-template splits it across lines and a line
+        # filter truncates it to "-----BEGIN CERTIFICATE-----". jq decodes each
+        # JSON-encoded env entry intact, embedded newlines preserved.
+        donor_env() { jq -r --arg k "$1" \
+            '.[] | select(startswith($k + "=")) | .[($k|length)+1:]'; }
+        DONOR_JSON="$(docker inspect "$BC_DONOR" --format '{{json .Config.Env}}' 2>/dev/null || true)"
+        if [ -n "$DONOR_JSON" ]; then
+            AGENT_VAULT_ADDR="${AGENT_VAULT_ADDR:-$(printf '%s' "$DONOR_JSON" | donor_env AGENT_VAULT_ADDR)}"
+            AGENT_VAULT_TOKEN="$(printf '%s' "$DONOR_JSON" | donor_env AGENT_VAULT_TOKEN)"
+            AGENT_VAULT_VAULT="${AGENT_VAULT_VAULT:-$(printf '%s' "$DONOR_JSON" | donor_env AGENT_VAULT_VAULT)}"
+            AGENT_VAULT_CA_PEM="$(printf '%s' "$DONOR_JSON" | donor_env AGENT_VAULT_CA_PEM)"
+        fi
+        [ -n "$AGENT_VAULT_TOKEN" ] && \
+            echo "shop-shell: recovered broker creds from running BC container '$BC_DONOR' (AGENT_VAULT_TOKEN not yet persisted in .env)." >&2
+    fi
+fi
+
+AGENT_VAULT_ADDR="${AGENT_VAULT_ADDR:-http://agent-vault:14321}"
+AGENT_VAULT_VAULT="${AGENT_VAULT_VAULT:-fleet}"
+
+if [ -z "$AGENT_VAULT_TOKEN" ]; then
+    echo "shop-shell: ERROR — no broker credentials available." >&2
+    echo "            This shell is brokered (no host ~/.claude / ~/.gitconfig)." >&2
+    echo "            Provide a broker proxy token one of two ways:" >&2
+    echo "              1. Provision the vault and record the av_agt_ token in .env:" >&2
+    echo "                   bin/agent-vault-provision   # prints AGENT_VAULT_TOKEN" >&2
+    echo "                   then add to .env:  AGENT_VAULT_TOKEN=av_agt_..." >&2
+    echo "              2. Or start a BC (bc-container launch ...) so its env can be" >&2
+    echo "                 recovered automatically." >&2
+    exit 1
+fi
+export AGENT_VAULT_ADDR AGENT_VAULT_TOKEN AGENT_VAULT_VAULT AGENT_VAULT_CA_PEM
+HTTPS_PROXY="http://${AGENT_VAULT_TOKEN}:${AGENT_VAULT_VAULT}@agent-vault:14322"
+
+# Git IDENTITY (not a credential) replaces what the ~/.gitconfig mount provided.
+# Name/email are identity, fine to pass as env; the broker handles auth.
+GIT_NAME="$(git -C "$ROOT" config user.name 2>/dev/null || true)"
+GIT_EMAIL="$(git -C "$ROOT" config user.email 2>/dev/null || true)"
+
+# Advisory: surface a GitHub PAT within 30 days of expiry (non-fatal).
+"$ROOT/bin/agent-vault-check" || true
+
 # The mounted docker socket is mode 660 (root:docker on the host). The shell
 # runs as the non-root vscode user, so it must join the socket's group to use
 # it — otherwise every docker call inside the shell is permission-denied.
@@ -53,13 +140,17 @@ fi
 SOCKET_GID="$(stat -L -c '%g' /var/run/docker.sock)"
 
 # Hand off to the shell container. Run as the non-root vscode user (uid 1000,
-# provisioned in bc-base with HOME=/home/vscode — the home the .claude/.gitconfig
-# mounts below target). The image's default USER is root, and Claude Code refuses
-# --dangerously-skip-permissions when EUID==0, so without this --user the shell
-# drops into root and `claude` won't start. This mirrors how the launcher runs
-# the BC agent: `docker exec --user vscode` (controller.AGENT_CONTAINER_USER).
-# Named `vscode` (not numeric $(id -u):$(id -g)) so $HOME and a passwd entry
-# resolve — host and image vscode are both 1000:1000, so they coincide anyway.
+# provisioned in bc-base with HOME=/home/vscode). The image's default USER is
+# root, and Claude Code refuses --dangerously-skip-permissions when EUID==0, so
+# without this --user the shell drops into root and `claude` won't start. This
+# mirrors how the launcher runs the BC agent: `docker exec --user vscode`
+# (controller.AGENT_CONTAINER_USER). Named `vscode` (not numeric $(id -u):$(id -g))
+# so $HOME and a passwd entry resolve — host and image vscode are both 1000:1000.
+#
+# NO host ~/.claude / ~/.gitconfig mounts (ADR-028, 2026-06-12): creds are
+# brokered via AGENT_VAULT_* + the MITM HTTPS_PROXY, exactly like a BC. The
+# bc-base entrypoint materializes the CA from AGENT_VAULT_CA_PEM and bakes the
+# placeholder ~/.claude that the broker fills in. Git identity arrives as GIT_*.
 exec docker run --rm -it \
     --network shopsystem \
     --user vscode \
@@ -67,8 +158,15 @@ exec docker run --rm -it \
     --workdir /workspace \
     -v "$ROOT:/workspace" \
     -v /var/run/docker.sock:/var/run/docker.sock \
-    -v "$HOME/.claude:/home/vscode/.claude" \
-    -v "$HOME/.gitconfig:/home/vscode/.gitconfig:ro" \
+    -e AGENT_VAULT_ADDR \
+    -e AGENT_VAULT_TOKEN \
+    -e AGENT_VAULT_VAULT \
+    -e AGENT_VAULT_CA_PEM \
+    -e HTTPS_PROXY="$HTTPS_PROXY" \
+    -e GIT_AUTHOR_NAME="$GIT_NAME" \
+    -e GIT_AUTHOR_EMAIL="$GIT_EMAIL" \
+    -e GIT_COMMITTER_NAME="$GIT_NAME" \
+    -e GIT_COMMITTER_EMAIL="$GIT_EMAIL" \
     -e SHOPMSG_DSN="postgresql://postgres:postgres@shopsystem-messaging-postgres-1:5432/shopsystem" \
     "$IMAGE" \
     bash
