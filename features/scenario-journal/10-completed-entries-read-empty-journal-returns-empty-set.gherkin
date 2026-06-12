@@ -1,0 +1,8 @@
+@bc:shopsystem-scenarios
+@scenario_hash:8e4a5e72eb8e220c
+Scenario: the scenarios completed-entries read returns an empty set for a journal file with no present entries
+  Given a scenario journal stored as a file on disk under the shopsystem-scenarios bounded context
+  And the journal file records no present entries
+  When the scenarios completed-entries read is run against that journal file to serve the request_completion_journal pull
+  Then the read returns the empty set of block-only canonical hashes
+  And the read exits with a success status rather than treating the empty journal as an error

@@ -1,0 +1,8 @@
+@bc:shopsystem-messaging
+@scenario_hash:761fb4d48a4aa2bc
+Scenario: A request_completion_journal response message validates with a bare set of completed block-only canonical hashes
+  Given the RequestCompletionJournal response schema from the shop-msg catalog
+  When I construct a RequestCompletionJournal response instance whose completed-entries field is a set of block-only canonical hashes "h1" and "h2"
+  Then construction succeeds
+  And no schema validation error is raised
+  And the constructed response carries exactly the completed block-only canonical hashes "h1" and "h2" as a bare set, with no per-entry record beyond the hash

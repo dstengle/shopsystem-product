@@ -1,0 +1,8 @@
+@bc:shopsystem-scenarios
+@scenario_hash:fb4b2e113070fc1e
+Scenario: the scenarios completed-entries read returns exactly the block-only canonical hashes present in the journal file
+  Given a scenario journal stored as a file on disk under the shopsystem-scenarios bounded context
+  And the journal file records the block-only canonical hashes "h1" and "h2" as its present entries
+  When the scenarios completed-entries read is run against that journal file to serve the request_completion_journal pull
+  Then the read returns exactly the set of block-only canonical hashes "h1" and "h2"
+  And the returned set is keyed solely on the block-only canonical hash, carrying no bead id, scenario title, dispatch record, or message-bus row
