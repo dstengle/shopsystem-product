@@ -227,6 +227,62 @@ scriptable (`service add --auth-type bearer --token-key CLAUDE_OAUTH`) — the
 OAuth-refresh behavior lives in the credential object, not the service. This
 provisioning split is recorded in `bin/agent-vault-provision`'s Claude step.
 
+#### D2 addendum — the EXACT agent-vault 0.32.0 provisioning CLI surface (clarification, 2026-06-13, validated end-to-end by dummyco spike iter-5)
+
+The D2 decision and the provisioning split above were originally written in
+generic terms ("credential set" / "service add" / "agent create"). That
+generic phrasing plausibly seeded `bin/agent-vault-provision` being first
+authored against a **fictional** agent-vault CLI (the `agent-vault put` verb,
+`lead-beym`) and against **kebab-case** credential keys (`lead-l95x`) — costing
+the dummyco spike its iter-2→iter-5 grind. This addendum records the **exact,
+validated** agent-vault 0.32.0 (commit `e01a925`) verb structure so the next
+BC dispatch authors against the real surface, not a generic gloss. The full
+flow ran **clean end-to-end against a live agent-vault 0.32.0 broker** in
+dummyco spike iter-5 (`findings/dummyco-spike-iter-5.md`); iter-4
+(`findings/dummyco-spike-iter-4.md`) located the casing wall and proved it the
+last one via a live contract-surface probe (ADR-018).
+
+The decision intent is unchanged: provisioning is scriptable down to the single
+Claude-OAuth dashboard paste (D4). What is sharpened is *which verbs, nested
+how, with what value-format rules*.
+
+1. **Owner bootstrap = `agent-vault auth register --email <e> --password-stdin`.**
+   The FIRST registrant against a fresh broker becomes the **instance owner**;
+   on re-run against an already-owned broker the idempotent path is
+   `agent-vault auth login --email <e> --password-stdin`. There is **no**
+   `owner …` sub-verb — owner identity is established through `auth`.
+2. **Vault = `agent-vault vault create <vault>`.** Top-level `vault` group;
+   creates the named vault all subsequent credential/service objects live under.
+3. **Credential = `agent-vault vault credential set <KEY>=<value> [<KEY>=<value> …] --vault <vault>`** —
+   a sub-verb **UNDER `vault`** (`vault credential set`, not a top-level
+   `credential`). Credential **KEYS must be SCREAMING_SNAKE_CASE**
+   (e.g. `GITHUB_PAT`, `GITHUB_PAT_USER`); kebab-case is **rejected at runtime**
+   with `Invalid credential key "…": must be SCREAMING_SNAKE_CASE`. **This
+   casing rule is NOT discoverable from `--help`** — it surfaces only at the
+   live broker. (This was the iter-4 wall, `lead-l95x`.)
+4. **Service = `agent-vault vault service add --name <n> --host <host> --auth-type basic --username-key <KEY> --password-key <KEY> --vault <vault>`** —
+   a sub-verb **UNDER `vault`** (`vault service add`). The GitHub leg is
+   `--host github.com --auth-type basic` referencing the SCREAMING_SNAKE
+   credential keys; it brokers `github.com` Basic over the same MITM proxy.
+5. **Fleet agent token = `agent-vault agent create <slug>-fleet --token-only --vault <vault>:proxy`** —
+   a **TOP-LEVEL `agent create`** that mints AND prints the `av_agt_` token.
+   The `vault agent` sub-group only **ADDS an existing** agent to a vault; it
+   does **NOT** mint. Use top-level `agent create` to mint.
+6. **The one human-gated step (D4) is unchanged:** the refreshing Claude-OAuth
+   credential TYPE has no CLI path in 0.32.0 (`vault credential set` is flat
+   `KEY=value` only, with no Token-URL / Client-ID / refresh-token / auth-method
+   fields), so it is pasted once into the broker dashboard's Credentials tab.
+   The *service* that references it stays scriptable
+   (`vault service add --auth-type bearer --token-key CLAUDE_OAUTH`).
+
+**Methodology note (cross-ref the live-broker-probe discipline).** A
+brokered-CLI provision contract must be validated against a **live broker**,
+not authored from `--help` syntax alone: value-format constraints such as the
+SCREAMING_SNAKE_CASE credential-key rule are **not `--help`-discoverable** and
+surface only at runtime against the real broker (ADR-018 contract-surface
+probe). The iter-2→iter-5 grind is the cost of skipping that validation; this
+addendum is its payoff.
+
 ### D3 — Readiness composition: launch gates on the COHERENT readiness of both servers; the startup prompt is withheld if EITHER is down
 
 Mirroring scenario 33 (`messaging_db_reachable`) for the second server, launch
@@ -375,6 +431,12 @@ credentials never are.
 - [`findings/agent-vault-credential-spike.md`](../findings/agent-vault-credential-spike.md)
   — the confirmed spike (`lead-jkwo`); the admissible artifact-surface record of
   current launch behavior and the proven brokered plumbing.
+- [`findings/dummyco-spike-iter-4.md`](../findings/dummyco-spike-iter-4.md) /
+  [`findings/dummyco-spike-iter-5.md`](../findings/dummyco-spike-iter-5.md) —
+  the live-broker end-to-end validation of the exact agent-vault 0.32.0
+  provisioning verb surface recorded in the D2 addendum (`lead-g19j`,
+  `lead-beym`, `lead-l95x`); iter-4 located the credential-key-casing wall and
+  proved it the last one, iter-5 ran the full provision clean to the human gate.
 - `features/bc-launcher/33,34,35` — the `messaging_db_reachable` readiness
   precedent (gate / idempotent barrier / readiness-not-liveness health) that
   scenarios 47/48 mirror and compose with.
