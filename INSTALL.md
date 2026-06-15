@@ -1,23 +1,38 @@
 # Getting started with shopsystem
 
 You don't install a toolchain, edit YAML, or learn any commands. You start a
-prebuilt image, tell the **lead shop** — an AI agent — what you want to build,
-and it stands your product up for you: its database, its credential broker, and
+prebuilt image, tell the **lead shop** — an AI agent that runs the whole setup
+for you — what you want to build, and it stands your product up: its database,
+its credential **broker** (a small service that safely holds your secrets), and
 its **bounded-context (BC) shops** — the small services that do the actual work.
 Need another capability later? Ask. The lead will **create a whole new BC** for
 it and put it to work. You never touch a container command.
 
 The only things that are yours to do: **start the image**, **say what you want**,
-and **hand over two of your own credentials** at the one moment the lead asks.
+and **hand over two of your own credentials** at the moments the lead asks.
+
+> **Is this real, or aspirational?** Real. The lead doing all of this —
+> provisioning the broker, creating a BC from scratch, building and passing a
+> feature — is captured in actual end-to-end transcripts:
+> [`findings/dummyco-spike-iter-5.md`](findings/dummyco-spike-iter-5.md) (setup →
+> credential gate) and
+> [`findings/dummyco-spike-iter-7.md`](findings/dummyco-spike-iter-7.md) (a BC
+> created and serving a working feature). This guide is the front door to that
+> flow.
 
 ---
 
 ## What you need
 
-- **Docker**, with access to the Docker socket (the lead spins up sibling
-  containers — your database, broker, and BCs — for you).
+- **Docker**, with access to the Docker socket — the lead spins up sibling
+  containers (your database, broker, and BCs) for you. On **Mac/Windows** use
+  Docker Desktop; on **Linux** make sure your user can reach the socket (the
+  `docker` group). No Docker yet? Install it first: <https://docs.docker.com/get-docker/>.
+  Run the commands below in a **bash-compatible shell** (macOS Terminal, Linux
+  shell, or Git Bash / WSL on Windows).
 - **The prebuilt image** — everything (the CLIs, Claude, the framework) is baked
-  in, so there is nothing to `pip install`:
+  in, so there is nothing to `pip install`. It is **public**; no `docker login`
+  needed:
 
   ```
   ghcr.io/dstengle/shopsystem-bc-base:latest
@@ -25,35 +40,50 @@ and **hand over two of your own credentials** at the one moment the lead asks.
 
 - **Two of your own credentials**, supplied only when the lead asks — never
   stored on disk, never mounted into a BC:
-  - a **GitHub token** (so your BCs' code can be cloned/pushed), and
-  - your **Claude credential** (so your BCs can think).
+  - a **GitHub token** — create one at <https://github.com/settings/tokens> with
+    the **`repo`** and **`workflow`** scopes (your BCs' code is cloned/pushed and
+    their release workflows are triggered under your account), and
+  - your **Claude credential** — the login for the same Claude account you use in
+    the Claude app / claude.ai. You'll sign in with it once when the agent
+    starts (below), and the lead reuses that to let your BCs think.
 
   A per-product **broker** holds these. Two products on one machine share
   nothing.
+
+> **Heads-up on side effects:** the lead creates **GitHub repositories under your
+> account** for each BC, and your BCs use your Claude account to work — so this
+> consumes Claude usage and adds repos to your GitHub. Nothing is hidden; the
+> lead tells you what it's creating as it goes.
 
 ---
 
 ## 1 — Start the lead
 
-Run the image and open a shell in it (mounting the Docker socket so the lead can
-stand up your services):
+Make a folder for your product, then run the image with the Docker socket mounted
+so the lead can stand up your services:
 
 ```bash
+mkdir -p myproduct
 docker run -it --rm \
   -v /var/run/docker.sock:/var/run/docker.sock \
   -v "$PWD/myproduct:/work" -w /work \
   ghcr.io/dstengle/shopsystem-bc-base:latest bash
 ```
 
-Inside, create your product's lead shop and start the agent:
+Inside the container, run **one** command to create your product's lead shop,
+then start the agent:
 
 ```bash
-shop-templates bootstrap --shop-type lead --shop-name myproduct   # one time
-claude                                                            # start the lead
+shop-templates bootstrap --shop-type lead --shop-name myproduct   # creates the lead shop
+claude                                                            # start the agent (sign in when prompted)
 ```
 
 > `myproduct` is your product's name (lowercase letters, digits, hyphens). Swap
-> in whatever you're building.
+> in whatever you're building. The `bootstrap` command lays down the lead shop so
+> that, when `claude` starts in this folder, it reads its instructions and
+> **becomes the lead** for your product. Signing in to `claude` uses the same
+> Claude credential listed above — you do it once, and the lead handles making it
+> available to your BCs later (§3).
 
 The agent reads its own instructions on start and becomes **the lead** for your
 product. From here you talk to it in plain language.
@@ -70,31 +100,41 @@ Say it the way you'd brief a colleague. For example:
 The lead takes it from there — it will, on its own:
 
 - bring up your product's **database** and **credential broker**;
-- **provision** the broker (the one step where it needs your credentials — see §3);
+- **provision** the broker (load your credentials into it — the one step where it
+  needs you; see §3);
 - **create the `greeter` BC** — scaffold it, make its repo, wire it to the
   broker, and launch it;
-- author a small feature, **dispatch** it to the BC, and confirm the BC built
-  and passed it.
+- author a small feature, **dispatch** it to the BC (hand it the work), and
+  confirm the BC built and passed it.
 
 You watch it work. You don't run any of these steps yourself.
+
+### What success looks like
+
+You'll know it worked when the lead reports the `greeter` BC **online** and its
+feature's test **passing** — e.g. *"greeter is up; the greet-by-name feature is
+built and green."* At any time you can ask **"what's running?"** and the lead
+will show you the live services and BCs. If you asked for a feature you can try,
+ask the lead **"how do I see it work?"** and it will show you.
 
 ---
 
 ## 3 — The one human moment: hand over your credentials
 
-Standing up the broker is the single point where the tooling genuinely needs
-**you** — it cannot supply your real secrets. The lead will pause and ask for
-exactly two things, in plain terms:
+Loading your secrets into the broker is the single point where the tooling
+genuinely needs **you** — it cannot supply your real secrets. The lead pauses and
+asks for exactly two things, in plain terms:
 
-1. **Your GitHub token** — when the lead provisions the broker, it will ask you
-   to paste your token (and your GitHub username). That's it.
-2. **Your Claude credential** — the lead stages a ready-to-approve request for
-   it, then tells you the **one command to run** to approve it, with your Claude
-   token filled in where you paste your secret. Run that command, tell the lead
-   it's done, and it finishes.
+1. **Your GitHub token** — when the lead provisions the broker, it asks you to
+   paste the token (and your GitHub username) you created above. That's it.
+2. **Your Claude credential** — the lead stages a ready-to-approve request for it
+   and tells you the **one command to run** to approve it, with the place to paste
+   your Claude token. (It's the same account you signed into in §1; the lead may
+   be able to reuse that sign-in so there's nothing to paste.) Run what it hands
+   you, tell the lead it's done, and it finishes.
 
-That's the whole human gate — paste a token, run one approve command the lead
-hands you, done. Everything about *how* the broker is wired (vault names, scoping,
+That's the whole human gate — paste a token, approve one request the lead hands
+you, done. Everything about *how* the broker is wired (vault names, scoping,
 credential formats, the exact image tags) is the lead's job, not yours — if any
 of it needs deciding, the lead decides it.
 
@@ -121,13 +161,23 @@ or walk you through what it just did.
 
 ---
 
+## Shutting down
+
+Your product runs as a set of containers (a database, a broker, and one per BC).
+To stop them, just ask the lead: **"stop everything for this product."** It tears
+down the containers it created. (The `--rm` on the `docker run` above only removes
+the lead's own shell — the services it spawned outlive it until you stop them.)
+Your product's files and its GitHub repos remain; nothing is lost by stopping.
+
+---
+
 ## If something goes wrong
 
 Ask the lead. It knows this system's sharp edges — the credential-name format the
 broker demands, the vault-scoping the approval needs, the right image tag to
 launch a BC from — and it will diagnose and fix them, or tell you precisely what
-it needs from you. You should not have to learn any of that yourself; if a step
-ever asks *you* to know it, that's a gap worth reporting.
+it needs from you. You should **not** have to learn any of that yourself; if a
+step ever asks *you* to know it, that's a gap worth reporting.
 
 ---
 
@@ -142,6 +192,5 @@ the lead does for you:
 - **Why the lead never holds BC source; everything is brokered and
   contract-verified:** [ADR-018](adr/018-empirical-verification-is-contract-surface.md)
 - **Proven end-to-end transcripts** (what the lead actually runs under the hood):
-  [`findings/dummyco-spike-iter-5.md`](findings/dummyco-spike-iter-5.md) (provision
-  → human gate) and [`findings/dummyco-spike-iter-7.md`](findings/dummyco-spike-iter-7.md)
-  (BC creation → working feature).
+  [`findings/dummyco-spike-iter-5.md`](findings/dummyco-spike-iter-5.md) and
+  [`findings/dummyco-spike-iter-7.md`](findings/dummyco-spike-iter-7.md).
