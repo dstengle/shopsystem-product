@@ -6,6 +6,13 @@ artifacts live. The shopsystem is itself a product built by a lead shop and
 three BC-shops; this repo holds the lead shop's content. Rationale and the
 four-repo split are in [`adr/001-framework-packaging.md`](adr/001-framework-packaging.md).
 
+## New here? Stand up a product
+
+To go from an empty directory to a working product (its own lead shop, postgres,
+agent-vault broker, and one BC serving a real feature), follow
+[`INSTALL.md`](INSTALL.md) — the empty-dir → working-product getting-started walk,
+with the one human credential step and the known gotchas called out.
+
 ## What's inside
 
 Framework spec (read in order):
