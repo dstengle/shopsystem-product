@@ -1,3 +1,4 @@
+@scenario_hash:e55fbdf82ccc8fa9
 Scenario Outline: bare invocations of "shop-msg pending", "shop-msg read", "shop-msg respond", and "shop-msg watch" resolve the invoking shop from CWD using the same walk-up mechanism as "shop-msg prime"
   Given a "<shop_type>" shop directory tree containing ".claude/shop/name.md" with literal content "<shop_name>" and ".claude/shop/type.md" with literal content "<shop_type>"
   And "<shop_name>" is registered in the messaging registry as a "<shop_type>"

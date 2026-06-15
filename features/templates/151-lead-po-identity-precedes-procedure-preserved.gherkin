@@ -1,3 +1,4 @@
+@scenario_hash:662c5822dbc6a896
 Scenario: the empowered-PM expansion preserves identity-precedes-procedure in the lead-po template
   When I read the lead-po template via "shop-templates show lead-po"
   Then a "# Lead PO — role prompt" identity header appears in the output

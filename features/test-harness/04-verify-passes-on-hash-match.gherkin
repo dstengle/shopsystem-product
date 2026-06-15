@@ -1,3 +1,4 @@
+@scenario_hash:f174a0e5c59224a4
 Scenario: shop-test-harness verify exits 0 when the set of scenario hashes echoed in work_done matches the assigned set
   Given an experiment target directory <dir> with a BC-shop whose outbox contains a valid "<work-id>-work_done.yaml" carrying scenario_hashes [H1, H2, H3]
   And an "expected hashes" file at path <expected> listing the same three hashes, one per line, in any order

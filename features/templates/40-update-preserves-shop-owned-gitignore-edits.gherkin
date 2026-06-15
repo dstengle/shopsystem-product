@@ -1,3 +1,4 @@
+@scenario_hash:757fa7770c9dcfb4
 Scenario: update does not overwrite or otherwise modify the target directory's top-level ".gitignore", even when the canonical ".gitignore" template has changed since the shop was bootstrapped
   Given an existing git repository at a target directory "/tmp/example-shop" that was previously bootstrapped as a "bc" shop named "example-shop"
   And the file at ".gitignore" in the target directory has been edited since bootstrap so that its content includes a shop-authored entry that the canonical ".gitignore" template does not contain

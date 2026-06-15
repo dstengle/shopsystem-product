@@ -1,3 +1,4 @@
+@scenario_hash:03df7848f78f3bed
 Scenario: bc-reviewer template directs the reviewer to verify the BC's working tree is clean AND the work_id's change is committed to origin/main before emitting work_done (complete)
   When I read the bc-reviewer template via "shop-templates show bc-reviewer"
   Then the content names "git status --porcelain" as a pre-emit verification step the reviewer must run before composing a work_done with status complete

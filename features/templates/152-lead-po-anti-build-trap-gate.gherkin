@@ -1,3 +1,4 @@
+@scenario_hash:c96e0d7e37de2079
 Scenario: lead-po template carries the anti-build-trap structural gate as the failure mode the role exists to prevent
   When I read the lead-po template via "shop-templates show lead-po"
   Then the content names the build trap — measuring output or shipping features nobody needed — as the structural failure mode the empowered-PM role exists to prevent

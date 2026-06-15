@@ -1,3 +1,4 @@
+@scenario_hash:05f8c0f9136fd70e
 Scenario Outline: bootstrap writes a top-level ".gitignore" to the target directory for both shop types
   Given an existing git repository at a target directory "<target>" with no top-level ".gitignore"
   When I invoke the "shop-templates" bootstrap entry point with shop type "<shop_type>", shop name "<shop_name>", and target directory "<target>"

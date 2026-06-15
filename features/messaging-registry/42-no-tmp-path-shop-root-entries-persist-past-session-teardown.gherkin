@@ -1,3 +1,4 @@
+@scenario_hash:483c079af9e068cb
 Scenario: After the pytest session completes, no shop_registry row for any production canonical name has a tmp_path-prefixed shop_root
   Given the messaging BC's pytest session has run to completion (all session-scoped teardowns have executed)
   And the production canonical names observed pre-session include at least "shopsystem-messaging", "shopsystem-docs", "shopsystem-product", and "shopsystem product"

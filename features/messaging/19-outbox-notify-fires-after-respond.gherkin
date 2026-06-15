@@ -1,4 +1,5 @@
 @bc:shopsystem-messaging
+@scenario_hash:cc52c90c432cd23e
 Scenario: A Postgres NOTIFY is fired on the outbox channel after a BC writes a respond work_done message
   Given an empty BC at a temporary path
   And a shop-msg watch --lead-root session is LISTEN-ing on the outbox channel for that BC

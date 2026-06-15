@@ -1,3 +1,4 @@
+@scenario_hash:c5707df6da77ae73
 Scenario: update overwrites hand-edits made to a bootstrap-managed agent file, restoring it to the current canonical template content
   Given an existing git repository at a target directory "/tmp/example-shop" that was previously bootstrapped as a "bc" shop named "example-shop"
   And the file at ".claude/agents/bc-implementer.md" in the target directory has been hand-edited so that its content differs from the current canonical "bc-implementer" template package-data file contents

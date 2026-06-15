@@ -1,3 +1,4 @@
+@scenario_hash:def7df91171edb1d
 Scenario: A BC response appears in the lead inbox and does not appear in the BC outbox
   Given "shopsystem-product" is registered as the lead shop
   And "shopsystem-messaging" is registered in the messaging registry

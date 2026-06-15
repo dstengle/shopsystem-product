@@ -12,6 +12,7 @@ Feature: on a version-tag release, each framework-utility repo emits a repositor
   tag and route. bc-launcher's own release is NOT covered here — its own
   same-repo tag trigger (scenario 37) is its rebuild reason.
 
+  @scenario_hash:c842f342ad50d83c
   Scenario: on a version-tag release of shopsystem-messaging, its release workflow emits a repository_dispatch to the bc-launcher repository
     Given the shopsystem-messaging source repository
     And a tag named "v0.2.0" is pushed to its "main" branch
@@ -26,6 +27,7 @@ Feature: on a version-tag release, each framework-utility repo emits a repositor
   # configured with dispatch permission in GitHub settings is OUT-OF-BAND and is
   # NOT asserted in-suite; "the step references the named secret" is the
   # in-suite proxy for "authorized credential".
+  @scenario_hash:a9f11f0f3bc72dc4
   Scenario: shopsystem-scenarios' release workflow declares a repository_dispatch emit to the bc-launcher repository on a version-tag release
     Given the shopsystem-scenarios framework-utility source repository
     When its release workflow file under ".github/workflows/" is inspected
@@ -33,6 +35,7 @@ Feature: on a version-tag release, each framework-utility repo emits a repositor
     And the workflow contains a step that performs a "repository_dispatch" targeting the "dstengle/shopsystem-bc-launcher" repository, satisfied by either a REST call to the GitHub repository-dispatches API or a use of the "peter-evans/repository-dispatch" action
     And that step references the secret "BC_LAUNCHER_DISPATCH_TOKEN" as the dispatch token
 
+  @scenario_hash:26ca8a14e01db50c
   Scenario: on a version-tag release of shopsystem-templates, its release workflow emits a repository_dispatch to the bc-launcher repository
     Given the shopsystem-templates source repository
     And a tag named "v0.2.0" is pushed to its "main" branch

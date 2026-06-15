@@ -1,3 +1,4 @@
+@scenario_hash:aa174b4e6622a71b
 Scenario: name.md carries only the canonical slug; any human-readable display form of the shop name lives in the shop-owned ".claude/shop/primer.md", not in name.md
   Given an existing git repository at a target directory "/tmp/example-display-form-target" with no ".claude/shop/" subdirectory
   When I invoke the "shop-templates" bootstrap entry point with shop type "lead", shop name "shopsystem-product", and target directory "/tmp/example-display-form-target"

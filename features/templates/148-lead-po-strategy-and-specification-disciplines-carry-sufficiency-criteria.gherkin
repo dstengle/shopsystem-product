@@ -1,3 +1,4 @@
+@scenario_hash:6773a984439f2a9e
 Scenario: lead-po template carries a testable sufficiency criterion for the strategy-before-backlog and specification-as-contract disciplines
   When I read the lead-po template via "shop-templates show lead-po"
   Then the strategy before backlog discipline block states a sufficiency criterion that requires every PDR or scenario set to trace up to a strategic bet recorded in the brief, with no orphan features

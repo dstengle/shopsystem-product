@@ -1,3 +1,4 @@
+@scenario_hash:35ee150a9d3cd3c1
 Scenario: lead-architect template directs the architect to re-run the BC @scenario_hash enumeration on every dispatch in a clarify-correction chain (not only the initial dispatch), against the BC's full "features/" tree (not only the hashes a prior clarify named)
   When I read the lead-architect template via "shop-templates show lead-architect"
   Then the content names a clarify-driven correction (a follow-up dispatch that augments or amends a prior dispatch in response to an Implementer clarify) as a moment that itself requires the BC @scenario_hash pre-state enumeration

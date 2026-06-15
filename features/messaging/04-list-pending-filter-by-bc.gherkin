@@ -1,4 +1,5 @@
 @bc:shopsystem-messaging
+@scenario_hash:905d845c4017c296
 Scenario: The lead side enumerates pending outbox responses for a single BC via a --bc filter
   Given a lead shop at a temporary path with BC clones "bc-alpha" and "bc-beta" present as sibling directories
   And shop-msg respond work_done was previously used inside "bc-alpha" to write an outbox response with work-id "lead-301" and status "complete"

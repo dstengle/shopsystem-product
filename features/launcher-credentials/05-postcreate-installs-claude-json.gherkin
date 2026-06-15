@@ -1,5 +1,5 @@
 @bc:shopsystem-bc-launcher
-@scenario_hash:<hash>
+@scenario_hash:7778833a9e3dd7f4
 Scenario: bc-container launch copies .claude.json from the mounted ~/.claude into the container user's home after start
   Given the shopsystem-bc-launcher BC is installed
   And the host file "$HOME/.claude/.claude.json" exists

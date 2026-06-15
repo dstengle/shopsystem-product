@@ -1,4 +1,5 @@
 @bc:shopsystem-devcontainer
+@scenario_hash:d36657c5f4d9ebac
 Scenario: shop-test-harness is on PATH inside the built image
   Given an image built from src/Dockerfile in the shopsystem-devcontainer BC repo
   When docker run --rm shopsystem-devcontainer:test which shop-test-harness is executed on the host

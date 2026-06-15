@@ -1,3 +1,4 @@
+@scenario_hash:75f86e538815b458
 Scenario Outline: bootstrap for a lead shop pours the canonical lead skill-group into ".claude/skills/", each skill as ".claude/skills/<name>/SKILL.md" byte-for-byte from package data
   Given an existing git repository at a target directory "<target>" with no ".claude/skills/" directory
   When I invoke the "shop-templates" bootstrap entry point with shop type "<shop_type>", shop name "<shop_name>", and target directory "<target>"

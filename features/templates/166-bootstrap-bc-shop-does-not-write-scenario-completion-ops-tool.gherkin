@@ -1,3 +1,4 @@
+@scenario_hash:e430bb96e91b89ab
 Scenario: bootstrap of a "bc" shop does not write the lead-side scenario-completion ops tool (no "bin/shop-scenario-completion") because the cross-BC "is-X-done" / "outstanding" aggregate view composes the lead's own bead ledger, which a BC running inside a bc-launcher container cannot see
   Given an existing git repository at a target directory "/tmp/example-bc-shop" with no "bin/" subdirectory
   When I invoke the "shop-templates" bootstrap entry point with shop type "bc", shop name "shopsystem-messaging", and target directory "/tmp/example-bc-shop"

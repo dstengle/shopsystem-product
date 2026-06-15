@@ -1,4 +1,5 @@
 @bc:shopsystem-messaging
+@scenario_hash:3734e861e9e6148a
 Scenario: Reading an inbox message whose stored content fails schema validation fails with a stderr explanation
   Given an empty BC at a temporary path
   And the BC's inbox already contains a file for work-id "lead-499" whose content is valid YAML but does not match any LeadMessage schema

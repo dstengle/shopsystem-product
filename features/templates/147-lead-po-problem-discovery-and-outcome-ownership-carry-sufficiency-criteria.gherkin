@@ -1,3 +1,4 @@
+@scenario_hash:25038c88fec521ba
 Scenario: lead-po template carries a testable sufficiency criterion for the problem-discovery and outcome-ownership disciplines
   When I read the lead-po template via "shop-templates show lead-po"
   Then the problem discovery & selection discipline block states a sufficiency criterion that requires every committed intent to trace to a validated problem or job-to-be-done, not to a stakeholder feature request

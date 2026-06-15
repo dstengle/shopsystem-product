@@ -36,6 +36,7 @@ Feature: the bc-emit work-done wrapper satisfies the reachability precondition f
   messaging primitive; the bare "--force" path (scenario 181) remains the escape
   valve.
 
+  @scenario_hash:12c98d2f7e5259a9
   Scenario: bc-emit work-done satisfies reachability for a TAG deliverable when the named tag exists and points at the expected commit lineage, even though origin/main HEAD has advanced past that commit
     Given a dispatched work_id whose deliverable is a release TAG that names an expected commit lineage
     And the named tag exists on "origin" after a "git fetch origin --tags" and points at the expected commit lineage
@@ -44,6 +45,7 @@ Feature: the bc-emit work-done wrapper satisfies the reachability precondition f
     Then the wrapper treats the reachability precondition as satisfied and does NOT refuse on the ground that the work_id is absent from "origin/main" HEAD
     And the satisfaction is established by the tag pointing at the expected commit lineage, not by the work_id being reachable from "origin/main" HEAD
 
+  @scenario_hash:6d95d409dd527be6
   Scenario: bc-emit work-done REFUSES for a TAG deliverable when the named tag exists but points at a commit lineage that does NOT carry/anchor the dispatched work_id, naming both the tag and the work_id
     Given a dispatched work_id whose deliverable is a release TAG that names an expected commit lineage
     And the named tag exists on "origin" after a "git fetch origin --tags" and its "git rev-list" is non-empty

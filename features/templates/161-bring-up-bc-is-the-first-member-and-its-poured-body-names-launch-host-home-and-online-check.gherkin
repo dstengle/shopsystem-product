@@ -1,3 +1,4 @@
+@scenario_hash:cc52003444ea63f7
 Scenario Outline: the poured "bring-up-bc" skill is a member of the canonical lead skill-group and its body names launching via bc-container, the BCLAUNCHER_HOST_HOME devcontainer fact, and the shop-msg bc-status online check
   Given an existing git repository at a target directory "<target>" with no ".claude/skills/" directory
   When I invoke the "shop-templates" bootstrap entry point with shop type "<shop_type>", shop name "<shop_name>", and target directory "<target>"

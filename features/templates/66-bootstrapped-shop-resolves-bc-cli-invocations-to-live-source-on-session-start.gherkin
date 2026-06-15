@@ -1,3 +1,4 @@
+@scenario_hash:e5f21b444322fb0a
 Scenario: on session start in a bootstrapped lead shop, every BC CLI installed into the product venv (for example "shop-msg", "shop-templates") resolves invocations to the current source tree of that BC's clone under "repos/", so an edit to a BC's source is reflected in the next CLI invocation without an intervening manual reinstall
   Given an existing git repository at a target directory "/tmp/example-lead-shop" that was previously bootstrapped as a "lead" shop named "shopsystem-product"
   And the target directory contains a sibling BC clone at "repos/shopsystem-messaging/" whose installed package name is "shop-msg"

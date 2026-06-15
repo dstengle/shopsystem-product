@@ -1,3 +1,4 @@
+@scenario_hash:bcedb488ecc57d8d
 Scenario: lead-po template leads with role identity and posture before any procedural CLI content
   When I read the lead-po template via "shop-templates show lead-po"
   Then a "# Lead PO — role prompt" identity header appears in the output

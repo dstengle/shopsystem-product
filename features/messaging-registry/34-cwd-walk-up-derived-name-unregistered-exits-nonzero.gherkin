@@ -1,3 +1,4 @@
+@scenario_hash:dc9981afe5f997cc
 Scenario: bare "shop-msg prime" exits non-zero when the CWD-derived shop name is not registered in the messaging registry
   Given a BC shop directory tree containing ".claude/shop/name.md" with literal content "unregistered-bc" and ".claude/shop/type.md" with literal content "bc"
   And no shop named "unregistered-bc" is registered in the messaging registry

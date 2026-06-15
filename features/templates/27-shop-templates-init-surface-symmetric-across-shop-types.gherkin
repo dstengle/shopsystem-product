@@ -1,3 +1,4 @@
+@scenario_hash:7e2e31c95f063688
 Scenario Outline: the bootstrap entry point accepts the same shape of arguments (shop type, shop name, target directory) for both shop types and exits 0 when invoked against an empty existing repository
   Given an existing git repository at a target directory "<target>"
   And the target directory contains no ".claude/agents/" directory and no ".beads/" directory and no top-level "CLAUDE.md" and no top-level ".gitignore"

@@ -1,3 +1,4 @@
+@scenario_hash:fd167169fcec58dd
 Scenario: lead-po template directs the PO to read an inbound clarify via the shop-msg CLI, never by reading mailbox YAML directly
   When I read the lead-po template via "shop-templates show lead-po"
   Then the content contains the literal substring "shop-msg read outbox"

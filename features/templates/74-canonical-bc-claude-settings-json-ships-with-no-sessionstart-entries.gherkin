@@ -8,6 +8,7 @@ Feature: Canonical BC ".claude/settings.json" ships as a hooks-wrapper with no "
 
   The Implementer should retire scenario 68's content from repos/shopsystem-templates/features/brief_003_event_driven_activation_and_settings_json_bootstrap.feature (BC-side hash 287e6a4f31533336) when landing this scenario.
 
+  @scenario_hash:5b88bf593466759b
   Scenario: the canonical ".claude/settings.json" template for shop type "bc" parses as a JSON object whose "hooks" key maps to a JSON object containing no "SessionStart" entries, so a BC shop's canonical settings.json carries no activation hook and no speculative non-activation hooks today
     When I ask the "shop-templates" package for the canonical ".claude/settings.json" template for shop type "bc" through its public template-access surface
     And the returned body is parsed as JSON

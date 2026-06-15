@@ -1,4 +1,5 @@
 @bc:shopsystem-devcontainer
+@scenario_hash:8fb580aea9e509cb
 Scenario: src/Dockerfile exists in the shopsystem-devcontainer BC repo
   Given the shopsystem-devcontainer BC repository
   When the repository file tree is inspected

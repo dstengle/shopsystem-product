@@ -1,3 +1,4 @@
+@scenario_hash:83f3eb8000cbd2dc
 Scenario: a standard library parser can read the manifest without custom code
   Given the manifest file is present at its well-known path
   When a script imports only a standard format parsing library (no custom manifest module)
@@ -5,11 +6,13 @@ Scenario: a standard library parser can read the manifest without custom code
   Then the script can extract the canonical name of every declared BC
   without raising a parse error or requiring manual string manipulation
 
+@scenario_hash:d36837de225d188c
 Scenario: the manifest format requires no documentation to parse
   Given the manifest file is present at its well-known path
   When a developer reads the manifest file directly
   Then each manifest entry contains only the expected field names and no others
 
+@scenario_hash:d035f5ca9d69bb4d
 Scenario: a pipeline script can extract all GitHub remote URLs from the manifest
   Given the manifest file contains entries for all six product BCs
   When a shell or Python script reads the manifest file and extracts all GitHub remote URLs

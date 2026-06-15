@@ -1,4 +1,5 @@
 @bc:shopsystem-messaging
+@scenario_hash:266fbc83d32ad724
 Scenario: Consuming one message_type on a work_id that has multiple outbox rows leaves the other message_types visible in pending outbox
   Given a lead shop at a temporary path with BC clone "bc-alpha" present as a sibling directory
   And shop-msg respond clarify was previously used inside "bc-alpha" to write an outbox response with work-id "lead-501" and question "which acceptance criterion applies?"

@@ -1,4 +1,5 @@
 @bc:shopsystem-devcontainer
+@scenario_hash:14ec166fa0b01e34
 Scenario: Workflow publishes both a latest tag and a git-SHA tag
   Given the shopsystem-devcontainer BC repository
   When the content of .github/workflows/publish-devcontainer.yml is read

@@ -1,4 +1,5 @@
 @bc:shopsystem-devcontainer
+@scenario_hash:4ab83136ba187735
 Scenario: Workflow push step targets ghcr.io with the correct image name
   Given the shopsystem-devcontainer BC repository
   When the content of .github/workflows/publish-devcontainer.yml is read

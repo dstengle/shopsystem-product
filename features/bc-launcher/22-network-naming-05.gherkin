@@ -1,3 +1,4 @@
+  @scenario_hash:c06b181e342f5191
   Scenario: bc-container launch does not attempt to create the network when it already exists
     Given a bc-manifest.yaml exists with product field "shopsystem product"
     And a Docker network named "shopsystem-product" already exists

@@ -1,3 +1,4 @@
+  @scenario_hash:593d25ed835942ed
   Scenario: explicit --network flag suppresses automatic network creation
     Given a bc-manifest.yaml exists with product field "shopsystem product"
     And no Docker network named "custom-net" exists

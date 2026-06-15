@@ -1,3 +1,4 @@
+@scenario_hash:7cb61b9dbd8a7cad
 Scenario: Syncing from the BC manifest removes registry entries for BCs no longer in the manifest
   Given "shopsystem-old-bc" is registered in the messaging registry
   And the BC manifest does not declare "shopsystem-old-bc" as a product BC

@@ -1,3 +1,4 @@
+@scenario_hash:4f7111e2bd6d4f68
 Scenario: A message to the lead routes to the lead sentinel address and does not land in any BC inbox
   Given "shopsystem-product" is registered as the lead shop with abstract address "shopsystem/lead"
   And "shopsystem-messaging" is registered in the messaging registry with abstract address "shopsystem/messaging"

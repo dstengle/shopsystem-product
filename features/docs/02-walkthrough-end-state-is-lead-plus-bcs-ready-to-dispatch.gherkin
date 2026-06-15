@@ -1,3 +1,4 @@
+@scenario_hash:8a3cf335034105e8
 Scenario: The adoption walkthrough's terminal section names the three observable end-state moves an adopter must achieve (lead-shop container, per-BC containers registered, first dispatch)
   Given the shopsystem-docs repository contains an adoption walkthrough (one or more linked markdown files) starting from the entry document
   When the walkthrough's markdown is parsed for the named end-state section (the final section the walkthrough designates as completion)

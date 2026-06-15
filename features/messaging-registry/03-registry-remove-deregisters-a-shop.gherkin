@@ -1,3 +1,4 @@
+@scenario_hash:3e050f6f4ff25701
 Scenario: Removing a registered shop by canonical name makes it no longer resolvable
   Given "shopsystem-messaging" is registered in the messaging registry
   When I run shop-msg registry remove with canonical name "shopsystem-messaging"

@@ -1,3 +1,4 @@
+@scenario_hash:ff5ff96230dc6690
 Scenario Outline: bootstrap writes ".claude/shop/name.md" into the target directory containing exactly the value passed as "--shop-name", with no other content
   Given an existing git repository at a target directory "<target>" with no ".claude/shop/" subdirectory
   When I invoke the "shop-templates" bootstrap entry point with shop type "<shop_type>", shop name "<shop_name>", and target directory "<target>"

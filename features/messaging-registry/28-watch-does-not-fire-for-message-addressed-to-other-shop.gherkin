@@ -1,3 +1,4 @@
+@scenario_hash:c31a40b86b2a3222
 Scenario: shop-msg watch --lead <name> does not fire when a message arrives addressed to a different shop
   Given "shopsystem-product" is registered as the lead shop
   And "shopsystem-messaging" is registered in the messaging registry

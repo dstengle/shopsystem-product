@@ -1,3 +1,4 @@
+@scenario_hash:06328160e83d2995
 Scenario: lead-architect template's "Responding to a BC clarify" subsection names "shop-msg read outbox" on every step whose action is reading the BC's outbox, never relying on a surrounding clause
   When I read the lead-architect template via "shop-templates show lead-architect"
   And I locate the subsection that begins with the heading "### Responding to a BC clarify via shop-msg respond" and ends at the next heading of depth two (##) or depth three (###), whichever comes first

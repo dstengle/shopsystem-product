@@ -1,4 +1,5 @@
 @bc:shopsystem-messaging
+@scenario_hash:b91122a031217812
 Scenario: Reading an inbox message by work_id returns the message contents without the caller inspecting storage
   Given an empty BC at a temporary path
   And shop-msg send assign_scenarios was previously used to write an inbox message with work-id "lead-400" containing one ScenarioPayload tagged "@bc:shopsystem-messaging"

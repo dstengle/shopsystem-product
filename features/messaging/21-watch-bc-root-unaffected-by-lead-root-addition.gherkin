@@ -1,4 +1,5 @@
 @bc:shopsystem-messaging
+@scenario_hash:d9da7d5a59206eed
 Scenario: shop-msg watch --bc-root behavior is unchanged after outbox NOTIFY is added
   Given an empty BC at a temporary path with no unprocessed inbox messages
   And shop-msg watch --bc-root is running in the background and has completed its startup drain

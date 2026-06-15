@@ -1,3 +1,4 @@
+@scenario_hash:83614a2765bd73ab
 Scenario: bc-reviewer template directs the reviewer to block a work_done (complete) emit when the work_done payload's "--scenario-hash" list carries a hash that is NOT reachable under any "@scenario_hash:<hash>" tag in the BC's as-committed "features/" tree (extra / orphan hash), and to name the work_id and the orphan hash in the response
   When I read the bc-reviewer template via "shop-templates show bc-reviewer"
   Then the content directs the reviewer that, before composing "shop-msg respond work_done --status complete", the reviewer must confirm by "grep" (or "git grep") for each hash the reviewer would pass to "--scenario-hash" that an "@scenario_hash:<hash>" tag carrying that exact value is reachable in some file under the BC's as-committed "features/" tree

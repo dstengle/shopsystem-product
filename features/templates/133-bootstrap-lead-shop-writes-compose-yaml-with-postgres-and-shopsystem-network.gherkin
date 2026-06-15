@@ -1,3 +1,4 @@
+@scenario_hash:721a626cd0146f86
 Scenario: bootstrap of a "lead" shop writes a top-level "compose.yaml" defining a postgres service on the "shopsystem" docker network with the pgdata bind mounted from "${SHOPSYSTEM_DATA:-${HOME}/.local/share/shopsystem}/pgdata", so the rendered file matches the prototype that the operator runs with "docker compose up -d postgres" via "./bin/shop-shell"
   Given an existing git repository at a target directory "/tmp/example-lead-shop" with no top-level "compose.yaml" file
   When I invoke the "shop-templates" bootstrap entry point with shop type "lead", shop name "shopsystem-product", and target directory "/tmp/example-lead-shop"

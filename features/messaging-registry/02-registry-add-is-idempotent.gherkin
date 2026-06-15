@@ -1,3 +1,4 @@
+@scenario_hash:3353f4a02c466d05
 Scenario: Registering an already-registered shop name a second time exits zero without error
   Given "shopsystem-messaging" is already registered in the messaging registry
   When I run shop-msg registry add with canonical name "shopsystem-messaging" and the same connection information

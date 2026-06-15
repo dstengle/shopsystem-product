@@ -1,4 +1,5 @@
 @bc:shopsystem-messaging
+@scenario_hash:ada5f264f55217a7
 Scenario: Listing pending messages reports each unprocessed inbox message's work_id and message_type
   Given an empty BC at a temporary path
   And shop-msg send assign_scenarios was previously used to write an inbox message with work-id "lead-100"

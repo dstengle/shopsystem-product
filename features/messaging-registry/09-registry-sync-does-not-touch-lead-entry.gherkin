@@ -1,3 +1,4 @@
+@scenario_hash:e8f6e61e449f618f
 Scenario: Syncing from the BC manifest does not remove or modify the lead shop's registry entry
   Given "shopsystem-product" is registered in the messaging registry as the lead shop
   And the BC manifest does not declare "shopsystem-product" as a product BC

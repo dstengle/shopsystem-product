@@ -1,3 +1,4 @@
+@scenario_hash:3c3c720d15cb1649
 Scenario: when update runs against a target directory that lacks ".claude/shop/type.md" (a legacy-bootstrap shop predating PDR-003 alternative F), update exits non-zero, writes a diagnostic to stderr naming the migration steps the operator must perform, and touches no files in the target
   Given an existing git repository at a target directory "/tmp/example-legacy-shop" that contains a top-level "CLAUDE.md" and has no file at ".claude/shop/type.md"
   And I record the recursive listing of file paths and the byte contents of every file in the target directory before the invocation

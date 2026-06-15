@@ -1,3 +1,4 @@
+@scenario_hash:6f0511d2197b1536
 Scenario: lead-architect template directs the architect to shop-msg CLI subcommands for inspecting BC outboxes and verifying dispatch, never to filename-convention reasoning or direct filesystem inspection
   When I read the lead-architect template via "shop-templates show lead-architect"
   Then the content contains the literal substring "shop-msg pending outbox"

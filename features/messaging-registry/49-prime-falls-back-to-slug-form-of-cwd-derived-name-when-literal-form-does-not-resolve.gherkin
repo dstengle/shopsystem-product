@@ -1,3 +1,4 @@
+@scenario_hash:e344045f0e8a82a0
 Scenario: bare "shop-msg prime" falls back to the slug form (spaces replaced with hyphens) of the CWD-derived name when the literal form does not match a registered canonical name
   Given a lead shop directory tree containing ".claude/shop/name.md" with literal content "shopsystem product" and ".claude/shop/type.md" with literal content "lead"
   And no shop with canonical name "shopsystem product" (with a literal space) is registered in the messaging registry

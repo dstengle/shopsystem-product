@@ -1,3 +1,4 @@
+@scenario_hash:e0d0748c3a40fad2
 Scenario: A name-addressed shop-msg operation resolves its bd working directory from the local invoking CWD and does not crash when no registry path exists
   Given "shopsystem-messaging" is registered in the messaging registry with abstract address "shopsystem/messaging"
   And the registry stores no filesystem path for any entry

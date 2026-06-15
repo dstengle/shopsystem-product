@@ -1,3 +1,4 @@
+@scenario_hash:f39b2e176b954197
 Scenario: the postgres "pgdata" volume source string in the bootstrap-rendered "compose.yaml" for a "lead" shop is derived from the "SHOPSYSTEM_DATA" environment variable with a "$HOME/.local/share/shopsystem" default, and never resolves to a path underneath the target shop's own repository — so an operator who runs "docker compose up -d postgres" from a freshly bootstrapped shop does not pollute the repo with a "pgdata/" directory
   Given an existing git repository at a target directory "/tmp/example-lead-shop"
   When I invoke the "shop-templates" bootstrap entry point with shop type "lead", shop name "shopsystem-product", and target directory "/tmp/example-lead-shop"

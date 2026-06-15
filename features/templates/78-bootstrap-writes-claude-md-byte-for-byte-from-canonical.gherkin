@@ -1,3 +1,4 @@
+@scenario_hash:1c2b18e4849bf189
 Scenario Outline: bootstrap writes the top-level "CLAUDE.md" with body byte-for-byte equal to the canonical "CLAUDE.md" body template for the chosen shop type, with no shop-specific splicing into the file itself
   Given an existing git repository at a target directory "<target>" with no top-level "CLAUDE.md"
   When I invoke the "shop-templates" bootstrap entry point with shop type "<shop_type>", shop name "<shop_name>", and target directory "<target>"

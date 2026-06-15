@@ -1,4 +1,5 @@
 @bc:shopsystem-messaging
+@scenario_hash:f2f7fa060bba7976
 Scenario: A minimal valid mechanism_observation message can be constructed without supplying any bd-related field
   Given the MechanismObservation schema from the shop-msg catalog
   When I construct a MechanismObservation instance supplying only the fields the schema marks as required, with no field whose name begins with "bd_" or otherwise references a beads issue identifier

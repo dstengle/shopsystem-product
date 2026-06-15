@@ -1,3 +1,4 @@
+@scenario_hash:a14e5a0aacb58285
 Scenario: update is idempotent for the managed lead skill-group when the poured skills already match the current canonical package data
   Given an existing git repository at a target directory "/tmp/example-lead-shop" that was previously bootstrapped as a "lead" shop named "example-lead-shop"
   And every skill in the ".claude/skills/" directory equals its current canonical lead-skill template package-data file contents byte-for-byte

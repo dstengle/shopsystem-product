@@ -9,6 +9,7 @@ Feature: BC session-start detects a healthy work-tracker and proceeds
   Pinned against the BC-startup contract surface (the observable health-step
   result), not the probe's internal commands. (lead-80t0 intent (a).)
 
+  @scenario_hash:76f65d95be6beece
   Scenario: a BC session starts with a locally-writable tracker whose test dolt push succeeds and the health step reports healthy and proceeds
     Given a BC shop whose bd tracker has a definite issue_prefix configured
     And the tracker's working set is populated from the committed registry

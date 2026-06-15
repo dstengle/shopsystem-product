@@ -1,3 +1,4 @@
+@scenario_hash:ba0814947ba016fa
 Scenario: lead-architect template names a concrete, mechanically observable enumeration mechanism for the BC @scenario_hash pre-state step — a grep across every "features/*.feature" file in the BC — so the discipline is testable rather than aspirational
   When I read the lead-architect template via "shop-templates show lead-architect"
   Then the content names the literal substring "grep" as the enumeration mechanism for the BC's @scenario_hash pre-state surface

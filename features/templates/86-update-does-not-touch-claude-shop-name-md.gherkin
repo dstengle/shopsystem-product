@@ -1,3 +1,4 @@
+@scenario_hash:2384a0766ff57e09
 Scenario Outline: update does not overwrite or otherwise modify ".claude/shop/name.md" in the target directory, even when the canonical "CLAUDE.md" body template, the canonical primer template, or the role-prompt templates have changed since the shop was bootstrapped
   Given an existing git repository at a target directory "/tmp/example-shop" that was previously bootstrapped as a "<shop_type>" shop named "<shop_name>"
   And the file at ".claude/shop/name.md" in the target directory has been edited since bootstrap so that its content includes a literal shop-authored sentence

@@ -1,5 +1,5 @@
 @bc:shopsystem-bc-launcher
-@scenario_hash:<hash>
+@scenario_hash:db4ed16fbbe05c39
 Scenario: bc-container launch warns to stderr and proceeds when host .claude.json is absent
   Given the shopsystem-bc-launcher BC is installed
   And the host directory "$HOME/.claude" exists

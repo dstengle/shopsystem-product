@@ -1,4 +1,5 @@
 @bc:shopsystem-messaging
+@scenario_hash:7503db957ffe09da
 Scenario: Attempting to consume an outbox row that does not exist produces a clear error and exits non-zero
   Given a lead shop at a temporary path with BC clone "bc-alpha" present as a sibling directory
   And no outbox message exists for work-id "lead-503" in "bc-alpha"

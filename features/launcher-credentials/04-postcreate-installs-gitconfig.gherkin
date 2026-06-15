@@ -1,5 +1,5 @@
 @bc:shopsystem-bc-launcher
-@scenario_hash:<hash>
+@scenario_hash:25dcae66228c78ca
 Scenario: bc-container launch copies the staged host gitconfig into the container user's home after start
   Given the shopsystem-bc-launcher BC is installed
   And the host file "$HOME/.gitconfig" exists

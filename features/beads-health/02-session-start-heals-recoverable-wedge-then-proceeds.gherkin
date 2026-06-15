@@ -11,6 +11,7 @@ Feature: BC session-start heals a recoverable work-tracker wedge, re-validates i
   writable + push succeeds), not the exact heal command (which may change once
   lead-vlsu lands). (lead-80t0 intent (b).)
 
+  @scenario_hash:450923d3ba50f11d
   Scenario: a BC session starts with an unprovisioned-but-recoverable tracker and the health step heals it, re-validates with a successful test dolt push, then proceeds
     Given a BC shop whose bd tracker working set is empty and has no issue_prefix configured
     And the committed registry names a definite issue_prefix and carries at least one issue

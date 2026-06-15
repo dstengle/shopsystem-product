@@ -1,3 +1,4 @@
+@scenario_hash:4ac13231bc3a49ac
 Scenario: A test that mutates a production canonical registry entry and then fails (raises) sees the registry restored before the next test runs
   Given the shop_registry contains a production entry for canonical name "shopsystem-messaging" with shop_root "/workspaces/shopsystem-product/repos/shopsystem-messaging"
   And the messaging BC's pytest session is running

@@ -1,4 +1,5 @@
 @bc:shopsystem-messaging
+@scenario_hash:6fdecc9b5ca3c0e2
 Scenario: Listing pending messages reports an empty result when no unprocessed inbox messages exist
   Given an empty BC at a temporary path
   When I run the shop-msg subcommand that enumerates pending unprocessed inbox messages, with no filter

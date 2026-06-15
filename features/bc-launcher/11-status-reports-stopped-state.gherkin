@@ -1,3 +1,4 @@
+@scenario_hash:4b931832ce83b2f8
 Scenario: bc-container status reports stopped state for a stopped BC container
   Given the shopsystem-bc-launcher BC is installed
   And no Docker container named "bc-shopsystem-messaging" is running

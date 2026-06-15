@@ -1,3 +1,4 @@
+@scenario_hash:4a008549dafc905c
 Scenario: update replaces a stale bootstrap-managed lead skill file with the current canonical content when the package-data template has changed since the shop was bootstrapped
   Given an existing git repository at a target directory "/tmp/example-lead-shop" that was previously bootstrapped as a "lead" shop named "example-lead-shop"
   And the file at ".claude/skills/bring-up-bc/SKILL.md" in the target directory holds an older version of the "bring-up-bc" canonical lead-skill template content

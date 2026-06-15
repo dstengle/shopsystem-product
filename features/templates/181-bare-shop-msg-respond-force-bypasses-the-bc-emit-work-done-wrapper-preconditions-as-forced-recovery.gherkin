@@ -15,6 +15,7 @@ Feature: bare shop-msg respond with --force bypasses the bc-emit work-done wrapp
   preconditions would have refused, so retro-retiring the prose pins and landing the
   wrapper does not remove the escape valve.
 
+  @scenario_hash:f81ee56bc163934b
   Scenario: bare shop-msg respond work_done --force deposits the work_done without running any bc-emit wrapper precondition, even when those preconditions would otherwise refuse the emit
     Given a BC whose state would cause the "bc-emit work-done" wrapper to refuse — for instance a dirty non-carved-out working tree, an unreachable work_id commit, or a scenario-hash mismatch
     When the BC invokes the bare messaging primitive "shop-msg respond work_done --force" directly rather than the "bc-emit work-done" wrapper

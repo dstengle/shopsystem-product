@@ -1,3 +1,4 @@
+@scenario_hash:a547c8ae2bf8b13f
 Scenario Outline: bootstrap writes ".claude/shop/primer.md" into the target directory as a shop-authored placeholder file that the operator may populate later; the file exists after bootstrap and contains no canonical primer text
   Given an existing git repository at a target directory "<target>" with no ".claude/shop/" subdirectory
   When I invoke the "shop-templates" bootstrap entry point with shop type "<shop_type>", shop name "<shop_name>", and target directory "<target>"

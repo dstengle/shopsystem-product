@@ -14,6 +14,7 @@ Feature: the canonical BC CLAUDE.md primer pins end-of-turn continuation so a BC
   assignment time; @lead_integration tag below is provisional pending placement decision.
 
 @lead_integration:templates
+  @scenario_hash:33945811579ca2b8
   Scenario: the canonical BC primer directs the BC to drain the next pending inbox item after a work_done emit without checking in with its session-lead
     Given the "shop-templates" package ships a canonical "CLAUDE.md" primer template for shop type "bc" through its public template-access surface
     When I ask the package for that canonical primer body for shop type "bc"

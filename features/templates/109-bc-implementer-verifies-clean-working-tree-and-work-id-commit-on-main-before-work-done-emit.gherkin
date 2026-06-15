@@ -1,3 +1,4 @@
+@scenario_hash:3c4a039dc12f9e72
 Scenario: bc-implementer template directs the implementer to verify the BC's working tree is clean AND the work_id's change is committed to origin/main before emitting work_done (complete) for an Implementer-emitted dispatch (request_maintenance or non-scenario request_bugfix)
   When I read the bc-implementer template via "shop-templates show bc-implementer"
   Then the content names "git status --porcelain" as a pre-emit verification step the implementer must run before composing a work_done with status complete on a dispatch where the Implementer is the work_done emitter (request_maintenance, or request_bugfix whose scenarios[] is empty)

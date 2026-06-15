@@ -1,3 +1,4 @@
+@scenario_hash:8b0b84013f7855c5
 Scenario: every §3.2 PO activity named in the lead-po template carries either one-line guidance or an explicit "guidance pending" marker
   Given the §3.2 PO activities "Interview stakeholder", "Maintain product brief", "Write PDR for new functionality", "Write Gherkin scenarios as requirements", and "Respond to BC `clarify` (scope, vocabulary)"
   When I read the lead-po template via "shop-templates show lead-po"

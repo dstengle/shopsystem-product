@@ -6,6 +6,7 @@ Feature: the shopsystem-bc-base image recipe is owned by and co-located in the s
   Dockerfile that builds bc-base lives in the bc-launcher repo — there is no
   separate bc-base repo or owner BC. (Targets shopsystem-bc-launcher.)
 
+  @scenario_hash:d9909f38abea83b5
   Scenario: the bc-launcher repository contains the Dockerfile that builds the bc-base image
     Given the shopsystem-bc-launcher BC repository
     When the repository file tree is inspected

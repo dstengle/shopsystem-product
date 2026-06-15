@@ -1,3 +1,4 @@
+@scenario_hash:97a55b5875121915
 Scenario: update does not overwrite or otherwise modify the target directory's top-level "CLAUDE.md", even when the canonical "CLAUDE.md" primer template has changed since the shop was bootstrapped
   Given an existing git repository at a target directory "/tmp/example-shop" that was previously bootstrapped as a "bc" shop named "example-shop"
   And the file at "CLAUDE.md" in the target directory has been edited since bootstrap so that its content includes a literal shop-authored sentence that the canonical "CLAUDE.md" primer template does not contain

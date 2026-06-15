@@ -1,3 +1,4 @@
+@scenario_hash:fd6c7f023ca4f7f0
 Scenario: shop-templates list outputs the four expected role-template names, one per line, sorted
   When I run "shop-templates list"
   Then the exit code is 0

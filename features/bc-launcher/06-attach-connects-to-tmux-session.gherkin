@@ -1,3 +1,4 @@
+@scenario_hash:7b53b8d069db187b
 Scenario: bc-container attach connects to the running BC container's tmux session
   Given the shopsystem-bc-launcher BC is installed
   And a Docker container named "bc-shopsystem-messaging" is running

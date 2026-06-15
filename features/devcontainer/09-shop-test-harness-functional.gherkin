@@ -1,4 +1,5 @@
 @bc:shopsystem-devcontainer
+@scenario_hash:bcd6c85223de42b4
 Scenario: shop-test-harness --help exits zero inside the built image
   Given an image built from src/Dockerfile in the shopsystem-devcontainer BC repo
   When docker run --rm shopsystem-devcontainer:test shop-test-harness --help is executed on the host

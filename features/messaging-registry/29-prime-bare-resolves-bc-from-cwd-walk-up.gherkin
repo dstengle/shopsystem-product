@@ -1,3 +1,4 @@
+@scenario_hash:bad131a5760ad021
 Scenario: bare "shop-msg prime" resolves a BC shop's identity by walking up from CWD reading .claude/shop/name.md and type.md
   Given a BC shop directory tree containing ".claude/shop/name.md" with literal content "shopsystem-docs" and ".claude/shop/type.md" with literal content "bc"
   And "shopsystem-docs" is registered in the messaging registry as a BC

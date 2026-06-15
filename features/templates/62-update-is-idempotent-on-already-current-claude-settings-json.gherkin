@@ -1,3 +1,4 @@
+@scenario_hash:5245163e76065d3b
 Scenario Outline: invoking "shop-templates" update against a target directory whose ".claude/settings.json" already equals the current canonical leaves the file byte-for-byte unchanged
   Given an existing git repository at a target directory "<target>" that was previously bootstrapped as a "<shop_type>" shop named "<shop_name>"
   And the file at ".claude/settings.json" in the target directory equals the current canonical ".claude/settings.json" template for shop type "<shop_type>" byte-for-byte

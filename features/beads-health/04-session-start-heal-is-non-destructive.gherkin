@@ -9,6 +9,7 @@ Feature: BC session-start heal of the work-tracker is non-destructive
   decided auto-heal-then-revalidate policy safe. (lead-80t0; guards the safety
   of (b).)
 
+  @scenario_hash:f76f3c221cab42ed
   Scenario: the work-tracker heal adopts the committed prefix and imports committed issues without fabricating or overwriting
     Given a BC shop whose bd tracker working set is empty and has no issue_prefix configured
     And the committed registry names issue_prefix "tmpl" and carries 23 issues under that prefix

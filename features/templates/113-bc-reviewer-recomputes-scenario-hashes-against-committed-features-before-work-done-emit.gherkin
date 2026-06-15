@@ -1,3 +1,4 @@
+@scenario_hash:418f41d9a7789ca1
 Scenario: bc-reviewer template directs the reviewer to recompute each hash in work_done.scenario_hashes against the as-committed feature files and to allow the emit only when every hash matches the recomputed value (happy path)
   When I read the bc-reviewer template via "shop-templates show bc-reviewer"
   Then the content directs the reviewer that, before composing "shop-msg respond work_done --status complete" on a scenario-carrying dispatch (assign_scenarios, or request_bugfix whose scenarios[] is non-empty), the reviewer must recompute the hash of every scenario the work_done payload will list in "--scenario-hash" using the canonical "scenarios hash" CLI against the BC's as-committed feature files under "features/"

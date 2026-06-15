@@ -1,3 +1,4 @@
+@scenario_hash:31a044e7d2eceaf4
 Scenario Outline: bootstrap invokes "bd init" with the "--skip-agents" flag so bd's own AGENTS.md and Claude settings generation is suppressed and the shop's canonical agent surface is the sole source of agent-prompt content
   Given an existing git repository at a target directory "<target>" with no ".beads/" directory
   When I invoke the "shop-templates" bootstrap entry point with shop type "<shop_type>", shop name "<shop_name>", and target directory "<target>"

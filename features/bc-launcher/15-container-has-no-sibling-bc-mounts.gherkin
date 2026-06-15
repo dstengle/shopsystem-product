@@ -1,3 +1,4 @@
+@scenario_hash:6bdb4802f57c1afb
 Scenario: The BC container does not have access to sibling BC source trees or the lead shop workspace
   Given the shopsystem-bc-launcher BC is installed
   And a temporary directory is created on the host as a candidate sibling mount

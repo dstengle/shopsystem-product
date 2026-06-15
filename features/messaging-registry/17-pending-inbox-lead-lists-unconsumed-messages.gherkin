@@ -1,3 +1,4 @@
+@scenario_hash:34a0c7d4b3230e11
 Scenario: Listing pending messages in the lead inbox returns only unconsumed messages addressed to the lead
   Given "shopsystem-product" is registered in the messaging registry as the lead shop
   And two messages addressed to "shopsystem-product" are present in the lead inbox with work-ids "lead-202" and "lead-203"

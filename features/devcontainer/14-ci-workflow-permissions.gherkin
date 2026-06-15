@@ -1,4 +1,5 @@
 @bc:shopsystem-devcontainer
+@scenario_hash:a831e049c8e38fa8
 Scenario: Workflow declares packages write permission for ghcr.io push
   Given the shopsystem-devcontainer BC repository
   When the content of .github/workflows/publish-devcontainer.yml is read

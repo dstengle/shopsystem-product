@@ -1,3 +1,4 @@
+@scenario_hash:864b2c4ed12c970b
 Scenario: invoking update against a shop whose bootstrap-managed files are already byte-equal to the current canonical templates leaves every file on disk unchanged
   Given an existing git repository at a target directory "/tmp/example-shop" that was previously bootstrapped as a "bc" shop named "example-shop"
   And every file in ".claude/agents/" in the target directory equals the corresponding current canonical template package-data file contents byte-for-byte

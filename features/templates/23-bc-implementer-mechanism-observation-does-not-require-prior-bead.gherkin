@@ -1,3 +1,4 @@
+@scenario_hash:b2d1036514610f30
 Scenario: bc-implementer template's mechanism-observation guidance does not make a beads issue a precondition for emitting the wire message, and names the renamed provenance-ref flag rather than the removed bd-ref flag
   When I read the bc-implementer template via "shop-templates show bc-implementer"
   Then the "Surfacing mechanism observations" section does not contain the literal substring "bd create"

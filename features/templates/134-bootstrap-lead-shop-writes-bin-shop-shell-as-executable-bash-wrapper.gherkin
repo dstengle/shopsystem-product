@@ -1,3 +1,4 @@
+@scenario_hash:bd4c9e3f3e391736
 Scenario: bootstrap of a "lead" shop writes "bin/shop-shell" as an executable bash script whose body brings up the compose-defined postgres if not already running and execs "docker run" against the shell image, so a fresh operator can run "./bin/shop-shell" with no further configuration
   Given an existing git repository at a target directory "/tmp/example-lead-shop" with no "bin/" subdirectory
   When I invoke the "shop-templates" bootstrap entry point with shop type "lead", shop name "shopsystem-product", and target directory "/tmp/example-lead-shop"

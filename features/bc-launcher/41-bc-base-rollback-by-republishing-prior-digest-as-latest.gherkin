@@ -7,6 +7,7 @@ Feature: a bad bc-base release can be rolled back by republishing a prior known-
   (scenario 37), the "latest" tag can be repointed at an earlier known-good
   digest. (Targets shopsystem-bc-launcher.)
 
+  @scenario_hash:be11d615375564e1
   Scenario: republishing a prior known-good digest as the latest tag makes latest resolve to that earlier digest
     Given the registry "ghcr.io/dstengle/shopsystem-bc-base" holds a prior known-good build pullable by its digest "D_good"
     And the "latest" tag currently points to a later digest "D_bad"

@@ -1,3 +1,4 @@
+@scenario_hash:9d15481aa23059ea
 Scenario: procedural shop-msg CLI content in the lead-architect template is subordinate to role identity, posture, and activity coverage
   When I read the lead-architect template via "shop-templates show lead-architect"
   Then every heading whose text mentions "shop-msg" appears at heading depth three (###) or deeper, never at depth two (##) or depth one (#)

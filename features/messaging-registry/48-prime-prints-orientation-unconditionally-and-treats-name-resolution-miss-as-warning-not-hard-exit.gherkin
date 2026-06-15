@@ -1,3 +1,4 @@
+@scenario_hash:b8828c5e3aecd7d0
 Scenario: bare "shop-msg prime" prints DSN, DB health, pending counts, and CLI catalog even when the CWD-derived shop name is not registered in the registry
   Given a shop directory tree containing ".claude/shop/name.md" with literal content "some-not-registered-form" and ".claude/shop/type.md" with literal content "lead"
   And no shop named "some-not-registered-form" is registered in the messaging registry

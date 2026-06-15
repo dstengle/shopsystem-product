@@ -1,4 +1,5 @@
 @bc:shopsystem-scenarios @scenario_hash:79acbeb40154dfed
+@scenario_hash:87d401f4d9abbdaa
 Scenario: the scenarios completed-entries read returns an empty set for a journal file with no present entries
   Given a scenario journal stored as a file on disk under the shopsystem-scenarios bounded context
   And the journal file records no present entries

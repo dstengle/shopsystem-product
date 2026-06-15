@@ -1,3 +1,4 @@
+@scenario_hash:e4f49b10f8231282
 Scenario: shop-test-harness bootstrap creates an isolated BC-shop directory alongside the lead-shop
   Given an empty target directory for an experiment
   When I run "shop-test-harness bootstrap --target <dir> --lead-shop lead --bc-shop bc-foo"

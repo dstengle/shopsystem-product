@@ -1,3 +1,4 @@
+@scenario_hash:e687cd6df8167282
 Scenario Outline: the top-level "CLAUDE.md" that bootstrap writes into the target directory references the bd (beads) discipline by naming "bd prime", for both shop types, so the bootstrapped shop is self-describing about its working discipline without depending on bd's own AGENTS.md generation
   Given an existing git repository at a target directory "<target>" with no top-level "CLAUDE.md"
   When I invoke the "shop-templates" bootstrap entry point with shop type "<shop_type>", shop name "<shop_name>", and target directory "<target>"

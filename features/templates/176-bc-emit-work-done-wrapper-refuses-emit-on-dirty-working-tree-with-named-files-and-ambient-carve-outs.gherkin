@@ -22,6 +22,7 @@ Feature: the bc-emit work-done wrapper refuses the emit on a dirty BC working tr
   messaging primitive; the bare "--force" path (scenario 181) remains the escape
   valve.
 
+  @scenario_hash:242c4de927d64339
   Scenario: bc-emit work-done refuses the emit when the BC working tree carries a non-carved-out modified or untracked path, naming the offending path, and does not invoke shop-msg respond
     Given a BC repository whose "git status --porcelain" output reports at least one modified or untracked path that is NOT one of the ambient carve-outs ".specstory", ".claude/scheduled_tasks.lock", or ".beads/issues.jsonl"
     When the BC invokes the "bc-emit work-done" wrapper for its dispatched work_id

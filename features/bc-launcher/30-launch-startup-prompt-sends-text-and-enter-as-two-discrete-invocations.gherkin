@@ -6,6 +6,7 @@ Feature: bc-container launch --startup-prompt commits the prompt to the in-conta
 
   This scenario re-grounds the launch-path pin from "the prompt is committed" (which the single-invocation shape spuriously satisfies in the testing layer) to "the BC issues two discrete tmux send-keys invocations against the container driver, in order: a text-only invocation carrying the prompt text and no Enter token, followed by an Enter-only invocation carrying the Enter token and no prompt text". The driver-surface assertion turns red under any single-invocation shape (whether the buggy "text and Enter in one argv" shape, or any variant carrying both payloads in one invocation), so any future regression to a single-write submission attempt is caught at the BC's contract surface without requiring a live TUI.
 
+  @scenario_hash:456266b23b11fefe
   Scenario: bc-container launch --startup-prompt issues two discrete tmux send-keys invocations against the container driver — first the prompt text alone, then the Enter key alone — and no single invocation carries both
     Given the shopsystem-bc-launcher BC is installed
     And no Docker container named "bc-shopsystem-messaging" is running

@@ -1,3 +1,4 @@
+@scenario_hash:9bc85eced7685a40
 Scenario: bootstrap of a "lead" shop writes a top-level "Dockerfile.shopsystem-shell" containing the recipe for the daily-driver shell image referenced by "bin/shop-shell", so an operator without a published shopsystem-shell image can build it locally with "docker build -t shopsystem-shell:dev -f Dockerfile.shopsystem-shell ."
   Given an existing git repository at a target directory "/tmp/example-lead-shop" with no top-level "Dockerfile.shopsystem-shell" file
   When I invoke the "shop-templates" bootstrap entry point with shop type "lead", shop name "shopsystem-product", and target directory "/tmp/example-lead-shop"

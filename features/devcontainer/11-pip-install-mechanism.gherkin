@@ -1,4 +1,5 @@
 @bc:shopsystem-devcontainer
+@scenario_hash:d3720d4486761e30
 Scenario: Dockerfile installs shop-msg shop-templates and shop-test-harness via pip from GitHub
   Given the shopsystem-devcontainer BC repository
   When the src/Dockerfile content is read

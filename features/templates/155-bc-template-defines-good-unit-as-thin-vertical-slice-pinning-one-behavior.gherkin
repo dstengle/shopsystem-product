@@ -1,3 +1,4 @@
+@scenario_hash:ddfd56067f13dc7d
 Scenario: bc-implementer template's decomposition discipline defines a well-sized unit as a thin vertical slice that pins one coherent behavior
   When I read the bc-implementer template via "shop-templates show bc-implementer"
   Then the decomposition discipline states a sufficiency criterion that a well-sized sub-unit is a thin vertical slice that pins one coherent behavior

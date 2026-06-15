@@ -14,6 +14,7 @@ Feature: the canonical BC CLAUDE.md primer pins idle-detection so a BC idles onl
   assignment time; @lead_integration tag below is provisional pending placement decision.
 
 @lead_integration:templates
+  @scenario_hash:08d207945b970bd1
   Scenario: the canonical BC primer permits the BC to idle only when shop-msg pending inbox is empty and no in-flight implementer/reviewer task remains
     Given the "shop-templates" package ships a canonical "CLAUDE.md" primer template for shop type "bc" through its public template-access surface
     When I ask the package for that canonical primer body for shop type "bc"

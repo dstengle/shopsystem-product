@@ -1,3 +1,4 @@
+@scenario_hash:9c09ed3c213de929
 Scenario Outline: the canonical ".claude/settings.json" template for each shop type conforms to Claude Code's hook-schema wrapper shape — every "SessionStart" entry is a matcher+hooks wrapper object, and every inner hook is a command object — so that Claude Code accepts the file at session start instead of rejecting it with a schema-validation error (the brief-003 templates pinned only inner content substrings and shipped a malformed wrapper that Claude Code rejected with "hooks → SessionStart → 0 → hooks: Expected array, but received undefined")
   When I ask the "shop-templates" package for the canonical ".claude/settings.json" template for shop type "<shop_type>" through its public template-access surface
   And the returned body is parsed as JSON

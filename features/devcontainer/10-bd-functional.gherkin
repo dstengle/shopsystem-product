@@ -1,4 +1,5 @@
 @bc:shopsystem-devcontainer
+@scenario_hash:1a694411405e3fe7
 Scenario: bd --version exits zero inside the built image
   Given an image built from src/Dockerfile in the shopsystem-devcontainer BC repo
   When docker run --rm shopsystem-devcontainer:test bd --version is executed on the host

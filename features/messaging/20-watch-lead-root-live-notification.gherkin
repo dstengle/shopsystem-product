@@ -1,4 +1,5 @@
 @bc:shopsystem-messaging
+@scenario_hash:b6b300ee8cf305ec
 Scenario: shop-msg watch --lead-root outputs one line to stdout when any BC writes a respond message
   Given a lead root directory containing two empty BCs at temporary paths
   And shop-msg watch --lead-root is running in the background and has completed its startup drain

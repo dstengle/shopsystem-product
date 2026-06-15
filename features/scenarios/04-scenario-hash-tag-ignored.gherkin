@@ -1,3 +1,4 @@
+@scenario_hash:fdb2431ecd1584ef
 Scenario: canonicalization drops lines that start with the @scenario_hash tag
   Given a Gherkin body A
   And a Gherkin body B that is A with one extra line "@scenario_hash:abcdef0123456789" prepended

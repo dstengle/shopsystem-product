@@ -6,6 +6,7 @@ Feature: Canonical lead ".claude/settings.json" ships with "bd prime" as the sol
 
   The Implementer should retire scenario 59's content from repos/shopsystem-templates/features/brief_003_event_driven_activation_and_settings_json_bootstrap.feature (BC-side hash c1e7f31eeef73e05) when landing this scenario.
 
+  @scenario_hash:ca3e98f71df1eb3e
   Scenario: the canonical ".claude/settings.json" template for shop type "lead" declares "bd prime" as the sole inner-hook command under "SessionStart", carries no activation hook, and conforms to the Claude Code matcher+hooks wrapper schema
     When I ask the "shop-templates" package for the canonical ".claude/settings.json" template for shop type "lead" through its public template-access surface
     And the returned body is parsed as JSON

@@ -6,6 +6,7 @@ Feature: bc-container launch pulls the current bc-base :latest from the registry
   registry digest before running, so a republished image actually reaches
   newly-launched BCs. (Targets shopsystem-bc-launcher.)
 
+  @scenario_hash:af2f03d3ac519cb5
   Scenario: launch resolves the current registry digest of bc-base latest before running, so a republished image reaches the new container
     Given the shopsystem-bc-launcher BC is installed
     And the local Docker cache holds the bc-base "latest" tag at an older digest "D_old"

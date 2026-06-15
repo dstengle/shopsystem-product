@@ -1,3 +1,4 @@
+  @scenario_hash:9378f92b158b4ffc
   Scenario: explicit --network flag overrides the network name derived from bc-manifest.yaml
     Given a bc-manifest.yaml exists with product field "shopsystem product"
     And no Docker container named "bc-shopsystem-messaging" is running

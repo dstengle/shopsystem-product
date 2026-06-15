@@ -1,3 +1,4 @@
+@scenario_hash:df49974a68a1616c
 Scenario: shop-templates show with an unknown template name exits non-zero and names both the bad input and the available list on stderr
   Given a template name "no-such-template" that is not in the list output by "shop-templates list"
   When I run "shop-templates show no-such-template"

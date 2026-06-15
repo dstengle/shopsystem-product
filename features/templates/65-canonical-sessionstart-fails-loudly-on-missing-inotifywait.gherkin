@@ -1,3 +1,4 @@
+@scenario_hash:97456a4b316b7958
 Scenario Outline: the canonical ".claude/settings.json" template for each shop type expresses the SessionStart activation hook so that, on a host where "inotifywait" is not on PATH, the hook surfaces a visible failure rather than silently degrading to a no-watcher state
   Given a host environment where the executable "inotifywait" is not present on PATH
   And an existing git repository at a target directory "<target>" that was previously bootstrapped as a "<shop_type>" shop named "<shop_name>"

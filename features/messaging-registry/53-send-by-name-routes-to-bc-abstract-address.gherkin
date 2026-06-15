@@ -1,3 +1,4 @@
+@scenario_hash:0f08498b8731112b
 Scenario: A message sent to a BC by name routes to that BC's abstract address and resolves there for read pending and watch
   Given "shopsystem-messaging" is registered in the messaging registry with abstract address "shopsystem/messaging"
   And "shopsystem-product" is registered as the lead shop with abstract address "shopsystem/lead"

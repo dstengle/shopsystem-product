@@ -1,3 +1,4 @@
+@scenario_hash:91af831f852cf961
 Scenario Outline: bootstrap writes a top-level "CLAUDE.md" to the target directory for both shop types
   Given an existing git repository at a target directory "<target>" with no top-level "CLAUDE.md"
   When I invoke the "shop-templates" bootstrap entry point with shop type "<shop_type>", shop name "<shop_name>", and target directory "<target>"

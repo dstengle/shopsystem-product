@@ -1,3 +1,4 @@
+@scenario_hash:885cbc86cf3e18d6
 Scenario Outline: no canonical role template makes creating or updating a bd issue a precondition for invoking a shop-msg subcommand
   When I read the <template> template via "shop-templates show <template>"
   Then the content does not contain any sentence, list item, or numbered step that instructs the reader to create, claim, or update a bd issue as a precondition for invoking any "shop-msg send" or "shop-msg respond" subcommand

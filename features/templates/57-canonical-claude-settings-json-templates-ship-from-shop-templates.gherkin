@@ -1,3 +1,4 @@
+@scenario_hash:13fbb07dcd21b606
 Scenario Outline: shopsystem-templates ships a canonical ".claude/settings.json" template for each shop type, accessible through the same package-data surface as the role-prompt and "CLAUDE.md" primer templates
   When I ask the "shop-templates" package for the canonical ".claude/settings.json" template for shop type "<shop_type>" through its public template-access surface
   Then a non-empty template body is returned

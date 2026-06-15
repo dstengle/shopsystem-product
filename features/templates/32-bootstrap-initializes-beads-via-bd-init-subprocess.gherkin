@@ -1,3 +1,4 @@
+@scenario_hash:2277308ce4fb92d2
 Scenario: bootstrap initializes the ".beads/" directory in the target directory by invoking "bd init" as a subprocess, not by importing or reproducing bd's internal behavior in-process
   Given an existing git repository at a target directory "/tmp/example-shop" with no ".beads/" directory
   When I invoke the "shop-templates" bootstrap entry point with shop type "bc", shop name "example-shop", and target directory "/tmp/example-shop"

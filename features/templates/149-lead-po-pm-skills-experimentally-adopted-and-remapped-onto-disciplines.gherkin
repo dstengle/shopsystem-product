@@ -1,3 +1,4 @@
+@scenario_hash:32537a54388dd716
 Scenario: lead-po template frames the PM skill catalogue as experimentally adopted and re-mapped onto the four disciplines
   When I read the lead-po template via "shop-templates show lead-po"
   Then the content states that the external PM skills are adapted to the shopsystem process rather than imported wholesale

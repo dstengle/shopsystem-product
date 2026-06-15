@@ -1,3 +1,4 @@
+@scenario_hash:b56d7e14f5360d79
 Scenario: The v1 shopsystem-docs repository publishes plain markdown files and does not ship a documentation site build
   Given the shopsystem-docs BC repository has been published at its v1 milestone
   When the repository's tracked files are enumerated at the v1 commit

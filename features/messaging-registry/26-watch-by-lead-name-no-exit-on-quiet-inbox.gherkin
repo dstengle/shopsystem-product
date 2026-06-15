@@ -1,3 +1,4 @@
+@scenario_hash:010f4d8f34cc8c3b
 Scenario: shop-msg watch --lead <name> does not exit when no new messages arrive after startup drain
   Given "shopsystem-product" is registered as the lead shop
   And the lead inbox is empty

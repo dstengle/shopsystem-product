@@ -1,3 +1,4 @@
+@scenario_hash:19cc8ce4a71b5ce1
 Scenario: bc-container status reports running state for a running BC container
   Given the shopsystem-bc-launcher BC is installed
   And a Docker container named "bc-shopsystem-messaging" is running

@@ -1,3 +1,4 @@
+@scenario_hash:5a8ac79c1a684e9d
 Scenario: Sending a message using --bc <name> routes to the registered BC without a path flag
   Given "shopsystem-messaging" is registered in the messaging registry
   When I run shop-msg send assign_scenarios --bc shopsystem-messaging with a valid payload and work-id "reg-101"

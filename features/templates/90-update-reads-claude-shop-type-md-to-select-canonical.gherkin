@@ -1,3 +1,4 @@
+@scenario_hash:1dc7d720bf2d53dc
 Scenario Outline: update determines which shop type's canonical templates to apply to the target directory by reading the literal contents of ".claude/shop/type.md" at the target root; the operator does not pass a shop-type flag to update, and the shop type captured at bootstrap is authoritative for subsequent updates
   Given an existing git repository at a target directory "/tmp/example-shop" that was previously bootstrapped as a "<bootstrap_shop_type>" shop named "<shop_name>"
   And the file at ".claude/shop/type.md" in the target directory contains exactly the literal string "<bootstrap_shop_type>"

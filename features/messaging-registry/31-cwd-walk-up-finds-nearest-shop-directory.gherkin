@@ -1,3 +1,4 @@
+@scenario_hash:6f2c4d22f92ae282
 Scenario: CWD walk-up resolves the nearest .claude/shop/ ancestor when multiple shop directories are nested
   Given a lead shop at "/tmp/example-lead" containing ".claude/shop/name.md" "shopsystem-product" and ".claude/shop/type.md" "lead"
   And a BC shop at "/tmp/example-lead/repos/shopsystem-docs" containing ".claude/shop/name.md" "shopsystem-docs" and ".claude/shop/type.md" "bc"

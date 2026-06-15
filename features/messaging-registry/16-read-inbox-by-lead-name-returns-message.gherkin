@@ -1,3 +1,4 @@
+@scenario_hash:082ac6fb3ef85122
 Scenario: Reading the lead inbox by canonical name returns a message sent to the lead
   Given "shopsystem-product" is registered in the messaging registry as the lead shop
   And a message addressed to "shopsystem-product" with work-id "lead-201" is present in the lead inbox

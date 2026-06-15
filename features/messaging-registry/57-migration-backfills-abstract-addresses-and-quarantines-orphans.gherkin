@@ -1,3 +1,4 @@
+@scenario_hash:925f60950cdbf7a7
 Scenario: Migration backfills abstract addresses from canonical names maps the lead to the sentinel and drops unmappable orphan rows
   Given a pre-migration shop_registry contains a path-keyed entry for canonical name "shopsystem-messaging"
   And it contains a path-keyed lead entry for canonical name "shopsystem-product"

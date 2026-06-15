@@ -1,3 +1,4 @@
+@scenario_hash:6465b30fe62fb935
 Scenario: lead-po template states that the PM role is product-general and its discovery inputs fork between consumer and framework instances
   When I read the lead-po template via "shop-templates show lead-po"
   Then the content states that the empowered-PM role is product-general — it instantiates into every product lead shop — and that market-facing PM competencies are load-bearing, not vestigial

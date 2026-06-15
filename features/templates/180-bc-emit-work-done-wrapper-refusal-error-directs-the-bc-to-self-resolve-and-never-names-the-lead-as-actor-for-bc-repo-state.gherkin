@@ -21,6 +21,7 @@ Feature: the bc-emit work-done wrapper's refusal error directs the BC to self-re
   ADR-018). "shop-msg respond" stays a pure messaging primitive; the bare "--force"
   path (scenario 181) remains the escape valve.
 
+  @scenario_hash:4a6133f7b5f061a2
   Scenario: on any bc-emit work-done precondition refusal the named-cause error directs the BC to self-resolve its own state and re-emit, and never names the lead or router as the actor for BC-repo state
     Given the "bc-emit work-done" wrapper refuses an emit on any of its preconditions — clean-working-tree, work_id-commit-on-origin-main, tag-deliverable reachability, or scenario_hashes-match
     When the BC reads the wrapper's named-cause error text

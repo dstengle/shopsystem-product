@@ -1,3 +1,4 @@
+@scenario_hash:877f081905c08af8
 Scenario: bc-implementer template directs the implementer to shop-msg CLI subcommands for inbox discovery and reading, never to direct filesystem inspection
   When I read the bc-implementer template via "shop-templates show bc-implementer"
   Then the content contains the literal substring "shop-msg pending inbox"

@@ -4,6 +4,7 @@ Feature: update preserves shop-authored content byte-for-byte under PDR-003 alte
 
   The Implementer should treat lead-shop scenario 39 as contradicted by this scenario and by scenario 84; no scenario-retirement step is required on the BC side because scenario 39's content was never pinned BC-side.
 
+  @scenario_hash:1a46491bac5f46d7
   Scenario Outline: update does not overwrite or otherwise modify ".claude/shop/primer.md" in the target directory, even when the canonical "CLAUDE.md" body template, the canonical primer template, or the role-prompt templates have changed since the shop was bootstrapped
     Given an existing git repository at a target directory "/tmp/example-shop" that was previously bootstrapped as a "<shop_type>" shop named "<shop_name>"
     And the file at ".claude/shop/primer.md" in the target directory has been edited since bootstrap so that its content includes a literal shop-authored sentence that the canonical "CLAUDE.md" primer template does not contain

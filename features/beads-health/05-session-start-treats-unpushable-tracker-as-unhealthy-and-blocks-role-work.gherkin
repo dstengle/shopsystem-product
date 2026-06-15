@@ -11,6 +11,7 @@ Feature: BC session-start treats a locally-writable-but-unpushable work-tracker 
   downstream because the tracker can never push. (lead-80t0; Brief 010 §3
   test-dolt-push criterion.)
 
+  @scenario_hash:43a05feaefc1d046
   Scenario: a BC session starts with a locally-writable tracker whose test dolt push fails and the health step blocks all role-work from starting
     Given a BC shop whose bd tracker has a definite issue_prefix configured and a populated working set
     And bd create and bd ready run in the BC shop both exit zero

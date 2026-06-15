@@ -1,3 +1,4 @@
+@scenario_hash:d9f061d15a5d714b
 Scenario Outline: bootstrap writes the canonical role-prompt copies for the shop type into ".claude/agents/", and writes no other agent files
   Given an existing git repository at a target directory "<target>" with no ".claude/agents/" directory
   When I invoke the "shop-templates" bootstrap entry point with shop type "<shop_type>", shop name "<shop_name>", and target directory "<target>"

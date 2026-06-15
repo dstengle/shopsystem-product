@@ -7,6 +7,7 @@ Feature: the bc-launcher build workflow also rebuilds bc-base and republishes :l
   a republish of the floating "latest" tag to the new digest. (Targets
   shopsystem-bc-launcher.)
 
+  @scenario_hash:4e470f7584650a2d
   Scenario: an inbound repository_dispatch event to the bc-launcher repository rebuilds bc-base and republishes the latest tag to the new digest
     Given the shopsystem-bc-launcher BC repository
     And the image tag "latest" at "ghcr.io/dstengle/shopsystem-bc-base" currently points to a digest "D_old"

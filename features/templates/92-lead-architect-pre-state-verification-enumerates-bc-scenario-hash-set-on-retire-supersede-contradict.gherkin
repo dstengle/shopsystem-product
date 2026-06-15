@@ -1,3 +1,4 @@
+@scenario_hash:2c6111996b3a7633
 Scenario: lead-architect template's pre-state-verification discipline directs the architect to empirically enumerate the BC's pinned @scenario_hash set whenever the dispatch retires, supersedes, or contradicts prior BC-side coverage
   When I read the lead-architect template via "shop-templates show lead-architect"
   Then the content names "@scenario_hash" as a pre-state surface the architect must verify before composing a dispatch that retires, supersedes, or contradicts prior BC-side coverage

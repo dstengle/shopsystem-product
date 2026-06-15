@@ -2,6 +2,7 @@ Feature: Canonical ".claude/settings.json" "SessionStart" keeps "bd prime" along
 
   Supersedes the "sole inner-hook command" property of scenario 75 (features/templates/75-canonical-lead-claude-settings-json-ships-with-bd-prime-as-sole-sessionstart-hook.gherkin) and scenario 96 (features/templates/96-canonical-bc-claude-settings-json-ships-with-bd-prime-as-sole-sessionstart-hook.gherkin). This scenario pins that "bd prime" is RETAINED (not removed) when "shop-msg prime" is added — the two hooks compose on SessionStart, each doing distinct orientation work ("bd prime" = beads workflow context; "shop-msg prime" = messaging DSN reachability + pending count). Both shop types carry both hooks; the BC primer in this repository already documents the BC-side composition explicitly ("Run 'shop-msg prime --bc <name>' ... Run 'bd prime' ..."), and PDR-009 brings the lead canonical into the same shape.
 
+  @scenario_hash:7954bf8c04b829b4
   Scenario Outline: the canonical ".claude/settings.json" for "<shop_type>" has exactly one inner-hook "command" entry equal to "bd prime" AND exactly one inner-hook "command" entry equal to "shop-msg prime" under "hooks.SessionStart"
     When I ask the "shop-templates" package for the canonical ".claude/settings.json" template for shop type "<shop_type>" through its public template-access surface
     And the returned body is parsed as JSON

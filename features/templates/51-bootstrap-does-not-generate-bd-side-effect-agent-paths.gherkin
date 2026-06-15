@@ -1,3 +1,4 @@
+@scenario_hash:0c4a2a3c4c64ac1d
 Scenario Outline: bootstrap leaves no top-level "AGENTS.md" and no ".claude/settings.json" in the target directory, regardless of shop type, because the shop's canonical agent surface is ".claude/agents/*.md" alone
   Given an existing git repository at a target directory "<target>" containing no top-level "AGENTS.md" and no file at ".claude/settings.json"
   When I invoke the "shop-templates" bootstrap entry point with shop type "<shop_type>", shop name "<shop_name>", and target directory "<target>"

@@ -1,3 +1,4 @@
+@scenario_hash:1302096a3cafc590
 Scenario: canonicalization is insensitive to blank lines between steps
   Given a Gherkin body A
   And a Gherkin body B that is A with one or more blank lines inserted between steps

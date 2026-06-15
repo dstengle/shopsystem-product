@@ -1,3 +1,4 @@
+@scenario_hash:9fac437e075784fe
 Scenario: lead-architect template develops the Maintain structurizr workspace activity with sufficiency criteria
   When I read the lead-architect template via "shop-templates show lead-architect"
   Then the content names the activity "Maintain structurizr workspace"

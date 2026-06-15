@@ -6,6 +6,7 @@ Feature: Bootstrap leaves no top-level "AGENTS.md" in the target directory
 
   The Implementer should retire scenario 51's content from repos/shopsystem-templates/features/bootstrap_bd_init_side_effects.feature when landing this scenario. The "bd init --skip-agents" mechanism (scenario 50 / 32d99f6d4a2dad37) remains the realization that produces the AGENTS.md-absence property; this scenario pins only the observable outcome.
 
+  @scenario_hash:17ec6c96c28e0f67
   Scenario Outline: bootstrap leaves no top-level "AGENTS.md" in the target directory, regardless of shop type, because the shop's canonical agent surface is ".claude/agents/*.md" alone and bootstrap invokes "bd init" with "--skip-agents"
     Given an existing git repository at a target directory "<target>" containing no top-level "AGENTS.md"
     When I invoke the "shop-templates" bootstrap entry point with shop type "<shop_type>", shop name "<shop_name>", and target directory "<target>"

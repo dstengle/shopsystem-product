@@ -2,6 +2,7 @@ Feature: "shop-templates update" replaces a stale inner-hook "command" string in
 
   Scenario 61 (features/templates/61-update-re-pours-claude-settings-json-as-managed-file.gherkin) already pins that "shop-templates update" re-pours ".claude/settings.json" byte-for-byte from the current canonical, treating it as bootstrap-managed. This scenario is the targeted regression guard for the specific failure mode that motivated lead-33r: a shop that was bootstrapped with an OLD canonical "settings.json" carrying a stale placeholder-bearing hook command (e.g., "shop-msg prime --bc {{SHOP_NAME}}") must, after "shop-templates update", carry the NEW canonical hook command ("shop-msg prime" with no placeholder and no addressing flag). The scenario fixes the inner-hook command string as the observable property so the regression cannot pass scenario 61's generic "equals canonical byte-for-byte" without ALSO passing the targeted placeholder-removal property.
 
+  @scenario_hash:03dc4a5a14f89100
   Scenario Outline: "shop-templates update" against a target shop whose ".claude/settings.json" carries a stale placeholder-bearing hook command replaces that command with the current canonical bare "shop-msg prime"
     Given an existing git repository at a target directory "<target>" that was previously bootstrapped as a "<shop_type>" shop named "<shop_name>"
     And the file at "<target>/.claude/settings.json" contains an inner-hook entry under "hooks.SessionStart" whose "command" string is the stale literal "shop-msg prime --bc {{SHOP_NAME}}"

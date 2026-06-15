@@ -1,3 +1,4 @@
+@scenario_hash:43fae05b4ad39eb3
 Scenario: bc-container list shows all known BC containers with their states
   Given the shopsystem-bc-launcher BC is installed
   And a Docker container named "bc-shopsystem-messaging" is running

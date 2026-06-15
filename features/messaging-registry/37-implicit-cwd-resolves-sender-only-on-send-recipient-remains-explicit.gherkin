@@ -1,3 +1,4 @@
+@scenario_hash:9e2dee7fa6cce3b9
 Scenario: on "shop-msg send", the CWD-implicit lookup resolves the SENDER's identity only; the recipient remains explicitly named via "--bc <name>" or "--lead <name>"
   Given a lead shop directory tree containing ".claude/shop/name.md" with literal content "shopsystem-product" and ".claude/shop/type.md" with literal content "lead"
   And both "shopsystem-product" and "shopsystem-docs" are registered in the messaging registry

@@ -1,3 +1,4 @@
+@scenario_hash:0a65d987a6e1cd42
 Scenario Outline: bootstrap writes ".claude/canonical/<shop_type>-primer.md" into the target directory with body byte-for-byte equal to the canonical primer template for the chosen shop type, as exposed by the "shop-templates" public template-access surface
   Given an existing git repository at a target directory "<target>" with no ".claude/canonical/" subdirectory
   When I invoke the "shop-templates" bootstrap entry point with shop type "<shop_type>", shop name "<shop_name>", and target directory "<target>"

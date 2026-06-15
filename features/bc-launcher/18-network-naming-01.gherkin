@@ -1,3 +1,4 @@
+  @scenario_hash:c1eac3b07f198049
   Scenario: bc-container launch derives the Docker network name from the product field in bc-manifest.yaml
     Given a bc-manifest.yaml exists containing:
       """

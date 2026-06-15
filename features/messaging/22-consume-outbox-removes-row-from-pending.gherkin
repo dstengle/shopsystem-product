@@ -1,4 +1,5 @@
 @bc:shopsystem-messaging
+@scenario_hash:c8e11a1d646df587
 Scenario: Consuming a specific outbox row removes it from pending outbox output
   Given a lead shop at a temporary path with BC clone "bc-alpha" present as a sibling directory
   And shop-msg respond work_done was previously used inside "bc-alpha" to write an outbox response with work-id "lead-500" and status "complete"

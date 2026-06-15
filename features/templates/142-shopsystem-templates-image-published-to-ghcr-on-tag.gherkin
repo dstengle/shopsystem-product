@@ -1,3 +1,4 @@
+@scenario_hash:1645eba89db8f651
 Scenario: when a git tag of the form "vMAJOR.MINOR.PATCH" is pushed to the shopsystem-templates repository, an OCI image is built and published to the canonical registry path "ghcr.io/dstengle/shopsystem-templates" with that version string as one of its image tags and "latest" as another tag — establishing the publication contract that bootstrap-via-docker-run depends on
   Given a tag named "v0.2.0" is pushed to the "main" branch of the shopsystem-templates source repository
   When the publication workflow associated with that tag push completes successfully

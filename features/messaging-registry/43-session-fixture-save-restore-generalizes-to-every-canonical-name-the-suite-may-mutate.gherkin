@@ -1,3 +1,4 @@
+@scenario_hash:c9a176bc95890f0f
 Scenario: The session-scoped save/restore mechanism covers every canonical name that a step definition may pass to the registry-mutating helper, not a hand-maintained subset
   Given the messaging BC's test suite contains a fixture helper that registers a (canonical-name, shop_root, shop_type) triple in the shop_registry on behalf of a step definition
   And the test suite contains a session-scoped fixture responsible for restoring production registry state at teardown

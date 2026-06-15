@@ -1,3 +1,4 @@
+@scenario_hash:1690580456d6efe6
 Scenario: the update entry point exits with an argparse-style usage error when invoked without --target, with no Python traceback emitted and no modification to any pre-existing shop scaffold
   Given a previously-bootstrapped shop at "/tmp/example-shop-update-no-target" of shop type "bc" whose ".claude/agents/" directory contains exactly the canonical "bc" role files
   And a recorded snapshot of the byte contents and mtimes of every file under "/tmp/example-shop-update-no-target/.claude/agents/"

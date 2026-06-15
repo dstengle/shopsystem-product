@@ -1,3 +1,4 @@
+@scenario_hash:c7febeb6c2e30325
 Scenario: procedural shop-msg CLI content in the lead-po template is subordinate to role identity, posture, and activity coverage
   When I read the lead-po template via "shop-templates show lead-po"
   Then every heading whose text mentions "shop-msg" appears at heading depth three (###) or deeper, never at depth two (##) or depth one (#)

@@ -4,6 +4,7 @@ Feature: bc-container launch --startup-prompt's autonomous-engagement guarantee 
 
   The contract surface for observation is "bc-container monitor", which streams the tmux pane's rendered output. "The agent has begun processing the prompt" is operationalized as a visible state-marker line in the streamed output that an idle, unsubmitted-buffer state does not produce — concretely, the agent's working/thinking indicator line (e.g. "Working… (thinking)" or the equivalent rendered by the agent runtime) appearing on the monitor stream after the launch command has exited.
 
+  @scenario_hash:861efc9ea1fe981d
   Scenario: bc-container monitor surfaces an agent-working state-marker within a bounded interval of bc-container launch --startup-prompt exiting, with no human or host-side follow-up keystroke
     Given the shopsystem-bc-launcher BC is installed
     And no Docker container named "bc-shopsystem-messaging" is running

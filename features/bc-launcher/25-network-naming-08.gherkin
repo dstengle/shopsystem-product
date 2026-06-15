@@ -1,3 +1,4 @@
+  @scenario_hash:5e76f9229443bd89
   Scenario: two BC containers launched under the same product are both attached to the same derived network
     Given no Docker container named "bc-shopsystem-messaging" is running
     And no Docker container named "bc-shopsystem-scenarios" is running

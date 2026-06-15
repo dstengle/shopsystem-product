@@ -1,4 +1,5 @@
 @bc:shopsystem-messaging
+@scenario_hash:c88a0421a0dc2c18
 Scenario: A minimal valid assign_scenarios message can be constructed without supplying any bd-related field
   Given the AssignScenarios schema from the shop-msg catalog
   When I construct an AssignScenarios instance supplying only the fields the schema marks as required, with no field whose name begins with "bd_" or otherwise references a beads issue identifier

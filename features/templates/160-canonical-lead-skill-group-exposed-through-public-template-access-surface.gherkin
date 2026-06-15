@@ -1,3 +1,4 @@
+@scenario_hash:c207853320920de7
 Scenario Outline: the canonical lead skill-group is shipped as package data and exposed through the "shop-templates" public template-access surface, parallel to the role templates and primer
   Given the installed "shop-templates" distribution
   When I query the "shop-templates" public template-access surface for the canonical "<shop_type>" skill-group

@@ -24,6 +24,7 @@ Feature: the bc-emit work-done wrapper verifies each emitted scenario hash again
   (ADR-036 D2, ADR-018). "shop-msg respond" stays a pure messaging primitive; the
   bare "--force" path (scenario 181) remains the escape valve.
 
+  @scenario_hash:ea9c1bbd9be87d72
   Scenario: bc-emit work-done refuses the emit when a recomputed scenario-block-only canonical hash diverges from the carried hash, names the divergence as stale, missing, or orphan, and uses the block-only delegate rather than the Feature-line-included wire form
     Given a dispatched work_id whose deliverable includes one or more scenario blocks committed under "features/" each carrying an "@scenario_hash:<hex>" tag
     And the wrapper recomputes each candidate scenario hash by delegating in-process to "scenarios.hash.compute_scenario_hash" using scenario-block-only canonicalization, with the enclosing "Feature:" header line NOT part of the hashed text

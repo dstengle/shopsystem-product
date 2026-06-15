@@ -1,3 +1,4 @@
+@scenario_hash:1f50e4f839dde04d
 Scenario: An adopter lands on the shopsystem-docs entry document and identifies framework, prerequisites, and the next step
   Given the shopsystem-docs BC repository is published at https://github.com/dstengle/shopsystem-docs
   And an adopter has Docker installed and a GitHub account but no prior knowledge of the shopsystem framework

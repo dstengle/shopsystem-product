@@ -1,3 +1,4 @@
+@scenario_hash:881f542d73651d23
 Scenario: Listing an empty registry exits zero with no entries
   Given no shops are registered in the messaging registry
   When I run shop-msg registry list

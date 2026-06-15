@@ -1,3 +1,4 @@
+@scenario_hash:1e49cc3a526d4272
 Scenario: lead-po template names the empowered-PM identity and every durable PM discipline with guidance or a "guidance pending" marker
   Given the four durable PM disciplines "problem discovery & selection", "outcome ownership", "strategy before backlog", and "specification as the contract"
   When I read the lead-po template via "shop-templates show lead-po"

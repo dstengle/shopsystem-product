@@ -1,3 +1,4 @@
+@scenario_hash:f312990bd1d5ca44
 Scenario: bc-reviewer template directs the reviewer to block a work_done (complete) emit when the work_done payload's "--scenario-hash" list omits a hash for one or more scenarios that the dispatch carried AND that ARE present in the as-committed "features/" tree (missing hash), and to name the work_id and the omitted scenarios in the response
   When I read the bc-reviewer template via "shop-templates show bc-reviewer"
   Then the content directs the reviewer that, before composing "shop-msg respond work_done --status complete", the reviewer must enumerate the scenario hashes the dispatch payload carried (the "@scenario_hash:<hash>" set the lead's dispatch text named) and confirm by "grep" (or "git grep") that each dispatched hash is also reachable under an "@scenario_hash:<hash>" tag in the BC's as-committed "features/" tree

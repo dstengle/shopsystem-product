@@ -1,3 +1,4 @@
+@scenario_hash:44b40ea04e13e3c0
 Scenario: The v1 walkthrough names the launcher gap honestly until a host-side lead-launch primitive ships
   Given the shopsystem-docs adoption walkthrough has a section that describes launching the lead-shop container on the adopter's host
   And no host-side primitive exists today that launches a lead-shop container (bc-container launch is BC-only; no shop-container, no lead-launcher, no bc-container launch --shop-type lead)

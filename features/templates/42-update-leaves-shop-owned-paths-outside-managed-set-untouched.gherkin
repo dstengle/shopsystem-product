@@ -1,3 +1,4 @@
+@scenario_hash:6ca39d047f507e70
 Scenario: update does not create, remove, or modify any path in the target directory that is outside the bootstrap-managed set
   Given an existing git repository at a target directory "/tmp/example-shop" that was previously bootstrapped as a "bc" shop named "example-shop"
   And the target directory additionally contains a non-empty file at "features/example.feature" authored by the shop

@@ -1,4 +1,5 @@
 @bc:shopsystem-devcontainer
+@scenario_hash:11ac757cd197f63d
 Scenario: Workflow triggers on push to main when .devcontainer/Dockerfile changes
   Given the shopsystem-devcontainer BC repository
   When the content of .github/workflows/publish-devcontainer.yml is read

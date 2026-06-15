@@ -4,6 +4,7 @@ Feature: bc-container inject commits the prompt to the in-container agent such t
 
   Scenario 07 pinned that "the tmux session ... has received the text 'bd prime' followed by a newline via tmux send-keys". The same defect identified in lead-xsmn for the --startup-prompt path applies here: a Line Feed byte buffered into an interactive TUI's input does not commit; only the Enter key as a discrete tmux send-keys key name submits. The empirical workaround for the startup-prompt bug ("bc-container inject <bc> ''" — an empty inject that apparently sends a bare Enter) only works because the empty-text path happens to route through a different tmux send-keys invocation; a non-empty inject suffers the same latent submission failure as launch. This scenario re-grounds the inject pin from "a newline byte was sent" to "the prompt has been submitted to the agent such that the agent processes it without further input".
 
+  @scenario_hash:f098c65e44cd97de
   Scenario: bc-container inject commits the prompt to the agent's input loop on its own, with no follow-up keystroke from the host required
     Given the shopsystem-bc-launcher BC is installed
     And a Docker container named "bc-shopsystem-messaging" is running with a tmux session named "agent" hosting an interactive agent at its input prompt

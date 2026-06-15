@@ -6,6 +6,7 @@ Feature: Canonical "CLAUDE.md" primer per shop type names the router-side Monito
 
   The Implementer should retire scenario 58's content from repos/shopsystem-templates/features/brief_003_event_driven_activation_and_settings_json_bootstrap.feature (BC-side hash 679d227f04533ad4) when landing this scenario.
 
+  @scenario_hash:96af1bf436390068
   Scenario Outline: the canonical "CLAUDE.md" primer template for each shop type contains an instruction telling the session router to arm the in-session "Monitor" tool, at session start, on a line-buffered "inotifywait" pipeline watching the shop-type's inbound mailbox surface, so the in-session Monitor primitive — not a synchronous SessionStart hook — carries the reactivity invariant
     When I ask the "shop-templates" package for the canonical "CLAUDE.md" primer template for shop type "<shop_type>" through its public template-access surface
     Then a non-empty template body is returned

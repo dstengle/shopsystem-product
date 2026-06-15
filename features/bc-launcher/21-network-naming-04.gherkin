@@ -1,3 +1,4 @@
+  @scenario_hash:8a26d4aa1da12870
   Scenario: bc-container launch creates the derived network before starting the container when the network does not exist
     Given a bc-manifest.yaml exists with product field "shopsystem product"
     And no Docker network named "shopsystem-product" exists

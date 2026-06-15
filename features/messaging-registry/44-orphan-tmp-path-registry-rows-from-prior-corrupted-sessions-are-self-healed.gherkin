@@ -1,3 +1,4 @@
+@scenario_hash:b736d586b37450b1
 Scenario: When a pytest session starts with the shop_registry already corrupted by a prior un-cleaned session, the session-scoped fixture treats tmp_path-prefixed entries as absent and does not re-persist them at teardown
   Given the shop_registry contains an entry for canonical name "shopsystem-docs" whose shop_root begins with "/tmp/" (a leaked tmp_path from a prior corrupted pytest session)
   And the production shop_root for "shopsystem-docs" is "/workspaces/shopsystem-product/repos/shopsystem-docs" but that production row is currently missing or pointing at the stale tmp_path

@@ -1,3 +1,4 @@
+@scenario_hash:7cd64a2508f3a829
 Scenario: shopsystem-templates BC CLAUDE.md instructs the router to discover and read unprocessed inbox work via shop-msg CLI subcommands, not via direct filesystem inspection or filename conventions
   Given the file at "repos/shopsystem-templates/CLAUDE.md" exists and is the canonical CLAUDE.md for the shopsystem-templates BC shop
   When I read that file

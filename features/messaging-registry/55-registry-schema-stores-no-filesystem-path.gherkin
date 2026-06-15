@@ -1,3 +1,4 @@
+@scenario_hash:659196b20eba0df7
 Scenario: A registered entry exposes no stored filesystem path on any observable surface
   Given "shopsystem-messaging" is registered in the messaging registry with abstract address "shopsystem/messaging"
   When I inspect the registered entry for "shopsystem-messaging" via shop-msg registry list

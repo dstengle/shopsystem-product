@@ -4,6 +4,7 @@ Feature: Canonical ".claude/settings.json" hook commands contain no "{{...}}" pl
 
   Per PDR-009 (decided 2026-05-27), shop identity is never embedded in canonical content; "shop-msg" resolves the invoking shop's identity from CWD by walking up looking for ".claude/shop/name.md" and ".claude/shop/type.md". This eliminates any architectural reason for a canonical hook command to embed shop identity via placeholder substitution.
 
+  @scenario_hash:9ff736e4d29b8d93
   Scenario Outline: every inner-hook "command" string in the canonical ".claude/settings.json" template for "<shop_type>" contains no occurrence of the substring "{{" and no occurrence of the substring "}}"
     When I ask the "shop-templates" package for the canonical ".claude/settings.json" template for shop type "<shop_type>" through its public template-access surface
     And the returned body is parsed as JSON

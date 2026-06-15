@@ -1,3 +1,4 @@
+@scenario_hash:f8be355d65de7374
 Scenario: bc-container launch starts a Docker container for the named BC
   Given the shopsystem-bc-launcher BC is installed
   And no Docker container named "bc-shopsystem-messaging" is running

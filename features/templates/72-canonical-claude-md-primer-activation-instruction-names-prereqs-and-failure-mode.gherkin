@@ -8,6 +8,7 @@ Feature: Canonical "CLAUDE.md" primer's activation instruction names host prereq
 
   The Implementer should retire scenario 65's content from repos/shopsystem-templates/features/brief_003_event_driven_activation_and_settings_json_bootstrap.feature (BC-side hash a9379ab3a162158d) when landing this scenario.
 
+  @scenario_hash:58abc878fca79937
   Scenario Outline: the activation instruction in the canonical "CLAUDE.md" primer template for each shop type explicitly names both host prerequisites the router's Monitor invocation depends on AND explicitly instructs the router to refuse to arm the watcher and surface a visible diagnostic when either prerequisite is missing, so that the loud-fail invariant carrying over from the prior hook-realization is preserved as a router-honored instruction
     When I ask the "shop-templates" package for the canonical "CLAUDE.md" primer template for shop type "<shop_type>" through its public template-access surface
     Then a non-empty template body is returned

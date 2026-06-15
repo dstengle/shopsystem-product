@@ -1,4 +1,5 @@
 @bc:shopsystem-messaging
+@scenario_hash:18c55ac39913532a
 Scenario: Reading an inbox message by an unknown work_id fails with a stderr explanation
   Given an empty BC at a temporary path
   When I run shop-msg read inbox with work-id "lead-nonexistent"

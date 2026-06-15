@@ -8,6 +8,7 @@ Feature: Bootstrap-generated top-level "CLAUDE.md" contains the router-side Moni
 
   The Implementer should retire scenario 57's content from repos/shopsystem-templates/features/brief_003_event_driven_activation_and_settings_json_bootstrap.feature (BC-side hash 1621b59b0ea8b20b) when landing this scenario. Note that ".claude/settings.json" still ships from the canonical package-data surface — scenarios 74 and 75 pin its new content — so the package-data surface itself does not disappear; only its role as the activation home is retired.
 
+  @scenario_hash:52c79a14592382ed
   Scenario Outline: the top-level "CLAUDE.md" that bootstrap writes into the target directory contains the router-side Monitor activation instruction for the shop type, so a freshly-bootstrapped shop is reactive on its first session start without depending on a SessionStart hook
     Given an existing git repository at a target directory "<target>" with no top-level "CLAUDE.md"
     When I invoke the "shop-templates" bootstrap entry point with shop type "<shop_type>", shop name "<shop_name>", and target directory "<target>"

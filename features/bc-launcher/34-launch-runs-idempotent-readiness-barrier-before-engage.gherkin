@@ -2,6 +2,7 @@ Feature: bc-container launch runs a defined, re-runnable readiness sequence as a
 
   Grounded in this session's failures (issue_prefix missing; messaging DB unreachable while the agent was nonetheless engaged) and complementing scenarios 32 and 33, which pin the individual readiness outcomes. This scenario pins the *sequencing*: the readiness checks (beads usable, messaging database reachable) are a single defined setup step that runs as a barrier — the startup prompt is injected and the agent engages only after the barrier passes. The barrier is idempotent: re-running the readiness sequence against an already-ready container makes no changes and reports ready, so it can be re-run after a transient failure without side effects.
 
+  @scenario_hash:c946bc6d8a05e44a
   Scenario: bc-container launch does not inject the startup prompt until the readiness barrier passes
     Given the shopsystem-bc-launcher BC is installed
     And no Docker container named "bc-shopsystem-messaging" is running
@@ -10,6 +11,7 @@ Feature: bc-container launch runs a defined, re-runnable readiness sequence as a
     Then no startup prompt has been sent to the tmux session named "agent" in container "bc-shopsystem-messaging"
     And once the readiness sequence completes successfully, the startup prompt is sent to the tmux session named "agent"
 
+  @scenario_hash:767eba36f237a79a
   Scenario: re-running the readiness sequence against an already-ready container is a no-op that reports ready
     Given the shopsystem-bc-launcher BC is installed
     And a Docker container named "bc-shopsystem-messaging" is running and has already passed its readiness sequence

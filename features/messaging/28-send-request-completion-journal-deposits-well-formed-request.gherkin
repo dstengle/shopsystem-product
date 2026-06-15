@@ -1,4 +1,5 @@
 @bc:shopsystem-messaging @scenario_hash:79dd275d8584c8fc
+@scenario_hash:70e0b335e766a7a6
 Scenario: shop-msg send request_completion_journal deposits a well-formed request naming the target bounded context
   Given an empty BC at a temporary path with no unprocessed inbox messages
   When shop-msg send request_completion_journal is run for work-id "lead-300" naming target bounded context "shopsystem-scenarios"

@@ -1,3 +1,4 @@
+@scenario_hash:9536b845a335b1b3
 Scenario: Using the removed --bc-root flag exits non-zero with a migration error message
   Given the shop-msg CLI has shipped name-based addressing
   When I run any shop-msg subcommand with a --bc-root flag

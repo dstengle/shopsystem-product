@@ -1,3 +1,4 @@
+@scenario_hash:ccdc472448b74757
 Scenario Outline: each shop-type's canonical ".claude/settings.json" template names only its own shop-type-appropriate watch target and does not name the other shop-type's watch target, so the two variants are not interchangeable and a BC shop cannot accidentally arm a lead-shop watcher (or vice versa)
   When I ask the "shop-templates" package for the canonical ".claude/settings.json" template for shop type "<shop_type>" through its public template-access surface
   Then the returned body contains the literal substring "<own_watch_target>"

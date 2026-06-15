@@ -1,3 +1,4 @@
+@scenario_hash:5c0a34a0b9ad1be7
 Scenario: bootstrap of a "lead" shop writes the lead-side scenario-completion ops tool as shop-owned starter content (in the PDR-003 path F sense) at a top-level "bin/" path — not under ".claude/canonical/" — so every newly-instantiated product lead shop is born with the cross-BC "is-X-done" / "outstanding" reconciliation view and the operator may freely customize it without colliding with the canonical-managed re-pour contract
   Given an existing git repository at a target directory "/tmp/example-lead-shop"
   When I invoke the "shop-templates" bootstrap entry point with shop type "lead", shop name "shopsystem-product", and target directory "/tmp/example-lead-shop"

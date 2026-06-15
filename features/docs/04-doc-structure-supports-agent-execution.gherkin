@@ -1,3 +1,4 @@
+@scenario_hash:e04a235d9aa68837
 Scenario: The adoption walkthrough is structured so a coding agent handed the documentation can execute the bootstrap without inferring intent
   Given the shopsystem-docs repository contains an adoption walkthrough (one or more linked markdown files)
   When the walkthrough's markdown is parsed for structural elements

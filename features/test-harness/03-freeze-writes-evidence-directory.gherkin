@@ -1,3 +1,4 @@
+@scenario_hash:11f2115ec1e43ef5
 Scenario: shop-test-harness freeze copies the live topology into an evidence directory under runs/N/
   Given an experiment target directory <dir> populated by a prior bootstrap (lead-shop + one BC-shop, with at least one inbox YAML and one outbox YAML present in the BC-shop's mailboxes)
   And an evidence root directory <evidence>

@@ -1,3 +1,4 @@
+@scenario_hash:bae50ac8b89ef4be
 Scenario: bare "shop-msg prime" exits non-zero when the walk-up finds a .claude/shop/ directory containing only one of name.md or type.md
   Given a directory tree containing ".claude/shop/name.md" but no ".claude/shop/type.md"
   And my current working directory is that directory or a descendant

@@ -4,6 +4,7 @@ Feature: lead-architect template grounds the BC @scenario_hash pre-state enumera
 
   Scenario 92 directed the architect to enumerate the BC's pinned @scenario_hash set "from the BC's 'features/' directory rather than from the lead shop's scenario register." Per ADR-018 D1, there is no repos/<bc> clone on the lead host, so a BC-side features/ directory is not a surface the lead can enumerate. The discipline survives — the architect must still establish the conflicting @scenario_hash set before composing a dispatch that retires, supersedes, or contradicts prior BC-side coverage — but its source-of-truth re-grounds to the contract/artifact surface: the lead-held "features/" Gherkin in this repo, the scenario hashes computed via the installed "scenarios hash" CLI (ADR-018 D2), and the BC's mailbox-reported scenario register/hashes carried in its "work_done" demonstration. This scenario re-grounds the pin accordingly.
 
+  @scenario_hash:49ab4f75cacbe5aa
   Scenario: lead-architect template's pre-state discipline directs the architect to enumerate the conflicting BC @scenario_hash set from the lead-held features/ surface and the mailbox-reported register whenever a dispatch retires, supersedes, or contradicts prior BC-side coverage
     When I read the lead-architect template via "shop-templates show lead-architect"
     Then the content names "@scenario_hash" as a pre-state surface the architect must enumerate before composing a dispatch that retires, supersedes, or contradicts prior BC-side coverage

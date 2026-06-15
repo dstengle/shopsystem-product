@@ -4,6 +4,7 @@ Feature: Canonical ".claude/settings.json" "SessionStart" includes bare "shop-ms
 
   PO judgment (PDR-009): the canonical hook command is bare "shop-msg prime" — no "--bc" or "--lead" addressing flag, no shop-name placeholder. "shop-msg" resolves the invoking shop's identity from CWD via the walk-up mechanism PDR-009 commits. Canonical content carries no shop identity. The "bare" property is essential — embedding the name (via placeholder or pour-time substitution) would re-introduce the very bug class PDR-009 exists to close.
 
+  @scenario_hash:98c31cc7077a7be2
   Scenario Outline: exactly one inner-hook "command" entry under "hooks.SessionStart" in the canonical ".claude/settings.json" for "<shop_type>" equals the literal string "shop-msg prime"
     When I ask the "shop-templates" package for the canonical ".claude/settings.json" template for shop type "<shop_type>" through its public template-access surface
     And the returned body is parsed as JSON

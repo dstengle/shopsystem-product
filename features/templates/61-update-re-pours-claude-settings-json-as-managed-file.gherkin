@@ -1,3 +1,4 @@
+@scenario_hash:395b2fbf05a2b487
 Scenario Outline: the "shop-templates" update entry point re-pours ".claude/settings.json" from the current canonical package data, treating it as bootstrap-managed (not init-only); stale content is replaced and already-current content is preserved
   Given an existing git repository at a target directory "<target>" that was previously bootstrapped as a "<shop_type>" shop named "<shop_name>"
   And the file at ".claude/settings.json" in the target directory differs from the current canonical ".claude/settings.json" template for shop type "<shop_type>"

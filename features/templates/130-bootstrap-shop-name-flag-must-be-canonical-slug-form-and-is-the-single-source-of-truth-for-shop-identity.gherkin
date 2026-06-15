@@ -1,3 +1,4 @@
+@scenario_hash:4e99a6abbc57b884
 Scenario: shop-templates bootstrap requires the "--shop-name" value to be the canonical slug form (lowercase letters, digits, and hyphens only; no whitespace) — the slug written into ".claude/shop/name.md" is the single source of truth for shop identity, and a display-form variant has no place in name.md
   Given an existing git repository at a target directory "/tmp/example-bootstrap-target" with no ".claude/shop/" subdirectory
   When I invoke the "shop-templates" bootstrap entry point with shop type "lead", shop name "shopsystem product" (with a literal space), and target directory "/tmp/example-bootstrap-target"

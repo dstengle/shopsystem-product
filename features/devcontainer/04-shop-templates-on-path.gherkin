@@ -1,4 +1,5 @@
 @bc:shopsystem-devcontainer
+@scenario_hash:434b1ed0636d4cff
 Scenario: shop-templates is on PATH inside the built image
   Given an image built from src/Dockerfile in the shopsystem-devcontainer BC repo
   When docker run --rm shopsystem-devcontainer:test which shop-templates is executed on the host

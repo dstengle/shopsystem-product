@@ -1,4 +1,5 @@
 @bc:shopsystem-messaging
+@scenario_hash:0112fd7b6e74f233
 Scenario: shop-msg watch drains unprocessed inbox messages on startup before entering the live listen loop
   Given an empty BC at a temporary path
   And shop-msg send assign_scenarios was previously used to write an inbox message with work-id "lead-100"

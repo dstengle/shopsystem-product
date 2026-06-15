@@ -1,3 +1,4 @@
+@scenario_hash:371c22e319d22de1
 Scenario: Running registry sync twice on an already-synced state produces no changes and exits zero both times
   Given the BC manifest declares "shopsystem-messaging" as a product BC
   And "shopsystem-messaging" is already registered in the messaging registry with matching connection information

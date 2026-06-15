@@ -19,6 +19,7 @@ Feature: the bc-emit work-done wrapper refuses the emit for a COMMIT deliverable
   pure messaging primitive; the bare "--force" path (scenario 181) remains the escape
   valve.
 
+  @scenario_hash:461d6066ef7dca0a
   Scenario: bc-emit work-done refuses the emit when the COMMIT deliverable for the work_id is not reachable from the BC's origin/main HEAD, naming the work_id and the current origin/main HEAD
     Given a dispatched work_id whose deliverable is a COMMIT attributable to that work_id
     And no commit attributable to the work_id is reachable from the BC's "origin/main" HEAD after a "git fetch origin"

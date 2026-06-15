@@ -1,4 +1,5 @@
 @bc:shopsystem-messaging
+@scenario_hash:7d951aaaa26e4b1b
 Scenario: An inbox message whose work_id already has a matching outbox response is not reported as pending
   Given an empty BC at a temporary path
   And shop-msg send request_maintenance was previously used to write an inbox message with work-id "lead-200"

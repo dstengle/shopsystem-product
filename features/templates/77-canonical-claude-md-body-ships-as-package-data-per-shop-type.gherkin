@@ -1,3 +1,4 @@
+@scenario_hash:f60396c0d8bd5421
 Scenario Outline: the "shop-templates" package exposes a canonical "CLAUDE.md" body template per shop type through its public template-access surface; this is the canonical-managed file that bootstrap writes to the target root and that update rewrites from package data
   When I ask the "shop-templates" package for the canonical "CLAUDE.md" body template for shop type "<shop_type>" through its public template-access surface
   Then a non-empty template body is returned

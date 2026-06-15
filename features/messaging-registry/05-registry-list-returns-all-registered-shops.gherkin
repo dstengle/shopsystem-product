@@ -1,3 +1,4 @@
+@scenario_hash:b4916a4ad4e2a8be
 Scenario: Listing the registry returns one line per registered shop with consistent fields
   Given "shopsystem-messaging" and "shopsystem-product" are both registered in the messaging registry
   When I run shop-msg registry list

@@ -1,3 +1,4 @@
+@scenario_hash:a37a8849155456dd
 Scenario: the published "ghcr.io/dstengle/shopsystem-templates:latest" image has a total compressed image size (as reported by the registry manifest, summed across layers) not exceeding 150 megabytes — the bootstrap image is a thin shop-templates CLI runner and must stay small enough that "docker pull" during onboarding completes in tens of seconds on a typical home connection, not minutes
   Given the image "ghcr.io/dstengle/shopsystem-templates:latest" is published at the registry "ghcr.io"
   When I query the image manifest for its layer sizes

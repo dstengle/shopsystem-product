@@ -1,4 +1,5 @@
 @bc:shopsystem-devcontainer
+@scenario_hash:0bd400541cfe9637
 Scenario: Workflow build step references .devcontainer/Dockerfile
   Given the shopsystem-devcontainer BC repository
   When the content of .github/workflows/publish-devcontainer.yml is read

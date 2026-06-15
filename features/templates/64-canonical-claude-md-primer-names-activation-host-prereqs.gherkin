@@ -1,3 +1,4 @@
+@scenario_hash:a220c7c7fa3774f3
 Scenario Outline: the canonical "CLAUDE.md" primer template for each shop type names the host-level prereqs the canonical SessionStart activation hook depends on, so the prereq naming is package-data property and not a per-shop hand-edit
   When I ask the "shop-templates" package for the canonical "CLAUDE.md" primer template for shop type "<shop_type>" through its public template-access surface
   Then a non-empty template body is returned

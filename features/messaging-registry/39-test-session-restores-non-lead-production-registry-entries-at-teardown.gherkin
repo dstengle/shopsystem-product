@@ -1,3 +1,4 @@
+@scenario_hash:e18f064642fe0485
 Scenario: The test session restores every production canonical registry entry it observed pre-session, not only the lead aliases
   Given the messaging BC's pytest session is about to start
   And the shop_registry contains a production entry for canonical name "shopsystem-messaging" with shop_root "/workspaces/shopsystem-product/repos/shopsystem-messaging"

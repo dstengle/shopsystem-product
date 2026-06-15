@@ -1,3 +1,4 @@
+@scenario_hash:3d0a20bb39078f32
 Scenario: shop-test-harness bootstrap creates an isolated lead-shop directory ready for inter-shop messaging
   Given an empty target directory for an experiment
   When I run "shop-test-harness bootstrap --target <dir> --lead-shop lead --bc-shop bc-foo"

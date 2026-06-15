@@ -1,3 +1,4 @@
+@scenario_hash:90a950a18d6995b0
 Scenario Outline: after bootstrap, the "CLAUDE.md" that bootstrap wrote at the target root, when its "@" import directives are resolved against the target directory, has assistant-observable startup content that includes the literal contents of all four typed files written by bootstrap (".claude/shop/name.md", ".claude/shop/type.md", ".claude/canonical/<shop_type>-primer.md", ".claude/shop/primer.md")
   Given an existing git repository at a target directory "<target>" with no top-level "CLAUDE.md"
   When I invoke the "shop-templates" bootstrap entry point with shop type "<shop_type>", shop name "<shop_name>", and target directory "<target>"

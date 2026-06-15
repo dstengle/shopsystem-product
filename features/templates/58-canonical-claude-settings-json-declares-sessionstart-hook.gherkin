@@ -1,3 +1,4 @@
+@scenario_hash:76777f29258707bd
 Scenario Outline: the canonical ".claude/settings.json" template for each shop type declares a "SessionStart" hook that arms a line-buffered inotifywait watcher over the shop-type's inbound mailbox surface, preserving the four reference-realization properties named in brief 003 scope item B (line-buffered output, alias-bypassed flushing filter, merged stderr+stdout for startup-chatter visibility, monitor-mode persistent arming)
   When I ask the "shop-templates" package for the canonical ".claude/settings.json" template for shop type "<shop_type>" through its public template-access surface
   Then the returned body contains the literal substring "SessionStart"

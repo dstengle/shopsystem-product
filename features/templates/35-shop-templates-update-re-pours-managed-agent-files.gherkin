@@ -1,3 +1,4 @@
+@scenario_hash:54eccdca6dd58c96
 Scenario: shop-templates exposes an update entry point that re-pours every bootstrap-managed agent file in the target directory from the current canonical package data
   Given an existing git repository at a target directory "/tmp/example-shop" that was previously bootstrapped as a "bc" shop named "example-shop"
   And the file at ".claude/agents/bc-implementer.md" in the target directory equals the current canonical "bc-implementer" template package-data file contents byte-for-byte
