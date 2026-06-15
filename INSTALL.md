@@ -41,7 +41,10 @@ own credentials** at the one gate that needs them.
     the **`repo`** and **`workflow`** scopes (your BCs' code is cloned/pushed and
     their workflows triggered under your account), and
   - your **Claude credential** — the same Claude account you use in the Claude
-    app / claude.ai. You sign in with it once when the agent starts.
+    app / claude.ai. You use it in two quick moments: signing the **lead agent**
+    in when it starts (§1), and letting the lead load it into your **broker** so
+    your BCs can think (§3). Have your **GitHub username** handy too — the broker
+    wants it alongside the token.
 
   A per-product **broker** holds these. Two products on one machine share
   nothing.
@@ -55,7 +58,8 @@ own credentials** at the one gate that needs them.
 
 ## 1 — Start the lead
 
-Make a folder for your product and run the image with the Docker socket mounted:
+On your **host machine**, make a folder for your product and run the image with
+the Docker socket mounted (this drops you into a shell *inside* the container):
 
 ```bash
 mkdir -p myproduct
@@ -73,13 +77,16 @@ shop-templates bootstrap --shop-type lead --shop-name myproduct   # turns /work 
 claude                                                            # start the agent
 ```
 
-When `claude` starts it will ask you to sign in to your Claude account (an
+When `claude` starts it asks you to sign in to your Claude account (an
 interactive sign-in — follow its link/prompt; on a headless host it gives you a
-URL to open in your browser). That sign-in *is* the Claude credential from the
-list above — you do it once here.
+URL to open in your browser). This sign-in is for the **lead agent itself** —
+it's how the lead is allowed to think. (Later, in §3, you separately let the lead
+load your Claude credential into the **broker** so your *BCs* can think too —
+same account, different job.)
 
 Because `bootstrap` laid down the lead shop's instructions, the agent reads them
-on start and **becomes the lead** for your product. From here, you talk to it.
+on start and **becomes the lead** for your product. You'll know it's ready when
+it greets you and asks what you'd like to build. From here, you talk to it.
 
 > `myproduct` is your product's name (lowercase letters, digits, hyphens).
 
@@ -103,8 +110,7 @@ The lead drives it from there, narrating as it goes. It will:
   passed it.
 
 You don't run these steps yourself — you watch them happen and answer when the
-lead asks. (Where a step isn't yet fully automated, the lead walks you through
-it rather than handing you a manual.)
+lead asks.
 
 ### What success looks like
 
@@ -123,9 +129,11 @@ do for you. The lead walks you through it and needs:
 1. **A broker owner password** — you choose it; it's how you (and the lead)
    administer this product's broker. The lead prompts for it.
 2. **Your GitHub token + username** — pasted when the lead provisions the broker.
-3. **Your Claude credential** — the lead stages a ready-to-approve request for it
-   and hands you the **one approve command to run**, with the spot to paste your
-   Claude token. You run it, tell the lead it's done, and provisioning finishes.
+3. **Your Claude credential** (loaded into the broker for your BCs — this is the
+   second of the two Claude moments from §1, *not* a repeat of the lead's own
+   sign-in). The lead stages a ready-to-approve request for it and hands you the
+   **one approve command to run**, with the spot to paste your Claude token. You
+   run it, tell the lead it's done, and provisioning finishes.
 
 That's the gate: a password you pick, a GitHub token, and approving one staged
 request with your Claude token. Everything about *how* the broker is wired —
