@@ -1,27 +1,40 @@
 # PDR-019 U5 / ADR-040 — shop-templates bootstrap extensions (owner:
 # shopsystem-templates; request_bugfix — extends the existing bootstrap render
-# surface). U5's remaining surface is: render beads "sync.remote" +
-# "issue_prefix", a working "bd dolt push" smoke-test, and the ".env.example"
+# surface). U5's remaining surface is: configure the bd dolt push remote +
+# issue prefix, a working "bd dolt push" smoke-test, and the ".env.example"
 # scaffold.
+#
+# REVISION (lead-pqaa): behaviors A and B re-authored to bd's ACTUAL interface,
+# verified empirically via 'bd dolt remote add --help', 'bd dolt push --help',
+# 'bd init --help', and '.beads/config.yaml'. This supersedes the prior hashes
+# 9e15d8cfd55b9541 (A) and 62eb2a8b9b617f4b (B). The two wrong assumptions
+# corrected: (1) the bd DOLT push remote is configured via 'bd dolt remote add
+# <name> <url>' (a DB-side remote), NOT a written 'sync.remote' YAML key — that
+# key is the SEPARATE jsonl-sync remote; the issue prefix is set via
+# 'bd init --prefix' and lives under the hyphenated 'issue-prefix' config key,
+# NOT 'issue_prefix'. (2) 'bd dolt push' takes NO positional URL and requires a
+# configured remote; the old 'bd dolt push <url>' ignored the positional and
+# skipped silently with exit 0, so it could never fail on a bad remote.
+# Behavior C (.env.example, f02f9491b3a43753) was NOT flagged — preserved verbatim.
 #
 # The ".env"/.gitignore half of U5 is ALREADY SHIPPED by lead-7if5 (CLOSED) —
 # rendered ".gitignore" ignores ".env"/".env.*" with a "!.env.example"
 # negation, pinned by the lead-7if5 coverage. It is REFERENCED here and
 # deliberately NOT re-pinned (additive, no duplicate coverage).
-@scenario_hash:9e15d8cfd55b9541
-Scenario: shop-templates bootstrap renders the beads config with the sync remote and issue prefix
+@scenario_hash:0636fba2c1445f9f
+Scenario: shop-templates bootstrap configures the bd dolt push remote and issue prefix
   Given an existing git repository at a target directory "<target>"
   When I invoke the "shop-templates" bootstrap entry point with shop type "lead", shop name "<shop_name>", and target directory "<target>"
   Then the exit code is 0
-  And the file ".beads/config.yaml" in the target directory sets "sync.remote" to the product beads remote
-  And the file ".beads/config.yaml" in the target directory sets "issue_prefix" to the product-derived prefix
+  And "bd dolt remote list" in the target directory lists a dolt push remote whose URL is the product beads remote
+  And "bd config get issue-prefix" in the target directory returns the product-derived prefix
 
-@scenario_hash:62eb2a8b9b617f4b
-Scenario: shop-templates bootstrap runs a bd dolt push smoke-test against the rendered beads config
-  Given an existing git repository at a target directory "<target>" with the beads config rendered by bootstrap
-  When the bootstrap smoke-test step runs
-  Then it performs a "bd dolt push" against the configured "sync.remote" and reports success
-  And bootstrap exits non-zero with a diagnostic if the "bd dolt push" smoke-test fails
+@scenario_hash:5ae67969a7f205d5
+Scenario: shop-templates bootstrap runs a bd dolt push smoke-test that fails on a missing or misconfigured remote
+  Given an existing git repository at a target directory "<target>" with the beads config rendered by bootstrap and the dolt push remote configured
+  When the bootstrap smoke-test step runs "bd dolt push" against the configured dolt remote
+  Then the smoke-test reports success and the bootstrap exit code is 0
+  And given the same target directory with no dolt push remote configured, when the bootstrap smoke-test step runs "bd dolt push", then it exits non-zero with a diagnostic naming the missing dolt remote
 
 @scenario_hash:f02f9491b3a43753
 Scenario: shop-templates bootstrap generates a .env.example scaffold for the run credentials
