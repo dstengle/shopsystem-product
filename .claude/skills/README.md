@@ -42,12 +42,19 @@ rules (from PDR-012, carried from the TDD/superpowers precedent):
 | [`jobs-to-be-done`](jobs-to-be-done/SKILL.md) | D1 — Problem discovery & selection | brief (jobs/pains/gains); problem statements |
 | [`problem-framing-canvas`](problem-framing-canvas/SKILL.md) | D1 — Problem discovery & selection | brief/PDR problem statement + "How Might We" |
 | [`opportunity-solution-tree`](opportunity-solution-tree/SKILL.md) | D1 — Problem discovery & selection | PDR (outcome → opportunities → bet); chosen behavior → Gherkin |
+| [`customer-journey-map`](customer-journey-map/SKILL.md) | D1 — Problem discovery & selection | brief (journey stages + friction/emotion curve); PDR problem statement (highest-friction moment); findings |
 | [`company-research`](company-research/SKILL.md) | D1 — consumer-fork market input | brief market/competitive context |
 | [`work-splitting`](work-splitting/SKILL.md) | D4 — specification (right-sizing) | Epic → scenarios; thin single-behavior scenarios |
 
-The first four cluster on **Discipline 1 (problem discovery & selection)** on
-purpose — the determination named it "the scarcest good," and it is exactly
-where the current order-taking PO is weakest. `work-splitting` adds the first
+The Discipline-1 cluster (jobs/framing/tree/journey-map) is on purpose — the
+determination named it "the scarcest good," and it is exactly
+where the current order-taking PO is weakest. `customer-journey-map` adds the one
+**sequence-and-friction** lens the others lack: JTBD and framing are point-in-time
+(the stable job, the acute pain), while the journey map locates *where across the
+sequence* the experience breaks (moments-of-truth, cognitive-load spikes,
+drop-off). Like the other experimental PM skills here, it is vulnerable to the
+`lead-1e8d` shop-templates over-prune until that bead lands; until then it lives
+in this repo, unprotected by the canonical template. `work-splitting` adds the first
 **Discipline 4** (specification) slice — it imports the splitting *technique*
 (not the user-story artifact) to right-size Epics into thin, single-behavior
 scenarios, and is also the candidate the BC template would deliver for the BC
