@@ -1,0 +1,31 @@
+# PDR-019 U5 / ADR-040 — shop-templates bootstrap extensions (owner:
+# shopsystem-templates; request_bugfix — extends the existing bootstrap render
+# surface). U5's remaining surface is: render beads "sync.remote" +
+# "issue_prefix", a working "bd dolt push" smoke-test, and the ".env.example"
+# scaffold.
+#
+# The ".env"/.gitignore half of U5 is ALREADY SHIPPED by lead-7if5 (CLOSED) —
+# rendered ".gitignore" ignores ".env"/".env.*" with a "!.env.example"
+# negation, pinned by the lead-7if5 coverage. It is REFERENCED here and
+# deliberately NOT re-pinned (additive, no duplicate coverage).
+@scenario_hash:9e15d8cfd55b9541
+Scenario: shop-templates bootstrap renders the beads config with the sync remote and issue prefix
+  Given an existing git repository at a target directory "<target>"
+  When I invoke the "shop-templates" bootstrap entry point with shop type "lead", shop name "<shop_name>", and target directory "<target>"
+  Then the exit code is 0
+  And the file ".beads/config.yaml" in the target directory sets "sync.remote" to the product beads remote
+  And the file ".beads/config.yaml" in the target directory sets "issue_prefix" to the product-derived prefix
+
+@scenario_hash:62eb2a8b9b617f4b
+Scenario: shop-templates bootstrap runs a bd dolt push smoke-test against the rendered beads config
+  Given an existing git repository at a target directory "<target>" with the beads config rendered by bootstrap
+  When the bootstrap smoke-test step runs
+  Then it performs a "bd dolt push" against the configured "sync.remote" and reports success
+  And bootstrap exits non-zero with a diagnostic if the "bd dolt push" smoke-test fails
+
+@scenario_hash:f02f9491b3a43753
+Scenario: shop-templates bootstrap generates a .env.example scaffold for the run credentials
+  Given an existing git repository at a target directory "<target>"
+  When I invoke the "shop-templates" bootstrap entry point with shop type "lead", shop name "<shop_name>", and target directory "<target>"
+  Then the exit code is 0
+  And the target directory contains a file ".env.example" documenting the run environment variables including the agent-vault master password and proxy token
