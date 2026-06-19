@@ -8,8 +8,7 @@ Feature: a confirmed spike graduates via the PDR-014 path against a fresh Phase-
   is never reused. This is a LEAD-PROCESS behavior pinning the graduation hand-off; the
   graduation act itself has no BC addressee (the chosen vehicle later dispatches the
   kept work to the owning BC, which is a downstream, separate step).
-
-@scenario_hash:929a1819838ea893 @lead_integration:spike-lifecycle
+  @scenario_hash:b30a8b5ca2e066a0
   Scenario: a spike with a confirm verdict and implementation-requirements is graduated through the PDR-014 path on a fresh bead
     Given a spike that reached a confirm or go-with-caveats verdict and recorded implementation-requirements in its findings document
     When the finding is graduated

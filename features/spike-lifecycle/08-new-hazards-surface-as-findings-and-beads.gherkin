@@ -8,8 +8,7 @@ Feature: a spike that uncovers an unanticipated hazard records it in the finding
   re-litigated — distinct from the spike bead and from any graduation bead. This is a
   LEAD-PROCESS behavior pinning the lead's findings-plus-registry discipline; there is no
   BC addressee.
-
-@scenario_hash:f419c2091970f4db @lead_integration:spike-lifecycle
+  @scenario_hash:e6f84dc40468cc03
   Scenario: a spike that surfaces an unanticipated hazard records it in the finding and files a fresh bead for it
     Given a spike whose execution uncovers a hazard that was not part of its original hypothesis
     When the spike records its verdict and findings beyond the plan

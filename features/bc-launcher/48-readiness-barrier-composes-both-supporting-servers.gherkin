@@ -7,8 +7,7 @@ Feature: bc-container launch gates on the coherent readiness of BOTH supporting 
   broker. This scenario pins readiness COMPOSITION: the barrier passes only when both
   are reachable, and the startup prompt is withheld if EITHER is down — neither server
   alone is sufficient.
-
-@scenario_hash:f73afae009c283fc @bc:shopsystem-bc-launcher
+  @scenario_hash:f73afae009c283fc
   Scenario: the readiness barrier passes and engages the agent only when both the messaging database and the agent-vault broker are reachable
     Given the shopsystem-bc-launcher BC is installed
     And no Docker container named "bc-shopsystem-messaging" is running
@@ -17,8 +16,7 @@ Feature: bc-container launch gates on the coherent readiness of BOTH supporting 
     When I run bc-container launch with BC name "shopsystem-messaging" and a startup prompt
     Then the readiness barrier reports both messaging-database and agent-vault checks passed
     And the startup prompt is sent to the tmux session named "agent" in container "bc-shopsystem-messaging"
-
-@scenario_hash:64aaff804dc4bf98 @bc:shopsystem-bc-launcher
+  @scenario_hash:64aaff804dc4bf98
   Scenario: the readiness barrier withholds engagement when the messaging database is reachable but the agent-vault broker is not
     Given the shopsystem-bc-launcher BC is installed
     And no Docker container named "bc-shopsystem-messaging" is running

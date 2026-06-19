@@ -1,1 +1,1 @@
-shopsystem product
+shopsystem-product

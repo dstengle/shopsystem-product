@@ -7,8 +7,7 @@ Feature: provisioning the broker vault with the real credentials is a single, ex
   ca fetch are CLI-doable). This pins that provisioning is an explicit human-gated
   precondition, not an automated step. Lead-owned integration check against the real
   broker.
-
-@scenario_hash:4ecd3b661ddf4713 @lead_integration:agent-vault-broker
+  @scenario_hash:4ecd3b661ddf4713
   Scenario: the broker vault is provisioned by exactly one human-gated paste of the real credentials
     Given a running agent-vault broker with an empty vault
     When the real Claude OAuth credential and the real GitHub credential are loaded into the vault

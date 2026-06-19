@@ -11,9 +11,9 @@ license = {text = "MIT"}
 authors = [{name = "David Stenglein"}]
 dependencies = [
     "scenarios @ git+https://github.com/dstengle/shopsystem-scenarios@v0.2.0",
-    "shop-templates @ git+https://github.com/dstengle/shopsystem-templates@v0.2.0",
-    "shopsystem-messaging @ git+https://github.com/dstengle/shopsystem-messaging@v0.2.1",
-    "shopsystem-bc-launcher @ git+https://github.com/dstengle/shopsystem-bc-launcher@v0.2.0",
+    "shop-templates @ git+https://github.com/dstengle/shopsystem-templates@v0.14.0",
+    "shopsystem-messaging @ git+https://github.com/dstengle/shopsystem-messaging@v0.4.0",
+    "shopsystem-bc-launcher @ git+https://github.com/dstengle/shopsystem-bc-launcher@v0.3.3",
 ]
 
 [project.urls]

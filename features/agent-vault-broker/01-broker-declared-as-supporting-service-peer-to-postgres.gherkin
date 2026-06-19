@@ -8,8 +8,7 @@ Feature: the agent-vault broker is declared as a lead-shop supporting-service in
   lead's own compose surface (ADR-028 D2): it inspects compose.yaml, the lead's own
   artifact surface, not BC source. It pins the SHAPE of the broker service so the
   lead-shop compose edit under lead-mdng has a target.
-
-@scenario_hash:a2d185d636d8ea50 @lead_integration:agent-vault-broker
+  @scenario_hash:a2d185d636d8ea50
   Scenario: compose.yaml declares the agent-vault broker as a service on the shopsystem network with a persistent vault volume and restart policy
     Given the lead shop's compose.yaml
     When the compose service definitions are inspected

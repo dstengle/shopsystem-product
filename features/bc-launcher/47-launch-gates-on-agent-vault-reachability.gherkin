@@ -7,8 +7,7 @@ Feature: bc-container launch verifies the agent-vault broker is reachable before
   engaged-but-broken agent that discovers the breakage mid-work (every brokered
   request fails). This scenario pins an agent_vault_reachable readiness barrier at
   launch, the precedent being messaging_db_reachable (driver.py:312).
-
-@scenario_hash:6cb07698a874aa47 @bc:shopsystem-bc-launcher
+  @scenario_hash:6cb07698a874aa47
   Scenario: bc-container launch surfaces a readiness failure when the agent-vault broker is unreachable, before the agent engages
     Given the shopsystem-bc-launcher BC is installed
     And no Docker container named "bc-shopsystem-messaging" is running
@@ -17,8 +16,7 @@ Feature: bc-container launch verifies the agent-vault broker is reachable before
     Then the command exits non-zero
     And stderr reports an agent-vault readiness failure that names the configured agent-vault broker address
     And no startup prompt has been sent to the tmux session named "agent" in container "bc-shopsystem-messaging"
-
-@scenario_hash:3b2a81c1bfe2897e @bc:shopsystem-bc-launcher
+  @scenario_hash:3b2a81c1bfe2897e
   Scenario: a BC container whose agent-vault broker is unreachable reports unhealthy despite the process being alive
     Given a BC container named "bc-shopsystem-messaging" is running with its agent process alive
     And the agent-vault broker configured for the container is not reachable

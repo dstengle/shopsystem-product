@@ -9,8 +9,7 @@ Feature: an autonomous spike detects a human-in-the-loop wall, never fakes it, a
   blocker, so the spike may still reach confirm provided the creds-free plumbing is
   proven. This is a LEAD-PROCESS behavior pinning autonomous-spike discipline; there
   is no BC addressee. Faking the secret to manufacture a green result is forbidden.
-
-@scenario_hash:6590500a359b43c5 @lead_integration:spike-lifecycle
+  @scenario_hash:3a14be3659e2516a
   Scenario: a spike hitting a human-gated step proves the plumbing creds-free, records the wall, and may still confirm
     Given a spike whose execution reaches a step requiring a one-time human secret the autonomous agent cannot supply
     When the spike handles that step

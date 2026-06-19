@@ -5,8 +5,7 @@ Feature: against an unreachable broker, bc-container launch exits non-zero, name
   database is reachable but the real broker is down, launch must fail closed — it does
   not present an engaged-but-broken agent that discovers the breakage mid-work on every
   brokered request. Lead-owned integration check against the real broker.
-
-@scenario_hash:2264ddea33fe67d4 @lead_integration:agent-vault-broker
+  @scenario_hash:2264ddea33fe67d4
   Scenario: launch exits non-zero and withholds the startup prompt when the broker is unreachable
     Given the messaging postgres is reachable on the shopsystem network
     And the agent-vault broker on the shopsystem network is not reachable

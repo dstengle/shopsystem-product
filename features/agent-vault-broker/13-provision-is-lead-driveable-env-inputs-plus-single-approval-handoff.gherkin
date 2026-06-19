@@ -14,7 +14,7 @@
 # PRESERVES features/agent-vault-broker/11 @scenario_hash:72af524bca85f59c — the
 # real OAuth secret is supplied only at approve-time (ADR-026 D4) and no automated
 # step transports a real credential; this scenario must not weaken that guarantee.
-@scenario_hash:1d08c456af08d577 @bc:shopsystem-templates
+  @scenario_hash:1d08c456af08d577
   Scenario: provision takes non-OAuth inputs via env/args and isolates the OAuth approval into a lead-presentable handoff
     Given a running agent-vault broker with an empty vault
     And the owner password and the GitHub username and PAT are supplied via environment variables or arguments

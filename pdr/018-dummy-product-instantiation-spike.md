@@ -89,6 +89,16 @@ typed message round-trip (condition 4):
    + installed tools. (If the run silently reuses a shopsystem artifact, the gate
    fails: the inheritance boundary is part of what is under test.)
 
+   *Gate-condition-1 interpretation note (lead-ii9q, 2026-06-12 spike iter-2):*
+   "empty" here means **no carried-over content** — the gate is satisfied
+   whether the dirs are *absent entirely* or *present-and-empty*. The v0.5.0
+   bootstrap renders `briefs/ adr/ pdr/ features/` as ABSENT (`ls: No such
+   file or directory`), which SATISFIES this condition. Read the check as
+   "zero inherited shopsystem artifacts," not "scaffolded dirs exist and are
+   empty." (If placeholder dirs + `.gitkeep` are later wanted as an author
+   ergonomic, that is a separate shopsystem-templates request, not a gate
+   failure.)
+
 2. **A distinct identity, end to end.** A system slug that is **not**
    `shopsystem` and an org that is **not** `dstengle`, carried through every
    layer the review named: messaging address projection, the BC image

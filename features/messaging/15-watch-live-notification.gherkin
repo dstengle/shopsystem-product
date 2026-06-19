@@ -1,5 +1,4 @@
-@bc:shopsystem-messaging
-@scenario_hash:6b5910b7b30777d8
+@scenario_hash:cf3b43277fa2f513
 Scenario: shop-msg watch outputs one line to stdout when a new message is inserted into the inbox after startup drain
   Given an empty BC at a temporary path with no unprocessed inbox messages
   And shop-msg watch is running in the background and has completed its startup drain

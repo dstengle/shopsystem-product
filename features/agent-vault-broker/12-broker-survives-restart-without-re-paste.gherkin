@@ -5,8 +5,7 @@ Feature: the broker survives a restart and re-opens its vault without a human re
   secrets out of band: the master password is auto-unlocked from the lead .env file, so
   a restart re-opens the vault rather than becoming a human-gated re-provisioning event.
   Lead-owned integration check against the real broker.
-
-@scenario_hash:9bf7669e98c01448 @lead_integration:agent-vault-broker
+  @scenario_hash:9bf7669e98c01448
   Scenario: after a broker restart the vault re-opens from the .env master password and brokered auth resumes with no re-paste
     Given a provisioned, running agent-vault broker whose master password is set in the lead .env file
     And a BC's brokered Claude and GitHub operations succeed before the restart

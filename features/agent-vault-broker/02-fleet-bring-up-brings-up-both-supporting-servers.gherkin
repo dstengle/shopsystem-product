@@ -11,8 +11,7 @@ Feature: a single fleet bring-up entrypoint brings up BOTH supporting servers â€
   lead-shell's own ~/.claude / ~/.gitconfig host mounts â€” agent-vault broker scope is
   BC CONTAINERS ONLY; the lead shop's own shell credential mounts are unchanged. That
   invariant is pinned separately in scenario 03.
-
-@scenario_hash:c33658fddacd00c2 @lead_integration:agent-vault-broker
+  @scenario_hash:c33658fddacd00c2
   Scenario: the fleet bring-up entrypoint brings up both the messaging postgres and the agent-vault broker
     Given the agent-vault broker is declared as a supporting service in compose.yaml
     And neither the messaging postgres nor the agent-vault broker container is currently running

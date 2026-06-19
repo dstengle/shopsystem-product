@@ -6,16 +6,14 @@ Feature: the agent-vault broker is provisioned with real credentials by a one-ti
   broker vault once. This is an explicit PRECONDITION of brokered launch, not an
   automated launch step: no part of bc-container launch reads, writes, or transports a
   real credential, and no real credential is ever placed inside a container.
-
-@scenario_hash:2a4e9889c141c790 @bc:shopsystem-bc-launcher
+  @scenario_hash:2a4e9889c141c790
   Scenario: brokered launch presupposes the broker vault already holds the real credentials, provisioned out of band
     Given the agent-vault broker has been provisioned out of band with the real Claude OAuth credential and the real GitHub credential
     And the shopsystem-bc-launcher BC is installed
     When bc-container launch is run with BC name "shopsystem-messaging" against the provisioned broker
     Then the brokered Claude OAuth substitution and the brokered GitHub substitution both succeed
     And bc-container launch performed no step that read a real credential from any host file
-
-@scenario_hash:f1b70c2b9ec76b98 @bc:shopsystem-bc-launcher
+  @scenario_hash:f1b70c2b9ec76b98
   Scenario: bc-container launch never writes a real credential into the broker vault or into a container
     Given the shopsystem-bc-launcher BC is installed
     When bc-container launch is run with BC name "shopsystem-messaging"

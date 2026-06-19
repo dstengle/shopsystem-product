@@ -1,9 +1,9 @@
-@scenario_hash:c8d531e984ca6920
+@scenario_hash:19443aaf1d7d9e79
 Scenario: each BC entry in the manifest has a canonical name field
   Given the manifest file is present at its well-known path
   When a script parses the manifest file
   Then every BC entry has a non-empty canonical name field
-  And every canonical name follows the "shopsystem-<identifier>" pattern
+  And every canonical name follows the "<product-slug>-<identifier>" pattern, where <product-slug> is the configured product slug (defaulting to "shopsystem" when no non-default slug is configured)
 
 @scenario_hash:2fe622be2f3d9310
 Scenario: each BC entry in the manifest has a GitHub remote URL field

@@ -10,8 +10,7 @@ Feature: a spike executes via Workflow and returns its finding as markdown, not 
   LEAD-PROCESS behavior: Workflow is the lead host's execution engine, not a current BC,
   so there is no BC addressee; flagged for the discriminator as the scenario most
   BC-adjacent should a Workflow-owning BC ever exist.
-
-@scenario_hash:7a9d575ab33147fd @lead_integration:spike-lifecycle
+  @scenario_hash:765f5473b2d121ec
   Scenario: a spike executes via Workflow and returns a markdown finding rather than a large array-heavy structured emit
     Given a spike that runs its execution through the Workflow multi-agent engine
     When the spike emits its durable finding

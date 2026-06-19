@@ -8,6 +8,9 @@
       ],
      "postCreateCommand": "cp /home/vscode/.claude/.claude.json /home/vscode/ && cp /tmp/host-gitconfig /home/vscode/.gitconfig",
      "remoteUser": "vscode",
+     "containerEnv": {
+        "SHOPMSG_DSN": "postgresql://postgres:postgres@shopsystem-messaging-postgres-1:5432/shopsystem"
+     },
      "runArgs": ["--network=shopsystem"]
      
 }

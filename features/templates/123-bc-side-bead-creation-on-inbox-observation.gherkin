@@ -76,7 +76,7 @@ Scenario: re-observation of the same inbox row is idempotent — "shop-msg pendi
   And the load-bearing property pinned here is idempotency on re-observation per ADR-017 decision 1 and ADR-016 decision 2: the CLI's side-effect is bead-creation-on-first-observation-only, with first-observation determined by the presence or absence of an existing BC-side bead carrying the matching "Lead work_id: <work_id>" cross-reference
 
 
-@scenario_hash:4dbddc9c5863ebe8
+@scenario_hash:a043c51c23afb0e2
 Scenario: shop-msg respond clarify on the BC side updates the BC-side bead's status to blocked with an appended note summarizing the question raised, as a CLI-layer side effect of the same transactional boundary as the outbound emission
   Given a BC "shopsystem-messaging" with its own bd registry
   And a BC-side bead "shopsystem-messaging-xyz" exists with status="open" and cross-reference "Lead work_id: lead-ddd" (created on first observation of the inbox row for work_id="lead-ddd")
@@ -88,7 +88,7 @@ Scenario: shop-msg respond clarify on the BC side updates the BC-side bead's sta
   And both the BC-bead status flip and the lead-inbox deposit are governed by ADR-012's atomicity protocol: a crash mid-respond leaves a recoverable partial state for the sweeper
   When the BC operator runs "shop-msg respond work_done --bc shopsystem-messaging --work-id lead-eee --status complete --summary 'shipped a89bc12'" against a different bead "shopsystem-messaging-www" with cross-reference "Lead work_id: lead-eee"
   Then the command exits zero and the BC-side bead "shopsystem-messaging-www" has its status flipped to "closed" per ADR-017 decision 4's mapping (work_done(complete) → closed)
-  When the BC operator runs "shop-msg respond mechanism_observation --bc shopsystem-messaging --work-id lead-fff --note 'observed framework quirk: ...'"
+  When the BC operator runs "shop-msg respond mechanism_observation --bc shopsystem-messaging --work-id lead-fff --subject 'observed framework quirk' --body 'the CLI surface accepts a structured observation routed through the MechanismObservation schema rather than a free-form note flag'"
   Then the command exits zero and the BC-side bead with cross-reference "Lead work_id: lead-fff" has its status unchanged but a note appended recording the observation per ADR-017 decision 4's mapping (mechanism_observation → unchanged + note)
   And the load-bearing property pinned here is the status-transition contract from ADR-017 decision 4 realized mechanically via ADR-016: clarify→blocked, work_done(complete)→closed, work_done(blocked)→blocked, mechanism_observation→unchanged-with-note; the agent does not run bd update by hand
 
