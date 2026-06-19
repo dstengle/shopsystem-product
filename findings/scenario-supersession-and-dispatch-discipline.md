@@ -34,7 +34,26 @@ lead's ADR-018 artifact surface) can be contradicted/superseded by a new
 dispatch, and the lead cannot see the collision at compose time. Observed
 three times: agent-vault (lead-v4ih superseded 7 host-cred-mount scenarios),
 respond-guard (lead-rl0f contradicted 2 prime_lead scenarios), each caught
-by the BC via `clarify` (loop worked as designed). Contrast the GOOD case
+by the BC via `clarify` (loop worked as designed). A FOURTH case
+(lead-k4k7, 2026-06-19) sharpens the failure mode: the dispatch text
+affirmatively asserted "no prior scenario pins this behavior, no
+conflicting `@scenario_hash` to retire" — but BC-side
+`@scenario_hash:251984e3ac55e8f9` (born lead-q5k7) pinned the SAME code
+path with the OPPOSITE disposition (skill-refresh failure is fatal vs.
+k4k7's warn-and-continue). The lead's `grep @scenario_hash features/`
+enumeration correctly returned "not in lead-held features/" — and that is
+precisely the blind spot: a BC-side PINNED hash existed, invisible to the
+lead-held grep, while the dispatch claimed none did. The no-reviewer
+implementer self-resolved by rewriting 251984e3 in place to
+warn-and-continue and surfaced the miss via `mechanism_observation`; lead
+ruling recorded (lead-ogky): q5k7's fatal pin IS superseded by k4k7. Two
+lessons: (a) the enumeration miss is NOT limited to BC-LOCAL *unpinned*
+scenarios — it covers BC-LOCAL *pinned* hashes too, which live ONLY in the
+BC's own register; (b) NEVER assert "no conflicting hash exists" in
+dispatch prose on the strength of the lead-held grep alone — that grep
+cannot see the BC's register; the affirmative claim must be backed by the
+BC's mailbox-reported register or stated as "none in lead-held features/;
+BC to reconcile its own register." Contrast the GOOD case
 (ADR-028 D3): `f23dfbe84c899968` lived on the lead's OWN ADR-018-visible
 surface, so the lead retired it directly with no clarify round-trip.
 
