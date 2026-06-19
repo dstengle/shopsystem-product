@@ -62,6 +62,73 @@ question that would otherwise require running BC implementation routes
 to the BC as a `clarify` or `nudge`, never as a lead-side execution —
 do not reach for the proof yourself.
 
+### Pre-state discipline: "constant X consumed by function Y" must be verified against Y's BODY, not merely X's presence
+
+When a pre-state claims a constant/value X is consumed by a function Y —
+and uses that consumption to classify the surface as pinned-existing
+(tightening) versus net-new — confirm the claim against Y's BODY, not just
+that X is defined somewhere. **Presence of a constant is NOT evidence that
+it is live.** If Y does not actually reference X, the surface is NET-NEW
+(`assign_scenarios`), not a tightening (`request_bugfix`); and the
+revert-teeth must bind the ACTUAL call site, not the dead definition.
+
+Concrete grounding: lead-rfc5 (2026-06-12) — a dispatch pre-state asserted
+that `BC_NAME_RE` (`manifest.py:34`) was "consumed by `validate()` at
+`:170`" and used that to gate the CLI as a tightening. In fact `validate()`
+never referenced `BC_NAME_RE`; the constant was DEAD CODE, only asserted in
+`tests/conftest.py`. The change was net-new behavior dressed as a
+tightening, and a less-careful implementer could have parameterized the
+dead constant and shipped a no-op. ("Body" here is the lead-visible
+artifact text / BC-reported demonstration — never lead-side execution of
+BC source, ADR-018 D1/D2.)
+
+### Pre-state discipline: recompute canonical-template pre-state from PACKAGE DATA, not the lead's local poured primer copy
+
+When composing a dispatch that revises a CANONICAL template
+(`claude/<shop>.md`, `lead-architect.md`, `lead-po.md`, `bc-*.md`),
+recompute the pre-state from ACTUAL PACKAGE DATA at compose time — the
+installed canonical template the BC will edit (`shop-templates show
+<role>` / the installed `claude/<shop>.md`), reconciled with the BC's last
+reported `origin/main` commit — NOT the lead host's local poured
+`.claude/canonical/lead-primer.md`. That poured primer is a derived POUR
+SOURCE (the intended end-state) that can outrun OR lag canonical, so it is
+not admissible as the pre-state. Cite the package-data pre-state in DELTA
+EVIDENCE, distinct from the pour-source intent.
+
+CAVEAT: installed package data may itself LAG the BC's `origin/main`
+(ADR-018: the lead cannot git-observe the BC tree). So "package data at
+compose time" = installed package data + the BC's last reported
+`origin/main`, reconciled, with DELTA EVIDENCE noting any divergence.
+
+Concrete grounding: lead-f3gm (2026-06-12) — a `request_bugfix` DELTA
+EVIDENCE described a pre-state computed against the lead's LOCAL primer
+copy that had drifted AHEAD of canonical package data (it claimed the PRIME
+DIRECTIVE was entirely absent when it was merely mispositioned, and claimed
+the older prohibition-framed choice-suppression body when commit 2730ea0
+had already partially reframed it).
+
+### TUI readiness-marker discipline: verify the marker does not match adjacent UI states
+
+When you select a SCREEN-SCRAPED readiness marker for a TUI-driven
+launcher — a string token used to decide that a UI pane has reached a
+given state — you must verify the marker token does NOT also appear in
+ADJACENT UI states. A marker that matches in more than one state silently
+bypasses the intended wait and re-creates a deadlock signature in a
+different form: the wait "succeeds" against pane content that actually
+belongs to the earlier state, so the step the wait was meant to gate
+(e.g. an Enter keypress) is skipped.
+
+Concrete grounding: the bare `❯` glyph is NOT a discriminating Claude
+Code post-trust input-ready marker — it ALSO appears in the PRE-trust
+pane as the trust-prompt selector arrow (`❯ 1. Yes, I trust this
+folder`). With `CLAUDE_INPUT_READY_MARKER='❯'` the post-trust wait would
+succeed trivially on the same pane content that already satisfied the
+pre-trust marker, silently bypassing the trust-accept Enter. The
+resolution (lead-5ig) set `CLAUDE_INPUT_READY_MARKER='bypass permissions
+on'` — footer text present ONLY once the trust prompt has cleared AND
+`--dangerously-skip-permissions` is active. This is a durable property of
+how Claude Code v2.1.x renders its TUI, not specific to lead-5ig.
+
 ## Your job
 
 Your job is the Architect activity catalogue, made operational. There are
