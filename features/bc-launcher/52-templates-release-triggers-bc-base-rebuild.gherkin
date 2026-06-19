@@ -1,0 +1,20 @@
+Feature: a shopsystem-templates release automatically triggers a bc-base rebuild
+
+  Closes defect (1) of lead-pwa2 — the EVENT MISMATCH. shopsystem-templates
+  release.yml POSTs a repository_dispatch carrying event_type
+  "shopsystem-templates-released" (with the released tag in client_payload),
+  but no bc-launcher workflow listens for that event type, so the dispatch is a
+  silent no-op and the rebuild never fires. This scenario pins the observable
+  contract independently of which side is changed: when shopsystem-templates
+  publishes a release, the bc-launcher rebuild-bc-base workflow runs. The fix is
+  expected to align the listened event type with the emitted one; this scenario
+  asserts only the observable trigger, not the wiring. (Targets
+  shopsystem-bc-launcher.)
+
+  @scenario_hash:c179b0c448ca851c
+  Scenario: a shopsystem-templates release dispatch starts a bc-base rebuild run
+    Given the shopsystem-templates repository publishes a release for the tag "vT_new"
+    And that release emits a repository_dispatch to the shopsystem-bc-launcher repository carrying the released tag "vT_new" in its client_payload
+    When that repository_dispatch is delivered to shopsystem-bc-launcher
+    Then a bc-base rebuild workflow run is started in the shopsystem-bc-launcher repository in response to that dispatch
+    And that workflow run receives the released tag "vT_new" from the dispatch client_payload

@@ -5,6 +5,9 @@
 research-backed, empowered-PM role structure (deep-research bead lead-8lgi: 27
 sources, 24 adversarially-confirmed claims) plus a durable user steering
 decision that the PM role is **product-general**, not framework-specific.
+**router-level discovery-dialogue gate (2026-06-19, bead lead-086d)** — adds the
+product-authority discovery-dialogue gate as a first-class discipline and corrects
+an over-correction in the experimental skills' adaptation rule #2.
 **Authors:** dstengle, Claude (lead-po)
 **Anchored to:** PO intent expressed in conversation 2026-06-04:
 *"I want the PO to do more product-manager work vs the straightforward
@@ -152,6 +155,40 @@ with a recorded reason**; **output volume is never a success measure.** A PO
 that treats "scenarios authored" or "features shipped" as a success measure has
 fallen into the build trap this gate exists to prevent.
 
+## Structural gate — the PRODUCT-AUTHORITY DISCOVERY DIALOGUE (the round-trip that must have a home)
+
+Discipline 1 (Problem discovery & selection) requires that every committed intent trace to a
+*validated* problem / job-to-be-done. Validation is impossible without a round-trip to the party who
+holds product authority. In a consumer instance that party is the user/market; in this
+framework-as-product bootstrap instance it is the operator/adopter — concretely, dave. That round-trip
+was being SKIPPED, for a structural reason: discovery was executed inside non-interactive subagents
+that cannot talk to a human, so the clarifying dialogue had no home in the loop and the product
+authority had to VOLUNTEER scope the process should have SOLICITED.
+
+This is distinct from, and must not be conflated with, the autonomous BC fleet loop. The fleet loop
+(Implementer<->Reviewer; lead<->BC clarify) is rightly NOT stalled on a human — COMMIT-TO-SPECIFICS
+governs it. The product-authority round-trip is the OPPOSITE: it must be solicited, not suppressed.
+The experimental-skills adaptation rule #2 over-corrected by collapsing the two; this PDR corrects it.
+
+GATE (load-bearing, router-level): the product-authority discovery dialogue is a first-class
+discovery discipline that runs at the ROUTER / main-agent level — the only level where dialogue with
+the product authority is possible — and it MUST run BEFORE discovery subagents are dispatched, because
+those subagents cannot conduct it themselves.
+
+SUFFICIENCY CRITERION (the gate): before a discovery subagent (jobs-to-be-done, problem-framing-canvas,
+opportunity-solution-tree, customer-journey-map, or any skill whose adapted furniture carries an
+"interactive"/"workshop" loop) is dispatched, the router has either
+  (i) conducted the product-authority discovery dialogue at the main-agent level and captured its
+      output as interview-notes the subagent receives as input (the brief/bead carries it); OR
+  (ii) recorded an EXPLICIT reason the dialogue is not required for this dispatch (e.g. the scope and
+      product vocabulary are already pinned by an existing brief/PDR the dispatch cites).
+A discovery dispatch that does neither has fallen through the gate. Silent inference of scope by a
+non-interactive subagent is the failure mode this gate exists to prevent.
+
+This gate composes with the anti-build-trap gate: the build trap asks "should we build this at all?";
+the discovery-dialogue gate ensures the "what problem / for whom / in what words" is solicited from
+the product authority rather than inferred. Both are upstream of authoring intent.
+
 ## How the four old flavors map (supersession, stated for legibility)
 
 The v1 "four research flavors" are superseded — not deleted but *re-placed* —
@@ -230,6 +267,12 @@ does not re-litigate them):
   the specific (the default) or records explicitly that it cannot commit yet —
   it does not stall. The PO does not introduce a stakeholder round-trip the
   shopsystem loop does not already have.
+  - A discovery skill's human-checkpoint does NOT collapse to "the PO commits the specific" when the
+    checkpoint is the PRODUCT-AUTHORITY discovery dialogue. That checkpoint maps to the router-level
+    discovery gate above (run the dialogue at the main-agent level, or record why it is not needed),
+    NOT to silent commitment by a non-interactive subagent. The "do not introduce a stakeholder
+    round-trip the loop does not already have" constraint refers to the BC FLEET loop; it never
+    licensed skipping the product-authority round-trip the loop DOES already have at the router level.
 
 ## Structurizr-workspace-maintenance development (lead-architect)
 
@@ -347,6 +390,9 @@ failure mode). Do not re-derive; this PDR encodes the reconciled output.
 - **The structurizr DSL toolchain / rendering** (how the workspace is
   validated or rendered) is out of scope here; this PDR develops the
   *activity discipline*, not the tooling.
+- **Whether the router discovery gate is enforced by a poured router checklist item, a skill
+  precondition assertion, or both, is a routing/implementation decision for the Architect; this PDR
+  pins that the gate EXISTS and what it requires, not its enforcement mechanism.**
 
 ## Cross-references
 

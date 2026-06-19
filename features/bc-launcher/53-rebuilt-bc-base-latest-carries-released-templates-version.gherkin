@@ -1,0 +1,20 @@
+Feature: the rebuilt bc-base:latest carries the templates version from the release that triggered it
+
+  Closes defect (2) of lead-pwa2 — the HARD-PIN. Even once the rebuild fires
+  (scenario 52), bc-base/Dockerfile hard-pins shop-templates at a fixed
+  "@vMAJOR.MINOR.PATCH", and the no-cache rebuild reinstalls that exact pin, so
+  a fresh build can never pick up a newer templates release without a manual
+  Dockerfile pin bump. This scenario pins the end-to-end observable: after a
+  templates release propagates, the resulting bc-base:latest carries the
+  shop-templates version from that release — not the old hard-pinned version.
+  The released tag passed in the dispatch client_payload (scenario 52) must be
+  applied as the shop-templates pin for the build. (Targets
+  shopsystem-bc-launcher.)
+
+  @scenario_hash:edd2c813688ab768
+  Scenario: after a templates release propagates, bc-base:latest carries the released shop-templates version
+    Given the published "bc-base:latest" image carries an installed shop-templates at version "vT_old"
+    And the shopsystem-templates repository publishes a newer release for the tag "vT_new" distinct from "vT_old"
+    When the bc-base rebuild triggered by that release completes and republishes the "latest" tag
+    Then pulling "ghcr.io/dstengle/shopsystem-bc-base:latest" yields an image whose installed shop-templates reports version "vT_new"
+    And the installed shop-templates version is no longer the previously hard-pinned "vT_old"
