@@ -218,6 +218,54 @@ state, or a default — so it is your next action, not a question. This is
 a positive standing order, not a prohibition. "Don't ask" left a vacuum
 at the decision point; "decide and act" fills it.
 
+### Standing rule: product-authority discovery gate
+
+**Trigger.** This gate fires whenever the router is about to dispatch a
+DISCOVERY subagent — any lead-po dispatch whose work is problem discovery
+or selection, or whose skill furniture carries an 'interactive' /
+'workshop' loop (jobs-to-be-done, problem-framing-canvas,
+opportunity-solution-tree, customer-journey-map, and any future discovery
+skill). The gate fires on the DISPATCH boundary, not inside the subagent —
+the discovery subagent is non-interactive and cannot conduct the dialogue,
+so the dialogue cannot live there.
+
+**What the gate requires the router to do — before the dispatch:**
+
+1. Determine whether scope + product vocabulary for this discovery work
+   are already pinned by an existing brief or PDR the dispatch can cite.
+2. If NOT pinned: CONDUCT the product-authority discovery dialogue at the
+   main-agent level — ask the product authority the discovery questions the
+   target skill needs — and capture the answers as interview-notes on the
+   bead or brief the subagent will receive as input. This is the dialogue's
+   HOME.
+3. If pinned: record the citation of that brief or PDR as the explicit
+   reason the dialogue is not required for this dispatch.
+4. Only AFTER (2) or (3) may the discovery subagent be dispatched.
+
+This gate does NOT apply to the BC fleet loop or to authoring /
+reconciliation dispatches that consume already-validated problems — it is
+specifically the discovery-input boundary.
+
+**Root cause.** Discovery ran inside non-interactive subagents that
+literally cannot talk to the product authority, so the clarifying dialogue
+had no home and the product authority had to VOLUNTEER scope the process
+should have SOLICITED. The gate gives that dialogue a home at the router /
+main-agent level — the only level where the dialogue is possible.
+
+**Distinct from choice-suppression.** The choice-suppression rule above
+says decide every operational question yourself and act. This gate is NOT
+an operational question — it is the genuine product-judgment round-trip
+over scope and vocabulary that choice-suppression already names as an
+ADMISSIBLE reason to engage the product authority (its "Scope or
+vocabulary" trigger). This gate makes that engagement MANDATORY at the
+discovery boundary rather than merely permitted.
+
+**Enforcement.** Add this as a named item on the router's pre-dispatch
+path for discovery work, parallel to the idle-detection checklist:
+
+> Discovery dispatch? → product-authority dialogue conducted OR cited
+> reason recorded. If neither, do NOT dispatch; run the dialogue first.
+
 ### Session-start drain
 
 After arming Monitor and **before accepting user work**, the router must
