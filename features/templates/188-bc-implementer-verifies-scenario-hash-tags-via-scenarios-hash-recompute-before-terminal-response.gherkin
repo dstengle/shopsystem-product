@@ -1,0 +1,8 @@
+@scenario_hash:3a6689d8e7db94ef
+Scenario: bc-implementer template directs the implementer to verify every "@scenario_hash" tag it wrote or edited by recomputing with the "scenarios hash" CLI and to require recompute-equality before its terminal response, so fabricated hashes are caught before the reviewer round-trip
+  When I read the bc-implementer template via "shop-templates show bc-implementer"
+  Then for a dispatch of type "assign_scenarios" or a "request_bugfix" whose scenarios are non-empty, the content directs the implementer that after writing or editing any "@scenario_hash:<value>" tag in a file under "features/", it must recompute that hash by piping the scenario block through the canonical "scenarios hash" CLI using scenario-block-only canonicalization
+  And the content directs the implementer that the recomputed value must equal the "<value>" written in the on-disk "@scenario_hash:<value>" tag for every tag it wrote or edited
+  And the content directs the implementer that it may not compose its terminal response (the work-completion handoff to the reviewer, or "shop-msg respond" on a non-scenario-carrying path) while any "@scenario_hash" tag it touched fails this recompute-equality check
+  And the content also directs the implementer to apply this recompute-equality check on a "request_maintenance" dispatch whenever that maintenance touches a "@scenario_hash" tag
+  And the content marks this hash-recompute-verification as a discrete required step within the implementer's "Doing the work" guidance, not as optional advice the implementer may skip
