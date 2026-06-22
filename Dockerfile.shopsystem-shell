@@ -37,6 +37,47 @@ RUN pipx install shop-msg \
     && pipx install scenarios \
     && pipx install shop-templates
 
+# Install Claude Code (the brokered lead agent) for the vscode user via the
+# official PUBLIC installer, so `claude` lands on PATH. The installer drops the
+# binary under ~/.local/bin; put that on PATH for every shell. Without this the
+# default image is "claude: command not found" on a brokered launch (lead-hguw).
+ENV PATH="/home/vscode/.local/bin:${PATH}"
+RUN curl -fsSL https://claude.ai/install.sh | bash
+
+# CA-materialization runs at container START, not build time: the shop-shell
+# script delivers the broker CA into the container env as AGENT_VAULT_CA_PEM
+# (alongside HTTPS_PROXY=http://agent-vault:14322). The ENTRYPOINT below writes
+# that PEM into the system trust store and runs update-ca-certificates BEFORE
+# the CMD/args exec, so claude's first outbound TLS to the :14322 MITM proxy
+# validates against the broker CA. Writing to the trust-anchor dir +
+# update-ca-certificates needs root; the container runs as vscode, so the
+# entrypoint uses the devcontainer base's passwordless sudo for vscode. If
+# AGENT_VAULT_CA_PEM is absent (non-brokered launch) the entrypoint is a no-op
+# and still execs the command. (lead-hguw)
+USER root
+RUN printf '%s\n' \
+    '#!/usr/bin/env bash' \
+    'set -euo pipefail' \
+    '# Materialize the broker CA (delivered via env by bin/shop-shell) into the' \
+    '# system trust store before the brokered agent makes its first TLS call.' \
+    'if [ -n "${AGENT_VAULT_CA_PEM:-}" ]; then' \
+    '  printf "%s\n" "${AGENT_VAULT_CA_PEM}" \' \
+    '    | sudo tee /usr/local/share/ca-certificates/agent-vault-ca.crt >/dev/null' \
+    '  sudo update-ca-certificates >/dev/null 2>&1 || true' \
+    'fi' \
+    'exec "$@"' \
+    > /usr/local/bin/agent-vault-ca-entrypoint.sh \
+    && chmod +x /usr/local/bin/agent-vault-ca-entrypoint.sh
+
+# Drop back to the non-root vscode user for the final image (scenario 135 keeps
+# a non-root USER). The entrypoint elevates only the CA-write via passwordless
+# sudo, which the devcontainer base grants the vscode user.
+USER vscode
+
 WORKDIR /workspace
 
+# The entrypoint materializes the CA (when present) then execs the CMD; bash
+# remains the effective shell, so a default `bin/shop-shell` launch lands the
+# operator (or the brokered claude agent) in a trusted shell.
+ENTRYPOINT ["/usr/local/bin/agent-vault-ca-entrypoint.sh"]
 CMD ["/bin/bash"]
