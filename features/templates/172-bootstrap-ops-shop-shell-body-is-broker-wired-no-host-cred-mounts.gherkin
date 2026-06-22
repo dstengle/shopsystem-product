@@ -1,16 +1,36 @@
-@scenario_hash:5335c39eb06f7493
-Scenario Outline: bootstrap of a "lead" shop named "<slug>" writes "bin/shop-shell" as an executable bash wrapper that is broker-wired (tightening scenario 134) — its body carries the agent-vault broker credentials and the :14322 HTTPS proxy, greps for the <slug>-derived container, errors when no token is present, and invokes "agent-vault-check"; while still preserving the executable bash wrapper, "docker compose up", "docker run", and "--user vscode" guarantees, and mounting no host "~/.claude" or "~/.gitconfig"
+# Supersedes the prior scenario 172 (@scenario_hash:5335c39eb06f7493), under
+# PDR-020 slice 2 (lead-6ox4). The prior 172 pinned bin/shop-shell as a
+# hand-rolled REIMPLEMENTATION of the brokered launch — its body carried the
+# agent-vault credentials and the :14322 HTTPS proxy and invoked
+# "agent-vault-check" itself. PDR-020 converges that onto one launch codebase:
+# bin/shop-shell now DELEGATES the brokered launch to "bc-container" running in
+# an ephemeral bc-base, which is the reference implementation of the proxy / CA /
+# onboarding (ADR-026, ADR-028). The DURABLE property the prior 172 protected —
+# the wrapper mounts NO host "~/.claude" or "~/.gitconfig" credentials — is
+# PRESERVED here, now guaranteed by the launcher rather than re-asserted in
+# bespoke bash. The self-wired proxy / CA / agent-vault-check assertions are
+# RETIRED with this supersession (the launcher owns them). Compose bring-up of
+# postgres + agent-vault (ADR-028 D1) is unchanged. The lead-only docker-socket
+# mount and the local-repo workspace-mount launch flags are live in bc-base
+# v0.3.6 (verified).
+@scenario_hash:03f1256aefc7fad4
+Scenario Outline: bootstrap of a "lead" shop named "<slug>" writes "bin/shop-shell" as a thin wrapper that DELEGATES the brokered Claude launch to "bc-container" running in an ephemeral bc-base — it brings up the compose supporting services, assembles the operator agent-vault "--env-file", then runs "bc-container launch" mounting the lead repo as the workspace with the lead-only docker socket and a LEAD startup-prompt override, and "bc-container attach" — while constructing NO proxy URL, fetching NO CA, building NO shell image, and mounting NO host credentials
   Given an existing git repository at a target directory "/tmp/example-lead-shop" with no "bin/" subdirectory
   When I invoke the "shop-templates" bootstrap entry point with shop type "lead", shop name "<slug>", and target directory "/tmp/example-lead-shop"
   Then the exit code is 0
   And after the invocation the target directory contains a file at "bin/shop-shell" whose owner-execute permission bit is set and whose first line is exactly "#!/usr/bin/env bash"
-  And the body of "bin/shop-shell" contains the literal substring "docker compose" followed somewhere later in the file by the literal substring "up -d postgres", and contains the literal substring "docker run", and contains the literal substring "--user vscode"
-  And the body of "bin/shop-shell" references the environment variable "AGENT_VAULT_ADDR" and the environment variable "AGENT_VAULT_TOKEN" for broker credentials
-  And the body of "bin/shop-shell" references the proxy endpoint by the literal substring "14322" carried on an "HTTPS_PROXY" assignment
-  And the body of "bin/shop-shell" greps for a container name containing the literal substring "<slug>-postgres" or "<slug>-agent-vault"
-  And the body of "bin/shop-shell" contains a token-presence guard that exits non-zero with a diagnostic when the broker token is empty or unset
-  And the body of "bin/shop-shell" contains the literal substring "agent-vault-check"
-  And the body of "bin/shop-shell" does not contain the literal substring "$HOME/.claude" and does not contain the literal substring "$HOME/.gitconfig" and does not contain the literal substring "~/.claude" and does not contain the literal substring "~/.gitconfig"
+  And the body of "bin/shop-shell" contains the literal substring "docker compose" followed somewhere later in the file by the literal substring "up -d postgres agent-vault", so it brings up both supporting services per ADR-028 D1
+  And the body of "bin/shop-shell" assembles the operator agent-vault credentials into an env-file by referencing the literal substring "--env-file"
+  And the body of "bin/shop-shell" launches an ephemeral bc-base by the literal substring "docker run --rm" carrying the interactive flag literal substring "-it" and the bc-base image reference by the literal substring "shopsystem-bc-base"
+  And the body of "bin/shop-shell" mounts the host docker socket into that ephemeral bc-base by the literal substring "/var/run/docker.sock:/var/run/docker.sock"
+  And the body of "bin/shop-shell" mounts the lead repository into that ephemeral bc-base so the inner "bc-container" can see it
+  And the body of "bin/shop-shell" inside that ephemeral bc-base invokes "bc-container launch" carrying the literal substring "--workspace-mount" and the literal substring "--mount-docker-socket", so the launched lead session mounts the live lead working tree and is granted the lead-only docker-daemon access
+  And the body of "bin/shop-shell" passes a lead-specific startup prompt into the launch by the literal substring "--startup-prompt", overriding the BC-default session-start so the launched session runs the router session-start
+  And the body of "bin/shop-shell" drops the operator into the brokered session by the literal substring "bc-container attach"
+  And the body of "bin/shop-shell" does not contain the literal substring "14322" and does not contain the literal substring "HTTPS_PROXY", because proxy-URL construction is delegated to the launcher and not re-derived in the wrapper
+  And the body of "bin/shop-shell" does not contain the literal substring "agent-vault ca fetch" and does not contain the literal substring "agent-vault-check", because CA sourcing and the readiness check are delegated to the launcher and bc-base entrypoint
+  And the body of "bin/shop-shell" does not contain the literal substring "SHOPSYSTEM_SHELL_IMAGE" and does not contain the literal substring "docker build", because the dedicated shell image and its Dockerfile are retired
+  And the body of "bin/shop-shell" does not contain the literal substring "$HOME/.claude" and does not contain the literal substring "$HOME/.gitconfig" and does not contain the literal substring "~/.claude" and does not contain the literal substring "~/.gitconfig", so no host credentials are mounted
 
   Examples:
     | slug       |
