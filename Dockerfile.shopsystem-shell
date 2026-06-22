@@ -33,9 +33,20 @@ USER vscode
 # Install the framework CLIs (shop-msg, scenarios, shop-templates) with
 # pipx so the operator has the full toolchain on PATH inside the shell.
 # pipx ships on the devcontainer base for the vscode user.
-RUN pipx install shop-msg \
-    && pipx install scenarios \
-    && pipx install shop-templates
+#
+# These three distributions are NOT published to public PyPI, so a bare
+# `pipx install shop-msg` fails `docker build` at this step with
+# "No matching distribution found for shop-msg". Install each from its
+# PUBLIC git+https source instead, pinned to a RELEASED tag (the scenario-129
+# VCS-pin shape — pin a tag/ref, never a moving branch). Package -> repo:
+#   shop-msg        -> github.com/dstengle/shopsystem-messaging  @ v0.4.0
+#   scenarios       -> github.com/dstengle/shopsystem-scenarios   @ v0.2.0
+#   shop-templates  -> github.com/dstengle/shopsystem-templates   @ v0.18.0
+# (pipx reads the real distribution name from each repo's metadata and puts
+# the `shop-msg`, `scenarios`, and `shop-templates` console scripts on PATH.)
+RUN pipx install "git+https://github.com/dstengle/shopsystem-messaging.git@v0.4.0" \
+    && pipx install "git+https://github.com/dstengle/shopsystem-scenarios.git@v0.2.0" \
+    && pipx install "git+https://github.com/dstengle/shopsystem-templates.git@v0.18.0"
 
 # Install Claude Code (the brokered lead agent) for the vscode user via the
 # official PUBLIC installer, so `claude` lands on PATH. The installer drops the
