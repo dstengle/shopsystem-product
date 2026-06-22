@@ -140,3 +140,51 @@ mechanism doesn't yet exercise. It graduates from "degenerate by design" to
 "build it" when §2(1) or §3 is scheduled. Until then the role names a
 responsibility realized via the BC's reported register, not a missing lead
 artifact.
+
+## 6. NEVER cite a specific BC-side `@scenario_hash` in conflicting-coverage enumerations (lead-5k8c)
+
+**FIFTH empirical instance** (lead-5k8c `mechanism_observation`, 2026-06-22,
+provenance `shopsystem_bc_launcher-t6k`). The lead-5k8c `request_bugfix`
+dispatch enumerated three conflicting-coverage hashes and attributed one to
+the BC's register by value: "the k4k7 warn-and-continue invariant lives in
+YOUR register (BC-side `@scenario_hash:251984e3ac55e8f9`)." That hash does
+**not** resolve anywhere in the BC's `features/` register. Earlier this same
+session, **lead-sltr already re-pinned** that scenario to
+`db11ca7b46dd12a4` ("a failed skill-refresh warns and proceeds to
+agent-start without logging false success") as part of a hash-integrity
+recompute. The dispatch therefore carried a **phantom/stale BC-side hash**:
+the architect cited `251984e3` from stale session memory, the lead cannot
+see the BC register (ADR-018), and BC-side hashes go stale on re-pin. The
+other two enumerated hashes (`f4ebaa3f7559a84a`, `1f1d178bca957fbc`) are
+lead-held and were correctly labeled as such.
+
+**Why this is load-bearing, not work-item-local.** The bc-reviewer echoes
+the set of currently-passing scenario hashes back to the lead in
+`work_done.scenario_hashes` for reconciliation. If the lead's mental model
+holds `251984e3` as a live BC-held pin, reconciliation carries a phantom
+hash no BC artifact backs, and the generalization this bugfix performs
+(extending the warn-and-continue CLASS to bd-bootstrap, now pinned BC-side
+as `aecde8d40bc5a7d6`) cannot be cross-walked to the named prior pin.
+
+**Sharpened rule (adopted from the BC's `proposed_action`).** A dispatch's
+conflicting-coverage enumeration MUST NEVER cite a specific BC-side
+`@scenario_hash` *by value*. Two reasons compound: (a) the lead structurally
+cannot see the BC register (ADR-018), so it cannot verify the value resolves;
+and (b) BC-side hashes are mutable — any re-pin (e.g. lead-sltr's
+hash-integrity recompute) silently invalidates a value the architect
+remembers from a prior session. Therefore:
+- **Enumerate lead-held hashes by value** (these the lead can grep and
+  verify on its own ADR-018 surface) — as f4ebaa3f / 1f1d178b were here.
+- **Refer to BC-side coverage by class-name / description**, never by hash
+  value — e.g. "the k4k7 warn-and-continue invariant on skill-refresh
+  failure," not a hash. The BC resolves the description against its own
+  authoritative, current register; the lead never asserts a value it cannot
+  see and that may have moved.
+
+This is the actionable convergence of the §2 / lead-ogky blind spot (the
+lead cannot see BC-side pins) with its mutability corollary (even a
+correctly-remembered BC-side value goes stale on re-pin). The fix is not
+"reconcile harder against the mailbox register" but a flat prohibition:
+keep BC-side hash *values* out of dispatch prose entirely. Fold into the
+lead-architect role-template enumeration step
+(`request_maintenance → shopsystem-templates`).
