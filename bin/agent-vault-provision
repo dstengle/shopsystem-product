@@ -1,190 +1,410 @@
 #!/usr/bin/env bash
-# agent-vault-provision — the ONE human-gated credential paste (ADR-026 D4 /
-# PDR-017 SB-6), run ONCE to provision the broker vault for the fleet.
+# bin/agent-vault-provision — one-time credential provisioning for the
+# product's agent-vault broker (shop-owned, PDR-003 path F).
 #
-# Everything else about the broker is automated (compose brings it up,
-# .env auto-unlocks it on restart). This is the single out-of-band step:
-# a human reads the real Claude OAuth + GitHub credentials and stores them in
-# the broker vault. No other part of fleet bring-up or BC launch reads, writes,
-# or transports a real credential.
+# Provisions the long-lived secrets the agent-vault broker injects on the
+# wire for the bc-launcher containers and the daily-driver shell: the GitHub PAT,
+# any plain API tokens, AND the refreshing Claude-OAuth credential. Run it
+# once per product after `docker compose up -d agent-vault`.
 #
-# Run from the lead host after the broker is up:
-#   cp .env.example .env && edit .env   # set AGENT_VAULT_MASTER_PASSWORD
-#   bin/shop-shell                      # (or: docker compose up -d agent-vault)
-#   bin/agent-vault-provision
+# PRODUCT-SCOPED (lead-w87b / WS-2): the broker CONTAINER, the VAULT name,
+# and the docker NETWORK all derive from the bootstrap product slug
+# (shopsystem) so this script never targets another product's broker. The
+# broker container name matches the agent-vault service compose.yaml defines
+# (shopsystem-agent-vault) so provisioning lands on the compose-defined
+# broker. Every product-scoped token is rendered from the slug; none is
+# hardcoded to a specific product's broker container or vault name.
 #
-# The agent-vault CLI is invoked INSIDE the running broker container, so no host
-# install is needed. Commands follow agent-vault v0.7.0; if a flag is rejected,
-# confirm against `docker exec shopsystem-agent-vault-1 agent-vault <cmd> --help`
-# (this script prints what it is about to run and stops on error).
+# REAL CLI SURFACE (lead-beym / ADR-026 D2): the GitHub-PAT path is scripted
+# against the REAL agent-vault 0.32.0 command surface — owner-account
+# registration (`auth register`) -> vault (`vault create`) -> credential
+# (`vault credential set`) -> service (`vault service add`, github.com Basic
+# brokered over the single MITM proxy listener at :14322) -> agent token
+# (`agent create <slug>-fleet --token-only`). agent-vault 0.32.0 has NO
+# `put`/`store` verb; every invocation below is one of the real top-level
+# verbs (account/agent/auth/ca/catalog/master-password/owner/run/server/
+# user/vault/version). After provisioning, the real broker address and the
+# minted `av_agt_...` fleet token are written back into .env (Brief 011 Step 4
+# — the fleet token wires shop-shell + the BC launches).
 #
-# NOTE — Claude Code uses an OAuth Bearer flow, NOT the api-key `anthropic`
-# catalog template (spike lead-jkwo, finding 4). The three Bearer hosts below
-# must be configured as custom bearer services that reference token-key
-# CLAUDE_OAUTH.
-#
-# CRITICAL — the Claude credential is the REFRESHING OAuth credential TYPE, which
-# is NOT scriptable in agent-vault 0.32.0 (verified live 2026-06-10, lead-5jbc):
-# `credential set` and `proposal create --credential` are flat KEY=value /
-# KEY=description only — no Token-URL / Client-ID / refresh-token / auth-method
-# fields. The OAuth credential TYPE is created in the DASHBOARD Credentials tab
-# (:14321 on the docker host). The refresh behavior lives in the CREDENTIAL
-# object, not the service, so the services below stay fully scriptable; only the
-# Claude credential itself stops for a human dashboard step (step 4b). The old
-# static `CLAUDE_CODE_OAUTH_TOKEN` path expired the lead's creds — do NOT use it.
-# ADR-026 D2 (resolved 2026-06-10) records the live proof.
-
+# HUMAN GATE (ADR-026 D4 / PDR-017): the Claude-OAuth credential is a
+# refreshing OAuth credential type. On agent-vault 0.32.0 it IS scriptable via
+# the structured credential-slot path: `vault proposal create -f -` (stdin
+# JSON) creates a pre-populated OAuth-typed CLAUDE_OAUTH credential SLOT
+# (carrying the token_url refresh machinery), and the operator's role drops to
+# APPROVING that proposal — pasting the real token at the printed approve URL
+# (or Connect). This CORRECTS the prior lead-5jbc note that the OAuth type was
+# unscriptable: that probe only tested the flat `--credential KEY=desc` (static)
+# path, not the JSON-mode oauth slot (verified lead-yrex against a throwaway
+# infisical/agent-vault broker, same image as the live fleet broker). ADR-026
+# D4 is preserved: a human still supplies the real secret, AT APPROVE TIME.
+# This script therefore CREATES the proposal and STOPS for the operator to
+# approve it; it is the ONE documented human step (approval, not a hand paste).
 set -euo pipefail
 
-CONTAINER="shopsystem-agent-vault-1"
-VAULT="${AGENT_VAULT_VAULT:-fleet}"
-AGENT="${AGENT_VAULT_AGENT:-bc-fleet}"
+# -----------------------------------------------------------------------
+# Slug-derived broker coordinates (every <product>-* literal is rendered
+# from shopsystem at bootstrap; nothing here is hardcoded to a product).
+# -----------------------------------------------------------------------
+SLUG="shopsystem"
+# The broker container compose.yaml brings up (container_name:
+# <slug>-agent-vault). Override only if you renamed the compose service.
+CONTAINER="${AGENT_VAULT_CONTAINER:-shopsystem-agent-vault}"
+# The logical vault/namespace the broker stores this product's secrets under.
+# Slug-derived (NOT a shared fixed namespace) so two products never share a vault.
+VAULT="${AGENT_VAULT_VAULT:-shopsystem}"
+# The docker network the broker and its clients share.
+NETWORK="${AGENT_VAULT_NETWORK:-shopsystem}"
+# The broker API address the in-network clients (shop-shell, bc-launcher
+# containers) reach. On the shared docker network the broker is addressable
+# by its container name on the fixed API port 14321 (compose maps it to a
+# slug-derived HOST port, but in-network traffic uses the container port).
+BROKER_ADDR="${AGENT_VAULT_ADDR:-http://${CONTAINER}:14321}"
+# The MITM HTTPS proxy listener the broker exposes (fixed container port).
+# ADR-026 D2: BOTH the github.com Basic leg and the agent's outbound traffic
+# broker over this single proxy listener.
+PROXY_PORT="14322"
+# The repo-local .env this script updates with the real broker addr + the
+# minted fleet token (replacing the <changeme-...> placeholders).
+ENV_FILE="${AGENT_VAULT_ENV_FILE:-.env}"
 
-av() { docker exec -i "$CONTAINER" agent-vault "$@"; }
+# Owner-account bootstrap credentials. The FIRST account registered on a
+# fresh broker becomes the instance owner (verified: `auth register` ->
+# "The first user to register becomes the instance owner."). These default
+# to env-supplied values; the password is read from stdin (never on argv).
+OWNER_EMAIL="${AGENT_VAULT_OWNER_EMAIL:-owner@${SLUG}.local}"
+OWNER_PASSWORD="${AGENT_VAULT_OWNER_PASSWORD:-}"
 
-prompt_secret() {  # $1 = human label; echoes the pasted value
-    local v
-    read -r -s -p "  paste $1 (input hidden), then Enter: " v >&2
-    echo >&2
-    printf '%s' "$v"
-}
+# GitHub Basic-auth identity. For github.com over Basic the token is the
+# password; the username is the GitHub login (or the token itself — GitHub
+# accepts any non-empty username when a token is the password). Defaults to
+# the conventional token-as-username form when unset. The credential KEY
+# names mirror the live fleet vault's AUTHORITATIVE keys: GITHUB_USERNAME /
+# GITHUB_TOKEN (SCREAMING_SNAKE — agent-vault rejects kebab credential keys).
+GITHUB_USERNAME="${GITHUB_USERNAME:-x-access-token}"
 
+# Claude-OAuth config (lead-yrex). The refreshing CLAUDE_OAUTH credential is
+# provisioned as an OAuth-TYPED credential-slot PROPOSAL; these vars fill the
+# oauth block the broker validates (token_url is REQUIRED on 0.32.0). Defaults
+# are the values verified from the live broker's working OAuth form; a future
+# Anthropic-endpoint change is a one-line override here.
+CLAUDE_OAUTH_TOKEN_URL="${CLAUDE_OAUTH_TOKEN_URL:-https://console.anthropic.com/v1/oauth/token}"
+CLAUDE_OAUTH_CLIENT_ID="${CLAUDE_OAUTH_CLIENT_ID:-9d1c250a-e61b-44d9-88ed-5944d1962f5e}"
+# Anthropic's token endpoint required no scopes in the live form; empty default.
+CLAUDE_OAUTH_SCOPES="${CLAUDE_OAUTH_SCOPES:-}"
+
+echo "agent-vault-provision: provisioning broker '$CONTAINER' (vault '$VAULT', network '$NETWORK')."
+
+# Fail fast if the compose-defined broker is not up.
 if ! docker ps --format '{{.Names}}' | grep -qx "$CONTAINER"; then
-    echo "ERROR: broker container '$CONTAINER' is not running. Bring it up first:" >&2
-    echo "  cp .env.example .env  # set AGENT_VAULT_MASTER_PASSWORD, then:" >&2
-    echo "  docker compose --env-file .env up -d agent-vault" >&2
-    exit 1
+  echo "agent-vault-provision: broker container '$CONTAINER' is not running." >&2
+  echo "  Bring it up first:  docker compose -f compose.yaml up -d agent-vault" >&2
+  exit 1
 fi
 
-echo "== agent-vault provisioning (one-time) =="
-echo "broker: $CONTAINER   vault: $VAULT   agent: $AGENT"
-echo
+# Every CLI verb runs inside the broker container via this exec prefix; the
+# `agent-vault <verb>` invocations below are spelled out in full so the real
+# 0.32.0 command surface is auditable by eye (no wrapper hides the verb).
+DEXEC=(docker exec -i "$CONTAINER")
 
-# 1) Owner account (first registered user becomes owner). Idempotent-guarded:
-#    skip if registration fails because an owner already exists.
-echo "-- step 1: owner account --"
-read -r -p "  owner email: " OWNER_EMAIL
-echo "  (choose an owner password; stored only in the vault DB)"
-OWNER_PW="$(prompt_secret 'owner password')"
-if printf '%s' "$OWNER_PW" | av auth register --email "$OWNER_EMAIL" --password-stdin; then
-    echo "  owner registered."
+# -----------------------------------------------------------------------
+# (0) Owner-account bootstrap (ADR-026 D2). The first registrant becomes the
+#     instance owner; on a re-run the account already exists, so a failing
+#     register is non-fatal (we proceed with the existing owner session).
+# -----------------------------------------------------------------------
+if [[ -n "$OWNER_PASSWORD" ]]; then
+  echo "agent-vault-provision: registering instance owner '$OWNER_EMAIL' (first registrant = owner)."
+  if ! printf '%s' "$OWNER_PASSWORD" | "${DEXEC[@]}" agent-vault auth register --email "$OWNER_EMAIL" --password-stdin 2>/dev/null; then
+    echo "agent-vault-provision: owner already registered (or register declined); logging in instead."
+    printf '%s' "$OWNER_PASSWORD" | "${DEXEC[@]}" agent-vault auth login --email "$OWNER_EMAIL" --password-stdin
+  fi
 else
-    echo "  auth register returned non-zero — assuming owner already exists; continuing."
+  echo "agent-vault-provision: AGENT_VAULT_OWNER_PASSWORD not set; assuming an" >&2
+  echo "  owner session already exists inside '$CONTAINER'. Export it to bootstrap" >&2
+  echo "  the owner non-interactively." >&2
 fi
 
-# 2) Vault
-echo "-- step 2: vault '$VAULT' --"
-av vault create "$VAULT" || echo "  vault create returned non-zero — assuming it exists; continuing."
+# -----------------------------------------------------------------------
+# (1) Vault + GitHub PAT + service wiring — provisioned non-interactively
+#     against the slug-derived broker/vault using ONLY real 0.32.0 verbs.
+#
+#     ADR-026 D2 flow: vault create -> credential set -> service add
+#     (github.com Basic, brokered over the single MITM proxy listener).
+# -----------------------------------------------------------------------
+echo "agent-vault-provision: ensuring vault '$VAULT' exists on '$CONTAINER'."
+# `vault create` is idempotent for our purposes: a re-run on an existing
+# vault is non-fatal (we still need it to exist).
+"${DEXEC[@]}" agent-vault vault create "$VAULT" 2>/dev/null || true
 
-# 3) Services (proxy substitution rules). ALL vault subcommands MUST pass
-#    --vault "$VAULT": in agent mode there is no interactive vault picker, and
-#    under `docker exec -i` (no TTY) an omitted --vault fails. Do NOT swallow
-#    these failures — a silently-empty service list makes the broker 405 every
-#    request (the failure mode the canary caught).
-echo "-- step 3: services --"
-# GitHub git-over-https (clone/push to github.com) — Basic auth (username + PAT).
-# NOTE: git hits github.com, NOT api.github.com; a Bearer-on-api.github.com
-# service alone does NOT broker git operations.
-av vault service add --vault "$VAULT" --name github-git --host github.com \
-    --auth-type basic --username-key GITHUB_USERNAME --password-key GITHUB_TOKEN
-# GitHub API (gh CLI) — Bearer to api.github.com.
-av vault service add --vault "$VAULT" --name github-api --host api.github.com \
-    --auth-type bearer --token-key GITHUB_TOKEN
-# Claude Code OAuth Bearer hosts (the built-in 'anthropic' catalog template is
-# x-api-key, NOT the OAuth Bearer flow Claude Code uses — configure manually).
-# These services reference token-key CLAUDE_OAUTH, the refreshing OAuth
-# credential created in the dashboard at step 4b. The service is scriptable; the
-# credential is not (see header NOTE). Refresh is handled natively by the broker
-# (ADR-026 D2, resolved 2026-06-10) — no re-paste needed once the OAuth
-# credential is in place.
-for host in api.anthropic.com platform.claude.com mcp-proxy.anthropic.com; do
-    av vault service add --vault "$VAULT" --name "claude-${host%%.*}" --host "$host" \
-        --auth-type bearer --token-key CLAUDE_OAUTH
-done
-echo "  services:"; av vault service list --vault "$VAULT" 2>&1 | grep -E 'name:|host:' | sed 's/^/    /'
+GITHUB_TOKEN="${GITHUB_TOKEN:-}"
+if [[ -n "$GITHUB_TOKEN" ]]; then
+  echo "agent-vault-provision: storing GitHub credential into vault '$VAULT' on '$CONTAINER'."
+  # `vault credential set <key=value> ...` — the github username + token are
+  # stored under the live fleet vault's AUTHORITATIVE SCREAMING_SNAKE keys.
+  "${DEXEC[@]}" agent-vault vault credential set \
+    "GITHUB_USERNAME=${GITHUB_USERNAME}" \
+    "GITHUB_TOKEN=${GITHUB_TOKEN}" \
+    --vault "$VAULT"
 
-# 4a) GITHUB CREDENTIALS — scriptable (flat key=value), the human-gated paste.
-#     The GitHub leg is a static Basic-PAT credential; the flat CLI expresses it.
-echo "-- step 4a: load real GitHub credentials (human-gated paste) --"
-read -r -p "  GitHub username (or x-access-token): " GH_USER
-echo "  GitHub: a PAT with repo push scope (durable — a short-lived 'gh auth token' will expire)."
-GH_TOKEN="$(prompt_secret 'GitHub PAT')"
-# credential set takes key=value args + --vault (no documented stdin form).
-av vault credential set --vault "$VAULT" \
-    "GITHUB_USERNAME=$GH_USER" "GITHUB_TOKEN=$GH_TOKEN"
-unset GH_TOKEN GH_USER OWNER_PW
-echo "  GitHub credentials stored in vault $VAULT."
+  echo "agent-vault-provision: wiring github-git (github.com Basic) over the MITM proxy (:$PROXY_PORT)."
+  # `vault service add` upserts the service by name. The PRESERVED existing
+  # clone/git service is named github-git: github.com brokered with Basic
+  # auth, username-key + password-key referencing the credentials stored
+  # above. Both legs broker over the single proxy listener (ADR-026 D2).
+  "${DEXEC[@]}" agent-vault vault service add \
+    --name github-git \
+    --host github.com \
+    --auth-type basic \
+    --username-key GITHUB_USERNAME \
+    --password-key GITHUB_TOKEN \
+    --vault "$VAULT"
 
-# 4b) CLAUDE OAUTH CREDENTIAL — NOT scriptable; STOP for a human dashboard step.
-#     agent-vault 0.32.0 has NO CLI/API path to create the refreshing OAuth
-#     credential TYPE (verified live 2026-06-10, lead-5jbc). The flat
-#     `credential set CLAUDE_OAUTH=<accessToken>` would store the STATIC type,
-#     which expires (the canary's failure mode). Create the OAuth credential in
-#     the dashboard so the broker can auto-refresh it.
-echo "-- step 4b: Claude OAuth credential (MANUAL — dashboard only) --"
-cat >&2 <<EOF
+  echo "agent-vault-provision: wiring github-api (api.github.com Bearer) over the MITM proxy."
+  # github-api: the REST/GraphQL API host attaches GITHUB_TOKEN as a Bearer.
+  "${DEXEC[@]}" agent-vault vault service add \
+    --name github-api \
+    --host api.github.com \
+    --auth-type bearer \
+    --token-key GITHUB_TOKEN \
+    --vault "$VAULT"
+else
+  echo "agent-vault-provision: GITHUB_TOKEN not set in the environment; skipping the"
+  echo "  scripted GitHub credential store + github-git/github-api service-adds."
+  echo "  Export GITHUB_TOKEN (and optionally GITHUB_USERNAME) and re-run."
+fi
 
-  >>> STOP. The Claude credential CANNOT be created from this script.
-      agent-vault 0.32.0 has no CLI/API path for the refreshing OAuth
-      credential type (flat 'credential set' would store a STATIC token
-      that expires — the canary's failure mode).
+# -----------------------------------------------------------------------
+# (1b) Claude broker service mappings (lead-8jar / WS-2). The live fleet
+#      vault carries three Claude services that attach the refreshing
+#      CLAUDE_OAUTH credential as a Bearer. Without these the broker never
+#      attaches the OAuth bearer to api.anthropic.com requests, so a fresh
+#      BC's Claude calls return 401 (dummyco spike iter-6).
+#
+#      These `service add` calls only DECLARE the host -> CLAUDE_OAUTH
+#      mapping; the CLAUDE_OAUTH credential itself is supplied later via the
+#      OAuth-proposal human gate (step 3, the operator approves the proposal).
+#      agent-vault upserts the service mapping independently of whether the
+#      credential exists yet, so these run UNCONDITIONALLY (the mapping is what
+#      makes the bearer attach once the human-gated approval lands).
+# -----------------------------------------------------------------------
+echo "agent-vault-provision: wiring the Claude broker services (bearer CLAUDE_OAUTH) over the MITM proxy."
+"${DEXEC[@]}" agent-vault vault service add \
+  --name claude-api \
+  --host api.anthropic.com \
+  --auth-type bearer \
+  --token-key CLAUDE_OAUTH \
+  --vault "$VAULT"
+"${DEXEC[@]}" agent-vault vault service add \
+  --name claude-platform \
+  --host platform.claude.com \
+  --auth-type bearer \
+  --token-key CLAUDE_OAUTH \
+  --vault "$VAULT"
+"${DEXEC[@]}" agent-vault vault service add \
+  --name claude-mcp-proxy \
+  --host mcp-proxy.anthropic.com \
+  --auth-type bearer \
+  --token-key CLAUDE_OAUTH \
+  --vault "$VAULT"
 
-  Create it ONCE in the agent-vault DASHBOARD (Credentials tab):
-      URL:          http://<docker-host>:14321  (log in as the owner)
-      Vault:        $VAULT
-      Key:          CLAUDE_OAUTH
-      Type:         OAuth
-      Token URL:    https://console.anthropic.com/v1/oauth/token
-      Client ID:    9d1c250a-e61b-44d9-88ed-5944d1962f5e
-      Auth Method:  None
-      Access token: the "accessToken"  from ~/.claude/.credentials.json
-      Refresh token:the "refreshToken" from ~/.claude/.credentials.json
+# -----------------------------------------------------------------------
+# (2) Mint the <slug>-fleet agent token (ADR-026 D2 / Brief 011 Step 4).
+#
+#     `agent create <name> --token-only --vault <vault>:proxy` prints the
+#     raw `av_agt_...` token on stdout. This is the long-lived fleet token
+#     that wires the shop-shell + every bc-launcher container's
+#     AGENT_VAULT_TOKEN. We capture it and write it (plus the broker addr)
+#     back into .env, replacing the <changeme-...> placeholders.
+# -----------------------------------------------------------------------
+# The fleet agent name is slug-derived (shopsystem-fleet) and rendered as a
+# literal at bootstrap so the minted agent is product-scoped.
+FLEET_AGENT="shopsystem-fleet"
+echo "agent-vault-provision: minting the '$FLEET_AGENT' agent token (vault '$VAULT')."
+FLEET_TOKEN="$("${DEXEC[@]}" agent-vault agent create "$FLEET_AGENT" --token-only --vault "${VAULT}:proxy" | tr -d '\r\n')"
 
-  The broker then auto-refreshes the access token within 5 min of expiry
-  via the stored refresh token (ADR-026 D2, proven live 2026-06-10). The
-  three claude-* services above already reference token-key CLAUDE_OAUTH.
+if [[ -z "$FLEET_TOKEN" ]]; then
+  echo "agent-vault-provision: failed to mint the '$FLEET_AGENT' agent token." >&2
+  exit 1
+fi
+
+# Fetch the broker root CA the in-network clients need to trust the MITM
+# proxy (lead-71tq). `agent-vault ca fetch` prints the root CA PEM. The PEM
+# is multi-line and unsafe to inline in a .env value, so we write it to a
+# CA file next to the .env and point AGENT_VAULT_CA_PEM at that PATH — the
+# form shop-shell/launch installs into the client trust store. (If the
+# launch path ever expects inline PEM instead, switch this to capture the
+# PEM into the value with proper escaping; path is the safer default.)
+CA_PEM_FILE="${AGENT_VAULT_CA_PEM:-agent-vault-ca.pem}"
+echo "agent-vault-provision: fetching broker root CA into '$CA_PEM_FILE'."
+"${DEXEC[@]}" agent-vault ca fetch > "$CA_PEM_FILE"
+
+# Write the real broker addr + fleet token + vault selector + CA path into
+# .env, REPLACING the placeholder values so no <changeme> survives for these.
+if [[ -f "$ENV_FILE" ]]; then
+  echo "agent-vault-provision: writing AGENT_VAULT_ADDR + AGENT_VAULT_TOKEN + AGENT_VAULT_VAULT + AGENT_VAULT_CA_PEM into '$ENV_FILE'."
+  # Replace the placeholder lines in place (BSD/GNU-portable: rewrite via a
+  # temp file). The .env.example ships these as:
+  #   AGENT_VAULT_ADDR=<changeme-broker-address>
+  #   AGENT_VAULT_TOKEN=<changeme-broker-token>
+  #   AGENT_VAULT_VAULT=<changeme-broker-vault>
+  #   AGENT_VAULT_CA_PEM=<changeme-broker-ca-pem>
+  tmp_env="$(mktemp)"
+  while IFS= read -r line || [[ -n "$line" ]]; do
+    case "$line" in
+      AGENT_VAULT_ADDR=*)   printf 'AGENT_VAULT_ADDR=%s\n' "$BROKER_ADDR" ;;
+      AGENT_VAULT_TOKEN=*)  printf 'AGENT_VAULT_TOKEN=%s\n' "$FLEET_TOKEN" ;;
+      AGENT_VAULT_VAULT=*)  printf 'AGENT_VAULT_VAULT=%s\n' "$VAULT" ;;
+      AGENT_VAULT_CA_PEM=*) printf 'AGENT_VAULT_CA_PEM=%s\n' "$CA_PEM_FILE" ;;
+      *)                    printf '%s\n' "$line" ;;
+    esac
+  done < "$ENV_FILE" > "$tmp_env"
+  mv "$tmp_env" "$ENV_FILE"
+else
+  echo "agent-vault-provision: '$ENV_FILE' not found; appending broker coordinates." >&2
+  {
+    printf 'AGENT_VAULT_ADDR=%s\n' "$BROKER_ADDR"
+    printf 'AGENT_VAULT_TOKEN=%s\n' "$FLEET_TOKEN"
+    printf 'AGENT_VAULT_VAULT=%s\n' "$VAULT"
+    printf 'AGENT_VAULT_CA_PEM=%s\n' "$CA_PEM_FILE"
+  } >> "$ENV_FILE"
+fi
+
+# -----------------------------------------------------------------------
+# (3) Claude-OAuth refreshing credential — THE HUMAN GATE (ADR-026 D4).
+#
+# On agent-vault 0.32.0 the refreshing OAuth credential type IS scriptable via
+# the structured credential-slot path (verified lead-yrex). We CREATE a
+# pre-populated OAuth-TYPED CLAUDE_OAUTH credential SLOT proposal via the CLI
+# JSON mode `vault proposal create -f -` (stdin), then STOP for the operator to
+# APPROVE it — pasting the real token at the printed approve URL (ADR-026 D4: a
+# human still supplies the secret, at approve time). The slot carries
+# oauth.token_url (the refresh machinery); the slot stores no token yet (the
+# server rejects a stored token for oauth creds — tokens arrive via the
+# approve/connect flow). This REPLACES the prior manual hand-paste step.
+# -----------------------------------------------------------------------
+# VAULT-SCOPED SESSION (lead-9qdn / WALL-2). agent-vault 0.32.0 runs proposal
+# create/approve in AGENT mode: they require a vault-SCOPED session, even though
+# the owner session that authorized `vault create` / `credential set` /
+# `service add` above succeeded. The owner session alone yields
+# "Error: Session requires vault scope". So before the proposal step we mint a
+# vault-scoped session token (`vault token --vault <vault>` prints an
+# `av_sess_...` to stdout, authorized off the in-container owner session) and run
+# every proposal subcommand under it via AGENT_VAULT_TOKEN/_ADDR/_VAULT env vars.
+# (CLI surface verified against agent-vault 0.32.0; fix proven live against a
+# throwaway broker.)
+echo "agent-vault-provision: minting a vault-scoped session for the proposal step on vault '$VAULT'."
+_SCOPED_SESSION="$("${DEXEC[@]}" agent-vault vault token --vault "$VAULT" | tr -d '\r\n')"
+if [[ -z "$_SCOPED_SESSION" ]]; then
+  echo "agent-vault-provision: failed to mint a vault-scoped session for vault '$VAULT'." >&2
+  echo "  proposal create/approve require a vault-scoped session on agent-vault 0.32.0." >&2
+  exit 1
+fi
+
+# The scoped exec runs proposal subcommands under the vault-scoped session. The
+# three env vars are exactly: the minted scoped session as AGENT_VAULT_TOKEN, the
+# broker's OWN API port (http://localhost:14321 — proposal runs INSIDE the
+# container, so localhost), and the vault selector. NOT the bare owner session.
+DEXEC_SCOPED=(docker exec -i \
+  -e AGENT_VAULT_TOKEN="$_SCOPED_SESSION" \
+  -e AGENT_VAULT_ADDR=http://localhost:14321 \
+  -e AGENT_VAULT_VAULT="$VAULT" \
+  "$CONTAINER")
+
+echo "agent-vault-provision: creating the CLAUDE_OAUTH OAuth-typed credential-slot proposal on vault '$VAULT' (vault-scoped session)."
+
+# Render the proposal JSON from the script vars (so an Anthropic-endpoint
+# change is a one-line edit above). action:set + type:oauth + the oauth block
+# (token_url REQUIRED, client_id pre-filled, scopes); the slot stores no token
+# (server-rejected for oauth creds); the interactive consent URL is omitted so
+# approval shows the token-paste path (the realistic Claude case — we approve
+# with a pasted token).
+_oauth_proposal_json="$(cat <<EOF
+{"credentials":[{"action":"set","key":"CLAUDE_OAUTH","type":"oauth","oauth":{"token_url":"${CLAUDE_OAUTH_TOKEN_URL}","client_id":"${CLAUDE_OAUTH_CLIENT_ID}","scopes":"${CLAUDE_OAUTH_SCOPES}"},"description":"Claude OAuth","obtain_instructions":"paste accessToken+refreshToken from ~/.claude/.credentials.json at approve time"}],"message":"Provision the refreshing CLAUDE_OAUTH credential for the claude-* broker services (vault ${VAULT})."}
+EOF
+)"
+
+# `vault proposal create -f -` reads the JSON body from stdin and (with --json)
+# prints the created proposal as JSON; capture it so we can surface the proposal
+# number/URL in the approve prompt below.
+_proposal_out="$(printf '%s' "$_oauth_proposal_json" | "${DEXEC_SCOPED[@]}" agent-vault vault proposal create -f - --json --vault "$VAULT")"
+
+# Surface the proposal number for the operator. The number is parsed from the
+# `proposal create --json` output (a "number"/"id" field); if the exact field
+# shape varies, fall back to the newest pending proposal in `proposal list`.
+# (Most robust portable parse: pull the first integer after a number/id key.)
+PROPOSAL_NUM="$(printf '%s' "$_proposal_out" | grep -oE '"(number|id)"[[:space:]]*:[[:space:]]*[0-9]+' | grep -oE '[0-9]+' | head -n1)"
+if [[ -z "$PROPOSAL_NUM" ]]; then
+  PROPOSAL_NUM="$("${DEXEC_SCOPED[@]}" agent-vault vault proposal list --status pending --vault "$VAULT" 2>/dev/null \
+    | grep -oE '[0-9]+' | tail -n1)"
+fi
+
+# -----------------------------------------------------------------------
+# LEAD-PRESENTABLE HANDOFF (PDR-019 U6 / ADR-040 D2). The non-OAuth inputs
+# (owner password, GitHub username/PAT) all arrived via env/args above with NO
+# interactive prompt. The ONE genuine human step that remains — approving the
+# CLAUDE_OAUTH proposal with the real secret — is isolated here into a clean
+# handoff the lead can present to the user: provision REPORTS the proposal
+# NUMBER together with the EXACT command the user runs, then RESUMES (it does
+# NOT block on an interactive ENTER wait). The real Claude OAuth secret is
+# supplied ONLY at approve-time by the human running that command; no automated
+# step here transports it (ADR-026 D4 / lead scenario 11 preserved — the
+# CLAUDE_OAUTH=<value> below stays a placeholder the user fills).
+# -----------------------------------------------------------------------
+cat <<EOF
+
+  ┌──────────────────────────────────────────────────────────────────────┐
+  │ HUMAN GATE — approve the Claude-OAuth proposal (one-time, lead handoff)│
+  └──────────────────────────────────────────────────────────────────────┘
+
+  A pre-populated OAuth-typed CLAUDE_OAUTH credential-slot proposal
+  (#${PROPOSAL_NUM:-<see 'agent-vault vault proposal list'>}) was created on
+  vault '$VAULT' (broker '$CONTAINER'). It already carries the OAuth config
+  (token_url + client_id); only the real token is missing.
+
+  PROPOSAL NUMBER: ${PROPOSAL_NUM:-<see 'agent-vault vault proposal list'>}
+
+  Run this EXACT command to approve it — supply the real secret (the Claude
+  accessToken) in place of <value> AT APPROVE TIME (ADR-026 D4); no automated
+  step carries the real secret, it is pasted only here by the human:
+
+    proposal approve ${PROPOSAL_NUM:-<num>} CLAUDE_OAUTH=<value> --yes
+
+  proposal approve runs in AGENT mode (agent-vault 0.32.0) and therefore needs
+  a VAULT-SCOPED session — run it under the scoped session env (NOT the bare
+  owner session), exactly as proposal create was run above. The full invocation
+  (the same exact 'proposal approve <num> CLAUDE_OAUTH=<value> --yes' command,
+  wrapped in the scoped docker exec) is:
+
+    docker exec -i \\
+      -e AGENT_VAULT_TOKEN=$_SCOPED_SESSION \\
+      -e AGENT_VAULT_ADDR=http://localhost:14321 \\
+      -e AGENT_VAULT_VAULT='$VAULT' \\
+      '$CONTAINER' \\
+      agent-vault vault proposal approve ${PROPOSAL_NUM:-<num>} CLAUDE_OAUTH=<value> --yes --vault '$VAULT'
+
+  (Or open the printed approve URL and Connect.) agent-vault enforces
+  SCREAMING_SNAKE credential keys — the claude-* services above attach this
+  credential via --token-key CLAUDE_OAUTH. After approval the stored
+  CLAUDE_OAUTH is the refresh-capable oauth type (it carries token_url), NOT a
+  static credential.
+
+  Provisioning of every automated step is COMPLETE; this is the only remaining
+  human action. The script does NOT wait — run the approve command above when
+  ready (re-run this script anytime to re-check the proposal status).
 
 EOF
-read -r -p "  Press Enter once the CLAUDE_OAUTH credential exists in the dashboard... " _
-# Verify the human actually created it before proceeding.
-if av vault credential list --vault "$VAULT" 2>&1 | grep -q 'CLAUDE_OAUTH'; then
-    echo "  CLAUDE_OAUTH present in vault $VAULT — continuing."
+
+# ADR-026 D4 status check (NON-blocking, informational): the script does not
+# wait for the human approve step (it RESUMES — the handoff above is the clean
+# lead-presentable hand-off, not a blocking gate). We report whether the
+# approved CLAUDE_OAUTH has already landed (e.g. on a re-run after approval),
+# but a not-yet-approved proposal is the EXPECTED post-handoff state, not a
+# failure — so this never exits non-zero on the pending case.
+echo "agent-vault-provision: checking whether the CLAUDE_OAUTH credential is already approved in vault '$VAULT' (informational)."
+if "${DEXEC[@]}" agent-vault vault credential list --vault "$VAULT" 2>/dev/null | grep -q "CLAUDE_OAUTH"; then
+  echo "agent-vault-provision: CLAUDE_OAUTH already present; provisioning fully complete for vault '$VAULT' on '$CONTAINER'."
 else
-    echo "  ERROR: CLAUDE_OAUTH not found in vault $VAULT. Create it in the" >&2
-    echo "         dashboard (see fields above) and re-run, or the brokered" >&2
-    echo "         Claude leg will 405/401 on every request." >&2
-    exit 1
+  echo "agent-vault-provision: CLAUDE_OAUTH not yet approved — run the approve command above when ready."
+  echo "  (Check status anytime: 'agent-vault vault proposal list --vault $VAULT'.)"
 fi
-
-# 5) Agent + proxy token the BCs use. `agent create` PRINTS the proxy token
-#    (av_agt_...) — THAT is the AGENT_VAULT_TOKEN bc-launcher injects; revocable,
-#    grants only proxy substitution (ADR-026). RECORD the av_agt_ value it prints.
-echo "-- step 5: fleet agent + proxy token --"
-echo "  >>> RECORD the av_agt_... token printed below — it is AGENT_VAULT_TOKEN for launches:"
-av agent create "$AGENT" --vault "$VAULT:proxy" \
-    || echo "  agent create non-zero — agent likely exists; recover the token with: docker exec -i $CONTAINER agent-vault vault token --vault $VAULT --ttl 31536000"
-# NOTE: `vault token` needs --vault (else it opens an interactive vault picker
-# that fails under `docker exec -i` with no TTY). The agent token above is
-# normally sufficient; this is only an alternative session token if you want one.
-
-# 6) CA the BC containers must trust so the MITM proxy's TLS validates.
-#    The vault state lives in the named volume; copy the CA out to a host file
-#    that bc-launcher can mount into BC containers' trust store.
-echo "-- step 6: fetch CA --"
-CA_OUT="${AGENT_VAULT_CA_OUT:-$PWD/agent-vault-ca.pem}"
-if av ca fetch -o /data/agent-vault-ca.pem \
-   && docker cp "$CONTAINER:/data/agent-vault-ca.pem" "$CA_OUT"; then
-    echo "  CA written to $CA_OUT (mount this into BC containers)."
-else
-    echo "  ca fetch/cp non-zero — fetch manually:" >&2
-    echo "    docker exec $CONTAINER agent-vault ca fetch -o /data/agent-vault-ca.pem" >&2
-    echo "    docker cp $CONTAINER:/data/agent-vault-ca.pem ./agent-vault-ca.pem" >&2
-fi
-
-echo
-echo "== done =="
-echo "Fleet launch config (bc-launcher) must point at:"
-echo "  AGENT_VAULT_ADDR=http://agent-vault:14321"
-echo "  AGENT_VAULT_VAULT=$VAULT"
-echo "  AGENT_VAULT_TOKEN=<the token minted in step 5>"
-echo "  + mount the CA from step 6 into the BC container's trust store."
+echo "agent-vault-provision: automated provisioning complete for vault '$VAULT' on '$CONTAINER'."

@@ -1,38 +1,42 @@
-# shopsystem-shell — prototype daily-driver shell image.
+# Dockerfile.shopsystem-shell — lead-shop daily-driver shell image recipe
+# (shop-owned, PDR-003 path F).
 #
-# Rebased onto the devcontainer image we already run BCs and the lead host in.
-# That base ships, out of the box:
-#   - claude (the CLI) on PATH                       <- was missing before
-#   - docker CLI + Microsoft's docker-init.sh entrypoint, which reconciles the
-#     mounted socket's GID so the non-root vscode user can reach the daemon
-#   - bd, tmux, node, python, git, pipx, the vscode (uid 1000) user
-# so this file only has to add the framework CLIs that aren't baked into the
-# base. Canonical form will be rendered by `shopsystem-templates init` /
-# published by shopsystem-bc-launcher once those scenarios land.
+# Build locally when no published shopsystem-shell image is available:
 #
-# Build with:
-#   docker build -t shopsystem-shell:dev -f Dockerfile.shopsystem-shell .
+#     docker build -t shopsystem-shell:dev -f Dockerfile.shopsystem-shell .
+#
+# This recipe may later be retired in favor of bc-launcher's published
+# shell image; ship it now to unblock docker-only onboarding.
+#
+# The shell base image is adopter-inherited infra (like postgres:16) but MUST
+# be PUBLICLY pullable. It is build-arg overridable via SHELL_BASE_IMAGE and
+# defaults to Microsoft's public devcontainer python base, which ships a
+# non-root "vscode" user, pipx, and Microsoft's docker-init.sh socket-GID
+# reconciler so a mounted docker socket is reachable without an explicit apt
+# docker-cli install layer. An adopter who already runs a private daily-driver
+# devcontainer base overrides it:
+#
+#     docker build --build-arg SHELL_BASE_IMAGE=<their-image> \
+#         -t shopsystem-shell:dev -f Dockerfile.shopsystem-shell .
+#
+# The default is deliberately NOT a private dstengle-namespaced image: an
+# adopter without access to that namespace could not pull it. bc-launcher is
+# INTENTIONALLY OMITTED (private repo).
+ARG SHELL_BASE_IMAGE=mcr.microsoft.com/devcontainers/python:1-3.12-bookworm
+FROM ${SHELL_BASE_IMAGE}
 
-FROM ghcr.io/dstengle/shopsystem-bc-base:latest
-
+# Run the shell as the non-root user shipped by the devcontainer base. The
+# base image's socket-GID reconciler makes the mounted docker socket
+# reachable for this user.
 USER vscode
 
-# Framework CLIs, pinned to match this repo's pyproject.toml so `shop-msg`,
-# `scenarios`, `shop-templates` resolve to the same revisions the lead installs.
-# pipx matches the base image's convention (everything lands on ~/.local/bin).
-# --force re-pins shop-templates even though the base image already ships it.
-#
-# bc-launcher is INTENTIONALLY OMITTED — dstengle/shopsystem-bc-launcher is a
-# private repo and git clone needs credentials this image can't carry. Install
-# it at runtime from inside the shell once your gh credentials are available:
-#   pipx install "bc-launcher @ git+https://github.com/dstengle/shopsystem-bc-launcher@caf62f5"
-# (Or make the repo public and add it to this layer.)
-RUN pipx install --force \
-        "scenarios @ git+https://github.com/dstengle/shopsystem-scenarios@v0.1.0" \
- && pipx install --force \
-        "shop-templates @ git+https://github.com/dstengle/shopsystem-templates@d1a8937" \
- && pipx install --force \
-        "shopsystem-messaging @ git+https://github.com/dstengle/shopsystem-messaging@1514e8a"
+# Install the framework CLIs (shop-msg, scenarios, shop-templates) with
+# pipx so the operator has the full toolchain on PATH inside the shell.
+# pipx ships on the devcontainer base for the vscode user.
+RUN pipx install shop-msg \
+    && pipx install scenarios \
+    && pipx install shop-templates
 
 WORKDIR /workspace
+
 CMD ["/bin/bash"]

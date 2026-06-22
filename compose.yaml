@@ -1,86 +1,96 @@
-# shopsystem-product runtime — postgres for shop-msg.
+# compose.yaml — lead-shop ops scaffolding (shop-owned, PDR-003 path F).
 #
-# Prototype shape during the BC-ownership transition. Canonical form will be
-# rendered by `shopsystem-templates init` per the design pinned in the templates
-# BC dispatch sequence following lead-yi0k.
+# Brings up the product postgres (and the agent-vault credential broker)
+# that the lead shop and its BC clones share. Run it via ./bin/shop-shell,
+# or directly with:
 #
-# pgdata lives OUTSIDE the repo. Default is $HOME/.local/share/shopsystem/pgdata
-# (XDG-ish). Override via SHOPSYSTEM_DATA env var.
+#     docker compose up -d postgres
 #
-# The container name and network alias match the host the BCs are configured
-# against (shopsystem-messaging-postgres-1 / postgres), so existing BC
-# containers continue working when this compose takes ownership of postgres.
-
+# PRODUCT-SCOPED: every name below derives from the bootstrap product slug
+# (shopsystem) so a second product can run alongside other live products
+# without colliding on container names, the docker network, named volumes,
+# or host
+# ports. The slug is the bootstrap --shop-name with a trailing "-product"
+# stripped (e.g. dummyco-product -> dummyco), read from .claude/shop/name.md.
+#
+# The pgdata bind source is derived from SHOPSYSTEM_DATA (default
+# ${HOME}/.local/share/shopsystem) and deliberately lives OUTSIDE this
+# repository so a `docker compose up` never pollutes the shop tree with a
+# pgdata/ directory.
+#
+# HOST PORTS are product-distinct: the published postgres host port defaults
+# to a deterministic slug-derived value (5829 =
+# 5432 + crc32(slug) % 1000) and is env-overridable via
+# SHOPSYSTEM_POSTGRES_PORT, so two products never bind the same host
+# port.
 services:
   postgres:
     image: postgres:16
-    container_name: shopsystem-messaging-postgres-1
+    container_name: shopsystem-postgres
     networks:
-      shopsystem:
-        aliases:
-          - postgres
-    volumes:
-      - ${SHOPSYSTEM_DATA:-${HOME}/.local/share/shopsystem}/pgdata:/var/lib/postgresql/data
-    ports:
-      - "5432:5432"
+      - shopsystem
     environment:
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_USER: shopsystem
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD:-shopsystem}"
       POSTGRES_DB: shopsystem
-    restart: unless-stopped
+    volumes:
+      - type: bind
+        source: "${SHOPSYSTEM_DATA:-${HOME}/.local/share/shopsystem}/pgdata"
+        target: /var/lib/postgresql/data
+    ports:
+      - "${SHOPSYSTEM_POSTGRES_PORT:-5829}:5432"
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 10s
       timeout: 5s
       retries: 5
 
-  # agent-vault — the credential broker, the SECOND lead-shop supporting
-  # service (peer to postgres), per ADR-028 D1. Vendored external tool
-  # (Infisical/agent-vault), operated not authored — the same class as
-  # postgres. The fleet's BC containers reach it by the network alias
-  # `agent-vault`; bc-launcher's `agent_vault_reachable` gate (scenarios
-  # 47/48) targets http://agent-vault:14321 and the MITM proxy at
-  # agent-vault:14322. Real credentials live ONLY in this broker's vault
-  # (ADR-026); they are loaded once by a human (see bin/agent-vault-provision).
+  # The credential broker. It holds the product's secrets and proxies
+  # outbound traffic, injecting credentials on the wire so no agent container
+  # ever sees raw secret material. The image is the real agent-vault broker
+  # image (product-neutral: the same reference renders for every product slug
+  # — it is NOT a <slug>-baked literal). The broker auto-unseals from
+  # AGENT_VAULT_MASTER_PASSWORD, sourced from the instance environment (see
+  # the rendered top-level .env.example).
   #
-  # Vault state (encrypted SQLite at /data/.agent-vault/agent-vault.db + CA
-  # material) persists in the named volume `shopsystem-agent-vault-data`,
-  # OUTSIDE the repo. NOTE: this uses a NAMED volume rather than a
-  # SHOPSYSTEM_DATA bind mount like pgdata, because the image runs as the
-  # non-root `agentvault` user (uid 65532) and cannot mkdir inside a host dir
-  # owned by another uid — a bind mount fails with EACCES, verified empirically;
-  # a named volume inherits the right ownership (upstream-recommended).
-  # The master password is read from an UNCOMMITTED .env (see .env.example); it
-  # auto-unlocks the vault on restart (SB-7) without a human re-paste. NEVER
-  # commit the real master password.
+  # The CONTAINER ports are fixed: 14321 (broker API) and 14322 (HTTPS proxy
+  # — the endpoint bin/shop-shell wires as HTTPS_PROXY=<broker>:14322). The
+  # published HOST ports default to deterministic slug-derived values
+  # (15082 = 14321 + crc32(slug) % 1000,
+  # 14462 = 14322 + crc32(slug) % 1000) and are
+  # env-overridable via SHOPSYSTEM_VAULT_API_PORT /
+  # SHOPSYSTEM_VAULT_PROXY_PORT, mirroring the postgres host-port
+  # derivation so two products never bind the same broker host port.
   agent-vault:
     image: infisical/agent-vault:latest
-    container_name: shopsystem-agent-vault-1
+    container_name: shopsystem-agent-vault
     networks:
-      shopsystem:
-        aliases:
-          - agent-vault
-    volumes:
-      - agent-vault-data:/data
-    ports:
-      - "14321:14321"
-      - "14322:14322"
+      - shopsystem
+    cap_add:
+      - IPC_LOCK
     environment:
-      AGENT_VAULT_MASTER_PASSWORD: ${AGENT_VAULT_MASTER_PASSWORD:?set AGENT_VAULT_MASTER_PASSWORD in .env (see .env.example) before bringing up the broker}
-      AGENT_VAULT_ADDR: ${AGENT_VAULT_ADDR:-http://agent-vault:14321}
-    restart: unless-stopped
+      AGENT_VAULT_MASTER_PASSWORD: "${AGENT_VAULT_MASTER_PASSWORD}"
+    volumes:
+      - type: volume
+        source: shopsystem-agent-vault-data
+        target: /data
+    ports:
+      - "${SHOPSYSTEM_VAULT_API_PORT:-15082}:14321"
+      - "${SHOPSYSTEM_VAULT_PROXY_PORT:-14462}:14322"
     healthcheck:
-      test: ["CMD", "wget", "-q", "--spider", "http://localhost:14321/health"]
-      interval: 30s
+      # sh-compatible TCP-liveness probe on the broker API port. The
+      # infisical/agent-vault image runs sh (no bash), so the bash-only
+      # device-file redirect probe can never work here; nc is shipped at
+      # /usr/bin/nc.
+      test: ["CMD", "nc", "-z", "127.0.0.1", "14321"]
+      interval: 10s
       timeout: 5s
-      retries: 3
+      retries: 5
 
 networks:
   shopsystem:
     name: shopsystem
-    external: true
 
 volumes:
-  # Persistent encrypted vault state for the agent-vault broker. Named volume
-  # (not a SHOPSYSTEM_DATA bind mount) — see the agent-vault service comment.
-  agent-vault-data:
+  shopsystem-agent-vault-data:
     name: shopsystem-agent-vault-data
