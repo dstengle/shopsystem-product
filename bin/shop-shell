@@ -83,8 +83,8 @@ docker run --rm -it \
   -v "$REPO_ROOT:$REPO_ROOT" \
   -v /var/run/docker.sock:/var/run/docker.sock \
   -w "$REPO_ROOT" \
-  shopsystem-bc-base \
-  bc-container launch \
+  ghcr.io/dstengle/shopsystem-bc-base:latest \
+  bc-container launch shopsystem-lead \
     --workspace-mount "$REPO_ROOT" \
     --mount-docker-socket \
     --startup-prompt "$LEAD_STARTUP_PROMPT"
@@ -95,5 +95,5 @@ exec docker run --rm -it \
   -v "$REPO_ROOT:$REPO_ROOT" \
   -v /var/run/docker.sock:/var/run/docker.sock \
   -w "$REPO_ROOT" \
-  shopsystem-bc-base \
-  bc-container attach
+  ghcr.io/dstengle/shopsystem-bc-base:latest \
+  bc-container attach shopsystem-lead
