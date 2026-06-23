@@ -1,20 +1,21 @@
-# Supersedes the prior scenario 172 (@scenario_hash:03f1256aefc7fad4), under
-# PDR-020. The prior 172 pinned the ephemeral LAUNCHER to "shopsystem-bc-base"
-# by literal substring. PDR-020 splits the launch images by ROLE: the ephemeral
-# launcher that runs "bc-container" needs the docker CLI present in its image, so
-# it now runs on "shopsystem-bc-lead" (the lead-launcher image carrying the docker
-# CLI), while the LEAF-BC sessions that "bc-container launch" actually stands up
-# continue to run on "shopsystem-bc-base". This scenario therefore re-pins the
-# ephemeral-launcher image reference to the product-neutral framework image
-# "ghcr.io/dstengle/shopsystem-bc-lead:latest", and additionally asserts that the
-# launch hands the leaf-BC its "shopsystem-bc-base" runtime image, preserving the
-# launcher/leaf split. The DURABLE property the prior 172 protected — the wrapper
-# mounts NO host "~/.claude" or "~/.gitconfig" credentials, constructs NO proxy
-# URL, fetches NO CA, builds NO shell image — is PRESERVED unchanged; the launcher
-# owns proxy / CA / onboarding (ADR-026, ADR-028). Compose bring-up of postgres +
-# agent-vault (ADR-028 D1) is unchanged.
-@scenario_hash:da8ea23429b8bdc9
-Scenario Outline: bootstrap of a "lead" shop named "<slug>" writes "bin/shop-shell" as a thin wrapper that DELEGATES the brokered Claude launch to "bc-container" running in an ephemeral LAUNCHER image carrying the docker CLI ("shopsystem-bc-lead") — it brings up the compose supporting services, assembles the operator agent-vault "--env-file", then runs "bc-container launch" standing up the leaf-BC session on the "shopsystem-bc-base" runtime image, mounting the lead repo as the workspace with the lead-only docker socket and a LEAD startup-prompt override, and "bc-container attach" — while constructing NO proxy URL, fetching NO CA, building NO shell image, and mounting NO host credentials
+# Supersedes the prior scenario 172 (@scenario_hash:da8ea23429b8bdc9), under
+# PDR-020 and lead-ss6k (ADR-010 superseding-pin). Both the ephemeral LAUNCHER
+# that runs "bc-container" AND the LEAF-BC session it stands up need the docker
+# CLI present in their image: the launcher to run "bc-container", and the leaf so
+# its OWN router can in turn run "bc-container launch". Both therefore now run on
+# "shopsystem-bc-lead" (the lead-launcher image carrying the docker CLI). The prior
+# 172 handed the leaf its "shopsystem-bc-base" runtime image; this scenario re-pins
+# the leaf-BC runtime image to "shopsystem-bc-lead", and additionally asserts the
+# inner "bc-container launch" attaches the leaf to the slug-scoped compose network
+# via "--network" so it reaches postgres + agent-vault by compose hostname (the
+# outer launcher's network does not attach the separate leaf container). The
+# DURABLE property the prior 172 protected — the wrapper mounts NO host "~/.claude"
+# or "~/.gitconfig" credentials, constructs NO proxy URL, fetches NO CA, builds NO
+# shell image — is PRESERVED unchanged; the launcher owns proxy / CA / onboarding
+# (ADR-026, ADR-028). Compose bring-up of postgres + agent-vault (ADR-028 D1) is
+# unchanged.
+@scenario_hash:725562869d9df919
+Scenario Outline: bootstrap of a "lead" shop named "<slug>" writes "bin/shop-shell" as a thin wrapper that DELEGATES the brokered Claude launch to "bc-container" running in an ephemeral LAUNCHER image carrying the docker CLI ("shopsystem-bc-lead") — it brings up the compose supporting services, assembles the operator agent-vault "--env-file", then runs "bc-container launch" standing up the leaf-BC session ALSO on the "shopsystem-bc-lead" runtime image (the leaf needs the docker CLI too so its own router can run "bc-container launch"), attaching the leaf to the slug-scoped compose network via "--network" so it reaches postgres + agent-vault by compose hostname, mounting the lead repo as the workspace with the lead-only docker socket and a LEAD startup-prompt override, and "bc-container attach" — while constructing NO proxy URL, fetching NO CA, building NO shell image, and mounting NO host credentials
   Given an existing git repository at a target directory "/tmp/example-lead-shop" with no "bin/" subdirectory
   When I invoke the "shop-templates" bootstrap entry point with shop type "lead", shop name "<slug>", and target directory "/tmp/example-lead-shop"
   Then the exit code is 0
@@ -25,7 +26,8 @@ Scenario Outline: bootstrap of a "lead" shop named "<slug>" writes "bin/shop-she
   And the body of "bin/shop-shell" mounts the host docker socket into that ephemeral launcher by the literal substring "/var/run/docker.sock:/var/run/docker.sock"
   And the body of "bin/shop-shell" mounts the lead repository into that ephemeral launcher so the inner "bc-container" can see it
   And the body of "bin/shop-shell" inside that ephemeral launcher invokes "bc-container launch" carrying the literal substring "--workspace-mount" and the literal substring "--mount-docker-socket", so the launched lead session mounts the live lead working tree and is granted the lead-only docker-daemon access
-  And the body of "bin/shop-shell" hands the leaf-BC session its runtime image by the literal substring "shopsystem-bc-base", so the launched session runs on the leaf-BC base image while the launcher itself runs on the lead-launcher image
+  And the body of "bin/shop-shell" hands the leaf-BC session its runtime image by the literal substring "shopsystem-bc-lead", so the launched session runs on the lead-launcher image because the leaf needs the docker CLI to run "bc-container launch" itself
+  And the body of "bin/shop-shell" attaches the launched leaf-BC session to the slug-scoped compose network by the inner "bc-container launch" carrying the literal substring "--network", so the launched session reaches the compose postgres and agent-vault by hostname (the outer launcher's network does not attach the separate leaf container)
   And the body of "bin/shop-shell" passes a lead-specific startup prompt into the launch by the literal substring "--startup-prompt", overriding the BC-default session-start so the launched session runs the router session-start
   And the body of "bin/shop-shell" drops the operator into the brokered session by the literal substring "bc-container attach"
   And the body of "bin/shop-shell" does not contain the literal substring "14322" and does not contain the literal substring "HTTPS_PROXY", because proxy-URL construction is delegated to the launcher and not re-derived in the wrapper
