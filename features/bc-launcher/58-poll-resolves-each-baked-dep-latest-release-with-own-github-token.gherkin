@@ -31,12 +31,14 @@ Feature: the poll resolves each baked dependency's latest release using bc-launc
   identically for steveyegge/beads, which is public and readable with the
   default token.
 
-  @scenario_hash:4e6cbb147adc8c24
+  @scenario_hash:0f386f31857fbeb1
   Scenario Outline: the poll resolves each baked dependency's latest release tag using bc-launcher's own GITHUB_TOKEN
     Given the centralized scheduled workflow in shopsystem-bc-launcher runs its dependency check
     And the baked dependency "<dependency>" is resolved against its canonical repository "<canonical_repo>"
     When the workflow looks up the latest release tag for "<dependency>"
-    Then the lookup reads the public "<canonical_repo>" releases using the workflow's own "GITHUB_TOKEN"
+    Then the workflow's executable body, with YAML comment lines excluded, enumerates "<dependency>" mapped to its canonical repository "<canonical_repo>"
+    And a "<dependency>" to "<canonical_repo>" mapping present only in a descriptive YAML comment, absent from the executable body, does not satisfy this lookup
+    And the lookup reads the public "<canonical_repo>" releases using the workflow's own "GITHUB_TOKEN"
     And the lookup does not reference a "BC_LAUNCHER_DISPATCH_TOKEN" or any other cross-repo dispatch credential
     And the resolved latest release tag for "<dependency>" is what the workflow compares against the current bc-base Dockerfile pin
 
