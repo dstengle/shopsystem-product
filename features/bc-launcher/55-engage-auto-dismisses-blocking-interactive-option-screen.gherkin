@@ -1,0 +1,75 @@
+Feature: bc-container engage auto-dismisses a blocking, escape-able interactive option screen before submitting the startup prompt, and logs what it dismissed as a host-discoverable warning
+
+  Pins lead-q3uy. Composes with the autonomous-engagement path pinned by
+  scenario 27 (features/bc-launcher/27-launch-with-startup-prompt-submits-prompt-autonomously.gherkin),
+  the two-discrete-keystroke submission shape pinned by scenario 30
+  (features/bc-launcher/30-launch-startup-prompt-sends-text-and-enter-as-two-discrete-invocations.gherkin),
+  and the readiness barrier that gates engage pinned by scenario 34
+  (features/bc-launcher/34-launch-runs-idempotent-readiness-barrier-before-engage.gherkin).
+
+  Product context: the in-container agent runtime (Claude Code) may present a NEW
+  interactive option/question screen at startup BEFORE the agent's prompt is ready
+  to accept input — the motivating example is a "flicker-free rendering" opt-in
+  screen, but the behavior must generalize to ANY such startup option screen, not
+  only that one named option. Such a screen BLOCKS the input loop: the startup
+  prompt cannot be committed (cf scenarios 27/30) because the agent is not yet at
+  its prompt, so autonomous engage stalls indefinitely.
+
+  This scenario pins the launcher's auto-dismiss behavior on the engage path. The
+  launcher RECOGNIZES, on the tmux pane's rendered output, an interactive option
+  screen that offers a dismiss/escape affordance — a yes/no, skip-able, or
+  cancel-able prompt that has an escape path. For such a screen it sends an ESCAPE
+  keystroke as a SEPARATE, discrete tmux send-keys invocation carrying the Escape
+  key as its key payload (the same text-vs-key discipline scenario 30 pins for the
+  Enter key: a discrete send-keys key name, never a literal byte embedded in a text
+  payload) — NOT Enter, because Enter could select an unintended default. The
+  abstract observable this scenario pins is "a discrete Escape key event, distinct
+  from any Enter key event"; the BC owns the concrete tmux key-name token it maps
+  that to (the conventional name is "Escape") and MUST document and echo that
+  concrete key-name token in work_done. Product-authority policy: ONLY option
+  screens that are safe to skip — i.e. that expose an escape/dismiss affordance —
+  are auto-escaped; a screen with no escape affordance is NOT auto-confirmed and
+  is not silently advanced with Enter. Everything the launcher auto-dismisses is
+  CAPTURED and LOGGED as a WARNING to a host-discoverable location. Because a
+  blocking option screen blocks the PROMPT, not the session — the in-container
+  agent runtime IS up and its tmux pane IS rendering — the engage observability
+  surface a host already reads without attaching ("bc-container monitor"; cf
+  scenario 29) composes correctly as that location, so this scenario reuses it
+  rather than inventing a new persisted warning path. The WARNING is discoverable
+  on that monitor surface so a human can review what was auto-dismissed.
+
+  After dismissal, engage proceeds and the real startup prompt is submitted
+  exactly as scenarios 27 and 30 pin, with no host-side follow-up keystroke.
+
+  @scenario_hash:f68d8199fef70fa7
+  Scenario: engage recognizes a blocking escape-able option screen, sends Escape (not Enter) to dismiss it, then submits the startup prompt
+    Given the shopsystem-bc-launcher BC is installed
+    And no Docker container named "bc-shopsystem-messaging" is running
+    And on engage the in-container agent runtime presents an interactive option screen that blocks the input prompt and exposes a dismiss/escape affordance
+    When I run "bc-container launch shopsystem-messaging --startup-prompt 'bd prime'" and the launch command exits zero
+    Then the launcher issues a discrete tmux send-keys invocation against the container driver carrying the Escape key as its key payload, targeting the tmux session named "agent" in container "bc-shopsystem-messaging", to dismiss the blocking option screen
+    And that Escape-bearing invocation does not carry the Enter key in the same invocation
+    And the launcher does not send an Enter keystroke to select a default on that blocking option screen
+    And after the option screen is dismissed the startup prompt "bd prime" is submitted to the tmux session named "agent" with no host-side follow-up "bc-container inject" invocation required
+    And the in-container agent transitions from the blocked option screen to actively processing the prompt "bd prime"
+
+  @scenario_hash:f17f0fc747e44e47
+  Scenario: an auto-dismissed option screen's content is captured and logged as a host-discoverable warning
+    Given the shopsystem-bc-launcher BC is installed
+    And no Docker container named "bc-shopsystem-messaging" is running
+    And on engage the in-container agent runtime presents an interactive option screen that blocks the input prompt and exposes a dismiss/escape affordance
+    When I run "bc-container launch shopsystem-messaging --startup-prompt 'bd prime'" and the launch command exits zero
+    And I read the engage observability surface for the launch via "bc-container monitor shopsystem-messaging" from the host
+    Then the launch surfaces a WARNING that an interactive option screen was auto-dismissed during engage
+    And that warning captures the rendered content of the dismissed option screen so a human can review what was auto-dismissed
+    And the warning is discoverable from the host without attaching into the container
+
+  @scenario_hash:91d4c1486c7b7d48
+  Scenario: an interactive screen with no escape affordance is not auto-confirmed with Enter
+    Given the shopsystem-bc-launcher BC is installed
+    And no Docker container named "bc-shopsystem-messaging" is running
+    And on engage the in-container agent runtime presents an interactive screen that blocks the input prompt and exposes no dismiss or escape affordance
+    When I run "bc-container launch shopsystem-messaging --startup-prompt 'bd prime'" and the launch command runs the engage path
+    Then the launcher does not send an Enter keystroke to advance the screen that has no escape affordance
+    And the launcher does not auto-confirm a default on a screen that exposes no escape affordance
+    And the launch surfaces a WARNING naming the un-escapable screen so a human can review it from the host
