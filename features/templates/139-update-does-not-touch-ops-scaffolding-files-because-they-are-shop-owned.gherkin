@@ -1,12 +1,16 @@
-@scenario_hash:3e8c8087c483db9e
-Scenario: "shop-templates update" against a "lead" shop does not modify the ops scaffolding files ("compose.yaml", "bin/shop-shell", "Dockerfile.shopsystem-shell") under any circumstances on the success path, because per PDR-003 path F's two-bucket model those files are shop-owned (not canonical-managed) — this is the ops-scaffolding analogue of scenarios 86, 87, and 88 (".claude/shop/" non-touch invariants)
+# SUPERSEDES the prior update-non-touch scenario (@scenario_hash:3e8c8087c483db9e)
+# under PDR-020 slice 2 (lead-6ox4). The prior body asserted update leaves
+# "Dockerfile.shopsystem-shell" untouched; PDR-020 retires that file, so the
+# Dockerfile leg is REMOVED. The surviving, still-valid coverage — update does not
+# modify the shop-owned "compose.yaml" and "bin/shop-shell" on the success path
+# (PDR-003 path F) — is PRESERVED.
+@scenario_hash:3c496f8858b6b033
+Scenario: "shop-templates update" against a "lead" shop does not modify the ops scaffolding files ("compose.yaml", "bin/shop-shell") under any circumstances on the success path, because per PDR-003 path F's two-bucket model those files are shop-owned (not canonical-managed) — this is the ops-scaffolding analogue of scenarios 86, 87, and 88 (".claude/shop/" non-touch invariants)
   Given an existing git repository at a target directory "/tmp/example-lead-shop" that was previously bootstrapped as a "lead" shop named "shopsystem-product"
   And the file at "compose.yaml" in the target directory has been hand-edited so that its byte contents are not equal to the canonical "compose.yaml" template body for shop type "lead"
   And the file at "bin/shop-shell" in the target directory has been hand-edited so that its byte contents are not equal to the canonical "bin/shop-shell" template body for shop type "lead"
-  And the file at "Dockerfile.shopsystem-shell" in the target directory has been hand-edited so that its byte contents are not equal to the canonical "Dockerfile.shopsystem-shell" template body for shop type "lead"
-  And I record the byte contents of those three files before the invocation
+  And I record the byte contents of those two files before the invocation
   When I invoke the "shop-templates" update entry point against the target directory "/tmp/example-lead-shop"
   Then the exit code is 0
   And after the invocation the byte contents of the file at "compose.yaml" in the target directory equal the recorded byte contents
   And after the invocation the byte contents of the file at "bin/shop-shell" in the target directory equal the recorded byte contents
-  And after the invocation the byte contents of the file at "Dockerfile.shopsystem-shell" in the target directory equal the recorded byte contents

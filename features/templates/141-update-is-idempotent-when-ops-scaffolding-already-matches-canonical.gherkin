@@ -1,4 +1,9 @@
-@scenario_hash:59d41246cbd5235b
+# SUPERSEDES the prior idempotence scenario (@scenario_hash:59d41246cbd5235b) under
+# PDR-020 slice 2 (lead-6ox4). The prior Examples table carried a
+# "Dockerfile.shopsystem-shell" row; PDR-020 retires that file, so that row is
+# REMOVED. The surviving, still-valid coverage — the already-current idempotence
+# guarantee for the shop-owned "compose.yaml" and "bin/shop-shell" — is PRESERVED.
+@scenario_hash:953b2102a6924c28
 Scenario Outline: "shop-templates update" against a "lead" shop whose ops scaffolding files match the current canonical template body byte-for-byte exits zero, emits no advisory for those files on stderr, and leaves on-disk byte contents and mtimes unchanged — the same idempotence guarantee scenario 89 pins for the canonical-managed surface, extended to the shop-owned ops scaffolding for the "already up to date" case
   Given an existing git repository at a target directory "/tmp/example-lead-shop" that was previously bootstrapped as a "lead" shop named "shopsystem-product"
   And the file at "<path>" in the target directory has byte contents equal to the current canonical "<path>" template body for shop type "lead"
@@ -13,4 +18,3 @@ Scenario Outline: "shop-templates update" against a "lead" shop whose ops scaffo
     | path                          |
     | compose.yaml                  |
     | bin/shop-shell                |
-    | Dockerfile.shopsystem-shell   |

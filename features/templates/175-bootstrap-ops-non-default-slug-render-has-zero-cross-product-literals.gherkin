@@ -1,9 +1,16 @@
-@scenario_hash:1b6dbe8a0095fb8f
-Scenario: the ops scaffolding rendered by bootstrap for a non-default-slug "lead" shop carries zero cross-product literals — for shop name "dummyco" the rendered "compose.yaml", "bin/shop-shell", and "Dockerfile.dummyco-shell" contain no case-insensitive occurrence of the literal "shopsystem" and no case-insensitive occurrence of the literal "fleet", confirming the generification leaves no default-product name baked into a non-default render
+# SUPERSEDES the prior no-cross-product scenario (@scenario_hash:1b6dbe8a0095fb8f)
+# under PDR-020 slice 2 (lead-6ox4). The prior body asserted a rendered
+# "Dockerfile.dummyco-shell"; PDR-020 retires the dedicated shell Dockerfile, so
+# that leg is REMOVED. The surviving, still-valid coverage — zero cross-product
+# literals ("shopsystem"/"fleet") in the rendered "compose.yaml" and
+# "bin/shop-shell" for a non-default slug — is PRESERVED, and the absence of ANY
+# rendered shell Dockerfile is asserted positively.
+@scenario_hash:72dbfc6d64222885
+Scenario: the ops scaffolding rendered by bootstrap for a non-default-slug "lead" shop carries zero cross-product literals — for shop name "dummyco" the rendered "compose.yaml" and "bin/shop-shell" contain no case-insensitive occurrence of the literal "shopsystem" and no case-insensitive occurrence of the literal "fleet", confirming the generification leaves no default-product name baked into a non-default render
   Given an existing git repository at a target directory "/tmp/example-lead-shop"
   When I invoke the "shop-templates" bootstrap entry point with shop type "lead", shop name "dummyco", and target directory "/tmp/example-lead-shop"
   Then the exit code is 0
   And the byte contents of "compose.yaml" in the target directory contain no case-insensitive occurrence of the literal substring "shopsystem" and no case-insensitive occurrence of the literal substring "fleet"
   And the byte contents of "bin/shop-shell" in the target directory contain no case-insensitive occurrence of the literal substring "shopsystem" and no case-insensitive occurrence of the literal substring "fleet"
-  And the byte contents of "Dockerfile.dummyco-shell" in the target directory contain no case-insensitive occurrence of the literal substring "shopsystem" and no case-insensitive occurrence of the literal substring "fleet"
+  And the target directory contains no top-level file named "Dockerfile.dummyco-shell"
   And the target directory contains no top-level file named "Dockerfile.shopsystem-shell"
