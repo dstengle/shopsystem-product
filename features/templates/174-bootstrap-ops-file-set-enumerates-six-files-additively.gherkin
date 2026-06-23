@@ -5,9 +5,13 @@
 # (compose.yaml, bin/shop-shell, bin/shop-scenario-completion,
 # bin/agent-vault-provision, bin/agent-vault-check) and the no-".claude/"-
 # placement coverage are PRESERVED, and the absence of any rendered
-# "Dockerfile.<slug>-shell" is now asserted positively.
-@scenario_hash:5730de0b80aa6a0b
-Scenario Outline: the ops scaffolding file-set written by bootstrap for a "lead" shop named "<slug>" enumerates exactly five shop-owned files additively — "compose.yaml", "bin/shop-shell", "bin/shop-scenario-completion", "bin/agent-vault-provision", and "bin/agent-vault-check" — each at a shop-owned path outside any ".claude/" subdirectory, and writes NO dedicated shell Dockerfile, because per PDR-020 the shell image is retired and "bin/shop-shell" launches an ephemeral bc-base instead
+# "Dockerfile.<slug>-shell" is now asserted positively. Per the PDR-020
+# launcher/leaf split, "bin/shop-shell" launches an ephemeral bc-lead LAUNCHER
+# image (carrying the docker CLI) which stands up the leaf-BC session on bc-base;
+# this title-prose update is behavior-neutral — the file-set enumeration steps
+# are unchanged.
+@scenario_hash:f7af63457d95962f
+Scenario Outline: the ops scaffolding file-set written by bootstrap for a "lead" shop named "<slug>" enumerates exactly five shop-owned files additively — "compose.yaml", "bin/shop-shell", "bin/shop-scenario-completion", "bin/agent-vault-provision", and "bin/agent-vault-check" — each at a shop-owned path outside any ".claude/" subdirectory, and writes NO dedicated shell Dockerfile, because per PDR-020 the shell image is retired and "bin/shop-shell" launches an ephemeral bc-lead launcher (which stands up the leaf-BC on bc-base) instead
   Given an existing git repository at a target directory "/tmp/example-lead-shop"
   When I invoke the "shop-templates" bootstrap entry point with shop type "lead", shop name "<slug>", and target directory "/tmp/example-lead-shop"
   Then the exit code is 0

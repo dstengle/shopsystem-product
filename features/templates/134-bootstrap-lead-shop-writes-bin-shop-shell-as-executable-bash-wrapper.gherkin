@@ -1,10 +1,13 @@
-# Revised under PDR-020 slice 2 (lead-6ox4): bin/shop-shell converges to a thin
-# bc-container wrapper. The durable wrapper guarantees survive — executable bash
-# script, shebang, compose bring-up of postgres, no-further-config operator UX —
-# but the retired self-wiring internals (SHOPSYSTEM_SHELL_IMAGE knob, the
+# Revised under PDR-020: bin/shop-shell converges to a thin bc-container wrapper.
+# The durable wrapper guarantees survive — executable bash script, shebang,
+# compose bring-up of postgres, no-further-config operator UX — but the retired
+# self-wiring internals (SHOPSYSTEM_SHELL_IMAGE knob, the
 # docker-run-against-a-built-shell-image launch) are removed from this scenario;
-# the converged thin-wrapper launch body is pinned by scenario 172 (superseded).
-@scenario_hash:5e42381f435397f2
+# the converged thin-wrapper launch body is pinned by scenario 172. Per PDR-020
+# the wrapper launches an ephemeral LAUNCHER image (shopsystem-bc-lead, carrying
+# the docker CLI) which in turn stands up the leaf-BC session on shopsystem-bc-base;
+# this prose update follows that launcher/leaf split.
+@scenario_hash:a3b723341d9f2872
 Scenario: bootstrap of a "lead" shop writes "bin/shop-shell" as an executable bash script whose body brings up the compose-defined postgres if not already running, so a fresh operator can run "./bin/shop-shell" with no further configuration
   Given an existing git repository at a target directory "/tmp/example-lead-shop" with no "bin/" subdirectory
   When I invoke the "shop-templates" bootstrap entry point with shop type "lead", shop name "shopsystem-product", and target directory "/tmp/example-lead-shop"
@@ -14,4 +17,4 @@ Scenario: bootstrap of a "lead" shop writes "bin/shop-shell" as an executable ba
   And the first line of the file at "bin/shop-shell" is exactly "#!/usr/bin/env bash"
   And the body of "bin/shop-shell" contains the literal substring "docker compose" followed somewhere later in the file by the literal substring "up -d postgres"
   And the body of "bin/shop-shell" references the environment variable "SHOPSYSTEM_DATA" with a default of "$HOME/.local/share/shopsystem"
-  And the body of "bin/shop-shell" does not contain the literal substring "SHOPSYSTEM_SHELL_IMAGE", because the dedicated shell image is retired and the wrapper launches an ephemeral bc-base instead of a separately-built shell image
+  And the body of "bin/shop-shell" does not contain the literal substring "SHOPSYSTEM_SHELL_IMAGE", because the dedicated shell image is retired and the wrapper launches an ephemeral bc-lead launcher (which stands up the leaf-BC on bc-base) instead of a separately-built shell image
