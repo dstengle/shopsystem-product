@@ -5,7 +5,7 @@
 **Authors:** dstengle (intent — the 2026-06-23 launch-robustness gap report on `lead-2qta`), Claude (lead-architect)
 **Pins:** [scenario 56](../features/bc-launcher/56-launch-failure-writes-host-discoverable-diagnostic.gherkin) — *a launch/engage failure writes a host-discoverable diagnostic naming the specific failure cause, readable from the host without attaching into a tmux session that may not exist.*
 **Anchored to:** [ADR-018](018-empirical-verification-is-contract-surface.md) (the lead carries no BC source; this ADR's pre-state is verified against the lead-held `features/bc-launcher/` surface only). The host-readability shape this ADR reuses is the one pinned by [scenario 13](../features/bc-launcher/13-mailbox-readable-from-host.gherkin) and [scenario 14](../features/bc-launcher/14-mailbox-response-readable-from-host.gherkin): a container-side artifact is made readable from the host. The failure causes the diagnostic distinguishes are the same readiness gates already pinned by [scenario 33](../features/bc-launcher/33-launch-gates-on-messaging-db-reachability.gherkin) (messaging-db), [scenario 47](../features/bc-launcher/47-launch-gates-on-agent-vault-reachability.gherkin) (agent-vault), and [scenario 34](../features/bc-launcher/34-launch-runs-idempotent-readiness-barrier-before-engage.gherkin) / [scenario 48](../features/bc-launcher/48-readiness-barrier-composes-both-supporting-servers.gherkin) (readiness barrier).
-**Related beads:** `lead-2qta` (the launch-failure-diagnostic gap this pins the resolution for), `lead-q3uy` (the sibling engage-robustness gap from the same report).
+**Related beads:** `lead-2qta` (the launch-failure-diagnostic gap this pins the resolution for; closed by answer-by-redispatch), `lead-63em` (re-issue of `lead-2qta`: the scenario now conveys the seam by observable property IN-TEXT rather than by "per ADR-041" cross-reference, because the BC cannot read the lead repo — mirror of ADR-018), `lead-q3uy` (the sibling engage-robustness gap from the same report).
 
 ---
 
@@ -90,3 +90,28 @@ literals so the pin is concrete and checkable from the host.
 - The cause markers become a checkable contract: a host operator (or test)
   can grep the diagnostic for `messaging-db` / `agent-vault` / `readiness`
   / `agent-startup` to confirm the right repair is pointed at.
+
+## Amendment (2026-06-23, `lead-63em`) — the seam travels in the scenario, not by ADR number
+
+The initial dispatch of scenario 56 (`lead-2qta`) referenced this ADR by
+number and told the BC to "reuse the per-BC mailbox/observability surface
+that `bc-container monitor` reads." The BC correctly blocked: (a) the
+monitor tmux pane (`capture_pane`, requires a live `agent` session) and the
+engage WARNING stderr surface are TWO DIFFERENT mechanisms, and NEITHER is a
+persisted, re-discoverable surface; (b) this ADR does not exist in the BC
+repo — the lead carries no BC source and the BC carries no lead source
+(ADR-018), so a bare "per ADR-041" reference inside a BC-bound scenario
+conveys nothing the BC can resolve.
+
+Resolution: the architectural decision is unchanged (D1–D3 stand), but the
+SCENARIO now pins the seam by **observable property entirely in its own
+steps** — a persisted host-readable diagnostic FILE at a known, documented
+host-discoverable location on the same host-visible per-BC surface the
+mailbox is read from, found by a host lookup that does NOT attach and does
+NOT depend on the launch command's stderr or the monitor tmux pane. The
+"per ADR-041" citation is demoted to a non-load-bearing aside. This is the
+canonical re-discoverable surface; stderr/monitor may additionally carry the
+text but are NOT the pinned contract (resolves the BC's ambiguity (a)). The
+re-authored scenario blocks pin hashes `0d010cf8f3175226` (Scenario Outline)
+and `7084bbbfdef94f81` (the host-discovery Scenario), superseding the
+originally-dispatched `23606a56d6c376b4` / `0578c14c4419d169`.

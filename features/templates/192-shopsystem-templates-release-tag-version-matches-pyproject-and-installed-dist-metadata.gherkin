@@ -1,0 +1,40 @@
+Feature: a release tag "vX.Y.Z" on shopsystem-templates carries a matching source version, so the published artifact does not misreport its own version
+
+  Pins the release-version-hygiene invariant lead-g72o identifies (operator-confirmed):
+  the "v0.21.0" git tag on shopsystem-templates points at commit 89d4aff, but the
+  "pyproject.toml" at that tagged commit still declares version "0.20.0". So a
+  "pip install" from "@v0.21.0" records "shop-templates 0.20.0" in dist metadata —
+  the published artifact misreports its own version, and "importlib.metadata.version"
+  / "pip show" disagree with the tag a consumer asked for.
+
+  This feature pins the SOURCE-version side of the release contract: for a release
+  tag "vX.Y.Z" on shopsystem-templates, the "pyproject.toml" version at that tagged
+  commit is EXACTLY "X.Y.Z" (the "v" prefix stripped), such that an install from that
+  tag reports "X.Y.Z" in its dist metadata. It composes with — and does not collide
+  with — scenario 142, which pins that the same tag triggers an OCI image publication
+  carrying the version string and "latest". 142 pins image publication; this pins that
+  the version metadata baked into the source at the tagged commit equals the tag's
+  version, observable through the installed distribution's recorded metadata.
+
+  The tag-string-to-version-field relationship is the literal teeth: the version field
+  reads "X.Y.Z" (no "v"), and the dist-metadata report after an install from the tag
+  equals "X.Y.Z". The version field at the tag MUST NOT lag the tag (the 0.21.0-vs-0.20.0
+  defect). Ideally the bump is automated as part of the tag/publish process; this feature
+  pins the observable invariant, not the automation mechanism.
+
+  @scenario_hash:88a5418db371a12a
+  Scenario Outline: the pyproject version at a release-tagged commit equals the tag's version, so an install from that tag reports the tag version in its dist metadata
+    Given the shopsystem-templates repository has a release tag named "<tag>"
+    And the commit that "<tag>" points at is checked out
+    When I read the "version" field of "[project]" in "pyproject.toml" at that tagged commit
+    And I "pip install" the shopsystem-templates distribution from that "<tag>" into a fresh environment
+    Then the "pyproject.toml" "version" field at the tagged commit is exactly "<version>"
+    And "<version>" equals "<tag>" with its leading "v" prefix removed
+    And "importlib.metadata.version(\"shop-templates\")" in that environment returns exactly "<version>"
+    And the "pip show shop-templates" output in that environment reports "Version: <version>"
+    And the dist-metadata version does NOT lag the tag — the version field at the tagged commit is not an earlier release than "<version>"
+
+    Examples:
+      | tag     | version |
+      | v0.21.0 | 0.21.0  |
+      | v0.22.0 | 0.22.0  |
