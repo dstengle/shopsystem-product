@@ -3,7 +3,8 @@
 **Status:** accepted (2026-06-02)
 **Authors:** dstengle, Claude (lead-architect)
 **Pins:** the publication-contract shape of
-[scenario 142](../features/templates/142-shopsystem-templates-image-published-to-ghcr-on-tag.gherkin)
+scenario 142 (RETIRED — file deleted per `lead-u8ip`, ADR-040 D1 / PDR-019 Q1; the
+shape it described is preserved here as the bc-base publication contract)
 — *on a version-tag push, an OCI image is built and published to its canonical
 `ghcr.io/dstengle/<name>` path with the version string as one image tag and
 `latest` as another, public visibility* — applied to a **new** image
@@ -306,9 +307,11 @@ without addressing the propagation trigger at all.
 
 ## Cross-references
 
-- [scenario 142](../features/templates/142-shopsystem-templates-image-published-to-ghcr-on-tag.gherkin)
-  — the publish-on-version-tag-to-ghcr publication contract this ADR mirrors for
-  the new bc-base image.
+- scenario 142 (RETIRED — file deleted per `lead-u8ip`, ADR-040 D1 / PDR-019 Q1):
+  the publish-on-version-tag-to-ghcr publication contract this ADR mirrored for
+  the new bc-base image. The *bc-base* publication contract this ADR establishes
+  is unaffected by 142's retirement; 142 was only the shape this ADR borrowed, and
+  its own templates-image capability is the architecturally-rejected alternative.
 - [scenario 129](../features/templates/129-lead-bootstrap-installs-bc-clis-from-vcs-published-packages-not-editable-from-clone.gherkin)
   — the VCS-pin install discipline that defines what "a framework-utility
   release" is (the version-tag the rebuild fires on).

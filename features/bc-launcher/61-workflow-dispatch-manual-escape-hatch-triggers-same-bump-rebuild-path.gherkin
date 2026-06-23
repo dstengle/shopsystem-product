@@ -1,0 +1,23 @@
+Feature: a workflow_dispatch manual escape hatch triggers the same bump-rebuild path on demand
+
+  Pins ADR-022 D4 — "A workflow_dispatch trigger is added for operator-forced
+  rebuilds. The centralized workflow (and/or rebuild-bc-base.yml) gains a
+  workflow_dispatch trigger so an operator can force a check-bump-rebuild from
+  the Actions UI / gh workflow run without a code change or a raw
+  gh api .../dispatches call (closing the finding-5 gap)." This scenario pins
+  that the manual trigger drives the SAME check-bump-rebuild path as the
+  scheduled run (scenarios 57-59), not a separate bare-rebuild path: an
+  operator-forced run still resolves latest releases, bumps any stale pin, and
+  rebuilds + republishes :latest only on change. A workflow_dispatch trigger
+  that runs a bare rebuild without the bump logic, or that is absent so the
+  workflow is only reachable via schedule, must FAIL this scenario. (Targets
+  shopsystem-bc-launcher.)
+
+  @scenario_hash:59c0f539187eabbb
+  Scenario: an operator manually starts the workflow via workflow_dispatch and it runs the same check-bump-rebuild path
+    Given the centralized bc-base rebuild workflow in shopsystem-bc-launcher declares a "workflow_dispatch" trigger
+    And a baked dependency's latest release tag is newer than the tag pinned in "docker/bc-base/Dockerfile"
+    When an operator starts the workflow via "workflow_dispatch" from the Actions UI or "gh workflow run"
+    Then the manually started run resolves each baked dependency's latest release tag the same way the scheduled run does
+    And the run bumps the stale Dockerfile pin then rebuilds and republishes "ghcr.io/dstengle/shopsystem-bc-base:latest"
+    And starting the workflow this way requires no source-code change and no raw "gh api .../dispatches" call

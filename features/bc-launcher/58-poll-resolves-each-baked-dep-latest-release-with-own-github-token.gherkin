@@ -1,0 +1,48 @@
+Feature: the poll resolves each baked dependency's latest release using bc-launcher's own GITHUB_TOKEN
+
+  Pins ADR-022 D2 step 1 ("resolves the dependency's latest release tag from
+  its canonical repo, read with bc-launcher's own GITHUB_TOKEN (all repos
+  public, finding 3)") and D3 ("Steady state needs NO cross-repo
+  BC_LAUNCHER_DISPATCH_TOKEN ... The poll runs inside bc-launcher reading
+  public dep repos with the default GITHUB_TOKEN. The BC_LAUNCHER_DISPATCH_TOKEN
+  PAT ... is removed from steady state"). The watched-dependency list is the
+  load-bearing output of ADR-022's pre-state work (D2 table): shop-templates
+  (dstengle/shopsystem-templates), shop-msg (dstengle/shopsystem-messaging),
+  scenarios (dstengle/shopsystem-scenarios — ADD per finding 1, was not baked),
+  and beads (steveyegge/beads — beads' real upstream, see the resolved-gap note
+  below). Each lookup is a read of a PUBLIC repo, so the workflow's own
+  GITHUB_TOKEN suffices and no cross-repo dispatch PAT is referenced. A design
+  that references BC_LAUNCHER_DISPATCH_TOKEN (or any cross-repo dispatch
+  credential) for the release lookup must FAIL this scenario. (Targets
+  shopsystem-bc-launcher.)
+
+  Note (ADR-022 gap, RESOLVED on the contract surface): ADR-022 D2's table
+  records "bd (beads) — external/upstream (no dstengle/beads*); re-point to
+  beads' real upstream/published source" but did not itself name the resolved
+  beads upstream repo. The lead-held contract surface DOES name it: scenario
+  features/devcontainer/06-bd-on-path pins that the bd binary is downloaded
+  from "github.com/steveyegge/beads" releases. This scenario therefore pins
+  beads' canonical repo as that authoritative upstream (steveyegge/beads,
+  public), closing the per-dependency list at the four ADR-022 watched deps.
+  Note that beads' release artifact is a downloaded binary rather than a pip
+  VCS @vX.Y.Z pin (unlike shop-templates/shop-msg/scenarios); the load-bearing
+  PROPERTY this scenario pins — latest-release resolution against the canonical
+  PUBLIC repo using the workflow's own GITHUB_TOKEN, no cross-repo PAT — holds
+  identically for steveyegge/beads, which is public and readable with the
+  default token.
+
+  @scenario_hash:4e6cbb147adc8c24
+  Scenario Outline: the poll resolves each baked dependency's latest release tag using bc-launcher's own GITHUB_TOKEN
+    Given the centralized scheduled workflow in shopsystem-bc-launcher runs its dependency check
+    And the baked dependency "<dependency>" is resolved against its canonical repository "<canonical_repo>"
+    When the workflow looks up the latest release tag for "<dependency>"
+    Then the lookup reads the public "<canonical_repo>" releases using the workflow's own "GITHUB_TOKEN"
+    And the lookup does not reference a "BC_LAUNCHER_DISPATCH_TOKEN" or any other cross-repo dispatch credential
+    And the resolved latest release tag for "<dependency>" is what the workflow compares against the current bc-base Dockerfile pin
+
+    Examples:
+      | dependency     | canonical_repo                  |
+      | shop-templates | dstengle/shopsystem-templates   |
+      | shop-msg       | dstengle/shopsystem-messaging   |
+      | scenarios      | dstengle/shopsystem-scenarios   |
+      | beads          | steveyegge/beads                |

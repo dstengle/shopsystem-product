@@ -1,8 +1,0 @@
-@scenario_hash:5d57ee5b6ec6176b
-Scenario: the "ghcr.io/dstengle/shopsystem-templates:latest" image's default ENTRYPOINT (with no CMD override) invokes the in-image "shop-templates" CLI, so that "docker run --rm ghcr.io/dstengle/shopsystem-templates:latest --help" prints the same usage line that "shop-templates --help" produces from the installed package — pinning the onboarding flow "docker run shopsystem-templates ..." treats the image as a thin wrapper over the CLI
-  Given the image "ghcr.io/dstengle/shopsystem-templates:latest" has been pulled successfully
-  When I run "docker run --rm ghcr.io/dstengle/shopsystem-templates:latest --help" with no CMD override
-  Then the command exits 0
-  And the captured stdout contains the literal substring "usage: shop-templates"
-  And the captured stdout contains the literal substring "bootstrap" as a named subcommand
-  And the captured stdout contains the literal substring "update" as a named subcommand

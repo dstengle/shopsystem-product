@@ -14,7 +14,13 @@ Feature: a release tag "vX.Y.Z" on shopsystem-templates carries a matching sourc
   with — scenario 142, which pins that the same tag triggers an OCI image publication
   carrying the version string and "latest". 142 pins image publication; this pins that
   the version metadata baked into the source at the tagged commit equals the tag's
-  version, observable through the installed distribution's recorded metadata.
+  version, observable through the installed distribution's recorded metadata. (The
+  scenario-142 reference above is RETAINED HISTORICALLY only — see note below.)
+  (Historical note: scenario 142 — the templates-image OCI-publication pin this
+  prose previously referenced — has been RETIRED per ADR-040 D1 / PDR-019 Q1;
+  the adopter bootstrap rides the existing bc-base interactive entrypoint MODE,
+  not a templates image. This feature's pin is independent of that retirement:
+  it is the SOURCE-version side of the release contract and stands on its own.)
 
   The tag-string-to-version-field relationship is the literal teeth: the version field
   reads "X.Y.Z" (no "v"), and the dist-metadata report after an install from the tag
