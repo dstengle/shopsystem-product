@@ -1,0 +1,59 @@
+# clarify_response message type — in-band lead→BC clarify-answer vehicle
+#
+# Pins lead-q616's approved proposal (lead-ox8 implementation target,
+# ADR-009 path a): a NEW first-class lead→BC "clarify_response" message
+# type added to the §5.3 catalogue alongside assign_scenarios,
+# request_bugfix, request_maintenance, clarify, work_done,
+# mechanism_observation, and nudge.
+#
+# Problem it solves (lead-q616 mechanism finding): answering a BC's
+# INFORMATION clarify ("which env var?", "does X exist?", "socket or
+# network?") had no in-band vehicle. The lead could only (a) re-dispatch
+# a fresh work_id (heavyweight: new bead, full payload) or (b) nudge
+# (ADR-015 — transmission-only, never consumed by the BC's gated loop).
+# Live evidence: PDR-020 slice-2 forced TWO fresh-bead re-dispatches
+# (lead-6ox4 → lead-mgwb → lead-4c3z) because nudge answers were not
+# consumed.
+#
+# THE DISCRIMINATOR this preserves (load-bearing, do not erode):
+# - INFORMATION clarify (answer does NOT change scenario coverage)
+#   → clarify_response: in-band, same work_id, loop-consumed, NO new bead.
+# - SCOPE-CHANGE clarify (answer changes the contract / adds or tightens
+#   scenarios) → STILL re-dispatch per ADR-009 layer (b) and ADR-027.
+# clarify_response CANNOT carry scenario state, so it CANNOT be misused
+# for scope changes (see feature file 33 — the bounding constraint,
+# mirroring ADR-015 decision 7's no-scenario-state nudge rule).
+#
+# Vocabulary (load-bearing across files 30-33):
+# - "clarify_response message type" — the new §5.3 catalogue entry.
+# - "lead-side clarify_response CLI" — "shop-msg send clarify_response
+#   --bc <name> --work-id <id> --resolution <text>"; NO --scenario-file.
+# - "ClarifyResponse schema" — new Pydantic class carrying work_id +
+#   resolution text; MUST NOT carry scenario_hashes.
+# - "allow_multi_type" — the storage flag (ADR-009) that lets the
+#   clarify_response row COEXIST with the original dispatch row on the
+#   same (bc, work_id) without colliding against the
+#   one-row-per-(bc,work_id,message_type) invariant.
+# - "re-open" — receipt of clarify_response resumes the BC's gated loop
+#   on the SAME work_id to consume the resolution; no new bead.
+#
+# Open architectural choice DEFERRED to the architect at dispatch and to
+# the BC at implementation (ADR-018): the exact storage mechanism that
+# re-opens the dispatch and the precise allow_multi_type wiring. The
+# scenarios are stated in vocabulary that pins behavior, not internals.
+#
+# Dispatch target: shopsystem-messaging (owns the catalogue + CLI).
+# Vehicle: assign_scenarios (new behavior — no such message type today).
+
+
+@scenario_hash:f5819af74da50561
+Scenario: shop-msg send clarify_response delivers an in-band answer that re-opens the original dispatch on the SAME work_id for the BC's gated loop to consume
+  Given a lead shop "shopsystem-product" registered as the lead in the messaging registry
+  And a BC "shopsystem-messaging" registered in the messaging registry
+  And the lead previously dispatched assign_scenarios for work_id "lead-700", stored as an inbox row at (bc=shopsystem-messaging, work_id="lead-700", direction='inbox', message_type='assign_scenarios')
+  And the BC previously emitted a clarify on that work_id, stored as an outbox row at (bc=shopsystem-messaging, work_id="lead-700", direction='outbox', message_type='clarify') asking "which environment variable names the broker host?"
+  When the lead operator runs "shop-msg send clarify_response --bc shopsystem-messaging --work-id lead-700 --resolution 'use BROKER_HOST'"
+  Then the command exits zero
+  And a clarify_response row is stored at (bc=shopsystem-messaging, work_id="lead-700", direction='inbox', message_type='clarify_response') whose payload validates against the ClarifyResponse schema and carries resolution text "use BROKER_HOST"
+  And the original assign_scenarios dispatch for work_id "lead-700" is RE-OPENED for the BC's gated loop to resume on the SAME work_id "lead-700" — no new work_id and no new bead are created
+  And the resolution text "use BROKER_HOST" is readable by the BC via "shop-msg pending inbox" against work_id "lead-700"

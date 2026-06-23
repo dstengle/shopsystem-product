@@ -1,0 +1,29 @@
+# clarify_response coexistence — allow_multi_type, no overwrite
+#
+# Pins the storage property of lead-ox8 / lead-q616's approved proposal:
+# the clarify_response row COEXISTS with the original dispatch row on the
+# same (bc, work_id). The lead→BC send path opts into allow_multi_type
+# for clarify_response (ADR-009) so the row does NOT collide with the
+# one-row-per-(bc,work_id,message_type) inbox invariant and does NOT
+# overwrite the original assign_scenarios / request_bugfix row.
+#
+# This is the storage analog of the nudge direction='nudge' coexistence
+# property (feature file 122), achieved here via allow_multi_type at
+# direction='inbox' with a distinct message_type discriminator.
+#
+# Vocabulary: see feature file 30. Dispatch target: shopsystem-messaging.
+# Vehicle: assign_scenarios.
+
+
+@scenario_hash:eb96e352471ffd35
+Scenario: the clarify_response row COEXISTS with the original dispatch row on the same (bc, work_id) and does NOT overwrite it (allow_multi_type)
+  Given a lead shop "shopsystem-product" registered as the lead in the messaging registry
+  And a BC "shopsystem-messaging" registered in the messaging registry
+  And the lead previously dispatched request_bugfix for work_id "lead-701", stored as an inbox row at (bc=shopsystem-messaging, work_id="lead-701", direction='inbox', message_type='request_bugfix') with a recorded payload and created_at
+  And the BC previously emitted a clarify on work_id "lead-701" stored at (bc=shopsystem-messaging, work_id="lead-701", direction='outbox', message_type='clarify')
+  When the lead operator runs "shop-msg send clarify_response --bc shopsystem-messaging --work-id lead-701 --resolution 'the socket path, not the network address'"
+  Then the command exits zero
+  And a clarify_response row now exists at (bc=shopsystem-messaging, work_id="lead-701", direction='inbox', message_type='clarify_response') carrying the resolution text
+  And the original request_bugfix inbox row for (bc=shopsystem-messaging, work_id="lead-701") is unchanged — its message_type, payload, and created_at are byte-identical to their pre-clarify_response state
+  And both the request_bugfix row and the clarify_response row are independently present at direction='inbox' for the same (bc=shopsystem-messaging, work_id="lead-701"), distinguished by their message_type discriminator
+  And the load-bearing property pinned here is that clarify_response opts into allow_multi_type so it COEXISTS with the dispatch row rather than colliding against the one-row-per-(bc,work_id,message_type) invariant

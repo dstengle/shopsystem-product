@@ -1,0 +1,22 @@
+# clarify_response precondition — refused without a prior BC clarify
+#
+# Pins the precondition of lead-ox8 / lead-q616's approved proposal:
+# clarify_response is valid ONLY when a prior BC clarify exists on that
+# (bc, work_id). A clarify_response with nothing to answer is operator
+# error; the send is refused with a non-zero exit and no row is written.
+#
+# Vocabulary: see feature file 30. Dispatch target: shopsystem-messaging.
+# Vehicle: assign_scenarios.
+
+
+@scenario_hash:6c23bb777bab93df
+Scenario: shop-msg send clarify_response is REFUSED when no prior BC clarify exists on that (bc, work_id) — a clarify_response with nothing to answer is operator error
+  Given a lead shop "shopsystem-product" registered as the lead in the messaging registry
+  And a BC "shopsystem-messaging" registered in the messaging registry
+  And the lead previously dispatched assign_scenarios for work_id "lead-702", stored as an inbox row at (bc=shopsystem-messaging, work_id="lead-702", direction='inbox', message_type='assign_scenarios')
+  And NO outbox clarify row exists for (bc=shopsystem-messaging, work_id="lead-702") — the BC has not asked anything on this work_id
+  When the lead operator runs "shop-msg send clarify_response --bc shopsystem-messaging --work-id lead-702 --resolution 'answer to nothing'"
+  Then the command exits non-zero with an error message explaining that clarify_response requires a prior BC clarify on that (bc, work_id) and none exists
+  And NO clarify_response row has been stored at (bc=shopsystem-messaging, work_id="lead-702", direction='inbox', message_type='clarify_response')
+  And the original assign_scenarios dispatch for work_id "lead-702" is unchanged and is NOT re-opened
+  And the load-bearing property pinned here is that clarify_response is valid ONLY as the answer to an outstanding clarify; the precondition is enforced at the CLI surface

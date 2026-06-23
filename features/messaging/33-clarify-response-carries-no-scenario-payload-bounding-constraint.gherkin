@@ -1,0 +1,33 @@
+# clarify_response bounding constraint — NO scenario payload
+#
+# Pins THE bounding constraint of lead-ox8 / lead-q616's approved
+# proposal: clarify_response carries NO scenario state. There is no
+# --scenario-file flag, and the ClarifyResponse schema has no
+# scenario_hashes field. This absence MECHANICALLY enforces the
+# discriminator — an answer that would change the contract or add/tighten
+# scenarios CANNOT be sent as a clarify_response; it MUST route to
+# re-dispatch (assign_scenarios / request_bugfix) per ADR-009 layer (b)
+# and ADR-027.
+#
+# This mirrors the nudge no-scenario-state constraint of ADR-015 decision
+# 7 (feature file 122, "shop-msg nudge rejects a payload carrying a
+# scenario_hashes field"): a work_id-referencing transmission primitive
+# that makes NO claim about scenario coverage. The discriminator is whether
+# the answer carries scenario_hashes — if it would, it is a re-dispatch by
+# definition.
+#
+# Vocabulary: see feature file 30. Dispatch target: shopsystem-messaging.
+# Vehicle: assign_scenarios.
+
+
+@scenario_hash:460c5e0cc666fef8
+Scenario: shop-msg send clarify_response carries NO scenario payload — the absence of scenario state mechanically forces scope-changing answers to re-dispatch (the bounding constraint)
+  Given a lead shop "shopsystem-product" registered as the lead in the messaging registry
+  And a BC "shopsystem-messaging" registered in the messaging registry
+  And the BC previously emitted a clarify on work_id "lead-703" stored at (bc=shopsystem-messaging, work_id="lead-703", direction='outbox', message_type='clarify')
+  When the lead operator inspects "shop-msg send clarify_response --help"
+  Then the help text shows the flags --bc, --work-id, and --resolution and shows NO --scenario-file or any flag that carries scenario state
+  And the ClarifyResponse schema accepts a resolution text and a work_id but has NO scenario_hashes field — construction supplying a scenario_hashes field raises a schema validation error
+  When the lead operator runs "shop-msg send clarify_response --bc shopsystem-messaging --work-id lead-703 --resolution 'use BROKER_HOST'"
+  Then the command exits zero and the stored clarify_response payload carries no scenario_hashes field and asserts no scenario coverage
+  And the load-bearing property pinned here is that, because clarify_response cannot carry scenarios, an answer that would change the contract or add or tighten scenarios CANNOT be sent as a clarify_response — it MUST route to re-dispatch (assign_scenarios or request_bugfix) per ADR-009 layer (b) and ADR-027, mirroring the nudge no-scenario-state constraint of ADR-015 decision 7
