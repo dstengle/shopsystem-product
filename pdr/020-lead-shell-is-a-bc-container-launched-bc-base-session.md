@@ -256,3 +256,9 @@ remote.
 - [PDR-003](003-claude-md-update-propagation.md) — the poured-furniture
   propagation path the thin wrapper's implementation follows (templates →
   re-pour), not an in-repo edit.
+
+## Addendum (2026-06-23) — live-e2e gaps found post-implementation
+Live e2e of the rendered shop-shell surfaced three runnability gaps the substring-scenarios missed:
+1. **Image ref** (FIXED, lead-zcob): bare `shopsystem-bc-base` → `ghcr.io/dstengle/shopsystem-bc-base:latest`.
+2. **Missing `bc_name`** (FIXED, lead-zcob): launch+attach now pass the slug-derived `<slug>-lead`.
+3. **bc-base lacks the docker CLI** (lead-nsj3, OPEN, ARCHITECTURAL): the ephemeral bc-base runs `bc-container launch`, which shells out to `docker` — absent in bc-base → `FileNotFoundError: 'docker'`. The ephemeral-bc-base-as-launcher premise of this PDR requires the launcher image to carry the docker CLI. DESIGN DECISION needed: add docker to bc-base (bloat/security for leaf BCs) vs a separate launcher-flavored image vs revise the approach. Plus dependency lead-cek6 (bc-base `:latest` must track ≥v0.3.6). The convergence is CODE-COMPLETE + scenario-passing but NOT yet runnable until #3 (+lead-cek6) resolve.
