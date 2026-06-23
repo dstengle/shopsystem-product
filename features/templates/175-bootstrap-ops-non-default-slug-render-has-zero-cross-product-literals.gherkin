@@ -1,16 +1,40 @@
-# SUPERSEDES the prior no-cross-product scenario (@scenario_hash:1b6dbe8a0095fb8f)
-# under PDR-020 slice 2 (lead-6ox4). The prior body asserted a rendered
-# "Dockerfile.dummyco-shell"; PDR-020 retires the dedicated shell Dockerfile, so
-# that leg is REMOVED. The surviving, still-valid coverage — zero cross-product
-# literals ("shopsystem"/"fleet") in the rendered "compose.yaml" and
-# "bin/shop-shell" for a non-default slug — is PRESERVED, and the absence of ANY
-# rendered shell Dockerfile is asserted positively.
-@scenario_hash:72dbfc6d64222885
-Scenario: the ops scaffolding rendered by bootstrap for a non-default-slug "lead" shop carries zero cross-product literals — for shop name "dummyco" the rendered "compose.yaml" and "bin/shop-shell" contain no case-insensitive occurrence of the literal "shopsystem" and no case-insensitive occurrence of the literal "fleet", confirming the generification leaves no default-product name baked into a non-default render
+# SUPERSEDES the prior no-cross-product scenario (@scenario_hash:72dbfc6d64222885)
+# under PDR-020 slice 2 RE-ISSUE v2 (lead supersession of lead-mgwb), in response
+# to shopsystem-templates clarify tmpl-a5l (2026-06-23). That clarify surfaced a
+# REAL ledger contradiction with carried scenario 172 (@scenario_hash:03f1256aefc7fad4):
+# 172 requires the rendered "bin/shop-shell" to reference the framework image by
+# the FIXED literal "shopsystem-bc-base" for EVERY slug row including "dummyco",
+# while the prior 175 forbade ANY case-insensitive "shopsystem" in the rendered
+# "bin/shop-shell" for the "dummyco" render. "shopsystem-bc-base" contains
+# "shopsystem", so the two were mutually unsatisfiable on the dummyco render.
+#
+# RULING (grounded in existing doctrine, not user judgment): "shopsystem-bc-base"
+# (ghcr.io/dstengle/shopsystem-bc-base) is a PRODUCT-NEUTRAL FRAMEWORK IMAGE —
+# every adopter pulls the SAME image regardless of slug (there is no
+# "dummyco-bc-base"). This is the established exemption pattern already documented
+# for the product-neutral agent-vault broker image at compose.yaml:50-52 ("the
+# same reference renders for every product slug — it is NOT a <slug>-baked
+# literal"). 172 is therefore CORRECT and STAYS. The cross-product-literal rule
+# this scenario enforces is about SLUG-DERIVED names (container / volume / network
+# / path / env literals baked from the default "shopsystem" slug), NOT about the
+# shared framework image tag.
+#
+# So this revision RE-SCOPES the "bin/shop-shell" leg: the ONLY permitted
+# case-insensitive occurrence of "shopsystem" in the rendered "bin/shop-shell" is
+# as the product-neutral framework image reference "shopsystem-bc-base"; once
+# those occurrences are removed, no slug-derived "shopsystem" literal and no
+# "fleet" literal may remain. The "compose.yaml" leg is UNCHANGED — the dummyco
+# compose render derives every name from the slug (scenarios 170/171) and the
+# only product-neutral image there (agent-vault) carries no "shopsystem" literal,
+# so zero "shopsystem"/"fleet" still holds for compose.yaml. The
+# absence-of-any-shell-Dockerfile legs are PRESERVED from the prior body.
+@scenario_hash:399d16c31084dbfc
+Scenario: the ops scaffolding rendered by bootstrap for a non-default-slug "lead" shop carries zero cross-product SLUG-derived literals — for shop name "dummyco" the rendered "compose.yaml" contains no case-insensitive occurrence of the literal "shopsystem" and no case-insensitive occurrence of the literal "fleet", and the rendered "bin/shop-shell" contains "shopsystem" ONLY as part of the product-neutral framework image reference "shopsystem-bc-base" (per scenario 172, exempt under the compose.yaml product-neutral-image precedent) and no case-insensitive occurrence of the literal "fleet", confirming the generification leaves no default-product slug name baked into a non-default render while the shared framework image reference is preserved
   Given an existing git repository at a target directory "/tmp/example-lead-shop"
   When I invoke the "shop-templates" bootstrap entry point with shop type "lead", shop name "dummyco", and target directory "/tmp/example-lead-shop"
   Then the exit code is 0
   And the byte contents of "compose.yaml" in the target directory contain no case-insensitive occurrence of the literal substring "shopsystem" and no case-insensitive occurrence of the literal substring "fleet"
-  And the byte contents of "bin/shop-shell" in the target directory contain no case-insensitive occurrence of the literal substring "shopsystem" and no case-insensitive occurrence of the literal substring "fleet"
+  And the byte contents of "bin/shop-shell" in the target directory, after every case-insensitive occurrence of the product-neutral framework image reference literal "shopsystem-bc-base" is removed, contain no remaining case-insensitive occurrence of the literal substring "shopsystem" and no case-insensitive occurrence of the literal substring "fleet"
+  And the byte contents of "bin/shop-shell" in the target directory contain the literal substring "shopsystem-bc-base", confirming the product-neutral framework image reference is preserved and not slug-rewritten to "dummyco-bc-base"
   And the target directory contains no top-level file named "Dockerfile.dummyco-shell"
   And the target directory contains no top-level file named "Dockerfile.shopsystem-shell"
