@@ -262,3 +262,44 @@ Live e2e of the rendered shop-shell surfaced three runnability gaps the substrin
 1. **Image ref** (FIXED, lead-zcob): bare `shopsystem-bc-base` → `ghcr.io/dstengle/shopsystem-bc-base:latest`.
 2. **Missing `bc_name`** (FIXED, lead-zcob): launch+attach now pass the slug-derived `<slug>-lead`.
 3. **bc-base lacks the docker CLI** (lead-nsj3, OPEN, ARCHITECTURAL): the ephemeral bc-base runs `bc-container launch`, which shells out to `docker` — absent in bc-base → `FileNotFoundError: 'docker'`. The ephemeral-bc-base-as-launcher premise of this PDR requires the launcher image to carry the docker CLI. DESIGN DECISION needed: add docker to bc-base (bloat/security for leaf BCs) vs a separate launcher-flavored image vs revise the approach. Plus dependency lead-cek6 (bc-base `:latest` must track ≥v0.3.6). The convergence is CODE-COMPLETE + scenario-passing but NOT yet runnable until #3 (+lead-cek6) resolve.
+
+## Addendum (2026-06-23, II) — DECISION on gap #3: a thin `bc-lead` launcher image (option b)
+
+**Decision (product authority, 2026-06-23):** Gap #3 is resolved by **option (b)**
+— a separate, *very thin* launcher-flavored image **`bc-lead` = `FROM bc-base` +
+the docker CLI**, used ONLY for the ephemeral-launcher role in `bin/shop-shell`.
+Leaf BCs continue to run on the lean `bc-base` image unchanged.
+
+**Why (b), not (a) "add docker to bc-base":** the ephemeral-launcher is the ONLY
+role in the system that shells out to `docker` (it runs `bc-container launch` to
+create containers — see this PDR's gap (e), docker socket as a lead-only
+privilege). Every leaf BC (`shopsystem-messaging`, `-scenarios`, `-templates`,
+`-bc-launcher` agents, and any adopter-product BC) runs the agent only and NEVER
+launches a container. Baking the docker CLI into `bc-base` would put a
+docker-in-docker footprint and its host-root-equivalent security surface into
+EVERY leaf agent image for a capability only the launcher role uses. Option (b)
+confines that footprint to the single image the launcher role pulls, keeping the
+broad fleet lean and minimizing the privileged attack surface — the same
+lead-only-privilege posture this PDR's open question (e) already requires for the
+docker socket mount.
+
+**Why (b), not (c) "revise the launcher approach":** the convergence (one launch
+codebase, one brokered-credential reference implementation) is the whole point of
+PDR-020 and is already CODE-COMPLETE + scenario-passing. Re-deriving a separate
+launcher mechanism would re-introduce the dual-codebase root cause this PDR
+retires. `bc-lead` keeps the single `bc-container launch` path intact and only
+swaps the *image* the ephemeral launcher runs in.
+
+**Shape:** `bc-lead` is `FROM ghcr.io/dstengle/shopsystem-bc-base:<ver>` plus an
+install of the docker CLI, published to GHCR alongside `bc-base` by the same
+publish pipeline. `bc_launcher`/`bc-container`/`claude`/the CA entrypoint/the
+baked `~/.claude` all inherit unchanged from the base layer.
+
+**Follow-on work this addendum authorizes:**
+- `shopsystem-bc-launcher` (owns the image build + publish): add the `bc-lead`
+  image build + publish (lead-nsj3), and fix `publish-bc-base.yml` so `:latest`
+  tracks newest-on-tag-push for both images + re-tag `:latest`=v0.3.6 (lead-cek6).
+- `shopsystem-templates` (owns the poured `bin/shop-shell`): point the
+  ephemeral-launcher `docker run` at `bc-lead` instead of `bc-base` — a SEPARATE
+  templates change + re-pour workstream (tracked separately, not folded into the
+  bc-launcher dispatch).
