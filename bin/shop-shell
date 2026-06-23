@@ -1,17 +1,22 @@
 #!/usr/bin/env bash
 # bin/shop-shell — lead-shop daily-driver shell (shop-owned, PDR-003 path F).
 #
-# THIN wrapper (PDR-020 slice 2, ADR-028 D1): this script does NOT build or
-# run a dedicated shell image and does NOT re-derive the broker proxy URL or
-# fetch the MITM CA itself. It DELEGATES the brokered Claude launch to
-# `bc-container`, run inside an ephemeral framework bc-base image. The wrapper:
+# THIN wrapper (PDR-020 slice 2 + Addendum II (b), ADR-028 D1): this script
+# does NOT build or run a dedicated shell image and does NOT re-derive the
+# broker proxy URL or fetch the MITM CA itself. It DELEGATES the brokered
+# Claude launch to `bc-container`, run inside an ephemeral framework LAUNCHER
+# image (shopsystem-bc-lead = bc-base + docker CLI). bc-base itself carries NO
+# docker CLI and so cannot run `bc-container launch`; the launcher must run on
+# bc-lead. The leaf-BC session the launcher stands up keeps the bc-base runtime
+# image, handed in via `bc-container launch --image`. The wrapper:
 #
 #   1. brings up the compose supporting services (postgres + agent-vault);
 #   2. assembles the operator agent-vault credentials into an --env-file;
-#   3. `docker run --rm -it` an ephemeral bc-base with the host docker socket
-#      and the lead repo mounted, and inside it invokes
-#      `bc-container launch --workspace-mount <lead-repo> --mount-docker-socket
-#      --startup-prompt <lead session-start>`; then
+#   3. `docker run --rm -it` an ephemeral bc-lead launcher with the host docker
+#      socket and the lead repo mounted, and inside it invokes
+#      `bc-container launch --image <bc-base> --workspace-mount <lead-repo>
+#      --mount-docker-socket --startup-prompt <lead session-start>`, standing up
+#      the leaf-BC session on the bc-base runtime image; then
 #   4. `bc-container attach` to drop the operator into the brokered session.
 #
 # Proxy-URL construction, CA sourcing, the readiness check, and the shell
@@ -21,9 +26,10 @@
 # PRODUCT-SCOPED: the data root, docker network, env-file path, and the
 # compose container-name greps all derive from the bootstrap product slug
 # (shopsystem) so this script never collides with a second product running
-# alongside it. The framework image reference shopsystem-bc-base is the SAME
-# product-neutral image for every product slug (the same exemption the
-# agent-vault broker image carries in compose.yaml) — it is NOT slug-rewritten.
+# alongside it. The framework image references shopsystem-bc-lead (the launcher)
+# and shopsystem-bc-base (the leaf-BC runtime) are the SAME product-neutral
+# images for every product slug (the same exemption the agent-vault broker image
+# carries in compose.yaml) — they are NOT slug-rewritten.
 set -euo pipefail
 
 # Resolve the repo root (this script lives at <repo>/bin/shop-shell).
@@ -68,14 +74,17 @@ LEAD_STARTUP_PROMPT="Run the lead router session-start: load the lead skill, pri
 # user can be granted access to it. stat -L follows the devcontainer symlink.
 SOCKET_GID="$(stat -L -c '%g' /var/run/docker.sock)"
 
-# (3) Run an EPHEMERAL bc-base, mounting the host docker socket and the lead
-# repo, and inside it delegate the brokered launch to `bc-container launch`.
-# --workspace-mount points the launched session at the live lead working tree;
-# --mount-docker-socket grants the launched lead session the lead-only
-# docker-daemon access; --startup-prompt overrides the BC-default session-start
-# with the lead router session-start. The image reference shopsystem-bc-base is
-# the product-neutral framework image — the SAME tag for every product slug,
-# not slug-rewritten to shopsystem-bc-base.
+# (3) Run an EPHEMERAL bc-lead launcher (bc-base + docker CLI), mounting the
+# host docker socket and the lead repo, and inside it delegate the brokered
+# launch to `bc-container launch`. --image hands the launched leaf-BC session
+# its bc-base RUNTIME image (the launcher itself runs on bc-lead because bc-base
+# carries no docker CLI); --workspace-mount points the launched session at the
+# live lead working tree; --mount-docker-socket grants the launched lead session
+# the lead-only docker-daemon access; --startup-prompt overrides the BC-default
+# session-start with the lead router session-start. The framework image
+# references shopsystem-bc-lead (launcher) and shopsystem-bc-base (leaf-BC
+# runtime) are product-neutral — the SAME tags for every product slug, not
+# slug-rewritten to shopsystem-bc-lead / shopsystem-bc-base.
 docker run --rm -it \
   --network shopsystem \
   --env-file "$AGENT_VAULT_ENV_FILE" \
@@ -83,17 +92,19 @@ docker run --rm -it \
   -v "$REPO_ROOT:$REPO_ROOT" \
   -v /var/run/docker.sock:/var/run/docker.sock \
   -w "$REPO_ROOT" \
-  ghcr.io/dstengle/shopsystem-bc-base:latest \
+  ghcr.io/dstengle/shopsystem-bc-lead:latest \
   bc-container launch shopsystem-lead \
+    --image ghcr.io/dstengle/shopsystem-bc-base:latest \
     --workspace-mount "$REPO_ROOT" \
     --mount-docker-socket \
     --startup-prompt "$LEAD_STARTUP_PROMPT"
 
-# (4) Drop the operator into the brokered session.
+# (4) Drop the operator into the brokered session via the bc-lead launcher
+# (attach takes no --image; it reattaches to the already-running leaf-BC).
 exec docker run --rm -it \
   --network shopsystem \
   -v "$REPO_ROOT:$REPO_ROOT" \
   -v /var/run/docker.sock:/var/run/docker.sock \
   -w "$REPO_ROOT" \
-  ghcr.io/dstengle/shopsystem-bc-base:latest \
+  ghcr.io/dstengle/shopsystem-bc-lead:latest \
   bc-container attach shopsystem-lead
