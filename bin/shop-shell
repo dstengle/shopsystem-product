@@ -1,22 +1,29 @@
 #!/usr/bin/env bash
 # bin/shop-shell — lead-shop daily-driver shell (shop-owned, PDR-003 path F).
 #
-# Brings up the compose-defined postgres if it is not already running, then
-# drops the operator into the product shell image with the project mounted
-# and the docker socket forwarded. A fresh operator can run ./bin/shop-shell
-# with no further configuration.
+# THIN wrapper (PDR-020 slice 2, ADR-028 D1): this script does NOT build or
+# run a dedicated shell image and does NOT re-derive the broker proxy URL or
+# fetch the MITM CA itself. It DELEGATES the brokered Claude launch to
+# `bc-container`, run inside an ephemeral framework bc-base image. The wrapper:
 #
-# PRODUCT-SCOPED: the data root, docker network, and the container-name
-# greps all derive from the bootstrap product slug (shopsystem) so this
-# script never collides with a second product running alongside it.
+#   1. brings up the compose supporting services (postgres + agent-vault);
+#   2. assembles the operator agent-vault credentials into an --env-file;
+#   3. `docker run --rm -it` an ephemeral bc-base with the host docker socket
+#      and the lead repo mounted, and inside it invokes
+#      `bc-container launch --workspace-mount <lead-repo> --mount-docker-socket
+#      --startup-prompt <lead session-start>`; then
+#   4. `bc-container attach` to drop the operator into the brokered session.
 #
-# ZERO-HOST-COUPLING (ADR-028): credentials are sourced exclusively through
-# the agent-vault broker — NO host credential or config dotfiles are mounted.
-# Outbound traffic routes through the broker proxy (HTTPS_PROXY at
-# agent-vault:14322), which injects the real secrets on the wire. Only the
-# git IDENTITY (author/committer name+email — not a secret) is forwarded from
-# the host git config. If no broker token can be obtained, this script ERRORS
-# OUT rather than falling back to host credentials.
+# Proxy-URL construction, CA sourcing, the readiness check, and the shell
+# image are ALL delegated to the launcher / bc-base entrypoint — none are
+# re-derived here. NO host credential or config dotfiles are ever mounted.
+#
+# PRODUCT-SCOPED: the data root, docker network, env-file path, and the
+# compose container-name greps all derive from the bootstrap product slug
+# (shopsystem) so this script never collides with a second product running
+# alongside it. The framework image reference shopsystem-bc-base is the SAME
+# product-neutral image for every product slug (the same exemption the
+# agent-vault broker image carries in compose.yaml) — it is NOT slug-rewritten.
 set -euo pipefail
 
 # Resolve the repo root (this script lives at <repo>/bin/shop-shell).
@@ -27,13 +34,7 @@ SHOPSYSTEM_DATA="${SHOPSYSTEM_DATA:-$HOME/.local/share/shopsystem}"
 export SHOPSYSTEM_DATA
 mkdir -p "$SHOPSYSTEM_DATA/pgdata"
 
-# The daily-driver shell image tag. Override with SHOPSYSTEM_SHELL_IMAGE
-# to point at a published image; defaults to the locally-built recipe in
-# Dockerfile.shopsystem-shell (docker build -t shopsystem-shell:dev -f
-# Dockerfile.shopsystem-shell .).
-SHOPSYSTEM_SHELL_IMAGE="${SHOPSYSTEM_SHELL_IMAGE:-shopsystem-shell:dev}"
-
-# Bring up postgres (and the agent-vault broker) if not already running.
+# (1) Bring up postgres AND the agent-vault broker via compose (ADR-028 D1).
 docker compose -f "$REPO_ROOT/compose.yaml" up -d postgres agent-vault
 
 # Confirm the slug-scoped compose containers are actually running by name
@@ -45,165 +46,54 @@ if ! docker ps --format '{{.Names}}' | grep -Eq '^shopsystem-postgres$|^shopsyst
   exit 1
 fi
 
-# -----------------------------------------------------------------------
-# Broker credential acquisition (ADR-028 zero-host-coupling).
-#
-# Source the agent-vault broker coordinates from these places, in priority
-# order:
-#   (1) a repo-local .env carrying AGENT_VAULT_* keys; then
-#   (2) the agent-vault BROKER ITSELF for the MITM CA, via
-#       `agent-vault ca fetch` executed against the shopsystem-agent-vault
-#       container (cold-start primary CA source — see below); then
-#   (3) recovered from a running bc-* donor container's environment via
-#       `docker inspect` (the bc-launcher containers already hold them) — a
-#       LOWER-PRIORITY fallback, not required for the CA on a cold start.
-# If none yields a broker TOKEN, ERROR OUT — there is no host-cred fallback.
-# -----------------------------------------------------------------------
-AGENT_VAULT_ADDR="${AGENT_VAULT_ADDR:-}"
-AGENT_VAULT_TOKEN="${AGENT_VAULT_TOKEN:-}"
-AGENT_VAULT_VAULT="${AGENT_VAULT_VAULT:-}"
-AGENT_VAULT_CA_PEM="${AGENT_VAULT_CA_PEM:-}"
-
-# (1) repo-local .env
+# (2) Assemble the operator agent-vault credentials into an --env-file the
+# ephemeral bc-base reads. The broker coordinates are sourced from a repo-local
+# .env (carrying AGENT_VAULT_ADDR / AGENT_VAULT_TOKEN / AGENT_VAULT_VAULT). The
+# env-file is written under the slug-scoped data root (mode 0600) so no secret
+# touches the repo tree. The launcher (`bc-container launch`) is responsible for
+# deriving the proxy URL and sourcing the MITM CA from these coordinates — the
+# wrapper does NOT re-derive the proxy URL or fetch the CA itself.
+AGENT_VAULT_ENV_FILE="$SHOPSYSTEM_DATA/shop-shell.env-file"
+install -m 0600 /dev/null "$AGENT_VAULT_ENV_FILE"
 if [[ -f "$REPO_ROOT/.env" ]]; then
-  # shellcheck disable=SC1090
-  set -a; source "$REPO_ROOT/.env"; set +a
+  grep -E '^AGENT_VAULT_[A-Z_]+=' "$REPO_ROOT/.env" > "$AGENT_VAULT_ENV_FILE" || true
 fi
 
-# (2) COLD-START broker fetch of the MITM CA (scenario 192
-# @scenario_hash:513cf8ea1a8ff4e9). On a fully-cold start — the agent-vault
-# broker container running but ZERO BC containers present — there is no donor
-# to recover the CA from, so the warm-path donor recovery below (step 3) yields
-# NOTHING and the shell would launch with an empty CA (silent TLS failure to
-# the :14322 proxy). Source the CA DIRECTLY FROM THE BROKER instead: the
-# shopsystem-agent-vault container ships the `agent-vault` CLI, and
-# `agent-vault ca fetch` prints the root CA PEM (same mechanism
-# agent-vault-provision uses to write agent-vault-ca.pem). We exec it INSIDE
-# the broker container so the fetch depends only on the broker being up — NOT
-# on any BC container being present.
-#
-# The fetch is NOT gated on broker-token presence: it is reachable whenever the
-# CA is still empty, so an operator who knows only the broker ADDRESS still gets
-# a CA. The multi-line PEM is captured INTACT via command substitution (no
-# `head`/`read` single-line truncation) so the full certificate survives into
-# AGENT_VAULT_CA_PEM and is passed to `docker run` below. This broker fetch is
-# ordered BEFORE the donor-BC recovery (step 3), which is demoted to a
-# lower-priority fallback for the remaining coordinates.
-if [[ -z "${AGENT_VAULT_CA_PEM:-}" ]]; then
-  AGENT_VAULT_CA_PEM="$(docker exec -i shopsystem-agent-vault agent-vault ca fetch 2>/dev/null || true)"
-fi
+# The lead session-start prompt the launched session runs — overriding the
+# bc-base default BC session-start so the launched lead session runs the lead
+# router session-start (prime, drain inbox, arm the watcher).
+LEAD_STARTUP_PROMPT="Run the lead router session-start: load the lead skill, prime, drain the inbox, and arm the inbox watcher."
 
-# (3) recover from a running bc-* container (slug-derived grep) and BACKFILL
-# any AGENT_VAULT_* field the steps above left empty.
-#
-# Donor-recovery is DECOUPLED from token presence (lead-7gvm, conformance to
-# scenario 183 @scenario_hash:2adc62a25c401e4b): it must fire when ANY of the
-# broker coordinates is still empty — not only when the TOKEN is absent. The
-# common operator state is a .env that carries the TOKEN but NOT the multi-line
-# CA PEM (shop-shell's .env parser captures only the first line of a multi-line
-# value, so a CA PEM cannot survive there). On a cold start the CA is already
-# filled by the broker fetch (step 2); this donor recovery is a LOWER-PRIORITY
-# fallback (scenario 192) and is no longer the only working CA source. It still
-# runs whenever the CA (or ADDR/VAULT/TOKEN) is empty too, e.g. when a warm BC
-# donor is the only place a TOKEN can be recovered from. Recovery fills ONLY the
-# empty fields — any value already obtained (e.g. the broker-fetched CA, or the
-# .env token) is PRESERVED, never clobbered.
-if [[ -z "${AGENT_VAULT_TOKEN:-}" || -z "${AGENT_VAULT_CA_PEM:-}" \
-      || -z "${AGENT_VAULT_ADDR:-}" || -z "${AGENT_VAULT_VAULT:-}" ]]; then
-  BC_CONTAINER="$(docker ps --format '{{.Names}}' | grep -E '^shopsystem-bc-|^bc-' | head -n1 || true)"
-  if [[ -n "$BC_CONTAINER" ]]; then
-    while IFS= read -r kv; do
-      case "$kv" in
-        AGENT_VAULT_ADDR=*)   [[ -z "${AGENT_VAULT_ADDR:-}" ]]  && AGENT_VAULT_ADDR="${kv#AGENT_VAULT_ADDR=}";;
-        AGENT_VAULT_TOKEN=*)  [[ -z "${AGENT_VAULT_TOKEN:-}" ]] && AGENT_VAULT_TOKEN="${kv#AGENT_VAULT_TOKEN=}";;
-        AGENT_VAULT_VAULT=*)  [[ -z "${AGENT_VAULT_VAULT:-}" ]] && AGENT_VAULT_VAULT="${kv#AGENT_VAULT_VAULT=}";;
-        AGENT_VAULT_CA_PEM=*) [[ -z "${AGENT_VAULT_CA_PEM:-}" ]] && AGENT_VAULT_CA_PEM="${kv#AGENT_VAULT_CA_PEM=}";;
-      esac
-    done < <(docker inspect -f '{{range .Config.Env}}{{println .}}{{end}}' "$BC_CONTAINER" 2>/dev/null || true)
-  fi
-fi
-
-if [[ -z "${AGENT_VAULT_TOKEN:-}" ]]; then
-  echo "bin/shop-shell: no agent-vault broker token available (checked .env and running bc-* containers)." >&2
-  echo "  Zero-host-coupling (ADR-028) forbids a host-credential fallback. Aborting." >&2
-  exit 1
-fi
-export AGENT_VAULT_ADDR AGENT_VAULT_TOKEN AGENT_VAULT_VAULT AGENT_VAULT_CA_PEM
-
-# -----------------------------------------------------------------------
-# Agent-vault MITM CA (self-source + fail-loud).
-#
-# claude's outbound TLS to the agent-vault :14322 MITM proxy is validated
-# against the broker's CA. If AGENT_VAULT_CA_PEM is empty/unset at this
-# point (the broker-credential acquisition above does not always carry the
-# CA), claude would be launched with an EMPTY CA and silently fail cert
-# validation. Self-source the CA before launching:
-#   (1) ask the broker to emit it via `agent-vault ca fetch`; else
-#   (2) read the host file ./agent-vault-ca.pem (the broker writes the CA
-#       there; it is gitignored).
-# If the CA still cannot be obtained, ERROR OUT — do NOT launch claude with
-# an empty CA (the silent-MITM-failure this guard exists to prevent).
-# -----------------------------------------------------------------------
-if [[ -z "${AGENT_VAULT_CA_PEM:-}" ]]; then
-  # (1) retry the broker fetch via `agent-vault ca fetch` against the
-  #     shopsystem-agent-vault container (multi-line PEM captured intact).
-  AGENT_VAULT_CA_PEM="$(docker exec -i shopsystem-agent-vault agent-vault ca fetch 2>/dev/null || true)"
-  # (2) fall back to the host CA file the broker writes alongside the repo.
-  if [[ -z "${AGENT_VAULT_CA_PEM:-}" && -f "$REPO_ROOT/agent-vault-ca.pem" ]]; then
-    AGENT_VAULT_CA_PEM="$(cat "$REPO_ROOT/agent-vault-ca.pem")"
-  fi
-  export AGENT_VAULT_CA_PEM
-fi
-
-if [[ -z "${AGENT_VAULT_CA_PEM:-}" ]]; then
-  echo "bin/shop-shell: could not obtain the agent-vault MITM CA (tried 'agent-vault ca fetch' and $REPO_ROOT/agent-vault-ca.pem)." >&2
-  echo "  Launching claude with an empty CA would silently fail TLS to the :14322 broker proxy. Aborting." >&2
-  exit 1
-fi
-
-# Route outbound traffic through the broker proxy so it can inject the real
-# secrets on the wire.
-HTTPS_PROXY="${HTTPS_PROXY:-http://agent-vault:14322}"
-HTTP_PROXY="${HTTP_PROXY:-http://agent-vault:14322}"
-export HTTPS_PROXY HTTP_PROXY
-
-# Forward the git IDENTITY (name+email — not a secret) from the host git
-# config so in-shell commits are attributed correctly.
-GIT_AUTHOR_NAME="$(git config --get user.name || true)"
-GIT_AUTHOR_EMAIL="$(git config --get user.email || true)"
-GIT_COMMITTER_NAME="$GIT_AUTHOR_NAME"
-GIT_COMMITTER_EMAIL="$GIT_AUTHOR_EMAIL"
-export GIT_AUTHOR_NAME GIT_AUTHOR_EMAIL GIT_COMMITTER_NAME GIT_COMMITTER_EMAIL
-
-# Surface impending broker-token expiry to the operator at startup
-# (non-fatal — the check itself decides whether to warn).
-"$REPO_ROOT/bin/agent-vault-check" || true
-
-# Resolve the GID that owns the mounted docker socket so the non-root
-# shell user can be granted access to it via --group-add. stat -L follows
-# the devcontainer-installed symlink to the real socket.
+# Resolve the GID that owns the mounted docker socket so the inner non-root
+# user can be granted access to it. stat -L follows the devcontainer symlink.
 SOCKET_GID="$(stat -L -c '%g' /var/run/docker.sock)"
 
-# Drop into the shell image on the product network, with the project
-# mounted and the docker socket forwarded so in-shell tooling can drive
-# docker. --group-add grants the non-root shell user membership in the
-# socket-owning group so the forwarded socket is reachable. --user pins the
-# agent to the NAMED vscode user (matching the bc-launcher
-# "docker exec --user vscode" convention) so the shell stays non-root even
-# when SHOPSYSTEM_SHELL_IMAGE is overridden to a root-default image —
-# Claude Code refuses --dangerously-skip-permissions at EUID==0. Named (not
-# numeric $(id -u):$(id -g)) ensures $HOME=/home/vscode and a passwd entry
-# resolve; host and image vscode are both uid 1000.
-exec docker run --rm -it \
+# (3) Run an EPHEMERAL bc-base, mounting the host docker socket and the lead
+# repo, and inside it delegate the brokered launch to `bc-container launch`.
+# --workspace-mount points the launched session at the live lead working tree;
+# --mount-docker-socket grants the launched lead session the lead-only
+# docker-daemon access; --startup-prompt overrides the BC-default session-start
+# with the lead router session-start. The image reference shopsystem-bc-base is
+# the product-neutral framework image — the SAME tag for every product slug,
+# not slug-rewritten to shopsystem-bc-base.
+docker run --rm -it \
   --network shopsystem \
-  --user vscode \
-  -e SHOPSYSTEM_DATA \
-  -e AGENT_VAULT_ADDR -e AGENT_VAULT_TOKEN -e AGENT_VAULT_VAULT -e AGENT_VAULT_CA_PEM \
-  -e HTTPS_PROXY -e HTTP_PROXY \
-  -e GIT_AUTHOR_NAME -e GIT_AUTHOR_EMAIL -e GIT_COMMITTER_NAME -e GIT_COMMITTER_EMAIL \
+  --env-file "$AGENT_VAULT_ENV_FILE" \
+  --group-add "$SOCKET_GID" \
   -v "$REPO_ROOT:$REPO_ROOT" \
   -v /var/run/docker.sock:/var/run/docker.sock \
-  --group-add "$SOCKET_GID" \
   -w "$REPO_ROOT" \
-  "$SHOPSYSTEM_SHELL_IMAGE" \
-  /bin/bash "$@"
+  shopsystem-bc-base \
+  bc-container launch \
+    --workspace-mount "$REPO_ROOT" \
+    --mount-docker-socket \
+    --startup-prompt "$LEAD_STARTUP_PROMPT"
+
+# (4) Drop the operator into the brokered session.
+exec docker run --rm -it \
+  --network shopsystem \
+  -v "$REPO_ROOT:$REPO_ROOT" \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  -w "$REPO_ROOT" \
+  shopsystem-bc-base \
+  bc-container attach
