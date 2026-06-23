@@ -64,12 +64,13 @@ Feature: bc-container engage auto-dismisses a blocking, escape-able interactive 
     And that warning captures the rendered content of the dismissed option screen so a human can review what was auto-dismissed
     And the warning is discoverable from the host without attaching into the container
 
-  @scenario_hash:91d4c1486c7b7d48
+  @scenario_hash:9d38d505fc8b5432
   Scenario: an interactive screen with no escape affordance is not auto-confirmed with Enter
     Given the shopsystem-bc-launcher BC is installed
     And no Docker container named "bc-shopsystem-messaging" is running
     And on engage the in-container agent runtime presents an interactive screen that blocks the input prompt and exposes no dismiss or escape affordance
     When I run "bc-container launch shopsystem-messaging --startup-prompt 'bd prime'" and the launch command runs the engage path
     Then the launcher does not send an Enter keystroke to advance the screen that has no escape affordance
+    And between detecting the un-escapable option screen and returning from launch the launcher issues ZERO tmux send-keys invocations carrying the Enter key — and no keystroke of any kind — targeting the tmux session named "agent" in container "bc-shopsystem-messaging" while the un-escapable screen is present, as recorded by the container driver's send-keys recorder
     And the launcher does not auto-confirm a default on a screen that exposes no escape affordance
     And the launch surfaces a WARNING naming the un-escapable screen so a human can review it from the host
