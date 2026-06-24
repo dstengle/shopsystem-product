@@ -51,7 +51,7 @@ The lead launches BCs, which needs the Docker CLI — so the lead runs on the
 scaffold the folder into a lead shop and start the agent:
 
 ```bash
-shop-templates bootstrap --shop-type lead --shop-name myproduct
+shop-templates bootstrap --shop-type lead --shop-name myproduct --target /work
 claude
 ```
 
