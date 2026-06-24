@@ -9,10 +9,16 @@ Supply your own values for `<your-github-token>`, `<your-github-username>`,
 ```bash
 mkdir myproduct
 docker run -it --rm \
+  --group-add "$(stat -c '%g' /var/run/docker.sock)" \
   -v /var/run/docker.sock:/var/run/docker.sock \
   -v "$PWD/myproduct:/work" -w /work \
   ghcr.io/dstengle/shopsystem-bc-lead:latest bash
 ```
+
+> `--group-add` puts the in-container `vscode` user in the host docker-socket
+> group so it can run `docker compose` / `bc-container` (§3, §5). If your host
+> UID isn't 1000, also `chown 1000:1000 myproduct` so the container can write
+> `/work`.
 
 ## 2 — Bootstrap the lead shop
 
