@@ -1,0 +1,6 @@
+Scenario: collection proceeds normally under a correct editable install of the scenarios package
+  Given a clean checkout whose "scenarios" package resolves from the workspace "src/scenarios/" editable install
+  And no non-editable site-packages copy shadows "src/scenarios/"
+  When pytest collection runs the conftest editable-install guard
+  Then the guard raises no error
+  And collection proceeds and the test suite runs against "src/scenarios/"
