@@ -1,12 +1,5 @@
 # INSTALL — bring up a new shopsystem product
 
-> Two fixes are on `main` but NOT yet in the published `:latest` image:
-> credential-free bootstrap (lead-3t1o, shop-templates) and `USER vscode`
-> in bc-lead/bc-base (lead-fwrx, bc-launcher). Until those release, a cold
-> adopter pulling `:latest` runs as root and, without a GitHub token at
-> bootstrap, can hang. The flow below is the INTENDED clean path; affected
-> steps are tagged `[PENDING RELEASE]`.
-
 Replace `myproduct` with your product slug (lowercase, digits, hyphens).
 Supply your own values for `<your-github-token>`, `<your-github-username>`,
 `<your-claude-token>`, `<owner-password>`.
