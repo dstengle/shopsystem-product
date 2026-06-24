@@ -53,21 +53,16 @@ This runs `auth register` (first registrant = owner) → `vault create` →
 → `ca fetch` → writes `AGENT_VAULT_ADDR/TOKEN/VAULT/CA_PEM` into `.env`.
 It then stages the Claude-OAuth proposal and STOPS for you to approve it.
 
-Approve the Claude proposal (replace `<num>` with the printed proposal number;
-the script prints this exact command):
+Approve the Claude proposal — paste your real Claude token:
 
 ```bash
-docker exec -i \
-  -e AGENT_VAULT_TOKEN="$(docker exec -i myproduct-agent-vault agent-vault vault token --vault myproduct | tr -d '\r\n')" \
-  -e AGENT_VAULT_ADDR=http://localhost:14321 \
-  -e AGENT_VAULT_VAULT=myproduct \
-  myproduct-agent-vault \
-  agent-vault vault proposal approve <num> CLAUDE_OAUTH=<your-claude-token> --yes --vault myproduct
+bin/agent-vault-approve-claude <your-claude-token>
 ```
 
-> `proposal approve` runs in agent mode and REQUIRES a vault-scoped session
-> (`av_sess_…` from `vault token`), not the bare owner session — the owner
-> session alone returns `Error: Session requires vault scope`.
+> The script auto-resolves the pending proposal, mints the vault-scoped session
+> the approve needs (a bare owner session is rejected with "Session requires
+> vault scope"), and applies the token — which rides the in-container argv only,
+> never written to disk.
 
 Verify provisioning:
 
