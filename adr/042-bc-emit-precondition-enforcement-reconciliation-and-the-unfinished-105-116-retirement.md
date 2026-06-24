@@ -1,0 +1,334 @@
+# ADR-042 — The ADR-036 procedural-precondition migration is as-built complete through the enforcement layer (the `bc-emit work-done` wrapper landed and shipped); its final leg — retro-retiring the template-prose pins 105-116 — was falsely marked delivered and is hereby re-opened as the one remaining, now-unblocked action
+
+**Status:** proposed (2026-06-24)
+**Tier:** system-global (per [ADR-034](034-system-global-adr-home-in-the-lead-repo-distinct-from-framework-adr.md) / [ADR-035](035-three-tier-adr-hierarchy-and-periodic-system-architect-review-cadence.md) — like its parent ADR-036 this governs *where* a class of cross-BC contract enforcement lives, per this product; not framework doctrine, not one BC's internals.)
+**Authors:** dstengle, Claude (lead-architect)
+**Supplements / does not supersede:** [ADR-036](036-procedural-preconditions-are-cli-layer-judgment-behaviors-are-template-prose.md). ADR-036's decomposition (D1 layering principle, D2 wrapper-not-`shop-msg-respond` home, D3 block-only canonicalization, D4 land-then-retire) is RE-AFFIRMED unchanged. This ADR records the as-built reconciliation, names a verified delivery gap, and ratifies the remaining leg — it decides nothing ADR-036 already decided.
+**Pins:** the layering principle on `lead-o6tp` (dave, 2026-05-29, as revised) — *procedural preconditions that can be mechanically checked belong in a CLI-layer emit path that enforces them and refuses the emit on failure; judgment behaviors that require natural-language interpretation stay template-prose-layer.* lead-o6tp's "open architect-judgment question" (cancel `lead-83l` vs land-then-retire) is resolved by ADR-036 D4 and re-confirmed here on the artifact surface.
+**Anchored to:** [ADR-036](036-procedural-preconditions-are-cli-layer-judgment-behaviors-are-template-prose.md) (the parent decision this reconciles), [ADR-019](019-canonicalization-ownership-in-scenarios-bc.md) (scenario-block-only is the one canonical hash text; `scenarios` owns the rule, templates delegate — the `lead-rwtz` block-only refinement folded into ADR-036 D3), [ADR-018](018-empirical-verification-is-contract-surface.md) (the artifact-surface evidence rule and the no-clone doctrine: the wrapper's git checks run BC-side, never lead-side; this ADR's pre-state is contract-surface only), [ADR-010](010-clarify-resolution-work-done-scope.md) (the `work_done.scenario_hashes` strict-subset rule the wrapper's `scenario_hashes-match` check mechanizes).
+**Anchored on (PDR):** [PDR-001](../pdr/001-role-templates-role-complete.md) (role-completeness — the prose-vs-CLI line; removing 105-116 prose preserves role-completeness because the obligation moves to a more reliable layer plus a pointer), [PDR-010](../pdr/010-bd-authoritative-shop-msg-transport.md) (`shop-msg` is transport, not policy enforcement — the layer instinct behind keeping the wrapper out of `shop-msg respond`).
+**Related beads:** `lead-o6tp` (the layering-principle ADR-candidate; advanced by this ADR), `lead-m56e` (the wrapper dispatch, scenarios 176-181, CLOSED/reconciled), `lead-83l` (the scenario-hash prose pins 113-116, CLOSED/landed), `lead-cw7` (clean-tree pins 105-108), `lead-8lm` (commit-on-origin-main pins 109-112), `lead-bsam` (the STEP-3 retirement bead falsely closed — see D2), `lead-bglz` (v0.6.0 cut + re-pour, CLOSED), `lead-7efq` (v0.7.0 cut + re-pour, CLOSED — `bc-emit` functional in launched BCs), `lead-rwtz` (block-only hash-recompute refinement, subsumed by lead-o6tp/ADR-036 D3), `lead-63mg` (the work-done-gate clean-tree-vs-plan-bead-closure deadlock the wrapper carve-out dissolves), `lead-hlgs` (downstream gate-scope refinements, blocked on lead-o6tp).
+
+---
+
+## Context
+
+ADR-036 (accepted 2026-06-10) ratified the lead-o6tp counter-design: move the
+three mechanically-checkable pre-emit obligations — (i) clean working tree,
+(ii) work_id committed on `origin/main`, (iii) `scenario_hashes` match the
+committed `features/` — out of fragile canonical-template *prose* (scenarios
+105-116 in `features/templates/`) and into a CLI-layer **`bc-emit work-done`
+wrapper** shipped by `shopsystem-templates`. The wrapper runs the preflight and
+refuses the emit with a named-cause error; bare `shop-msg respond --force` stays
+as the forced-recovery escape valve (ADR-015). Judgment behaviors that cannot be
+mechanically decided (continuous-action, idle checklist, choice-suppression,
+inbound-message sufficiency) stay prose.
+
+ADR-036 left an explicitly-tracked three-step plan in its Consequences:
+(1) PO authors the wrapper precondition scenarios; (2) Architect dispatches them
+to `shopsystem-templates` as `assign_scenarios` (new capability — no command
+pins `bc-emit` today); (3) **only after** the wrapper enforces in launched BCs,
+retro-retire prose pins 105-116 to one-line pointers — *land-then-retire, never
+retire-then-gap* (ADR-036 D4).
+
+This ADR is the reconciliation of that plan against the as-built artifact
+surface, prompted by ADVANCE of `lead-o6tp` on 2026-06-24, and by fresh evidence
+this session that the prose-only checks kept failing in practice precisely
+because agents did not follow prose: hash corruption caught only by manual
+architect `scenarios hash` verification across multiple dispatches (`lead-rwtz`);
+the work-done-gate clean-tree-vs-plan-bead-closure DEADLOCK where closing the
+plan bead dirties `.beads/issues.jsonl` and fails the clean-tree check, so a
+verified-complete BC self-blocks and escalates an un-lead-performable action
+(`lead-63mg`); and reviewer-gate false-negatives (`lead-hlgs`). Each is a fresh
+instance of the same fragility ADR-036 was ratified to close — and each is
+dissolved by the wrapper (the `.beads/issues.jsonl` carve-out in scenario 176
+directly resolves `lead-63mg`; the block-only recompute in scenario 179 directly
+resolves the `lead-rwtz` corruption class).
+
+### Pre-state empirical findings (artifact surface only, ADR-018 D1/D2)
+
+Verified 2026-06-24 from the lead CWD against this repo's `features/templates/`,
+the `adr/`/`pdr/` records, the `bd` registry, and the installed `scenarios hash`
+contract tool. No BC source read, run, or git-observed (ADR-018 D1) — there is no
+`repos/` tree on the lead host. The task's pointer to a
+`features/bc_emit_work_done_wrapper.feature` does not resolve on this host; the
+wrapper's lead-held coverage lives as `features/templates/176-181` (confirmed
+below), and that is the authoritative surface.
+
+1. **The enforcement layer is as-built COMPLETE and SHIPPED. CONFIRMED.**
+   - The wrapper scenarios `176-181` are present in lead-held
+     `features/templates/` (176 clean-tree + ambient carve-outs incl. the
+     `.beads/issues.jsonl` non-idempotent carve-out; 177 commit-on-origin-main;
+     178 tag-lineage reachability, both arms; 179 `scenario_hashes-match` via
+     **scenario-block-only** `compute_scenario_hash`, refusing stale/missing/
+     orphan; 180 named-cause error directs BC self-resolve, never names the lead;
+     181 `--force` escape valve).
+   - `lead-m56e` (the wrapper dispatch) is CLOSED/RECONCILED: the wrapper is
+     `src/shop_templates/bc_emit.py`, a package-delivered `bc-emit` console
+     script on templates `origin/main`.
+   - `lead-bglz` (cut shop-templates **v0.6.0** + re-pour) is CLOSED: re-poured
+     and verified on the lead host; this is the bump that delivers `bc-emit` to
+     launched BCs (delivery-currency).
+   - `lead-7efq` (cut **v0.7.0** + re-pour) is CLOSED: `bc-emit --help`
+     importable (scenarios VCS-pinned dep + lazy import) — i.e. the wrapper is
+     now *functional* in launched BCs, not dead-on-arrival.
+   - **Consequence:** the ADR-036 D4 retirement precondition (the wrapper
+     enforces in launched shops) is MET. The land-then-retire window has opened.
+
+2. **The `lead-83l` open-question is moot on the cancel side, exactly as
+   ADR-036 D4 found. CONFIRMED.** `bd show lead-83l` is CLOSED, close-reason
+   citing templates commit `9e7138c`; the four scenario-hash prose pins 113-116
+   are on-disk in `features/templates/`. It cannot be cancelled — it shipped. The
+   live decision was, and remains, **land-then-retire** (ratified ADR-036 D4,
+   re-confirmed here on the artifact surface). This ADR records no new decision
+   on lead-83l; it re-affirms ADR-036 D4 against current state.
+
+3. **The final leg — STEP 3 retro-retirement of 105-116 — DID NOT HAPPEN.
+   CONFIRMED, and this is the load-bearing finding of this ADR.** All twelve
+   prose pins remain live in `features/templates/` with their original
+   `@scenario_hash:` tags intact (enumeration below), and neither scenario 105
+   nor 113 carries any `bc-emit` / "the wrapper enforces these" pointer-prose
+   redirect. The retirement bead `lead-bsam` is nonetheless CLOSED — but its
+   close-reason is a 2026-06-19 *triage sweep* whose text is about unrelated
+   PDR-018/PDR-019 adopter-bootstrap work ("PDR-019 adopter-bootstrap epic
+   COMPLETE … starter re-rendered 3a1c985, v0.14.0"), NOT about the 105-116
+   retirement it nominally tracks. It was closed in error: the bead's own DESCRIPTION
+   names the deliverable (retire/redirect 105-116) and the artifact surface shows
+   that deliverable absent. **The migration is therefore complete through the
+   enforcement layer but has a live duplicate-coverage tail: 105-116 prose pins
+   AND 176-181 wrapper pins both assert the same three preconditions today.**
+
+4. **The overlap the ADVANCE task asked me to "resolve" is already resolved by
+   ADR-036 D2 — and the duplication is now between PROSE pins and a WRAPPER, not
+   between two enforcers. CONFIRMED.** The task framed an overlap between
+   "`shop-msg respond` enforcement" and "the templates `bc-emit work-done`
+   wrapper." ADR-036 D2 already settled this: enforcement does NOT go into
+   `shop-msg respond` (that stays a pure messaging primitive — PDR-010 layer
+   instinct, ADR-018/ADR-019 ownership: `scenarios` owns canonicalization,
+   `messaging` transports). The wrapper is the single home. The real residual
+   overlap on the surface today is the *prose pins 105-116 vs the wrapper pins
+   176-181* — i.e. precisely the duplication STEP 3 exists to remove. There is
+   no double-enforcement to design away; there is unfinished retirement to
+   execute.
+
+5. **Block-only recompute of the conflicting set reproduces the pinned tags.
+   CONFIRMED.** `scenarios hash` over the block-only body of scenario 113 (tag
+   line stripped, no Feature line) reproduces `418f41d9a7789ca1` — its pinned
+   tag — verifying the lead-held `features/templates/` surface is authoritative
+   for the retirement enumeration and that the block-only canonicalization (the
+   `lead-rwtz` refinement, ADR-019 D3) is the correct unit for it.
+
+### Conflicting BC-side `@scenario_hash` enumeration (the retirement target)
+
+Established from the lead-held `features/templates/` surface (the authoritative
+surface per ADR-018 — there is no `repos/shopsystem-templates` clone on the lead
+host), each tag read on-disk and reconciled against ADR-036's recorded
+enumeration and the `lead-m56e` dispatch record. The retirement dispatch
+(Consequences, step R) must reference each by hash ID or carry an explicit
+retirement instruction for it:
+
+| scn | bead     | `@scenario_hash`   | precondition |
+|-----|----------|--------------------|--------------|
+| 105 | lead-cw7 | `03df7848f78f3bed`  | clean-tree + commit-on-main (reviewer, complete) |
+| 106 | lead-cw7 | `304dec007a39b56b`  | clean-tree block on modified/uncommitted (reviewer) |
+| 107 | lead-cw7 | `29e754e4122b9333`  | clean-tree block on untracked (reviewer) |
+| 108 | lead-cw7 | `0c4b28c02212d454`  | commit-on-origin-main block (reviewer) |
+| 109 | lead-8lm | `3c4a039dc12f9e72`  | clean-tree + commit-on-main (implementer) |
+| 110 | lead-8lm | `d1a890b937181543`  | clean-tree block on modified/uncommitted (implementer) |
+| 111 | lead-8lm | `e98d72015796afbe`  | clean-tree block on untracked (implementer) |
+| 112 | lead-8lm | `bb41b17b6ebd0c81`  | commit-on-origin-main block (implementer) |
+| 113 | lead-83l | `418f41d9a7789ca1`  | scenario_hash recompute (reviewer, happy) |
+| 114 | lead-83l | `a176ea1af49b5fa0`  | scenario_hash block on stale |
+| 115 | lead-83l | `f312990bd1d5ca44`  | scenario_hash block on missing |
+| 116 | lead-83l | `83614a2765bd73ab`  | scenario_hash block on orphan |
+
+The wrapper pins that SUPERSEDE this set (the surviving coverage):
+`176=242c4de927d64339`, `177=461d6066ef7dca0a`,
+`178=12c98d2f7e5259a9`+`6d95d409dd527be6`, `179=ea9c1bbd9be87d72`,
+`180=4a6133f7b5f061a2`, `181=f81ee56bc163934b`.
+
+---
+
+## Decision
+
+### D1 — ADR-036's decomposition stands unchanged; this ADR adds no new layering
+
+The decomposition the ADVANCE task asked to "decide" is already decided by
+ADR-036 and is RE-AFFIRMED here without modification. For the record, restated
+against the three preconditions and naming the owning BC for each check:
+
+- **(i) clean-working-tree** — with `.beads/issues.jsonl` (non-idempotent
+  bd-dolt export churn, `lead-63mg`/`lead-bdqm`/`lead-vhfa`), `.specstory`, and
+  `.claude/scheduled_tasks.lock` ambient carve-outs. **Home: the `bc-emit
+  work-done` wrapper in `shopsystem-templates`** (scenario 176). The git check
+  runs BC-side against the BC's own tree (ADR-018). This carve-out is what
+  dissolves the `lead-63mg` deadlock: a verified-COMMITTED fix whose only dirt is
+  the re-exported `.beads/issues.jsonl` is treated as clean.
+- **(ii) work_id-committed-on-origin-main** — with the tag-lineage reachability
+  mode for tag/release deliverables (`lead-vhfa#1`, scenario 178).
+  **Home: the `bc-emit work-done` wrapper in `shopsystem-templates`**
+  (scenarios 177, 178).
+- **(iii) scenario_hashes-match** — **block-only** recompute (no `#`/Feature
+  lines; explicit `@bc` handling — the `lead-rwtz` refinement), delegated
+  in-process to `scenarios.hash.compute_scenario_hash`; refuses on stale /
+  missing / orphan (ADR-010 strict-subset). **Home: the `bc-emit work-done`
+  wrapper in `shopsystem-templates`** (scenario 179), which **delegates the
+  canonicalization to `shopsystem-scenarios`** (ADR-019 D2 ownership). `shop-msg`
+  (the `shopsystem-messaging` BC) is NOT an enforcer for any of the three — it
+  stays a pure transport (ADR-036 D2, PDR-010). This is the explicit
+  "wrapper vs `shop-msg respond` vs both" resolution: **wrapper only; never
+  `shop-msg respond`; never both**.
+
+Ownership summary: `shopsystem-templates` owns the wrapper that runs all three
+checks; `shopsystem-scenarios` owns the canonicalization rule check (iii)
+delegates to; `shopsystem-messaging` owns only transport and remains
+enforcement-free.
+
+### D2 — `lead-bsam` was closed in error; the STEP-3 retirement of 105-116 is the one remaining, now-unblocked leg of lead-o6tp and must be RE-OPENED and executed
+
+`lead-bsam` is marked CLOSED with a triage-sweep close-reason that does not match
+its deliverable, and the artifact surface shows its deliverable (retire/redirect
+105-116) absent. The close is not evidence the work happened. The router shall
+RE-OPEN `lead-bsam` (or file a fresh successor bead and link it), because the
+land-then-retire precondition is now MET (D1 finding 1: v0.6.0/v0.7.0 shipped and
+re-poured, wrapper functional in launched BCs). Until the retirement lands, the
+framework carries DUPLICATE coverage of the three preconditions — prose pins
+105-116 and wrapper pins 176-181 both live — which is exactly the verbose,
+fragile state lead-o6tp set out to remove, now compounded by redundancy.
+
+### D3 — The retirement vehicle is a fresh-work_id `request_bugfix` to `shopsystem-templates`, NOT `assign_scenarios`, and NOT `request_maintenance`
+
+Running the message-type discriminator on the retirement against the verified
+pre-state (ADR-018 D1):
+
+- **Capability exists?** YES — `shopsystem-templates` already pins all three
+  preconditions, twice over: as prose (105-116) and as the shipped wrapper
+  (176-181). So NOT `assign_scenarios` (that is for net-new capability; this is
+  not new).
+- **Pinned by scenarios?** YES — the prose pins 105-116 are exactly the scenarios
+  being changed/retired. The change is BEHAVIORAL (it retires twelve pinned
+  scenarios and replaces them with one-line pointer prose that the templates BC
+  must verify is present), and it retires/supersedes prior BC-side coverage. That
+  is a tightening/contradiction of existing pinned coverage → **`request_bugfix`**,
+  with the conflicting `@scenario_hash` set (the twelve hashes in the table above)
+  enumerated in the dispatch description and each carrying an explicit retirement
+  instruction. NOT `request_maintenance` — this is not a flat value/doc tweak; it
+  changes what the template-prose contract pins.
+- **Fresh work_id** even though it follows lead-m56e/lead-bsam (sufficiency check
+  for `request_bugfix` item 4): a re-opened or successor lead bead, never a reused
+  predecessor ID.
+
+The dispatch description must cite the contract-surface verification (ADR-018 D1)
+and the @scenario_hash enumeration in the same shape the architect template
+requires, so the templates Implementer can confirm the enumeration ran rather
+than re-deriving it.
+
+### D4 — Do NOT draft a competing layering ADR; this ADR is reconciliation, not re-decision
+
+A new ADR re-deciding the wrapper-vs-`shop-msg` home, the block-only unit, or the
+land-then-retire sequence would be wrong: ADR-036 already decided each with the
+alternatives weighed, and re-litigating settled ground is exactly what the ADR
+discipline forbids. This ADR's only novel decisions are D2 (the false-closure
+finding and re-open) and D3 (the retirement vehicle selection on verified
+pre-state). Everything else is recorded reconciliation.
+
+---
+
+## Alternatives considered
+
+**Option A — Draft a fresh standalone layering ADR (as the ADVANCE task's literal
+framing suggested), re-deciding wrapper-vs-`shop-msg respond` and the three-check
+home.** Rejected (D4). ADR-036 already ratified that decomposition with
+alternatives weighed (its Options A-F). The empirical pre-state shows the design
+is not only decided but as-built and shipped through the enforcement layer.
+Re-deciding it would re-litigate settled ground and produce a redundant ADR. The
+genuine open item is execution of the final leg, not a new decision.
+
+**Option B — Treat the overlap as live double-enforcement to design away (wrapper
+AND `shop-msg respond`).** Rejected (finding 4). There is no `shop-msg respond`
+enforcement and ADR-036 D2 forbids adding it. The only real duplication is prose
+pins vs wrapper pins, resolved by retiring the prose (D2/D3), not by re-layering.
+
+**Option C — Retire 105-116 immediately in THIS task.** Rejected by the task
+constraint (this is a DRAFT/proposal step; no dispatch sent) AND by process: the
+retirement is a BC-bound `request_bugfix` to `shopsystem-templates` (D3), routed
+PO-authors-pointer-prose → architect-dispatches. It is the router's next
+sequenced action, recorded in the execution plan below, not a lead-side edit.
+
+**Option D — Leave `lead-bsam` closed and trust the triage sweep.** Rejected
+(D2). The close-reason text does not match the deliverable and the artifact
+surface contradicts it. A bead close is not admissible evidence that the work
+landed; the `features/templates/` surface is. The surface says the work did not
+land.
+
+---
+
+## Consequences
+
+### The remaining leg — a tracked plan, NOT dispatched by this ADR
+
+Per the task constraint, no Gherkin is authored and no dispatch is sent here.
+The plan, ordered for the router to drive:
+
+- **Step O (router).** Re-open `lead-bsam` (or file a fresh successor and link
+  it to `lead-o6tp` / `lead-m56e` / this ADR). Correct the erroneous close.
+- **Step P (PO).** Author the one-line pointer prose to replace the twelve pins
+  105-116 (e.g. "the `bc-emit work-done` wrapper enforces clean-tree,
+  commit-on-origin-main, and scenario_hashes-match; if your emit is refused, fix
+  the named underlying state and retry — bare `shop-msg respond --force` remains
+  the forced-recovery escape valve"). The pointer is prose-content the templates
+  BC must verify is present, replacing scenario-content obligations.
+- **Step A (architect, this role).** Dispatch a `request_bugfix` (fresh lead
+  work_id) to `shopsystem-templates` (D3). At dispatch, RE-RUN the full
+  `@scenario_hash` enumeration over lead-held `features/templates/` (the twelve
+  hashes in the table above), reconcile against the templates BC's
+  mailbox-reported register, and cite each hash with an explicit retirement
+  instruction in the dispatch description. Verify the templates BC is live
+  (per `lead-yxsr`) before dispatching.
+- **Step R (architect, on work_done).** Reconcile: confirm 105-116 are gone from
+  the templates register / `features/templates/`, the pointer prose is present,
+  176-181 remain, and file follow-up beads as needed. Then close lead-o6tp.
+
+### Other consequences
+
+- **`lead-o6tp` advances but stays OPEN** until Step R reconciles the retirement.
+  This ADR is its design+ADR deliverable; the retirement dispatch is the
+  remaining code-bound work.
+- **`lead-hlgs` is unblocked in principle.** Its gate-scope refinements (Check-1
+  scope-to-deliverable, Check-5 genuine-red, Check-2 idempotent-no-op) depend on
+  lead-o6tp; with the wrapper shipped, those refinements now belong against the
+  `bc-emit` wrapper / work-done-gate skill rather than against template prose. The
+  router should re-route lead-hlgs accordingly after the retirement lands.
+- **Duplicate-coverage window persists until Step R.** Until the retirement
+  lands, BCs carry both prose pins and wrapper pins for the same three
+  preconditions. This is benign (the wrapper is authoritative and enforcing) but
+  is the verbosity lead-o6tp targets; closing it is the point of the remaining
+  leg.
+- **No tier collapse, no PDR.** System-global per ADR-034 (cross-BC, per-product;
+  no product-UX surface change), same as parent ADR-036.
+
+## Cross-references
+
+- [ADR-036](036-procedural-preconditions-are-cli-layer-judgment-behaviors-are-template-prose.md)
+  — the parent decision; D1-D4 re-affirmed unchanged.
+- [ADR-019](019-canonicalization-ownership-in-scenarios-bc.md) — block-only is the
+  one canonical hash text; `scenarios` owns it; the wrapper's check (iii)
+  delegates (D1).
+- [ADR-018](018-empirical-verification-is-contract-surface.md) — contract-surface
+  evidence + no-clone doctrine (this ADR's pre-state; the wrapper's BC-side git
+  checks).
+- [ADR-010](010-clarify-resolution-work-done-scope.md) — the strict-subset rule
+  the `scenario_hashes-match` check mechanizes.
+- [ADR-015](015-nudge-message-type.md) — the `--force` forced-recovery escape
+  valve preserved (scenario 181).
+- [PDR-010](../pdr/010-bd-authoritative-shop-msg-transport.md) — `shop-msg` is
+  transport, not policy (why no `shop-msg respond` enforcement).
+- [PDR-001](../pdr/001-role-templates-role-complete.md) — role-completeness across
+  the retirement.
+- `features/templates/176-181` — the shipped wrapper coverage (surviving).
+- `features/templates/105-116` — the prose pins routed to retirement (D2/D3).
+- [lead-o6tp](beads:lead-o6tp) / [lead-m56e](beads:lead-m56e) /
+  [lead-bsam](beads:lead-bsam) / [lead-83l](beads:lead-83l) /
+  [lead-bglz](beads:lead-bglz) / [lead-7efq](beads:lead-7efq) /
+  [lead-rwtz](beads:lead-rwtz) / [lead-63mg](beads:lead-63mg) /
+  [lead-hlgs](beads:lead-hlgs).
