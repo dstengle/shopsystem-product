@@ -21,7 +21,7 @@ Create a new repository from the `shopsystem-starter` template, named
 slug by stripping it). Then clone it and enter it:
 
 ```bash
-gh repo create <you>/<product>-lead --template dstengle/shopsystem-starter --clone
+gh repo create <you>/<product>-lead --template dstengle/shopsystem-starter --private --clone
 cd <product>-lead
 ```
 
