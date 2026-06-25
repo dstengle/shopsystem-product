@@ -333,3 +333,20 @@ image; the starter is compose + script + env-example + README.
   no-vendored-source doctrine the starter's image-only-framework-code rule mirrors.
 - `lead-5cgv` (parent), `lead-8vxy` (lead-driveable provision dependency),
   `lead-7if5` / `lead-2xi3` / `lead-94mn` / `lead-okre` (cross-referenced beads).
+
+## Addendum (2026-06-25, PDR-021) — the starter slims to README + bin/bootstrap
+
+This ADR's Context describes the `shopsystem-starter` repo as carrying
+`compose.yaml` + `bin/bootstrap` + `.env.example` + `README.md`. [PDR-021](../pdr/021-unify-product-bringup-on-the-footing-runway.md)
+narrows that: the starter carries **only `README.md` + `bin/bootstrap`**.
+`compose.yaml` and `.env.example` are **rendered into the fork** by
+`bin/bootstrap`'s in-container `shop-templates bootstrap` (versioned with the
+published image), not carried in the starter.
+
+This is consistent with — and deepens — this ADR's core doctrine ("framework
+code lives only in the published image, never forked-and-stale"): any artifact
+the image can render is removed from the starter so it cannot drift. The
+published starter had in fact drifted (last rendered from templates v0.14.0
+while templates were at v0.25.0); the slim removes that drift surface entirely.
+The fork→`./bin/bootstrap`→render→`bin/footing`→stop→Discovery flow and the
+Footing/Discovery boundary are unchanged.
