@@ -1,6 +1,6 @@
 # ADR-043 — Every derived bootstrap coordinate is computed ONCE at a canonical point and re-used; nothing recomputes or hardcodes it
 
-**Status:** proposed (2026-06-26) — for product-authority ratification (lead-kc0k)
+**Status:** accepted (ratified by dave, 2026-06-26, lead-kc0k)
 **Tier:** system-global (cross-BC / per-product structural decision about how the
 adopter bootstrap derives identity, coordinates, ports, names, and org — it
 touches the `shop-templates bootstrap` render surface (cli.py), the rendered ops
