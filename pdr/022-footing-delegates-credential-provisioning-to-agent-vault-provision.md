@@ -1,0 +1,169 @@
+# PDR-022 — Footing DELEGATES agent-vault credential/service/fleet-token provisioning to `bin/agent-vault-provision` instead of inlining it; credential ops are broker-local docker-exec ONLY
+
+**Status:** proposed (2026-06-26) — driving bead `lead-yudo` (P1, product-authority
+authorized after the postgres revert `lead-kz4j` / v0.38.0). Folds `lead-542d`
+(the local-first scope boundary).
+**Authors:** dstengle (authorized lead-yudo), Claude (lead-architect).
+**Anchored to:**
+[PDR-021](021-unify-product-bringup-on-the-footing-runway.md) (the footing runway
+this refactors — footing owns the runway, this moves credential provisioning out
+of it),
+[ADR-026](../adr/026-agent-vault-brokered-credentials-eliminate-host-filesystem-coupling.md)
+(the brokered-credential substrate provision provisions; the one human gate),
+[ADR-043](../adr/043-single-source-of-truth-for-derived-bootstrap-coordinates.md)
+(provision already sources the `ops-coordinates` artifact — delegation keeps the
+single-source property),
+[ADR-018](../adr/018-empirical-verification-is-contract-surface.md) (the audit
+below is artifact-surface; the broker round-trip is the LEAD's live-verify, not
+BC-testable).
+**Related beads:** `lead-yudo` (this — driving), `lead-542d` (the local-first
+boundary, folded here), and the three regressions this is the durable fix for:
+`lead-4sg9` (vault-create `--address`), `lead-0j60` (owner-remote `credential set`
+→ "Member role required"), `lead-21uk` (proposal-number parse).
+
+---
+
+## Context
+
+Across the v0.30–0.38 bootstrap run, THREE defects were footing **reinventing**
+provisioning that `bin/agent-vault-provision` already does correctly:
+
+1. `lead-4sg9` — footing's inlined `vault create` passed `--address` (rejected;
+   only `vault token` accepts it), silently swallowed, vault never created.
+2. `lead-0j60` — footing's inlined `credential set` ran under the owner's REMOTE
+   vault-scoped session → "Member role required" → `set -e` abort. It works ONLY
+   broker-locally via `docker exec` — exactly how provision does it.
+3. `lead-21uk` — footing's inlined proposal-number parse grabbed a timestamp digit.
+
+**Empirical state (ADR-018 surface, templates HEAD `95a8a54` = v0.38.0):**
+`bin/agent-vault-provision` already performs the COMPLETE, correct sequence via
+broker-local docker-exec, and sources the `ops-coordinates` artifact (L48,
+ADR-043): owner `auth register` → `vault create` (L137) → github `credential set`
+→ `service add` github-git/github-api/claude (L160-209) → fleet agent-token mint
+`agent create <slug>-fleet --token-only` (L229) → `ca fetch` → `.env` writeback of
+`AGENT_VAULT_TOKEN`/`_VAULT`/`_CA_PEM` → Claude OAuth `proposal create` (L32).
+footing inlines a SUBSET of this (owner auth L334-335; vault create L350; the
+broker-local PAT store L382; the OAuth proposal L399 + number parse L406 +
+wait-for-approve L448) — and CRUCIALLY does NOT do the fleet-agent-token, the
+service wiring, or the `.env` writeback that `bin/shop-shell` and the BC launches
+need. So footing both DUPLICATES (badly) and UNDER-DELIVERS.
+
+**Why provision's approach is correct and footing's was wrong (lead-542d, folded):**
+agent-vault 0.32.0 `credential set`/`get` FAIL "Member role required" via BOTH the
+owner remote scoped session AND a fleet agent token — they WORK ONLY broker-locally
+via `docker exec` into the broker. So **credential ops are broker-local/docker-exec
+ONLY**; the PDR-021 D4 local-first posture (run agent-vault on the host vs
+`AGENT_VAULT_ADDR`) CANNOT cover credential provisioning. provision is built on the
+docker-exec path; footing's local-first inlining fought the broker's role model.
+
+---
+
+## Decision
+
+### D1 — Footing DELEGATES credential/service/fleet-token provisioning to `bin/agent-vault-provision`
+
+footing replaces its inlined provisioning block with an INVOCATION of
+`bin/agent-vault-provision`. provision owns: owner register, vault create, github
+`credential set`, service wiring, fleet-agent-token mint, `ca fetch`, and the
+`.env` writeback of `AGENT_VAULT_TOKEN`/`_VAULT`/`_CA_PEM`. This collapses the
+reinvention class AND closes the fleet-token/service/.env-writeback functional gap
+(the next frontier shop-shell + BC launches hit post-footing).
+
+### D2 — Footing KEEPS the runway orchestration it owns
+
+footing keeps: the single auth gate (owner pw generated + PAT prompt), infra-up
+(compose postgres+agent-vault), network self-attach, broker-ready wait, the product
+manifest (ADR-043 D1 root), the pour (`shop-templates bootstrap`), beads repo +
+git/dolt remotes + sync.remote, `git push` + `bd dolt push`, and STOP-at-green.
+provision is a STEP within that runway, not a replacement for it.
+
+### D3 — Credential ops are broker-local docker-exec ONLY (folds lead-542d)
+
+The local-first scope boundary: local-first (PDR-021 D4) applies to auth /
+vault-token / read ops the remote session supports, but `credential set`/`get`
+(and anything requiring Member role) are docker-exec-only. provision IS the
+docker-exec owner of those; footing does not re-implement them. `lead-542d` is
+satisfied by this PDR and closes as folded.
+
+### D4 — The Claude OAuth proposal is OWNED BY provision; footing keeps only the human gate
+
+provision already does `proposal create` (L32). So provision OWNS proposal-create;
+footing keeps ONLY the human-gated approve handoff (presenting the
+`bin/agent-vault-approve-claude` operator path + the wait-for-approved). This is
+the consistent option: the proposal mechanics live with the rest of provisioning;
+only the irreducibly-human approve step stays in the runway. (approve-claude's
+own proposal-number-identity fix, `lead-21uk` / `d8422606299d8819`, is UNAFFECTED —
+it governs the operator approve tool, not footing's inlined provisioning.)
+
+### D5 — Sequencing and coordinates
+
+provision needs the broker up + owner pw + PAT; footing has all three by the call
+point. provision sources the `ops-coordinates` artifact (ADR-043) for
+slug/container/vault/addr — the single source — so footing and provision agree on
+coordinates by construction.
+
+### D6 — Phased delivery (this is a big refactor)
+
+- **Phase A:** footing INVOKES provision for owner/vault/github-cred/service/
+  fleet-token/CA/.env-writeback; the fleet-token + `.env` writeback become PRESENT
+  in the footing path (the functional gap closes). footing's now-redundant inlined
+  vault-create + PAT-store are removed in the same phase (they directly contradict
+  "footing invokes provision").
+- **Phase B:** remove any remaining now-dead inlined provisioning paths and tighten
+  the delegation contract (provision is the single provisioning owner; footing
+  carries no parallel credential code).
+
+---
+
+## Reconciliation of affected scenarios (ADR-018)
+
+After delegation, footing no longer DIRECTLY provisions — so the footing-side
+scenarios that assert "footing provisions/stores" become false and are SUPERSEDED
+by the delegation scenario (footing invokes provision; provision provisions). The
+behavior is MOVED into provision's contract, not lost.
+
+- **RETIRE `a3242f1f65e52caf`** (`footing_vault_create_via_env.feature` — "footing
+  provisions the product-slug vault via AGENT_VAULT_ADDR env"): footing stops
+  inlining vault-create; provision owns it. Superseded by the Phase-A delegation
+  scenario (footing invokes provision, which creates the vault). MOVE the
+  vault-create guarantee into provision's contract.
+- **RETIRE `7c96f830aa7c0a50`** (`footing_pat_store_broker_local.feature` — "footing
+  stores the collected GitHub PAT via a broker-local credential set"): footing
+  stops inlining the PAT store; provision's github `credential set` owns it.
+  Superseded by the delegation scenario. MOVE the github-credential-set guarantee
+  into provision's contract.
+- **KEEP `d8422606299d8819`** (`footing_proposal_number_identity.feature` —
+  approve-claude resolves the proposal by `#` not timestamp): UNAFFECTED — it
+  governs the operator approve tool (the human gate footing keeps per D4), not
+  footing's inlined provisioning. Stays green.
+- **KEEP** the env-init/owner-pw-generation scenarios (the auth gate footing owns,
+  D2): unaffected — footing still generates the owner pw and writes the manifest;
+  provision consumes them. (PO confirms exact hashes at authoring.)
+
+The retirements (`a3242f1f`, `7c96f830`) are NAMED in the Phase-A dispatch; the
+moved guarantees (vault-create, github-credential-set) become provision-contract
+scenarios the PO authors.
+
+---
+
+## Flag for product-authority (hard-to-reverse / judgment)
+
+- **D4 (provision owns the OAuth proposal).** Moving proposal-create into provision
+  is a contract choice: it means provision (not footing) is the single
+  proposal-creator, and footing's runway only presents the human approve. This is
+  the consistent option but it IS a contract boundary the adopter sees (where the
+  proposal is created). FLAGGING for ratification alongside the PDR; if the product
+  authority prefers footing keep proposal-create, D4 flips and the wait/approve
+  stays footing-side either way. Everything else (D1/D2/D3/D5/D6) follows directly
+  from the authorized lead-yudo decision and the empirical findings — proceeding.
+
+---
+
+## Alternatives considered
+
+- **Keep footing inlining, just fix each bug (status quo).** Rejected — three
+  regressions this run; each fix re-broke at the next inlined step, and it leaves
+  the fleet-token/service/.env-writeback gap open.
+- **Move the runway into provision.** Rejected — provision is a provisioning STEP;
+  the runway (manifest, pour, beads, push, stop-at-green) is footing's identity
+  per PDR-021. Inverting that mislayers the two.
