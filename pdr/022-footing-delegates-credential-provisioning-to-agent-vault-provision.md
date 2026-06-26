@@ -1,6 +1,6 @@
 # PDR-022 — Footing DELEGATES agent-vault credential/service/fleet-token provisioning to `bin/agent-vault-provision` instead of inlining it; credential ops are broker-local docker-exec ONLY
 
-**Status:** proposed (2026-06-26) — driving bead `lead-yudo` (P1, product-authority
+**Status:** accepted (ratified by dave, 2026-06-26 — D4 confirmed: provision owns OAuth proposal-create) — driving bead `lead-yudo` (P1, product-authority
 authorized after the postgres revert `lead-kz4j` / v0.38.0). Folds `lead-542d`
 (the local-first scope boundary).
 **Authors:** dstengle (authorized lead-yudo), Claude (lead-architect).
