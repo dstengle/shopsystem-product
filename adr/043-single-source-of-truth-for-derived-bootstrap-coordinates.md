@@ -1,0 +1,187 @@
+# ADR-043 — Every derived bootstrap coordinate is computed ONCE at a canonical point and re-used; nothing recomputes or hardcodes it
+
+**Status:** proposed (2026-06-26) — for product-authority ratification (lead-kc0k)
+**Tier:** system-global (cross-BC / per-product structural decision about how the
+adopter bootstrap derives identity, coordinates, ports, names, and org — it
+touches the `shop-templates bootstrap` render surface (cli.py), the rendered ops
+artifacts (compose.yaml + the `bin/` ops scripts), and the footing runway; not
+framework-doctrine §1–6 and not one BC's internals.)
+**Authors:** dstengle (intent — the 2026-06-26 product-authority directive on
+lead-kc0k: "We keep getting hit with hardcoded values … any value like this
+should be determined at a single point and re-used"), Claude (lead-architect).
+**Anchored to:**
+[ADR-038](038-manifest-product-field-is-the-canonical-product-identity-source.md)
+(the manifest `product:` field is THE canonical declared product identity — this
+ADR makes every derived coordinate flow from it),
+[ADR-040](040-adopter-footing-is-a-deterministic-agentless-bootstrap-distinct-from-agent-driven-discovery.md)
+(the footing runway this governs),
+[ADR-018](018-empirical-verification-is-contract-surface.md) (the audit below is
+artifact-surface only).
+**Related beads:** `lead-kc0k` (this audit/directive — parent), `lead-yh0s` (the
+`PRODUCT` vs `OPS_SLUG` dual-source consolidation — a specific instance this ADR
+generalizes), `lead-yudo` (footing delegates credential provisioning to
+`bin/agent-vault-provision` — removes the ops-script duplication class), plus the
+whole v0.30–0.35 bug run this ADR is the durable fix for: `lead-h2rq`/`lead-4sg9`
+(vault create), `lead-pdsd`/`lead-0j60` (PAT store), `lead-21uk` (proposal #),
+`lead-nhr2` (host port + sync.remote org/name).
+
+---
+
+## Context
+
+Across the v0.30.0–v0.35.0 adopter-bootstrap bug run, nearly every defect was a
+**duplicated-derivation** failure: a value that should have ONE source was
+recomputed (or hardcoded) in a second place, and the two diverged. Concretely
+this run produced: the GitHub org hardcoded `dstengle` in N places vs derived
+from origin in one; `:14321` (the container port) assumed where the **generated
+host port** was needed; the beads repo named `-product-beads` in cli.py vs
+`-lead-beads` in footing; and the product slug derived as `{{OPS_SLUG}}` at render
+time vs `${REPO_NAME%-lead}` at runtime. Each was patched at one site; the next
+site re-broke. The product authority's directive names the root: **single source
+of truth.**
+
+### Empirical audit (artifact surface, ADR-018 D1/D2 — templates HEAD `36236ff` = v0.35.0)
+
+Verified via proxy-authed `gh` over the 7 templates source files; counts are
+literal occurrences, classified into **live duplication** vs **legitimately-fixed
+or comment**. (A "legit-exempt" value is one with a single correct source — e.g.
+the in-network *container* port 14321, or the product-neutral framework image
+reference — that is NOT a per-product duplication.)
+
+**Class F — product IDENTITY derivation (THE ROOT).** Two parallel regimes that
+must coincide but are computed independently:
+- **Render-time:** `{{OPS_SLUG}}` injected by `shop-templates bootstrap` — 24
+  occurrences in `compose.yaml`, plus the cli.py rendering machinery.
+- **Runtime:** `PRODUCT="${REPO_NAME%-lead}"` (footing L86, from the fork dir
+  basename); the manifest `product:` field footing writes (L88).
+  → These coincide ONLY by construction (the fork is `<slug>-lead` and
+  `OPS_SLUG=slug`). ADR-038 already names the manifest `product:` as canonical,
+  but nothing forces the render-time and runtime derivations to flow from it.
+  This is the generator behind Classes A/B/E.
+
+**Class A — GitHub org `dstengle`.** `cli.py` L776 LIVE
+(`return f"git+https://github.com/dstengle/{shop_name}-beads.git"` — the sync.remote
+bug lead-nhr2 patches at runtime in footing, but cli.py still RENDERS the wrong
+org); L769/772/782 are docstring/comment. `shop-shell` L106/108/121 are
+`ghcr.io/dstengle/shopsystem-bc-lead:latest` — the **product-neutral framework
+image reference** (scenario-172 exempt; NOT a per-product literal). So the live
+org-duplication is cli.py's beads-remote render, which must derive from the same
+origin owner footing derives (lead-pdsd I2 / lead-nhr2), not a hardcoded default.
+
+**Class B — broker ports 14321/14322.** `compose.yaml` is the canonical source:
+the CONTAINER ports are fixed 14321/14322 (correct, single source), and the HOST
+ports are the generated `{{OPS_VAULT_API_PORT}} = 14321 + crc32(slug)%1000` /
+`{{OPS_VAULT_PROXY_PORT}}` (L65-88). The live bug is HOST-context code that assumes
+the container port: `agent-vault-approve-claude` L91
+(`-e AGENT_VAULT_ADDR=http://localhost:14321`) and any host call that does not read
+the generated/mapped port. footing L299-308 (lead-nhr2) already models the correct
+pattern (`docker port … 14321` → host-reachable addr). The other `:14321`
+occurrences are in-network container-port uses (legit single source).
+
+**Class C — host literals `localhost`/`127.0.0.1`.** approve-claude L91
+(`http://localhost:14321` — couples Class B); compose L94 healthcheck
+`127.0.0.1` (in-container, legit). footing L307 records `http://localhost:<mapped>`
+(the lead-nhr2 fix). The defect subset is the approve-claude host literal.
+
+**Class D — postgres coordinates.** `compose.yaml` is canonical: `POSTGRES_USER:
+{{OPS_SLUG}}` (L39), `POSTGRES_DB: {{OPS_SLUG}}` (L41), host port
+`{{OPS_POSTGRES_PORT}} = 5432 + crc32(slug)%1000` (L47), container 5432. cli.py
+(6 occurrences) renders DSN/coords — must reference the same single source, not
+re-spell `5432`/creds independently.
+
+**Class E — beads-repo NAME forms.** `cli.py` `_product_beads_remote` builds
+`{shop_name}-beads` (= `<slug>-product-beads`) at L776; footing forces
+`$PRODUCT-lead-beads` (L467/491/513) and `$PRODUCT-<bc>-beads`. lead-nhr2 fixes
+the *runtime* sync.remote, but cli.py still *renders* the divergent name. One
+canonical naming rule (`<product>-lead-beads`, `<product>-<bc>-beads`) must be
+the single source both render and runtime use.
+
+**What is NOT a duplication (do not "fix"):** the in-network container ports
+(14321/14322/5432), the product-neutral framework image references
+(`shopsystem-bc-lead`/`-bc-base`, scenario-172 exempt), and the compose-rendered
+`{{OPS_*}}` tokens that ALREADY are the single generated source. The defect is
+every place that RE-DERIVES or HARDCODES a value the canonical source already
+holds.
+
+---
+
+## Decision
+
+### D1 — The manifest `product:` field (ADR-038) is the single identity root; every coordinate derives from it
+
+At footing time the manifest `product:` field is written once (ADR-038) and is
+THE product identity. Every product coordinate — slug, network name, container
+names (`<product>-postgres`, `<product>-agent-vault`), vault name, beads repo
+names, the org (from origin), and the generated ports — is computed from that one
+declared identity (plus origin owner for the org, plus the generated-port rule),
+and re-used. `PRODUCT="${REPO_NAME%-lead}"` and the render-time `{{OPS_SLUG}}`
+both reconcile TO the manifest `product:` rather than being independent
+derivations (closes lead-yh0s).
+
+### D2 — A single rendered "ops coordinates" source the scripts SOURCE, rather than each script re-deriving
+
+`shop-templates bootstrap` renders ONE canonical coordinates artifact (e.g. an
+`ops/coordinates` env-file or a `[product]` block of the manifest) carrying the
+derived coordinates — slug, container names, vault name, the generated host ports,
+the beads repo names, the org placeholder — and every `bin/` ops script
+(`footing`, `agent-vault-provision`, `agent-vault-check`,
+`agent-vault-approve-claude`, `shop-shell`) **sources that one file** instead of
+re-spelling `{{OPS_SLUG}}` / `14321` / `dstengle` / `-beads` independently. A value
+appears as a literal in exactly ONE place (the renderer / the coordinates file);
+everywhere else is a variable reference.
+
+### D3 — The generated-port rule lives in ONE place
+
+`<host_port> = <container_port> + crc32(slug) % 1000` (and the
+`<SLUG_UPPER>_*_PORT` overrides) is already centralized in `compose.yaml`'s render
+tokens. D2's coordinates artifact carries the RESOLVED host ports (or footing
+discovers them via `docker port` once, per lead-nhr2, and records them), so no
+host-context script ever re-assumes `:14321`.
+
+### D4 — The org is derived from origin once (not hardcoded)
+
+The GitHub org/owner is parsed from `git remote get-url origin` ONCE (lead-pdsd
+I2) and recorded in the coordinates source; cli.py's beads-remote render stops
+emitting a hardcoded `dstengle` and instead leaves an origin-derived placeholder
+the footing runtime fills (or footing rewrites it, as lead-nhr2 does for
+sync.remote). The product-neutral framework image references stay as-is (exempt).
+
+### D5 — One canonical beads-naming rule
+
+`<product>-lead-beads` (lead) and `<product>-<bc>-beads` (per BC) is the single
+naming rule, sourced from the coordinates artifact; cli.py's render and footing's
+runtime both use it — eliminating the `-product-beads` vs `-lead-beads` split.
+
+### D6 — Where it cannot be single-sourced, it is DERIVED, never re-spelled
+
+Any value that genuinely cannot be pre-rendered (e.g. a runtime-discovered mapped
+port) is derived ONCE at the earliest point that can compute it and recorded for
+re-use, never independently recomputed downstream.
+
+---
+
+## Consequences
+
+- **lead-yudo (footing-delegates-to-provision) composes with this and is
+  amplified:** delegating credential provisioning to `bin/agent-vault-provision`
+  removes the largest ops-script duplication surface (footing stops re-deriving
+  vault/credential coordinates provision already holds). The two should be
+  sequenced together.
+- **lead-yh0s is subsumed:** the PRODUCT-vs-OPS_SLUG dual-source is the Class-F
+  instance D1 closes; lead-yh0s becomes the first concrete slice.
+- This is **expensive to reverse** once the coordinates-source contract ships and
+  adopters fork it — hence ADR-tier. The product authority ratifies the
+  principle + the canonical mechanism (D2's coordinates artifact).
+
+---
+
+## Alternatives considered
+
+- **Patch each hardcode in place (status quo).** Rejected — that is exactly what
+  the v0.30–0.35 run did; every patch re-broke at the next un-patched site. Does
+  not address the generator (Class F).
+- **Push all derivation into cli.py render tokens only.** Rejected — footing runs
+  at runtime in the fork with information cli.py render time does not have (the
+  actual origin owner, the actual mapped host port), so a render-only single
+  source cannot cover the runtime-derived coordinates. The coordinates artifact
+  (D2) bridges render-time and runtime under one contract.
