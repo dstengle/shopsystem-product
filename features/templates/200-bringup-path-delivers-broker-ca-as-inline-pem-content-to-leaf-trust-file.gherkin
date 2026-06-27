@@ -1,0 +1,30 @@
+# NET-NEW under lead-lu91, pinning ADR-045 (AGENT_VAULT_CA_PEM is inline PEM
+# content, not a filesystem path). The templates feature surface already pins the
+# rendered ops-script PRESENCE and body substrings (scenario 172 broker-wiring /
+# no-host-cred-mounts, 174 five-file enumeration, 137 shop-owned paths), and the
+# CONSUMER side (bc-launcher: bc-container --env-file + bc-base entrypoint) is
+# already correct and pinned by lead-b14a (features/bc-launcher /
+# bc_container_broker_ca_trust + bc_base_agent_vault_entrypoint). What is NOT yet
+# pinned anywhere is that the RENDERED shop-owned bringup transport delivers the
+# broker CA *content* (a real certificate) — rather than the path string — so the
+# launched leaf agent's trust file is a valid certificate. Today the rendered
+# bin/agent-vault-provision records AGENT_VAULT_CA_PEM as a PATH (L237/257/268) and
+# the rendered bin/shop-shell carries that line verbatim through
+# "grep ... > --env-file" (L73/L101), so the leaf trust file ends up containing the
+# literal string "agent-vault-ca.pem" instead of a certificate and brokered-MITM TLS
+# fails subtly (ADR-045 Context / symptom). This is the shop-templates-side fix
+# (request_bugfix per ADR-045 Status-of-the-fix). Per ADR-045 the proven-correct
+# transport shape reads the CA file content into the launcher PROCESS environment
+# (a process env value CAN carry real newlines; docker's file-based --env-file
+# CANNOT). @bc: and the reproducing @scenario_hash are added by the Architect at
+# dispatch.
+@scenario_hash:7ce09202755b0503
+Scenario: the rendered shop-owned bringup path delivers the broker root CA to the launched leaf-BC session as inline PEM CONTENT — so the leaf's trust file is a valid certificate, not a path/filename string
+  Given a "lead" shop bootstrapped by "shop-templates" with the rendered ops scripts "bin/agent-vault-provision" and "bin/shop-shell"
+  And a broker whose "agent-vault ca fetch" emits a multi-line root-CA certificate beginning with the literal "-----BEGIN CERTIFICATE-----"
+  When the operator runs the rendered "bin/agent-vault-provision" to source the broker root CA
+  And then the rendered "bin/shop-shell" transports the broker credentials into the launched leaf-BC session
+  Then the rendered "bin/shop-shell" delivers "AGENT_VAULT_CA_PEM" to the launcher by reading the CA file CONTENT — its body contains the literal substring "$(cat" applied to the broker-CA file — rather than carrying the path string
+  And the rendered "bin/shop-shell" passes "AGENT_VAULT_CA_PEM" into the launched session as a process-environment value that can hold real newlines — its body contains the literal substring "-e AGENT_VAULT_CA_PEM" — rather than carrying the "AGENT_VAULT_CA_PEM=" line from ".env" through "grep" into a file-based "--env-file" (which cannot carry a multi-line value)
+  And the value of "AGENT_VAULT_CA_PEM" reaching the launched leaf-BC session begins with the literal "-----BEGIN CERTIFICATE-----" — it is the certificate content, not the filename string "agent-vault-ca.pem"
+  And the trust file the launched leaf agent materializes from "AGENT_VAULT_CA_PEM" therefore contains a valid "-----BEGIN CERTIFICATE-----" block (the broker root CA), not a path/filename string
