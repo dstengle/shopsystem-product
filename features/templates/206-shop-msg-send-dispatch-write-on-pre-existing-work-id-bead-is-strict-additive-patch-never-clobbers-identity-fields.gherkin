@@ -1,0 +1,57 @@
+# shop-msg send dispatch write on a PRE-EXISTING work_id bead is a strict
+# additive metadata/notes-only patch — it never clobbers identity fields
+#
+# Pins the fix for bug lead-rqox (dispatch bead lead-yyr9). Architect-verified
+# owner: shopsystem-messaging BC (owns the shop-msg CLI surface and its bd
+# integration). Vehicle: request_bugfix (the capability — Step-1 bd write —
+# exists but is unpinned for the pre-existing-bead case).
+#
+# Root cause (architect-verified, reproduced 4x: lead-lu91, lead-b6f2,
+# lead-dui6, lead-ml51): shop-msg's bd integration Step-1 "bd create
+# --metadata" (pinned by scenario 119 @scenario_hash:e73037244a92b1a4 and
+# @scenario_hash:98c6065aca2b54c6) is an UPSERT. In the normal lead-shop case
+# the work_id is a PRE-EXISTING lead bead, so the upsert OVERWRITES the bead's
+# identity fields with a synthesized dispatch stub: title -> "dispatch
+# request_bugfix -> ...", type bug -> task, priority P1 -> P2, description
+# replaced. The bd / bd-dolt write path itself is innocent (direct
+# "bd update --claim --set-metadata --append-notes" does NOT clobber); the
+# defect is purely in the shop-msg integration's create-vs-patch behavior on a
+# pre-existing bead.
+#
+# Vocabulary (load-bearing):
+#
+# - "pre-existing work_id bead" — a lead bd entry that ALREADY EXISTS in the
+#   lead registry before any dispatch, because the dispatch work_id IS a
+#   pre-existing lead bead (the normal lead-shop case, not a freshly synthesized
+#   dispatch id).
+# - "identity fields" — title, type, priority, description: the bead's own
+#   authored intent, owned by the PO/Architect who filed it, NOT dispatch
+#   bookkeeping.
+# - "dispatch metadata" — the ADR-011 canonical dispatch field set
+#   (dispatched_to_bc, dispatch_message_type, dispatch_state,
+#   scenario_hashes_pinned, ...) written as bd structured metadata.
+# - "strict additive patch" — a write that ADDS or UPDATES dispatch metadata
+#   keys and APPENDS notes only; it mutates no identity field.
+#
+# Relationship to scenario 119: this TIGHTENS the create-vs-patch boundary that
+# 119 leaves implicit. 119's scenarios establish the NEW-bead create path and
+# the canonical field mapping (e73037244a92b1a4) and the 3-step protocol
+# (98c6065aca2b54c6) — both legitimate for the freshly-created-bead case and
+# remain valid there. This scenario pins the complementary PRE-EXISTING-bead
+# invariant. 98c6065aca2b54c6's Step-1 wording ("is created via 'bd create
+# --metadata <json>'") prescribes the exact upserting verb unconditionally and
+# should be scoped/amended to the new-bead case by the Architect; it is not
+# silently contradicted here.
+
+
+@scenario_hash:ea2d453f88110e82
+Scenario: shop-msg send records dispatch state onto an already-existing work_id bead as a strict additive metadata-and-notes-only patch, never overwriting the bead's title, type, priority, or description
+  Given a lead shop "shopsystem-product" registered as the lead in the messaging registry
+  And a BC "shopsystem-messaging" registered in the messaging registry
+  And a lead bd entry with id "lead-xyz" ALREADY EXISTS before any dispatch, carrying identity fields title="bd dispatch upsert clobbers pre-existing work_id bead identity fields", type="bug", priority="P1", and description="when shop-msg send targets a pre-existing work_id bead, Step-1 bd create upserts and overwrites the bead's identity fields"
+  And a payload file at "/tmp/dispatch-payload.yaml" pinning a valid request_bugfix carrying one scenario hash "abc123def456abcd"
+  When the lead architect runs "shop-msg send request_bugfix --bc shopsystem-messaging --work-id lead-xyz --payload /tmp/dispatch-payload.yaml"
+  Then the command exits zero
+  And the lead bd entry "lead-xyz" retains every pre-existing identity field byte-for-byte: title is still "bd dispatch upsert clobbers pre-existing work_id bead identity fields" (NOT replaced by a synthesized "dispatch request_bugfix -> ..." stub), type is still "bug" (NOT downgraded to "task"), priority is still "P1" (NOT downgraded to "P2"), and description is still "when shop-msg send targets a pre-existing work_id bead, Step-1 bd create upserts and overwrites the bead's identity fields" (NOT replaced)
+  And the only changes applied to "lead-xyz" are additive: dispatch metadata keys dispatched_to_bc="shopsystem-messaging", dispatch_message_type="request_bugfix", dispatch_state="dispatched", and scenario_hashes_pinned="abc123def456abcd" are added or updated, and dispatch notes are appended, with no other field mutated
+  And the load-bearing property pinned here is that when the work_id bead pre-exists (the normal lead-shop case, since the work_id is a pre-existing lead bead), the shop-msg bd write is a strict additive metadata/notes-only patch — the Step-1 write detects the existing bead and patches it rather than clobbering identity fields via an upserting "bd create --metadata"
