@@ -115,6 +115,7 @@ docker run --rm -it \
 # (attach takes no --image; it reattaches to the already-running leaf-BC).
 exec docker run --rm -it \
   --network shopsystem \
+  --group-add "$SOCKET_GID" \
   -v "$REPO_ROOT:$REPO_ROOT" \
   -v /var/run/docker.sock:/var/run/docker.sock \
   -w "$REPO_ROOT" \
