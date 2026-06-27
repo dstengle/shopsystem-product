@@ -70,7 +70,34 @@ fi
 AGENT_VAULT_ENV_FILE="$SHOPSYSTEM_DATA/shop-shell.env-file"
 install -m 0600 /dev/null "$AGENT_VAULT_ENV_FILE"
 if [[ -f "$REPO_ROOT/.env" ]]; then
-  grep -E '^AGENT_VAULT_[A-Z_]+=' "$REPO_ROOT/.env" > "$AGENT_VAULT_ENV_FILE" || true
+  # The single-line broker coordinates (ADDR / TOKEN / VAULT) travel fine via the
+  # file-based --env-file. AGENT_VAULT_CA_PEM is EXCLUDED here (ADR-045, lead-lu91):
+  # docker's --env-file cannot carry a multi-line value, and .env records only the
+  # CA file's PATH — so passing that line through would deliver the literal path
+  # string 'agent-vault-ca.pem' as the value, not the certificate, causing a
+  # silent MITM-TLS trust failure in the launched leaf. The CA travels as inline
+  # PEM CONTENT in a process-env value below instead.
+  grep -E '^AGENT_VAULT_[A-Z_]+=' "$REPO_ROOT/.env" \
+    | grep -v '^AGENT_VAULT_CA_PEM=' > "$AGENT_VAULT_ENV_FILE" || true
+fi
+
+# Deliver the broker root CA to the launched leaf as INLINE PEM CONTENT (ADR-045).
+# .env records AGENT_VAULT_CA_PEM as the PATH to the CA file bin/agent-vault-provision
+# already sourced from the broker; READ that file's CONTENT (real internal newlines)
+# into the launcher PROCESS env and pass it via `-e AGENT_VAULT_CA_PEM` on the docker
+# runs below — a process-env value CAN hold multi-line content, so the value reaching
+# the leaf begins with '-----BEGIN CERTIFICATE-----'. This is a `cat` of the
+# already-written file, NOT a fresh broker CA pull (the launcher/bc-base still own CA
+# materialization, proxy-URL construction, and readiness).
+_CA_PEM_REL="$(grep -E '^AGENT_VAULT_CA_PEM=' "$REPO_ROOT/.env" 2>/dev/null | head -n1 | cut -d= -f2-)"
+if [[ -n "$_CA_PEM_REL" ]]; then
+  case "$_CA_PEM_REL" in
+    /*) _CA_PEM_FILE="$_CA_PEM_REL" ;;
+    *)  _CA_PEM_FILE="$REPO_ROOT/$_CA_PEM_REL" ;;
+  esac
+  if [[ -f "$_CA_PEM_FILE" ]]; then
+    export AGENT_VAULT_CA_PEM="$(cat "$_CA_PEM_FILE")"
+  fi
 fi
 
 # The lead session-start prompt the launched session runs — overriding the
@@ -99,6 +126,7 @@ SOCKET_GID="$(stat -L -c '%g' /var/run/docker.sock)"
 docker run --rm -it \
   --network shopsystem \
   --env-file "$AGENT_VAULT_ENV_FILE" \
+  -e AGENT_VAULT_CA_PEM \
   --group-add "$SOCKET_GID" \
   -v "$REPO_ROOT:$REPO_ROOT" \
   -v /var/run/docker.sock:/var/run/docker.sock \
@@ -115,6 +143,7 @@ docker run --rm -it \
 # (attach takes no --image; it reattaches to the already-running leaf-BC).
 exec docker run --rm -it \
   --network shopsystem \
+  -e AGENT_VAULT_CA_PEM \
   --group-add "$SOCKET_GID" \
   -v "$REPO_ROOT:$REPO_ROOT" \
   -v /var/run/docker.sock:/var/run/docker.sock \
