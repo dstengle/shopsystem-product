@@ -1,0 +1,16 @@
+# Feature: skills provenance marker (PDR-023) — the EXPERIMENT lifecycle.
+#
+# PDR-023 point 3 (EXPERIMENT): drop a LOCAL skill into .claude/skills/ and it
+# persists across every re-pour with no further ceremony. This is the exact
+# lifecycle of the PM discovery skills that were collaterally deleted twice
+# (v0.13.0 re-pour b573851 + 84df061 sweep). This scenario pins that such a
+# skill — LOCAL-marked and absent from canonical package data — survives.
+@scenario_hash:e6bb8f6846518c3c
+Scenario: an experiment skill that is LOCAL-marked and absent from canonical package data persists byte-for-byte across a re-pour
+  Given an existing git repository at a target directory "/tmp/example-lead-shop" previously bootstrapped as a "lead" shop
+  And the target contains a skill directory ".claude/skills/opportunity-solution-tree/" whose ".provenance" marker declares the skill LOCAL
+  And no skill named "opportunity-solution-tree" exists in canonical lead skill-group package data
+  When I invoke the "shop-templates" update entry point against the target directory "/tmp/example-lead-shop"
+  Then the exit code is 0
+  And after the invocation ".claude/skills/opportunity-solution-tree/" and its "SKILL.md" and its ".provenance" marker are all still present with their pre-invocation contents preserved byte-for-byte
+  And the invocation does not prune or modify any skill directory whose ".provenance" marker declares it LOCAL

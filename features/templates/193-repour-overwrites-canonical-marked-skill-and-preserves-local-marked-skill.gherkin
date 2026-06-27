@@ -1,0 +1,21 @@
+# Feature: skills provenance marker (PDR-023) — the pour decides what to
+# overwrite from a per-skill ".provenance" marker, not by directory name.
+#
+# This scenario pins the core decision (PDR-023 point 1): on a re-pour, a skill
+# whose ".provenance" marker declares CANONICAL is re-poured byte-for-byte from
+# package data, while a skill whose marker declares LOCAL survives untouched.
+# It also pins that a poured canonical skill carries a discoverable CANONICAL
+# marker (the discoverability gap named in the empirical pre-state).
+#
+# Supersedes the by-name classification in scenario 159 (9a064e8f6ed915e3):
+# membership is now read from the marker, not from the directory name set.
+@scenario_hash:4eb7078dc04b056e
+Scenario: shop-templates update re-pours a CANONICAL-marked skill from package data and preserves a LOCAL-marked skill byte-for-byte
+  Given an existing git repository at a target directory "/tmp/example-lead-shop" previously bootstrapped as a "lead" shop
+  And the target contains a skill directory ".claude/skills/bring-up-bc/" whose ".provenance" marker declares the skill CANONICAL and whose "SKILL.md" holds an older version of the canonical "bring-up-bc" body that differs from current package data
+  And the target contains a skill directory ".claude/skills/jobs-to-be-done/" whose ".provenance" marker declares the skill LOCAL and whose "SKILL.md" is not present in canonical package data
+  When I invoke the "shop-templates" update entry point against the target directory "/tmp/example-lead-shop"
+  Then the exit code is 0
+  And after the invocation ".claude/skills/bring-up-bc/SKILL.md" equals the current canonical "bring-up-bc" lead-skill package-data contents byte-for-byte
+  And after the invocation ".claude/skills/bring-up-bc/.provenance" declares the skill CANONICAL
+  And after the invocation ".claude/skills/jobs-to-be-done/SKILL.md" and its ".provenance" marker are still present with their pre-invocation contents preserved byte-for-byte

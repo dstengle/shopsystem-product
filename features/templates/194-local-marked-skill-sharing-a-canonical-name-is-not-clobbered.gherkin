@@ -1,0 +1,18 @@
+# Feature: skills provenance marker (PDR-023) — the by-name fragility fix.
+#
+# Under the superseded by-name test (scenario 159 / 9a064e8f6ed915e3), a local
+# skill that shares a name with a canonical member is classified canonical and
+# CLOBBERED on the next pour. This scenario pins that an explicit LOCAL marker
+# OVERRIDES the name and protects the skill: the pour decides from the marker,
+# not the name (PDR-023 points 1 and 2). This is the silent hole the marker
+# closes.
+@scenario_hash:2763eff7ff73d7be
+Scenario: a LOCAL-marked skill whose directory name collides with a canonical member survives a re-pour byte-for-byte
+  Given an existing git repository at a target directory "/tmp/example-lead-shop" previously bootstrapped as a "lead" shop
+  And "bring-up-bc" is a canonical lead skill-group member shipped in package data
+  And the target contains a skill directory ".claude/skills/bring-up-bc/" whose ".provenance" marker declares the skill LOCAL and whose "SKILL.md" holds operator-localized content that differs from the canonical "bring-up-bc" package-data body
+  When I invoke the "shop-templates" update entry point against the target directory "/tmp/example-lead-shop"
+  Then the exit code is 0
+  And after the invocation ".claude/skills/bring-up-bc/SKILL.md" still holds the operator-localized content preserved byte-for-byte
+  And after the invocation ".claude/skills/bring-up-bc/.provenance" still declares the skill LOCAL
+  And the invocation does not overwrite the directory ".claude/skills/bring-up-bc/" from canonical package data despite its name matching a canonical member
