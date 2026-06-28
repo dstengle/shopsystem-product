@@ -4,6 +4,13 @@
 # sync` and as the source of remote URLs when launching BCs.
 #
 # Each entry: name (canonical shopsystem-<id>), remote (GitHub URL), role.
+#
+# product: the single-token product slug (ADR-038 D1) — the single derivation
+# root for the shop docker network and slug-scoped container names (compose
+# network `shopsystem`, `shopsystem-postgres`/`shopsystem-agent-vault`). Lets
+# `bc-container launch` resolve the network from on-disk config without a
+# per-launch --network flag (lead-ngzl).
+product: shopsystem
 bcs:
   - name: shopsystem-messaging
     remote: https://github.com/dstengle/shopsystem-messaging
