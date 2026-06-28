@@ -1,0 +1,57 @@
+# NET-NEW under lead-z0v2 (P1 launcher bug). FACET 3 (CA trust before clone), SHARPENED to
+# the REAL container observable — beyond the fake-driver model that scenario 68 was tested
+# against. EMPIRICAL FINDING (product authority, 2026-06-28, REAL v0.3.34 flagless launch of
+# shopsystem-test-harness on the pulled v0.3.34 bc-base image): F1 (resolve remote from
+# manifest, scenario 65) and F2 (/workspace owned vscode:vscode, scenario 67) now WORK, but
+# F3 is BROKEN. The launch logs "Materialized the agent-vault broker MITM root CA into the
+# container trust store before the clone" YET the clone fails
+# "error setting certificate file: /home/vscode/.config/agent-vault/ca.pem". In-container
+# that directory/file DOES NOT EXIST, `git config --global http.sslCAInfo` is EMPTY, and
+# AGENT_VAULT_CA_PEM is EMPTY. The launcher points git at a CA path it never creates. The
+# working operator reference is `agent-vault ca fetch > <ca file>` then git is pointed at it.
+#
+# WHY THIS SHARPENS, AND SUPERSEDES, SCENARIO 68 (@scenario_hash:0d29c76818a323a1):
+#   68 pins the SAME single behavior (the launched BC trusts the agent-vault MITM CA before
+#   the clone so a proxied clone passes TLS). But 68's Then wording — "has installed the
+#   agent-vault MITM root CA into its git/system trust store" — is satisfiable by a
+#   fake-driver model that merely MODELS materialization: 68 PASSED the BC's fake-driver
+#   tests while the real container has NO CA file and git is pointed at a non-existent path.
+#   68's fake-driver-only pin is INSUFFICIENT — it does not catch the real bug (git aimed at
+#   a CA path the launcher never writes). This scenario REPLACES that loose pin with
+#   real-container-verifiable assertions a fake-driver cannot satisfy: the CA is a NON-EMPTY
+#   regular file beginning "-----BEGIN CERTIFICATE-----" AT the exact path git is configured
+#   to use, git's configured CA path names that EXISTING file (or the CA is in the system
+#   trust store), and the proxied clone passes with NO "error setting certificate file" and
+#   NO "unable to get local issuer certificate". RECOMMENDATION TO THE ARCHITECT: this
+#   scenario SUPERSEDES 68 (@scenario_hash:0d29c76818a323a1) — retire/replace 68 at dispatch;
+#   it pins the same behavior but at insufficient (driver-only) fidelity. The PO does not edit
+#   existing scenarios; the retire/replace call is the Architect's at assignment.
+#
+# COEXISTENCE the architect must enumerate at dispatch:
+#   - templates scenario 200 (@scenario_hash:7ce09202755b0503) — delivers the broker root CA
+#     as INLINE PEM CONTENT (producer/transport side, ADR-045). This scenario is the
+#     launcher-side consequence: that CA must land as a USABLE file git actually trusts.
+#     Complementary across BCs; no conflict. (Note: the empirical finding shows
+#     AGENT_VAULT_CA_PEM empty in-container, so the launcher's delivery/materialization leg
+#     is where F3 breaks; this scenario pins the container end-state, not the transport.)
+#   - scenario 47 (@scenario_hash launch gates on agent-vault reachability) and the 45/46
+#     broker family — broker REACHABILITY / credential brokering; orthogonal to CA TRUST at
+#     clone time. Coexist unchanged.
+#   - scenario 65 (@scenario_hash:bdec2754d9135086, F1 manifest-remote resolution) and
+#     scenario 67 (@scenario_hash:4154b0ea63d0516b, F2 /workspace ownership) — SEQUENCING
+#     predecessors: a clone must be attempted into a writable /workspace before the TLS leg
+#     is reachable. This F3 pin presupposes both. The architect carries the sequencing.
+#
+# Pin observable container/clone state only (ADR-018; no BC source read) — the CA file's
+# existence/contents (stat + read first line), git's CA config (`git config --global
+# http.sslCAInfo`), and the proxied clone's exit/error string are all observable inside the
+# running container. @bc: and the reproducing @scenario_hash on dispatch are the Architect's;
+# the block-only @scenario_hash below is the PO's authoring hash.
+  @scenario_hash:09f871cf8b99a34b
+  Scenario: a launched BC materializes the agent-vault MITM root CA as a non-empty certificate file at the path git is configured to trust, so a clone routed through HTTPS_PROXY passes TLS verification
+    Given the shopsystem-bc-launcher BC is installed
+    And the launched BC routes outbound HTTPS through the agent-vault MITM proxy via "HTTPS_PROXY", so the clone's TLS is terminated by the broker MITM and requires the broker root CA to verify
+    When bc-container launch is run with BC name "shopsystem-test-harness" via the no-flag manifest-resolution clone path and the running container is inspected before the in-container clone runs
+    Then a regular file exists inside the running container at the exact path git is configured to use as its CA bundle, and that file is non-empty and its first line is "-----BEGIN CERTIFICATE-----"
+    And "git config --global http.sslCAInfo" inside the container names that existing CA file (or, equivalently, the agent-vault broker root CA is installed into the system trust store git uses by default), so git is never pointed at a CA path that does not exist
+    And the in-container clone of "shopsystem-test-harness" routed through "HTTPS_PROXY" completes its TLS handshake with neither an "error setting certificate file" error nor an "SSL certificate problem: unable to get local issuer certificate" error
