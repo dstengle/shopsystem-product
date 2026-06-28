@@ -1,0 +1,40 @@
+Feature: the bc-emit work-done wrapper's clean-working-tree precondition is deliverable-scoped — it refuses only on dirty deliverable paths (features/ src/ tests/) and does NOT refuse on dirty non-deliverable harness or config paths
+
+  Reconciles the clean-working-tree precondition of the CLI-layer "bc-emit
+  work-done" wrapper (ADR-036 D1/D2) to the work-done-gate skill's Check 1
+  deliverable-scope model, REPLACING the narrower ambient carve-out allowlist
+  that scenario 176 (@242c4de927d64339) pins. The skill's Check 1 is
+  deliverable-scoped: it blocks ONLY on dirty paths under the deliverable
+  directories "features/", "src/", "tests/", and explicitly treats harness /
+  config paths — ".claude/canonical/bc-primer.md", ".claude/settings.json" —
+  as NON-deliverable (they do not block). The ambient carve-outs (".specstory",
+  ".claude/scheduled_tasks.lock", ".beads/issues.jsonl") are a SUBSET of the
+  non-deliverable paths, so deliverable-scope subsumes them — there is no
+  separate carve-out check.
+
+  Origin (twice-observed): lead-b6f2 + lead-mab1 mechanism_observations. The
+  executable wrapper discounted ONLY the narrow ambient carve-out allowlist, so
+  when the harness churns non-deliverable ".claude" paths at session-start
+  (router bc-primer.md rewrite, settings.json SessionStart-hook reorder — another
+  role's in-flight work, not the deliverable, neither safe to commit under this
+  work_id nor revert), the wrapper FALSE-REFUSED a clean-deliverable emit. That
+  forced reviewers onto the bare "shop-msg respond" escape valve (scenario 181),
+  bypassing the wrapper's reachability + scenario-hash re-validation — the
+  opposite of intent, and (now that lead-mab1 directs reviewers TO the wrapper)
+  the thing that made the wrapper unusable. The lead-mab1 reviewer literally had
+  to use the bare escape valve for its own sign-off because of this.
+
+  This pin is the clean-tree-SCOPE arm and is orthogonal to the
+  plan-decomposition checks lead-8vny added (scenario 208 @0b48508e40fdde18
+  sub-issue-open, scenario 209 @7bcfc89161c0b2ee bd-decomposition-durability):
+  those evaluate bd state, this evaluates working-tree scope. The check runs
+  inside the BC container against the BC's own tree (ADR-036 D2, ADR-018).
+  "shop-msg respond" stays a pure messaging primitive; the bare "--force" path
+  (scenario 181) remains the escape valve.
+
+  @scenario_hash:cba037e97c6a8325
+  Scenario: bc-emit work-done's clean-working-tree precondition is deliverable-scoped — it refuses the emit only when a path under features/, src/, or tests/ is dirty, and does NOT refuse when the only dirty paths are non-deliverable harness or config paths
+    Given a BC repository whose "git status --porcelain -uall" output reports modified, staged, or untracked paths ONLY under non-deliverable harness or config paths — for example ".claude/canonical/bc-primer.md", ".claude/settings.json", or the ambient carve-outs ".specstory", ".claude/scheduled_tasks.lock", and ".beads/issues.jsonl" — and reports NO modified, staged, untracked, or deleted path under any deliverable directory "features/", "src/", or "tests/"
+    When the BC invokes the "bc-emit work-done" wrapper for its dispatched work_id
+    Then the wrapper does NOT refuse on the clean-working-tree precondition and proceeds to the remaining preconditions, treating the tree as clean because no deliverable path is dirty
+    And the same wrapper, run against a tree whose "git status --porcelain -uall" reports a dirty path under any deliverable directory "features/", "src/", or "tests/", exits non-zero, does not invoke "shop-msg respond work_done", and names the clean-working-tree precondition as the cause while listing each offending deliverable path verbatim as "git status --porcelain" reported it
