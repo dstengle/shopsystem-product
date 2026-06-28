@@ -1,0 +1,45 @@
+Feature: the bc-reviewer role template directs the sign-off work_done emit through the "bc-emit work-done" wrapper, not the bare "shop-msg respond work_done" primitive, so the wrapper's scenario_hashes-match precondition is reached on every sign-off
+
+  Driver: lead-mab1 (re-scoped; architect layer disposition confirmed). Root cause on
+  the installed artifact surface (shop-templates show bc-reviewer): the bc-reviewer
+  template's "Sign-off -> work_done complete" outcome instructs the CONCRETE emit command
+  as the BARE "shop-msg respond work_done --bc ... --scenario-hash <h> ...", while the
+  preceding prose claims "the bc-emit work-done wrapper enforces these preconditions ...
+  if your emit is refused, fix and retry". Because the instructed command is the bare
+  messaging primitive, the wrapper is never invoked, the "refused, fix and retry" prose
+  is dead, and the wrapper's orphan/stale/missing scenario-hash refusal is never reached.
+  In the lead-jonx incident the reviewer followed the template literally and a typo'd
+  orphan hash ('cc52003444ee7', not the pinned 'cc52003444ea63f7' for scenario 161)
+  persisted to the lead inbox.
+
+  This scenario pins the CORRECTED guidance: the sign-off "work_done complete" outcome
+  must direct the emit through the "bc-emit work-done" WRAPPER (the path that runs the
+  mechanically-checkable preconditions per ADR-036 D), and must scope the bare
+  "shop-msg respond work_done --force" to forced recovery only.
+
+  Coexistence (additive; none retired):
+  - Scenario 179 @ea9c1bbd9be87d72 pins that the bc-emit work-done WRAPPER recomputes
+    block-only scenario hashes and refuses on stale/missing/orphan. THIS scenario pins
+    that the reviewer is actually routed through that wrapper, so 179's refusal is reached
+    on the sign-off path. The two compose; 179 is unchanged.
+  - Scenario 181 @f81ee56bc163934b pins that bare "shop-msg respond work_done --force"
+    bypasses the wrapper as the forced-recovery escape valve. THIS scenario pins that the
+    template names --force ONLY as that escape valve, not as the routine sign-off emit.
+    The two compose; 181 is unchanged.
+  - Scenario 189 @942895d284cf0ec7 gates that the templates' respond subsections name
+    "shop-msg respond" per numbered step; its bc-reviewer row targets "## Outcomes". The
+    Outcomes section is bullet-form (not numbered steps), and the clarify and
+    work_done(blocked) outcomes still name "shop-msg respond"; "bc-emit work-done" is the
+    wrapper over "shop-msg respond work_done". Architect to confirm the 189 interaction at
+    assignment; neither scenario retires the other.
+
+  Grounded against the installed artifact surface (ADR-018) via "shop-templates show
+  bc-reviewer"; this scenario currently fails against the rendered template (which
+  instructs the bare command) and is the pin for the request_bugfix fix.
+
+  @scenario_hash:35d3af0c79b55fbf
+  Scenario: the rendered bc-reviewer template directs the sign-off work_done emit through the "bc-emit work-done" wrapper and names bare "shop-msg respond work_done --force" only as the forced-recovery escape valve
+    When I read the bc-reviewer template via "shop-templates show bc-reviewer"
+    Then the sign-off "work_done complete" outcome names "bc-emit work-done" as the concrete command the reviewer runs to emit the sign-off
+    And that sign-off outcome does NOT instruct a bare "shop-msg respond work_done" invocation as the command the reviewer runs to emit the sign-off
+    And the bare "shop-msg respond work_done --force" path is named only as the forced-recovery escape valve, never as the routine sign-off emit
