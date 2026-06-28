@@ -38,23 +38,34 @@ the `create-bc` flow wrote — for the repo URL, image pin, network, broker, and
 env-file. If you are launching a BC that `create-bc` just registered, those
 flags are already recorded; you do not re-pass them here.
 
-### 2. The `BCLAUNCHER_HOST_HOME` devcontainer fact
+### 2. The `BCLAUNCHER_HOST_HOME` devcontainer fact (bind-mounted-home case only)
 
-The BC runs inside a **devcontainer with a bind-mounted home directory**. The
-launcher needs to know the *host* path of that home so it can bind-mount it into
-the container at the same location the in-container tooling expects. That host
-path is supplied through the `BCLAUNCHER_HOST_HOME` environment variable:
+`BCLAUNCHER_HOST_HOME` is required **only** for the **workspace-mount /
+bind-mounted-home devcontainer** launch case — it is *not* a universal
+launch-time setting. When the BC runs inside a **devcontainer with a
+bind-mounted home directory**, the launcher needs the *host* path of that home
+so it can bind-mount it into the container at the same location the in-container
+tooling expects. That host path is supplied through the `BCLAUNCHER_HOST_HOME`
+environment variable:
 
 ```bash
+# workspace-mount / bind-mounted-home devcontainer case only:
 export BCLAUNCHER_HOST_HOME="$HOME"
 bc-container launch <bc-name>
 ```
 
-Without `BCLAUNCHER_HOST_HOME` set, the launcher cannot resolve the host side of
-the bind mount and the container comes up with a home that is missing the
-credential-helper config, the git identity, and the agent-vault client material
-the BC needs. **Always set `BCLAUNCHER_HOST_HOME` to the host home directory
-before launching** — this is the single most common launch-time miss.
+In that bind-mounted-home case, without `BCLAUNCHER_HOST_HOME` set the launcher
+cannot resolve the host side of the bind mount and the container comes up with a
+home that is missing the credential-helper config, the git identity, and the
+agent-vault client material the BC needs.
+
+A **clone-path BC launch does not require `BCLAUNCHER_HOST_HOME`.** On the
+clone path the launcher pulls the BC's repo into a fresh container and the
+container's credentials arrive on the wire through the agent-vault broker — there
+is no bind-mounted host home to resolve, so there is nothing for
+`BCLAUNCHER_HOST_HOME` to point at. Do **not** treat `BCLAUNCHER_HOST_HOME` as
+universally required for every launch; set it only for the bind-mounted-home
+devcontainer case above.
 
 ### 3. Verify the BC reaches `online`
 
@@ -74,8 +85,9 @@ dispatching any work to it. Do not consider the bring-up complete until
 
 ## Definition of Done
 
-- `bc-container launch <bc-name>` ran with `BCLAUNCHER_HOST_HOME` exported to the
-  host home directory.
+- For the workspace-mount / bind-mounted-home devcontainer case,
+  `bc-container launch <bc-name>` ran with `BCLAUNCHER_HOST_HOME` exported to the
+  host home directory; a clone-path launch does not require it.
 - `shop-msg bc-status` shows the BC in the `online` state.
 - The BC accepts a `shop-msg` ping/dispatch (it is reachable on the bus, not
   merely "container running").
