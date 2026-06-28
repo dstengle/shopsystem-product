@@ -1,0 +1,29 @@
+# NET-NEW under lead-uiwu (CRITICAL clone-path regression). FACET 2 (workspace ownership).
+# EMPIRICAL FINDING (product authority, 2026-06-28, reproduced launching shopsystem-
+# templates against bc-base/launcher v0.3.33): with --repo-url supplied, the in-container
+# clone fails "/workspace/.git: Permission denied" because /workspace is created
+# root:root while the agent + clone run as user vscode (uid 1000). The working 5-day-old
+# messaging container has /workspace owned vscode:vscode — so this re-pins the contract
+# that regressed. Single behavior: a launched BC's /workspace is writable by the agent
+# user because it is OWNED by that user, so the clone performed as that user succeeds.
+#
+# COEXISTENCE the architect must enumerate at dispatch:
+#   - scenario 02 (@scenario_hash:62e1e005e9ece9f3) — pins the clone lands in the
+#     workspace but ASSUMES the write succeeds; 67 pins the OWNERSHIP precondition that
+#     makes that write succeed (no Permission denied). Complementary, no conflict.
+#   - scenario 44 family (@scenario_hash:6952248a419ca56b / f838de07a80749f9 /
+#     d6296d959f851be5) — no host-filesystem credential mounts; orthogonal (ownership of
+#     /workspace is not a credential mount). Coexists unchanged.
+#
+# Pin observable container state only (ADR-018; no BC source read) — ownership is
+# observable via stat inside the running container, and the clone outcome via its exit /
+# error string. @bc: and the reproducing @scenario_hash on dispatch are the Architect's;
+# the block-only @scenario_hash below is the PO's authoring hash.
+  @scenario_hash:4154b0ea63d0516b
+  Scenario: a launched BC's /workspace is owned by the agent user so the in-container clone performed as that user succeeds without Permission denied
+    Given the shopsystem-bc-launcher BC is installed
+    And bc-container launch is run with BC name "shopsystem-templates" with a valid repo URL
+    And the container "bc-shopsystem-templates" is running
+    When the ownership of the "/workspace" directory inside the running container is inspected
+    Then "/workspace" is owned by the agent user "vscode" (uid 1000), not by root
+    And the clone performed into "/workspace" as the agent user completes without a "/workspace/.git: Permission denied" error
