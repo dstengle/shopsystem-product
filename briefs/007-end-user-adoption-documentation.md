@@ -630,6 +630,162 @@ manual step.
 
 ---
 
+## Operational & security runbook (WS-8 fold-in — review finding 9)
+
+This section folds the operational/security loose ends of independent MVP
+review **finding 9** (workplan WS-8, bead `lead-5l0w`) into brief 007 as a
+single runbook addition rather than fixing them piecemeal. It is the
+adopter-facing **keep / empty / run** checklist the docs BC renders for a
+host operator standing the product up — the operational counterpart to the
+narrative bootstrap walkthrough above. It consolidates **only already-decided
+/ already-validated** facts from this bootstrap initiative; it does NOT open
+new product scope. Two items are explicitly flagged as **needing a
+product-authority posture decision** before they can be written as
+prescriptive doc steps (see "Open posture decisions" at the end of this
+section).
+
+The runbook is grounded in the validated substrate this initiative landed:
+CA-inline credential delivery (ADR-045), the derived-coordinate single source
+of truth (ADR-043), the `product:` manifest field as canonical identity
+(ADR-038), the agent-vault broker as a lead-shop supporting service
+(ADR-026 / ADR-028), footing's deterministic agent-less bring-up with
+socket-GID symmetry (ADR-040, PDR-021/022), and the host-readable launch
+diagnostic (ADR-041). It mirrors the per-product isolation brief 011 commits
+and the one-credential-gate brief 012 commits; where this runbook and those
+briefs overlap, those briefs are the authority and this section is the
+operator-checklist projection of them.
+
+### KEEP — persistent state the operator must not lose or commit
+
+- **`.env` (gitignored, never committed).** Carries this product's own
+  `AGENT_VAULT_MASTER_PASSWORD`, `POSTGRES_PASSWORD`, `SHOPMSG_DSN`, and the
+  product's distinct host ports. It is per-product secret state; losing it
+  loses access to the vault's stored credentials. Brief 011 Step 2 produces
+  it from `.env.example`.
+- **The two named compose volumes** — postgres data and the agent-vault data
+  volume (the uid-65532 named volume per ADR-028's accepted EACCES
+  rationale). These hold the messaging journal and the brokered credentials;
+  they are the product's durable state and survive `compose down`.
+- **The provisioned credentials inside the vault** — the developer's GitHub
+  PAT and the dashboard-set Claude OAuth credential (ADR-026 D2/D4). These
+  are pasted ONCE at the single human credential gate; the vault keeps them
+  so no real secret ever lands on a BC's disk.
+
+### EMPTY — what starts blank and is provisioned, never hand-authored
+
+- **No host credential files.** Per ADR-026, BCs are zero-host-coupled: the
+  operator does NOT create `~/.config/...` credential files, does NOT bind a
+  host token file into a BC. Credentials reach the fleet only through the
+  agent-vault proxy as short-lived `av_agt_…` proxy tokens; the broker
+  resolves the real credential on-disk inside its own volume.
+- **The CA trust material is inline content, not a path (ADR-045).**
+  `AGENT_VAULT_CA_PEM` carries the PEM **bytes** in the environment, not a
+  filename. The operator does not place a CA file on the host for BCs to
+  read; the value is delivered inline through the env surface. A runbook step
+  that says "point this at a `.pem` file" is wrong and would reintroduce host
+  coupling.
+- **No `repos/` tree on the host.** Per ADR-018 / resolved Q5, BC source is
+  cloned inside each BC container; the operator keeps no host-side BC clone
+  directory.
+
+### RUN — the bring-up sequence and its prerequisites
+
+1. **Host prerequisites: Docker + a GitHub account only** (brief 012). The
+   operator installs no framework tooling on the host; every CLI is on the
+   container PATH.
+2. **Identity is declared once.** The `product:` field in `bc-manifest.yaml`
+   is the canonical product-identity source (ADR-038); the fleet tooling
+   derives the system slug, the docker network name, the BC-name prefix, and
+   the image namespace from it. Every derived coordinate is computed once at
+   its canonical point and re-used (ADR-043) — the operator does NOT hardcode
+   the network name or slug in multiple places.
+3. **Docker network.** The product runs on its own docker network named for
+   the derived slug (ADR-038), isolated from any other product on the same
+   host (brief 011). The bring-up path is responsible for ensuring that
+   network exists before service start; under footing's topology this is the
+   `compose up` + `docker network connect <slug>` step (PDR-021). The
+   operator should not have to pre-create it by hand if footing owns it — but
+   if the operator is running the manual composition (v1, pre-orchestrator),
+   the `docker network create <slug>` prerequisite must be named explicitly
+   so `compose`'s `external: true` network reference resolves.
+4. **Socket-GID symmetry (PDR-021, bead lead-27ka).** The bring-up container
+   is launched with `--group-add <host-socket-gid>` so its non-root user can
+   use the mounted `/var/run/docker.sock`. This is the validated mechanism;
+   the runbook names the docker-socket mount + matching group-add as a
+   prerequisite, and flags that the socket-mounted container is privileged
+   (see the security note below).
+5. **Supporting services first: postgres + agent-vault (ADR-028).** Both come
+   up as lead-shop supporting-services compose entries on the product
+   network, with persistent volumes and `restart` policy. **Postgres ships a
+   `pg_isready` compose healthcheck** (WS-8 Tier A, landed) and
+   **`POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-postgres}`** with `.env.example`
+   documenting it — the dev default works out-of-box, and a real deployment
+   sets its own. Runbook caveat to carry verbatim: the healthcheck only
+   de-flakes bring-up **if consumers gate on readiness**; BCs gate via
+   bc-launcher's `messaging_db_reachable` / `agent_vault_reachable` readiness
+   checks, NOT via compose `depends_on` (the BCs are not in this compose).
+   Second caveat: the postgres password is a **split surface** — BCs connect
+   via `SHOPMSG_DSN`, which embeds the password independently of
+   `POSTGRES_PASSWORD`, so a password change is a two-place edit.
+6. **The single credential gate (ADR-026 D4, brief 011 Step 4, brief 012
+   Stage 5).** Exactly one human-gated step: run `bin/agent-vault-provision`,
+   paste the GitHub PAT, and set the Claude OAuth credential **in the
+   agent-vault dashboard** (the refreshing-OAuth type is dashboard-set, not
+   CLI-expressible — ADR-026 D2 provisioning caveat). After this, no real
+   credential enters a BC.
+7. **Launch the fleet and verify.** Bring up the lead shell and the BC
+   containers. A failed launch writes a **host-readable diagnostic file
+   naming the specific failure cause** on the same per-BC surface the mailbox
+   uses (ADR-041) — the runbook directs the operator there first, not to
+   `docker logs`. Health is confirmed via `bin/agent-vault-check` and the
+   readiness gates rather than by inference.
+
+### Security hardening notes (operator-visible posture)
+
+- **Set a real `POSTGRES_PASSWORD` and a real `AGENT_VAULT_MASTER_PASSWORD`
+  for any non-dev deployment.** The shipped `postgres` default is a dev
+  convenience only; the `.env.example` now documents the postgres password
+  explicitly (WS-8 Tier A closed the prior silence).
+- **The docker-socket-mounted bring-up container is privileged.** Mounting
+  the host docker socket grants effective host-root-equivalent control
+  (PDR-020 gap (e)). The runbook names this as a deliberate, scoped privilege
+  (the lead/bring-up surface launches containers; BCs do not get the socket),
+  not an accident — so an operator does not silently widen it.
+- **Known resilience limitation (do NOT treat as a bug to reopen).**
+  `shop-msg watch` does not currently survive a Postgres LISTEN drop
+  (`lead-tsj`, closed/settled-moot). The operator-facing mitigation is
+  procedural: if the lead-inbox watcher goes quiet after a postgres restart,
+  re-arm the Monitor watcher / restart `shop-msg watch`. This is documented
+  as a known operational behavior, not promised away. `lead-tsj` is NOT
+  reopened by this runbook.
+
+### Open posture decisions — FLAGGED for the product authority (not pre-decided)
+
+These two WS-8 items are **Tier B** and require a product-authority posture
+call before they can be written as prescriptive runbook steps. The PO does
+NOT guess them; they are surfaced here as the named open decisions:
+
+1. **`bin/shop-shell` host bind-mounts of `~/.claude` and `~/.gitconfig`
+   (finding-9 evidence; ADR-028 still open).** BCs already meet
+   zero-host-coupling; the lead shell does not. Whether to remove these
+   bind-mounts — and accept the resulting change to how lead-shell identity
+   is provided — is a security-posture decision for the product authority,
+   not a PO scope call. Until decided, the runbook documents the current
+   behavior honestly and does not assert it is the target state. (ADR-046
+   already records a related parameterized-image exemption overriding
+   ADR-028 for the framework image; the bind-mount question is distinct and
+   still open.)
+2. **Token rotation / revocation policy for the `av_agt_…` proxy token.**
+   There is no documented rotation/revocation runbook today, and
+   `agent-vault-provision` has no re-mint subcommand. The *policy* — rotation
+   cadence, revocation triggers, who rotates — is a product-authority
+   decision; the PO cannot invent it. The **re-mint subcommand itself is a
+   separate lead-tooling task**, not part of this brief's authoring. Until
+   the policy is set, the runbook names rotation as an explicit gap rather
+   than papering a default over it.
+
+---
+
 ## Vehicle hints (Architect's call)
 
 For pre-state verification, not as a prejudgment:
