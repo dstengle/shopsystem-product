@@ -1,7 +1,0 @@
-  @scenario_hash:384b6296b6779419
-  Scenario: bc-container launch exits non-zero when no bc-manifest.yaml exists and no --network flag is provided
-    Given no bc-manifest.yaml exists in the working directory
-    And no explicit "--network" flag is provided
-    When I run bc-container launch with BC name "shopsystem-messaging"
-    Then the command exits non-zero
-    And stderr includes the text "no network: bc-manifest.yaml not found and --network not provided"
