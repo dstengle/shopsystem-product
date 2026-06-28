@@ -1,0 +1,33 @@
+Feature: the bc-emit work-done wrapper refuses the emit when the work_id's bd decomposition and sub-issue closures are not durable — not reachable from the pushed tracker remote — naming the non-durability specifically rather than as a generic dirty tree
+
+  Tightens the durability/reachability surface of the CLI-layer "bc-emit work-done"
+  wrapper (ADR-036 D1/D2) so that the bd decomposition state is held to the same
+  reachability discipline the work_id-commit-on-origin-main precondition (scenario
+  177) already enforces for code deliverables.
+
+  Origin: a lead-yyr9 mechanism_observation (architect-validated). The closed
+  decomposition state (the sub-issue closures) lived only in an uncommitted /
+  locally-staged ".beads" registry — NOT committed or reachable from the pushed
+  tracker remote. The clean-working-tree precondition (scenario 176) read this as a
+  generic dirty tree, AND it carves ".beads/issues.jsonl" out as a non-idempotent
+  ambient artifact — so the carve-out leaves the gate SILENT on whether the actual
+  sub-issue closures are durable. This scenario closes that gap: the wrapper verifies
+  the work_id's decomposition-and-closure state is reachable from the pushed tracker
+  remote and names that specific cause on refusal, rather than reporting a generic
+  dirty-working-tree failure.
+
+  The durability check is reachability of the closure STATE from the pushed remote,
+  NOT working-tree cleanliness of ".beads/issues.jsonl" (whose bd-dolt export churn is
+  non-idempotent per scenario 176, so a commit cannot make it clean). The check runs
+  inside the BC container against the BC's own bd registry (ADR-036 D2, ADR-018).
+  "shop-msg respond" stays a pure messaging primitive; the bare "--force" path
+  (scenario 181) remains the escape valve.
+
+  @scenario_hash:7bcfc89161c0b2ee
+  Scenario: bc-emit work-done refuses the emit when the work_id's sub-issue closures exist only in an uncommitted or locally-staged .beads registry that is not reachable from the pushed tracker remote, naming the bd-decomposition-non-durable precondition specifically rather than a generic dirty working tree
+    Given a dispatched work_id whose umbrella bead's TDD sub-issues are all closed in the BC's local bd state
+    And those sub-issue creations and closures exist only in an uncommitted or locally-staged ".beads" registry that is NOT yet committed and reachable from the BC's pushed tracker remote — the configured bd-dolt remote / "origin/main"
+    When the BC invokes the "bc-emit work-done" wrapper for that work_id
+    Then the wrapper exits non-zero and does not invoke "shop-msg respond work_done"
+    And the wrapper's error names the bd-decomposition-durability precondition specifically — that the work_id's sub-issue decomposition and closures are not reachable from the pushed tracker remote — and names the work_id, rather than reporting a generic dirty-working-tree cause
+    And the durability precondition is satisfied by the decomposition-and-closure state being reachable from the pushed tracker remote, NOT by the ".beads/issues.jsonl" working-tree bytes being clean — consistent with that path being a carved-out non-idempotent ambient artifact under the clean-working-tree precondition, so the carve-out cannot by itself establish that the closures are durable

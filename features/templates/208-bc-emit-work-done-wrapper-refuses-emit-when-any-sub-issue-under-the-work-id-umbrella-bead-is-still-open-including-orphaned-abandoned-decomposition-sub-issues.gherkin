@@ -1,0 +1,29 @@
+Feature: the bc-emit work-done wrapper refuses the emit when any sub-issue under the work_id umbrella bead is still OPEN, including orphaned sub-issues from an abandoned earlier decomposition the implementer never closed
+
+  Tightens the TDD-decomposition precondition of the CLI-layer "bc-emit work-done"
+  wrapper (ADR-036 D1/D2) — the gate's "≥1 RED sub-issue exists and all sub-issues
+  are closed" check — to detect ORPHANED OPEN sub-issues, not merely to confirm the
+  set the implementer itself closed is closed.
+
+  Origin: a lead-yyr9 mechanism_observation (architect-validated). An abandoned
+  first-pass decomposition left sub-issues OPEN under the work_id umbrella bead while
+  the real TDD pass's sub-issues were closed. The prior check only inspected the
+  sub-issues the implementer closed, so it was SILENT on the orphaned OPEN duplicates
+  still live under the umbrella. Those orphans surface in "bd ready" and wedge the
+  lead router's idle-detection into re-picking already-completed work (observed
+  wedging the gate three times on lead-yyr9).
+
+  This scenario pins the tightened arm: the gate enumerates EVERY sub-issue reachable
+  under the work_id umbrella bead and refuses the emit if any remains OPEN, naming the
+  offending sub-issues by id. The check runs inside the BC container against the BC's
+  own bd registry (ADR-036 D2, ADR-018). "shop-msg respond" stays a pure messaging
+  primitive; the bare "--force" path (scenario 181) remains the escape valve.
+
+  @scenario_hash:0b48508e40fdde18
+  Scenario: bc-emit work-done refuses the emit when any sub-issue reachable under the work_id umbrella bead is still OPEN — including an orphaned sub-issue from an abandoned earlier decomposition the implementer never closed — naming each offending OPEN sub-issue
+    Given a dispatched work_id whose umbrella bead carries TDD sub-issues, at least one of which is a RED sub-issue, and the implementer's real decomposition pass closed every sub-issue that pass created
+    And a separate earlier abandoned decomposition left at least one orphaned sub-issue still OPEN under the same work_id umbrella bead, which the implementer never closed
+    When the BC invokes the "bc-emit work-done" wrapper for that work_id
+    Then the wrapper exits non-zero and does not invoke "shop-msg respond work_done"
+    And the wrapper's error names the all-sub-issues-under-the-work_id-umbrella-closed precondition as the cause and lists each still-OPEN sub-issue, including the orphaned one, by its bd id
+    And the precondition is evaluated by enumerating EVERY sub-issue reachable under the work_id umbrella bead — not only the set the implementer reports or itself closed — so an OPEN sub-issue the implementer did not create still blocks the emit and the prior "at least one RED sub-issue exists and all sub-issues the implementer closed are closed" check alone does NOT pass the gate
