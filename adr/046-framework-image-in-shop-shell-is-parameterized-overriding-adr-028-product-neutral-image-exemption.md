@@ -95,7 +95,16 @@ agent-vault-broker image treatment (ADR-028's original precedent) is NOT touched
 by this ADR; the shared ADR-043 coordinates-artifact mechanism is what generalizes
 across the other `bin/` scripts under lead-ml51's umbrella.
 
-## Open dependency — ADR-043 D2 shape
+## Open dependency — ADR-043 D2 shape (RESOLVED 2026-06-28, lead-7wta)
+
+> **UPDATE 2026-06-28 (lead-7wta):** ADR-043 D2 is now FINALIZED — the
+> ops-coordinates artifact is `bin/ops-coordinates`, a rendered, directly
+> shell-sourceable `KEY=value` env-file derived at bootstrap from the manifest
+> `product:` root (the lean recorded below, ratified). `OPS_FRAMEWORK_IMAGE` is
+> the framework-image key this amendment's scenario 205 sources. The PO
+> re-author of 204/205 to sharpen the source-target leg to the concrete path is
+> gated on lead-ml51 reconcile (it is IN FLIGHT carrying the filename-agnostic
+> 204/205). See ADR-043 "D2 — FINALIZED".
 
 ADR-043 D2 deliberately leaves the ops-coordinates artifact's concrete shape/path
 open ("an `ops/coordinates` env-file OR a `[product]` block of the manifest").

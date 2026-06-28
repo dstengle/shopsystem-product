@@ -1,6 +1,8 @@
 # ADR-043 — Every derived bootstrap coordinate is computed ONCE at a canonical point and re-used; nothing recomputes or hardcodes it
 
-**Status:** accepted (ratified by dave, 2026-06-26, lead-kc0k)
+**Status:** accepted (ratified by dave, 2026-06-26, lead-kc0k); D2 artifact
+shape/path FINALIZED 2026-06-28 (lead-7wta) — see "D2 — FINALIZED" below
+(`bin/ops-coordinates`, a rendered shell-sourceable env-file).
 **Tier:** system-global (cross-BC / per-product structural decision about how the
 adopter bootstrap derives identity, coordinates, ports, names, and org — it
 touches the `shop-templates bootstrap` render surface (cli.py), the rendered ops
@@ -129,6 +131,84 @@ the beads repo names, the org placeholder — and every `bin/` ops script
 re-spelling `{{OPS_SLUG}}` / `14321` / `dstengle` / `-beads` independently. A value
 appears as a literal in exactly ONE place (the renderer / the coordinates file);
 everywhere else is a variable reference.
+
+#### D2 — FINALIZED (2026-06-28, lead-7wta): the artifact is `bin/ops-coordinates`, a rendered shell-sourceable env-file
+
+D2 above deliberately left the artifact's concrete shape/path OPEN ("an
+`ops/coordinates` env-file OR a `[product]` block of the manifest"). The
+keystone of the on-disk single-source initiative — shop-shell, the `bin/`
+provision scripts, AND bc-launcher network resolution all consume this one
+artifact — so the shape is now ratified.
+
+**FORMAT — a rendered, directly shell-sourceable env-file (`KEY=value` lines).**
+Chosen over the manifest-`[product]`-block alternative. The decisive constraint
+is the consumer mechanism the PO-authored scenarios already pin: scenarios 204
+(`@scenario_hash:b7ea0de32ef49854`), 205 (`@scenario_hash:1885dea2b4550fde`),
+and the bc-launcher network scenario 63 (`@scenario_hash:5a1fc25a7823b268`) all
+require each `bin/` script to obtain its coordinates by a shell `source `/`. `
+directive. A YAML `[product]` block is NOT shell-sourceable — `source` of YAML
+fails; consuming it would force every `bin/` script (and bc-launcher) to carry a
+YAML parser. A `KEY=value` env-file `source`s natively in bash. This is the lean
+ADR-046's Open-dependency section already recorded; D2 now ratifies it.
+
+**PATH — `bin/ops-coordinates`** (a sibling of the `bin/` ops scripts). Chosen
+over `ops/coordinates`. The scripts source it as `source
+"$(dirname "$0")/ops-coordinates"` (the form scenarios 204/205 authored against
+— a sibling of `bin/shop-shell`); `$(dirname "$0")` already resolves to `bin/`,
+so a sibling needs no path math and no new top-level `ops/` directory. The
+existing ops-scaffolding set is `bin/`-rooted (the six-file set scenario 174
+enumerates: compose.yaml + the `bin/` scripts), and `bin/ops-coordinates` joins
+it as one more shop-owned ops file (ADR-region of scenarios 136/137/139:
+ops scaffolding is shop-owned, written by bootstrap, NOT re-poured by `update`).
+
+**CONTENT / KEYS — the env-file exports stable, slug-NEUTRAL `OPS_*` keys** (so
+every script references `$OPS_*` regardless of slug; only the VALUES carry the
+product identity). Each line honors the ADR-038 D3 precedence inline
+(`OPS_X="${<OVERRIDE_ENV>:-<rendered-default>}"`) so an explicit environment
+assignment still takes precedence over the rendered default — satisfying the
+"environment-overridable" leg of scenarios 204/205. The key set, reconciled with
+D1's coordinate list + ADR-046's framework image + the values
+shop-shell / the `bin/` scripts / bc-launcher actually consume (live values for
+slug `shopsystem` shown):
+
+- `OPS_SLUG` — product slug (`shopsystem`); the ADR-038 `product:` derivation root.
+- `OPS_NETWORK` — docker network name (`shopsystem`); consumed by shop-shell's
+  outer `--network` AND inner `bc-container launch --network`, and by
+  bc-launcher's `_resolve_shop_network()` (lead-ngzl, today reading
+  compose.yaml/name.md as the INTERIM — switches to this artifact, see
+  Consequences).
+- `OPS_POSTGRES_CONTAINER` — `shopsystem-postgres`.
+- `OPS_VAULT_CONTAINER` — `shopsystem-agent-vault`.
+- `OPS_VAULT_NAME` — the agent-vault credential store name.
+- `OPS_BROKER_ADDR` — in-network broker address (`http://agent-vault:14321`);
+  the host-mapped form is runtime-discovered (see DERIVATION).
+- `OPS_POSTGRES_PORT` — generated host port (`5829` = `5432 + crc32(slug)%1000`),
+  inline default over `SHOPSYSTEM_POSTGRES_PORT`.
+- `OPS_VAULT_API_PORT` / `OPS_VAULT_PROXY_PORT` — generated host ports
+  (`15082` / `14462`), inline defaults over `SHOPSYSTEM_VAULT_*_PORT`.
+- `OPS_DATA_ROOT` — persistent data root (`$HOME/.local/share/shopsystem`),
+  inline default over `SHOPSYSTEM_DATA`; shop-shell's env-file path derives from it.
+- `OPS_LEAD_BEADS_REPO` — `shopsystem-lead-beads`;
+  `OPS_BC_BEADS_REPO_FMT` — `shopsystem-<bc>-beads` (the D5 naming rule).
+- `OPS_ORG` — GitHub org/owner, DERIVED FROM `git remote get-url origin` ONCE
+  (D4, lead-pdsd I2); rendered as an origin-derived placeholder footing fills.
+- `OPS_FRAMEWORK_IMAGE` — `ghcr.io/dstengle/shopsystem-bc-lead:latest` (ADR-046:
+  the framework launcher/leaf image joins the coordinate set, overriding
+  ADR-028's product-neutral-image exemption for `bin/shop-shell`).
+
+**DERIVATION + WHO RENDERS.** The artifact is DERIVED at bootstrap from the
+manifest `product:` root (D1 / ADR-038): `shop-templates bootstrap` (cli.py
+render tokens) writes `bin/ops-coordinates` ONCE, alongside compose.yaml and the
+other `bin/` ops scripts, with the render-time-derivable values substituted from
+`product:`. The two genuinely runtime-only coordinates — `OPS_ORG` (the actual
+origin owner) and the host-MAPPED broker/postgres addresses — are filled ONCE by
+the footing runtime in the fork (ADR-040 runway; per D6 / lead-nhr2's
+`docker port … 14321` discovery), written into the SAME artifact, never
+re-derived downstream. Because `bin/ops-coordinates` is shop-owned ops
+scaffolding, `shop-templates update` does NOT overwrite it (advisory-on-drift
+only, mirroring compose.yaml under scenarios 139/140). A value appears as a
+literal in exactly ONE place — this artifact — and every `bin/` script plus
+bc-launcher carries only `$OPS_*` references.
 
 ### D3 — The generated-port rule lives in ONE place
 
