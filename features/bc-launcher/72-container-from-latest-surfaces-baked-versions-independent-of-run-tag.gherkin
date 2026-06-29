@@ -1,0 +1,33 @@
+Feature: a container started from a bc-launcher image's :latest tag surfaces the correct baked versions via docker container inspect, because OCI labels and ENV inherit onto every container regardless of the run-tag
+
+  Pins lead-5xnd (step 1 of the version-management roadmap), the runtime half of
+  the provenance contract and its actual product-value statement: "so when you
+  tell me about an image, I can be sure I'm using the right one." The real-world
+  case is a container running from ":latest", where the originating version tag
+  is NOT recoverable from the container — exactly why tags cannot carry the
+  provenance. OCI labels and ENV baked at build time DO inherit onto every
+  container (docker container inspect surfaces .Config.Labels and .Config.Env)
+  regardless of which tag was used to run it, so the version is verifiable from
+  the running container itself.
+
+  This scenario pins that run-tag-independent OBSERVABLE — what "docker container
+  inspect" surfaces on a container started from ":latest" — not the Dockerfile
+  mechanism. It composes with scenario 71 (7c0c949fccdf9df2), which establishes
+  that both bc-base and bc-lead carry these labels/env on the image; this
+  scenario uses bc-base (the image with the known misleading "3.1.2" upstream
+  label) as the representative instance, because the inheritance property is
+  identical across both images. It is the load-bearing check behind bin/doctor
+  (lead-q3r1) and bootstrap baked-version verify (lead-b2iz) reading the version
+  from a live container. (Targets shopsystem-bc-launcher: the bc-base/bc-lead
+  Dockerfiles and the publish workflow.)
+
+  @scenario_hash:26d1817c9d115f0d
+  Scenario: a container started from bc-base:latest surfaces the baked bc-launcher and shop-templates versions via container inspect, independent of the lost run-tag
+    Given the published "ghcr.io/dstengle/shopsystem-bc-base" image at bc-launcher release version "v0.3.38" baking shop-templates version "v0.47.0" carries those versions as OCI labels and ENV
+    And a container is started from that image addressed only by its "latest" tag, so the originating version tag is not recoverable from the running container
+    When the running container is examined with "docker container inspect"
+    Then the container's configured labels surface "org.opencontainers.image.version" equal to the bc-launcher release version "v0.3.38"
+    And the container's configured labels surface "shopsystem.shop-templates.version" equal to the baked shop-templates version "v0.47.0"
+    And the container's configured environment surfaces "SHOPSYSTEM_BC_LAUNCHER_VERSION" equal to "v0.3.38"
+    And the container's configured environment surfaces "SHOP_TEMPLATES_VERSION" equal to "v0.47.0"
+    And the surfaced bc-launcher version is "v0.3.38" rather than the upstream devcontainer base label value "3.1.2"

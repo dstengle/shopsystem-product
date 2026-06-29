@@ -1,0 +1,39 @@
+# BUGFIX under lead-m1dc (P1, empirical bootstrap defect, product authority
+# 2026-06-29): "the approve script breaks halfway through when it can't find the
+# env var it needs. It says to retry, but it half-completed the work and re-run is
+# broken. The fix should be to verify preconditions to be able to execute the full
+# process and if at all possible be able to update the tokens after the fact as
+# well." Follow-on to lead-al1r (the approve-claude oauth fix shipped as
+# shop-templates v0.47.0, the 08136da oauth-tokens path); this pins the ROBUSTNESS
+# gap in that shipped script.
+#
+# Target: the rendered ops script "bin/agent-vault-approve-claude" (v0.47.0 /
+# 08136da oauth-tokens path), which: resolves the ops-coordinates -> performs an
+# owner "POST /v1/auth/login" (session cookie) -> creates/ensures the CLAUDE_OAUTH
+# proposal/slot -> performs "POST /v1/credentials/oauth/tokens" with access+refresh.
+# Today it fails PARTWAY through on a missing input, leaving partial vault state,
+# and tells the operator only to retry.
+#
+# This is the UPFRONT PRECONDITION + FAIL-FAST + ZERO-PARTIAL-STATE pin (single
+# behavior). Siblings under the same family: 220 (@scenario_hash:9aa82d211517155d,
+# idempotent re-run) and 221 (@scenario_hash:45dc18d4b0d1730e, update-after-the-
+# fact). This family TIGHTENS robustness and does NOT retire scenario 202
+# (@scenario_hash:1c054dfdc468860a, the non-blank-writeback pin) — the script must
+# still write a non-empty credential AND now verify preconditions first.
+#
+# SCOPE THINNESS flagged for architect pre-state: the product authority did not
+# name WHICH specific env var the operator hit. This scenario pins the GENERAL
+# precondition-completeness behavior (every required input + endpoint verified
+# before any mutating step) rather than a single named variable, so it holds
+# regardless of which input was missing. The architect should confirm against the
+# v0.47.0 / 08136da script body which inputs are actually required.
+#
+# @bc: and the reproducing @scenario_hash on dispatch are the Architect's; the
+# block-only @scenario_hash below is the PO's authoring hash.
+@scenario_hash:3b7e07095a354e0a
+Scenario: the rendered "bin/agent-vault-approve-claude" verifies every required input and endpoint reachability BEFORE any mutating step, and on a missing precondition fails fast with an actionable diagnostic while making ZERO partial changes
+  Given a "lead" shop bootstrapped by "shop-templates" with the rendered ops script "bin/agent-vault-approve-claude" whose token-seed path resolves the ops-coordinates, performs an owner "POST /v1/auth/login", ensures the CLAUDE_OAUTH proposal/slot, and performs "POST /v1/credentials/oauth/tokens" with the access and refresh tokens
+  When the operator runs "bin/agent-vault-approve-claude" in a session missing one or more required inputs — the Claude credential/token source, the owner login credentials, the broker address, or the resolvable ops-coordinates — or where a required broker endpoint is unreachable
+  Then "bin/agent-vault-approve-claude" verifies every required input is present and every endpoint it will call is reachable BEFORE performing any mutating step (before the owner login, before ensuring the proposal/slot, before the oauth/tokens writeback)
+  And on any missing input or unreachable endpoint it exits non-zero with a clear, actionable diagnostic naming the specific missing precondition, rather than failing partway through with an opaque message that tells the operator only to retry
+  And it makes ZERO partial changes when a precondition fails — no proposal/slot is created or mutated and no token writeback is attempted — so the vault is left in exactly its pre-run state

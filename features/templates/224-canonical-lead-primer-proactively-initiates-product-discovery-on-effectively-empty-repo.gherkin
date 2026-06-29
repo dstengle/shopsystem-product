@@ -1,0 +1,38 @@
+Feature: the canonical lead CLAUDE.md primer directs the router to proactively initiate a product-discovery conversation when it detects an effectively-empty repo, instead of declaring idle
+
+  lead-vglj (P2) — product authority 2026-06-29 (verbatim): "for the lead to
+  detect when the repo is effectively empty and start a product discovery
+  conversation with the user to start determining the shape of the new system."
+
+  This scenario pins the PROACTIVE-INITIATION half: on detecting the
+  effectively-empty / no-product-defined state (defined by sibling scenario, file
+  221) at session start or during the idle-detection checklist, the router must
+  OPEN a product-discovery conversation with the product authority rather than
+  declaring idle and waiting for a prompt. This is the empty-repo TRIGGER that
+  FIRES the existing product-authority discovery gate.
+
+  Design alignment (reference, do not contradict): the existing product-authority
+  discovery gate already establishes that the discovery DIALOGUE happens at the
+  main-agent / router level because discovery subagents are non-interactive and
+  cannot conduct it. This scenario adds the trigger that fires that dialogue
+  proactively; it must NOT pin a non-interactive subagent doing the talking. The
+  discovery skill furniture (jobs-to-be-done, problem-framing-canvas,
+  opportunity-solution-tree, customer-journey-map) exists; the trigger leads the
+  router into a discovery conversation seeded from that furniture, capturing the
+  result as the seed brief / intent.
+
+  AUTHORING ONLY — no BC dispatch. @bc tag is the Architect's to apply at
+  assignment time; @lead_integration:templates below is provisional placement
+  matching sibling primer-furniture scenarios.
+
+@lead_integration:templates
+  @scenario_hash:eb64adc52ce02579
+  Scenario: the canonical lead primer directs the router, on the effectively-empty state at session start or the idle-detection checkpoint, to proactively open a product-discovery conversation rather than declare idle
+    Given the "shop-templates" package ships a canonical "CLAUDE.md" primer template for shop type "lead" through its public template-access surface
+    And the lead repo is in the effectively-empty / no-product-defined state
+    When I ask the package for that canonical primer body for shop type "lead"
+    Then a non-empty template body is returned
+    And the returned body contains a contiguous block directing the router, on detecting the effectively-empty state at session start or during the idle-detection checklist, to proactively open a product-discovery conversation with the product authority
+    And that block states the discovery conversation is conducted at the main-agent / router level — consistent with the product-authority discovery gate — and is not delegated to a non-interactive discovery subagent
+    And that block names seeding the conversation from the discovery skill furniture, such as jobs-to-be-done, problem-framing-canvas, or opportunity-solution-tree, and capturing the result as the seed brief or intent
+    And that block states that on the effectively-empty state the router initiates discovery rather than declaring idle

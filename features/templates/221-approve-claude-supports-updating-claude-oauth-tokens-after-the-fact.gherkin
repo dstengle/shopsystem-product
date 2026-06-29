@@ -1,0 +1,24 @@
+# BUGFIX/ROBUSTNESS under lead-m1dc (P1, product authority 2026-06-29): "... and
+# if at all possible be able to update the tokens after the fact as well."
+# Follow-on to lead-al1r (the approve-claude oauth fix, shop-templates v0.47.0 /
+# 08136da oauth-tokens path). Target: the rendered ops script
+# "bin/agent-vault-approve-claude".
+#
+# This is the UPDATE-TOKENS-AFTER-THE-FACT pin (single behavior): a later re-run
+# to UPDATE an already-populated CLAUDE_OAUTH credential (re-POST fresh token
+# material to the oauth-tokens endpoint) is a supported, non-error path. It is the
+# operator-facing counterpart to the idempotency pin 220 — 220 pins that a re-run
+# does not BREAK on prior state; 221 pins that a re-run is the SUPPORTED way to
+# refresh the tokens later. Siblings: 219 (@scenario_hash:3b7e07095a354e0a) and 220
+# (@scenario_hash:9aa82d211517155d). TIGHTENS robustness; does NOT retire scenario
+# 202 (@scenario_hash:1c054dfdc468860a, non-blank-writeback) — the updated
+# credential is still non-empty.
+#
+# @bc: and the reproducing @scenario_hash on dispatch are the Architect's; the
+# block-only @scenario_hash below is the PO's authoring hash.
+@scenario_hash:45dc18d4b0d1730e
+Scenario: the rendered "bin/agent-vault-approve-claude" supports updating the CLAUDE_OAUTH tokens after the fact — a later re-run re-POSTs fresh token material to the oauth-tokens endpoint as a supported, non-error path
+  Given a "lead" shop bootstrapped by "shop-templates" with the rendered ops script "bin/agent-vault-approve-claude" and an already-populated, refreshing CLAUDE_OAUTH credential from a prior successful run
+  When the operator later re-runs "bin/agent-vault-approve-claude" with newer Claude token material to refresh the stored credential
+  Then "bin/agent-vault-approve-claude" treats updating an already-populated CLAUDE_OAUTH credential as a supported path — it performs the owner login and re-POSTs the new access and refresh tokens to "POST /v1/credentials/oauth/tokens" rather than erroring because the credential already exists
+  And after the update the CLAUDE_OAUTH credential carries the newly supplied token material and remains in a refreshing/connected state
