@@ -1,4 +1,4 @@
-# PDR-025 — Published bc-launcher images carry their bc-launcher version and baked shop-templates version as inspectable OCI-label + ENV provenance
+# PDR-026 — Published bc-launcher images carry their bc-launcher version and baked shop-templates version as inspectable OCI-label + ENV provenance
 
 **Status:** draft (2026-06-29)
 **Authors:** dstengle (intent), Claude (lead-po)

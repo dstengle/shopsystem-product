@@ -1,4 +1,4 @@
-# PDR-025 — Empty-repo detection fires a proactive product-discovery trigger in the lead primer
+# PDR-027 — Empty-repo detection fires a proactive product-discovery trigger in the lead primer
 
 **Status:** draft (2026-06-29)
 **Authors:** dstengle, Claude (lead-po)
