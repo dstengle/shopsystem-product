@@ -1,0 +1,26 @@
+# NET-NEW under lead-q3r1 (→ shopsystem-templates; new capability → assign_scenarios).
+# Product authority 2026-06-29: a doctor shell command that "validates credentials
+# and connections." This is the Claude-credential check of the rendered "bin/doctor":
+# CLAUDE_OAUTH present AND in a refreshable/connected state. It is the diagnosis
+# counterpart to the blank-CLAUDE_OAUTH-writeback bug pinned by scenario 202
+# (@scenario_hash:1c054dfdc468860a) — doctor surfaces an absent, empty, or
+# non-refreshable credential as an explicit named fail rather than the agent
+# discovering it mid-session.
+#
+# WORK-SPLITTING: ONE check-behavior scenario (CLAUDE_OAUTH presence + refreshable
+# state). Siblings: 215 (@scenario_hash:a6f8c0656a9e1cd9, messaging-DB) and 216
+# (@scenario_hash:f55aa51f4bd138b3, agent-vault); aggregate pass/fail is 218
+# (@scenario_hash:027a4d836bb1ae43).
+#
+# Pins what doctor ASSERTS (check name, pass/fail, remediation hint), NOT the probe
+# implementation.
+#
+# @bc: and the reproducing @scenario_hash on dispatch are the Architect's; the
+# block-only @scenario_hash below is the PO's authoring hash.
+@scenario_hash:5cf88671d3fab25b
+Scenario: the rendered "bin/doctor" credential check for Claude asserts CLAUDE_OAUTH is present and in a refreshable/connected state, reporting a named pass/fail line with a remediation hint on failure
+  Given a "lead" shop bootstrapped by "shop-templates" with the rendered ops command "bin/doctor"
+  When the operator runs "bin/doctor" in a session whose "CLAUDE_OAUTH" credential is present and in a refreshable, connected state
+  Then "bin/doctor" emits a check line named for the Claude credential (a "CLAUDE_OAUTH" check) whose status is an explicit pass
+  And the same check, run in a session where "CLAUDE_OAUTH" is absent, empty, or in a non-refreshable/disconnected state, emits that same named check line whose status is an explicit fail
+  And the fail line carries a remediation hint naming the corrective action (re-run the approve-claude provisioning to restore a non-empty refreshable credential) rather than only reporting that the check failed

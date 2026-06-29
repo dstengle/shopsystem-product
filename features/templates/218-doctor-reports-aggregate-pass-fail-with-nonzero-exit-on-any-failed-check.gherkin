@@ -1,0 +1,27 @@
+# NET-NEW under lead-q3r1 (→ shopsystem-templates; new capability → assign_scenarios).
+# Product authority 2026-06-29: a doctor shell command that "validates credentials
+# and connections" and reports a clear pass/fail diagnosis so the agent does not
+# ad-hoc diagnose. This is the TOP-LEVEL aggregate scenario: doctor runs every
+# individual check and rolls them into one pass/fail verdict with a meaningful exit
+# code.
+#
+# WORK-SPLITTING: this is the aggregate counterpart to the per-check scenarios 215
+# (@scenario_hash:a6f8c0656a9e1cd9, messaging-DB), 216 (@scenario_hash:f55aa51f4bd138b3,
+# agent-vault), and 217 (@scenario_hash:5cf88671d3fab25b, CLAUDE_OAUTH). Those pin
+# each check's diagnosis surface in isolation; this pins how the checks COMPOSE into
+# one verdict (all-pass ⇒ overall pass + exit 0; any fail ⇒ overall fail naming the
+# failed check(s) + non-zero exit). It also establishes that "bin/doctor" is the
+# rendered command that performs the messaging-DB, agent-vault, and Claude checks.
+#
+# Pins the aggregate diagnosis surface and exit-code contract, NOT the implementation
+# of any individual probe.
+#
+# @bc: and the reproducing @scenario_hash on dispatch are the Architect's; the
+# block-only @scenario_hash below is the PO's authoring hash.
+@scenario_hash:027a4d836bb1ae43
+Scenario: the rendered "bin/doctor" runs every credential and connection check and reports an aggregate pass/fail diagnosis with a non-zero exit on any failed check
+  Given a "lead" shop bootstrapped by "shop-templates" with the rendered ops command "bin/doctor" that performs the messaging-DB, agent-vault, and Claude-credential checks
+  When the operator runs "bin/doctor" in a session where every individual check would pass
+  Then "bin/doctor" reports each named check line as a pass, reports an aggregate diagnosis of overall pass, and exits with code 0
+  And when "bin/doctor" is run in a session where at least one individual check would fail, it reports each check line with its own pass/fail status, reports an aggregate diagnosis of overall fail that names which check(s) failed, and exits non-zero
+  And the aggregate diagnosis is derived from the individual check results — overall pass requires every check to pass and any single failed check forces overall fail — so the operator gets one clear pass/fail verdict without ad-hoc diagnosing

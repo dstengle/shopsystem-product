@@ -1,0 +1,37 @@
+# BUGFIX under lead-j8so (empirical bootstrap defect, product authority 2026-06-29:
+# "The lead claude is up but SHOPMSG_DSN is not set so it is trying to diagnose and
+# work around. This should be fixed ..."). The lead shell is itself a bc-container-
+# launched bc-base session brought up by the rendered "bin/shop-shell" (PDR-020).
+# That bringup path already transports specific values into the launched session —
+# AGENT_VAULT_CA_PEM as inline PEM content (scenario 200, @scenario_hash:7ce09202755b0503)
+# and a non-empty placeholder GH_TOKEN (scenario 201, @scenario_hash:0789db8bb7f3bc73) —
+# but it transports NO SHOPMSG_DSN, so the launched lead agent comes up with
+# SHOPMSG_DSN unset, "shop-msg" cannot reach postgres on first use (the unreachable/
+# unset path pinned by messaging scenario 18), and the agent wastes a turn self-
+# diagnosing and working around it. This is the long-named-but-not-closed
+# "SHOPMSG_DSN-unset environment plumbing" gap carried out of ADR-020 (the lead-3lw6
+# second half, "named, not closed"). This is the shop-templates-side fix
+# (request_bugfix — it tightens existing bootstrap/shop-shell render behavior that
+# is unpinned for SHOPMSG_DSN).
+#
+# The product postgres coordinates are already the single-sourced ops-coordinates
+# values (OPS_POSTGRES_CONTAINER / OPS_POSTGRES_PORT / OPS_NETWORK, scenario 211,
+# @scenario_hash:0a3a8267109b5792); this scenario pins that "bin/shop-shell" derives
+# the launched session's SHOPMSG_DSN from those coordinates and passes it into the
+# launch, mirroring the GH_TOKEN/CA transport already pinned for the same path. It
+# does NOT re-pin the connection-string format beyond "non-empty + reaches the DB
+# on first use" — the observable behavior is that the freshly-launched lead agent's
+# first "shop-msg" call reaches postgres with no operator or agent work-around.
+# Single behavior: SHOPMSG_DSN reaches the launched lead-shell session non-empty and
+# DB-reachable.
+#
+# @bc: and the reproducing @scenario_hash on dispatch are the Architect's; the
+# block-only @scenario_hash below is the PO's authoring hash.
+@scenario_hash:a0342b1700fe27e7
+Scenario: the rendered shop-owned bringup path delivers a non-empty SHOPMSG_DSN into the launched lead-shell session so shop-msg reaches the product postgres on first use without a manual operator or agent export
+  Given a "lead" shop bootstrapped by "shop-templates" with the rendered ops script "bin/shop-shell" and the rendered single ops-coordinates artifact "bin/ops-coordinates" carrying the product postgres coordinates (OPS_POSTGRES_CONTAINER, OPS_POSTGRES_PORT, OPS_NETWORK)
+  And the product postgres service is up and reachable on the shop docker network at those coordinates
+  When the operator runs the rendered "bin/shop-shell" to launch the lead-shell session
+  Then the rendered "bin/shop-shell" delivers a non-empty "SHOPMSG_DSN" into the launched lead-shell session environment — its body passes "SHOPMSG_DSN" set to a non-empty value into the launch (the body contains the literal substring "-e SHOPMSG_DSN") rather than leaving "SHOPMSG_DSN" unset
+  And the "SHOPMSG_DSN" value reaching the launched session is derived from the sourced ops-coordinates postgres coordinates (the product postgres container and port on the shop docker network), not an empty or placeholder address
+  And a freshly-launched lead-shell agent can therefore run "shop-msg" against the product postgres on first use — the first invocation reaches the database rather than exiting non-zero on an unset or unreachable "SHOPMSG_DSN" — without the agent first self-diagnosing or the operator first running "export SHOPMSG_DSN=..." by hand
