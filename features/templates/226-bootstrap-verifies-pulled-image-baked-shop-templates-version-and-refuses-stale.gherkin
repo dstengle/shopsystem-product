@@ -1,0 +1,54 @@
+# lead-b2iz (P1 bug) — pins the corrected behavior for the fresh-adopter
+# bootstrap regression. ROOT CAUSE: the rendered "bin/bootstrap" floats the
+# bc-lead/bc-base image on a tag and "docker pull"s it, then PROCEEDS to render
+# regardless of whether the pull fetched a current image — so a stale/cached
+# ":latest" (or a silent pull/auth fallback to cache) makes the in-image
+# "shop-templates bootstrap" render an ANCIENT shop (no AGENT_VAULT_CA_PEM,
+# hardcoded product name, pre-<changeme> style). These scenarios pin the gate
+# that closes that gap: bootstrap READS the pulled image's baked shop-templates
+# version and only renders when it meets an expected minimum; otherwise it
+# refuses loudly instead of silently rendering an ancient shop.
+#
+# ENABLER (already shipped): PDR-026 / lead-5xnd bakes the version into the
+# published images as inspectable provenance — OCI label
+# "shopsystem.shop-templates.version" and container ENV "SHOP_TEMPLATES_VERSION"
+# (verified live on v0.3.40 / templates 0.48.0). That makes the read CHEAP
+# (docker image inspect / printenv) WITHOUT invoking python/pip in the image —
+# exactly the consumer PDR-026 named for this bead.
+#
+# DELIVERY LINKAGE (architect): "bin/bootstrap" is RENDERED from shop-templates
+# (the templates/ops bootstrap entry), so the fix is a shop-templates template
+# change; but adopters receive "bin/bootstrap" via the starter fork
+# (dstengle/shopsystem-starter), which is STALE per lead-x4mk — so reaching
+# adopters ALSO needs the starter re-render (lead-x4mk). Cross-ref lead-ko2v
+# (bc-container launch uses cached :latest — same stale-:latest class) and
+# lead-5xnd (the provenance enabler).
+#
+# SCOPE THINNESS (flag for architect): "expected-minimum shop-templates version
+# known to bin/bootstrap" pins the MECHANISM (read baked version, compare to a
+# declared floor, gate). WHERE that floor is set/updated (a hardcoded constant
+# re-rendered each release vs. sourced from a pinned coordinate vs. the starter's
+# own pinned version) is a policy left to decomposition — pinned here only as
+# "known to bin/bootstrap".
+#
+# @bc: and the reproducing @scenario_hash on dispatch are the Architect's; the
+# block-only @scenario_hash below is the PO's authoring hash.
+
+Feature: bin/bootstrap verifies the pulled image's baked shop-templates version before rendering
+
+@scenario_hash:4457c8c280d4fbf4
+Scenario: bootstrap reads the pulled image's baked shop-templates version and proceeds when it meets the expected minimum
+  Given an adopter fork whose "bin/bootstrap" resolves the bc-lead/bc-base image on a floating tag
+  And the pulled image carries baked shop-templates provenance per PDR-026 — the OCI label "shopsystem.shop-templates.version" and the container ENV "SHOP_TEMPLATES_VERSION"
+  And that baked shop-templates version is at or above the expected-minimum shop-templates version known to "bin/bootstrap"
+  When the adopter runs "bin/bootstrap" and it pulls the image
+  Then bootstrap reads the baked shop-templates version from the pulled image's provenance via a "docker image inspect" read of the "shopsystem.shop-templates.version" label (or a "printenv SHOP_TEMPLATES_VERSION" read of a container started from it), without invoking "pip show" or any python in the image
+  And because the read version is at or above the expected minimum, bootstrap proceeds to render the shop via the in-image "shop-templates bootstrap"
+
+@scenario_hash:e9d64a8acc917efb
+Scenario: bootstrap refuses to render and exits loudly when the pulled image's baked shop-templates version is below the expected minimum
+  Given an adopter fork whose "bin/bootstrap" resolves the bc-lead/bc-base image on a floating tag
+  And the pull resolves a stale or cached image whose baked shop-templates version — read from the PDR-026 "shopsystem.shop-templates.version" label or "SHOP_TEMPLATES_VERSION" ENV — is below the expected-minimum shop-templates version known to "bin/bootstrap"
+  When the adopter runs "bin/bootstrap" and it pulls that stale image
+  Then bootstrap does not invoke the in-image "shop-templates bootstrap" render step against the stale image, so no shop is rendered from it
+  And bootstrap exits non-zero with a diagnostic that names the stale baked shop-templates version it read, the expected-minimum version it required, and an actionable remediation for obtaining the current image
