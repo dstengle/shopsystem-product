@@ -1,0 +1,25 @@
+# NET-NEW under lead-loos (→ shopsystem-templates), Increment 1. Pins ADR-047 D2: the
+# shop-templates-rendered "bin/system-manifest" CAPTURE verb. "assemble" composes a new
+# "releases[]" entry FROM already-released component versions read through the lead-5xnd
+# baked image provenance (PDR-026: OCI labels + container ENV), under a product-chosen
+# system semver the tool RECORDS verbatim and never computes (PDR-030 D1). Mirrors the
+# existing sibling registry CLI shape ("bc-container manifest list|validate|sync" over
+# "bc-manifest.yaml") per ADR-047 D2.
+#
+# SCOPE: Increment 1 is CAPTURE-first (ADR-047 D2). The "drive" half — the tool
+# orchestrating component bumps/tags rather than only capturing — is a deferred follow-up
+# (entangled with the deferred PDR-030 D5 BC-self-tag leg, ADR-018). NOT pinned here:
+# messaging/scenarios published-coherence (lead-5xnd bakes provenance only for
+# bc-launcher/shop-templates today; ADR-047 D3 scope note).
+#
+# @bc: and the reproducing @scenario_hash on dispatch are the Architect's; the
+# block-only @scenario_hash below is the PO's authoring hash.
+@lead_integration:templates
+@scenario_hash:c9aff70e92ef409f
+Scenario: "bin/system-manifest assemble" captures a new "releases[]" entry pinning the product-chosen "system_version:" verbatim against the already-released component versions it reads from the lead-5xnd baked image provenance
+  Given a "lead" shop with the rendered ops command "bin/system-manifest" and a pulled bc-lead/bc-base image carrying lead-5xnd baked provenance — the OCI labels "org.opencontainers.image.version" (the bc-launcher release) and "shopsystem.shop-templates.version" (the baked shop-templates version)
+  And a product-chosen system semver "1.4.0" supplied to the assemble step
+  When the operator runs "bin/system-manifest assemble" with the product-chosen system version "1.4.0"
+  Then "bin/system-manifest" reads the already-released component versions from the pulled image's baked provenance via a "docker image inspect" read of the "org.opencontainers.image.version" and "shopsystem.shop-templates.version" labels (or a "printenv" read of the container ENV "SHOPSYSTEM_BC_LAUNCHER_VERSION" / "SHOP_TEMPLATES_VERSION"), without invoking "pip show" or any python in the image
+  And it appends a new "releases[]" entry to "system-manifest.yaml" whose "system_version:" is the supplied "1.4.0" recorded verbatim as authored and never computed from the component versions, and whose "components:" map pins "shopsystem-bc-launcher" and "shopsystem-templates" to the exact versions it read from the baked provenance
+  And the exit code is 0

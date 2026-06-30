@@ -1,0 +1,28 @@
+# NET-NEW under lead-loos (→ shopsystem-templates), Increment 1. Pins ADR-047 D3, the
+# ADDITIVE DOCTOR check: a new system-manifest published-coherence check joins the
+# PDR-024 D3 diagnosis surface (name + status + remediation hint) reporting the
+# published-coherence result, folded into doctor's aggregate as a NON-FATAL advisory at
+# dev-time. PDR-024 D2 records that additional checks are ADDITIVE under the D3 surface
+# and do not reopen the decision (ADR-047 pre-state finding 2) — so this is an additive
+# check, not a doctor re-design.
+#
+# NON-CONTRADICTION with scenario 218 (@scenario_hash:027a4d836bb1ae43, "any failed check
+# forces non-zero exit"): the coherence drift result is an ADVISORY line, NOT a hard
+# pass/fail check — so a coherence WARNING does not by itself force a non-zero aggregate
+# at dev-time. 218's aggregate rule over the hard credential/connection checks is
+# UNCHANGED and NOT contradicted.
+#
+# SCOPE: published-coherence vs lead-5xnd ONLY; advisory at dev-time (the BLOCKING posture
+# lives at adopter stand-up, scenarios 234/235). Dependency-coherence vs lead-h2p0 is a
+# deferred follow-up.
+#
+# @bc: and the reproducing @scenario_hash on dispatch are the Architect's; the
+# block-only @scenario_hash below is the PO's authoring hash.
+@lead_integration:templates
+@scenario_hash:0462a55392e2f5b8
+Scenario: "bin/doctor" runs an additive system-manifest published-coherence check on the PDR-024 D3 diagnosis surface that reports the published-coherence drift result as a non-fatal advisory line at dev-time
+  Given a "lead" shop with the rendered ops command "bin/doctor" carrying an additive system-manifest published-coherence check alongside the existing messaging-DB, agent-vault, and Claude checks
+  And the manifest's "current:" release pins a "shopsystem-bc-launcher" version that differs from the version baked into the pulled image's lead-5xnd provenance
+  When the operator runs "bin/doctor" at dev-time
+  Then "bin/doctor" reports a named "system-manifest coherence" check line on the PDR-024 D3 diagnosis surface — a name, a status, and a remediation hint — that reports the published-coherence drift result naming the incoherent component "shopsystem-bc-launcher" and the manifest-pinned and observed baked versions
+  And the coherence line is folded into doctor's aggregate as a non-fatal advisory at dev-time, so a coherence drift warning does not by itself force a non-zero aggregate exit (consistent with scenario 218, @scenario_hash:027a4d836bb1ae43, whose aggregate rule over the hard credential and connection checks is unchanged)

@@ -1,0 +1,25 @@
+# NET-NEW under lead-loos (→ shopsystem-templates), Increment 1. Pins ADR-047 D3, the
+# PROCEED-ON-COHERENT counterpart to the blocking stand-up gate (scenario 234): when the
+# manifest's "current:" tuple MATCHES the lead-5xnd baked image versions, the
+# published-coherence stand-up check passes and bootstrap proceeds to stand up the shop.
+# This is the happy-path half of the generalized feature-226 read-and-refuse mechanism
+# (cf. scenario 226 proceed counterpart, @scenario_hash:4457c8c280d4fbf4).
+#
+# COEXIST (by hash): scenario 226 proceed (@scenario_hash:4457c8c280d4fbf4) — single-floor
+# shop-templates proceed — remains VALID and RELATED-not-retired; this generalizes it to a
+# tuple match. Refuse counterpart: scenario 234.
+#
+# SCOPE: published-coherence vs lead-5xnd ONLY. lead-5xnd bakes provenance for
+# bc-launcher/shop-templates today; messaging/scenarios fall back to component-repo tags
+# (ADR-047 D3 scope note). Dependency-coherence vs lead-h2p0 is a deferred follow-up.
+#
+# @bc: and the reproducing @scenario_hash on dispatch are the Architect's; the
+# block-only @scenario_hash below is the PO's authoring hash.
+@lead_integration:templates
+@scenario_hash:c1e62eef25ad9484
+Scenario: at adopter bootstrap/stand-up a coherent manifest tuple passes the published-coherence stand-up gate and bootstrap proceeds to stand up the shop
+  Given an adopter fork whose deterministic agent-less "bin/bootstrap" runs the system-manifest published-coherence check as a stand-up step
+  And every component in the manifest's "current:" release that carries lead-5xnd baked provenance — "shopsystem-bc-launcher" and "shopsystem-templates" — pins a version that matches the version baked into the pulled image ("org.opencontainers.image.version" and "shopsystem.shop-templates.version")
+  When the adopter runs "bin/bootstrap" and it pulls the image and runs the stand-up coherence check against the manifest's "current:" tuple
+  Then the published-coherence stand-up check passes because every baked-provenance component the manifest pins matches the observed baked version read from the image provenance
+  And bootstrap proceeds to stand up the shop by invoking the render step against the coherent tuple

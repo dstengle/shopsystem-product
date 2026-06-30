@@ -1,0 +1,27 @@
+# NET-NEW under lead-loos (→ shopsystem-templates), Increment 1 of the system-version
+# manifest BOM. Pins ADR-047 D1: the lead-owned "system-manifest.yaml" presence and
+# shape — a committed root-level sibling of "bc-manifest.yaml" carrying a "releases:"
+# history list plus a "current:" pointer, each release entry pinning a standard-semver
+# "system_version:" and a "components:" map keyed by the canonical "shopsystem-<id>"
+# identity form "bc-manifest.yaml" uses (ADR-047 pre-state finding 1). Closes the
+# lead-6b53 ambiguity: "shopsystem vN" resolves from one in-file entry to a concrete
+# tuple, for the current and every prior system version, without reconstruction across
+# four independently-versioned component lines.
+#
+# SCOPE: Increment 1 pins PRESENCE + SHAPE only. The system_version is an independent
+# product-authored semver (PDR-030 D1) recorded verbatim, never computed from component
+# bumps — the capture mechanics are pinned separately (scenario 232). Dependency-edge
+# fields are REFERENCED not embedded (ADR-047 D1); the dependency-coherence leg is
+# deferred to lead-h2p0 and is NOT pinned here.
+#
+# @bc: and the reproducing @scenario_hash on dispatch are the Architect's; the
+# block-only @scenario_hash below is the PO's authoring hash.
+@lead_integration:templates
+@scenario_hash:b0f74cd354ef7169
+Scenario: the lead repo root carries a committed "system-manifest.yaml" sibling to "bc-manifest.yaml" whose shape is a "releases:" history list plus a "current:" pointer, each release entry pinning a standard-semver "system_version:" on its own line and a "components:" map keyed by canonical "shopsystem-<id>" names
+  Given a "lead" shop whose repo root carries the committed "bc-manifest.yaml" fleet registry
+  When the lead system-version BOM at the repo root is consulted
+  Then a committed file "system-manifest.yaml" exists at the repo root, a sibling of "bc-manifest.yaml" and not under any ".claude/" subdirectory
+  And "system-manifest.yaml" carries a top-level "releases:" list and a top-level "current:" pointer whose value names exactly one of the "releases[]" entries by its "system_version:"
+  And each "releases[]" entry carries a "system_version:" value that is a standard "MAJOR.MINOR.PATCH" semver recorded on its own line as an independent product-authored line, and a "components:" map whose keys are the canonical "shopsystem-<id>" identity form that "bc-manifest.yaml" uses
+  And each release entry's "components:" map pins at minimum the four released component lines "shopsystem-templates", "shopsystem-bc-launcher", "shopsystem-messaging", and "shopsystem-scenarios", each mapped to an explicit version string
