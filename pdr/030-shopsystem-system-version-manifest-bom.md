@@ -182,12 +182,14 @@ router/architect recommendation: shop-templates-rendered furniture so every
 product gets it) and how it reads ADR-039 component releases and ADR-021
 rebuild state.
 
-### D4 — Coherence validation is ADVISORY-first (warn on drift, do not block) (resolves Brief 015 Q4 at product level)
+### D4 — Coherence validation is ADVISORY at authoring/dev-time, BLOCKING at adopter bootstrap/stand-up (resolves Brief 015 Q4)
 
 The lead may validate a manifest tuple for coherence — does the pinned tuple
 actually hold together per the `lead-h2p0` dependency view, and does it match
-what is published per `lead-5xnd` baked image labels/ENV? The **product-level
-default is ADVISORY**: a coherence check **warns on drift, it does not block.**
+what is published per `lead-5xnd` baked image labels/ENV? The posture is
+**split by gate**: **ADVISORY at authoring/dev-time** (warn on drift, do not
+block) and **BLOCKING at adopter bootstrap / stand-up** (refuse to stand up an
+incoherent tuple).
 
 **Rationale.** Advisory-first matches the manifest's role as a curated record:
 the lead author is the authority on the tuple, and a hard block would invert
@@ -197,13 +199,14 @@ surfaces drift loudly without seizing authorship — consistent with the
 doctor-diagnosis posture of PDR-024 (name + status + remediation hint), where
 the verdict informs rather than forecloses.
 
-**FLAGGED as a product-judgment call (see "Remaining for David" below).**
-Advisory-vs-blocking *for the bootstrap/release gate specifically* is a genuine
-product call: at **bootstrap/adopter-stand-up** there may be a case for a
-**blocking** coherence check (an adopter should not stand up an incoherent
-tuple), even while authoring-time validation stays advisory. The default
-recorded here is advisory everywhere; David's confirmation is requested before
-any blocking gate is specified.
+**RESOLVED (product authority, David, 2026-06-30): BLOCK at adopter bootstrap /
+stand-up; advisory everywhere else.** An adopter must not stand up an incoherent
+component tuple — it yields a silently-broken system (the class of failure the
+stale-image bootstrap bugs caused). The bootstrap/stand-up coherence check is
+therefore a **hard gate**: it refuses to proceed on an incoherent tuple,
+consistent with the "doctor gates operations" direction (`lead-arp1`).
+Authoring- and dev-time validation stays **advisory** so it never blocks
+iteration on a deliberately-ahead-of-the-dependency-view pin.
 
 **Framed for architect ADR (NOT decided here):** whether the coherence check is
 a `doctor` check (cf. PDR-024 D2's check set), a `bootstrap` step, or both; the
@@ -238,9 +241,10 @@ lead-curated and depends on **no BC behavior change.**
 - **Why a separate manifest file, not a field on `bc-manifest.yaml`?** D2 records
   it: membership registry vs. release roll-up are different jobs with different
   cadences and readers.
-- **Why advisory coherence, not blocking?** D4 records it: the lead author owns
-  the tuple; a hard veto inverts authorship. (And it flags where blocking might
-  legitimately apply.)
+- **Why advisory at authoring but blocking at bootstrap?** D4 records it: the
+  lead author owns the tuple at authoring time (a hard veto there would invert
+  authorship), but an adopter must not stand up an incoherent tuple — so the
+  bootstrap/stand-up gate blocks.
 - **Why is BC self-tagging not in the first increment?** D5 records the explicit
   product-authority scope boundary and the ADR-018 reason it is dispatch-
   orchestration rather than a lead edit.
