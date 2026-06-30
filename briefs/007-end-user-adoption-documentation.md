@@ -639,10 +639,13 @@ adopter-facing **keep / empty / run** checklist the docs BC renders for a
 host operator standing the product up — the operational counterpart to the
 narrative bootstrap walkthrough above. It consolidates **only already-decided
 / already-validated** facts from this bootstrap initiative; it does NOT open
-new product scope. Two items are explicitly flagged as **needing a
-product-authority posture decision** before they can be written as
-prescriptive doc steps (see "Open posture decisions" at the end of this
-section).
+new product scope. Of the two WS-8 items that previously needed a
+product-authority posture decision, the first — the lead-shell
+host-coupling posture — is now **RESOLVED by product-authority direction
+(confirm-and-pin)** and is recorded as the pinned target state; the
+second still needs a product-authority posture decision before it can be
+written as a prescriptive doc step (see "Open posture decisions" at the
+end of this section).
 
 The runbook is grounded in the validated substrate this initiative landed:
 CA-inline credential delivery (ADR-045), the derived-coordinate single source
@@ -759,22 +762,49 @@ operator-checklist projection of them.
   as a known operational behavior, not promised away. `lead-tsj` is NOT
   reopened by this runbook.
 
-### Open posture decisions — FLAGGED for the product authority (not pre-decided)
+### Open posture decisions — one RESOLVED (confirm-and-pin), one still FLAGGED for the product authority
 
-These two WS-8 items are **Tier B** and require a product-authority posture
-call before they can be written as prescriptive runbook steps. The PO does
-NOT guess them; they are surfaced here as the named open decisions:
+Of these two WS-8 **Tier B** items, the first is now **RESOLVED by
+product-authority direction (confirm-and-pin)** and is recorded below as
+the pinned target state; the second still requires a product-authority
+posture call before it can be written as a prescriptive runbook step. The
+PO does NOT guess the open one:
 
-1. **`bin/shop-shell` host bind-mounts of `~/.claude` and `~/.gitconfig`
-   (finding-9 evidence; ADR-028 still open).** BCs already meet
-   zero-host-coupling; the lead shell does not. Whether to remove these
-   bind-mounts — and accept the resulting change to how lead-shell identity
-   is provided — is a security-posture decision for the product authority,
-   not a PO scope call. Until decided, the runbook documents the current
-   behavior honestly and does not assert it is the target state. (ADR-046
-   already records a related parameterized-image exemption overriding
-   ADR-028 for the framework image; the bind-mount question is distinct and
-   still open.)
+1. **`bin/shop-shell` host bind-mounts — RESOLVED (confirm-and-pin):
+   lead-shell zero-host-coupling IS the target state.** The lead shell,
+   exactly like a BC container, takes **no** host dotfile bind-mounts —
+   there is no `~/.claude` mount and no `~/.gitconfig` mount. Its identity
+   and credentials come through the agent-vault broker, the same mechanism
+   the BCs use. The runbook documents this as the **target state**, not as
+   transitional "current behavior."
+   - **Evidence (artifact surface, ADR-018).** `bin/shop-shell`'s two
+     `docker run` blocks mount only the repo root
+     (`-v "$REPO_ROOT:$REPO_ROOT"`, surfaced inward as the launched
+     session's `--workspace-mount`) and the docker socket
+     (`-v /var/run/docker.sock:/var/run/docker.sock`, surfaced as
+     `--mount-docker-socket`). Neither is a credential coupling: the
+     workspace mount is the lead working tree, and the socket mount is the
+     deliberate, scoped lead-only privilege the launcher needs to stand up
+     BCs (named in the security note above). No `$HOME/.claude` and no
+     `$HOME/.gitconfig` mount appears in either block. Claude and git auth
+     flow through the broker (`AGENT_VAULT_*` env + the MITM `HTTPS_PROXY`);
+     git identity travels as `GIT_*` env, not a mounted `.gitconfig`.
+   - **Pinned by.** [PDR-020](../pdr/020-lead-shell-is-a-bc-container-launched-bc-base-session.md)
+     (the lead shell is itself a `bc-container`-launched bc-base session,
+     so it inherits the BCs' brokered-credential model);
+     [ADR-026](../adr/026-agent-vault-brokered-credentials-eliminate-host-filesystem-coupling.md)
+     (brokered credentials eliminate host-filesystem coupling); and
+     **[ADR-028 D4](../adr/028-agent-vault-broker-is-a-lead-shop-supporting-service-broker-own-behaviors-pinned-by-lead-integration-surface.md)**,
+     which already RESOLVED the "does fleet bring-up flip the lead shell's
+     own host mounts?" open question in the affirmative (2026-06-12, by
+     product-authority direction) and records the removed mounts as a
+     landed consequence. This confirm-and-pin makes that pinned state the
+     brief's asserted target rather than a hedged open question.
+   - **ADR-046 note.** ADR-046 records a related parameterized-image
+     exemption overriding ADR-028's product-neutral image rule for the
+     framework image. That is a distinct concern from the host-coupling
+     posture; it does not reopen the bind-mount question, which is now
+     settled.
 2. **Token rotation / revocation policy for the `av_agt_…` proxy token.**
    There is no documented rotation/revocation runbook today, and
    `agent-vault-provision` has no re-mint subcommand. The *policy* — rotation
