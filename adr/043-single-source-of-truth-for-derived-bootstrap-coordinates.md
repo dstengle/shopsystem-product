@@ -1,8 +1,11 @@
 # ADR-043 — Every derived bootstrap coordinate is computed ONCE at a canonical point and re-used; nothing recomputes or hardcodes it
 
 **Status:** accepted (ratified by dave, 2026-06-26, lead-kc0k); D2 artifact
-shape/path FINALIZED 2026-06-28 (lead-7wta) — see "D2 — FINALIZED" below
-(`bin/ops-coordinates`, a rendered shell-sourceable env-file).
+shape/path FINALIZED 2026-06-28 (lead-7wta) and RECONCILED-TO-IMPLEMENTATION
+2026-06-29 (lead-7wta) against the now-shipped pinning scenarios 211/213/228 —
+see "D2 — FINALIZED" below (`bin/ops-coordinates`, a rendered shell-sourceable
+env-file; a derived single-source **managed-render** artifact that
+`shop-templates update` OWNS — refreshed, NOT advisory-on-drift).
 **Tier:** system-global (cross-BC / per-product structural decision about how the
 adopter bootstrap derives identity, coordinates, ports, names, and org — it
 touches the `shop-templates bootstrap` render surface (cli.py), the rendered ops
@@ -140,6 +143,45 @@ keystone of the on-disk single-source initiative — shop-shell, the `bin/`
 provision scripts, AND bc-launcher network resolution all consume this one
 artifact — so the shape is now ratified.
 
+**RECONCILED-TO-IMPLEMENTATION (2026-06-29, lead-7wta).** The 2026-06-28
+finalization below is now confirmed against the shop-templates scenarios that
+SHIPPED and reconciled this session — the implemented reality, on the
+contract/artifact surface (ADR-018 D1/D2), is:
+
+- **Scenario 211** (`@scenario_hash:0a3a8267109b5792`,
+  `features/templates/211-*.gherkin`) — `shop-templates bootstrap` renders the
+  single shell-sourceable `bin/ops-coordinates` `KEY=value` env-file, derived
+  from the manifest `product:` root, carrying the slug-NEUTRAL OPS_* keys each
+  placeholder-safe env-overridable. This pins the FORMAT, PATH, KEYS, and the
+  **slug contract** (`_ops_slug` strips a trailing `-product`, so shop name
+  `shopsystem-product` → slug `shopsystem`) and the placeholder-safe
+  `OPS_BC_BEADS_REPO_FMT="<slug>-{bc}-beads"` with the literal `{bc}` intact,
+  plus `OPS_FRAMEWORK_IMAGE` resolving non-empty.
+- **Scenario 213** (`@scenario_hash:4c646ae20a1540e3`,
+  `features/templates/213-*.gherkin`) — `shop-templates update` against an
+  existing repo lacking `bin/ops-coordinates` RENDERS it (create-if-absent),
+  byte-equal to the bootstrap render.
+- **Scenario 228** (`@scenario_hash:8e5955d5fb5bb9c8`,
+  `features/templates/228-*.gherkin`) — `shop-templates update` against a repo
+  whose `bin/ops-coordinates` has DRIFTED REFRESHES it in place, overwriting
+  the stale body byte-equal to the current canonical bootstrap render.
+
+All three hashes reproduce under the installed `scenarios hash` contract tool
+over the lead-held block-only Gherkin (verified 2026-06-29). **The one place
+the implemented reality DIVERGES from the 2026-06-28 prediction below is the
+`update` behavior:** the prediction said `update` does NOT overwrite the
+artifact (advisory-on-drift only, mirroring compose.yaml under scenarios
+139/140). The shipped contract chose the OPPOSITE and stronger guarantee:
+`bin/ops-coordinates` is a derived single-source **managed-render** artifact
+whose ONLY customization path is environment override, so `update` OWNS its
+refresh — create-if-absent (213) AND refresh-drifted-in-place (228) — exactly
+as it re-pours the managed agent files (scenarios 35/36) and the managed lead
+skill group (162-164), and explicitly does NOT apply the shop-owned
+drift-advisory contract (139/140) used for `compose.yaml` and `bin/shop-shell`.
+The text below is corrected to record this. The artifact SHAPE itself
+(env-file, `bin/ops-coordinates`, the OPS_* key set, the slug contract) is
+unchanged from the 2026-06-28 finalization and is confirmed by 211.
+
 **FORMAT — a rendered, directly shell-sourceable env-file (`KEY=value` lines).**
 Chosen over the manifest-`[product]`-block alternative. The decisive constraint
 is the consumer mechanism the PO-authored scenarios already pin: scenarios 204
@@ -158,8 +200,11 @@ over `ops/coordinates`. The scripts source it as `source
 so a sibling needs no path math and no new top-level `ops/` directory. The
 existing ops-scaffolding set is `bin/`-rooted (the six-file set scenario 174
 enumerates: compose.yaml + the `bin/` scripts), and `bin/ops-coordinates` joins
-it as one more shop-owned ops file (ADR-region of scenarios 136/137/139:
-ops scaffolding is shop-owned, written by bootstrap, NOT re-poured by `update`).
+it as one more `bin/`-rooted ops file written by bootstrap. (NOTE — unlike the
+hand-editable shop-owned ops scripts of scenarios 136/137/139, the shipped
+contract makes `bin/ops-coordinates` a derived managed-render artifact that
+`update` re-pours; see the DERIVATION paragraph and the RECONCILED note above —
+scenarios 213/228.)
 
 **CONTENT / KEYS — the env-file exports stable, slug-NEUTRAL `OPS_*` keys** (so
 every script references `$OPS_*` regardless of slug; only the VALUES carry the
@@ -171,7 +216,9 @@ D1's coordinate list + ADR-046's framework image + the values
 shop-shell / the `bin/` scripts / bc-launcher actually consume (live values for
 slug `shopsystem` shown):
 
-- `OPS_SLUG` — product slug (`shopsystem`); the ADR-038 `product:` derivation root.
+- `OPS_SLUG` — product slug (`shopsystem`); the ADR-038 `product:` derivation
+  root. The slug contract (scenario 211) is `_ops_slug`, which strips a trailing
+  `-product` from the shop name (so `shopsystem-product` → `shopsystem`).
 - `OPS_NETWORK` — docker network name (`shopsystem`); consumed by shop-shell's
   outer `--network` AND inner `bc-container launch --network`, and by
   bc-launcher's `_resolve_shop_network()` (lead-ngzl, today reading
@@ -189,7 +236,12 @@ slug `shopsystem` shown):
 - `OPS_DATA_ROOT` — persistent data root (`$HOME/.local/share/shopsystem`),
   inline default over `SHOPSYSTEM_DATA`; shop-shell's env-file path derives from it.
 - `OPS_LEAD_BEADS_REPO` — `shopsystem-lead-beads`;
-  `OPS_BC_BEADS_REPO_FMT` — `shopsystem-<bc>-beads` (the D5 naming rule).
+  `OPS_BC_BEADS_REPO_FMT` — `shopsystem-{bc}-beads` (the D5 naming rule). Per
+  scenario 211 this key is rendered in a PLACEHOLDER-SAFE form (outside the
+  `${:-}` default, or with the brace escaped) so that the literal `{bc}`
+  placeholder survives sourcing intact while the key remains env-overridable —
+  the prior naive `"${OPS_BC_BEADS_REPO_FMT:-<slug>-{bc}-beads}"` corrupted the
+  value because bash closes the expansion on the first `}`.
 - `OPS_ORG` — GitHub org/owner, DERIVED FROM `git remote get-url origin` ONCE
   (D4, lead-pdsd I2); rendered as an origin-derived placeholder footing fills.
 - `OPS_FRAMEWORK_IMAGE` — `ghcr.io/dstengle/shopsystem-bc-lead:latest` (ADR-046:
@@ -204,9 +256,18 @@ other `bin/` ops scripts, with the render-time-derivable values substituted from
 origin owner) and the host-MAPPED broker/postgres addresses — are filled ONCE by
 the footing runtime in the fork (ADR-040 runway; per D6 / lead-nhr2's
 `docker port … 14321` discovery), written into the SAME artifact, never
-re-derived downstream. Because `bin/ops-coordinates` is shop-owned ops
-scaffolding, `shop-templates update` does NOT overwrite it (advisory-on-drift
-only, mirroring compose.yaml under scenarios 139/140). A value appears as a
+re-derived downstream. Because `bin/ops-coordinates` is a DERIVED
+single-source managed-render artifact (its only customization path is
+environment override, not hand-editing), `shop-templates update` OWNS its
+refresh: it renders the artifact create-if-absent (scenario 213,
+`@scenario_hash:4c646ae20a1540e3`) and refreshes a drifted artifact in place
+byte-equal to the current canonical bootstrap render (scenario 228,
+`@scenario_hash:8e5955d5fb5bb9c8`) — re-pouring it as it does the managed agent
+files (35/36) and the managed lead skill group (162-164), and explicitly NOT
+applying the shop-owned drift-advisory contract (139/140) used for
+`compose.yaml`/`bin/shop-shell`. (The footing-filled runtime-only coordinates —
+`OPS_ORG` and the host-MAPPED addresses — are an environment-override layer over
+the rendered defaults, consistent with that managed render.) A value appears as a
 literal in exactly ONE place — this artifact — and every `bin/` script plus
 bc-launcher carries only `$OPS_*` references.
 
