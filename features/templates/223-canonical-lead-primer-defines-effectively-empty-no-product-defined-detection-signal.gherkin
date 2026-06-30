@@ -1,39 +1,32 @@
-Feature: the canonical lead CLAUDE.md primer defines the effectively-empty / no-product-defined repo detection signal so a freshly bootstrapped lead can recognize that no product has been shaped yet
+Feature: the canonical lead CLAUDE.md primer defines the effectively-empty / no-product-defined repo detection signal as a two-signal test so a freshly bootstrapped lead can recognize that no product has been shaped yet
 
   lead-vglj (P2) — product authority 2026-06-29 (verbatim): "for the lead to
   detect when the repo is effectively empty and start a product discovery
   conversation with the user to start determining the shape of the new system."
 
-  This scenario pins the DETECTION half: the canonical lead primer (rendered into
-  every product's lead via shop-templates) must define what "effectively empty"
-  observably means, so the router can recognize the no-product-defined state. The
-  bootstrap scaffold itself writes canonical-managed files (CLAUDE.md, the typed
-  .claude/shop/* files, agent definitions, settings, an empty/initialized beads
-  registry, a placeholder shop primer) — those do NOT constitute a product. The
-  observable signal is the absence of any PRODUCT-BEARING artifact beyond that
-  scaffold: no substantive brief, no PDR, no features/ scenario, no
-  product-bearing bead.
+  This scenario pins the DETECTION half. SCOPE PINNED 2026-06-30 (product
+  authority, David): EFFECTIVELY EMPTY is a TWO-SIGNAL test — BOTH signals must
+  hold: (1) no product-bearing bead in the beads registry, AND (2) no
+  product-bearing scenario in the "features/" tree. The bootstrap scaffold —
+  canonical-managed files, "CLAUDE.md", the typed ".claude/" files, the role
+  templates, the placeholder shop primer, and the initialized-but-empty beads
+  registry — is IGNORED by the test and does not by itself defeat either signal.
+  Briefs and PDRs are NOT part of the two-signal test.
 
-  Ties to the existing product-authority discovery gate in the lead primer (which
-  governs WHERE the discovery dialogue happens); this scenario adds the empty-repo
-  detection signal that the proactive-initiation trigger (sibling scenario, file
-  222) fires on.
-
-  SCOPE THINNESS FLAGGED FOR PRODUCT ROUND-TRIP: the exact membership of the
-  "product-bearing artifact" set — and whether an empty/initialized-only beads
-  registry counts as scaffold vs. product — is the PO's provisional reading of the
-  authority's words, pending confirmation when the authority returns.
+  The detection signal feeds the proactive-initiation trigger, the re-fire
+  cadence, and the brainstorm-then-branch opener pinned by the sibling
+  product-discovery scenarios in this family.
 
   AUTHORING ONLY — no BC dispatch. @bc tag is the Architect's to apply at
   assignment time; @lead_integration:templates below is provisional placement
   matching sibling primer-furniture scenarios.
 
 @lead_integration:templates
-  @scenario_hash:8d141b60dea4b2f8
-  Scenario: the canonical lead primer defines the effectively-empty / no-product-defined detection signal as the absence of any product-bearing artifact beyond the bootstrap scaffold
+  @scenario_hash:PLACEHOLD
+  Scenario: the canonical lead primer defines the effectively-empty / no-product-defined detection signal as a two-signal test requiring no product-bearing bead AND no product-bearing features/ scenario
     Given the "shop-templates" package ships a canonical "CLAUDE.md" primer template for shop type "lead" through its public template-access surface
     When I ask the package for that canonical primer body for shop type "lead"
     Then a non-empty template body is returned
-    And the returned body contains a contiguous block defining an effectively-empty / no-product-defined repo state
-    And that block names the observable signal as the absence of any product-bearing brief, PDR, "features/" scenario, or product-bearing bead beyond the artifacts the bootstrap scaffold itself writes
-    And that block distinguishes the bootstrap scaffold — canonical-managed files, the placeholder shop primer, and the initialized-but-empty beads registry — from product-bearing artifacts so that the scaffold alone counts as effectively empty
+    And the returned body contains a contiguous block defining an effectively-empty / no-product-defined repo state as a two-signal test requiring BOTH signals to hold
+    And that block names the first signal as the beads registry carrying no product-bearing bead and the second signal as the "features/" tree carrying no product-bearing scenario
+    And that block states the bootstrap scaffold — the canonical-managed files, "CLAUDE.md", the typed ".claude/" files, the role templates, the placeholder shop primer, and the initialized-but-empty beads registry — is ignored by the test and does not by itself defeat either signal
