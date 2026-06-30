@@ -42,7 +42,7 @@
 #
 # @bc: and the reproducing @scenario_hash on dispatch are the Architect's; the
 # block-only @scenario_hash below is the PO's authoring hash.
-@scenario_hash:c9e3f4c8cbbd4a32
+@scenario_hash:8e5955d5fb5bb9c8
 Scenario: "shop-templates update" against an existing "lead" shop whose "bin/ops-coordinates" has drifted from the current canonical render refreshes it in place — overwriting the stale on-disk body with the current canonical render-tokens body for that shop type and name (the same ADR-043 D2 content contract pinned by the bootstrap render, scenario 211 @scenario_hash:0a3a8267109b5792, and by the create-if-absent update path, scenario 213 @scenario_hash:dd82193e56e52d95) — because ops-coordinates is a derived single-source managed-render artifact whose only customization path is environment override, so update OWNS its refresh exactly as it re-pours the managed agent files (scenarios 35/36) and the managed lead skill group (scenarios 162-164), and does NOT apply the shop-owned drift-advisory contract it uses for "compose.yaml" and "bin/shop-shell" (scenarios 139/140); so an already-bootstrapped repo carrying a pre-current ops-coordinates adopts the canonical artifact via update without a re-bootstrap
   Given an existing git repository at a target directory "/tmp/example-lead-shop" that was previously bootstrapped as a "lead" shop named "shopsystem-product"
   And the target directory contains a file at "bin/ops-coordinates" whose byte contents differ from the current canonical "bin/ops-coordinates" render-tokens body for shop type "lead" and shop name "shopsystem-product" (the stale/drifted adoption state of a repo bootstrapped before the current canonical artifact existed)
