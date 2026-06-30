@@ -1,0 +1,9 @@
+@scenario_hash:5b13b13d2205459b
+Scenario: A minimal valid request_scenario_register request names the target bounded context and omits narrowing to request that BC's full register
+  Given the RequestScenarioRegister request schema from the shop-msg catalog
+  When I construct a RequestScenarioRegister request instance supplying only the fields the schema marks as required, naming the target bounded context whose scenario register is sought, and supplying no narrowing selector
+  Then construction succeeds
+  And no schema validation error is raised
+  And the constructed request carries the named target bounded context and no register entry of its own
+  And the omitted narrowing selector denotes the target bounded context's full register rather than any subset
+  And the schema also permits an optional narrowing selector that confines the request to a named feature-area surface or to an explicit set of block-only canonical hashes

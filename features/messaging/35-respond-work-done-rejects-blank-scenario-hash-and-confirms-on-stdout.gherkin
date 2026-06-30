@@ -1,0 +1,12 @@
+@scenario_hash:a2d05a918db02efd
+Scenario: shop-msg respond work_done rejects a blank scenario-hash and confirms a valid emit on stdout
+  Given an empty BC at a temporary path
+  And an inbox message with work-id "lead-300" has been sent to that BC
+  When shop-msg respond work_done is called for work-id "lead-300" with status "complete" and a single --scenario-hash whose value is the empty string
+  Then the command exits non-zero
+  And stderr names the rejected blank scenario-hash value
+  And no work_done response is stored for work-id "lead-300"
+  When shop-msg respond work_done is called again for work-id "lead-300" with status "complete" and a single non-empty scenario hash
+  Then the command exits zero
+  And stdout confirms the emit, naming work-id "lead-300" and status "complete"
+  And the stored work_done response carries the non-empty scenario hash and no empty-string member

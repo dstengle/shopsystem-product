@@ -1,0 +1,9 @@
+@scenario_hash:9b12f88736c6964f
+Scenario: A request_scenario_register response carries each register entry's hash, title and text, features/ file location, and live-or-retired status, unlike the bare-hash completion journal
+  Given the RequestScenarioRegister response schema from the shop-msg catalog
+  When I construct a RequestScenarioRegister response instance whose register-entries field holds two entries, each carrying a block-only canonical hash, the scenario's title and step text, the scenario's file location within the target bounded context's features/ tree, and a status of either live or retired/superseded
+  Then construction succeeds
+  And no schema validation error is raised
+  And the constructed response carries, for each register entry, its block-only canonical hash together with its scenario title and step text, its features/ file location, and its live-or-retired/superseded status
+  And these per-entry fields let the requester locate, import, or supersede the pinned scenario from the response alone
+  And a register entry supplying only a bare block-only canonical hash, with no title, step text, file location, or status, is rejected as schema-invalid

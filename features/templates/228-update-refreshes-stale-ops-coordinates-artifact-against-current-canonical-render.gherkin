@@ -1,0 +1,56 @@
+# NET-NEW under lead-m0uy (→ shopsystem-templates), pinning the REFRESH half of the
+# update-path ops-coordinates render. Scenario 213 (@scenario_hash:dd82193e56e52d95)
+# pins the CREATE-IF-ABSENT case (an existing repo with NO "bin/ops-coordinates" gets
+# one rendered by update); it explicitly deferred the stale-refresh case to a separate
+# scenario ("a stale-refresh case, if wanted, is a separate behavior/scenario"). This
+# is that scenario: an already-bootstrapped repo whose "bin/ops-coordinates" PREDATES
+# the current canonical render (a pre-v0.46.0 artifact, or any drifted body) must have
+# it REFRESHED to the current canonical render-tokens body by "shop-templates update".
+# This is the actual lead-q14e re-pour use case: the lead already carries an
+# ops-coordinates whose body is stale relative to canonical, so create-if-absent (213)
+# does not fire — only refresh closes the adoption gap without a risky re-bootstrap.
+#
+# MANAGED-RENDER, not drift-advised — same decision recorded on 213, restated for the
+# refresh case: "bin/ops-coordinates" is a DERIVED single-source artifact whose values
+# come from the manifest "product:" root and whose ONLY customization path is
+# environment override (each OPS_* key is env-overridable per scenario 211,
+# @scenario_hash:0a3a8267109b5792), NOT hand-editing. So update OWNS its refresh
+# exactly as it re-pours the managed agent files (scenarios 35/36) and re-pours the
+# managed lead skill group (scenarios 162-164), and does NOT apply the shop-owned
+# drift-advisory contract it uses for "compose.yaml" and "bin/shop-shell" (scenarios
+# 139/140). This does NOT conflict with 139/140: their file set (compose.yaml,
+# bin/shop-shell) does not include bin/ops-coordinates. The ops-coordinates-sourcing
+# FURNITURE itself (bin/shop-shell, which sources this artifact per scenarios 204/205)
+# remains shop-owned and is only drift-advised by update (140) — this scenario refreshes
+# the SOURCED artifact, not the sourcing scripts, so the canonical zero-fallback
+# bin/shop-shell can resolve OPS_FRAMEWORK_IMAGE non-empty once the artifact it sources
+# is current.
+#
+# COEXIST (by hash): 211 (@0a3a8267109b5792, bootstrap RENDER) and 213
+# (@dd82193e56e52d95, update CREATE-IF-ABSENT) remain VALID — this is the update REFRESH
+# counterpart that completes update/bootstrap parity for the managed-render artifact;
+# 204 (@b7ea0de32ef49854) and 205 (@1885dea2b4550fde, bin/shop-shell SOURCES the
+# artifact) remain VALID consumers; 139 (@3c496f8858b6b033) and 140 (@29caed838aebe9f7,
+# shop-owned non-touch / drift advisory for compose.yaml + bin/shop-shell) remain VALID
+# and are NOT contradicted — their file set does not include bin/ops-coordinates.
+#
+# ARCHITECT FLAG (do NOT act here — PO authoring only): scenario 174
+# (@scenario_hash:f7af63457d95962f) enumerates the bootstrap ops file-set as EXACTLY
+# FIVE shop-owned files with an exclusivity premise and does not yet include
+# "bin/ops-coordinates"; the same 174-growth follow-up flagged on 211/213 governs
+# there. Not edited here.
+#
+# @bc: and the reproducing @scenario_hash on dispatch are the Architect's; the
+# block-only @scenario_hash below is the PO's authoring hash.
+@scenario_hash:567ea61c36eb0dab
+Scenario: "shop-templates update" against an existing "lead" shop whose "bin/ops-coordinates" has drifted from the current canonical render refreshes it in place — overwriting the stale on-disk body with the current canonical render-tokens body for that shop type and name (the same ADR-043 D2 content contract pinned by the bootstrap render, scenario 211 @scenario_hash:0a3a8267109b5792, and by the create-if-absent update path, scenario 213 @scenario_hash:dd82193e56e52d95) — because ops-coordinates is a derived single-source managed-render artifact whose only customization path is environment override, so update OWNS its refresh exactly as it re-pours the managed agent files (scenarios 35/36) and the managed lead skill group (scenarios 162-164), and does NOT apply the shop-owned drift-advisory contract it uses for "compose.yaml" and "bin/shop-shell" (scenarios 139/140); so an already-bootstrapped repo carrying a pre-current ops-coordinates adopts the canonical artifact via update without a re-bootstrap
+  Given an existing git repository at a target directory "/tmp/example-lead-shop" that was previously bootstrapped as a "lead" shop named "shopsystem-product"
+  And the target directory contains a file at "bin/ops-coordinates" whose byte contents differ from the current canonical "bin/ops-coordinates" render-tokens body for shop type "lead" and shop name "shopsystem-product" (the stale/drifted adoption state of a repo bootstrapped before the current canonical artifact existed)
+  And I record the byte contents of the file at "bin/ops-coordinates" before the invocation
+  When I invoke the "shop-templates" update entry point against the target directory "/tmp/example-lead-shop"
+  Then the exit code is 0
+  And after the invocation the target directory contains a file at "bin/ops-coordinates" not under any ".claude/" subdirectory
+  And after the invocation the byte contents of "bin/ops-coordinates" are not equal to the recorded byte contents, so the stale on-disk body was replaced rather than preserved or merely advised on
+  And after the invocation the byte contents of "bin/ops-coordinates" equal what the "shop-templates" bootstrap render-tokens path writes to "bin/ops-coordinates" for shop type "lead" and shop name "shopsystem-product" — the same ADR-043 D2 content contract pinned by scenario 211 (@scenario_hash:0a3a8267109b5792)
+  And sourcing "bin/ops-coordinates" in a bash shell succeeds with exit code 0 and defines the shell variables OPS_SLUG, OPS_NETWORK, OPS_POSTGRES_CONTAINER, OPS_VAULT_CONTAINER, OPS_VAULT_NAME, OPS_BROKER_ADDR, OPS_POSTGRES_PORT, OPS_VAULT_API_PORT, OPS_VAULT_PROXY_PORT, OPS_DATA_ROOT, OPS_LEAD_BEADS_REPO, OPS_BC_BEADS_REPO_FMT, OPS_ORG, and OPS_FRAMEWORK_IMAGE
+  And after sourcing the refreshed artifact with no override environment set, OPS_BC_BEADS_REPO_FMT resolves to "shopsystem-product-{bc}-beads" with the literal "{bc}" placeholder intact, and OPS_FRAMEWORK_IMAGE resolves to a non-empty value, so the canonical "bin/shop-shell" that sources this refreshed artifact with no literal fallback resolves neither an empty launch image nor a placeholder-destroyed beads-repo format
