@@ -1,0 +1,36 @@
+Feature: the canonical lead CLAUDE.md primer directs the router to open the product-discovery conversation as a general brainstorming conversation first, then branch into a router-selected structured discovery skill
+
+  lead-vglj (P2) — product authority 2026-06-29: "for the lead to detect when the
+  repo is effectively empty and start a product discovery conversation with the
+  user to start determining the shape of the new system."
+
+  This scenario pins the OPENER SHAPE. SCOPE PINNED 2026-06-30 (product authority,
+  David): the opener is a GENERAL BRAINSTORMING conversation FIRST, then BRANCHES
+  into ONE structured discovery skill — selected from jobs-to-be-done,
+  problem-framing-canvas, opportunity-solution-tree, or customer-journey-map —
+  based on what surfaces in the brainstorming conversation. It is NOT a fixed
+  single skill chosen up front. The router performs the skill SELECTION itself, at
+  the router / main-agent level, as the triage step that follows the brainstorming
+  opener, then dispatches the selected discovery skill.
+
+  Split out of the proactive-initiation trigger scenario to keep one behavior per
+  scenario.
+
+  CORPUS GAP (follow-up for lead-22x1): there is no dedicated "brainstorming" /
+  divergence-opener skill in the skills corpus today, so the opener is encoded as
+  router-level behavior with skill-selection as the triage step. A named
+  brainstorming/divergence opener skill is a candidate skills-corpus follow-up.
+
+  AUTHORING ONLY — no BC dispatch. @bc tag is the Architect's to apply at
+  assignment time; @lead_integration:templates below is provisional placement
+  matching sibling primer-furniture scenarios.
+
+@lead_integration:templates
+  @scenario_hash:d1da2651e3d6def3
+  Scenario: the canonical lead primer directs the router to open product discovery as a general brainstorming conversation first, then branch into one router-selected structured discovery skill based on what surfaces
+    Given the "shop-templates" package ships a canonical "CLAUDE.md" primer template for shop type "lead" through its public template-access surface
+    When I ask the package for that canonical primer body for shop type "lead"
+    Then a non-empty template body is returned
+    And the returned body contains a contiguous block directing the router to open the product-discovery conversation as a general brainstorming conversation first, before committing to any single structured discovery skill
+    And that block directs the router to then branch into one structured discovery skill — selected from jobs-to-be-done, problem-framing-canvas, opportunity-solution-tree, or customer-journey-map — based on what surfaces in the brainstorming conversation
+    And that block states the router performs that skill selection itself, at the router / main-agent level, as the triage step that follows the brainstorming opener
