@@ -21,7 +21,7 @@ Feature: the canonical lead CLAUDE.md primer directs the router to re-fire the p
   matching sibling primer-furniture scenarios.
 
 @lead_integration:templates
-  @scenario_hash:c0bf83e11bb74f05
+  @scenario_hash:bdba904f4f64f4a2
   Scenario: the canonical lead primer directs the router to re-fire the product-discovery prompt on each session while the effectively-empty state holds, and to suppress it only once the product surface is non-empty
     Given the "shop-templates" package ships a canonical "CLAUDE.md" primer template for shop type "lead" through its public template-access surface
     When I ask the package for that canonical primer body for shop type "lead"

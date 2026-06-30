@@ -22,7 +22,7 @@ Feature: the canonical lead CLAUDE.md primer defines the effectively-empty / no-
   matching sibling primer-furniture scenarios.
 
 @lead_integration:templates
-  @scenario_hash:3c41435a4e21c2a4
+  @scenario_hash:00bdd6985ab94756
   Scenario: the canonical lead primer defines the effectively-empty / no-product-defined detection signal as a two-signal test requiring no product-bearing bead AND no product-bearing features/ scenario
     Given the "shop-templates" package ships a canonical "CLAUDE.md" primer template for shop type "lead" through its public template-access surface
     When I ask the package for that canonical primer body for shop type "lead"

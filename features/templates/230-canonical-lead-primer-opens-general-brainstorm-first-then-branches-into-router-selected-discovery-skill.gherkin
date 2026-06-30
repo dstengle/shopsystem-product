@@ -26,7 +26,7 @@ Feature: the canonical lead CLAUDE.md primer directs the router to open the prod
   matching sibling primer-furniture scenarios.
 
 @lead_integration:templates
-  @scenario_hash:d1da2651e3d6def3
+  @scenario_hash:46afaafc507e7d6f
   Scenario: the canonical lead primer directs the router to open product discovery as a general brainstorming conversation first, then branch into one router-selected structured discovery skill based on what surfaces
     Given the "shop-templates" package ships a canonical "CLAUDE.md" primer template for shop type "lead" through its public template-access surface
     When I ask the package for that canonical primer body for shop type "lead"
