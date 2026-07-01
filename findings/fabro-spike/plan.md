@@ -88,3 +88,22 @@ Slices are provisional; refine as Slice 0 reveals fabro's real shape. Keep each 
 ## Running log
 
 - 2026-07-01: repos tagged `fabro-spike-baseline`. Plan persisted. Launching Slice 0.
+- 2026-07-01: **Slice 0 DONE** (synthesis: `findings/fabro-spike/00-fabro-recon.md`;
+  legs 00a/00b/00c). Result: fabro v0.254.0 is a real single Rust binary (GitHub
+  Releases `fabro-sh/fabro`, not pip/npm), installs + boots headlessly, ran a trivial
+  workflow end-to-end via `--dry-run` (simulated LLM, zero creds); **agent-vault
+  bypass PROVEN** (dummy `GITHUB_TOKEN` in fabro's vault + `HTTPS_PROXY` proxy
+  injection → real GitHub calls succeeded). Native secret seam to bypass =
+  `vaults/default/secrets.json` (exact-name lookup). f6ta "2 seams / 3 invariants"
+  recovered verbatim; Seam(a) launch=CLEAN, Seam(b) reactive-loop=PARTIAL (no native
+  external-async primitive; `shop-msg watch` survives as a command node). Sharpest
+  risk = fabro SlateDB checkpoint vs bd-authority ADR-012 race at the BC tier + new
+  silent-failure-masking hazard (unconditional edges mark FAILED runs SUCCEEDED).
+  **Slice 1 recommendation:** write the two target specs against the artifact surface
+  only (bc-base is un-rebuildable, no live boot) — (A) the `bc-container` launch
+  contract as the drop-in interface a fabro launcher must satisfy, mapping each
+  asserted property to its fabro analog (`[run.clone]`/`[run.prepare]`/
+  `[environments.<slug>] provider='local'` + vault-placeholder+`HTTPS_PROXY` cred
+  path); (B) the minimal Implementer→Reviewer loop + gated `work_done` emission as a
+  fabro DOT graph, with **outcome-conditional edges** so a FAILED node cannot reach
+  Exit/SUCCEEDED. Output → `findings/fabro-spike/01-targets-spec.md`.
