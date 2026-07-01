@@ -1,0 +1,39 @@
+Feature: the centralized scheduled poll tracks fabro as a baked dependency so a newer fabro release bumps the bc-base pin and rebuilds :latest
+
+  SLICE 1 of the fabro launch path (epic lead-6k1r, S1), poll-tracking leg. Once
+  fabro is baked into bc-base (scenario 73 @scenario_hash:a3512aedb8763150), it
+  must be maintained the SAME way the other baked dependencies are: enrolled in
+  the single centralized scheduled bc-launcher poll (ADR-022 D2; scenarios 57
+  @scenario_hash:930a6a6579e2a859, 58 @scenario_hash:0f386f31857fbeb1, 59
+  @scenario_hash:5b6a931a493971a6) that resolves each dep's latest release and
+  bump-then-rebuild-republishes :latest when a pin has advanced. This scenario
+  pins the DISTINCT behavior that fabro is IN that watched-dependency set, mapped
+  to its canonical PUBLIC release source fabro-sh/fabro (a GitHub-Releases Rust
+  binary, downloaded like beads/steveyegge/beads rather than a pip VCS pin —
+  see findings/fabro-spike/00a-fabro-tool.md).
+
+  COMPOSITION, not retirement: this scenario COMPOSES with 57/58/59 and does NOT
+  modify or retire them. It is NET-NEW and pins fabro specifically; the retirement
+  set for S1 is EMPTY. (Scenario 58's Examples table could ALTERNATIVELY be
+  extended BC-side to add the fabro row — see the possible-import flag in the
+  dispatch note — but that would re-author 58's block; this fabro-specific pin
+  keeps 58 untouched.)
+
+  VERSION-COUPLING GUARD (ADR-051 D3): the fail-closed loop guarantee (S5/S6)
+  rests on three fabro v0.254.0 mechanism facts. A poll-driven fabro bump that
+  advances past v0.254.0 and touches any of those three facts REOPENS that
+  guarantee and must re-verify S5/S6 before the new :latest is trusted. This
+  scenario pins the ENROLLMENT + bump-rebuild mechanics only; the re-verify gate
+  is a named ADR-051 D3 follow-up (S1 risk note), not asserted in this block.
+  (Targets shopsystem-bc-launcher.)
+
+  @scenario_hash:4fc67c610cba6227
+  Scenario: the centralized poll enrolls fabro as a baked dependency against fabro-sh/fabro and bump-rebuilds :latest on a newer release
+    Given the bc-base Dockerfile in shopsystem-bc-launcher bakes fabro at pin "v0.254.0" as a baked dependency alongside shop-templates, shop-msg, scenarios, and beads
+    And the single centralized scheduled bc-launcher workflow is the one poll that check-bump-rebuilds bc-base for its baked dependencies
+    When the workflow's dependency check runs and its executable body, with YAML comment lines excluded, is inspected
+    Then the executable body enumerates "fabro" mapped to its canonical public release source "fabro-sh/fabro"
+    And a "fabro" to "fabro-sh/fabro" mapping present only in a descriptive YAML comment, absent from the executable body, does not satisfy this enrollment
+    And the fabro latest-release lookup reads the public "fabro-sh/fabro" releases using the workflow's own "GITHUB_TOKEN" and references no "BC_LAUNCHER_DISPATCH_TOKEN" or any other cross-repo dispatch credential
+    And when the resolved latest fabro release tag differs from the baked "v0.254.0" pin, the workflow first mutates the Dockerfile fabro pin to the resolved tag, then rebuilds bc-base and republishes "ghcr.io/dstengle/shopsystem-bc-base:latest" at the new digest
+    And a bare rebuild that left the Dockerfile fabro pin at "v0.254.0" would not satisfy this behavior

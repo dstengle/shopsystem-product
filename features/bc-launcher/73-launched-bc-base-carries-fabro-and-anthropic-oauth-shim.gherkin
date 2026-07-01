@@ -1,0 +1,44 @@
+Feature: a launched bc-base BC carries fabro v0.254.0 and the anthropic-oauth-shim, both resolvable and launchable in the running container
+
+  SLICE 1 of the fabro launch path (epic lead-6k1r, S1). The fabro spike proved
+  that a BC can run under in-container fabro orchestration (findings/fabro-spike/
+  04-goal-demo.md, 05-structural-loop.md) but did so by HAND-PROVISIONING a
+  throwaway container. To make fabro a first-class launch path (ADR-048), the
+  fabro substrate must be BAKED into the shared image rather than provisioned by
+  hand. This scenario pins the one image change that is the hard prerequisite for
+  everything downstream: bc-base:latest carries BOTH pieces of the fabro
+  substrate — the fabro Rust binary (fabro-sh/fabro release v0.254.0) and the
+  anthropic-oauth-shim (shim.py, python-stdlib only; findings/fabro-spike/
+  fabro-defs/anthropic-oauth-shim/) — present and launchable in a running
+  launched container.
+
+  This is the RUNTIME observable (parallel to scenario 64 @scenario_hash:
+  04f2c7501273705c, which pins gh + agent-vault resolvable on PATH), NOT the
+  build-time Dockerfile-content pin. It is NET-NEW versus scenario 64: fabro and
+  the shim are the newly baked substrate, alongside the existing gh / agent-vault
+  / shop-templates / shop-msg / beads deps.
+
+  VERSION-COUPLING (ADR-051 D3): the pinned fabro version is v0.254.0
+  specifically because the fail-closed loop guarantee (S5/S6, ADR-051) rests on
+  three v0.254.0 mechanism facts — native `script=` as sole enforcement lever,
+  `[run.environment.env]` as sole native-input channel, and per-node
+  `permissions=` NOT enforced. The `--version` assertion here is what lets a
+  later poll-driven fabro bump (scenario for S1 poll-tracking) be detected and
+  re-verified before the new :latest is trusted.
+
+  SCOPE: this pins PRESENCE + LAUNCHABILITY only. The live credential round-trip
+  (dummy x-api-key -> shim -> HTTPS_PROXY -> agent-vault -> real OAuth 200) is a
+  DISTINCT downstream behavior (S3) and is NOT asserted here; the shim launcher
+  need not reach agent-vault to satisfy this scenario. The native fabro vault
+  __PLACEHOLDER__ invariant (ADR-049) is likewise pinned by the S2/S3 scenarios,
+  not here. (Targets shopsystem-bc-launcher / bc-base, owned per ADR-021.)
+
+  @scenario_hash:a3512aedb8763150
+  Scenario: a launched bc-base BC has fabro v0.254.0 and the anthropic-oauth-shim present and launchable
+    Given the shopsystem-bc-launcher BC is installed
+    And bc-container launch is run with BC name "shopsystem-messaging"
+    And the container "bc-shopsystem-messaging" is running on the pinned bc-base image
+    When "fabro --version" is executed inside that running container
+    Then it exits zero and reports the fabro version "v0.254.0"
+    And the anthropic-oauth-shim is resolvable inside the container as a baked launcher, and invoking that launcher with its usage/help flag exits zero using the python standard library alone with no third-party import required
+    And both fabro and the anthropic-oauth-shim are real baked artifacts present in the running container, not placeholders and not merely declared in the image manifest
