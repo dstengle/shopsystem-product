@@ -224,3 +224,22 @@ DOT loop graph with emit_r sole gated emitter + fail-closed (ADR-051). Observabl
   closed — acceptance must exercise a live dummy-`x-api-key`→200 round trip.
 </content>
 </invoke>
+
+## Reconciliation log
+
+- **2026-07-01 — S1 (lead-ckq5) RECONCILED.** shopsystem-bc-launcher work_done
+  status=complete. Both assigned scenarios GREEN: block-only `scenarios hash`
+  recompute (calibrated on anchor scn213→4c646ae20a1540e3) confirms
+  features/bc-launcher/73→a3512aedb8763150 and 74→4fc67c610cba6227, exact match
+  to reported hashes; additive (retirement set EMPTY); Gate A clean, Gate B commit
+  3627302 reachable from bc-launcher origin/main HEAD. CAVEAT: scenario-73 version
+  leg MODELED (docker unavailable in BC env), not container-executed. LIVE-IMAGE
+  GAP (empirical registry/contract surface): `ghcr.io/dstengle/shopsystem-bc-base:latest`
+  is NOT yet rebuilt with fabro — pulled digest sha256:36a73b60…, Created
+  2026-06-30T19:19Z, version v0.3.41; throwaway boot → FABRO_NOT_FOUND, no shim.
+  S1 delivered SOURCE only; the fabro-carrying `:latest` rebuild is a pending
+  version-tag/poll consequence. Follow-ups filed: lead-3aoj (confirm/trigger
+  fabro-carrying `:latest`, S2-S6 prereq), lead-czy8 (deferred live-verify scn-73
+  in booted container, blocked-by lead-3aoj). Row consumed; lead-ckq5 closed.
+  **S2 BLOCKED on lead-3aoj** (its acceptance needs a launched container whose
+  bc-base image actually carries fabro).
