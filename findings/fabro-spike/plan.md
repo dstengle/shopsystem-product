@@ -1,5 +1,16 @@
 # Fabro spike — plan & running log
 
+> **▶ NEXT SESSION — START HERE.** This is the active overnight task (epic
+> **lead-6k1r**). Setup is done: all 5 repos tagged `fabro-spike-baseline`
+> (rollback point), plan below, memory pointer `fabro-spike-active`. NO workflows
+> have been started yet. First action: **create a `fabro-spike` branch in the lead
+> repo, then run Slice 0 (fabro recon) via a workflow** (3 parallel legs: (A) install
+> + stand up a local ephemeral fabro server, run a trivial workflow, document its
+> format + secret-handling; (B) extract the f6ta "2 seams / 3 invariant surfaces";
+> (C) inventory the bc-shop loop + shop-templates furniture to translate) → synthesize
+> to `00-fabro-recon.md`, then decide Slice 1. Keep main-loop context minimal —
+> delegate to workflows/subagents; read only slice summaries.
+
 **Started:** 2026-07-01 (product authority: David; runs autonomously overnight)
 **Origin bead:** [lead-f6ta] (fabro as alternable orchestration substrate) — this is
 f6ta activated with a concrete goal. Epic bead: see `bd ready`.
