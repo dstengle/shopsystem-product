@@ -244,3 +244,16 @@ Slices are provisional; refine as Slice 0 reveals fabro's real shape. Keep each 
   defs uncommitted (orchestrator owns commit): `fabro-defs/workflow.fabro`,
   `workflow.toml`, `workflow-forcefail.fabro` (new). Container + fabro server + shim left
   running.
+- 2026-07-01: **GRADUATED (David authorized): ADR-048..051 + graduation scenarios authored
+  on `graduate-fabro`.** Durable canon: `adr/048` (fabro as alternable in-container
+  BC-orchestration substrate, provider=local; SUPERSEDES origin bead lead-f6ta; umbrella
+  REALIZED BY 049/050/051), `adr/049` (agent-vault sole credential surface; fabro native
+  secrets FORBIDDEN), `adr/050` (launch-interface parity with bc-container; KEPT vs REPLACED
+  P1–P20), `adr/051` (DOT loop-graph contract; emit_r sole gated emitter; fail-closed edges).
+  Four block-only scenario pins in `features/fabro-orchestration/` (01 boot parity
+  `1aeace4c593ab14f`, 02 agent-vault-only cred `9c7b4e8280665239`, 03 loop→work_done
+  `56c0f126447e48d6`, 04 forced-fail fail-closed `7ddada412f406767`) — hashes verified to
+  reproduce via the installed `scenarios hash` CLI (anchor scn213 → 4c646ae20a1540e3
+  calibration re-passed). LEAD-PROCESS/contract pins, not yet assign_scenarios-dispatchable.
+  Bead ops (orchestrator owns): note+close lead-f6ta (superseded by ADR-048), close epic
+  lead-6k1r GRADUATED, re-check lead-odqd unblock.
