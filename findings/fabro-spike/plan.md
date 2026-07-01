@@ -189,3 +189,29 @@ Slices are provisional; refine as Slice 0 reveals fabro's real shape. Keep each 
   UNIQUE-collision → halt → FAILED, no second emit) and AC8 reactive-seam (`shop-msg
   watch` LISTEN/NOTIFY drain). Observe a valid `work_done` = goal green → write
   `findings/fabro-spike/04-goal-demo.md`. Throwaway BC only; never the lead host.
+- 2026-07-01: **Slice 4 DONE — GOAL VERDICT: PARTIAL** (synthesis:
+  `findings/fabro-spike/04-goal-demo.md`; legs 04a LAUNCH / 04b DEMO). A fresh throwaway
+  `bc-fabro-throwaway` (from `bc-base`, hand-provisioned to launch-parity) ran a real
+  non-dry-run `fabro run` (run `01KWDTN9F1J0MASAPDCE3TAAN8`, real haiku + tools all via the
+  shim, vault `__PLACEHOLDER__`) that consumed a seeded `assign_scenarios` and deposited a
+  **valid `status: complete` work_done** to the outbox (correct block-only hash
+  `674e0bb2d51a6f2b`, real `test(red) 8eec830`→`feat(green) a2abb16`). **Artifact = GREEN;
+  loop-fidelity = RED.** Headline gap: **command-as-agent node SCOPE OVERRUN / node-collapse**
+  — v0.254.0 has no native command handler, so the `prime` node (a general read-write agent
+  carrying the graph goal) executed the ENTIRE Implementer→Reviewer pipeline + emit inside
+  node index=1; the 9 downstream loop nodes never ran; `arm` drained an empty inbox to a
+  **false SUCCEEDED**. **AC5 gated-emit = PARTIAL** (gate re-ran + single emit +
+  UNIQUE-collision→exit-1 fail-closed all CONFIRMED; reviewer-sole-emitter NOT exercised and
+  NOT enforced by fabro). **AC8 reactive-seam = GREEN mechanism** (drain + `shop-msg watch`
+  both observe arrival; Seam(b) PARTIAL — not a fabro primitive; drain not robust to upstream
+  consume). **All 5 hard invariants HELD** (fabro in-container only; agent-vault-only creds;
+  launch-parity; shop-msg preserved; main untouched — only writes were to a local bare origin
+  inside the throwaway). **needs_david: none.** Clean fix for the node-collapse + sole-emit
+  gaps = native `script=`-gated command nodes + per-node tool/permission scoping, **blocked by
+  the `input-into-command-sandbox` gap (03b)**. **NEXT: Slice 5 "structural loop, no
+  collapse"** — close 03b's input-into-command-sandbox gap, convert command nodes to native
+  gated `script=` steps, re-run the Slice-4 demo and assert loop fidelity (prime stays in lane;
+  classify→…→emit_r all run; emit_r is sole emitter; forced fail ⇒ FAILED, no complete emit) →
+  `findings/fabro-spike/05-structural-loop.md`. Graduate via odqd ADRs+scenarios **only after
+  Slice 5 GREEN** (ADRs: fabro-as-substrate / agent-vault-sole-cred / launch-parity /
+  loop-graph-contract). Slice-4 commit `fb997c2` (04b) NOT yet pushed — orchestrator to push.
