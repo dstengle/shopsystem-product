@@ -1,0 +1,49 @@
+// ============================================================================
+// Slice-5 RERUN — criterion (d) FORCED-REVIEWER-FAIL isolation probe.
+// Deterministically proves the anti-collapse safety edge of workflow.fabro:
+//   review outcome=failed  -> halt  -> run STATUS FAILED
+//   and emit_r (the SOLE work_done(complete) emitter) is NEVER reached, so NO
+//   work_done(complete) reaches the wire.
+// Mirrors the real graph topology exactly on the review sub-path:
+//   review -> wdg_r            (signoff success path)
+//   review -> halt [outcome=failed]   (non-signoff -> HALT)
+//   wdg_r  -> emit_r -> done    (the only route to the complete-emitter)
+// review is a NATIVE script that exits 1 => outcome=failed is guaranteed (no LLM
+// variance). emit_r is a REAL bc-emit: if the fail path wrongly reached it, a
+// complete work_done for $WORK_ID would appear -- the assertion checks it does NOT.
+// SPIKE / THROWAWAY. Branch fabro-spike.
+// ============================================================================
+digraph ForceFailReview {
+    graph [
+        goal="Forced reviewer-fail probe: prove review outcome=failed routes to halt (run FAILED) and the sole work_done(complete) emitter emit_r is structurally unreachable on the fail path."
+        model_stylesheet="* { model: claude-haiku-4-5 }"
+        rankdir=TB
+    ]
+
+    start  [shape=Mdiamond, label="Start"]
+    done   [shape=Msquare,  label="Exit: SUCCEEDED (would require emit_r)"]
+    halt   [shape=parallelogram,
+            label="HALTED / FAILED (terminal sink)",
+            script="echo 'HALT/FAILED: reviewer did not sign off; no work_done(complete) emitted'; exit 1"]
+
+    // FORCED reviewer failure: native script, exit 1 => outcome=failed (deterministic).
+    review [shape=parallelogram,
+            label="FORCED reviewer failure (outcome=failed)",
+            script="echo 'FORCED reviewer failure (criterion-d probe): review stage returns outcome=failed'; exit 1"]
+
+    // Signoff-only path (must NOT execute when review fails).
+    wdg_r  [shape=parallelogram,
+            label="work-done-gate (signoff path only)",
+            script="echo 'wdg_r ran -- this should NOT happen on a reviewer fail'; exit 0"]
+
+    // SOLE work_done(complete) emitter -- a REAL bc-emit. Must never be reached here.
+    emit_r [shape=parallelogram,
+            label="reviewer emits work_done -- SOLE EMITTER (must NOT run)",
+            script="echo 'emit_r ran -- SAFETY VIOLATION'; bc-emit work-done --bc \"$BC_NAME\" --work-id \"$WORK_ID\" --status complete --summary 'SAFETY VIOLATION: complete emitted on a forced reviewer-fail path'"]
+
+    start  -> review
+    review -> wdg_r                              // signoff success (unconditional)
+    review -> halt  [condition="outcome=failed"] // FORCED fail -> HALT (run FAILED)
+    wdg_r  -> emit_r
+    emit_r -> done
+}

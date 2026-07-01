@@ -19,13 +19,29 @@ graph = "workflow.fabro"
 # overrides these defaults at `fabro run`. Confirmed: `{{ inputs.BC_NAME }}`
 # resolves from `-I BC_NAME=...`; the old shell-style `${BC_NAME}` is NOT
 # honored (minijinja leaves it literal -> reaches the shell -> expands empty).
-# NOTE: inputs are NOT available in `script=` (literal text) NOR as env vars in
-# a native command-node sandbox (proven: `$BC_NAME` -> empty). Any node that
-# must parameterize on BC_NAME/WORK_ID therefore stays an AGENT command node
-# (its `prompt=` is templated), never a native `script=` command node.
+# NOTE: [run.inputs] / {{ inputs.NAME }} are NOT available in `script=` (literal
+# text) NOR as env vars in a native command sandbox. They are used ONLY in AGENT
+# `prompt=` text and the graph `goal=` (minijinja). For NATIVE `script=` nodes the
+# values arrive via the [run.environment.env] overlay below (Slice 5 finding).
+# Keep the two tables in sync.
 [run.inputs]
-BC_NAME = "shopsystem-example"     # canonical BC name; override per BC at run
-WORK_ID = "lead-0000"              # work_id of the message under service
+BC_NAME = "fabro-throwaway"        # canonical BC name; override per BC at run
+WORK_ID = "fabro-spike-demo-3"     # work_id of the message under service
+
+# ---- ENV OVERLAY into the NATIVE script= sandbox (Slice 5 HARDEN, PROVEN) ----
+# The GLOBAL [run.environment.env] overlay (same channel that delivers HTTPS_PROXY
+# /CA to the shim) DOES reach a native `shape=parallelogram, script=` sandbox as
+# real shell env vars -- unlike [run.inputs]. PROVEN by probe run
+# 01KWDVPMCZA2M8N8J5MGRF6KCM: a native `echo $BC_NAME $WORK_ID` printed
+# `shopsystem-example lead-envprobe1`. This is what lets every non-judgment node
+# (gates/emit/integ/session-start) be a native no-LLM script reading $BC_NAME /
+# $WORK_ID. Per-BC/per-work override: edit these two values (native `script=` does
+# NOT honor `-I`; `-I` only overrides [run.inputs] for the agent prompts). The
+# HTTPS_PROXY/CA/proxy overlay lives in ~/.fabro/settings.toml's own
+# [run.environment.env] (invariant #2: agent-vault, fabro vault stays placeholder).
+[run.environment.env]
+BC_NAME = "fabro-throwaway"
+WORK_ID = "fabro-spike-demo-3"
 
 [run.environment]
 id = "local"                       # ephemeral in-container fabro server (00a s5)

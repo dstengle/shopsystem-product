@@ -215,3 +215,32 @@ Slices are provisional; refine as Slice 0 reveals fabro's real shape. Keep each 
   `findings/fabro-spike/05-structural-loop.md`. Graduate via odqd ADRs+scenarios **only after
   Slice 5 GREEN** (ADRs: fabro-as-substrate / agent-vault-sole-cred / launch-parity /
   loop-graph-contract). Slice-4 commit `fb997c2` (04b) NOT yet pushed — orchestrator to push.
+- 2026-07-01: **Slice 5 DONE — LOOP FIDELITY: GREEN; OVERALL GOAL: PARTIAL → GREEN**
+  (synthesis: `findings/fabro-spike/05-structural-loop.md`; legs 05a HARDEN / 05b RERUN).
+  The Slice-4 node-collapse is eliminated structurally: **every non-judgment node is now a
+  native `script=` step (no LLM agency); only 6 genuine judgment nodes remain agents**
+  (`fabro validate` → OK, 23 nodes / 45 edges). Proven live, non-dry-run, in
+  `bc-fabro-throwaway` (v0.254.0). **Four criteria all PASS:** (a) `prime` native
+  283–343ms, runs only `shop-msg prime && bd prime` (was 4m14s/$0.48 runaway); (b) full
+  loop `classify→suff→worktree→plan→impl→redgate→integ→review→wdg_r→emit_r→done` ran in
+  order in-graph (demo-3g); (c) `emit_r` is the structural **sole** work_done emitter
+  (reachable only via `review→signoff→wdg_r`, all native), emitted a valid `complete`
+  in-graph (hashes `[674e0bb2, ed28a476, a24121ea]`, real `test(red) 21458da`→`feat(green)
+  57fe9b2`); (d) forced reviewer-fail (`workflow-forcefail.fabro`, review=native `exit 1`)
+  → run FAILED, `wdg_r`/`emit_r` never ran, no complete on wire. One defect found+FIXED
+  mid-leg (emit_r/wdg_r stale-cwd + empty `scenarios hash` → C3 reject; fix = `cd
+  ../wt-$WORK_ID` + build payload from on-disk `@scenario_hash` tags) — **fixable defs,
+  NOT a fabro wall.** Two mechanism facts pinned: **`[run.environment.env]` overlay reaches
+  the native `script=` sandbox** (closes the 03b input-into-command-sandbox gap — the key
+  enabler; `-I` feeds only agent prompts); **per-node `permissions=` NOT enforced** in
+  v0.254.0 (native `script=` is the sole real lever). **All 5 invariants HELD** (invariant
+  #2 verified: fabro vault `__PLACEHOLDER__`, all LLM via anthropic-oauth-shim→agent-vault).
+  **No remaining fabro capability walls;** residuals (scenario_hash over-inclusion,
+  flat-path wdg_f/emit_f need same worktree fix, sonnet rate-limit) all fixable/orthogonal.
+  **NEXT: spike is DONE — recommend GRADUATION via the odqd track** (4 ADRs:
+  fabro-as-substrate / agent-vault-sole-cred / launch-parity / loop-graph-contract; +
+  scenarios: launch-parity boot, agent-vault-only cred, assign_scenarios→work_done loop,
+  fail-closed). **Graduation is a product decision for David — needs_david.** All Slice-5
+  defs uncommitted (orchestrator owns commit): `fabro-defs/workflow.fabro`,
+  `workflow.toml`, `workflow-forcefail.fabro` (new). Container + fabro server + shim left
+  running.
