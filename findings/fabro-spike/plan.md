@@ -133,3 +133,29 @@ Slices are provisional; refine as Slice 0 reveals fabro's real shape. Keep each 
   implementer/reviewer shims) into `prompt=`/`cmd=` node bodies; run `fabro validate` to
   pin the command-node attribute and assert no-fallible-node→SUCCEEDED. Output →
   `findings/fabro-spike/02-translation.md`.
+- 2026-07-01: **Slice 2 DONE** (assemble+validate: `findings/fabro-spike/02-translation.md`;
+  legs = defs graph + 11 furniture ports). Result: `fabro validate workflow.fabro` →
+  **OK, 22 nodes / 39 edges, 0 diagnostics** (fabro 0.254.0, now symlinked onto PATH at
+  `~/.local/bin/fabro`). Leg-1 graph × Leg-2 nodes reconciled — every `prompt_file=`
+  resolves to a real `nodes/*.md`, every command node carries a concrete inline command,
+  **no mismatches to fix**. **Command-node attribute pinned:** no native command
+  StageHandler on the DOT surface → command steps are tool-restricted agent nodes
+  (`class="command", deterministic=true, permissions="read-write"`, command inline in
+  `prompt=`); `deterministic`/`backend` confirmed as binary-recognized tokens, validate
+  is permissive on attr names, the LLM-node classification proof needs a live server
+  (`preflight` → connection refused). **Fail-closed static check PASS:** `Exit:SUCCEEDED`
+  (`done`) has exactly 3 labeled in-edges (`arm→empty`, `emit_r→ok`, `emit_f→ok`); all
+  18 fallible nodes carry an explicit failure-labeled edge; three distinct terminals
+  (`done`/`reported`/`halt`); only unlabeled edge is `start→prime`. Slice-0
+  silent-failure-masking hazard structurally eliminated. Carried: U5 HTTPS_PROXY-into-agent
+  LLM (sharpest), U1 box-sink run-status, U2/native-command (both need a live server),
+  U3 `-I` input injection, U4 parallel fan-in. **Slice 3 recommendation:** first live
+  `fabro run` of the graph inside an already-booted BC container (`provider='local'`,
+  the readiness barrier = first prepare node) driven via a workflow — exercise the 8
+  Slice-3 ACs in §7 of 02-translation.md, sharpest-risk-first (AC-proxy-cred: a non-dry-run
+  agent node's own LLM + gh/git/shop-msg calls succeed through HTTPS_PROXY→agent-vault
+  with only `__PLACEHOLDER__` in the vault). Confirm the deterministic-agent command
+  nodes execute (else port to `.toml` execution, U2), that `${BC_NAME}`/`${WORK_ID}`
+  resolve from `-I`, and that a forced failure yields run-STATUS FAILED with NO
+  `work_done(complete)` on the wire (U1). Hard prereq unchanged: bc-base un-rebuildable
+  (ADR-022) — needs an already-booted container.

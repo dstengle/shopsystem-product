@@ -1,0 +1,12 @@
+# project.toml -- .fabro/project.toml equivalent for the fabro-spike loop project.
+# Slice 2 Leg 1 (epic lead-6k1r). Branch fabro-spike. SPIKE / THROWAWAY.
+#
+# In a real .fabro/ tree this lives at .fabro/project.toml. The scaffold
+# (`fabro repo init`) enables PR creation by default; we disable it here too so
+# fabro never opens a PR -- `integrating-to-main` (the `integ` node) stays the SOLE
+# integration authority (01b s2 caution; parallels the bd-authority invariant).
+
+_version = 1
+
+[run.pull_request]
+enabled = false
