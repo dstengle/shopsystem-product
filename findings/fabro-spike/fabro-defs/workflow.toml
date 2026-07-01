@@ -13,6 +13,20 @@ _version = 1
 [workflow]
 graph = "workflow.fabro"
 
+# ---- RUNTIME INPUTS (Slice 3 Leg B, empirically pinned) --------------------
+# Declared inputs are referenced in node `prompt=` / graph `goal=` ONLY, via
+# minijinja `{{ inputs.NAME }}` (fabro embeds minijinja 2.19). `-I NAME=VALUE`
+# overrides these defaults at `fabro run`. Confirmed: `{{ inputs.BC_NAME }}`
+# resolves from `-I BC_NAME=...`; the old shell-style `${BC_NAME}` is NOT
+# honored (minijinja leaves it literal -> reaches the shell -> expands empty).
+# NOTE: inputs are NOT available in `script=` (literal text) NOR as env vars in
+# a native command-node sandbox (proven: `$BC_NAME` -> empty). Any node that
+# must parameterize on BC_NAME/WORK_ID therefore stays an AGENT command node
+# (its `prompt=` is templated), never a native `script=` command node.
+[run.inputs]
+BC_NAME = "shopsystem-example"     # canonical BC name; override per BC at run
+WORK_ID = "lead-0000"              # work_id of the message under service
+
 [run.environment]
 id = "local"                       # ephemeral in-container fabro server (00a s5)
 

@@ -159,3 +159,33 @@ Slices are provisional; refine as Slice 0 reveals fabro's real shape. Keep each 
   resolve from `-I`, and that a forced failure yields run-STATUS FAILED with NO
   `work_done(complete)` on the wire (U1). Hard prereq unchanged: bc-base un-rebuildable
   (ADR-022) — needs an already-booted container.
+- 2026-07-01: **Slice 3 DONE** (synthesis: `findings/fabro-spike/03-fabro-launch.md`;
+  legs 03a proxycred-recon / 03c shim-U5-close / 03b runtime-mechanics). Result: the
+  launch path WORKS — first live `fabro run` under `provider='local'` succeeds. **8
+  Slice-3 ACs = 6 PASS, 2 DEFERRED, 0 FAIL.** **U5 CLOSED** (was the load-bearing
+  BLOCKER): root cause was a header-shape mismatch (fabro's Anthropic adapter uses
+  `x-api-key`; the fleet agent-vault only rewrites OAuth `Authorization: Bearer` +
+  `anthropic-beta`). Fix = a ~180-line stdlib **anthropic-oauth-shim** (`127.0.0.1:8788`)
+  that strips `x-api-key`, adds the OAuth headers, and forwards through `HTTPS_PROXY`→
+  agent-vault; fabro points at it via the **`anthropic` adapter `base_url` override**
+  (native Anthropic format both ways — NO translation). A fabro node's OWN LLM call +
+  its `gh api user` both succeed through agent-vault with fabro's vault holding only
+  `__PLACEHOLDER__` — **invariant #2 preserved (verified)**. Runtime mechanics all
+  pinned: AC2 command-node (native `script=` = the execution layer, no `.toml` needed),
+  AC4 fail-closed (native `exit 1` `halt` SINK + `condition="outcome=failed"`), AC6
+  input-injection (`{{ inputs.NAME }}` minijinja + `[run.inputs]` + `-I`), AC7 fan-in
+  (`impl parallel=true` single-stage converges, no `parallel.fan_in`). **bc-base =
+  AVAILABLE** (3 healthy BC containers running + `:latest` pullable) → Slice-4 real e2e
+  is REACHABLE. Defs corrected + revalidated (22 nodes / 44 edges OK); shim (pid 286891)
+  + fabro server (pid 287406) left running. Carried #1 risk = AGENT NO-DIRECTIVE HAZARD
+  (an agent that completes but emits no directive is not hard-fail-closed; backstops =
+  native gates + halt sink; clean fix = native `script=` gates, needs the
+  input-into-command-sandbox gap closed). **Slice 4 recommendation:** run the graph
+  INSIDE a healthy bc-launcher container (invariant #1; container already carries
+  HTTPS_PROXY, side-stepping the local-sandbox env traps) — install fabro+defs+shim,
+  seed a throwaway `assign_scenarios` into the inbox via `shop-msg`, `fabro run
+  workflow.fabro -I BC_NAME=<bc> -I WORK_ID=<id>`, then exercise the two deferred ACs
+  live: AC5 gated-emit (reviewer is SOLE `bc-emit work-done --status complete`;
+  UNIQUE-collision → halt → FAILED, no second emit) and AC8 reactive-seam (`shop-msg
+  watch` LISTEN/NOTIFY drain). Observe a valid `work_done` = goal green → write
+  `findings/fabro-spike/04-goal-demo.md`. Throwaway BC only; never the lead host.

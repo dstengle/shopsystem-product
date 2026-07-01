@@ -1,0 +1,30 @@
+# ==============================================================================
+# Fabro spike U5 — settings.toml additions (append to ~/.fabro/settings.toml)
+# ==============================================================================
+
+# (1) Point the built-in `anthropic` provider at the local credential-shape shim.
+#     Adapter stays `anthropic`, so the shim speaks native Anthropic format
+#     (NO OpenAI<->Anthropic translation). ANTHROPIC_API_KEY stays a dummy.
+[llm.providers.anthropic]
+base_url = "http://127.0.0.1:8788/v1"
+
+# (2) Global sandbox env overlay (delivered to the coding node's shell tool).
+#     Use [run.environment.env] — the GLOBAL overlay — NOT [environments.<slug>]:
+#     fabro AUTO-MIGRATES [environments.<slug>] into an environments/<slug>.toml
+#     file, and the file-based [env] table is DROPPED for the local ACP sandbox.
+#     [run.environment.env] does NOT migrate and reliably reaches the sandbox.
+#     Run with `--environment local` (a minimal environments/local.toml selects
+#     provider=local); this overlay is layered on top.
+#     NOTE: the ACP coding agent STRIPS credential-shaped vars (GH_TOKEN,
+#     GITHUB_TOKEN, ANTHROPIC_API_KEY...) from the shell tool env. Proxy/cwd vars
+#     pass through; a dummy git token must be supplied INLINE in the command
+#     (e.g. `GH_TOKEN=ghp_dummy gh api user`) — the proxy injects the real one.
+[run.environment.env]
+HTTPS_PROXY = "http://<REDACTED_AGENT_VAULT_PROXY>"
+HTTP_PROXY  = "http://<REDACTED_AGENT_VAULT_PROXY>"
+NO_PROXY    = "localhost,127.0.0.1,agent-vault"
+SSL_CERT_FILE       = "/home/vscode/.agent-vault/mitm-ca.pem"
+NODE_EXTRA_CA_CERTS = "/home/vscode/.agent-vault/mitm-ca.pem"
+
+# Plus a minimal ~/.fabro/environments/local.toml:
+#     provider = "local"

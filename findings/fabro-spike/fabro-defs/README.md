@@ -141,25 +141,38 @@ each file body into `prompt=` for a self-contained graph. File names match Leg 2
 `agent-vault` ✓ · `shop-templates` ✓. (Inside a real BC sandbox these must be baked
 into `bc-base`; `scenarios hash` absence is the ADR-022 gap — hard Slice-4 prereq.)
 
-## Uncertainties for the assembler to resolve at first `fabro run` (Slice 4)
+## Uncertainties — U1–U5 RESOLVED (Slice 3). See findings for detail.
 
-- **U1 — sink-terminal run status.** `fabro validate` accepts `reported`/`halt` as box
-  sinks, but the RUN-STATUS when a path ends at a non-Msquare sink is unconfirmed:
-  `halt` must yield **run=FAILED** (it runs `exit 1`); `reported` should be a
-  non-failure end. Confirm the exact fabro conclusion mapping; if a sink-ended path is
-  treated as incomplete, switch `halt` to whatever native fail-terminal fabro exposes
-  and route `reported` to the single `done` Msquare (folding REPORTED into SUCCEEDED,
-  with the done-vs-reported distinction preserved on the emitted shop-msg — the ADR-018
-  harvest surface).
-- **U2 — command-node execution surface.** Native command execution may instead live in
-  the `.toml` `execution`/`script`/`command` layer (per Leg 2 finding #2). If a live
-  preflight rejects the deterministic-agent command nodes, port their inline commands
-  into that layer. Graph shape / outcome edges are unchanged either way.
-- **U3 — run-input injection of `${BC_NAME}`/`${WORK_ID}`** into node env / `prompt=`
-  templating (fabro exposes `{{ goal }}` in prompts; the `-I KEY=VALUE` input path and
-  its templating into command directives needs a live confirmation).
-- **U4 — `parallel=true` fan-in.** `impl` fans out with `parallel=true` and flows
-  straight to `redgate`; whether an explicit `parallel.fan_in` join node is required
-  before continuing was not forced at validate time — confirm at run.
-- **U5 — HTTPS_PROXY into a non-dry-run agent node's OWN calls** (AC6/AC9) — the
-  standing sharpest risk; `provider='local'` should inherit for free.
+U1–U4 were closed by the RUNTIME leg via live `fabro run`
+(`findings/fabro-spike/03b-runtime-mechanics.md`); U5 by the SHIM leg
+(`03c-shim-u5-close.md`). The graph/toml here were corrected accordingly
+(`fabro validate` OK, 22 nodes / 44 edges).
+
+- **U1 — sink-terminal run status. RESOLVED.** A NATIVE command node
+  (`shape=parallelogram, script="…; exit 1"`) with **no outgoing edge** yields
+  run=**FAILED** ("stage failed with no outgoing fail edge"). `halt` is now that
+  sink. `reported` is a native `script exit 0` node → `done` (SUCCEEDED).
+  Failures are caught with `condition="outcome=failed"` (an unlabeled failsafe or
+  `goal_gate=true` do NOT reliably catch — proven). An agent running `exit 1`
+  does NOT fail the run (that was the Leg-A quirk).
+- **U2 — command-node execution surface. RESOLVED.** Native command execution is
+  the DOT `script=` attribute on `shape=parallelogram` (no LLM; exit code =
+  outcome). `script=` is literal (no templating / no input env), so
+  BC_NAME/WORK_ID-bearing gates stay AGENT command nodes (templated `prompt=`).
+- **U3 — run-input injection. RESOLVED.** `{{ inputs.NAME }}` in `prompt=`/`goal=`
+  only, declared in `[run.inputs]`, overridden by `-I NAME=VALUE`. Shell-style
+  `${NAME}` is NOT honored. Not available in `script=` or sandbox env.
+- **U4 — `parallel=true` fan-in. RESOLVED.** `impl` is one stage (in-node subagent
+  fan-out) converging to `redgate` via one edge — no `parallel.fan_in` needed.
+  True graph-level fan-out would use `shape=component` + `shape=tripleoctagon`
+  (handler `parallel.fan_in`, `join_policy`/`max_parallel`).
+- **U5 — HTTPS_PROXY into a non-dry-run agent node's OWN calls. RESOLVED (PASS)**
+  via the `anthropic-oauth-shim` (03c) — LLM + outbound tool call both succeed
+  through agent-vault with only placeholders in fabro's vault.
+
+**Remaining open risk (Slice 4):** the *agent no-directive hazard* — a
+non-compliant agent that COMPLETES but emits no `{"preferred_next_label":…}`
+directive slips to a labelled success edge and is NOT hard-fail-closed
+(`condition="outcome=failed"` only catches genuine stage errors). Backstops: the
+native gates + the `halt` sink. Clean fix needs native `script=` gates, blocked
+by the input-into-command-sandbox gap. See 03b.

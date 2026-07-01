@@ -1,184 +1,250 @@
 // ============================================================================
 // bc-shop Implementer->Reviewer loop + GATED work_done, as a fabro DOT workflow.
-// Slice 2 Leg 1 (epic lead-6k1r). Faithfully realizes 01b-target-loop-workdone.md
-// section 2. Branch fabro-spike. SPIKE / THROWAWAY.
+// Slice 2 Leg 1, RUNTIME-CORRECTED in Slice 3 Leg B (epic lead-6k1r).
+// Faithfully realizes 01b-target-loop-workdone.md section 2. Branch fabro-spike.
+// SPIKE / THROWAWAY.
 //
 // HARD RULE (encoded structurally): a FAILED node NEVER advances to the SUCCEEDED
-// terminal. Every fallible node carries an EXPLICIT outcome-labeled failure edge
-// routing to `emit_blk` (block-and-report) or `halt` (infra failure). `done`
-// (Exit:SUCCEEDED) is reachable ONLY from emit_r/emit_f `ok` or the arm->empty idle.
+// terminal. Every fallible node carries an EXPLICIT unconditional FAILSAFE edge:
+//   - INFRA gates + emit nodes  -> `halt`     (run=FAILED, no work emitted)
+//   - deliverable/business nodes -> `emit_blk` (report blocked, then reported->done)
+// `done` (Exit:SUCCEEDED) is reachable ONLY from emit_r/emit_f 'ok', the arm
+// 'empty' idle, or the reported passthrough.
 //
-// NODE-KIND REALITY (fabro v0.254.0, empirically pinned by Leg 1 + Leg 2):
-//   The DOT authoring surface does NOT expose a native `command` StageHandler.
-//   A node with `cmd=`/`command=` is still classified an LLM node at `fabro run`
-//   preflight ("LLM node '<id>' has no prompt or label attribute").
-//   => Every "command" node below is a TOOL-RESTRICTED agent node: class="command",
-//      deterministic=true, permissions="read-write", carrying a prompt that says
-//      "run EXACTLY this command, use no judgment, emit the outcome label from the
-//      exit status". The concrete command is written inline in the prompt.
-//   Judgment nodes are agent nodes: class="coding"|"review".
+// ========================= RUNTIME MECHANICS (Slice 3 Leg B, EMPIRICALLY PINNED)
+// fabro v0.254.0. All four points verified by live `fabro run` against the
+// anthropic-oauth-shim (findings/fabro-spike/03b-runtime-mechanics.md):
 //
-// PROMPT-FILE CONVENTION: each agent node references its full ported furniture body
-//   via `prompt_file="nodes/<furniture>.md"` (authored by Leg 2, named by FURNITURE
-//   piece, per fabro-defs/README.md). fabro has no native prompt-file honoring, so
-//   `prompt=` here carries a runtime-executable directive (load+follow that file);
-//   the ASSEMBLER inlines the file body into `prompt=` for a self-contained graph.
+//  (U3/AC6) INPUT TEMPLATING. fabro embeds minijinja. Placeholders resolve via
+//    `{{ inputs.NAME }}` in `prompt=` and graph `goal=` ONLY (label/script are
+//    literal). Declared in workflow.toml [run.inputs]; overridden by
+//    `fabro run -I BC_NAME=... -I WORK_ID=...`. Shell-style `${NAME}` is NOT
+//    honored. Inputs are NOT visible in `script=` nor as sandbox env vars.
+//
+//  (U2/AC2) NODE-KIND REALITY. Two deterministic-command realities exist:
+//    * NATIVE command node  = `shape=parallelogram, script="<cmd>"`. NO LLM;
+//      exit 0 => outcome `succeeded`, nonzero => `failed`. `script=` is literal
+//      (no templating, no input env) -> used ONLY for parameter-free terminals
+//      (halt/reported) and gates that need no BC_NAME/WORK_ID.
+//    * AGENT command node = `shape=box, class="command"` with a TEMPLATED
+//      `prompt=`. Runs via LLM shell tool; used wherever BC_NAME/WORK_ID must be
+//      interpolated. Its stage outcome is the AGENT's, NOT the shell exit code
+//      (this is why fail-closed can NOT rely on an agent's `exit 1`).
+//
+//  (U1/AC4) FAIL-CLOSED TERMINAL. A native command node whose `script` exits
+//    nonzero and has NO outgoing edge yields run=FAILED
+//    ("stage <n> failed with no outgoing fail edge"). => `halt` is a native
+//    `script="...; exit 1"` SINK. (An agent node running `exit 1` does NOT fail
+//    the run -- that was the Leg-A single-Msquare-SUCCEEDED quirk.)
+//
+//  (ROUTING) EDGE SELECTION CASCADE (transitions): (1) `condition=` edges first
+//    (highest weight wins); (2) an agent's routing directive
+//    `{"preferred_next_label":"<L>"}` matched against edge `label=`;
+//    (3) suggested_next_ids; (4) UNCONDITIONAL fallback last (a LABELLED edge is
+//    still eligible here and is PREFERRED over an unlabeled one).
+//    => `label=` alone does NOT route; the node's prompt MUST emit the directive.
+//
+//  (ROUTING / FAIL-CLOSED, PROVEN-SAFE PATTERN — Leg B) The ONLY reliably
+//    fail-closed catch is on a NATIVE command node:
+//        node -> success_target                       // UNCONDITIONAL (no label)
+//        node -> fail_target  [condition="outcome=failed"]
+//    exit 0 => succeeded => unconditional => success; exit!=0 => failed =>
+//    condition => fail_target. VERIFIED. An UNLABELED failsafe alone does NOT
+//    catch a failure (a labelled 'ok' edge wins the fallback -> SUCCEEDED); and
+//    `condition="outcome=failed"` does NOT catch an AGENT that COMPLETES
+//    (outcome=succeeded) but emits no directive -- it slips to the labelled
+//    branch. => HAZARD: a non-compliant agent is NOT hard-fail-closed. The
+//    structural backstops are (a) the deterministic native gates and (b) the
+//    `halt` exit-1 sink; the residual agent-directive-compliance risk is the #1
+//    Slice-4 item (see 03b-runtime-mechanics.md "Agent no-directive hazard").
+//    Single-success-branch nodes below use the proven pattern (unconditional
+//    success + condition=outcome=failed). Multi-branch agent nodes route
+//    branches by directive-label and add condition=outcome=failed as the
+//    genuine-error catch.
+//
+//  (U4/AC7) FAN-IN. `impl` is a SINGLE stage that fans out to bc-implementer
+//    subagents INTERNALLY (parallel=true is an accepted node attr); it emits one
+//    outcome and converges to `redgate` via one edge -- NO graph-level
+//    `parallel.fan_in` join is needed. True graph-level parallel branches would
+//    require `shape=component` fan-out + `shape=tripleoctagon`
+//    (handler parallel.fan_in) with join_policy/max_parallel; not used here.
+//
+// PROMPT-FILE CONVENTION: each agent node references its full ported furniture
+//   body via `prompt_file="nodes/<furniture>.md"`; `prompt=` carries the
+//   runtime-executable directive. The ASSEMBLER inlines the file body for a
+//   self-contained graph.
 //
 // CREDENTIALS: no node reads a real secret. Every node inherits HTTPS_PROXY ->
-//   agent-vault (provider='local' inherits parent env); fabro's vault holds only
-//   __PLACEHOLDER__ dummies. See vaults/default/secrets.json + README.
-//
-// RUNTIME PLACEHOLDERS: ${BC_NAME}, ${WORK_ID} are supplied as run inputs
-//   (`fabro run -I BC_NAME=... -I WORK_ID=...`) / node env. Exact injection syntax
-//   is an assembler item to confirm at first `fabro run` (see README uncertainties).
+//   agent-vault; fabro's vault holds only __PLACEHOLDER__. LLM calls reach
+//   Anthropic through the anthropic-oauth-shim (see anthropic-oauth-shim/).
 // ============================================================================
 digraph BcShopLoop {
     graph [
-        goal="Recreate the bc-shop Implementer->Reviewer loop and emit a GATED work_done via shop-msg/bc-emit. Reviewer is the SOLE work_done emitter on the scenario path. HARD RULE: a FAILED node must never advance to the SUCCEEDED terminal; every fallible node carries an explicit outcome-labeled failure edge."
+        goal="Recreate the bc-shop Implementer->Reviewer loop for BC {{ inputs.BC_NAME }} / work {{ inputs.WORK_ID }} and emit a GATED work_done via shop-msg/bc-emit. Reviewer is the SOLE work_done emitter on the scenario path. HARD RULE: a FAILED node must never advance to the SUCCEEDED terminal; every fallible node carries an explicit unconditional failsafe edge to halt (infra) or emit_blk (deliverable)."
         model_stylesheet="* { model: claude-haiku-4-5 } .coding { model: claude-sonnet-4-5 } .review { model: claude-sonnet-4-5 } .command { model: claude-haiku-4-5 }"
         rankdir=TB
         fallback_retry_target="halt"
     ]
 
-    // ---------- terminals (three DISTINCT ends; 01b section 4) --------------
-    // fabro permits exactly ONE Msquare terminal (validated: "Pipeline must have
-    // exactly one terminal node"). `done` is it (SUCCEEDED). `reported` and `halt`
-    // are box SINK nodes (no outgoing edge) — validated as allowed alongside the
-    // single Msquare. See README uncertainty U1 for run-status of a sink-ended path.
+    // ---------- terminals ---------------------------------------------------
+    // `done` = the single Msquare SUCCEEDED terminal.
+    // `halt` = NATIVE command sink (script exits 1, NO outgoing edge) => run
+    //          FAILED. This is the fail-closed backstop (U1/AC4).
+    // `reported` = NATIVE command node (exit 0) marking a correct non-failure
+    //          reporting end, then passes through to `done` (SUCCEEDED).
     start    [shape=Mdiamond, label="Start"]
     done     [shape=Msquare,  label="Exit: SUCCEEDED\n(work_done complete emitted, or idle-empty)"]
-    reported [shape=box, class="command", deterministic=true, permissions="read-write",
-              label="REPORTED (terminal)",
-              prompt="REPORTED terminal. A clarify OR work_done(blocked) was already emitted upstream via shop-msg. This is a CORRECT non-failure end (the loop did its reporting job). Take no further action; report outcome 'reported'. Run no commands."]
-    halt     [shape=box, class="command", deterministic=true, permissions="read-write",
-              label="HALTED / FAILED (terminal)",
-              prompt="HALT/FAILED terminal. A session-start infra failure (prime/health) or a retry-exhausted emit collision reached here; NO role work was emitted. FAIL the run deterministically: run exactly `exit 1`. Do not emit any shop-msg message."]
+    reported [shape=parallelogram,
+              label="REPORTED",
+              script="echo 'REPORTED: a clarify OR work_done(blocked) was already emitted upstream; correct non-failure reporting end'; exit 0"]
+    halt     [shape=parallelogram,
+              label="HALTED / FAILED (terminal sink)",
+              script="echo 'HALT/FAILED: session-start infra failure (prime/health) or retry-exhausted emit collision; NO role work emitted'; exit 1"]
 
-    // ---------- session start (deterministic command nodes) ----------------
+    // ---------- session start (AGENT command nodes; templated) --------------
     prime    [shape=box, class="command", deterministic=true, permissions="read-write", retry=3,
               label="prime", prompt_file="nodes/bc-router.md",
-              prompt="Run EXACTLY, no judgment; emit label from exit status: `shop-msg prime --bc ${BC_NAME} && bd prime`. ok -> label 'ok'; any nonzero -> label 'failed'. Full furniture: load and follow nodes/bc-router.md (session-start protocol)."]
+              prompt="Run EXACTLY, no judgment: `shop-msg prime --bc {{ inputs.BC_NAME }} && bd prime`. Full furniture: nodes/bc-router.md (session-start protocol). ROUTING: if exit 0, end your reply with {\"preferred_next_label\": \"ok\"}; on any nonzero exit emit NO directive so the run fails closed to halt."]
     health   [shape=box, class="command", deterministic=true, permissions="read-write", retry=2,
               label="work-tracker health gate", prompt_file="nodes/bc-router.md",
-              prompt="Run EXACTLY, no judgment; this GATES the role loop. Verify beads is functional AND messaging DB reachable: `bd ready` exits 0 AND a test `bd dolt push` round-trips under the BC prefix. healthy -> label 'healthy'; else -> label 'unhealthy'. Full furniture: nodes/bc-router.md."]
+              prompt="Run EXACTLY, no judgment; this GATES the role loop. Verify beads is functional AND messaging DB reachable: `bd ready` exits 0 AND a test `bd dolt push` round-trips under the BC prefix. Full furniture: nodes/bc-router.md. ROUTING: if healthy, end with {\"preferred_next_label\": \"healthy\"}; if unhealthy emit NO directive so the run fails closed to halt (the role loop must NOT begin)."]
     arm      [shape=box, class="command", deterministic=true, permissions="read-write",
               label="arm watch + drain inbox", prompt_file="nodes/bc-router.md",
-              prompt="Run EXACTLY, no judgment: `shop-msg pending inbox --bc ${BC_NAME}` (drain; Monitor/LISTEN-NOTIFY stays a command poll, Seam(b) PARTIAL). If a pending message exists, `shop-msg read inbox --bc ${BC_NAME} --work-id ${WORK_ID}` -> label 'message'; if inbox empty -> label 'empty'. Full furniture: nodes/bc-router.md."]
+              prompt="Run EXACTLY, no judgment: `shop-msg pending inbox --bc {{ inputs.BC_NAME }}` (drain). If a pending message exists, `shop-msg read inbox --bc {{ inputs.BC_NAME }} --work-id {{ inputs.WORK_ID }}`. Full furniture: nodes/bc-router.md. ROUTING: end with {\"preferred_next_label\": \"message\"} if a message was read, or {\"preferred_next_label\": \"empty\"} if the inbox was empty (legitimate idle). On command error emit NO directive (fails closed to halt)."]
 
     // ---------- classify (judgment agent) ----------------------------------
     classify [class="coding", permissions="read-only",
               label="bc-router classify", prompt_file="nodes/bc-router.md",
-              prompt="Classify message_type via the 4-row bc-router table. assign_scenarios OR non-empty request_bugfix -> outcome 'scenario' (reviewer emits). request_maintenance OR empty request_bugfix -> outcome 'flat' (implementer emits). Load and follow nodes/bc-router.md."]
+              prompt="Classify message_type via the 4-row bc-router table. Load and follow nodes/bc-router.md. ROUTING: end with {\"preferred_next_label\": \"scenario\"} for assign_scenarios OR non-empty request_bugfix (reviewer emits); or {\"preferred_next_label\": \"flat\"} for request_maintenance OR empty request_bugfix (implementer emits). If you cannot classify, emit NO directive (fails closed to emit_blk)."]
 
     // ---------- scenario path (reviewer is SOLE work_done emitter) ----------
     suff     [class="coding", permissions="read-write",
               label="bc-sufficiency-check", prompt_file="nodes/bc-sufficiency-check.md",
-              prompt="Binary proceed|clarify per the per-message-type sufficiency criteria. Sufficient -> outcome 'proceed'. Insufficient -> outcome 'clarify' naming the gap; do NOT dispatch. Load and follow nodes/bc-sufficiency-check.md."]
+              prompt="Binary proceed|clarify per the per-message-type sufficiency criteria. Load and follow nodes/bc-sufficiency-check.md. ROUTING: end with {\"preferred_next_label\": \"proceed\"} if sufficient, or {\"preferred_next_label\": \"clarify\"} (naming the gap; do NOT dispatch) if insufficient. Otherwise emit NO directive (fails closed to emit_blk)."]
     worktree [shape=box, class="command", deterministic=true, permissions="read-write",
               label="using-git-worktrees", prompt_file="nodes/using-git-worktrees.md",
-              prompt="Run EXACTLY, no judgment, BEFORE any impl: `git worktree add` a branch named for ${WORK_ID}. ok -> 'ok'; nonzero -> 'failed'. Full furniture: nodes/using-git-worktrees.md."]
+              prompt="Run EXACTLY, no judgment, BEFORE any impl: `git worktree add` a branch named for {{ inputs.WORK_ID }}. Full furniture: nodes/using-git-worktrees.md. ROUTING: on success end with {\"preferred_next_label\": \"ok\"}; on nonzero exit emit NO directive (fails closed to emit_blk)."]
     plan     [class="coding", permissions="read-write",
               label="writing-plans-bdd", prompt_file="nodes/writing-plans-bdd.md",
-              prompt="Decompose the assigned scenario(s) into a bd sub-issue DAG: one RED + one GREEN sub-issue per behavior, bd dep edges encoding order. Success -> 'ok'; cannot decompose -> 'failed'. Load and follow nodes/writing-plans-bdd.md."]
+              prompt="Decompose the assigned scenario(s) into a bd sub-issue DAG: one RED + one GREEN sub-issue per behavior, bd dep edges encoding order. Load and follow nodes/writing-plans-bdd.md. ROUTING: on success end with {\"preferred_next_label\": \"ok\"}; if you cannot decompose emit NO directive (fails closed to emit_blk)."]
     impl     [class="coding", permissions="read-write", parallel=true,
               label="bc-implementer (parallel fan-out)", prompt_file="nodes/subagent-driven-development.md",
-              prompt="subagent-driven-development: `bd ready` -> fan out all unblocked sub-issues in PARALLEL to bc-implementer subagents; each runs test-driven-development RED->GREEN->REFACTOR and recomputes @scenario_hash via `scenarios hash` (block-only, ADR-019) == on-disk tag. All GREEN -> 'ok'; any failure -> 'failed'. Load and follow nodes/subagent-driven-development.md (+ nodes/test-driven-development.md, nodes/bc-implementer.md)."]
+              prompt="subagent-driven-development: `bd ready` -> fan out all unblocked sub-issues in PARALLEL to bc-implementer subagents; each runs test-driven-development RED->GREEN->REFACTOR and recomputes @scenario_hash via `scenarios hash` (block-only, ADR-019) == on-disk tag. Load and follow nodes/subagent-driven-development.md (+ nodes/test-driven-development.md, nodes/bc-implementer.md). ROUTING: if ALL sub-issues are GREEN end with {\"preferred_next_label\": \"ok\"}; on any failure emit NO directive (fails closed to emit_blk)."]
     redgate  [shape=box, class="command", deterministic=true, permissions="read-write",
               label="RED-before-GREEN inter-layer gate", prompt_file="nodes/subagent-driven-development.md",
-              prompt="Run EXACTLY, no judgment: for each behavior verify a watched-fail `test(red)` commit PRECEDES its `feat(green)` in the work-branch history AND each sub-issue is closed. All hold -> 'pass'; any violation -> 'fail' (must NOT proceed to integrate). Full furniture: nodes/subagent-driven-development.md."]
+              prompt="Run EXACTLY, no judgment: for each behavior verify a watched-fail `test(red)` commit PRECEDES its `feat(green)` in the work-branch history AND each sub-issue is closed. Full furniture: nodes/subagent-driven-development.md. ROUTING: if all hold end with {\"preferred_next_label\": \"pass\"}; on any violation emit NO directive (fails closed to emit_blk; must NOT integrate)."]
     integ    [shape=box, class="command", deterministic=true, permissions="read-write", retry=2,
               label="integrating-to-main", prompt_file="nodes/integrating-to-main.md",
-              prompt="Run EXACTLY, no judgment: land the work branch on origin/main per integrating-to-main. Landed -> 'ok'; nonzero -> 'failed'. Full furniture: nodes/integrating-to-main.md."]
+              prompt="Run EXACTLY, no judgment: land the work branch on origin/main per integrating-to-main. Full furniture: nodes/integrating-to-main.md. ROUTING: on landed end with {\"preferred_next_label\": \"ok\"}; on nonzero exit emit NO directive (fails closed to emit_blk)."]
     review   [class="review", permissions="read-write",
               label="bc-reviewer / bc-review", prompt_file="nodes/bc-review.md",
-              prompt="Adversarial gate: re-run the BDD suite; probe faithful realization; probe step defs (broad regex / swallowed exceptions / state leakage); verify test(red) precedes feat(green). Outcome one of: 'signoff' | 'scenario_gap' | 'impl_gap'. Load and follow nodes/bc-review.md (+ nodes/bc-reviewer.md)."]
+              prompt="Adversarial gate: re-run the BDD suite; probe faithful realization; probe step defs (broad regex / swallowed exceptions / state leakage); verify test(red) precedes feat(green). Load and follow nodes/bc-review.md (+ nodes/bc-reviewer.md). ROUTING: end with {\"preferred_next_label\": \"signoff\"} | {\"preferred_next_label\": \"scenario_gap\"} | {\"preferred_next_label\": \"impl_gap\"}. If you cannot conclude, emit NO directive (fails closed to emit_blk)."]
     wdg_r    [shape=box, class="command", deterministic=true, permissions="read-write",
               label="work-done-gate (3 checks)", prompt_file="nodes/work-done-gate.md",
-              prompt="Run EXACTLY, no judgment, the 3 checks: C1 clean deliverable tree over features/,src/,tests/ (git status --porcelain -uall, carve-outs discounted); C2 ${WORK_ID} reachable from origin/main as a WHOLE token (git fetch origin; git log origin/main -E --grep whole-word); C3 emitted scenario_hashes are a SUBSET of committed @scenario_hash tags (scenarios hash recompute + git grep). ALL pass -> 'pass'; any fail -> 'fail'. Full furniture: nodes/work-done-gate.md."]
+              prompt="Run EXACTLY, no judgment, the 3 checks: C1 clean deliverable tree over features/,src/,tests/ (git status --porcelain -uall, carve-outs discounted); C2 {{ inputs.WORK_ID }} reachable from origin/main as a WHOLE token (git fetch origin; git log origin/main -E --grep whole-word); C3 emitted scenario_hashes are a SUBSET of committed @scenario_hash tags (scenarios hash recompute + git grep). Full furniture: nodes/work-done-gate.md. ROUTING: if ALL pass end with {\"preferred_next_label\": \"pass\"}; on any fail emit NO directive (fails closed to emit_blk)."]
     emit_r   [shape=box, class="command", deterministic=true, permissions="read-write", retry=2,
               label="reviewer emits work_done -- SOLE EMITTER", prompt_file="nodes/work-done-gate.md",
-              prompt="Run EXACTLY, no judgment (reviewer is the SOLE emitter for scenario work; reached ONLY via review->signoff->wdg_r->pass): `bc-emit work-done --bc ${BC_NAME} --work-id ${WORK_ID} --scenario-hash <h..> --summary '<probes considered+dismissed>'` (the bc-emit wrapper RE-RUNS the gate and builds the pydantic WorkDone; status=complete). Deposited -> 'ok'; UNIQUE(work_id,direction,shop) collision or retry-exhausted -> 'failed' (fail-closed to halt; ADR-012 backstop). NEVER hand-write the message. Full furniture: nodes/work-done-gate.md."]
+              prompt="Run EXACTLY, no judgment (reviewer is the SOLE emitter for scenario work; reached ONLY via review->signoff->wdg_r->pass): `bc-emit work-done --bc {{ inputs.BC_NAME }} --work-id {{ inputs.WORK_ID }} --scenario-hash <h..> --summary '<probes considered+dismissed>'` (the bc-emit wrapper RE-RUNS the gate and builds the pydantic WorkDone; status=complete). NEVER hand-write the message. Full furniture: nodes/work-done-gate.md. ROUTING: on deposit end with {\"preferred_next_label\": \"ok\"}; on UNIQUE(work_id,direction,shop) collision or retry-exhausted emit NO directive (fails closed to halt; ADR-012 backstop -- never a silent success)."]
 
     // ---------- flat path (implementer is the emitter; no reviewer) --------
     impl_f   [class="coding", permissions="read-write",
               label="bc-implementer (maintenance / empty bugfix)", prompt_file="nodes/bc-implementer.md",
-              prompt="Flat path: no planning, no reviewer. Make the flat change (request_maintenance or empty request_bugfix); then the implementer is the emitter. Made -> 'ok'; insufficient intake -> 'clarify'; failed -> 'failed'. Load and follow nodes/bc-implementer.md."]
+              prompt="Flat path: no planning, no reviewer. Make the flat change (request_maintenance or empty request_bugfix); then the implementer is the emitter. Load and follow nodes/bc-implementer.md. ROUTING: on change made end with {\"preferred_next_label\": \"ok\"}; on insufficient intake end with {\"preferred_next_label\": \"clarify\"}; on failure emit NO directive (fails closed to emit_blk)."]
     wdg_f    [shape=box, class="command", deterministic=true, permissions="read-write",
               label="work-done-gate (3 checks)", prompt_file="nodes/work-done-gate.md",
-              prompt="Run EXACTLY, no judgment: same C1|C2|C3 as wdg_r. ALL pass -> 'pass'; any fail -> 'fail'. Full furniture: nodes/work-done-gate.md."]
+              prompt="Run EXACTLY, no judgment: same C1|C2|C3 as wdg_r over {{ inputs.WORK_ID }}. Full furniture: nodes/work-done-gate.md. ROUTING: if ALL pass end with {\"preferred_next_label\": \"pass\"}; on any fail emit NO directive (fails closed to emit_blk)."]
     emit_f   [shape=box, class="command", deterministic=true, permissions="read-write", retry=2,
               label="implementer emits work_done", prompt_file="nodes/work-done-gate.md",
-              prompt="Run EXACTLY, no judgment (implementer is the emitter on the flat path): `bc-emit work-done --bc ${BC_NAME} --work-id ${WORK_ID} --summary '<flat change>' --status complete` (wrapper re-runs the gate; pydantic WorkDone). Deposited -> 'ok'; collision/retry-exhausted -> 'failed'. NEVER hand-write. Full furniture: nodes/work-done-gate.md."]
+              prompt="Run EXACTLY, no judgment (implementer is the emitter on the flat path): `bc-emit work-done --bc {{ inputs.BC_NAME }} --work-id {{ inputs.WORK_ID }} --summary '<flat change>' --status complete` (wrapper re-runs the gate; pydantic WorkDone). NEVER hand-write. Full furniture: nodes/work-done-gate.md. ROUTING: on deposit end with {\"preferred_next_label\": \"ok\"}; on collision/retry-exhausted emit NO directive (fails closed to halt)."]
 
-    // ---------- shared report emitters (deterministic command nodes) -------
+    // ---------- shared report emitters (AGENT command nodes; templated) -----
     emit_clar [shape=box, class="command", deterministic=true, permissions="read-write", retry=2,
                label="emit clarify",
-               prompt="Run EXACTLY, no judgment: `shop-msg respond clarify --bc ${BC_NAME} --work-id ${WORK_ID} --question '<gap>'`. Sent -> 'ok'; failed -> 'failed'."]
+               prompt="Run EXACTLY, no judgment: `shop-msg respond clarify --bc {{ inputs.BC_NAME }} --work-id {{ inputs.WORK_ID }} --question '<gap>'`. ROUTING: on sent end with {\"preferred_next_label\": \"ok\"}; on send failure emit NO directive (fails closed to halt)."]
     emit_blk  [shape=box, class="command", deterministic=true, permissions="read-write", retry=2,
                label="emit work_done BLOCKED (named evidence)",
-               prompt="Run EXACTLY, no judgment (any deliverable-side gate/step failure lands here -- a failed node's EVIDENCE, never a silent complete): `shop-msg respond work_done --bc ${BC_NAME} --work-id ${WORK_ID} --status blocked --summary '<failed check + evidence>'`. Sent -> 'ok'; failed -> 'failed'."]
+               prompt="Run EXACTLY, no judgment (any deliverable-side gate/step failure lands here -- a failed node's EVIDENCE, never a silent complete): `shop-msg respond work_done --bc {{ inputs.BC_NAME }} --work-id {{ inputs.WORK_ID }} --status blocked --summary '<failed check + evidence>'`. ROUTING: on sent end with {\"preferred_next_label\": \"ok\"}; on send failure emit NO directive (fails closed to halt)."]
 
     // =======================================================================
-    // EDGES -- every fallible node has an EXPLICIT outcome-labeled failure edge.
-    // No fallible node has an unlabeled fall-through to `done`.
+    // EDGES -- PROVEN-SAFE fail-closed pattern (Leg B):
+    //   single-success-branch node:  node -> success (UNCONDITIONAL, no label)
+    //                                node -> failsafe [condition="outcome=failed"]
+    //   multi-branch (agent judgment): labelled branches (directive-routed) PLUS
+    //                                one condition="outcome=failed" catch.
+    // `halt` is a native exit-1 SINK (run=FAILED). `reported` -> `done`.
+    // (Residual: a non-compliant agent that COMPLETES but mis-signals is not
+    //  hard-caught here -- see header ROUTING/FAIL-CLOSED + 03b findings.)
     // =======================================================================
     start -> prime
 
-    prime  -> health   [label="ok"]
-    prime  -> halt     [label="failed"]        // DSN unreachable at prime -> HALT, no work emitted
+    // --- session start (single-branch: uncond success + condition catch) ---
+    prime  -> health                              // success (uncond)
+    prime  -> halt  [condition="outcome=failed"]  // DSN unreachable at prime -> HALT
 
-    health -> arm      [label="healthy"]
-    health -> halt     [label="unhealthy"]     // role loop does NOT begin, emits NO role work
+    health -> arm                                 // success (uncond)
+    health -> halt  [condition="outcome=failed"]  // unhealthy/stage-error -> role loop never begins
 
-    arm    -> classify [label="message"]
-    arm    -> done     [label="empty"]         // nothing pending: legitimate idle-empty SUCCEEDED
+    // --- arm: multi-branch (message|empty) + failure catch ---
+    arm    -> classify [label="message"]          // directive-routed
+    arm    -> done     [label="empty"]            // legitimate idle-empty SUCCEEDED
+    arm    -> halt     [condition="outcome=failed"] // drain/read error -> HALT
 
-    classify -> suff   [label="scenario"]      // assign_scenarios | non-empty request_bugfix
-    classify -> impl_f [label="flat"]          // request_maintenance | empty request_bugfix
+    // --- classify: multi-branch (scenario|flat) + failure catch ---
+    classify -> suff   [label="scenario"]         // assign_scenarios | non-empty request_bugfix
+    classify -> impl_f [label="flat"]             // request_maintenance | empty request_bugfix
+    classify -> emit_blk [condition="outcome=failed"] // stage error -> report blocked
 
     // --- scenario path ---
+    // suff: multi-branch (proceed|clarify) + failure catch
     suff -> worktree   [label="proceed"]
-    suff -> emit_clar  [label="clarify"]       // insufficient -> clarify, STOP
+    suff -> emit_clar  [label="clarify"]          // insufficient -> clarify, STOP
+    suff -> emit_blk   [condition="outcome=failed"]
 
-    worktree -> plan   [label="ok"]
-    worktree -> emit_blk [label="failed"]
+    worktree -> plan                              // success (uncond)
+    worktree -> emit_blk [condition="outcome=failed"] // worktree add failed -> BLOCK
 
-    plan -> impl       [label="ok"]
-    plan -> emit_blk   [label="failed"]
+    plan -> impl                                  // success (uncond)
+    plan -> emit_blk [condition="outcome=failed"]
 
-    impl -> redgate    [label="ok"]
-    impl -> emit_blk   [label="failed"]
+    impl -> redgate                               // success (uncond); parallel fan-out converges here
+    impl -> emit_blk [condition="outcome=failed"] // any sub-issue failed -> BLOCK
 
-    redgate -> integ   [label="pass"]
-    redgate -> emit_blk [label="fail"]         // RED not before GREEN -> BLOCK; must NOT integrate
+    redgate -> integ                              // success (uncond)
+    redgate -> emit_blk [condition="outcome=failed"] // RED not before GREEN -> BLOCK, must NOT integrate
 
-    integ -> review    [label="ok"]
-    integ -> emit_blk  [label="failed"]
+    integ -> review                               // success (uncond)
+    integ -> emit_blk [condition="outcome=failed"]
 
-    review -> wdg_r    [label="signoff"]
-    review -> emit_clar [label="scenario_gap"] // gap in scenario -> clarify to lead
-    review -> emit_blk  [label="impl_gap"]     // implementation gap -> work_done blocked
+    // review: multi-branch (signoff|scenario_gap|impl_gap) + stage-error catch
+    review -> wdg_r     [label="signoff"]
+    review -> emit_clar [label="scenario_gap"]    // gap in scenario -> clarify to lead
+    review -> emit_blk  [label="impl_gap"]        // implementation gap -> work_done blocked
+    review -> halt      [condition="outcome=failed"] // genuine review stage error -> HALT
 
-    wdg_r -> emit_r    [label="pass"]
-    wdg_r -> emit_blk  [label="fail"]          // any of C1/C2/C3 fails -> BLOCKED, never complete
+    wdg_r -> emit_r                               // success (uncond)
+    wdg_r -> emit_blk [condition="outcome=failed"] // any of C1/C2/C3 fails -> BLOCKED, never complete
 
-    emit_r -> done     [label="ok"]
-    emit_r -> halt     [label="failed"]        // UNIQUE collision / retry-exhausted: HALT, not silent success
+    emit_r -> done                                // success (uncond)
+    emit_r -> halt [condition="outcome=failed"]   // UNIQUE collision / retry-exhausted -> HALT
 
     // --- flat path ---
-    impl_f -> wdg_f    [label="ok"]
-    impl_f -> emit_clar [label="clarify"]      // failed sufficiency on flat path -> clarify directly
-    impl_f -> emit_blk [label="failed"]
+    // impl_f: multi-branch (ok|clarify) + failure catch
+    impl_f -> wdg_f     [label="ok"]
+    impl_f -> emit_clar [label="clarify"]         // failed sufficiency on flat path -> clarify directly
+    impl_f -> emit_blk  [condition="outcome=failed"]
 
-    wdg_f -> emit_f    [label="pass"]
-    wdg_f -> emit_blk  [label="fail"]
+    wdg_f -> emit_f                               // success (uncond)
+    wdg_f -> emit_blk [condition="outcome=failed"]
 
-    emit_f -> done     [label="ok"]
-    emit_f -> halt     [label="failed"]
+    emit_f -> done                                // success (uncond)
+    emit_f -> halt [condition="outcome=failed"]
 
-    // --- report emitters converge on REPORTED (a correct terminal) ---
-    emit_clar -> reported [label="ok"]
-    emit_clar -> halt     [label="failed"]
-    emit_blk  -> reported [label="ok"]
-    emit_blk  -> halt     [label="failed"]
+    // --- report emitters converge on REPORTED (a correct non-failure end) ---
+    emit_clar -> reported                         // success (uncond)
+    emit_clar -> halt [condition="outcome=failed"] // send failed -> HALT
+    emit_blk  -> reported                          // success (uncond)
+    emit_blk  -> halt [condition="outcome=failed"] // send failed -> HALT
+
+    // --- reported passthrough to the single SUCCEEDED terminal ---
+    reported -> done
 }
