@@ -1,0 +1,60 @@
+# workflow.toml -- run/environment config for workflow.fabro (bc-shop loop).
+# Slice 2 Leg 1 (epic lead-6k1r). Branch fabro-spike. SPIKE / THROWAWAY.
+#
+# NOTE ON RETRY: node-level retry is NOT configured here. In fabro v0.254.0 retry
+# is DOT-graph-native (empirically pinned): a node carries `retry=N`, an optional
+# `retry_target`, and the graph declares `fallback_retry_target`. Those live in
+# workflow.fabro (prime=3, health=2, integ=2, emit_*=2; graph
+# fallback_retry_target="halt"). The 01b draft's `[run.retry.nodes]` table was a
+# guess and is NOT a v0.254.0 config key -- superseded by the graph attributes.
+
+_version = 1
+
+[workflow]
+graph = "workflow.fabro"
+
+# ---- RUNTIME INPUTS (Slice 3 Leg B, empirically pinned) --------------------
+# Declared inputs are referenced in node `prompt=` / graph `goal=` ONLY, via
+# minijinja `{{ inputs.NAME }}` (fabro embeds minijinja 2.19). `-I NAME=VALUE`
+# overrides these defaults at `fabro run`. Confirmed: `{{ inputs.BC_NAME }}`
+# resolves from `-I BC_NAME=...`; the old shell-style `${BC_NAME}` is NOT
+# honored (minijinja leaves it literal -> reaches the shell -> expands empty).
+# NOTE: [run.inputs] / {{ inputs.NAME }} are NOT available in `script=` (literal
+# text) NOR as env vars in a native command sandbox. They are used ONLY in AGENT
+# `prompt=` text and the graph `goal=` (minijinja). For NATIVE `script=` nodes the
+# values arrive via the [run.environment.env] overlay below (Slice 5 finding).
+# Keep the two tables in sync.
+[run.inputs]
+BC_NAME = "fabro-throwaway"        # canonical BC name; override per BC at run
+WORK_ID = "fabro-spike-demo-3"     # work_id of the message under service
+
+# ---- ENV OVERLAY into the NATIVE script= sandbox (Slice 5 HARDEN, PROVEN) ----
+# The GLOBAL [run.environment.env] overlay (same channel that delivers HTTPS_PROXY
+# /CA to the shim) DOES reach a native `shape=parallelogram, script=` sandbox as
+# real shell env vars -- unlike [run.inputs]. PROVEN by probe run
+# 01KWDVPMCZA2M8N8J5MGRF6KCM: a native `echo $BC_NAME $WORK_ID` printed
+# `shopsystem-example lead-envprobe1`. This is what lets every non-judgment node
+# (gates/emit/integ/session-start) be a native no-LLM script reading $BC_NAME /
+# $WORK_ID. Per-BC/per-work override: edit these two values (native `script=` does
+# NOT honor `-I`; `-I` only overrides [run.inputs] for the agent prompts). The
+# HTTPS_PROXY/CA/proxy overlay lives in ~/.fabro/settings.toml's own
+# [run.environment.env] (invariant #2: agent-vault, fabro vault stays placeholder).
+[run.environment.env]
+BC_NAME = "fabro-throwaway"
+WORK_ID = "fabro-spike-demo-3"
+
+[run.environment]
+id = "local"                       # ephemeral in-container fabro server (00a s5)
+
+[environments.local]
+provider = "local"                 # runs in the current process/cwd INSIDE the BC
+                                   # container; inherits parent env so HTTPS_PROXY ->
+                                   # agent-vault reaches every node (00a s4.3, OQ1).
+                                   # The provider KEY rides agent-vault: fabro's vault
+                                   # holds only dummies (vaults/default/secrets.json).
+
+[run.pull_request]
+enabled = false                    # integrating-to-main (the `integ` node) is the
+                                   # SOLE integration authority. Leaving fabro's native
+                                   # PR creation on would open a competing integration
+                                   # path -> disable (01b s2 caution; 01a P20/ADR-018).

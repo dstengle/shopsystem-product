@@ -1,0 +1,23 @@
+Feature: a BC boots under an ephemeral in-container fabro server with launch-interface parity to bc-container
+
+  Fabro launch-interface parity — ADR-050 (KEPT vs REPLACED P1-P20 launch properties,
+  the readiness-barrier seam, the engage-tier replacement), Anchored on ADR-048 (fabro as
+  the alternable in-container BC-orchestration substrate). Evidence: findings/fabro-spike/
+  01-targets-spec.md + 01a-target-launch-parity.md (20 properties / 3 tiers) and 04-goal-demo.md
+  section 3 invariant #3 (a BC booted from the same shopsystem-bc-base:latest the three
+  healthy infra BCs run). Fabro runs as an ephemeral LOCAL server (provider=local, 127.0.0.1)
+  inside one bc-base container; it REPLACES the engage-tier / tmux-inject engagement with the
+  run-graph launch entry path but KEEPS the image, credential-proxy, postgres DSN and the
+  real registered EMPTY-mailbox starting posture. This is a LEAD-PROCESS contract pin:
+  fabro in-container orchestration is not yet an owned BC, so there is no BC addressee; it is
+  NOT dispatchable via assign_scenarios and is flagged for the discriminator as the scenario
+  most BC-adjacent should a fabro-orchestration BC ever be created. Distinct from
+  features/bc-launcher 33/34/35/48 (bc-container launch gates), which this does not duplicate.
+  @scenario_hash:1aeace4c593ab14f
+  Scenario: a BC boots under an ephemeral in-container fabro server and clears the KEPT launch-parity surface
+    Given an ephemeral in-container fabro server running provider=local on 127.0.0.1 inside a shopsystem-bc-base:latest container
+    When the fabro run-graph enters its launch entry path for one BC loop
+    Then the BC presents a real registered postgres mailbox that starts empty
+    And the BC boots from the same shopsystem-bc-base:latest image the infra BCs run
+    And the launch traverses the KEPT parity surface prime, health, arm, classify in order
+    And no tmux-inject engage-tier engagement is used, that surface being replaced by the run-graph entry path

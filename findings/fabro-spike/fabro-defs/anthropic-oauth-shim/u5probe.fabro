@@ -1,0 +1,18 @@
+digraph U5Probe {
+    graph [
+        goal="U5 proxy-cred probe: prove a fabro agent node's OWN LLM call (via the anthropic-oauth-shim) AND its outbound authenticated tool call (gh, real token injected by agent-vault) both succeed, with only placeholders in fabro's vault."
+        model_stylesheet="* { model: claude-haiku-4-5 } .coding { model: claude-haiku-4-5 }"
+        rankdir=TB
+    ]
+    start [shape=Mdiamond, label="Start"]
+    done  [shape=Msquare,  label="Exit: SUCCEEDED"]
+    fail  [shape=box, label="FAILED"]
+
+    probe [class="coding", permissions="read-write",
+           label="u5-proxy-probe",
+           prompt="You are a probe verifying outbound proxy credential injection. Run EXACTLY this single shell command, verbatim: `GH_TOKEN=ghp_dummy_proxy_injects_real gh api user`. The environment already has HTTPS_PROXY pointing at agent-vault, which injects the REAL GitHub token on the wire in place of the dummy. Read the JSON the command returns and report the value of the `login` field. If a JSON object with a `login` comes back, report outcome 'ok' and state the login value. If it errors, report outcome 'failed' and paste the raw error."]
+
+    start -> probe
+    probe -> done [label="ok"]
+    probe -> fail [label="failed"]
+}
