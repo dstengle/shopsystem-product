@@ -65,3 +65,15 @@ fabro-launcher live-only bugs and show dagger REDs on it locally, before any rel
 
 - 2026-07-02: epic lead-fzxt activated; `dagger-spike` cut off main; plan persisted.
   Launching Slice 0 recon.
+- 2026-07-02: **Slice 0 DONE** (legs A/B/C + synthesis `00-dagger-recon.md`). Result:
+  dagger v0.21.7 installed & proven on this host — real-Dockerfile `docker-build` +
+  `with-exec` RED-propagation + `cmd://` client-side agent-vault secret bridge + identical
+  `dagger call` locally and via `dagger/dagger-for-github`; the real bc-launcher CI is 3
+  workflows and NONE run tests (structural-only fakes = the exact fabro empty-middle gap);
+  mapped 3 seams (A build+push CLEAN, B test-loop relocation-only, C fabro-e2e PARTIAL) +
+  5 invariant surfaces; contract is WRAP-not-REPLACE `publish-bc-base.yml`. **No blockers.**
+  → **Slice 1:** spec ONE engineVersion-pinned Python-SDK module (local `build-and-test`
+  + CI `build-test-and-push` over the same build core, GHA becomes a thin
+  `dagger/dagger-for-github` wrapper preserving IS-1/IS-4). Make-or-break design item to
+  resolve first: agent-vault egress into the dagger engine + BuildKit `RUN` steps (engine
+  carries no proxy/CA today) — proxy+MITM-CA injection vs. accept direct build egress.
