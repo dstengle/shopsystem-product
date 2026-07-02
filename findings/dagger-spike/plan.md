@@ -106,3 +106,30 @@ fabro-launcher live-only bugs and show dagger REDs on it locally, before any rel
   defect the structural loop misses (sharpest: shim-not-a-listener via the real-image `listen`
   smoke, or a bad `FABRO_VERSION` asset-URL 404 at build-time). Show the structural suite stays
   GREEN while dagger goes RED locally, before any tag. **No blockers; egress resolved.**
+- 2026-07-02: **Slice 2 DONE — the LOAD-BEARING PROOF is GREEN** (`02-dagger-experiment.md`;
+  detail `02a-experiment.md`). **PROVED:** dagger, building the real bc-base fabro/agent-vault
+  install blocks BYTE-VERBATIM through the agent-vault MITM engine + a real-image tier, REDs
+  LOCALLY on a fabro-style defect the structural pytest gate stays GREEN on — before any tag.
+  **Two clean splits:** (1) sha256 sidecar `.sha256`→`.sha256sum` (a bead-0fz sibling) —
+  structural GREEN (no text-pin covers the sidecar), dagger RED (`curl 404`); (2)
+  shim-not-a-listener — structural + `--help` tier GREEN, real-image listen smoke RED
+  (`SHIM_NOT_LISTENING`). Honest nuance: the brief's goreleaser-name defect (0fz) is now
+  DOUBLE-caught (suite hardened post-0fz) — text-pins are reactive, which is exactly why the
+  sidecar sibling proves the point. **No-divergence push:** same build core, dual-tag
+  `{v0.3.48,latest}` → identical `sha256:a1b927…bad6` (IS-4), observed not asserted.
+  **IS-3 CA-trust verdict: NOT verbatim-for-free** — the real bc-base trusts the agent-vault CA
+  only at RUNTIME (entrypoint), never before its build-time egress RUNs, so the full verbatim
+  Dockerfile x509-fails at line-70 through the MITM; needs a build-time CA-trust base (01a
+  option 2). MITM-LOCAL ONLY — under real CI (public egress) the Dockerfile is verbatim as-is,
+  NOT a shipped-path IS-3 bend. Three new engine-provisioning findings for the WRAP spec:
+  NO_PROXY needs registry APEX entries (Go leading-dot rule); whitelist dagger-infra hosts
+  (go-proxy/pypi) while github stays proxied (two-engine split, IS-2 intact); engine config via
+  `docker cp`+restart, not host `-v` (daemon can't see scratchpad mounts). Residuals carried:
+  private-GHCR resolver (sidestepped via local base), fabro-e2e Seam-C nesting, engine-in-BC
+  dogfood, structural-suite fold. **No blockers.**
+  → **Slice 3 recommendation: GRADUATE.** Draft 4 ADRs (dagger as local+CI substrate /
+  WRAP-not-replace publish-bc-base.yml; same-definition-local==CI no-divergence; agent-vault
+  egress recipe incl. NEW-A/B/C; build-time CA-trust prerequisite as MITM-local infra) + author
+  4 scenarios (sidecar-404 RED / structural-GREEN split; shim listen-smoke split; dual-tag
+  one-digest same-core; egress recipe github-proxied/base-direct). Then Slice 4 DISPATCHES the
+  module+WRAP to shopsystem-bc-launcher (IS-5/ADR-018), carrying the residuals.
