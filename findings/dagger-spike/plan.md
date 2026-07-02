@@ -137,3 +137,24 @@ fabro-launcher live-only bugs and show dagger REDs on it locally, before any rel
 - 2026-07-02: **Slice 3 GRADUATED** — ADR-052..055 + dagger-ci scenarios authored on
   dagger-spike; next Slice 4 productionize (dispatch to bc-launcher, run under
   --orchestrator fabro).
+
+- 2026-07-02: **Slice 4 — CHECKPOINTED for David** (findings 04a/04b/04c). Dispatched the
+  dagger CI work to a separate fabro-orchestrated `shopsystem-bc-launcher-dagger` (distinct
+  identity; real infra untouched) and DOGFOODED fabro. **Fabro dogfood SUCCEEDED (its goal):
+  5 real residuals found+fixed on real work → fabro v0.3.48→v0.3.50** (F1 classify→haiku; F2
+  fail-closed non-consuming/retriable, held 3×; F3+R7 launch-returns via docker exec -d; R6a
+  ALL .coding/.review→haiku-primary — the BC caught that fabro's stylesheet `fallbacks:` key
+  is silently-swallowed=false-green). On v0.3.50 the loop ran FULL LENGTH on haiku
+  (classify→suff→worktree→plan→impl→RED/GREEN gate) — fabro proven end-to-end on real work.
+  **BUT the dagger ci/ module is NOT yet built** — impl authored only BDD test scaffolding.
+  Two forks for David: (a) fabro `integ` pushes worktree→origin/main (dogfood clone can't/
+  shouldn't push to the real repo → fail-closed protectively; emit-vs-push is a DESIGN Q, not
+  a clear bug); (b) DISPATCH-SHAPE gap — `armed` reads 1 msg/work_id so the 03 module-spec
+  (companion carrier) never reached the implementer; haiku saw only the 4 behavioral scenarios
+  → scaffolded tests. Deeper: the fabro BDD implement-a-scenario loop may be the wrong builder
+  for an infra module, and haiku scaffolds where sonnet might build (quota). **Queued David
+  decisions:** restore sonnet quota; how to complete the module build (re-shape dispatch /
+  convey the proven spike module via request_maintenance+adopt / need sonnet); integ
+  emit-vs-push; whether bc-launcher MERGES the dagger CI into its shipped repo (real release).
+  lead-fzxt stays OPEN. Follow-ups filed: lead-o8qk, lead-sh4a. **DAGGER GRADUATED + fabro
+  dogfood delivered; module-build productionization paused on David's judgment.**
