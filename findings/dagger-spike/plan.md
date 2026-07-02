@@ -133,3 +133,7 @@ fabro-launcher live-only bugs and show dagger REDs on it locally, before any rel
   4 scenarios (sidecar-404 RED / structural-GREEN split; shim listen-smoke split; dual-tag
   one-digest same-core; egress recipe github-proxied/base-direct). Then Slice 4 DISPATCHES the
   module+WRAP to shopsystem-bc-launcher (IS-5/ADR-018), carrying the residuals.
+
+- 2026-07-02: **Slice 3 GRADUATED** — ADR-052..055 + dagger-ci scenarios authored on
+  dagger-spike; next Slice 4 productionize (dispatch to bc-launcher, run under
+  --orchestrator fabro).
