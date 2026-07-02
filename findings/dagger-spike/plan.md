@@ -77,3 +77,32 @@ fabro-launcher live-only bugs and show dagger REDs on it locally, before any rel
   `dagger/dagger-for-github` wrapper preserving IS-1/IS-4). Make-or-break design item to
   resolve first: agent-vault egress into the dagger engine + BuildKit `RUN` steps (engine
   carries no proxy/CA today) — proxy+MITM-CA injection vs. accept direct build egress.
+- 2026-07-02: **Slice 1a EGRESS leg DONE** (`01a-egress.md`). Make-or-break RESOLVED:
+  egress-through-agent-vault WORKS for BuildKit `RUN`, proven end-to-end (PyPI + git+https +
+  api.github.com all 200/OK through the MITM proxy, agent-vault handle = sole cred, IS-2 held).
+  Recipe = two halves: (1) PROXY routing is CLEAN/no-Dockerfile-edit — set `HTTP(S)_PROXY`+
+  `NO_PROXY` on a privileged engine JOINED to the `shopsystem` net; BuildKit propagates daemon
+  proxy env into every `RUN` (docker's `--build-arg http_proxy` convention is IGNORED by dagger
+  — dead end). (2) MITM CA trust must come from the BASE IMAGE (no engine knob injects a CA file
+  into a `RUN` rootfs) — the ONE IS-3 tension; verify whether real bc-base already trusts the
+  agent-vault CA early → verbatim-for-free, else one-line org-CA-base `FROM` (never direct
+  egress = IS-2 violation). Open item: private-GHCR engine-resolver CA trust (bc-lead `FROM
+  bc-base:vX`) unresolved; public bc-base base unaffected via `NO_PROXY`.
+- 2026-07-02: **Slice 1 DONE** — target spec written (`01-dagger-target-spec.md`). Specifies
+  (1) ONE Python-SDK module (`engineVersion` v0.21.7) over ONE build core: `build-and-test`
+  (LOCAL: real bc-base/bc-lead `dockerBuild` verbatim + structural pytest tier + NEW real-image
+  tier running the freshly-built image — fabro/shim/scenarios/bd/gh live self-checks) and
+  `build-test-and-push` (CI: same core + GHCR dual-tag-one-digest push, IS-4); inputs/build-args,
+  the `cmd://` agent-vault secret seam (IS-2), the `01a` engine egress recipe, and the
+  same-`dagger call`-locally-and-in-GHA no-divergence property. (2) WRAP-not-REPLACE
+  `publish-bc-base.yml` before/after: swap ONLY `docker/build-push-action@v6` for a
+  `dagger/dagger-for-github` call; keep `v*` trigger, GHCR cred source, dual-tag, OCI labels,
+  visibility PATCH, rollback (IS-1/IS-4/IS-5). (3) Seam-C fabro-e2e as an optional advanced
+  `fabro_e2e` fn (docker-socket nesting + agent-vault net — the hard, highest-value part).
+  (4) Slice-2 acceptance criteria. (5) Dogfood-fabro Slice-4 dispatch angle.
+  → **Slice 2 recommendation:** BUILD the throwaway. First resolve the CA-trust verify item
+  (does real bc-base trust the agent-vault CA before its egress RUNs); then run
+  `dagger call build-and-test` against the real bc-base, and PROVE it REDs on a fabro-style
+  defect the structural loop misses (sharpest: shim-not-a-listener via the real-image `listen`
+  smoke, or a bad `FABRO_VERSION` asset-URL 404 at build-time). Show the structural suite stays
+  GREEN while dagger goes RED locally, before any tag. **No blockers; egress resolved.**
