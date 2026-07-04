@@ -17,7 +17,7 @@ Feature: scenarios validate enforces the three-dimension scenario-file schema an
 
   # ---- Per-file validate: happy path (ADR-056 D4/D5) ----
 
-  @scenario_hash:e612d2bc67a8d330
+  @scenario_hash:bc4faf077632e574
   Scenario: A file satisfying all three schema dimensions passes validation with exit code 0
     Given a scenario file that parses under the off-the-shelf @cucumber/gherkin parser
     And the file declares exactly one Feature carrying exactly one @bc naming a known context and exactly one @origin naming a known decision record
@@ -28,7 +28,7 @@ Feature: scenarios validate enforces the three-dimension scenario-file schema an
 
   # ---- Per-file validate: off-the-shelf Gherkin parse (ADR-056 D4.1/D5) ----
 
-  @scenario_hash:de6883bd9e416eae
+  @scenario_hash:cee5f6eb2477f007
   Scenario: A file that fails off-the-shelf Gherkin parsing is rejected with E_GHERKIN_PARSE
     Given a scenario file whose text does not parse under the @cucumber/gherkin parser
     When I run "scenarios validate" against the file
@@ -44,7 +44,7 @@ Feature: scenarios validate enforces the three-dimension scenario-file schema an
     Then the exit code is non-zero
     And the diagnostic names the offending file and the rule code E_NO_FEATURE
 
-  @scenario_hash:312e5e6f133cfa52
+  @scenario_hash:b6cfcc70d4c6e3a2
   Scenario: A file that declares more than one Feature is rejected with E_MULTI_FEATURE
     Given a scenario file that declares two Feature keywords
     When I run "scenarios validate" against the file
@@ -67,7 +67,7 @@ Feature: scenarios validate enforces the three-dimension scenario-file schema an
     Then the exit code is non-zero
     And the diagnostic names the offending feature and the rule code E_MULTI_BC
 
-  @scenario_hash:22e0098ac4b9a950
+  @scenario_hash:75a75ca0b6c99529
   Scenario: A feature whose @bc value is not a known context is rejected with E_UNKNOWN_BC
     Given a scenario file whose Feature carries a @bc value that is absent from the bc-manifest.yaml bcs list and is not the lead product token
     When I run "scenarios validate" against the file
@@ -90,7 +90,7 @@ Feature: scenarios validate enforces the three-dimension scenario-file schema an
     Then the exit code is non-zero
     And the diagnostic names the offending feature and the rule code E_MULTI_ORIGIN
 
-  @scenario_hash:00c1012eca30b666
+  @scenario_hash:6dcca1590530910b
   Scenario: A feature whose @origin value resolves to no known decision record is rejected with E_UNKNOWN_ORIGIN
     Given a scenario file whose Feature carries an @origin ref that matches no file under adr, pdr, or briefs and no lead bead id
     When I run "scenarios validate" against the file
@@ -106,7 +106,7 @@ Feature: scenarios validate enforces the three-dimension scenario-file schema an
     Then the exit code is non-zero
     And the diagnostic names the offending scenario and the rule code E_MISSING_HASH
 
-  @scenario_hash:88f87cd987b8477d
+  @scenario_hash:b35f46011723a621
   Scenario: A scenario whose @scenario_hash differs from its parser-path block-only hash is rejected with E_HASH_MISMATCH
     Given a scenario whose embedded @scenario_hash value does not equal the block-only hash computed over its body via the parser path
     When I run "scenarios validate" against the file
@@ -122,7 +122,7 @@ Feature: scenarios validate enforces the three-dimension scenario-file schema an
     Then the exit code is 0
     And the optional @service is accepted without substituting for the mandatory @bc owner
 
-  @scenario_hash:387d1451be7f77e7
+  @scenario_hash:2e18817554202ca5
   Scenario: A @service tag does not substitute for the mandatory @bc owner tag
     Given a scenario file whose Feature carries a @service tag but carries no @bc tag
     When I run "scenarios validate" against the file
@@ -131,7 +131,7 @@ Feature: scenarios validate enforces the three-dimension scenario-file schema an
 
   # ---- Per-file validate: machine-readable diagnostic (ADR-056 D5, requirement 1f) ----
 
-  @scenario_hash:65ab84565fd85be3
+  @scenario_hash:951bf3f83b7873e5
   Scenario: The JSON diagnostic names the offending file, scenario, and rule for a violation
     Given a scenario file containing exactly one schema violation
     When I run "scenarios validate --json" against the file
@@ -164,7 +164,7 @@ Feature: scenarios validate enforces the three-dimension scenario-file schema an
     Then the exit code is non-zero
     And the diagnostic names the non-conformant file and the per-file rule code it violated
 
-  @scenario_hash:addd899ec87ec171
+  @scenario_hash:4983d39ac4a8375f
   Scenario: The aggregate gate passes only when every file is conformant and no transitional markers remain
     Given a corpus in which every file is schema-valid and no Feature carries @bc:unassigned or @origin:unresolved
     When I run "scenarios validate --aggregate" over the corpus
@@ -173,7 +173,7 @@ Feature: scenarios validate enforces the three-dimension scenario-file schema an
 
   # ---- One canonicalization: raw-stdin hash reconciled to parser block-only (ADR-056 D5/ADR-019, capability 3) ----
 
-  @scenario_hash:66e694afa456dbf1
+  @scenario_hash:910fbb7f03297276
   Scenario: The raw-stdin "scenarios hash" of a scenario equals its parser-path block-only hash
     Given a scenario whose canonical block-only hash under the parser path is H
     When I pipe to "scenarios hash" the scenario body alone and separately the same body wrapped with preceding @-tags, comment lines, and a Feature declaration
