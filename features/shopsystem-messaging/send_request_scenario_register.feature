@@ -18,3 +18,11 @@ Feature: shop-msg send request_scenario_register — deposit a scenario-register
     And that deposited message validates against the RequestScenarioRegister request schema and names target bounded context "shopsystem-templates"
     And the deposited message carries the supplied narrowing selector and no register entry of its own
     And shop-msg send request_scenario_register run with no narrowing selector instead deposits a valid request denoting the target bounded context's full register
+
+  @scenario_hash:da255854d5d933f5
+  Scenario: shop-msg send request_scenario_register deposits a well-formed JSON-serializable request when narrowed to an explicit set of block-only canonical hashes
+    Given an empty BC at a temporary path with no unprocessed inbox messages
+    When shop-msg send request_scenario_register is run for work-id "lead-401" naming target bounded context "shopsystem-templates" and supplying a narrowing selector confining the request to an explicit set of three block-only canonical hashes "d8422606299d8819", "74d0086b73d4e477" and "e59b29a6fc34f60a"
+    Then the inbox holds exactly one unprocessed request_scenario_register message for work_id "lead-401"
+    And that deposited message serialized without error and validates against the RequestScenarioRegister request schema and names target bounded context "shopsystem-templates"
+    And the deposited message carries the supplied narrowing selector as a JSON-serializable list of exactly those three block-only canonical hashes and no register entry of its own
