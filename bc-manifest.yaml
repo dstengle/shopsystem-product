@@ -3,7 +3,23 @@
 # committed, not gitignored. Consumed by `bc-container manifest list|validate|
 # sync` and as the source of remote URLs when launching BCs.
 #
-# Each entry: name (canonical shopsystem-<id>), remote (GitHub URL), role.
+# Each BC entry: name (canonical shopsystem-<id>), remote (GitHub URL), role.
+# Additive fields (ignored by older consumers):
+#   status: provisional   — defined but not-live; in/out DEFERRED (see below).
+#   deferred_to: <bead>    — the review deciding a provisional entry's in/out.
+#
+# Reconciled 2026-07-04 per ADR-056 D10 (epic lead-vzxd, David-confirmed):
+#   bcs: = the four LIVE domain BCs. THROWAWAYS excluded from ownership —
+#   `shopsystem-bc-launcher-dagger` (a dogfood instance), `fabro-e2e*`, and
+#   `fabro-throwaway` (spike scrap) appear in the shop-msg registry but are NOT
+#   owners and must never carry an `@bc:` tag.
+#   services: = supporting services per ADR-028 (agent-vault-broker + postgres)
+#   — NOT BCs, NOT `@bc:` owners; the source of the legal `@service:` value set.
+#   The lead itself (shopsystem-product) is a SHOP, not a bc; its lead-owned
+#   scenarios carry the `@bc:shopsystem-product` product token (not registered
+#   here as a bc).
+#   shopsystem-devcontainer / shopsystem-test-harness are DEFINED but not-live:
+#   kept as provisional entries, in/out DEFERRED to the DDD review lead-bh2m.
 #
 # product: the single-token product slug (ADR-038 D1) — the single derivation
 # root for the shop docker network and slug-scoped container names (compose
@@ -11,7 +27,10 @@
 # `bc-container launch` resolve the network from on-disk config without a
 # per-launch --network flag (lead-ngzl).
 product: shopsystem
+
 bcs:
+  # LIVE domain BCs — the four bounded contexts with real deliverables and
+  # running Implementer/Reviewer loops. These are the legal `@bc:` owner set.
   - name: shopsystem-messaging
     remote: https://github.com/dstengle/shopsystem-messaging
     role: bc
@@ -21,12 +40,31 @@ bcs:
   - name: shopsystem-templates
     remote: https://github.com/dstengle/shopsystem-templates
     role: bc
-  - name: shopsystem-test-harness
-    remote: https://github.com/dstengle/shopsystem-test-harness
-    role: bc
-  - name: shopsystem-devcontainer
-    remote: https://github.com/dstengle/shopsystem-devcontainer
-    role: bc
   - name: shopsystem-bc-launcher
     remote: https://github.com/dstengle/shopsystem-bc-launcher
     role: bc
+
+  # PROVISIONAL — defined but not-live. Kept as defined entries; whether they
+  # are in or out as bounded contexts is DEFERRED to the DDD review lead-bh2m.
+  - name: shopsystem-test-harness
+    remote: https://github.com/dstengle/shopsystem-test-harness
+    role: bc
+    status: provisional
+    deferred_to: lead-bh2m
+  - name: shopsystem-devcontainer
+    remote: https://github.com/dstengle/shopsystem-devcontainer
+    role: bc
+    status: provisional
+    deferred_to: lead-bh2m
+
+services:
+  # Supporting services per ADR-028 — lead-shop infrastructure the lead operates
+  # (compose-run), NOT BCs and NOT `@bc:` owners. These names are the legal
+  # `@service:<name>` value set (ADR-056 D9). Their own behaviors are pinned by
+  # the lead-owned integration surface (ADR-028 D2), tagged `@bc:shopsystem-product`.
+  - name: agent-vault-broker
+    role: service
+    kind: supporting-service
+  - name: postgres
+    role: service
+    kind: supporting-service

@@ -1,7 +1,11 @@
 # ADR-056 — Scenario files conform to a three-dimension schema (off-the-shelf Gherkin + feature-level `@bc` owner + feature-level `@origin` provenance + per-scenario `@scenario_hash`), enforced by `scenarios validate`; a feature = (originating decision × owning context); the in-file tags become authoritative and beads is deauthorized for assignment; a system consistency gate defines DONE
 
-**Status:** draft (2026-07-04, rev-2) — DESIGN ONLY, no dispatch. Authored
-under epic `lead-vzxd`; blocks the DDD bounded-context review `lead-bh2m`.
+**Status:** accepted (2026-07-04, rev-2) — David approved the shape 2026-07-04
+("approve the shape and go"). Authored under epic `lead-vzxd`; blocks the DDD
+bounded-context review `lead-bh2m`. STEP 1 of the scenario-integrity plan
+(this acceptance + the `bc-manifest.yaml` reconcile, D10) is landed on branch
+`dagger-spike`; the C1… dispatches remain HELD pending the plan's sequencing
+(no `shop-msg` send at this step).
 **Tier:** system-global (per ADR-034/035 — governs a cross-BC contract:
 where scenario ownership + provenance truth lives and how every shop
 validates scenario files. Not one BC's internals; not framework doctrine.)
@@ -241,11 +245,19 @@ SERVICES, not BCs.** Model:
   ADR-038 product slug) + `@bc:unassigned`.
 - Legal `@service:` = `bc-manifest.yaml` new `services:` section.
 - Legal `@origin:` = existing `adr/` `pdr/` `briefs/` files + lead bead IDs.
-- **Reconcile the manifest before backfill:** dispatch history references
-  `shopsystem-bc-launcher-dagger` and `shopsystem-agent-vault-broker` (absent
-  from `bcs:`) and `fabro-e2e*` throwaways. Confirm the real BCs → add to
-  `bcs:`; agent-vault-broker → `services:` (not `bcs:`, per ADR-028); spike
-  names never become owners. `E_UNKNOWN_BC`/`E_UNKNOWN_ORIGIN` fire otherwise.
+- **Manifest reconcile (DONE 2026-07-04, STEP 1; David-confirmed):** the
+  `bcs:` section = the four LIVE domain BCs — `shopsystem-messaging`,
+  `shopsystem-scenarios`, `shopsystem-templates`, `shopsystem-bc-launcher`.
+  `shopsystem-bc-launcher-dagger` (a dogfood instance), `fabro-e2e*`, and
+  `fabro-throwaway` (spike scrap) appear in the shop-msg registry but are
+  THROWAWAYS — excluded, they never become `@bc` owners. A new `services:`
+  section = `agent-vault-broker` + `postgres` (supporting services per ADR-028,
+  NOT `bcs:`; the source of the legal `@service:` set). `shopsystem-devcontainer`
+  and `shopsystem-test-harness` remain DEFINED but not-live: kept as provisional
+  `bcs:` entries with their in/out DEFERRED to the DDD review `lead-bh2m`. The
+  lead itself (`shopsystem-product`) is a shop, not a `bc`; its lead-owned
+  scenarios carry the `@bc:shopsystem-product` product token. `E_UNKNOWN_BC` /
+  `E_UNKNOWN_ORIGIN` fire against anything outside these sets.
 
 ### D11 — Source-of-truth CUTOVER (one-time)
 
