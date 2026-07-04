@@ -8,15 +8,13 @@ they cannot yet be tagged conformantly to the ADR-056 three-dimension schema
 deliberately kept OUT of `features/` so `scenarios validate --aggregate` stays
 green (the aggregate gate scans only `features/`).
 
-## devcontainer/ (17 scenarios) — @bc OK, @origin UNRESOLVED
-- `@bc:shopsystem-devcontainer` is legal (provisional manifest entry, deferred
-  to the DDD review **lead-bh2m**). Each file already carries `@bc` + a
-  reproduced `@scenario_hash`.
-- **Blocker:** no durable `@origin` decision record. The devcontainer BC (image
-  + framework-CLI-on-PATH + CI publish workflow) has no dedicated ADR/brief;
-  the scenarios were authored under lead beads (lead-5fd / lead-sbp), which is
-  a weak provenance for a permanent `@origin`. Left provisional pending a
-  devcontainer ADR/brief (candidate home: the DDD review **lead-bh2m**).
+## devcontainer/ (17 scenarios) — NO CURRENT USE (parked, not planned)
+- David 2026-07-04: devcontainer has **no current use**. Parked here, out of the
+  aggregate gate; not slated for promotion. `@bc:shopsystem-devcontainer` is a
+  legal (provisional) manifest token and each file already carries `@bc` + a
+  reproduced `@scenario_hash`, but there is no durable `@origin` decision record
+  and none is planned. If devcontainer is ever put back into use, it would need
+  an `@origin` (ADR/brief) before promotion into `features/`.
 
 ## docs/ (5 scenarios) — no legal @bc
 - References a `shopsystem-docs` BC that is **not in `bc-manifest.yaml`**, so
