@@ -1,7 +1,0 @@
-@scenario_hash:bcedb488ecc57d8d
-Scenario: lead-po template leads with role identity and posture before any procedural CLI content
-  When I read the lead-po template via "shop-templates show lead-po"
-  Then a "# Lead PO — role prompt" identity header appears in the output
-  And a "## Your default posture: COMMIT TO SPECIFICS" posture header appears in the output
-  And the byte offset of the identity header is less than the byte offset of the first occurrence of the string "shop-msg"
-  And the byte offset of the posture header is less than the byte offset of the first occurrence of the string "shop-msg"

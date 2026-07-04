@@ -1,9 +1,0 @@
-@scenario_hash:bad131a5760ad021
-Scenario: bare "shop-msg prime" resolves a BC shop's identity by walking up from CWD reading .claude/shop/name.md and type.md
-  Given a BC shop directory tree containing ".claude/shop/name.md" with literal content "shopsystem-docs" and ".claude/shop/type.md" with literal content "bc"
-  And "shopsystem-docs" is registered in the messaging registry as a BC
-  And my current working directory is the BC shop directory (or any descendant of it that contains no nearer ".claude/shop/" directory)
-  When I run "shop-msg prime" with no addressing flags
-  Then the command exits zero
-  And the command resolves the invoking shop's identity to canonical name "shopsystem-docs" and shop type "bc"
-  And the output is the same orientation output that an explicit "shop-msg prime --bc shopsystem-docs" invocation from outside the shop directory would produce

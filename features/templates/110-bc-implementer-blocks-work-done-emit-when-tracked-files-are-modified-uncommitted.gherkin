@@ -1,7 +1,0 @@
-@scenario_hash:d1a890b937181543
-Scenario: bc-implementer template directs the implementer to block a work_done (complete) emit when tracked files in the BC root are modified but uncommitted, and to name the dirty paths in the response
-  When I read the bc-implementer template via "shop-templates show bc-implementer"
-  Then the content directs the implementer that, prior to emitting work_done with status complete on a dispatch where the Implementer is the work_done emitter (request_maintenance, or request_bugfix whose scenarios[] is empty), the implementer must invoke "git status --porcelain" in the BC root and inspect its output
-  And the content directs the implementer that any line in "git status --porcelain" output with a tracked-file modification marker (lines beginning with " M", "M ", "MM", " D", "D ", "A ", "AM", " R", "R ", " C", "C ", or "UU") is a precondition failure
-  And the content directs the implementer that on such a precondition failure the implementer does NOT compose "shop-msg respond work_done --status complete" and instead emits "shop-msg respond work_done --status blocked" with a summary that names the tracked paths reported by "git status --porcelain"
-  And the content frames the dirty-tracked-files check as a step the implementer runs even when acceptance criteria are satisfied and any local verification (unit tests, build, lint) passes, so a green local result does not bypass the check

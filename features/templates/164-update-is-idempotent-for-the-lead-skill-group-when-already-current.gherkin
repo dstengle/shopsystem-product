@@ -1,8 +1,0 @@
-@scenario_hash:a14e5a0aacb58285
-Scenario: update is idempotent for the managed lead skill-group when the poured skills already match the current canonical package data
-  Given an existing git repository at a target directory "/tmp/example-lead-shop" that was previously bootstrapped as a "lead" shop named "example-lead-shop"
-  And every skill in the ".claude/skills/" directory equals its current canonical lead-skill template package-data file contents byte-for-byte
-  When I invoke the "shop-templates" update entry point against the target directory "/tmp/example-lead-shop"
-  Then the exit code is 0
-  And after the invocation every skill in the ".claude/skills/" directory still equals its current canonical lead-skill template package-data file contents byte-for-byte
-  And the set of skill directories under ".claude/skills/" in the target directory is unchanged

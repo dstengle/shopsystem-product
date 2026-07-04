@@ -1,8 +1,0 @@
-@bc:shopsystem-messaging
-@scenario_hash:b6b300ee8cf305ec
-Scenario: shop-msg watch --lead-root outputs one line to stdout when any BC writes a respond message
-  Given a lead root directory containing two empty BCs at temporary paths
-  And shop-msg watch --lead-root is running in the background and has completed its startup drain
-  When a shop-msg respond work_done message with work-id "lead-301" is inserted into the first BC's outbox
-  Then shop-msg watch --lead-root outputs exactly one line to stdout for work_id "lead-301"
-  And no additional output line arrives within 2 seconds

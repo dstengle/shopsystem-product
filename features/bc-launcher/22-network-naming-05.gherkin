@@ -1,9 +1,0 @@
-  @scenario_hash:c06b181e342f5191
-  Scenario: bc-container launch does not attempt to create the network when it already exists
-    Given a bc-manifest.yaml exists with product field "shopsystem product"
-    And a Docker network named "shopsystem-product" already exists
-    And no Docker container named "bc-shopsystem-messaging" is running
-    When I run bc-container launch with BC name "shopsystem-messaging"
-    Then the command exits zero
-    And the FakeDockerDriver records that "docker network create shopsystem-product" was NOT called
-    And a Docker container named "bc-shopsystem-messaging" is running

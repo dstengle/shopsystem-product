@@ -1,7 +1,0 @@
-@scenario_hash:cf3b43277fa2f513
-Scenario: shop-msg watch outputs one line to stdout when a new message is inserted into the inbox after startup drain
-  Given an empty BC at a temporary path with no unprocessed inbox messages
-  And shop-msg watch is running in the background and has completed its startup drain
-  When a new assign_scenarios message with work-id "lead-200" is inserted into the inbox
-  Then shop-msg watch outputs exactly one line to stdout for work_id "lead-200"
-  And no additional output line arrives within 2 seconds

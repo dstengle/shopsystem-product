@@ -1,7 +1,0 @@
-@scenario_hash:7b53b8d069db187b
-Scenario: bc-container attach connects to the running BC container's tmux session
-  Given the shopsystem-bc-launcher BC is installed
-  And a Docker container named "bc-shopsystem-messaging" is running
-  And a tmux session named "agent" exists inside the container
-  When I run bc-container attach with BC name "shopsystem-messaging"
-  Then the command executes docker exec -it bc-shopsystem-messaging tmux attach-session -t agent

@@ -1,7 +1,0 @@
-@scenario_hash:8a5341da355cc6ee
-Scenario: scenarios hash emits a 16-character hex hash for a well-formed scenario body
-  Given a Gherkin scenario body on stdin
-  When I run "scenarios hash"
-  Then the exit code is 0
-  And stdout is a single line of 16 lowercase hex characters
-  And stderr is empty

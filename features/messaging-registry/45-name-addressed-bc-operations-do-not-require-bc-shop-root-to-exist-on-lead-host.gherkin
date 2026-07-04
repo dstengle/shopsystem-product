@@ -1,9 +1,0 @@
-@scenario_hash:4fa5c3404860ec68
-Scenario: shop-msg send by --bc <name> succeeds when the registered BC's shop_root path does not exist on the lead host
-  Given "shopsystem-messaging" is registered in the messaging registry as a BC whose shop_root column points to a filesystem path that does not exist on the lead host
-  And no other registry mutation is required for the lead's own entry to be present
-  When I run shop-msg send assign_scenarios --bc shopsystem-messaging with a valid payload and work-id "reg-mxxm-101"
-  Then the command exits zero
-  And stderr contains no "registry entry for ... points to path ... which does not exist on disk" warning
-  And stderr contains no "registry may be stale" warning
-  And shop-msg pending inbox --bc shopsystem-messaging includes work-id "reg-mxxm-101"

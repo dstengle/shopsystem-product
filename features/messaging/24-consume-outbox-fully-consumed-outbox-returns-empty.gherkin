@@ -1,9 +1,0 @@
-@bc:shopsystem-messaging
-@scenario_hash:414b25f9c253556f
-Scenario: pending outbox returns empty output when all outbox rows for all BCs have been consumed
-  Given a lead shop at a temporary path with BC clone "bc-alpha" present as a sibling directory
-  And shop-msg respond work_done was previously used inside "bc-alpha" to write an outbox response with work-id "lead-502" and status "complete"
-  And shop-msg consume outbox has been run with --bc-root pointing at "bc-alpha", --work-id "lead-502", and --message-type "work_done"
-  When I run the shop-msg subcommand that enumerates pending unprocessed outbox responses, with no filter
-  Then the command exits zero
-  And stdout contains no work_id entries

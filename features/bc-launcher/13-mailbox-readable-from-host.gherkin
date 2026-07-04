@@ -1,8 +1,0 @@
-@scenario_hash:d43c07318eba1402
-Scenario: shop-msg sent from the host is receivable by the BC agent inside the container
-  Given the shopsystem-bc-launcher BC is installed
-  And a Docker container named "bc-shopsystem-messaging" is running on the shared Docker network
-  And the container has SHOPMSG_DSN set to the shared PostgreSQL instance
-  When I run shop-msg send assign_scenarios on the host with work-id "lead-500" targeting the "shopsystem-messaging" BC
-  Then the command exits zero
-  And running shop-msg pending inside the container reports work-id "lead-500" as pending

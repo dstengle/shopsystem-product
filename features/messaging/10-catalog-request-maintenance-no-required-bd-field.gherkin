@@ -1,8 +1,0 @@
-@bc:shopsystem-messaging
-@scenario_hash:ff6c63eb9b5dfa10
-Scenario: A minimal valid request_maintenance message can be constructed without supplying any bd-related field
-  Given the RequestMaintenance schema from the shop-msg catalog
-  When I construct a RequestMaintenance instance supplying only the fields the schema marks as required, with no field whose name begins with "bd_" or otherwise references a beads issue identifier
-  Then construction succeeds
-  And no schema validation error is raised
-  And no required field of the schema names a beads identifier in its name, type, or validation pattern

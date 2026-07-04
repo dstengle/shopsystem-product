@@ -1,9 +1,0 @@
-@scenario_hash:e0d0748c3a40fad2
-Scenario: A name-addressed shop-msg operation resolves its bd working directory from the local invoking CWD and does not crash when no registry path exists
-  Given "shopsystem-messaging" is registered in the messaging registry with abstract address "shopsystem/messaging"
-  And the registry stores no filesystem path for any entry
-  And the invoking CWD contains a .beads directory discoverable by walk-up
-  When I run a name-addressed shop-msg operation against --bc shopsystem-messaging that needs a bd context
-  Then the command exits zero
-  And the bd context used is the .beads directory discovered from the local invoking CWD
-  And the command emits no FileNotFoundError or NotADirectoryError arising from a registry-stored path

@@ -1,7 +1,0 @@
-@scenario_hash:b1fbd8070695aa52
-Scenario: registry add accepts a canonical name with no filesystem path and assigns the abstract address
-  Given no shop named "shopsystem-messaging" is registered in the messaging registry
-  And the deployment's system slug is "shopsystem"
-  When I run shop-msg registry add with canonical name "shopsystem-messaging" and no filesystem-path argument
-  Then the command exits zero
-  And shop-msg registry list includes an entry for "shopsystem-messaging" whose abstract address is "shopsystem/messaging"

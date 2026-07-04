@@ -1,6 +1,0 @@
-@scenario_hash:e98b2b5c80151839
-Scenario: The lead shop appears in the registry after bootstrap registry add
-  Given no shop named "shopsystem-product" is registered in the messaging registry
-  When I run shop-msg registry add with canonical name "shopsystem-product" and its connection information
-  Then the command exits zero
-  And shop-msg registry list includes an entry for "shopsystem-product"

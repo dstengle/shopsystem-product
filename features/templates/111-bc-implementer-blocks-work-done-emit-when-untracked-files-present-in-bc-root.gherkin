@@ -1,6 +1,0 @@
-@scenario_hash:e98d72015796afbe
-Scenario: bc-implementer template directs the implementer to block a work_done (complete) emit when untracked files are present in the BC root, and to name the untracked paths in the response
-  When I read the bc-implementer template via "shop-templates show bc-implementer"
-  Then the content directs the implementer that the same "git status --porcelain" inspection that catches modified-tracked-files (per scenario 110) also catches untracked files (lines beginning with "??") and treats them as a precondition failure on any Implementer-emitted work_done (request_maintenance, or request_bugfix whose scenarios[] is empty)
-  And the content directs the implementer that on untracked-files failure the implementer does NOT compose "shop-msg respond work_done --status complete" and instead emits "shop-msg respond work_done --status blocked" with a summary that names the untracked paths reported by "git status --porcelain"
-  And the content explicitly directs the implementer that the untracked-files check is NOT satisfied by adding the paths to .gitignore unless the paths are genuinely outside the BC's scope of work; the implementer must confirm by inspection of the dispatch's acceptance criteria (or by clarify back to the lead) whether the untracked paths are work product that should be committed before re-attempting the emit

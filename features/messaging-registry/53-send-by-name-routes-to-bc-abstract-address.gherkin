@@ -1,9 +1,0 @@
-@scenario_hash:0f08498b8731112b
-Scenario: A message sent to a BC by name routes to that BC's abstract address and resolves there for read pending and watch
-  Given "shopsystem-messaging" is registered in the messaging registry with abstract address "shopsystem/messaging"
-  And "shopsystem-product" is registered as the lead shop with abstract address "shopsystem/lead"
-  When I run shop-msg send assign_scenarios --bc shopsystem-messaging with a valid payload and work-id "reg-501"
-  Then the command exits zero
-  And the stored message's "to" field is the abstract address "shopsystem/messaging"
-  And shop-msg pending inbox --bc shopsystem-messaging includes work-id "reg-501"
-  And shop-msg read inbox --bc shopsystem-messaging with work-id "reg-501" returns that message

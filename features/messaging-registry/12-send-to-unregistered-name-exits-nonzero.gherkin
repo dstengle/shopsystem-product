@@ -1,6 +1,0 @@
-@scenario_hash:38b33e17c05a1a61
-Scenario: Sending a message to a name not in the registry exits non-zero with a clear error
-  Given no shop named "shopsystem-unknown" is registered in the messaging registry
-  When I run shop-msg send assign_scenarios --bc shopsystem-unknown with a valid payload
-  Then the command exits non-zero
-  And stderr contains a message indicating "shopsystem-unknown" could not be resolved in the registry

@@ -1,9 +1,0 @@
-@scenario_hash:1e49cc3a526d4272
-Scenario: lead-po template names the empowered-PM identity and every durable PM discipline with guidance or a "guidance pending" marker
-  Given the four durable PM disciplines "problem discovery & selection", "outcome ownership", "strategy before backlog", and "specification as the contract"
-  When I read the lead-po template via "shop-templates show lead-po"
-  Then the content names an empowered Product-Manager identity that owns the problem and the outcome, distinct from an order-taker who converts requests into scenarios
-  And the content states that this empowered-PM identity sharpens, and does not replace, the existing COMMIT TO SPECIFICS posture
-  And the content names each of the four durable PM disciplines
-  And for each discipline, the content has a contiguous block — either a subsection that names the discipline or a line that names the discipline — that contains at minimum one sentence of guidance OR an explicit marker of the form "guidance pending" (case-insensitive)
-  And no PM discipline appears as a bare list item with neither guidance nor a "guidance pending" marker

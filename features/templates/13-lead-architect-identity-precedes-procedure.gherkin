@@ -1,7 +1,0 @@
-@scenario_hash:0584713623f506bb
-Scenario: lead-architect template leads with role identity and posture before any procedural CLI content
-  When I read the lead-architect template via "shop-templates show lead-architect"
-  Then a "# Lead Architect — role prompt" identity header appears in the output
-  And a "## Your default posture: PRE-STATE DETERMINES VEHICLE — VERIFIED EMPIRICALLY" posture header appears in the output
-  And the byte offset of the identity header is less than the byte offset of the first occurrence of the string "shop-msg"
-  And the byte offset of the posture header is less than the byte offset of the first occurrence of the string "shop-msg"

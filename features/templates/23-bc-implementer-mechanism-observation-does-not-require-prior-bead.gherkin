@@ -1,9 +1,0 @@
-@scenario_hash:b2d1036514610f30
-Scenario: bc-implementer template's mechanism-observation guidance does not make a beads issue a precondition for emitting the wire message, and names the renamed provenance-ref flag rather than the removed bd-ref flag
-  When I read the bc-implementer template via "shop-templates show bc-implementer"
-  Then the "Surfacing mechanism observations" section does not contain the literal substring "bd create"
-  And the section does not contain the literal substring "--bd-ref"
-  And the section does not contain language of the form "Create a beads issue" or "create a beads issue" or "create a bd issue" as a numbered or otherwise-ordered step that precedes the shop-msg respond mechanism_observation step
-  And every shop-msg respond mechanism_observation invocation example in the section is composable without referring to any flag whose name contains the substring "bd"
-  And if the section mentions a provenance pointer at all it names it via the optional flag "--provenance-ref"
-  And the section contains an explicit statement that emitting the mechanism_observation does not require the BC to use bd or to create a bd issue

@@ -1,7 +1,0 @@
-@bc:shopsystem-messaging
-@scenario_hash:6ad300e47e1f4f97
-Scenario: shop-msg watch remains running when there are no pending messages and no new notifications arrive
-  Given an empty BC at a temporary path with no unprocessed inbox messages
-  When I run shop-msg watch in the background and wait for startup drain to complete
-  Then the process has not exited after 2 seconds of inactivity
-  And no output lines have been written to stdout during that idle period

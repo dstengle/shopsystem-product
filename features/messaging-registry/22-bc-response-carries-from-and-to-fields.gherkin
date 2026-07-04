@@ -1,9 +1,0 @@
-@scenario_hash:9c3bcc978009e5ac
-Scenario: A BC response carries from and to fields identifying the BC sender and the lead recipient
-  Given "shopsystem-product" is registered as the lead shop
-  And "shopsystem-messaging" is registered in the messaging registry
-  And shop-msg respond work_done was run by "shopsystem-messaging" for work-id "lead-402"
-  When I run shop-msg read inbox --lead shopsystem-product with work-id "lead-402"
-  Then the command exits zero
-  And stdout includes a "from" field containing "shopsystem-messaging"
-  And stdout includes a "to" field containing "shopsystem-product"

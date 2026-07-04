@@ -1,6 +1,0 @@
-@scenario_hash:997afb1f7cd92f7a
-Scenario: shop-msg watch --lead <name> exits non-zero immediately when the database is unreachable
-  Given the messaging database is not reachable
-  When I run shop-msg watch --lead shopsystem-product
-  Then the command exits non-zero
-  And stderr contains a message indicating the database could not be reached

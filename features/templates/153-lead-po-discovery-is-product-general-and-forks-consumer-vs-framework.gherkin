@@ -1,8 +1,0 @@
-@scenario_hash:6465b30fe62fb935
-Scenario: lead-po template states that the PM role is product-general and its discovery inputs fork between consumer and framework instances
-  When I read the lead-po template via "shop-templates show lead-po"
-  Then the content states that the empowered-PM role is product-general — it instantiates into every product lead shop — and that market-facing PM competencies are load-bearing, not vestigial
-  And the content states that the four disciplines are identical across product instances and only their inputs fork
-  And the content states the consumer-product fork: full market-facing PM with real user, market, and JTBD discovery, competitive analysis, positioning, and segmentation, whose outcome is customer behavior change or business metrics
-  And the content states the framework-as-product fork: platform-as-a-product or developer-experience PM whose customers are adopters, operators, and BC shops and whose outcome is adoption or developer experience
-  And the content names the consumer product as the primary case and framework-as-product as the bootstrap or meta instance

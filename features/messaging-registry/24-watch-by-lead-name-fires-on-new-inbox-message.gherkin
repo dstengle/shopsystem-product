@@ -1,7 +1,0 @@
-@scenario_hash:1f4e864ca2f7ba0d
-Scenario: shop-msg watch --lead <name> outputs one line to stdout when a new message arrives addressed to the lead
-  Given "shopsystem-product" is registered as the lead shop
-  And shop-msg watch --lead shopsystem-product is running in the background and has completed its startup drain
-  When a shop-msg respond work_done message with work-id "lead-501" is sent to the lead inbox
-  Then shop-msg watch --lead shopsystem-product outputs exactly one line to stdout for work_id "lead-501"
-  And no additional output line arrives within 2 seconds

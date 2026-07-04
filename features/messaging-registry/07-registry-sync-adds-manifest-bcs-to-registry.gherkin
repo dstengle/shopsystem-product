@@ -1,8 +1,0 @@
-@scenario_hash:d62604ef55086083
-Scenario: Syncing from the BC manifest registers all BCs declared in the manifest
-  Given the BC manifest declares "shopsystem-messaging" and "shopsystem-scenarios" as product BCs
-  And neither "shopsystem-messaging" nor "shopsystem-scenarios" is registered in the messaging registry
-  When I run shop-msg registry sync with the path to the BC manifest
-  Then the command exits zero
-  And shop-msg registry list includes an entry for "shopsystem-messaging"
-  And shop-msg registry list includes an entry for "shopsystem-scenarios"

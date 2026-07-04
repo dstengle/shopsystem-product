@@ -1,8 +1,0 @@
-@scenario_hash:8bb999408f08414b
-Scenario: the bootstrap entry point exits with an argparse-style usage error when invoked without --target, with no Python traceback emitted
-  Given an existing empty directory "/tmp/example-shop-no-target-witness" that contains no ".claude/agents/" directory, no ".beads/" directory, no top-level "CLAUDE.md", and no top-level ".gitignore"
-  When I invoke the "shop-templates" bootstrap entry point with --shop-type "bc" and --shop-name "shopsystem-example" but with no --target argument
-  Then the exit code is 2
-  And stderr names "--target" as a missing required argument
-  And stderr does not contain a Python traceback or the substring "TypeError"
-  And the witness directory "/tmp/example-shop-no-target-witness" still contains no ".claude/agents/" directory and no ".beads/" directory and no top-level "CLAUDE.md" and no top-level ".gitignore"

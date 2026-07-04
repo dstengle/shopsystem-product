@@ -1,8 +1,0 @@
-@scenario_hash:f79d1838ca9dbd89
-Scenario: bc-container launch reports state instead of starting a second container when the BC is already running
-  Given the shopsystem-bc-launcher BC is installed
-  And a Docker container named "bc-shopsystem-messaging" is already running
-  When I run bc-container launch with BC name "shopsystem-messaging"
-  Then the command exits zero
-  And stdout reports that "bc-shopsystem-messaging" is already running
-  And exactly one Docker container named "bc-shopsystem-messaging" is running

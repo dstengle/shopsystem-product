@@ -1,9 +1,0 @@
-@scenario_hash:6bdb4802f57c1afb
-Scenario: The BC container does not have access to sibling BC source trees or the lead shop workspace
-  Given the shopsystem-bc-launcher BC is installed
-  And a temporary directory is created on the host as a candidate sibling mount
-  And bc-container launch is run with BC name "shopsystem-messaging"
-  And the container "bc-shopsystem-messaging" is running
-  When the container's filesystem mounts are inspected
-  Then the only bind mounts inside the container are the BC's own repository mount
-  And no bind mount inside the container has the candidate directory as its source

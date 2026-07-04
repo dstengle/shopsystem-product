@@ -1,6 +1,0 @@
-@scenario_hash:c302d0f6e0daf0c0
-Scenario: Registering a shop by canonical name makes it resolvable by shop-msg
-  Given no shop named "shopsystem-messaging" is registered in the messaging registry
-  When I run shop-msg registry add with canonical name "shopsystem-messaging" and its connection information
-  Then the command exits zero
-  And shop-msg registry list includes an entry for "shopsystem-messaging"

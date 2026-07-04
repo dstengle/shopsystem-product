@@ -1,7 +1,0 @@
-@scenario_hash:04236074a60ffcd7
-Scenario: bc-container launch starts a named tmux session inside the container
-  Given the shopsystem-bc-launcher BC is installed
-  And no Docker container named "bc-shopsystem-messaging" is running
-  When I run bc-container launch with BC name "shopsystem-messaging"
-  And the container starts
-  Then a tmux session named "agent" exists inside the container "bc-shopsystem-messaging"

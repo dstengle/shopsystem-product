@@ -1,8 +1,0 @@
-  @scenario_hash:9378f92b158b4ffc
-  Scenario: explicit --network flag overrides the network name derived from bc-manifest.yaml
-    Given a bc-manifest.yaml exists with product field "shopsystem product"
-    And no Docker container named "bc-shopsystem-messaging" is running
-    When I run bc-container launch with BC name "shopsystem-messaging" and flag "--network custom-net"
-    Then the command exits zero
-    And the FakeDockerDriver records that the docker run command for "bc-shopsystem-messaging" includes the flag "--network custom-net"
-    And the FakeDockerDriver records that the docker run command does NOT include "--network shopsystem-product"

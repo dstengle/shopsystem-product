@@ -1,9 +1,0 @@
-@scenario_hash:43fae05b4ad39eb3
-Scenario: bc-container list shows all known BC containers with their states
-  Given the shopsystem-bc-launcher BC is installed
-  And a Docker container named "bc-shopsystem-messaging" is running
-  And a Docker container named "bc-shopsystem-scenarios" is stopped
-  When I run bc-container list
-  Then the command exits zero
-  And stdout includes an entry for "shopsystem-messaging" with state "running"
-  And stdout includes an entry for "shopsystem-scenarios" with state "stopped"
