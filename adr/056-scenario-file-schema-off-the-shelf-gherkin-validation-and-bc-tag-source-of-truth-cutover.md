@@ -1,258 +1,292 @@
-# ADR-056 — Scenario files conform to an off-the-shelf-Gherkin + `@bc`/`@scenario_hash` schema enforced by `scenarios validate`; the in-file `@bc` tag becomes the authoritative owner and beads dispatch history is deauthorized for assignment (one-time backfill)
+# ADR-056 — Scenario files conform to a three-dimension schema (off-the-shelf Gherkin + feature-level `@bc` owner + feature-level `@origin` provenance + per-scenario `@scenario_hash`), enforced by `scenarios validate`; a feature = (originating decision × owning context); the in-file tags become authoritative and beads is deauthorized for assignment; a system consistency gate defines DONE
 
-**Status:** draft (2026-07-03) — DESIGN ONLY, no dispatch. Authored under
-epic `lead-vzxd`; blocks the DDD bounded-context review `lead-bh2m`.
+**Status:** draft (2026-07-04, rev-2) — DESIGN ONLY, no dispatch. Authored
+under epic `lead-vzxd`; blocks the DDD bounded-context review `lead-bh2m`.
 **Tier:** system-global (per ADR-034/035 — governs a cross-BC contract:
-where scenario-ownership truth lives and how every shop validates scenario
-files. Not one BC's internals; not framework doctrine.)
+where scenario ownership + provenance truth lives and how every shop
+validates scenario files. Not one BC's internals; not framework doctrine.)
 **Authors:** dstengle, Claude (lead-architect)
 **Anchored to:** ADR-018 (empirical verification is the contract/artifact
 surface; no BC clone on the lead host), ADR-019 (canonicalization ownership
-lives in the `scenarios` BC — there is exactly ONE canonical scenario-block
-hash text and `scenarios` owns the rule; templates delegate), ADR-036 D3
-(block-only canonicalization), ADR-042 (the `bc-emit work-done` wrapper is
-the mechanically-enforced pre-emit gate; it already checks that
-`work_done.scenario_hashes` match the committed `features/`), ADR-011
-(bead↔message field mapping — the `dispatched_to_bc` /
-`scenario_hashes_pinned` metadata this ADR deauthorizes for assignment),
-ADR-005 (`bc-manifest.yaml` is the canonical BC registry).
+lives in the `scenarios` BC — exactly ONE canonical scenario-block hash text),
+ADR-028 (agent-vault broker + postgres are lead-shop SUPPORTING SERVICES, not
+BCs — the service-dependency grounding for D9), ADR-036 D3 (block-only
+canonicalization), ADR-042 (the `bc-emit work-done` wrapper is the enforced
+pre-emit gate), ADR-047 (the `bin/doctor` / `system-manifest` coherence gate —
+the host for the aggregate consistency gate D8), ADR-011 (bead↔message field
+mapping — the metadata this ADR deauthorizes for assignment), ADR-005
+(`bc-manifest.yaml` is the canonical BC registry).
 **Anchored on (PDR):** PDR-011 (empirical verification is contract surface).
 
 ---
 
 ## Context
 
-Two problems, one artifact surface.
+Three problems, one artifact surface.
 
-**(1) Ownership is not on the artifact.** Today "which BC owns scenario X"
-is recovered from **beads dispatch history** — each dispatch bead carries
-metadata `dispatched_to_bc` + `scenario_hashes_pinned` (ADR-011). That is a
-production-system ledger fact, not a product fact. The DDD review
-(`lead-bh2m`) needs to read ownership *off the scenarios themselves*, and
-ownership is a PRODUCT fact (which bounded context a behavior belongs to),
-so it must live in the product artifact — the scenario file — not the ledger.
+**(1) Ownership AND provenance are not on the artifact.** "Which BC owns
+scenario X" is recovered from **beads dispatch history** (`dispatched_to_bc`
++ `scenario_hashes_pinned`, ADR-011) — a production-system-ledger fact, not a
+product fact. And "which decision ORIGINATED this scenario / what feature does
+it belong to" is not recorded on the scenario at all. Both are PRODUCT facts
+(which bounded context owns a behavior; which decision it realizes), so both
+must live on the product artifact. The DDD review (`lead-bh2m`) reads both off
+the scenarios.
 
-Measured pre-state (2026-07-03, artifact + `bd export` surface, ADR-018):
+David's insight (2026-07-04): **"what is a feature" is DERIVABLE from
+beads+briefs+pdrs+adrs — the SAME derivation as provenance.** Scenarios that
+share an originating decision FORM a feature; that decision IS the feature's
+provenance. One derivation yields BOTH grouping and provenance.
 
-- Corpus: **562 scenarios** across **484 `.gherkin` files** under
-  `features/` (via `scenarios list`, the authoritative per-scenario view).
-- **Only ~29.5%** of scenarios (166/562) resolve to an owner by *exact
-  block-only hash match* against the beads dispatch map (379 distinct
-  pinned hashes, built from 182 dispatch beads: 66 `assign_scenarios` +
-  116 `request_bugfix`). Adding existing in-file `@bc` tags (49) and
-  work_id-comment→`dispatched_to_bc` inference (14) reaches only **40.7%**.
-  **59.3% (333 scenarios) are not cleanly derivable from beads** and must
-  be resolved by a supervised heuristic or marked `@bc:unassigned`.
-- **213 of 379 (56%)** beads-pinned hashes no longer match ANY current
-  scenario body — heavy drift/supersession. Beads is therefore an
-  unreliable *ongoing* ownership oracle even for what it did record.
-- Only **53 files** carry a real `@bc:` tag line today; `templates/` (225
-  files) and the lead's own mirror are entirely untagged. Tag **absence**
-  is the default state across ~431 files.
+Measured pre-state (artifact + `bd export` surface, ADR-018):
+- **562 scenarios** across **484 `.gherkin` files** (`scenarios list`).
+- **Owner-by-beads (lead-side):** only ~29.5% resolve by exact block-only
+  hash → single BC; ~40.7% with existing tags + work_id inference; **~59%
+  not cleanly derivable** — because **56% (213/379) of beads-pinned hashes
+  have drifted** off their bodies. Beads is an unreliable *ongoing* oracle.
+- **Provenance-by-decision (lead-side):** ~50.5% of scenarios carry a
+  derivable originating decision via in-file ADR/PDR/brief/bead references
+  (drift-independent — the refs live in file comments); 49.5% underivable
+  lead-side.
+- Tag absence is the default: only 53 files carry any `@bc` tag; `templates/`
+  (225 files) is entirely untagged; **370/484 files have no `Feature:` line**
+  (rejected by any standard Gherkin parser).
 
-**(2) There is no schema and no validation, and there are TWO
-canonicalizations in the shipped tool.** `scenarios` today offers
-`hash / verify / list / count / titles / tags` — **no `validate`, no schema,
-no tag enforcement, no create/modify**. Worse, empirical probing surfaced a
-latent ADR-019 violation:
+**(2) No schema, no validation, and TWO canonicalizations.** `scenarios`
+offers `hash/verify/list/count/titles/tags` — no `validate`, no schema, no
+tag enforcement, no create/modify. And empirical probing found a latent
+ADR-019 violation:
+- **Parser path** (`scenarios list`/`count`): parses Gherkin, hashes each
+  scenario block-only, **ignoring** tags/comments/`Feature:`. Reproduces
+  **100% (417/417)** of embedded `@scenario_hash` tags — the authoritative
+  canonicalization.
+- **Raw-stdin path** (`scenarios hash < text`): retains tags/comments as
+  content → **diverges** (e.g. `messaging/23`: parser `266fbc83d32ad724` vs
+  raw `5cb732540fec3c93`). The recipe `awk '/Scenario:/{p=1} p' | scenarios
+  hash` is right for `templates/213` by coincidence and wrong for `23`.
+  Slice-16-class "two inputs to canonicalization" bug, live in the tool.
 
-- The **parser path** (`scenarios list` / `scenarios count`) parses the
-  Gherkin, extracts each scenario node, and hashes it **block-only,
-  tag/comment/`Feature:`-insensitive**. It reproduces **100% (417/417)** of
-  the embedded `@scenario_hash` tags in the corpus, with **zero
-  mismatches**. This is the authoritative canonicalization.
-- The **raw-stdin path** (`scenarios hash < text`) canonicalizes whatever
-  literal text it is handed; it retains `@bc` and comment/`Feature:` lines
-  as content and therefore **diverges** from the parser path whenever those
-  are present. Example: `features/messaging/23-*.gherkin` →
-  parser `266fbc83d32ad724` vs raw-block `5cb732540fec3c93`. The two agree
-  only coincidentally (e.g. `templates/213`). The commonly-used recompute
-  recipe `awk '/Scenario:/{p=1} p' FILE | scenarios hash` is therefore
-  **unsafe** — it is right for `213` and wrong for `23`.
-
-David additionally requires (this session): scenario files must be **real
-ecosystem-valid Gherkin** (pass an off-the-shelf parser) with a proper
-`Feature:` declaration and multiple scenarios grouped per file — today
-**370/484 files have no `Feature:` line at all**, so they would be rejected
-by any standard Gherkin parser.
+**(3) The cleanup has no defined end.** David: *"I want this to have a
+defined end. The system does not pass consistency checks until this is
+resolved."* Missing tags / `unassigned` / missing provenance must be a
+NON-PASSING system state, not a permanent honest default.
 
 ## Considered alternatives
 
-- **Keep beads authoritative, add a lookup tool.** Rejected: 56% hash drift
-  makes beads unreliable ongoing; ownership is a product fact that belongs
-  on the product artifact; and `lead-bh2m` cannot read the ledger as a
-  product surface.
-- **Directory = owner.** Rejected: directory name is not a BC name
-  (`features/agent-vault-broker/` scenarios resolve to `shopsystem-templates`;
-  `features/launcher-credentials/` holds `@bc:shopsystem-bc-launcher` tags),
-  and two directories are genuinely mixed-owner (`templates/` leaks one
-  `shopsystem-messaging` scenario; `scenario-journal/` splits
-  scenarios/messaging). Directory is a useful *review hint*, never an
-  authority.
-- **Bespoke Gherkin dialect + our own hasher as the only validator.**
-  Rejected per David: files must pass a standard off-the-shelf parser so the
-  corpus stays ecosystem-portable.
-- **Two canonicalizations, documented.** Rejected: ADR-019 mandates exactly
-  one canonical hash text owned by `scenarios`. The raw-stdin divergence is
-  a bug to close, not a feature to document.
+- **Keep beads authoritative + a lookup tool.** Rejected: 56% drift; ownership
+  is a product fact; `lead-bh2m` cannot read the ledger as a product surface.
+- **Lead-side beads resolution as the backfill resolver.** Rejected (David's
+  refinement): caps at ~40% due to drift. **Each BC authoritatively knows its
+  own scenarios from its own repo (near-100%)** — so backfill leans on **BC
+  self-tagging**; beads becomes a cross-check/seed, not the resolver (D7).
+- **Separate `@adr-NNN`/`@pdr-NNN`/… provenance tags.** Rejected: multiple
+  tags with ambiguous cardinality and mixed namespaces. Unified `@origin:<ref>`
+  gives one rule, one grep dimension, one canonical root per feature (D2).
+- **Feature = one decision (possibly multi-BC).** Rejected: a decision can
+  span BCs (e.g. ADR-042 touches templates + the gate); if a feature spanned
+  BCs, `@bc` could not be feature-level-inherited. **Feature = (decision ×
+  owning context)** keeps both `@bc` and `@origin` constant within a feature →
+  both feature-level-inherited (D1/D6).
+- **Directory = owner.** Rejected: dir name ≠ BC name (`agent-vault-broker/`,
+  `launcher-credentials/`); two dirs are mixed-owner. Directory is a review
+  hint only.
+- **Service dependencies as `@bc` owners.** Rejected: ADR-028 fixes
+  agent-vault broker + postgres as SUPPORTING SERVICES, not BCs → a distinct
+  `@service:` category (D9).
+- **`@bc:unassigned` as a permanent honest default.** Rejected per David:
+  it is a TRANSITIONAL forcing marker; the aggregate gate stays RED until it
+  reaches zero (D8).
 
 ---
 
 ## Decision
 
-### D1 — Scenario-file SCHEMA (validated, enforced)
+### D1 — Three conformance dimensions; feature-level vs scenario-level
 
-A conformant scenario file MUST satisfy ALL of:
+Every scenario is governed by three tag dimensions:
 
-1. **Off-the-shelf-Gherkin valid.** It parses cleanly under the pinned
-   **official `@cucumber/gherkin`** parser (see D4 for why this one). This
-   forces a `Feature:` declaration and well-formed structure — the corpus
-   becomes ecosystem-valid Gherkin, not a bespoke dialect.
-2. **Exactly one `Feature:`** per file, with one or more scenarios grouped
-   under it.
-3. **Every `Scenario` / `Scenario Outline` carries exactly one owner tag:**
-   `@bc:<canonical-bc-name>` **or** the explicit sentinel `@bc:unassigned`.
-   **Tag absence is a schema violation** — this is the core mandate. The
-   owner tag is placed on the scenario (immediately above `Scenario:`), not
-   on the `Feature:`, because a grouped file may hold scenarios of different
-   owners (see D6). `<canonical-bc-name>` MUST be a known BC (D5).
-4. **Every scenario carries exactly one `@scenario_hash:<16-hex>` tag** whose
-   value equals the **parser (block-only) canonical hash** of that scenario
-   (D3). This is the PO-authored pin; `scenarios validate` recomputes and
-   confirms it.
-5. **Canonicalization is block-only and tag/comment/`Feature:`-insensitive**
-   (ADR-019 / ADR-036 D3): editing the `Feature:` line, adding/removing
-   `@bc`/`@scenario_hash` tags, and inter-scenario blank lines/comments do
-   NOT change any `@scenario_hash`. This is an *invariant the tool must
-   uphold*, and it is **empirically verified today under the parser path**
-   (D3 evidence).
+| Dimension | Tag | Level | Cardinality | Meaning |
+|-----------|-----|-------|-------------|---------|
+| Owner | `@bc:<name>` \| `@bc:unassigned` | **feature** (inherited) | exactly 1 | owning bounded context |
+| Provenance | `@origin:<ref>` \| `@origin:unresolved` | **feature** (inherited) | exactly 1 | originating decision |
+| Identity | `@scenario_hash:<16hex>` | **scenario** | exactly 1 | block-only canonical hash |
 
-### D2 — `scenarios validate` conformity contract
+`@bc` and `@origin` are placed on the **`Feature:`** and inherited by all its
+scenarios via standard Gherkin feature-level tag inheritance. `@scenario_hash`
+is per-scenario. This is possible because a feature = (decision × owning
+context) (D6), so both owner and origin are constant across the feature.
 
-`scenarios validate <path...>` (net-new capability in the `scenarios` BC):
+### D2 — Provenance tag scheme: unified `@origin:<ref>`
 
-- Runs the pinned off-the-shelf Gherkin parser over each file; a parse error
-  is a violation.
-- Enforces schema rules D1.2–D1.4: exactly one `Feature:`; every scenario has
-  exactly one `@bc:` owner tag (known BC or `unassigned`); every scenario has
-  a `@scenario_hash` matching the recomputed **parser** hash.
+`@origin:<ref>`, ref ∈ `{adr-NNN, pdr-NNN, brief-<slug>, <lead-bead-id>}`.
+The ref is the **governing originating decision record**, resolved by
+precedence **adr > pdr > brief > bead** (most-authoritative root; supporting
+decisions may still be cited in comments, but `@origin` is the single
+canonical root). Chosen over separate `@adr-NNN/@pdr-NNN` tags because: one
+validation rule ("exactly one `@origin:` per feature"), one grep dimension,
+uniform `@key:value` shape with `@bc`/`@scenario_hash`, and unambiguous
+cardinality (a feature has exactly one originating decision by D6).
+
+### D3 — Provenance = grouping (ONE derivation)
+
+Deriving a scenario's originating decision AND clustering scenarios into
+features are the same operation:
+1. For each scenario, derive its originating decision from: in-file ADR/PDR/
+   brief/bead references; the dispatch bead(s) that pinned its hash and THEIR
+   ADR/PDR references (transitive); BC-side commit/PR/bead links (BC self-
+   tagging, D7).
+2. Scenarios sharing (originating decision × owning context) form ONE feature,
+   grouped into one `Feature:`-headed file tagged with that `@origin` + `@bc`.
+
+Lead-side derivability floor: ~50.5% (findings doc R1). BC self-tagging raises
+it substantially (the BC sees its own repo history). Residual → `@origin:
+unresolved` (transitional, D8). "May be harder to backfill, but necessary"
+(David).
+
+### D4 — Scenario-file SCHEMA (validated, enforced)
+
+A conformant file MUST satisfy ALL of:
+1. **Off-the-shelf-Gherkin valid** under the pinned **official
+   `@cucumber/gherkin`** parser (D5). Forces a `Feature:` declaration and
+   well-formed structure — ecosystem-valid, not a bespoke dialect.
+2. **Exactly one `Feature:`** per file, with ≥1 scenario.
+3. **Feature carries exactly one `@bc:<name>|@bc:unassigned`** owner tag
+   (known context per D10). Tag absence is a violation.
+4. **Feature carries exactly one `@origin:<ref>|@origin:unresolved`** tag
+   (D2). Tag absence is a violation.
+5. **Every scenario carries exactly one `@scenario_hash:<16hex>`** equal to
+   the parser (block-only) hash (D5.canonicalization).
+6. **Canonicalization is block-only, tag/comment/`Feature:`-insensitive**
+   (ADR-019/ADR-036 D3) — verified today under the parser path.
+
+### D5 — `scenarios validate`, one canonicalization, off-the-shelf parser
+
+`scenarios validate <path...>` (net-new in the `scenarios` BC):
+- Runs the pinned **`@cucumber/gherkin`** parser (the reference spec parser,
+  multi-language, tracks the grammar — chosen over the unmaintained
+  style-scope `gherkin-lint`); a parse error is a violation.
+- Enforces D4.2–D4.6.
 - **Exit non-zero** on any violation.
-- Emits **machine-readable JSON** (`--json`): a list of
-  `{file, line, scenario_title, scenario_hash, bc, violations:[code,…]}`
-  with stable violation codes (`E_NO_FEATURE`, `E_MULTI_FEATURE`,
-  `E_MISSING_BC`, `E_MULTI_BC`, `E_UNKNOWN_BC`, `E_MISSING_HASH`,
-  `E_HASH_MISMATCH`, `E_GHERKIN_PARSE`). Human-readable default output too.
+- **Machine-readable JSON** (`--json`): `{file, line, scenario_title,
+  scenario_hash, bc, origin, violations:[code…]}` with stable codes
+  (`E_GHERKIN_PARSE, E_NO_FEATURE, E_MULTI_FEATURE, E_MISSING_BC, E_MULTI_BC,
+  E_UNKNOWN_BC, E_MISSING_ORIGIN, E_MULTI_ORIGIN, E_UNKNOWN_ORIGIN,
+  E_MISSING_HASH, E_HASH_MISMATCH`), plus transitional markers surfaced for
+  the aggregate gate (`W_BC_UNASSIGNED, W_ORIGIN_UNRESOLVED`).
+- **ONE canonicalization (ADR-019):** hashes via the parser path only. As a
+  same-BC fix, **`scenarios hash` is reconciled to parse-then-hash** so raw
+  and parser paths cannot disagree; the `awk … | scenarios hash` recompute is
+  deprecated. Closes the slice-16-class hazard on the artifact surface.
 
-### D3 — ONE canonicalization; the parser path is authoritative; the raw-stdin divergence is a bug to close
+### D6 — A feature = (originating decision × owning context)
 
-Per ADR-019 there is exactly one canonical scenario-block hash text. It is
-the **parser path** used by `scenarios list`/`count`, verified to reproduce
-100% of the corpus's embedded `@scenario_hash` tags. `scenarios validate`
-MUST compute hashes via this parser path — never via the tag-sensitive
-raw-stdin path. As a same-BC tool fix, **`scenarios hash` MUST be
-reconciled** to parse-then-hash (so raw and parser paths cannot disagree),
-or be scoped to a single already-parsed scenario block; the current
-"`awk … | scenarios hash`" recompute recipe is deprecated. This closes the
-slice-16-class "two inputs to canonicalization" hazard on the artifact
-surface.
+The unit of grouping is one originating decision realized within one owning
+context. Both `@bc` and `@origin` are therefore constant within a feature and
+feature-level-inherited (David's "feature-level-inherited tags are ideal").
+When a single decision spans multiple contexts, it yields multiple features
+(one per context), each pinning the same `@origin` and its own `@bc`. This
+partition is *forced* by the inheritance mechanic (feature-level tags apply to
+all scenarios), and it is the DDD feature-clustering `lead-bh2m` consumes.
 
-### D4 — Off-the-shelf parser choice
+### D7 — Backfill leans on BC SELF-TAGGING; beads is seed/cross-check
 
-Pin the **official `@cucumber/gherkin`** parser (the reference
-implementation maintained by the Cucumber project) as the conformance
-oracle, over `gherkin-lint` (unmaintained; style-lint scope, not a
-spec-parser). Rationale: `@cucumber/gherkin` is the canonical spec parser,
-tracks the Gherkin grammar itself, is multi-language, and gives an
-authoritative parse/AST we can layer our extra rules on. `scenarios
-validate` = run `@cucumber/gherkin` for structural validity, then apply our
-extra rules (D1.2–D1.4) over its AST + tag scan. The `scenarios` BC vendors
-or shells the pinned parser version; the version is pinned so validation is
-deterministic across shops.
+The one-time backfill resolves `@bc` and `@origin` **primarily by each BC
+self-tagging its own repo** (a BC authoritatively knows its own scenarios and
+their origin from its own history — near-100% for `@bc`), NOT by lead-side
+beads resolution (~40% ceiling from drift). The lead supplies its
+beads-derived tag map as a **SEED and cross-check** in each sweep. Tagged
+registers flow back to the lead mirror via `request_scenario_register`
+(visibility). Going-forward, the PO tags at authoring time (`@bc` = dispatch
+target, `@origin` = driving decision, `@scenario_hash`).
 
-### D5 — Known-BC set = `bc-manifest.yaml`; reconcile the drift
+### D8 — Consistency gate defines DONE (defined end)
 
-The set of legal `@bc:<name>` values is the canonical registry
-`bc-manifest.yaml` (ADR-005), plus the sentinel `@bc:unassigned`. Pre-state
-drift to fix as part of this work: dispatch history references BCs **absent
-from the manifest** — `shopsystem-bc-launcher-dagger`,
-`shopsystem-agent-vault-broker`, and throwaway spike names (`fabro-e2e*`).
-Before backfill, the manifest MUST be reconciled (add the real BCs; the
-spike names never become owners). `E_UNKNOWN_BC` fires on any `@bc` value not
-in the reconciled manifest.
+Two levels:
+- **(a) File-schema-valid** (`scenarios validate` per file): tags present;
+  value MAY be `@bc:unassigned` / `@origin:unresolved`.
+- **(b) System-consistent** (aggregate): **ZERO `@bc:unassigned`, ZERO
+  `@origin:unresolved`, all files schema-valid, all `@bc`/`@origin` values
+  known.**
 
-### D6 — Owner tag is per-scenario; the "what is a feature" grouping is a PRODUCT decision (defer to David / `lead-bh2m`)
+`@bc:unassigned` and `@origin:unresolved` are **TRANSITIONAL forcing
+markers**, not permanent defaults; the backfill MUST drive both to zero. The
+aggregate check (`scenarios validate --aggregate features/` returning
+non-zero while any transitional marker remains) wires **additively into the
+existing `bin/doctor` / `system-manifest` coherence gate (ADR-047 D4)** so the
+system is **RED until fully resolved**. The cleanup's DONE = the aggregate
+gate is GREEN. Owned by `shopsystem-templates` (renders `bin/doctor`).
 
-The owner tag is mandatory **per scenario** (not per `Feature:`) so that a
-grouped file can legally contain scenarios of different owners. The
-definition of *what constitutes a feature* — i.e. which scenarios group into
-one file during structural consolidation (D7) — is a product-judgment call
-that connects directly to the DDD feature-clustering under `lead-bh2m`. This
-ADR does NOT decide it; it names it as a David decision. Candidate grouping
-strategies (recommend deciding in `lead-bh2m`): (a) existing Feature-wrapped
-precedent (33 files already multi-scenario); (b) `@bc` + topic cluster;
-(c) numbered-file clustering. Recommended interim: group by existing
-directory/topic while preserving per-scenario `@bc`, so consolidation is
-hash-preserving and owner-safe regardless of the final DDD clustering.
+### D9 — Service-dependency model (distinct category)
 
-### D7 — Source-of-truth CUTOVER (one-time migration)
+Per ADR-028, **agent-vault broker + postgres are lead-shop SUPPORTING
+SERVICES, not BCs.** Model:
+- Introduce a distinct tag `@service:<name>`, ref from a new **`services:`
+  section in `bc-manifest.yaml`** (initially `postgres`, `agent-vault-broker`).
+  These are NOT domain `@bc` owners (DDD: external-system / generic subdomain).
+- A scenario exercising a service dependency STILL carries its mandatory
+  feature-level `@bc:<owner>` = the CONSUMING context that owns the behavior,
+  and ADDITIONALLY `@service:<name>` marking the dependency. `@service` is
+  optional (present only when a service dep is exercised) and does not
+  substitute for `@bc`.
+- The `features/agent-vault-broker/` scenarios (13) are the **lead-owned
+  integration-check surface** ADR-028 names → `@bc:shopsystem-product` (D10)
+  + `@service:agent-vault-broker`. postgres is pinned indirectly (e.g.
+  `shop-msg watch/notify`) under `@bc:shopsystem-messaging` +
+  `@service:postgres`.
 
-1. **Backfill is a ONE-TIME migration** from beads dispatch history → in-file
-   `@bc` tags. After cutover, **the in-file `@bc` tag is authoritative for
-   scenario ownership**, and **beads `dispatched_to_bc` /
-   `scenario_hashes_pinned` are DEAUTHORIZED for assignment** (they remain a
-   historical dispatch/audit record only).
-2. Backfill resolution is **supervised**, three tiers:
-   - **Authoritative** (auto-tag): exact block-only hash match to a single
-     BC in the dispatch map (166 scenarios) + existing in-file `@bc` tags
-     (49). ~38%.
-   - **Review-queue** (propose, human-confirm): directory-pure /
-     work_id-comment heuristics for the residual in pure directories.
-     Presented as a diff, never silently applied — mixed dirs (`templates`
-     leak, `scenario-journal`) and dir-name≠BC cases (`agent-vault-broker`,
-     `launcher-credentials`) force human review.
-   - **`@bc:unassigned`** (explicit sentinel): anything still underivable.
-     Grep-able backlog; every such scenario satisfies the "no tag absence"
-     mandate while flagging owed product judgment.
-3. **Consumers repoint** off beads onto the tag at cutover (see Consequences).
+### D10 — Known-value sets; `bc-manifest.yaml` reconciliation
 
-### D8 — Enforcement guard (no regression after cutover)
+- Legal `@bc:` = `bc-manifest.yaml` `bcs:` + the lead product token
+  **`@bc:shopsystem-product`** (lead-owned scenarios; token = the shop name /
+  ADR-038 product slug) + `@bc:unassigned`.
+- Legal `@service:` = `bc-manifest.yaml` new `services:` section.
+- Legal `@origin:` = existing `adr/` `pdr/` `briefs/` files + lead bead IDs.
+- **Reconcile the manifest before backfill:** dispatch history references
+  `shopsystem-bc-launcher-dagger` and `shopsystem-agent-vault-broker` (absent
+  from `bcs:`) and `fabro-e2e*` throwaways. Confirm the real BCs → add to
+  `bcs:`; agent-vault-broker → `services:` (not `bcs:`, per ADR-028); spike
+  names never become owners. `E_UNKNOWN_BC`/`E_UNKNOWN_ORIGIN` fire otherwise.
 
-`scenarios validate` wires into the **`bc-emit work-done` gate** (ADR-042,
-rendered by `shopsystem-templates` into `bc-reviewer`/`bc-implementer`) and
-into CI, so no scenario file can merge/emit with a missing/absent `@bc`,
-missing/mismatched `@scenario_hash`, or non-off-the-shelf-valid Gherkin. The
-ADR-042 wrapper already checks hash-match; this extends it to schema + tag
-validity. The role-template gate edits are owned by the `shopsystem-templates`
-BC.
+### D11 — Source-of-truth CUTOVER (one-time)
+
+After backfill, the **in-file `@bc` and `@origin` tags are authoritative**;
+beads `dispatched_to_bc`/`scenario_hashes_pinned` are **DEAUTHORIZED for
+assignment** (historical/audit only). Consumers repoint off beads onto the
+tags (Consequences).
+
+### D12 — Enforcement guard + create/modify helper
+
+- `scenarios validate` wires into the **`bc-emit work-done` gate** (ADR-042,
+  rendered by `shopsystem-templates` into `bc-reviewer`/`bc-implementer`) and
+  CI: no scenario file merges/emits with missing/absent `@bc`/`@origin`,
+  missing/mismatched `@scenario_hash`, or non-off-the-shelf-valid Gherkin.
+- **CONFIRMED (R4):** the `scenarios` BC gains a scoped conformant
+  **create/modify/consolidate** surface (emit `Feature:`-headed grouped
+  Gherkin with correct feature-level `@bc`/`@origin` + per-scenario
+  `@scenario_hash`), making the consolidation mechanical and hash-safe.
 
 ---
 
 ## Consequences
 
-**Owner-reader consumers that must repoint beads → tag at cutover:**
+**Owner/provenance-reader consumers that repoint beads → tags at cutover:**
+lead-architect `@scenario_hash` enumeration; reconciliation; scenario-to-BC
+assignment; `request_scenario_register` import (VISIBILITY-only return path,
+now carries `@bc`/`@origin`); `bc-emit` gate + `bc-reviewer`/`bc-implementer`
+templates (owned by `shopsystem-templates`); DDD review `lead-bh2m` (reads
+`@bc` + `@origin`/feature-grouping off the tags); scenario-completion journal
+(ADR-023/024/025); beads dispatch metadata itself (→ audit-only).
 
-1. **lead-architect pre-state `@scenario_hash` enumeration** — reads ownership
-   from the in-file `@bc` tag instead of inferring from dispatch history.
-2. **Reconciliation** (router standing rule + lead-architect) — the "assigned
-   owner" cross-check reads the tag; beads becomes audit-only.
-3. **Scenario-to-BC assignment / assign-per-structurizr** — the tag is the
-   per-scenario owner of record.
-4. **`request_scenario_register` / lead-mirror import** — imported scenarios
-   carry/receive their `@bc` tag (this vehicle stays VISIBILITY-only; it was
-   never a universal-tagging mechanism — see design doc A.iii).
-5. **`bc-emit work-done` gate (ADR-042) + `bc-reviewer`/`bc-implementer`
-   templates** — enforcement point for D8 (owned by `shopsystem-templates`).
-6. **DDD review `lead-bh2m`** — reads ownership off the tag (the blocked
-   consumer this ADR unblocks).
-7. **Scenario-completion journal (ADR-023/024/025, `scenarios` BC)** — keyed
-   by hash; note the tag as the ownership dimension if it reports per-BC.
+**Tooling:** `scenarios` gains `validate` (+ pinned `@cucumber/gherkin`),
+`--aggregate`, the create/modify/consolidate helper, and the `scenarios hash`
+reconciliation (D5). `bin/doctor`/`system-manifest` gains the aggregate
+consistency check (ADR-047 D4 surface; templates-owned).
 
-**Tooling:** `scenarios` gains `validate` (+ pinned off-the-shelf parser) and
-optionally a conformant-Gherkin `create`/`modify` surface (design doc C1
-weighs the tradeoff). `scenarios hash` is reconciled to the single
-canonicalization (D3).
+**Migration is hash-preserving.** Consolidation (Feature header + grouping +
+feature-level `@bc`/`@origin` + inter-scenario comments/blanks) does NOT
+change any `@scenario_hash` under the parser path — verified (findings doc B).
 
-**Migration is hash-preserving.** Structural consolidation (Feature header +
-grouping + tag backfill + inter-scenario comments/blanks) does NOT invalidate
-any `@scenario_hash` under the parser path — verified empirically (design doc
-B). No re-pin cascade, no beads-dispatch invalidation from the edits.
+**Defined end.** The system does not pass consistency checks until zero
+`@bc:unassigned` and zero `@origin:unresolved` remain and all files are
+schema-valid. That green aggregate gate IS the definition of done for
+`lead-vzxd`.
