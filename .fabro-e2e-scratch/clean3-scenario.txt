@@ -1,0 +1,4 @@
+Scenario: fabro e2e demo trivial greeting
+  Given the fabro-orchestrated e2e BC is running
+  When the demo greeting behavior is exercised
+  Then it returns the fixed string "hello-fabro-e2e"

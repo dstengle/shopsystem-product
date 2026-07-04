@@ -1,0 +1,12 @@
+LAUNCH CMD:
+bc-container launch fabro-e2e-final --orchestrator fabro --workspace-mount /home/dstengle/repos/shopsystem-product/.fabro-e2e-scratch/fabro-final-tree --network shopsystem --shopmsg-dsn postgresql://postgres:postgres@postgres:5432/shopsystem --env-file /workspace/.fabro-e2e-scratch/fabro-final.env --work-id fabro-final-1
+===== OUTPUT =====
+282149d01982fab856699f5b0e6093d09510f0e45a40c3d3f1faea7e79ecf6f5
+Started container bc-fabro-e2e-final
+Placed the self-contained fabro loop def bundle (15 files) into /workspace/.fabro (lead-h2bj, ADR-051)
+Rewrote the placed /workspace/.fabro/workflow.toml [run.environment.env] / [run.inputs] BC_NAME=fabro-e2e-final WORK_ID=fabro-final-1 (lead-ze4w BUG#2)
+Started the baked anthropic-oauth-shim (/usr/local/bin/anthropic-oauth-shim) as a background listener on 127.0.0.1:8788 (lead-vwib, lead-so2h)
+Wrote fabro effective settings to /workspace/.fabro/settings.toml ([llm.providers.anthropic] base_url=http://127.0.0.1:8788/v1, adapter=anthropic; no credential written — ADR-049 D1/D2)
+Chowned the placed /workspace/.fabro tree to vscode (lead-ze4w BUG#1 workspace-mount parity)
+Fabro orchestrator engage (lead-cadr): started the ephemeral in-container fabro server (fabro server start --foreground --no-web) and ran the ADR-051 loop def as the engage (fabro run workflow.fabro -I BC_NAME=fabro-e2e-final -I WORK_ID=fabro-final-1); no tmux 'agent' send-keys session and no 'claude' engage started on this path — the engage tier is REPLACED by the fabro run-graph entry (ADR-050 D3)
+===== EXIT 0 =====
