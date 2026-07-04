@@ -1,0 +1,45 @@
+@bc:shopsystem-bc-launcher @origin:adr-050
+Feature: bc-container launch --orchestrator {tmux|fabro} selects the engage tier — fabro engage vs tmux default (lead-cadr, S4)
+
+  The canonical launch surface is `bc-container launch <bc> --orchestrator
+  {tmux|fabro}` with tmux the DEFAULT (superseding S3's off-by-default
+  --fabro-path flag, which remains only as a hidden alias). AFTER the
+  readiness barrier passes (scenario 34), the engage tier the launcher issues
+  is selected by --orchestrator: 'fabro' REPLACES the tmux/claude engage with
+  the fabro run-graph entry (ephemeral in-container `fabro server start
+  --foreground --no-web` + `fabro run workflow.fabro -I BC_NAME=<bc> -I
+  WORK_ID=<work_id>`), starting NO tmux `agent` send-keys session and NO
+  `claude` on that path (ADR-050 D3); 'tmux' (default) engages via the
+  existing tmux send-keys path exactly as scenario 04, starting NO fabro
+  server and issuing NO fabro run. Container / credential-proxy / postgres DSN
+  / shop-msg mailbox surfaces are IDENTICAL on both paths — only the engage
+  tier differs (ADR-050 D1/D2 launch parity).
+
+  FIDELITY (test-fidelity-for-image-layer-container-runtime-scenarios): the
+  step defs drive the REAL launcher (controller.launch over the
+  FakeDockerDriver) and bind to its ACTUAL recorded exec/send-keys calls — the
+  fabro-path server-start + run argv, the absence of any tmux `agent`
+  send-keys / `claude` engage on that path, the tmux-default engage, and the
+  launch-parity surfaces — never to a model.
+
+  @scenario_hash:68e14cdcd8b7c145
+    Scenario: bc-container launch --orchestrator fabro starts the ephemeral in-container fabro server and runs the loop def as the engage step, running no tmux engage on that path
+    Given the shopsystem-bc-launcher BC is installed
+    And bc-container launch is run for BC name "shopsystem-messaging" with work id "lead-cadr" on the fabro orchestrator launch path selected by "--orchestrator fabro"
+    And the container "bc-shopsystem-messaging" is running on the pinned bc-base image carrying the self-contained fabro def at "/workspace/.fabro/" (scenario 75, @scenario_hash:2dfefe2ba81e418d) with the started anthropic-oauth-shim and fabro's anthropic "base_url" wired to it (scenario 76, @scenario_hash:8b5a1b9e5499293b)
+    And the launcher's idempotent readiness barrier composing the messaging DB and the agent-vault broker has passed (scenario 34)
+    When the engage step the launcher issues on the fabro orchestrator path is inspected structurally, without a live docker daemon, a running fabro server, or a reachable agent-vault
+    Then AFTER the readiness barrier passes the launcher starts an ephemeral in-container fabro server running "provider=local" in the foreground with no web UI bound to a local 127.0.0.1 socket, issuing the argv "fabro server start --foreground --no-web", so the loop runs headless inside the one bc-base container and nothing is orchestrated outside it
+    And the launcher invokes "fabro run workflow.fabro -I BC_NAME=shopsystem-messaging -I WORK_ID=lead-cadr" against that server as the engage step, carrying BC_NAME and WORK_ID into the run via the def's "[run.environment.env]", so the ADR-051 Implementer->Reviewer loop def (scenario 75) is the agent loop that engages
+    And no tmux "agent" send-keys session and no "claude" engage is started on this path, the engage tier being REPLACED by the fabro run-graph entry rather than added alongside it (ADR-050 D3), reproducing fabro-orchestration/01 (@scenario_hash:1aeace4c593ab14f) via the real bc-container launch path
+    And the container, credential-proxy, postgres DSN and shop-msg mailbox surfaces are unchanged from the tmux path, only the engage tier differing (ADR-050 D1/D2 launch parity)
+
+  @scenario_hash:ee8f4803eb5342f0
+    Scenario: bc-container launch defaults --orchestrator to tmux and leaves the existing tmux engage unchanged, starting no fabro server and issuing no fabro run
+    Given the shopsystem-bc-launcher BC is installed
+    And bc-container launch is run for BC name "shopsystem-messaging" with no "--orchestrator" flag supplied
+    And the launcher's idempotent readiness barrier has passed (scenario 34)
+    When the engage step the launcher issues is inspected structurally, without a live docker daemon or a running fabro server
+    Then the orchestrator defaults to "tmux", the canonical launch surface being "bc-container launch <bc> --orchestrator {tmux|fabro}" with "tmux" the default, superseding S3's off-by-default "--fabro-path" flag which may remain only as a hidden alias
+    And AFTER the readiness barrier passes the launcher engages via the existing tmux "agent" send-keys path exactly as scenario 04 (@scenario_hash:04236074a60ffcd7) pins, unchanged
+    And the launcher starts no ephemeral fabro server and issues no "fabro run" on this default path, so the fabro engage replacement is confined to "--orchestrator fabro" (ADR-050 D1 tmux-default launch parity preserved)

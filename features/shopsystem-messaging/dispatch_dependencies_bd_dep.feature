@@ -1,0 +1,103 @@
+@bc:shopsystem-messaging @origin:adr-013
+Feature: Dispatch dependencies via bd dep, honored by shop-msg send (PDR-010 ADR-013)
+
+  @scenario_hash:48ade065ce073a54
+  Scenario: shop-msg send in strict mode (default) consults bd depends-on edges before deposit and refuses the send when a predecessor is not at dispatch_state=closed
+    Given a lead shop "shopsystem-product" registered as the lead in the messaging registry
+    And a BC "shopsystem-messaging" registered in the messaging registry
+    And a lead bd entry "lead-aaa" exists at dispatch_state="dispatched" (predecessor is in-flight to a BC; not yet closed)
+    And the lead architect has recorded a depends-on edge with "bd dep add lead-bbb lead-aaa" so lead-bbb depends on lead-aaa
+    And a payload file at "/tmp/payload-bbb.yaml" pinning a valid request_bugfix
+    When the lead architect runs "shop-msg send request_bugfix --bc shopsystem-messaging --work-id lead-bbb --payload /tmp/payload-bbb.yaml" (no --queue-on-dependency flag)
+    Then the command exits non-zero with an error message that names the unmet dependency: the predecessor work_id "lead-aaa" and its current dispatch_state "dispatched"
+    And NO postgres outbox row at (bc=shopsystem-messaging, direction='outbox', work_id='lead-bbb', message_type='request_bugfix') is inserted
+    And NO lead bd entry "lead-bbb" is created (no bd-side dispatch_state mutation; no partial state at all)
+    And the load-bearing property pinned here is total refusal — strict-mode rejection MUST leave no postgres artifact and no bd artifact, so re-running after the predecessor closes is the same as running for the first time
+
+  @scenario_hash:e7b04e158d78c858
+  Scenario: shop-msg send with --queue-on-dependency writes a lead bd entry at dispatch_state=outbox_pending with pending_dependency=<predecessor_work_id> and does NOT deposit a postgres row
+    Given a lead shop "shopsystem-product" registered as the lead in the messaging registry
+    And a BC "shopsystem-messaging" registered in the messaging registry
+    And a lead bd entry "lead-ccc" exists at dispatch_state="dispatched" (predecessor is in-flight; not yet closed)
+    And the lead architect has recorded a depends-on edge with "bd dep add lead-ddd lead-ccc" so lead-ddd depends on lead-ccc
+    And a payload file at "/tmp/payload-ddd.yaml" pinning a valid request_bugfix carrying scenario hashes "abc1234567890def" and "0987654321fedcba"
+    When the lead architect runs "shop-msg send request_bugfix --bc shopsystem-messaging --work-id lead-ddd --payload /tmp/payload-ddd.yaml --queue-on-dependency"
+    Then the command exits zero with a message indicating the dispatch is queued behind "lead-ccc"
+    And a lead bd entry "lead-ddd" is created carrying bd structured metadata with dispatch_state="outbox_pending", pending_dependency="lead-ccc", dispatched_to_bc="shopsystem-messaging", dispatch_message_type="request_bugfix", and scenario_hashes_pinned="abc1234567890def,0987654321fedcba"
+    And NO postgres outbox row at (bc=shopsystem-messaging, direction='outbox', work_id='lead-ddd', message_type='request_bugfix') is inserted (queued mode defers the postgres deposit per ADR-013 decision 4)
+    And the bd entry's queued-mode write is a single atomic unit per ADR-012's atomicity protocol: the bd metadata is written via "bd create --metadata" with all fields in one payload
+    And the load-bearing property pinned here is that the queued intent is durable in bd alone, survives /compact and session boundaries, and is observable via "bd show lead-ddd"
+
+  @scenario_hash:0aa568d27fe0a04a
+  Scenario: closing a predecessor bead via bd close triggers a promote scan that deposits the queued dependent's postgres row and flips its dispatch_state from outbox_pending to dispatched
+    Given a lead shop "shopsystem-product" registered as the lead in the messaging registry
+    And a BC "shopsystem-messaging" registered in the messaging registry
+    And a lead bd entry "lead-eee" exists at dispatch_state="consumed" (the predecessor's BC has emitted work_done, the lead has consumed it, only the architect's close-step remains)
+    And a lead bd entry "lead-fff" exists at dispatch_state="outbox_pending" with pending_dependency="lead-eee" (queued behind lead-eee per the previous scenario)
+    When the lead architect runs "bd close lead-eee" transitioning its dispatch_state to "closed"
+    Then the close operation triggers a promote scan that enumerates all bd entries with pending_dependency="lead-eee"
+    And for "lead-fff", whose remaining depends-on edges are all at dispatch_state="closed", the promote scan deposits a postgres outbox row at (bc=shopsystem-messaging, direction='outbox', work_id='lead-fff', message_type='request_bugfix') carrying the payload reference held on the bd entry
+    And the promote scan flips "lead-fff"'s dispatch_state from "outbox_pending" to "dispatched" via "bd update --set-metadata dispatch_state=dispatched"
+    And the promote scan clears the pending_dependency field via "bd update --unset-metadata pending_dependency"
+    And the load-bearing property pinned here is that closure of a predecessor is the trigger event for promote; the queued dispatch does NOT need a separate operator step to fire after the predecessor closes
+
+  @scenario_hash:7da5c251f049ccd5
+  Scenario: the promote scan is idempotent — repeated invocations on the same closing bead leave the same final state (no double-deposit, no spurious bd flip on already-promoted entries)
+    Given a lead shop "shopsystem-product" registered as the lead in the messaging registry
+    And a BC "shopsystem-messaging" registered in the messaging registry
+    And a lead bd entry "lead-ggg" has just been closed (dispatch_state="closed") triggering a promote scan
+    And the promote scan has already executed once, promoting a queued dependent "lead-hhh" from outbox_pending to dispatched and depositing its postgres row
+    When the promote scan is invoked a second time against "lead-ggg" (e.g., by a sweep or by an operator manually retriggering)
+    Then "lead-hhh" remains at dispatch_state="dispatched"; the promote scan recognizes the dispatch_state is no longer "outbox_pending" and treats lead-hhh as a no-op
+    And NO duplicate postgres outbox row at (bc=shopsystem-messaging, direction='outbox', work_id='lead-hhh', message_type='request_bugfix') is inserted (the postgres uniqueness constraint on (work_id, direction, shop) would also block this, but the promote scan SHOULD skip the deposit attempt entirely on an already-promoted entry)
+    And a queued dependent "lead-iii" whose other depends-on edges are still NOT all closed (e.g., depends on lead-ggg AND lead-jjj where lead-jjj remains open) is NOT promoted on this scan, and remains at dispatch_state="outbox_pending" with pending_dependency cleared for lead-ggg but still set for any other open predecessor
+    And the load-bearing property pinned here is idempotency under ADR-013 decision 6: multiple promote invocations leave the same final state — each queued dispatch either becomes live (exactly once) or remains queued (if other predecessors are still open)
+
+  @scenario_hash:947050ad4f0c42ba
+  Scenario: cross-BC dispatch dependencies are first-class — lead-X dispatched to BC A may depend on lead-Y dispatched to BC B, with both edges living in lead bd and both legs visible to shop-msg send and to the promote scan
+    Given a lead shop "shopsystem-product" registered as the lead in the messaging registry
+    And two BCs "shopsystem-scenarios" and "shopsystem-messaging" registered in the messaging registry
+    And a lead bd entry "lead-kkk" at dispatch_state="dispatched" with dispatched_to_bc="shopsystem-scenarios" (the predecessor leg of a coordinated fanout)
+    And the lead architect has recorded a depends-on edge with "bd dep add lead-lll lead-kkk" so lead-lll depends on lead-kkk
+    And a payload file at "/tmp/payload-lll.yaml" pinning a valid request_bugfix targeting shopsystem-messaging
+    When the lead architect runs "shop-msg send request_bugfix --bc shopsystem-messaging --work-id lead-lll --payload /tmp/payload-lll.yaml --queue-on-dependency"
+    Then the command exits zero
+    And a lead bd entry "lead-lll" is created carrying dispatched_to_bc="shopsystem-messaging", pending_dependency="lead-kkk", and dispatch_state="outbox_pending"
+    And the cross-BC dependency edge (lead-lll depending on lead-kkk, where lead-kkk targets a DIFFERENT BC than lead-lll) is honored by shop-msg send identically to a same-BC dependency: the BC routing of the predecessor does not change the dispatch-dependency contract
+    And when "lead-kkk" later closes, the promote scan deposits the postgres outbox row for "lead-lll" against the BC "shopsystem-messaging" (the BC named on the queued entry, NOT the BC of the predecessor)
+    And the load-bearing property pinned here is that cross-BC sequencing is FIRST-CLASS per ADR-013 decision 7: both edges live in lead bd, no BC-side coordination is required, and the lead remains the sole holder of the cross-BC sequence (per PDR-010 decision 4's loose-cross-shop-visibility model)
+
+  @scenario_hash:09e59dc534b1b4dd
+  Scenario: bd dep add rejects a cycle — if adding a depends-on edge would close a cycle in the depends-on graph (e.g., lead-X depends on lead-Y, lead-Y depends on lead-X), the operation is refused (adversarial — graph acyclicity enforcement)
+    Given a lead shop "shopsystem-product" registered as the lead in the messaging registry
+    And a lead bd entry "lead-mmm" exists
+    And a lead bd entry "lead-nnn" exists
+    And the lead architect has already recorded a depends-on edge "bd dep add lead-mmm lead-nnn" so lead-mmm depends on lead-nnn
+    When the lead architect runs "bd dep add lead-nnn lead-mmm" (attempting to record that lead-nnn depends on lead-mmm, which would close the cycle lead-mmm -> lead-nnn -> lead-mmm)
+    Then the command exits non-zero
+    And the command's stderr or stdout contains a cycle-rejection message (a substring match on "cycle" is sufficient; specific wording is NOT required — bd's native error text is what governs)
+    And the pre-existing "lead-mmm depends on lead-nnn" depends-on edge is unchanged (still present, still in the same direction)
+    And NO new depends-on edge has been added in either direction (neither lead-nnn -> lead-mmm nor any other new edge)
+    And subsequent "shop-msg send" invocations against either lead-mmm or lead-nnn behave as if the cycle attempt had not been made: lead-mmm continues to be gated on lead-nnn closing; lead-nnn has no pending_dependency
+    And per ADR-013 decision 8, acyclicity is enforced on the bd side; shop-msg send does NOT need to re-check at dispatch time, because the depends-on graph is invariantly acyclic by construction
+    And the load-bearing property pinned here is that the bd-side cycle-rejection contract is what makes shop-msg send's introspection step safe from infinite-loop pathology: shop-msg send walks the graph trusting it is a DAG — the participant-naming detail in bd's error text is UX, NOT the architectural property pinned here
+
+  @scenario_hash:6b3559d0bf3141ff
+  Scenario: a parent-child epic-container edge to an open epic does NOT gate dispatch — only true depends-on / blocks edges gate (PDR-010 ADR-013 decision 4 tightening)
+    Given a lead shop "shopsystem-product" registered as the lead in the messaging registry
+    And a BC "shopsystem-messaging" registered in the messaging registry
+    And an open epic lead bd entry "lead-epic" exists (open by container design for its whole work-stream)
+    And the lead architect has recorded a parent-child edge with "bd dep add lead-rch lead-epic --type parent-child" so lead-rch is a child of the epic lead-epic
+    And a payload file at "/tmp/payload-rch.yaml" pinning a valid request_bugfix
+    When the lead architect runs "shop-msg send request_bugfix --bc shopsystem-messaging --work-id lead-rch --payload /tmp/payload-rch.yaml" (no --queue-on-dependency flag)
+    Then the command exits zero (the parent-child epic edge is a container relation, not a gating predecessor)
+    And a postgres outbox row at (bc=shopsystem-messaging, direction='outbox', work_id='lead-rch', message_type='request_bugfix') IS inserted
+    And the load-bearing property pinned here is that a parent-child epic-container edge is EXCLUDED from the gating-predecessor set: an epic is open by design for its whole work-stream, so gating on its parent-child edge would make every child permanently undispatchable
+
+  @scenario_hash:a326c2f50eeceed4
+  Scenario: shop-msg sweep does NOT promote a queued bead whose predecessor is still open
+    Given a lead bd entry "lead-ppp" at dispatch_state=outbox_pending with pending_dependency="lead-qqq" and an outbox_pending_at older than the sweep threshold
+    And lead-qqq is NOT at dispatch_state=closed
+    When the lead architect runs "shop-msg sweep"
+    Then NO postgres outbox row for lead-ppp is deposited
+    And lead-ppp remains at dispatch_state=outbox_pending with pending_dependency="lead-qqq" unchanged

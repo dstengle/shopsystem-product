@@ -1,0 +1,11 @@
+@bc_internal
+Feature: lead-po template — problem-discovery and outcome-ownership sufficiency criteria
+
+  @scenario_hash:25038c88fec521ba @bc:shopsystem-templates
+  Scenario: lead-po template carries a testable sufficiency criterion for the problem-discovery and outcome-ownership disciplines
+    When I read the lead-po template via "shop-templates show lead-po"
+    Then the problem discovery & selection discipline block states a sufficiency criterion that requires every committed intent to trace to a validated problem or job-to-be-done, not to a stakeholder feature request
+    And the problem discovery & selection discipline block names choosing which problem to solve as the scarcest good, anchored on a stable job-to-be-done before intent is committed
+    And the outcome ownership discipline block states a sufficiency criterion that requires the intent to name the outcome it targets as an observable behavior change rather than an output
+    And the outcome ownership discipline block states that the intent must address at least value (will they use it) and viability, naming Cagan's four risks with feasibility owned in partnership with the Architect
+    And neither discipline's sufficiency criterion is expressed as a constraint ("don't crash", "use judgment") rather than a measurable outcome

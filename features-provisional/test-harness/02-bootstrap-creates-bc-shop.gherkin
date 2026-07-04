@@ -1,8 +1,0 @@
-@scenario_hash:e4f49b10f8231282
-Scenario: shop-test-harness bootstrap creates an isolated BC-shop directory alongside the lead-shop
-  Given an empty target directory for an experiment
-  When I run "shop-test-harness bootstrap --target <dir> --lead-shop lead --bc-shop bc-foo"
-  Then the exit code is 0
-  And a "bc-foo/" subdirectory exists under <dir> with empty "inbox/" and "outbox/" subdirectories
-  And a "bc-foo/.beads/" subdirectory exists with beads metadata (issue prefix matches the BC-shop name)
-  And "shop-msg send request_maintenance --bc-root <dir>/bc-foo --work-id w-001 --description 'sanity check'" succeeds and writes "<dir>/bc-foo/inbox/w-001.yaml"

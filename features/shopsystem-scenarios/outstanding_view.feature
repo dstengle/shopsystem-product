@@ -1,0 +1,10 @@
+@bc:shopsystem-scenarios @origin:brief-009
+Feature: shopsystem-scenarios — system-wide outstanding view
+
+  @scenario_hash:f58a7dc39c4e718a
+  Scenario: the system-wide outstanding view counts a never-dispatched canonical scenario as outstanding
+  Given a canonical scenario authored under this repo's features with block-only canonical hash "h6"
+  And no BC journal records "h6" and no work_done has ever landed for "h6"
+  When the system-wide outstanding view is computed over all canonical scenarios under features
+  Then the outstanding view lists the scenario with block-only canonical hash "h6" as outstanding
+  And the scenario with hash "h6" is counted in the outstanding denominator despite never having been dispatched to any BC

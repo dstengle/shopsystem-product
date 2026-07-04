@@ -1,0 +1,11 @@
+@bc:shopsystem-messaging @origin:lead-ay7j
+Feature: shop-msg consume outbox drains a request_completion_journal_response row
+
+  @scenario_hash:e45c01a40e4e4cbe
+  Scenario: shop-msg consume outbox accepts message-type request_completion_journal_response and drains the matching outbox row from pending outbox
+    Given "shopsystem-product" is registered as the lead shop in the messaging registry
+    And "bc-launcher" is registered in the messaging registry
+    And a request_completion_journal_response from BC "bc-launcher" for work-id "lead-800" is present as an unconsumed outbox response, listed by "shop-msg pending outbox --lead shopsystem-product"
+    When I run "shop-msg consume outbox --bc bc-launcher --work-id lead-800 --message-type request_completion_journal_response"
+    Then the command exits zero
+    And "shop-msg pending outbox --lead shopsystem-product" no longer lists work-id "lead-800" with message_type "request_completion_journal_response"

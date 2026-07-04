@@ -1,9 +1,0 @@
-@scenario_hash:e2a3c9695dd876b6
-Scenario: shop-test-harness verify exits non-zero with a diagnostic naming the divergence when the hash sets do not match
-  Given an experiment target directory <dir> with a BC-shop whose outbox contains a valid "<work-id>-work_done.yaml" carrying scenario_hashes [H1, H2]
-  And an "expected hashes" file at path <expected> listing [H1, H3] (H1 in common, H2 unexpected, H3 missing)
-  When I run "shop-test-harness verify --target <dir> --bc bc-foo --work-id <work-id> --expected <expected>"
-  Then the exit code is non-zero
-  And stderr names H3 as a hash that was expected but not echoed back (forward-conformance gap)
-  And stderr names H2 as a hash that was echoed back but not assigned (reverse-conformance gap)
-  And stdout is empty
