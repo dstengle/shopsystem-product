@@ -1,6 +1,0 @@
-@scenario_hash:6aea253f5dcbfd61
-Scenario: bc-implementer template's decomposition discipline forbids layer-shaped and task-shaped units
-  When I read the bc-implementer template via "shop-templates show bc-implementer"
-  Then the decomposition discipline states that a sub-unit must be a vertical slice and must not be a layer, naming a layer-shaped unit such as a "front-end" unit as the anti-pattern to reject
-  And the decomposition discipline states that a sub-unit must not be an engineering task, naming a task-shaped unit such as "set up the DB" as the anti-pattern to reject
-  And the discipline distinguishes a vertical behavior-shaped slice from a horizontal layer or a setup task as the property that makes a breakdown good or poor

@@ -1,9 +1,0 @@
-@scenario_hash:eab2808bbaed0061
-Scenario: bc-reviewer template directs the reviewer to shop-msg CLI subcommands for reading the assigned scenarios, never to direct filesystem inspection of the inbox
-  When I read the bc-reviewer template via "shop-templates show bc-reviewer"
-  Then the content contains the literal substring "shop-msg read inbox"
-  And the content does not contain the literal substring "ls inbox"
-  And the content does not contain the literal substring "ls outbox"
-  And the content does not contain the literal substring "<BC root>/inbox/"
-  And the content does not contain the literal substring "<BC root>/outbox/"
-  And the content does not instruct the reader to read the inbox YAML file directly or by any non-shop-msg means

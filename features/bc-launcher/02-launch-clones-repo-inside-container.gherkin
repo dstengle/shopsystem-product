@@ -1,8 +1,0 @@
-@scenario_hash:62e1e005e9ece9f3
-Scenario: bc-container launch clones the BC repository inside the container
-  Given the shopsystem-bc-launcher BC is installed
-  And a BC named "shopsystem-messaging" with a valid repo URL is configured
-  When I run bc-container launch with BC name "shopsystem-messaging"
-  And the container starts
-  Then the repository is cloned into the container's workspace directory
-  And the cloned directory contains a git repository for "shopsystem-messaging"

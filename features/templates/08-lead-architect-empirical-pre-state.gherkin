@@ -1,5 +1,0 @@
-@scenario_hash:13bc1deb5be4ed79
-Scenario: lead-architect template requires empirical pre-state verification (Finding 17 / S16 pin)
-  When I read the lead-architect template via "shop-templates show lead-architect"
-  Then the content names "empirical" pre-state verification as the discipline for choosing between assign_scenarios, request_bugfix, and request_maintenance
-  And the content distinguishes "reading code" (hypothesis) from "running it" (fact) as the basis for that choice

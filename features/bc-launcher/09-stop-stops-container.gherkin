@@ -1,7 +1,0 @@
-@scenario_hash:05b93eda8268ee7c
-Scenario: bc-container stop stops the named BC container
-  Given the shopsystem-bc-launcher BC is installed
-  And a Docker container named "bc-shopsystem-messaging" is running
-  When I run bc-container stop with BC name "shopsystem-messaging"
-  Then the command exits zero
-  And no Docker container named "bc-shopsystem-messaging" is running

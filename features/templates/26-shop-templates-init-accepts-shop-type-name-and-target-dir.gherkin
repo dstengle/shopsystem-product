@@ -1,9 +1,0 @@
-@scenario_hash:8c209f5b76c94abd
-Scenario: shop-templates exposes a bootstrap entry point that accepts a shop type, a shop name, and a target directory and scaffolds the named existing repository
-  Given an existing git repository at a target directory "/tmp/example-shop"
-  And the target directory contains no ".claude/agents/" directory and no ".beads/" directory and no top-level "CLAUDE.md" and no top-level ".gitignore"
-  When I invoke the "shop-templates" bootstrap entry point with shop type "bc", shop name "example-shop", and target directory "/tmp/example-shop"
-  Then the exit code is 0
-  And the invocation completes without prompting for any input on stdin
-  And stderr does not contain any prompt-style text such as "y/n" or "press enter"
-  And after the invocation the target directory contains a ".claude/agents/" directory, a ".beads/" directory, a top-level "CLAUDE.md", and a top-level ".gitignore"

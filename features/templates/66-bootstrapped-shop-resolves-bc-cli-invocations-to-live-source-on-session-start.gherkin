@@ -1,9 +1,0 @@
-@scenario_hash:e5f21b444322fb0a
-Scenario: on session start in a bootstrapped lead shop, every BC CLI installed into the product venv (for example "shop-msg", "shop-templates") resolves invocations to the current source tree of that BC's clone under "repos/", so an edit to a BC's source is reflected in the next CLI invocation without an intervening manual reinstall
-  Given an existing git repository at a target directory "/tmp/example-lead-shop" that was previously bootstrapped as a "lead" shop named "shopsystem-product"
-  And the target directory contains a sibling BC clone at "repos/shopsystem-messaging/" whose installed package name is "shop-msg"
-  And a fresh edit has been made to a Python source file under "repos/shopsystem-messaging/src/" that changes observable CLI behavior of "shop-msg"
-  When a Claude Code session starts in the target directory and the "SessionStart" hooks declared by ".claude/settings.json" complete
-  And the agent invokes the "shop-msg" CLI through its normal entry point
-  Then the invocation exhibits the post-edit observable behavior
-  And no manual "pip install" step is required between the source edit and the invocation

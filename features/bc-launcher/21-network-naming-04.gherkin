@@ -1,9 +1,0 @@
-  @scenario_hash:8a26d4aa1da12870
-  Scenario: bc-container launch creates the derived network before starting the container when the network does not exist
-    Given a bc-manifest.yaml exists with product field "shopsystem product"
-    And no Docker network named "shopsystem-product" exists
-    And no Docker container named "bc-shopsystem-messaging" is running
-    When I run bc-container launch with BC name "shopsystem-messaging"
-    Then the command exits zero
-    And the FakeDockerDriver records that "docker network create shopsystem-product" was called before "docker run"
-    And a Docker network named "shopsystem-product" exists

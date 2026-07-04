@@ -1,8 +1,0 @@
-@scenario_hash:def7df91171edb1d
-Scenario: A BC response appears in the lead inbox and does not appear in the BC outbox
-  Given "shopsystem-product" is registered as the lead shop
-  And "shopsystem-messaging" is registered in the messaging registry
-  And shop-msg respond work_done was run by "shopsystem-messaging" for work-id "lead-302"
-  When I run shop-msg pending inbox --lead shopsystem-product
-  Then stdout includes work-id "lead-302"
-  And shop-msg pending outbox --bc shopsystem-messaging does not include work-id "lead-302"

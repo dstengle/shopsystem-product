@@ -1,0 +1,21 @@
+_version = 1
+
+[workflow]
+graph = "workflow-forcefail.fabro"
+
+[run.inputs]
+BC_NAME = "fabro-e2e-clean3"
+WORK_ID = "fabro-clean3-s6"
+
+[run.environment.env]
+BC_NAME = "fabro-e2e-clean3"
+WORK_ID = "fabro-clean3-s6"
+
+[run.environment]
+id = "local"
+
+[environments.local]
+provider = "local"
+
+[run.pull_request]
+enabled = false

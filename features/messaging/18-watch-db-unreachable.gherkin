@@ -1,8 +1,0 @@
-@bc:shopsystem-messaging
-@scenario_hash:22305f43edd6f98a
-Scenario: shop-msg watch exits non-zero with a message naming the DSN when the database is unreachable at startup
-  Given a BC at a temporary path
-  And the environment variable SHOPMSG_DSN is set to an address where no Postgres instance is listening
-  When I run shop-msg watch
-  Then the command exits non-zero
-  And stderr contains the DSN value from SHOPMSG_DSN

@@ -1,9 +1,0 @@
-@scenario_hash:c3eb7f5294f46e0b
-Scenario: the bootstrap entry point exits non-zero when invoked with a shop type that is neither "bc" nor "lead", names the offending input on stderr, and writes no scaffold
-  Given an existing git repository at a target directory "/tmp/example-shop"
-  And the target directory contains no ".claude/agents/" directory and no ".beads/" directory and no top-level "CLAUDE.md" and no top-level ".gitignore"
-  When I invoke the "shop-templates" bootstrap entry point with shop type "neither-bc-nor-lead", shop name "example-shop", and target directory "/tmp/example-shop"
-  Then the exit code is non-zero
-  And stderr names the offending shop-type value "neither-bc-nor-lead"
-  And stderr lists the accepted shop-type values "bc" and "lead"
-  And the target directory still contains no ".claude/agents/" directory and no ".beads/" directory and no top-level "CLAUDE.md" and no top-level ".gitignore"

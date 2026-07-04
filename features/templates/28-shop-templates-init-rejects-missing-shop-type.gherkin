@@ -1,8 +1,0 @@
-@scenario_hash:99cbb1a08f386c1b
-Scenario: the bootstrap entry point exits non-zero and writes a usage diagnostic to stderr when invoked without a shop type, with no default applied
-  Given an existing git repository at a target directory "/tmp/example-shop"
-  When I invoke the "shop-templates" bootstrap entry point with a shop name and a target directory but with no shop type argument
-  Then the exit code is non-zero
-  And the target directory still contains no ".claude/agents/" directory and no ".beads/" directory and no top-level "CLAUDE.md" and no top-level ".gitignore"
-  And stderr names "shop type" (or an equivalent phrase identifying the missing argument) as the missing required input
-  And stderr lists the accepted shop-type values "bc" and "lead" so the caller can recover

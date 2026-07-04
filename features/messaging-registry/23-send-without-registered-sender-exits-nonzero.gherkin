@@ -1,7 +1,0 @@
-@scenario_hash:6f927c2c41e62861
-Scenario: Sending a message when the caller is not registered in the registry exits non-zero
-  Given no shop is registered in the messaging registry for the current caller context
-  And "shopsystem-messaging" is registered in the messaging registry
-  When I run shop-msg send assign_scenarios --bc shopsystem-messaging with a valid payload
-  Then the command exits non-zero
-  And stderr contains a message indicating the sender could not be determined from the registry

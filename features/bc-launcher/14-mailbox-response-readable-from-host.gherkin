@@ -1,9 +1,0 @@
-@scenario_hash:0d573c8426c8ced7
-Scenario: shop-msg response written inside the BC container is readable from the host
-  Given the shopsystem-bc-launcher BC is installed
-  And a Docker container named "bc-shopsystem-messaging" is running on the shared Docker network
-  And the container has SHOPMSG_DSN set to the shared PostgreSQL instance
-  And an inbox message with work-id "lead-500" exists in the shared PostgreSQL backend
-  When shop-msg respond work_done is run inside the container with work-id "lead-500"
-  Then running shop-msg read outbox on the host with work-id "lead-500" exits zero
-  And stdout includes message_type "work_done"

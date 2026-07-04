@@ -1,9 +1,0 @@
-@scenario_hash:16349a51d1cac290
-Scenario: registry list emits abstract addresses and projects no path column
-  Given "shopsystem-messaging" is registered in the messaging registry
-  And "shopsystem-product" is registered as the lead shop
-  When I run shop-msg registry list
-  Then the command exits zero
-  And stdout contains an entry whose abstract address is "shopsystem/messaging"
-  And stdout contains an entry whose abstract address is "shopsystem/lead"
-  And no entry in stdout contains a filesystem path field

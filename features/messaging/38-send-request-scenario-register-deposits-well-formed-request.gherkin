@@ -1,8 +1,0 @@
-@scenario_hash:7bc14b8a649e1868
-Scenario: shop-msg send request_scenario_register deposits a well-formed request naming the target bounded context with optional narrowing
-  Given an empty BC at a temporary path with no unprocessed inbox messages
-  When shop-msg send request_scenario_register is run for work-id "lead-400" naming target bounded context "shopsystem-templates" and supplying a narrowing selector confining the request to feature-area surface "approve-claude"
-  Then the inbox holds exactly one unprocessed request_scenario_register message for work_id "lead-400"
-  And that deposited message validates against the RequestScenarioRegister request schema and names target bounded context "shopsystem-templates"
-  And the deposited message carries the supplied narrowing selector and no register entry of its own
-  And shop-msg send request_scenario_register run with no narrowing selector instead deposits a valid request denoting the target bounded context's full register

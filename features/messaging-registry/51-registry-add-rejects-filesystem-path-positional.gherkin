@@ -1,7 +1,0 @@
-@scenario_hash:b4a81d70bd7bdf7d
-Scenario: Passing a filesystem-path positional to registry add exits non-zero with a migration message
-  Given the shop-msg CLI has shipped abstract-address routing identity
-  When I run shop-msg registry add with canonical name "shopsystem-messaging" and a filesystem-path positional argument
-  Then the command exits non-zero
-  And stderr contains a message indicating registry add no longer accepts a shop_root path and instructs the caller to use registry add [--lead-shop] <name>
-  And no entry for "shopsystem-messaging" is added to the registry

@@ -1,6 +1,0 @@
-@scenario_hash:fd6c7f023ca4f7f0
-Scenario: shop-templates list outputs the four expected role-template names, one per line, sorted
-  When I run "shop-templates list"
-  Then the exit code is 0
-  And stdout is exactly the four names "bc-implementer", "bc-reviewer", "lead-architect", "lead-po", one per line in that sorted order
-  And stderr is empty

@@ -1,7 +1,0 @@
-@scenario_hash:307967ddfb53fc45
-Scenario: the lead snapshot incrementally reflects a newly-completed scenario carried by a work_done
-  Given a lead snapshot in which the block-only canonical hash "h4" is not recorded as completed
-  And a work_done arrives carrying a scenario whose block-only canonical hash "h4" equals its on-disk @scenario_hash tag
-  When the lead applies that work_done to its snapshot incrementally
-  Then the lead snapshot records the block-only canonical hash "h4" as completed
-  And the lead recorded "h4" without performing a full reconciliation sweep of every BC journal

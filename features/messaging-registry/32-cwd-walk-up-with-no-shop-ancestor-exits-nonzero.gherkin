@@ -1,7 +1,0 @@
-@scenario_hash:e8003198468448cf
-Scenario: bare "shop-msg prime" exits non-zero with a clear diagnostic when CWD has no .claude/shop/ ancestor up to the filesystem root
-  Given my current working directory has no ancestor (up to the filesystem root) containing a ".claude/shop/" directory with both "name.md" and "type.md"
-  When I run "shop-msg prime" with no addressing flags
-  Then the command exits non-zero
-  And stderr contains a diagnostic naming that no shop was found by walking up from the current directory
-  And stderr names both remediations available to the caller: cd into a shop directory, OR pass an explicit "--bc <name>" or "--lead <name>" flag

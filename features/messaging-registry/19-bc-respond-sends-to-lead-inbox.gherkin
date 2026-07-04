@@ -1,8 +1,0 @@
-@scenario_hash:e6752f9bb4b36fcd
-Scenario: A BC responding to work sends the response to the lead inbox, not to a BC outbox
-  Given "shopsystem-product" is registered in the messaging registry as the lead shop
-  And "shopsystem-messaging" is registered in the messaging registry
-  And a work-done response for work-id "lead-301" is ready from "shopsystem-messaging"
-  When shop-msg respond work_done is run by "shopsystem-messaging" for work-id "lead-301"
-  Then the command exits zero
-  And shop-msg pending inbox --lead shopsystem-product includes work-id "lead-301"

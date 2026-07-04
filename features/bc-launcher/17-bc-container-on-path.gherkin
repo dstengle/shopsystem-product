@@ -1,6 +1,0 @@
-@scenario_hash:a876c34e9c93ee43
-Scenario: bc-container is available on PATH after installing the shopsystem-bc-launcher package
-  Given the shopsystem-bc-launcher BC package is installed in a Python environment
-  When bc-container --help is executed in that environment
-  Then the command exits zero
-  And stdout includes the top-level subcommand names launch, attach, inject, monitor, stop, status, and list

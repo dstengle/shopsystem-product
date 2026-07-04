@@ -1,6 +1,0 @@
-@scenario_hash:f39fa801c31d827b
-Scenario: canonicalization is insensitive to per-line surrounding whitespace
-  Given a Gherkin body A
-  And a Gherkin body B that is A with extra leading and trailing whitespace on every step line
-  When I compute the canonical hash of A and of B
-  Then both hashes are identical

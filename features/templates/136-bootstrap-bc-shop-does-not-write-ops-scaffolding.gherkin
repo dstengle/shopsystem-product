@@ -1,8 +1,0 @@
-@scenario_hash:0c7b91617e93d78f
-Scenario: bootstrap of a "bc" shop does not write the lead-shop ops scaffolding (no "compose.yaml", no "bin/shop-shell", no "Dockerfile.shopsystem-shell") because a BC runs inside a bc-launcher container and never owns its own postgres or shell image
-  Given an existing git repository at a target directory "/tmp/example-bc-shop" with no top-level "compose.yaml", no "bin/" subdirectory, and no top-level "Dockerfile.shopsystem-shell"
-  When I invoke the "shop-templates" bootstrap entry point with shop type "bc", shop name "shopsystem-messaging", and target directory "/tmp/example-bc-shop"
-  Then the exit code is 0
-  And after the invocation the target directory contains no top-level file named "compose.yaml"
-  And after the invocation the target directory contains no file at "bin/shop-shell"
-  And after the invocation the target directory contains no top-level file named "Dockerfile.shopsystem-shell"

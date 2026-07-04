@@ -1,6 +1,0 @@
-@scenario_hash:ccd086362aa88e17
-Scenario: Removing a shop name that is not in the registry exits zero with a notice
-  Given no shop named "shopsystem-unknown" is registered in the messaging registry
-  When I run shop-msg registry remove with canonical name "shopsystem-unknown"
-  Then the command exits zero
-  And stdout or stderr contains a notice that "shopsystem-unknown" was not found

@@ -1,7 +1,0 @@
-@scenario_hash:2e4a3b51ea0dd8c4
-Scenario: shop-msg watch --lead <name> drains messages already in the lead inbox before entering live-notification mode
-  Given "shopsystem-product" is registered as the lead shop
-  And a message with work-id "lead-502" is already present in the lead inbox before watch starts
-  When shop-msg watch --lead shopsystem-product is started
-  Then it outputs a line for work_id "lead-502" during the startup drain
-  And after the drain completes it enters live-notification mode without exiting
