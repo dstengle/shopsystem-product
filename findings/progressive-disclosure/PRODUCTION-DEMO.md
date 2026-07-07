@@ -127,17 +127,17 @@ Real-corpus result today:
 | Surface | Command | Result |
 |---|---|---|
 | **Authoring** (PR / doctor) | `--mode authoring --aggregate` | `PASS — 0 blocking → exit 0` (coherence rows are WARNs) |
-| **Distribution** (DECISIONS.md pour / release) | `--mode distribution --aggregate` | `FAIL — 230 blocking → exit 1` |
+| **Distribution** (DECISIONS.md pour / release) | `--mode distribution --aggregate` | `FAIL — 234 blocking → exit 1` |
 
-Composition of the 230 blocking rows (per-class, run each with `--class <c>`):
+Composition of the 234 blocking rows (per-class, run each with `--class <c>`):
 
 | Class | Failure class | Blocking | Advisory | What it is |
 |---|---|---|---|---|
 | `ln` | schema floor | 0 | 0 | lint clean |
-| `ci` | **FC1** claimed-invariant vs reality | **1** (CI-006) | 56 (CI-000) | ADR-050's pinned parity feature is absent |
+| `ci` | **FC1** claimed-invariant vs reality | **2** (CI-001×1, CI-006×1) | 56 (CI-000) | ADR-050's pinned parity feature is absent; live governed-delta parity baseline diff |
 | `sg` | **FC4** supersession graph | **7** (SG-001×3, SG-003×3, SG-008×1) | 0 | ADR-025 supersedes active docs; a dependency cycle |
-| `dr` | **FC3** doc↔reality drift | **222** (DR-001×74, DR-002×135, DR-004×13) | 751 (DR-005) | dangling links, cited hashes that resolve to nothing, `@origin` with no decision |
-| `sp` | **FC2** stale forward-looking prose | 0 | 223 (SP-001) | untagged "not yet / deferred / follow-up" prose |
+| `dr` | **FC3** doc↔reality drift | **224** (DR-001×74, DR-002×137, DR-004×13) | 751 (DR-005) | dangling links, cited hashes that resolve to nothing, `@origin` with no decision |
+| `sp` | **FC2** stale forward-looking prose | **1** (SP-002) | 222 (SP-001) | ADR-048's "not yet an owned BC" contradiction BLOCKS via its `pending:` predicate; untagged prose stays advisory |
 
 > Always pass the **full** corpus (`adr pdr briefs`). Running one dir alone makes
 > edges into the omitted dirs look dangling and inflates SG falsely.
@@ -233,23 +233,28 @@ Genuine drift, correct citing artifact, correct line.
 ### FC2 — stale forward-looking prose (the "not yet an owned BC" claim)
 
 ```bash
-decisions check adr --class sp --decision ADR-048 --mode authoring   # (advisory)
+decisions check adr --class sp --decision ADR-048 --mode distribution   # BLOCKS
 ```
 ```
-[WARN] COH-SP-001  ./adr/048-...-substrate.md:197
-       untagged forward-looking prose: 'fabro in-container orchestration is not yet an owned BC, so the graduation'
-       remediation: add a pending: [{marker, predicate}] entry covering this line
+[FAIL] COH-SP-002  ./adr/048-fabro-as-alternable-in-container-bc-orchestration-substrate.md
+       pending predicate satisfied (tag --orchestrator fabro present): 'not yet' prose now contradicts state
+       remediation: the awaited thing landed — amend/supersede this doc and drop the pending
 ```
 
 ADR-048 line 197 still says fabro "is **not yet an owned BC** … not
 `assign_scenarios`-dispatchable today" — while `features/shopsystem-bc-launcher/`
 carries 4+ fabro feature files, a shipped 15-file fabro-def bundle, and a real
 `bc-container launch --orchestrator fabro` flag. The prose is stale-as-current.
-**Honest scope of this catch (see §remaining):** FC2 flags this at **advisory**
-severity today; its blocking `COH-SP-002` teeth engage only once the line is
-tagged with a `pending: {predicate}` entry — which the corpus migration did not
-synthesize. This demo ships the regex fix that makes SP-001 *see* the sentence;
-turning it into a blocking catch is the tracked follow-up below.
+**This catch now BLOCKS.** ADR-048 carries a hand-authored `pending:` frontmatter
+entry — marker `not yet an owned BC`, predicate `feature-has-tag` on
+`features/shopsystem-bc-launcher/bc_container_orchestrator_flag_engage_tier.feature`
+for the tag `--orchestrator fabro`. The predicate evaluates **true** against the
+artifact surface (the flag ships), so `COH-SP-002` fires blocking in distribution
+mode (exit 1) and WARN-only in authoring mode (ADR-047 D3). Honest scope: this is
+a **single hand-authored** `pending:` entry on the one known-stale line; the
+corpus migration still synthesizes zero `pending:` entries, so every OTHER
+"not yet" sentence in the corpus remains advisory SP-001 until tagged — general
+`migrate.py` synthesis is the tracked follow-up below.
 
 ---
 
@@ -394,17 +399,20 @@ PYTHONPATH=tools/shopsystem-decisions/src python3 -m pytest \
 
 **What a reviewer must know is NOT fully closed:**
 
-1. **FC2 is the weak class.** The **REFUTE** from verification stands in spirit:
-   on the real corpus FC2 catches stale "not yet" prose only at **advisory**
-   severity. This pass broadened `FORWARD_RE` so SP-001 now *sees* the exact FC2
-   sentence (ADR-048:197 "not yet an owned BC" — previously invisible), but the
-   **blocking** `COH-SP-002` teeth require a `pending: {predicate}` frontmatter
-   entry that the corpus migration synthesized **zero** of. Until `migrate.py`
-   emits `pending:` entries (or the gate detects present-tense state claims
-   contradicted by the artifact surface, not just a keyword list), FC2's real
-   catch of the fabro "not yet a BC" contradiction is advisory-only. **This is the
-   top follow-up.** (SP-001 is also noisy — it matches the word "pending" in
-   ordinary prose; the advisory net wants tightening.)
+1. **FC2 blocking teeth are live on the known contradiction, hand-authored, not
+   yet synthesized.** The real fabro catch now BLOCKS: ADR-048 carries a
+   `pending:` entry (marker `not yet an owned BC`, `feature-has-tag` predicate on
+   the `--orchestrator fabro` flag in
+   `bc_container_orchestrator_flag_engage_tier.feature`), the predicate evaluates
+   true against the artifact surface, and `COH-SP-002` fails distribution mode
+   with exit 1. What remains open: the corpus migration still synthesizes **zero**
+   `pending:` entries, so FC2 blocks only where an author (or this pass) has
+   hand-tagged the line — the other 222 SP-001 "not yet / deferred / follow-up"
+   sentences across the corpus stay advisory. **Top follow-up: `migrate.py`
+   synthesis of `pending:` entries** (or a gate that detects present-tense state
+   claims contradicted by the artifact surface, not just a keyword list).
+   (SP-001 is also noisy — it matches the word "pending" in ordinary prose; the
+   advisory net wants tightening.)
 2. **FC1 governed-delta is opt-in.** It catches a stale parity claim only when the
    claim is machine-encoded (`invariants[]` + `decisions baseline`). The migrated
    corpus gave ADR-050 a `path-present` pin, not a `governed-delta` parity

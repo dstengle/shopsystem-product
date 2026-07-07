@@ -14,6 +14,12 @@ edges:
   anchored-on: [ADR-006, ADR-018, ADR-020, ADR-029, ADR-030, ADR-032, PDR-010, PDR-011, PDR-014, PDR-016]
   pins: []
   related: []
+pending:
+  - marker: not yet an owned BC
+    predicate:
+      kind: feature-has-tag
+      feature: features/shopsystem-bc-launcher/bc_container_orchestrator_flag_engage_tier.feature
+      tag: "--orchestrator fabro"
 ---
 # ADR-048 — Fabro is an alternable in-container BC-orchestration substrate (provider=local); it replaces only the Seam(a) launch+loop, never the three shop-msg/bd invariant surfaces
 
