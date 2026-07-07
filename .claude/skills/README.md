@@ -69,6 +69,7 @@ disciplines — same experimental-first status, different lineage.
 | Skill | What it does |
 |---|---|
 | [`bring-up-bc`](bring-up-bc/SKILL.md) | Instantiate a BC as a running container via `bc-container` so the lead can dispatch to it (DSN/network, the devcontainer `BCLAUNCHER_HOST_HOME` gotcha, verification). |
+| [`consult-decision-index`](consult-decision-index/SKILL.md) | Triage against the L0 decision index and run the coherence gate BEFORE authoring/amending any ADR/PDR/brief, so a new decision doesn't duplicate, silently contradict, or leave a dangling supersede. The authoring-time half of the `tools/shopsystem-decisions/` gate (its CI/pour half is `ci/decisions-gate.sh`). Canonical source: `tools/shopsystem-decisions/skill/consult-decision-index/`. |
 
 ## How a skill graduates
 

@@ -134,16 +134,29 @@ paths. `build` is idempotent (`build && build` writes zero bytes) and
 
 ## Wiring on the lead host (Step 4.2)
 
-- **Doctor:** add aggregate check `DECISION_COHERENCE` running
-  `decisions check adr pdr briefs --mode authoring --aggregate` + `decisions build --check`.
-- **CI (dagger):** `decisions_gate(source)` = lint (blocking) → `build --check`
-  (blocking) → `check --mode authoring --json` (captured as PR annotation, never
-  fails the build).
-- **Pour gate:** front the `DECISIONS.md` digest pour with
-  `decisions check adr pdr briefs --mode distribution --aggregate || abort`.
+**One entrypoint** drives all three surfaces so local and CI never diverge
+(ADR-053); the advisory/blocking split is ADR-047 D3:
 
-The authoring skill lives at
-[`skill/consult-decision-index/SKILL.md`](skill/consult-decision-index/SKILL.md).
+```bash
+ci/decisions-gate.sh --mode authoring       # PR / doctor  — leg 3 WARNs (exit 0)
+ci/decisions-gate.sh --mode distribution    # pour / release — leg 3 BLOCKS (exit 1)
+```
+
+Three legs: **lint** (`--lint`, blocks everywhere, exit 2) → **drift**
+(`build --check`, blocks everywhere, exit 1) → **coherence** (`check --mode`,
+FC1–FC4; WARN at authoring / BLOCK at distribution).
+
+- **Doctor:** aggregate check `DECISION_COHERENCE` = `ci/decisions-gate.sh --mode authoring`.
+- **CI (dagger):** call `ci/decisions-gate.sh --mode authoring` with
+  `DECISIONS_ANNOTATION_FILE=coherence.json` — legs 1–2 fail the build, leg 3's
+  FC1–FC4 rows are emitted as a non-failing PR annotation.
+- **Pour gate:** front the `DECISIONS.md` digest pour with
+  `ci/decisions-gate.sh --mode distribution` (aborts on any FC1–FC4 blocking row).
+
+The authoring-time discipline is the [`consult-decision-index`](skill/consult-decision-index/SKILL.md)
+skill (canonical source here; wired/registered copy at
+`.claude/skills/consult-decision-index/`). Full walkthrough on the real corpus:
+[`findings/progressive-disclosure/PRODUCTION-DEMO.md`](../../findings/progressive-disclosure/PRODUCTION-DEMO.md).
 
 ## Module map
 

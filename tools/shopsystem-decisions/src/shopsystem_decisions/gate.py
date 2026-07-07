@@ -37,8 +37,16 @@ FLAG_RE = re.compile(r"(?<=\s)--[a-z][a-z0-9-]*")
 ONESHOT_RE = re.compile(
     r"(?i)(one-?shot|exactly one .* deposit|exits after (depositing|emitting))")
 FORWARD_RE = re.compile(
-    r"(?i)\b(NOT YET BUILT|TBD|deferred|follow-?up|will (?:be|ship|land)|pending)\b")
+    r"(?i)\b("
+    r"NOT YET BUILT|TBD|deferred|follow-?up|will (?:be|ship|land)|pending"
+    # present-state "not yet ..." claims (e.g. "not yet an owned BC",
+    # "not yet productionized") — the real FC2 phrasing the keyword list missed.
+    r"|not yet\b"
+    r")")
 MD_LINK_RE = re.compile(r"\]\(([^)]+)\)")
+# Any RFC-3986-style scheme prefix (http:, mailto:, beads:, bd:, ...). A link
+# carrying one is not a relative filesystem path, so DR-001 must skip it.
+URI_SCHEME_RE = re.compile(r"^[a-z][a-z0-9+.-]*:")
 
 
 # --------------------------------------------------------------------------- #
@@ -419,7 +427,10 @@ def check_ci(docs, graph: Graph, base: str, lock: dict) -> list[Finding]:
 
 def _check_governed_delta(d, inv, pred, base, lock) -> list[Finding]:
     iid = inv.get("id")
-    entry = (lock.get(d.id) or {}).get("invariants", {}).get(iid)
+    doc_lock = lock.get(d.id) or {}
+    # accepted_rev is stamped at doc level by stamp_baseline(), not per-invariant.
+    accepted_rev = doc_lock.get("accepted_rev")
+    entry = doc_lock.get("invariants", {}).get(iid)
     if not entry:
         return [Finding("COH-CI-005", SEV_ADVISORY, d.path,
                         f"no lock entry for {d.id}/{iid}",
@@ -446,7 +457,7 @@ def _check_governed_delta(d, inv, pred, base, lock) -> list[Finding]:
 
     def detail():
         return [
-            f"baseline : {d.id} @ {entry.get('accepted_rev','?')} — "
+            f"baseline : {d.id} @ {accepted_rev or '?'} — "
             f"{len(lock_hashes)} pin(s), flags {sorted(set(lock_tok.get('flags') or []))}",
             f"actual   : +{sorted(added)} -{sorted(removed)} "
             f"flag±{sorted(flag_delta)} lifecycle±{sorted(life_delta)}",
@@ -454,7 +465,7 @@ def _check_governed_delta(d, inv, pred, base, lock) -> list[Finding]:
 
     findings: list[Finding] = []
     base_kw = dict(file=d.path, invariant=iid,
-                   baseline={"rev": entry.get("accepted_rev"),
+                   baseline={"rev": accepted_rev,
                              "hashes": sorted(lock_hashes),
                              "surface_tokens": lock_tok},
                    actual={"hashes": sorted(cur),
@@ -515,7 +526,12 @@ def check_dr(docs, graph: Graph, base: str) -> list[Finding]:
         # DR-001: relative markdown links resolve
         for m in MD_LINK_RE.finditer(d.body):
             link = m.group(1).split()[0]
-            if link.startswith("#") or link == "#" or "://" in link or link.startswith("mailto:"):
+            # Skip in-page anchors and any URI with a scheme (http://, mailto:,
+            # beads:, bd:, ...): a scheme prefix means "not a relative filesystem
+            # path", so it is out of DR-001's scope. Custom schemes like
+            # `beads:lead-mxy` are still covered by advisory DR-005, not blocking.
+            if (link.startswith("#") or link == "#"
+                    or URI_SCHEME_RE.match(link)):
                 continue
             target = link.split("#")[0]
             if not target:

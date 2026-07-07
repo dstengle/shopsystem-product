@@ -8,17 +8,14 @@ description: Consult the decision index (L0) and run the coherence gate BEFORE a
 ---
 # Consult the decision index before authoring
 
-> **Canonical source.** This is the authored home of the skill. The wired,
-> agent-discoverable copy lives at `.claude/skills/consult-decision-index/`
-> (provenance `LOCAL`); keep the two in lockstep. The CI/pour half of the same
-> gate is [`../../ci/decisions-gate.sh`](../../ci/decisions-gate.sh).
-
 **Discipline: no decision authored blind against the corpus.**
 
 This is the authoring-time half of the decision-coherence system shipped by the
-`decisions` CLI. The CI/pour half runs the same gate mechanically. This skill is
-the *human/agent* discipline that keeps a decision coherent **before** it is
-committed, so the gate has less to catch.
+`decisions` CLI (`tools/shopsystem-decisions/`). The CI/pour half runs the same
+gate mechanically — see [`ci/decisions-gate.sh`](../../../tools/shopsystem-decisions/ci/decisions-gate.sh)
+and "How the gate runs in CI" below. This skill is the *human/agent* discipline
+that keeps a decision coherent **before** it is committed, so the gate has less
+to catch.
 
 ## Procedure
 1. **Triage against L0.** Read `decision-refs/llms.txt` (or `decisions list adr pdr briefs`)
@@ -54,10 +51,12 @@ ADR-047 D3:
 - **Authoring / PR / doctor (advisory).** `ci/decisions-gate.sh --mode authoring`
   runs lint (blocking) → `build --check` (blocking) → `check --mode authoring`
   (FC1-FC4 **WARN**, captured as a PR annotation via
-  `DECISIONS_ANNOTATION_FILE`, never fails the build).
+  `DECISIONS_ANNOTATION_FILE`, never fails the build). A doctor aggregate check
+  `DECISION_COHERENCE` runs the same line.
 - **Distribution / DECISIONS.md pour / release reconciliation (blocking).**
   `ci/decisions-gate.sh --mode distribution` runs the same legs but leg 3
-  **blocks**: any FC1-FC4 blocking row (`exit 1`) aborts the pour.
+  **blocks**: any FC1-FC4 blocking row (`exit 1`) aborts the pour. This is the
+  hard boundary a stale "parity" ADR or a dangling supersede cannot cross.
 
 Lint (`COH-LN-*`) and projection drift (`build --check`) block in **both** modes.
 
