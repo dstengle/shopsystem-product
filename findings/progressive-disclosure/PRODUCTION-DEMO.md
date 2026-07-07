@@ -180,40 +180,50 @@ other).
 
 ### FC1 — claimed-invariant vs reality (the fabro "parity" class)
 
-On the real corpus, ADR-050 authored a `path-present` invariant pinning its
-parity boot scenario; the file does not exist:
+This is the catch the whole initiative exists for, and it now fires **live on the
+real corpus** — no fixture, no reconstruction. ADR-050 carries two invariants: a
+`path-present` pin (its parity boot scenario, whose file does not exist) **and** a
+`governed-delta` invariant `engage-tier-parity-delta` (`claim: parity`, hash
+`66bdf7828f7aa808`) whose engage scenario-set was **baselined at acceptance**
+(`decisions baseline ADR-050 --rev 9ee441c`, stamped into
+`decision-refs/coherence-lock.yaml`). When the real ADR-058 reactive-dispatcher
+change lands in the governed feature — swapping the engage scenario hash
+`68e14cdcd8b7c145 → 30fd5f2079f1c433` — the still-`parity`-claimed ADR-050 is
+caught:
 
 ```bash
-decisions check adr --class ci --decision ADR-050 --mode distribution
+decisions check adr pdr briefs --class ci --decision ADR-050 --mode distribution
 ```
 ```
 [FAIL] COH-CI-006  ./adr/050-fabro-launch-interface-parity-with-bc-container.md
-       invariant launch-interface-parity-pin (path-present) violated: path
-       features/fabro-orchestration/01-launch-interface-parity-boot.gherkin absent
+       invariant launch-interface-parity-pin (path-present) violated: path features/fabro-orchestration/01-launch-interface-parity-boot.gherkin absent
        remediation: the claim no longer holds against the artifact surface — amend or fix
+[FAIL] COH-CI-001  ./adr/050-fabro-launch-interface-parity-with-bc-container.md
+       invariant engage-tier-parity-delta (parity) governed delta nonempty
+       baseline : ADR-050 @ 9ee441c — 2 pin(s), flags ['--fabro-path', '--foreground', '--no-web', '--orchestrator']
+       actual   : +['30fd5f2079f1c433'] -['68e14cdcd8b7c145'] flag±[] lifecycle±[]
+       remediation: re-claim as `additive` listing the new hash(es), OR retire the new pin if parity was intended; then `decisions hash` + `decisions baseline`.
+OK — · FAIL 2 (blocking) · WARN 0 → exit 1
 ```
 
-The **governed-delta** flavor of FC1 is the one that would have caught the
-original parity regression directly: baseline the governed scenario-set at
-acceptance, and any later `added / removed / flag-delta / lifecycle-delta`
-against a `claim: parity` invariant fires `COH-CI-001` with the exact delta. The
-shipped test exercises this end-to-end against the *real* `scenarios` oracle
-(`tools/shopsystem-decisions/tests/test_fc1_delta.py`, `test_parity_clean_then_delta_fires`).
-The diagnostic (reproduced from that fixture) names the intruding scenario hash
-and flag:
+`COH-CI-001` names the intruding scenario hash `30fd5f2079f1c433` in `added` and
+the retired baseline pin `68e14cdcd8b7c145` in `removed` — the **exact** fabro
+parity-vs-lifecycle regression, on the actual ADR-050 doc, blocking the pour
+(exit 1). The change would have to be *re-claimed* as `additive`/`retire`
+(registering it) and re-baselined before it could ship. That is the whole point:
+parity claims are now machine truth, not prose anyone can quietly falsify. The
+`COH-CI-006` path-present row fires alongside it (as in the earlier demo); the
+NEW, live row is `COH-CI-001`. The same mechanism is also pinned end-to-end
+against the real `scenarios` oracle in
+`tools/shopsystem-decisions/tests/test_fc1_delta.py`
+(`test_parity_clean_then_delta_fires`) — but the demonstration above is the live
+corpus, not that test.
 
-```
-[FAIL] COH-CI-001  invariant send-vehicle-parity
-    baseline : ADR-060 @ e57aba1 — 1 pin(s), flags ['--bc']
-    actual   : +['da255854d5d933f5'] -[] flag±['--hash'] lifecycle±[]
-```
-
-Read against fabro: a `parity`-claimed ADR-050 whose engage scenario changed to
-the one-shot `-I WORK_ID` form (`68e14cdcd8b7c145`) would show that hash in
-`added` and block the pour — the change would have to be *re-claimed* as
-`additive`/`retire` (registering it) before it could ship. That is the whole
-point: parity claims become machine-checkable, not prose anyone can quietly
-falsify.
+> Reproduce the clean→dirty transition: on a checkout **before** the ADR-058
+> engage change, the same command fires only the pre-existing `COH-CI-006`
+> (path-present) — no `COH-CI-001`. Applying the real engage-scenario change to
+> `bc_container_orchestrator_flag_engage_tier.feature` is what makes the governed
+> delta nonempty and trips the parity catch.
 
 ### FC3 — doc↔reality drift (dangling reference)
 
@@ -360,7 +370,7 @@ decisions check adr --class sp --decision ADR-048 --mode authoring      # FC2 (a
 
 # whole-corpus, both surfaces (distribution DR leg is slow: it resolves bead refs)
 decisions check adr pdr briefs --mode authoring    --aggregate          # PASS, exit 0
-decisions check adr pdr briefs --mode distribution --aggregate          # FAIL 230 blocking, exit 1
+decisions check adr pdr briefs --mode distribution --aggregate          # FAIL 234 blocking, exit 1
 
 # Part (c) wiring: the CI entrypoint (both surfaces)
 tools/shopsystem-decisions/ci/decisions-gate.sh --mode authoring
@@ -380,16 +390,26 @@ PYTHONPATH=tools/shopsystem-decisions/src python3 -m pytest \
 - **Single-source schema + deterministic generator.** 97 docs → L0/L1/L2 + index
   + llms.txt + DECISIONS.md; `build` idempotent; `build --check` is a clean drift
   gate. 53 tests pass, including a socket-blocked offline proof.
-- **The gate catches FC1, FC3, FC4 on the real corpus with correct, specific,
-  blocking diagnostics** (verified adversarially, near-miss batteries):
+- **The gate catches all four — FC1, FC2, FC3, FC4 — on the real corpus with
+  correct, specific, blocking diagnostics** (verified adversarially, near-miss
+  batteries; every catch below re-run live this pass):
   - **FC4** — CONFIRMED. ADR-025 SG-001/SG-003, the 053↔054 cycle; near-miss
     matrix (8 variants) discriminates correctly; mode teeth correct.
   - **FC3** — CONFIRMED. ADR-004 DR-002 (independently grep-verified dangling);
     12-case near-miss matrix; the `beads:`-URI false-positive **fixed this pass**
     (DR-001 dropped 143 → 74; 69 spurious blocking rows removed).
-  - **FC1** — CONFIRMED. Governed-delta parity diff catches the intruding scenario
-    hash + flag; the baseline-rev diagnostic bug (`@ ?`) **fixed this pass** (now
-    `@ e57aba1`); real-corpus CI-006 blocks on ADR-050's absent parity feature.
+  - **FC1** — CONFIRMED, **now LIVE on ADR-050**. The governed-delta `parity`
+    invariant `engage-tier-parity-delta` is baselined at acceptance (`@ 9ee441c`,
+    stamped in `coherence-lock.yaml`); the real ADR-058 engage change
+    (`68e14cdcd8b7c145 → 30fd5f2079f1c433`) fires `COH-CI-001` on the actual
+    ADR-050 doc — `+['30fd5f2079f1c433'] -['68e14cdcd8b7c145']`, exit 1 — naming
+    the intruding hash and the retired pin. The `path-present` `COH-CI-006` blocks
+    alongside it. (Test `test_parity_clean_then_delta_fires` still pins the
+    mechanism against the real `scenarios` oracle.)
+  - **FC2** — CONFIRMED, **now BLOCKS** on the real ADR-048 "not yet an owned BC"
+    contradiction via a hand-authored `pending:` predicate (`COH-SP-002`, exit 1);
+    fail-closed both ways (deleting the sentence trips `COH-SP-003`). Scope caveat
+    below.
 - **Mode teeth** (ADR-047 D3): authoring WARN/exit 0, distribution BLOCK/exit 1;
   lint + drift block in both. **One CI entrypoint** (`ci/decisions-gate.sh`)
   wired for both surfaces; authoring run verified green on this corpus.
@@ -399,27 +419,38 @@ PYTHONPATH=tools/shopsystem-decisions/src python3 -m pytest \
 
 **What a reviewer must know is NOT fully closed:**
 
-1. **FC2 blocking teeth are live on the known contradiction, hand-authored, not
-   yet synthesized.** The real fabro catch now BLOCKS: ADR-048 carries a
-   `pending:` entry (marker `not yet an owned BC`, `feature-has-tag` predicate on
-   the `--orchestrator fabro` flag in
+1. **FC2 blocking teeth are LIVE on the known contradiction (hand-authored), but
+   not yet synthesized corpus-wide.** ✅ *Closed this pass:* the real fabro catch
+   now BLOCKS — ADR-048 carries a `pending:` entry (marker `not yet an owned BC`,
+   `feature-has-tag` predicate on `--orchestrator fabro` in
    `bc_container_orchestrator_flag_engage_tier.feature`), the predicate evaluates
-   true against the artifact surface, and `COH-SP-002` fails distribution mode
-   with exit 1. What remains open: the corpus migration still synthesizes **zero**
+   true against the artifact surface, and `COH-SP-002` fails distribution mode with
+   exit 1 (fail-closed both ways: deleting the sentence trips `COH-SP-003`).
+   *Residual, two parts:* **(a)** the corpus migration still synthesizes **zero**
    `pending:` entries, so FC2 blocks only where an author (or this pass) has
    hand-tagged the line — the other 222 SP-001 "not yet / deferred / follow-up"
    sentences across the corpus stay advisory. **Top follow-up: `migrate.py`
    synthesis of `pending:` entries** (or a gate that detects present-tense state
-   claims contradicted by the artifact surface, not just a keyword list).
-   (SP-001 is also noisy — it matches the word "pending" in ordinary prose; the
-   advisory net wants tightening.)
-2. **FC1 governed-delta is opt-in.** It catches a stale parity claim only when the
-   claim is machine-encoded (`invariants[]` + `decisions baseline`). The migrated
-   corpus gave ADR-050 a `path-present` pin, not a `governed-delta` parity
-   baseline, so the *direct* parity-regression catch is proven by the shipped test
-   and the reconstruction, not yet by a live baseline on ADR-050. Authoring
-   ADR-050's governed-delta baseline against the real engage feature is a small,
-   well-understood next step.
+   claims contradicted by the artifact surface, not just a keyword list). SP-001 is
+   also noisy — it matches the word "pending" in ordinary prose; the advisory net
+   wants tightening. **(b)** the `feature-has-tag` predicate is implemented as a
+   plain **substring-containment** check (`tag in feature_file_text`), not a strict
+   Gherkin `@tag` parse: `--orchestrator fabro` matches because it appears in the
+   scenario-title prose that names the flag. That is a faithful *proxy* for "the
+   flag capability landed" and the semantic catch is correct, but a stricter
+   predicate (parse actual `@tags`, or a `scenario-hash-present` / flag-in-CLI
+   check) would be less brittle to unrelated prose edits — a small refinement.
+2. **FC1 governed-delta is now LIVE on ADR-050, but remains opt-in per-claim.**
+   ✅ *Closed this pass:* ADR-050 now carries a real `governed-delta` `parity`
+   invariant (`engage-tier-parity-delta`), baselined at `@ 9ee441c`, and the direct
+   parity-regression catch fires **live** — `COH-CI-001` on the actual doc with
+   `+['30fd5f2079f1c433'] -['68e14cdcd8b7c145']`, blocking the pour (no longer
+   "proven only by test/reconstruction"). *Residual:* the mechanism catches a stale
+   parity claim only where the claim is machine-encoded (`invariants[]` +
+   `decisions baseline`). ADR-050 is now wired; any OTHER doc making a parity/
+   governed-set claim needs its own baseline to be covered — this is by design
+   (opt-in registration is the contract), not a defect, but it means coverage grows
+   one authored baseline at a time rather than automatically.
 3. **FC4 models supersession as whole-document.** ADR-025's real supersession is
    *partial* (it supersedes ADR-023 D2/D3 + ADR-024's messaging parts; other
    clauses remain in force). The gate correctly detects the incoherence, but the
@@ -436,13 +467,35 @@ PYTHONPATH=tools/shopsystem-decisions/src python3 -m pytest \
    awareness before a governed-delta baseline ships.
 5. **Not pushed / not merged.** This lives on `pd-consistency-experiments` in a
    worktree; it is an experiment pending David's review, not merged to `main`. The
-   distribution gate currently reports **230 real blocking findings** — that is the
-   gate working (the corpus genuinely has that much drift), not a defect; triaging
-   those 230 into fix-vs-accept is the adoption work, not a tool gap.
+   distribution gate currently reports **234 real blocking findings** (ci=2, sg=7,
+   dr=224, sp=1) — that is the gate working (the corpus genuinely has that much
+   drift), not a defect; triaging those 234 into fix-vs-accept is the adoption
+   work, not a tool gap.
+
+> **Another belief-vs-reality case this gate class covers — `lead-l4iw` (fabro
+> clone-path never bootstrapped).** The `lead-l4iw` thread carried the belief that
+> fabro's in-container clone-path was bootstrapped and working, when in reality
+> that path was never stood up. This is structurally the *same* failure the gate
+> exists to stop as FC1/FC2: a decision/status asserting a reality the artifact
+> surface does not support. Encoded, it is a one-line invariant — a `file-exists`
+> / `path-present` predicate on the clone-path artifact (blocks via `COH-CI-006`
+> when absent), or a `pending:` marker on the "bootstrapped" prose whose predicate
+> stays *false* until the path actually lands (fail-closed: the doc cannot claim
+> "bootstrapped" while the artifact is missing). It is not wired today — it is
+> called out here as evidence the mechanism generalizes beyond the two fabro
+> catches above, and as a candidate for the next authored baseline.
 
 **Bottom line for the reviewer:** the machinery — single source, deterministic
-projections, the FC1/FC3/FC4 blocking catches, mode teeth, the CI entrypoint, the
-authoring skill — is production-shaped and demonstrated on the real corpus. FC2's
-blocking teeth and FC1's live parity baseline on ADR-050 are the two honest gaps
-between "the demo catches it" and "the corpus is fully wired to catch it going
-forward."
+projections, **all four FC1/FC2/FC3/FC4 blocking catches now demonstrated LIVE on
+the real corpus** (FC1 `COH-CI-001` on ADR-050 and FC2 `COH-SP-002` on ADR-048
+were the two catches previously "proven only by test/reconstruction" — both now
+fire on the actual docs, exit 1), mode teeth, the CI entrypoint, the authoring
+skill — is production-shaped and demonstrated on the real corpus. The two honest
+gaps that previously sat between "the demo catches it" and "the corpus is fully
+wired" are **closed**; what remains is *corpus-wide coverage growth*, not
+mechanism: FC1 governed-delta and FC2 `pending:` catch only where a claim is
+machine-encoded (ADR-050, ADR-048 are wired; other docs are covered one authored
+baseline / `pending:` at a time), and **`migrate.py` does not yet synthesize
+those entries automatically** — the top remaining follow-up. Detection is done;
+the adoption work is triaging the 234 real blocking rows and extending encoded
+claims across the corpus.
