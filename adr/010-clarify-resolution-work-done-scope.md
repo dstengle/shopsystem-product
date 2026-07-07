@@ -1,3 +1,20 @@
+---
+id: ADR-010
+kind: adr
+title: "Clarify-resolution `work_done.scenario_hashes` scope: strict subset of the resolving dispatch, not of the original"
+status: accepted
+date: "2026-05-27"
+description: "Clarify-resolution `work_done.scenario_hashes` scope: strict subset of the resolving dispatch, not of the original"
+beads: [lead-apk, lead-architect, lead-b34, lead-eqx, lead-km9, lead-side]
+edges:
+  supersedes: []
+  superseded-by: []
+  amends: []
+  depends-on: []
+  anchored-on: [ADR-009]
+  pins: []
+  related: []
+---
 # ADR-010 — Clarify-resolution `work_done.scenario_hashes` scope: strict subset of the resolving dispatch, not of the original
 
 **Status:** accepted (2026-05-27)

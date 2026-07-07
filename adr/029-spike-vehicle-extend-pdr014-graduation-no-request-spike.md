@@ -1,3 +1,20 @@
+---
+id: ADR-029
+kind: adr
+title: "Spike vehicle: extend PDR-014 graduation; reject `request_spike` for now (spike sits upstream of the ADR-018 discriminator)"
+status: accepted
+date: "2026-06-10"
+description: "Spike vehicle: extend PDR-014 graduation; reject `request_spike` for now (spike sits upstream of the ADR-018 discriminator)"
+beads: [lead-8mho, lead-95q5, lead-architect, lead-capability, lead-f6ta, lead-gkhk, lead-jkwo, lead-odqd, lead-po, lead-skill]
+edges:
+  supersedes: []
+  superseded-by: []
+  amends: []
+  depends-on: []
+  anchored-on: [ADR-018, PDR-012, PDR-014]
+  pins: [PDR-014, PDR-016]
+  related: []
+---
 # ADR-029 — Spike vehicle: extend PDR-014 graduation; reject `request_spike` for now (spike sits upstream of the ADR-018 discriminator)
 
 **Status:** accepted (2026-06-10)

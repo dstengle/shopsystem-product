@@ -1,3 +1,20 @@
+---
+id: ADR-042
+kind: adr
+title: The ADR-036 procedural-precondition migration is as-built complete through the enforcement layer (the `bc-emit work-done` wrapper landed and shipped); its final leg — retro-retiring the template-prose pins 105-116 — was falsely marked delivered and is hereby re-opened as the one remaining, now-unblocked action
+status: proposed
+date: "2026-06-24"
+description: The ADR-036 procedural-precondition migration is as-built complete through the enforcement layer (the `bc-emit work-done` wrapper landed and shipped); its final leg — retro-reti...
+beads: [lead-63mg, lead-7efq, lead-83l, lead-8lm, lead-architect, lead-bglz, lead-bsam, lead-cw7, lead-hlgs, lead-m56e, lead-o6tp, lead-repo, lead-rwtz, lead-side]
+edges:
+  supersedes: []
+  superseded-by: []
+  amends: []
+  depends-on: []
+  anchored-on: [ADR-010, ADR-018, ADR-019, ADR-036, PDR-001, PDR-010]
+  pins: [ADR-036]
+  related: []
+---
 # ADR-042 — The ADR-036 procedural-precondition migration is as-built complete through the enforcement layer (the `bc-emit work-done` wrapper landed and shipped); its final leg — retro-retiring the template-prose pins 105-116 — was falsely marked delivered and is hereby re-opened as the one remaining, now-unblocked action
 
 **Status:** proposed (2026-06-24)

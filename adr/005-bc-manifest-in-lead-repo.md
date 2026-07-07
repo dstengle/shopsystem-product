@@ -1,3 +1,19 @@
+---
+id: ADR-005
+kind: adr
+title: BC Manifest as a Committed File in the Lead Repo, Managed via bc-launcher CLI
+status: accepted
+date: "2026-05-20"
+description: BC Manifest as a Committed File in the Lead Repo, Managed via bc-launcher CLI
+edges:
+  supersedes: []
+  superseded-by: []
+  amends: []
+  depends-on: []
+  anchored-on: []
+  pins: []
+  related: []
+---
 # ADR-005: BC Manifest as a Committed File in the Lead Repo, Managed via bc-launcher CLI
 
 **Status:** Accepted  

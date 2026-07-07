@@ -1,3 +1,19 @@
+---
+id: PDR-010
+kind: pdr
+title: bd is authoritative for system state; shop-msg is transport + wakeup + liveness
+status: accepted
+date: "2026-05-29"
+description: bd is authoritative for system state; shop-msg is transport + wakeup + liveness
+edges:
+  supersedes: []
+  superseded-by: []
+  amends: []
+  depends-on: []
+  anchored-on: []
+  pins: []
+  related: []
+---
 # PDR-010 — bd is authoritative for system state; shop-msg is transport + wakeup + liveness
 
 **Status:** accepted (2026-05-29)

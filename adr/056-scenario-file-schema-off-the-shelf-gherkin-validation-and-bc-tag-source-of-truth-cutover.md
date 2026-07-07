@@ -1,3 +1,20 @@
+---
+id: ADR-056
+kind: adr
+title: Scenario files conform to a three-dimension schema (off-the-shelf Gherkin + feature-level `@bc` owner + feature-level `@origin` provenance + per-scenario `@scenario_hash`), enforced by `scenarios validate`; a feature = (originating decision × owning context); the in-file tags become authoritative and beads is deauthorized for assignment; a system consistency gate defines DONE
+status: accepted
+date: "2026-07-04"
+description: Scenario files conform to a three-dimension schema (off-the-shelf Gherkin + feature-level `@bc` owner + feature-level `@origin` provenance + per-scenario `@scenario_hash`), enfo...
+beads: [lead-architect, lead-bh2m, lead-shop, lead-vzxd]
+edges:
+  supersedes: []
+  superseded-by: []
+  amends: []
+  depends-on: []
+  anchored-on: [ADR-005, ADR-011, ADR-018, ADR-019, ADR-028, ADR-036, ADR-042, ADR-047, PDR-011]
+  pins: []
+  related: []
+---
 # ADR-056 — Scenario files conform to a three-dimension schema (off-the-shelf Gherkin + feature-level `@bc` owner + feature-level `@origin` provenance + per-scenario `@scenario_hash`), enforced by `scenarios validate`; a feature = (originating decision × owning context); the in-file tags become authoritative and beads is deauthorized for assignment; a system consistency gate defines DONE
 
 **Status:** accepted (2026-07-04, rev-2) — David approved the shape 2026-07-04

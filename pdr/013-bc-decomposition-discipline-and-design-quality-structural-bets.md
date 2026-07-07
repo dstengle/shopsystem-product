@@ -1,3 +1,20 @@
+---
+id: PDR-013
+kind: pdr
+title: BC decomposition/splitting discipline (immediate); BC-local architect role + three-tier ADR hierarchy (structural, architect-owned)
+status: draft
+date: "2026-06-05"
+description: BC decomposition/splitting discipline (immediate); BC-local architect role + three-tier ADR hierarchy (structural, architect-owned)
+beads: [lead-5hm1, lead-8lgi, lead-ir9m, lead-po]
+edges:
+  supersedes: []
+  superseded-by: []
+  amends: []
+  depends-on: []
+  anchored-on: [PDR-001, PDR-012]
+  pins: []
+  related: []
+---
 # PDR-013 — BC decomposition/splitting discipline (immediate); BC-local architect role + three-tier ADR hierarchy (structural, architect-owned)
 
 **Status:** draft (2026-06-05)
@@ -344,7 +361,7 @@ scenarios are all skill outputs, not the operator's original solution shape.
   bets as architect-owned / guidance pending. Matches PDR-001's division of
   labor and the experimental-first / build-trap discipline.
 
-## 7. Decision
+## Decision
 
 1. The BC role template SHALL carry a **decomposition / right-sizing
    discipline** on its existing §4.2 "break down into sub-issues" activity —

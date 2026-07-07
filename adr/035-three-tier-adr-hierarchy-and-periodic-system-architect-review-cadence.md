@@ -1,3 +1,20 @@
+---
+id: ADR-035
+kind: adr
+title: The three-tier ADR hierarchy (framework / system-global / BC-local) and a periodic system-architect review cadence over the BC-local tier
+status: accepted
+date: "2026-06-10"
+description: The three-tier ADR hierarchy (framework / system-global / BC-local) and a periodic system-architect review cadence over the BC-local tier
+beads: [lead-5hm1, lead-architect, lead-cnbu, lead-ir9m, lead-repo]
+edges:
+  supersedes: []
+  superseded-by: []
+  amends: []
+  depends-on: []
+  anchored-on: [ADR-017, ADR-018, PDR-013]
+  pins: [ADR-033, ADR-034, PDR-013]
+  related: []
+---
 # ADR-035 — The three-tier ADR hierarchy (framework / system-global / BC-local) and a periodic system-architect review cadence over the BC-local tier
 
 **Status:** accepted (2026-06-10)

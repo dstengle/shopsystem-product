@@ -1,3 +1,20 @@
+---
+id: BRIEF-002
+kind: brief
+title: Brief 002 — Shop bootstrap CLI surface
+status: draft
+date: "2026-05-12"
+description: Brief 002 — Shop bootstrap CLI surface
+beads: [lead-3d7, lead-po, lead-shop]
+edges:
+  supersedes: []
+  superseded-by: []
+  amends: []
+  depends-on: []
+  anchored-on: []
+  pins: []
+  related: []
+---
 # Brief 002 — Shop bootstrap CLI surface
 
 **Status:** draft (2026-05-12)

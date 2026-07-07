@@ -1,3 +1,20 @@
+---
+id: ADR-031
+kind: adr
+title: "Human-in-the-loop wall protocol for autonomous spikes: detect, do-not-fake, prove-up-to-the-wall, emit as a Phase-2 operational step"
+status: accepted
+date: "2026-06-10"
+description: "Human-in-the-loop wall protocol for autonomous spikes: detect, do-not-fake, prove-up-to-the-wall, emit as a Phase-2 operational step"
+beads: [lead-architect, lead-capability, lead-jkwo]
+edges:
+  supersedes: []
+  superseded-by: []
+  amends: []
+  depends-on: []
+  anchored-on: [ADR-029, ADR-030]
+  pins: [PDR-016]
+  related: []
+---
 # ADR-031 — Human-in-the-loop wall protocol for autonomous spikes: detect, do-not-fake, prove-up-to-the-wall, emit as a Phase-2 operational step
 
 **Status:** accepted (2026-06-10)

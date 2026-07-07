@@ -1,3 +1,20 @@
+---
+id: ADR-017
+kind: adr
+title: BC-side bead creation on inbox drain; cross-reference via shared work_id
+status: accepted
+date: "2026-05-29"
+description: BC-side bead creation on inbox drain; cross-reference via shared work_id
+beads: [lead-architect, lead-bp3, lead-side]
+edges:
+  supersedes: []
+  superseded-by: []
+  amends: []
+  depends-on: []
+  anchored-on: [ADR-011, ADR-012, ADR-015, ADR-016, PDR-010]
+  pins: []
+  related: []
+---
 # ADR-017 — BC-side bead creation on inbox drain; cross-reference via shared work_id
 
 **Status:** accepted (2026-05-29)

@@ -1,3 +1,20 @@
+---
+id: PDR-015
+kind: pdr
+title: "Scenario-completion journal + lead snapshot: solution-space framing (intent, owner-agnostic)"
+status: draft
+date: "2026-06-08"
+description: "Scenario-completion journal + lead snapshot: solution-space framing (intent, owner-agnostic)"
+beads: [lead-5p07, lead-po, lead-shop]
+edges:
+  supersedes: []
+  superseded-by: []
+  amends: []
+  depends-on: []
+  anchored-on: [ADR-018, PDR-001, PDR-002]
+  pins: []
+  related: []
+---
 # PDR-015 — Scenario-completion journal + lead snapshot: solution-space framing (intent, owner-agnostic)
 
 **Status:** draft (2026-06-08)
@@ -122,6 +139,15 @@ in-flight progress; roll-up into higher-level units. These motivate B1's
 posture and C2's existence but are not authored as scenarios.
 
 ---
+
+## Decision
+
+This is a solution-space PDR. It commits the *behavioral surface* — both the
+incremental-reflect (scenario 04) and on-demand-reconcile (scenario 05) paths
+must exist — and records the stakeholder's pre-weighted fork (§4): prefer a
+lightweight unification (C3) as the default to test, falling back to separate
+C1/C2 if unification is not lightweight. The canonical structural selection is
+the Architect's, made post empirical pre-state (§5); it is not decided here.
 
 ## 4. The one trade-off the stakeholder pre-weighted
 

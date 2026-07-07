@@ -1,3 +1,20 @@
+---
+id: ADR-023
+kind: adr
+title: The scenario-completion journal is decomposed `scenarios`(KEY) + `messaging`(BC journal store + pull vehicle) + lead-facing snapshot/view on `shop-msg`; incremental and on-demand paths are kept SEPARATE over a shared store
+status: proposed
+date: "2026-06-08"
+description: Decomposes the scenario-completion journal into ownership pins (sc01-07); messaging owns the store, scenarios owns the block-only hash key.
+beads: [lead-5p07, lead-9b3w, lead-architect, lead-facing, lead-gw60, lead-held, lead-if3j, lead-ji28, lead-onfq]
+edges:
+  supersedes: []
+  superseded-by: []
+  amends: []
+  depends-on: []
+  anchored-on: [ADR-018, PDR-015]
+  pins: [ADR-019]
+  related: []
+---
 # ADR-023 — The scenario-completion journal is decomposed `scenarios`(KEY) + `messaging`(BC journal store + pull vehicle) + lead-facing snapshot/view on `shop-msg`; incremental and on-demand paths are kept SEPARATE over a shared store
 
 **Status:** proposed (2026-06-08)

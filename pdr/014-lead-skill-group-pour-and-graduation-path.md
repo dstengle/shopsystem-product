@@ -1,3 +1,20 @@
+---
+id: PDR-014
+kind: pdr
+title: "Canonical lead skill-group: `shop-templates` pours it, and it is the graduation path for experimental lead skills"
+status: draft
+date: "2026-06-05"
+description: "Canonical lead skill-group: `shop-templates` pours it, and it is the graduation path for experimental lead skills"
+beads: [lead-3nf7, lead-po]
+edges:
+  supersedes: []
+  superseded-by: []
+  amends: []
+  depends-on: []
+  anchored-on: []
+  pins: []
+  related: []
+---
 # PDR-014 — Canonical lead skill-group: `shop-templates` pours it, and it is the graduation path for experimental lead skills
 
 **Status:** draft (2026-06-05)

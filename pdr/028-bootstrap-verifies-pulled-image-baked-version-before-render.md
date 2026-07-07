@@ -1,3 +1,20 @@
+---
+id: PDR-028
+kind: pdr
+title: bin/bootstrap verifies the pulled image's baked shop-templates version before rendering, and refuses a stale image
+status: draft
+date: "2026-06-30"
+description: bin/bootstrap verifies the pulled image's baked shop-templates version before rendering, and refuses a stale image
+beads: [lead-5xnd, lead-b2iz, lead-po]
+edges:
+  supersedes: []
+  superseded-by: []
+  amends: []
+  depends-on: []
+  anchored-on: []
+  pins: []
+  related: []
+---
 # PDR-028 — bin/bootstrap verifies the pulled image's baked shop-templates version before rendering, and refuses a stale image
 
 **Status:** draft (2026-06-30)

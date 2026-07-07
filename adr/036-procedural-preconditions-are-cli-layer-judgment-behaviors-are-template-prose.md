@@ -1,3 +1,20 @@
+---
+id: ADR-036
+kind: adr
+title: Procedural preconditions that can be mechanically checked are CLI-layer (a `shop-templates` emit wrapper enforces them and refuses the emit on failure); judgment behaviors that require natural-language interpretation stay template-prose-layer — and the wrapper's `scenario_hashes-match` check uses scenario-block-only canonicalization
+status: accepted
+date: "2026-06-10"
+description: Procedural preconditions that can be mechanically checked are CLI-layer (a `shop-templates` emit wrapper enforces them and refuses the emit on failure); judgment behaviors that...
+beads: [lead-83l, lead-8lm, lead-architect, lead-cw7, lead-ji28, lead-o6tp, lead-repo, lead-side, lead-wgv, lead-yxsr]
+edges:
+  supersedes: []
+  superseded-by: []
+  amends: []
+  depends-on: []
+  anchored-on: [ADR-010, ADR-015, ADR-018, ADR-019, PDR-001, PDR-010]
+  pins: [ADR-019]
+  related: []
+---
 # ADR-036 — Procedural preconditions that can be mechanically checked are CLI-layer (a `shop-templates` emit wrapper enforces them and refuses the emit on failure); judgment behaviors that require natural-language interpretation stay template-prose-layer — and the wrapper's `scenario_hashes-match` check uses scenario-block-only canonicalization
 
 **Status:** accepted (2026-06-10)

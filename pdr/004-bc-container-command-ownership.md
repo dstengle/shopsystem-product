@@ -1,3 +1,20 @@
+---
+id: PDR-004
+kind: pdr
+title: BC container command ownership
+status: draft
+date: "2026-05-20"
+description: BC container command ownership
+beads: [lead-po]
+edges:
+  supersedes: []
+  superseded-by: []
+  amends: []
+  depends-on: []
+  anchored-on: []
+  pins: []
+  related: []
+---
 # PDR-004 — BC container command ownership
 
 **Status:** draft (2026-05-20)

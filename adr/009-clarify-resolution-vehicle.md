@@ -1,3 +1,20 @@
+---
+id: ADR-009
+kind: adr
+title: "Clarify-resolution vehicle: re-dispatch via existing catalog message types (with future `clarify_response` primitive deferred)"
+status: accepted
+date: "2026-05-27"
+description: "Clarify-resolution vehicle: re-dispatch via existing catalog message types (with future `clarify_response` primitive deferred)"
+beads: [lead-4wy, lead-8z1, lead-architect, lead-d6o, lead-rv9, lead-side]
+edges:
+  supersedes: []
+  superseded-by: []
+  amends: []
+  depends-on: [ADR-006]
+  anchored-on: []
+  pins: []
+  related: []
+---
 # ADR-009 — Clarify-resolution vehicle: re-dispatch via existing catalog message types (with future `clarify_response` primitive deferred)
 
 **Status:** accepted (2026-05-27)

@@ -1,3 +1,20 @@
+---
+id: BRIEF-009
+kind: brief
+title: Brief 009 — Scenario-completion journal (BC-authoritative) and lead-side system implementation-state snapshot
+status: draft
+date: "2026-06-08"
+description: Brief 009 — Scenario-completion journal (BC-authoritative) and lead-side system implementation-state snapshot
+beads: [lead-5p07, lead-po, lead-shop]
+edges:
+  supersedes: []
+  superseded-by: []
+  amends: []
+  depends-on: []
+  anchored-on: []
+  pins: []
+  related: []
+---
 # Brief 009 — Scenario-completion journal (BC-authoritative) and lead-side system implementation-state snapshot
 
 **Status:** draft (2026-06-08)

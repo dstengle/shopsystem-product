@@ -1,3 +1,20 @@
+---
+id: ADR-037
+kind: adr
+title: The framework spec (§1–6) is a system-CONSTRUCTION artifact (it describes the system's own design); it stays in the framework/lead repo and is NOT shipped to product instances — product role templates are self-contained, situational guidance lives in skills
+status: accepted
+date: "2026-06-12"
+description: The framework spec (§1–6) is a system-CONSTRUCTION artifact (it describes the system's own design); it stays in the framework/lead repo and is NOT shipped to product instances —...
+beads: [lead-architect, lead-el6r, lead-hyxx, lead-repo, lead-shop, lead-skill]
+edges:
+  supersedes: []
+  superseded-by: []
+  amends: []
+  depends-on: []
+  anchored-on: [ADR-018, ADR-034, PDR-001, PDR-002, PDR-014]
+  pins: []
+  related: []
+---
 # ADR-037 — The framework spec (§1–6) is a system-CONSTRUCTION artifact (it describes the system's own design); it stays in the framework/lead repo and is NOT shipped to product instances — product role templates are self-contained, situational guidance lives in skills
 
 **Status:** accepted (2026-06-12)

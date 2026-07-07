@@ -1,3 +1,20 @@
+---
+id: ADR-004
+kind: adr
+title: shopsystem-bc-launcher as a new Bounded Context
+status: accepted
+date: "2026-05-20"
+description: shopsystem-bc-launcher as a new Bounded Context
+beads: [lead-architect]
+edges:
+  supersedes: []
+  superseded-by: []
+  amends: []
+  depends-on: [ADR-001, ADR-002]
+  anchored-on: [PDR-004]
+  pins: []
+  related: []
+---
 # ADR-004 — shopsystem-bc-launcher as a new Bounded Context
 
 **Status:** accepted (2026-05-20)

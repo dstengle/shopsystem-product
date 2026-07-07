@@ -1,3 +1,20 @@
+---
+id: ADR-030
+kind: adr
+title: "Spike isolation contract: `spike-`-prefixed scratch, dummy data, throwaway worktree, teardown-to-findings"
+status: accepted
+date: "2026-06-10"
+description: "Spike isolation contract: `spike-`-prefixed scratch, dummy data, throwaway worktree, teardown-to-findings"
+beads: [lead-8mho, lead-architect, lead-capability, lead-f6ta, lead-host, lead-jkwo]
+edges:
+  supersedes: []
+  superseded-by: []
+  amends: []
+  depends-on: []
+  anchored-on: [ADR-004, ADR-018, ADR-029]
+  pins: [PDR-016]
+  related: []
+---
 # ADR-030 — Spike isolation contract: `spike-`-prefixed scratch, dummy data, throwaway worktree, teardown-to-findings
 
 **Status:** accepted (2026-06-10)

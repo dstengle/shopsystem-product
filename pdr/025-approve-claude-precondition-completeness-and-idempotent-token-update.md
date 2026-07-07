@@ -1,3 +1,20 @@
+---
+id: PDR-025
+kind: pdr
+title: "`bin/agent-vault-approve-claude` verifies preconditions up front, runs idempotently, and supports updating the Claude OAuth tokens after the fact"
+status: draft
+date: "2026-06-29"
+description: "`bin/agent-vault-approve-claude` verifies preconditions up front, runs idempotently, and supports updating the Claude OAuth tokens after the fact"
+beads: [lead-al1r, lead-m1dc, lead-po]
+edges:
+  supersedes: []
+  superseded-by: []
+  amends: []
+  depends-on: []
+  anchored-on: [ADR-043, PDR-024]
+  pins: []
+  related: []
+---
 # PDR-025 — `bin/agent-vault-approve-claude` verifies preconditions up front, runs idempotently, and supports updating the Claude OAuth tokens after the fact
 
 **Status:** draft (2026-06-29)

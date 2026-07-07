@@ -1,3 +1,20 @@
+---
+id: ADR-001
+kind: adr
+title: Framework packaging into bounded-context-aligned repos
+status: accepted
+date: "2026-05-11"
+description: Framework packaging into bounded-context-aligned repos
+beads: [lead-shop]
+edges:
+  supersedes: []
+  superseded-by: []
+  amends: []
+  depends-on: []
+  anchored-on: []
+  pins: []
+  related: []
+---
 # ADR-001 — Framework packaging into bounded-context-aligned repos
 
 **Status:** accepted (2026-05-11)

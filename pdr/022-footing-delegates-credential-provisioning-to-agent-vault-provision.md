@@ -1,3 +1,20 @@
+---
+id: PDR-022
+kind: pdr
+title: Footing DELEGATES agent-vault credential/service/fleet-token provisioning to `bin/agent-vault-provision` instead of inlining it; credential ops are broker-local docker-exec ONLY
+status: accepted
+date: "2026-06-26"
+description: Footing DELEGATES agent-vault credential/service/fleet-token provisioning to `bin/agent-vault-provision` instead of inlining it; credential ops are broker-local docker-exec ONLY
+beads: [lead-0j60, lead-21uk, lead-4sg9, lead-542d, lead-architect, lead-kz4j, lead-yudo]
+edges:
+  supersedes: []
+  superseded-by: []
+  amends: []
+  depends-on: []
+  anchored-on: [ADR-018, ADR-026, ADR-043, PDR-021]
+  pins: []
+  related: []
+---
 # PDR-022 — Footing DELEGATES agent-vault credential/service/fleet-token provisioning to `bin/agent-vault-provision` instead of inlining it; credential ops are broker-local docker-exec ONLY
 
 **Status:** accepted (ratified by dave, 2026-06-26 — D4 confirmed: provision owns OAuth proposal-create) — driving bead `lead-yudo` (P1, product-authority

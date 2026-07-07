@@ -1,3 +1,20 @@
+---
+id: PDR-007
+kind: pdr
+title: Path-to-name addressing migration
+status: accepted
+date: "2026-05-20"
+description: Path-to-name addressing migration
+beads: [lead-po]
+edges:
+  supersedes: []
+  superseded-by: []
+  amends: []
+  depends-on: []
+  anchored-on: []
+  pins: []
+  related: []
+---
 # PDR-007 — Path-to-name addressing migration
 
 **Status:** decided (2026-05-20)

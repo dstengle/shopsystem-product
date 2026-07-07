@@ -1,3 +1,20 @@
+---
+id: PDR-023
+kind: pdr
+title: "Skills provenance marker: re-pour overwrites only CANONICAL skills, LOCAL skills survive every re-pour"
+status: draft
+date: "2026-06-27"
+description: "Skills provenance marker: re-pour overwrites only CANONICAL skills, LOCAL skills survive every re-pour"
+beads: [lead-22x1, lead-po, lead-vme1]
+edges:
+  supersedes: []
+  superseded-by: []
+  amends: []
+  depends-on: []
+  anchored-on: [PDR-014]
+  pins: []
+  related: []
+---
 # PDR-023 — Skills provenance marker: re-pour overwrites only CANONICAL skills, LOCAL skills survive every re-pour
 
 **Status:** draft (2026-06-27)

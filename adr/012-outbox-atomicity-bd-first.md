@@ -1,3 +1,20 @@
+---
+id: ADR-012
+kind: adr
+title: "Outbox-pattern atomicity: bd-first writes for shop-msg send/respond"
+status: accepted
+date: "2026-05-29"
+description: "Outbox-pattern atomicity: bd-first writes for shop-msg send/respond"
+beads: [lead-2id, lead-architect, lead-nn5f, lead-o6tp, lead-tsj]
+edges:
+  supersedes: []
+  superseded-by: []
+  amends: []
+  depends-on: []
+  anchored-on: [ADR-011, PDR-010]
+  pins: []
+  related: []
+---
 # ADR-012 — Outbox-pattern atomicity: bd-first writes for shop-msg send/respond
 
 **Status:** accepted (2026-05-29)

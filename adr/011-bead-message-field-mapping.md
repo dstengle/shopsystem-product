@@ -1,3 +1,20 @@
+---
+id: ADR-011
+kind: adr
+title: "Bead/message field mapping: lead bd schema for projecting shop-msg lifecycle"
+status: accepted
+date: "2026-05-29"
+description: "Bead/message field mapping: lead bd schema for projecting shop-msg lifecycle"
+beads: [lead-architect, lead-cw7, lead-plt, lead-ymct]
+edges:
+  supersedes: []
+  superseded-by: []
+  amends: []
+  depends-on: []
+  anchored-on: [PDR-010]
+  pins: []
+  related: []
+---
 # ADR-011 — Bead/message field mapping: lead bd schema for projecting shop-msg lifecycle
 
 **Status:** accepted (2026-05-29)

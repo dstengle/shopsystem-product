@@ -1,3 +1,20 @@
+---
+id: BRIEF-003
+kind: brief
+title: Brief 003 — Event-driven shop activation
+status: draft
+date: "2026-05-13"
+description: Brief 003 — Event-driven shop activation
+beads: [lead-0h1, lead-79q, lead-po, lead-shop]
+edges:
+  supersedes: []
+  superseded-by: []
+  amends: []
+  depends-on: []
+  anchored-on: []
+  pins: []
+  related: []
+---
 # Brief 003 — Event-driven shop activation
 
 **Status:** draft (2026-05-13)

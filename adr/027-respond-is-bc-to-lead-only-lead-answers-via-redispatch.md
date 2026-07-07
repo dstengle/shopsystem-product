@@ -1,3 +1,20 @@
+---
+id: ADR-027
+kind: adr
+title: "`shop-msg respond` is BC→lead only; the lead answers clarifies via re-dispatch; `prime --lead` realigned"
+status: accepted
+date: "2026-06-09"
+description: "`shop-msg respond` is BC→lead only; the lead answers clarifies via re-dispatch; `prime --lead` realigned"
+beads: [lead-8z1, lead-architect, lead-mcps, lead-ox8, lead-rl0f, lead-uhd2]
+edges:
+  supersedes: []
+  superseded-by: []
+  amends: [ADR-009]
+  depends-on: []
+  anchored-on: [ADR-009]
+  pins: []
+  related: []
+---
 # ADR-027 — `shop-msg respond` is BC→lead only; the lead answers clarifies via re-dispatch; `prime --lead` realigned
 
 **Status:** accepted (2026-06-09)

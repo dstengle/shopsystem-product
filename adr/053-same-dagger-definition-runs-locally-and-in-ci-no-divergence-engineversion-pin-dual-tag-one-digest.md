@@ -1,3 +1,20 @@
+---
+id: ADR-053
+kind: adr
+title: "Same-definition-locally-and-in-CI (no-divergence): the engineVersion pin + identical `dagger call` shape make local == CI, and dual-tag-one-digest is content-addressed"
+status: accepted
+date: "2026-07-02"
+description: "One dagger definition runs locally and in CI with no divergence: engine-version pin, dual-tag, one digest."
+beads: [lead-5xnd, lead-fzxt, lead-owned]
+edges:
+  supersedes: []
+  superseded-by: []
+  amends: []
+  depends-on: []
+  anchored-on: [ADR-018, ADR-021, ADR-029, ADR-052, ADR-054, ADR-055, PDR-011]
+  pins: []
+  related: []
+---
 # ADR-053 -- Same-definition-locally-and-in-CI (no-divergence): the engineVersion pin + identical `dagger call` shape make local == CI, and dual-tag-one-digest is content-addressed
 
 - Status: Accepted (2026-07-02)

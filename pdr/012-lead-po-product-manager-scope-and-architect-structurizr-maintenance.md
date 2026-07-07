@@ -1,3 +1,20 @@
+---
+id: PDR-012
+kind: pdr
+title: Elevate lead-po to empowered Product-Manager scope; develop lead-architect structurizr-workspace-maintenance
+status: draft
+date: "2026-06-04"
+description: Elevate lead-po to empowered Product-Manager scope; develop lead-architect structurizr-workspace-maintenance
+beads: [lead-086d, lead-8lgi, lead-po]
+edges:
+  supersedes: []
+  superseded-by: []
+  amends: []
+  depends-on: []
+  anchored-on: []
+  pins: []
+  related: []
+---
 # PDR-012 — Elevate lead-po to empowered Product-Manager scope; develop lead-architect structurizr-workspace-maintenance
 
 **Status:** draft (2026-06-04); **research revision v2 (2026-06-05)** — the

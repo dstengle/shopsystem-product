@@ -1,3 +1,20 @@
+---
+id: PDR-019
+kind: pdr
+title: "Adopter bootstrap \"stand-up-product\": the Footing is a deterministic agent-less script; the decomposition + dispatch plan"
+status: draft
+date: "2026-06-18"
+description: "Adopter bootstrap \"stand-up-product\": the Footing is a deterministic agent-less script; the decomposition + dispatch plan"
+beads: [lead-5cgv, lead-architect, lead-skill, lead-y73x]
+edges:
+  supersedes: []
+  superseded-by: []
+  amends: []
+  depends-on: []
+  anchored-on: [PDR-011, PDR-014, PDR-018]
+  pins: []
+  related: []
+---
 # PDR-019 — Adopter bootstrap "stand-up-product": the Footing is a deterministic agent-less script; the decomposition + dispatch plan
 
 **Status:** draft (2026-06-18)

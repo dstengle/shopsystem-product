@@ -1,3 +1,20 @@
+---
+id: PDR-018
+kind: pdr
+title: The dummy-product instantiation spike is the MVP acceptance gate
+status: draft
+date: "2026-06-12"
+description: The dummy-product instantiation spike is the MVP acceptance gate
+beads: [lead-jdfb, lead-po, lead-wm2r]
+edges:
+  supersedes: []
+  superseded-by: []
+  amends: []
+  depends-on: []
+  anchored-on: []
+  pins: []
+  related: []
+---
 # PDR-018 — The dummy-product instantiation spike is the MVP acceptance gate
 
 **Status:** draft (2026-06-12)

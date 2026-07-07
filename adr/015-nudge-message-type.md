@@ -1,3 +1,20 @@
+---
+id: ADR-015
+kind: adr
+title: "`nudge` message type for operational liveness"
+status: accepted
+date: "2026-05-29"
+description: "`nudge` message type for operational liveness"
+beads: [lead-7wp, lead-architect, lead-ji28, lead-ymct]
+edges:
+  supersedes: []
+  superseded-by: []
+  amends: []
+  depends-on: []
+  anchored-on: [ADR-014, PDR-010]
+  pins: []
+  related: []
+---
 # ADR-015 — `nudge` message type for operational liveness
 
 **Status:** accepted (2026-05-29)

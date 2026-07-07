@@ -1,3 +1,20 @@
+---
+id: BRIEF-008
+kind: brief
+title: "Brief 008 — Single-container bootstrap orchestrator (slice 1: lead-only prove-out)"
+status: draft
+date: "2026-05-22"
+description: "Brief 008 — Single-container bootstrap orchestrator (slice 1: lead-only prove-out)"
+beads: [lead-po, lead-shop]
+edges:
+  supersedes: []
+  superseded-by: []
+  amends: []
+  depends-on: []
+  anchored-on: []
+  pins: []
+  related: []
+---
 # Brief 008 — Single-container bootstrap orchestrator (slice 1: lead-only prove-out)
 
 **Status:** draft, narrowed (2026-05-22) — rewritten from a multi-question

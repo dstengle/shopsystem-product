@@ -1,3 +1,20 @@
+---
+id: ADR-051
+kind: adr
+title: "The fabro DOT loop-graph contract: Implementer-to-Reviewer graph with emit_r as the SOLE gated work_done emitter, outcome-conditional fail-closed edges, ENFORCED by native script= scoping"
+status: accepted
+date: "2026-07-01"
+description: "Fabro's .loop graph contract: the reviewer is the sole gated emitter and the loop fails closed."
+beads: [lead-6k1r, lead-f6ta]
+edges:
+  supersedes: []
+  superseded-by: []
+  amends: []
+  depends-on: []
+  anchored-on: [ADR-012, ADR-016, ADR-018, ADR-042, ADR-048, ADR-049, ADR-050, PDR-011]
+  pins: []
+  related: []
+---
 # ADR-051 -- The fabro DOT loop-graph contract: Implementer-to-Reviewer graph with emit_r as the SOLE gated work_done emitter, outcome-conditional fail-closed edges, ENFORCED by native script= scoping
 
 - Status: Accepted (2026-07-01)

@@ -1,3 +1,20 @@
+---
+id: BRIEF-005
+kind: brief
+title: Brief 005 — BC manifest
+status: draft
+date: "2026-05-20"
+description: Brief 005 — BC manifest
+beads: [lead-po]
+edges:
+  supersedes: []
+  superseded-by: []
+  amends: []
+  depends-on: []
+  anchored-on: []
+  pins: []
+  related: []
+---
 # Brief 005 — BC manifest
 
 **Status:** draft (2026-05-20)

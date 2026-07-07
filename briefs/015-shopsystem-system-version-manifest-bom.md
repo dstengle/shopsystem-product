@@ -1,3 +1,20 @@
+---
+id: BRIEF-015
+kind: brief
+title: Brief 015 — The shopsystem system-version manifest (Bill of Materials)
+status: draft
+date: "2026-06-30"
+description: Brief 015 — The shopsystem system-version manifest (Bill of Materials)
+beads: [lead-6b53, lead-h2p0, lead-loos, lead-po]
+edges:
+  supersedes: []
+  superseded-by: []
+  amends: []
+  depends-on: []
+  anchored-on: []
+  pins: []
+  related: []
+---
 # Brief 015 — The shopsystem system-version manifest (Bill of Materials)
 
 **Status:** draft (2026-06-30)

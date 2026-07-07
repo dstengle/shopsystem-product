@@ -1,0 +1,2028 @@
+[
+  {
+    "id": "ADR-001",
+    "kind": "adr",
+    "title": "Framework packaging into bounded-context-aligned repos",
+    "status": "accepted",
+    "description": "Framework packaging into bounded-context-aligned repos",
+    "tags": [],
+    "path": "adr/001-framework-packaging.md",
+    "edges_out": {},
+    "edges_in": {
+      "depended-on-by": [
+        "ADR-004",
+        "ADR-008"
+      ]
+    }
+  },
+  {
+    "id": "ADR-002",
+    "kind": "adr",
+    "title": "Introducing the harness Bounded Context",
+    "status": "accepted",
+    "description": "Introducing the harness Bounded Context",
+    "tags": [],
+    "path": "adr/002-harness-bc-introduction.md",
+    "edges_out": {},
+    "edges_in": {
+      "depended-on-by": [
+        "ADR-004"
+      ]
+    }
+  },
+  {
+    "id": "ADR-004",
+    "kind": "adr",
+    "title": "shopsystem-bc-launcher as a new Bounded Context",
+    "status": "accepted",
+    "description": "shopsystem-bc-launcher as a new Bounded Context",
+    "tags": [],
+    "path": "adr/004-bc-launcher-as-new-bc.md",
+    "edges_out": {
+      "depends-on": [
+        "ADR-001",
+        "ADR-002"
+      ],
+      "anchored-on": [
+        "PDR-004"
+      ]
+    },
+    "edges_in": {
+      "anchored-by": [
+        "ADR-008",
+        "ADR-018",
+        "ADR-026",
+        "ADR-028",
+        "ADR-030",
+        "PDR-020"
+      ]
+    }
+  },
+  {
+    "id": "ADR-005",
+    "kind": "adr",
+    "title": "BC Manifest as a Committed File in the Lead Repo, Managed via bc-launcher CLI",
+    "status": "accepted",
+    "description": "BC Manifest as a Committed File in the Lead Repo, Managed via bc-launcher CLI",
+    "tags": [],
+    "path": "adr/005-bc-manifest-in-lead-repo.md",
+    "edges_out": {},
+    "edges_in": {
+      "pinned-by": [
+        "ADR-038"
+      ],
+      "anchored-by": [
+        "ADR-038",
+        "ADR-047",
+        "ADR-056",
+        "PDR-030"
+      ]
+    }
+  },
+  {
+    "id": "ADR-006",
+    "kind": "adr",
+    "title": "Messaging name registry design",
+    "status": "accepted",
+    "description": "Messaging name registry design",
+    "tags": [],
+    "path": "adr/006-messaging-name-registry-design.md",
+    "edges_out": {
+      "anchored-on": [
+        "PDR-007"
+      ]
+    },
+    "edges_in": {
+      "depended-on-by": [
+        "ADR-009"
+      ],
+      "anchored-by": [
+        "ADR-019",
+        "ADR-020",
+        "ADR-048"
+      ]
+    }
+  },
+  {
+    "id": "ADR-008",
+    "kind": "adr",
+    "title": "shopsystem-docs as a new Bounded Context",
+    "status": "accepted",
+    "description": "shopsystem-docs as a new Bounded Context",
+    "tags": [],
+    "path": "adr/008-docs-bc-introduction.md",
+    "edges_out": {
+      "depends-on": [
+        "ADR-001"
+      ],
+      "anchored-on": [
+        "ADR-004"
+      ]
+    },
+    "edges_in": {}
+  },
+  {
+    "id": "ADR-009",
+    "kind": "adr",
+    "title": "Clarify-resolution vehicle: re-dispatch via existing catalog message types (with future `clarify_response` primitive deferred)",
+    "status": "accepted",
+    "description": "Clarify-resolution vehicle: re-dispatch via existing catalog message types (with future `clarify_response` primitive deferred)",
+    "tags": [],
+    "path": "adr/009-clarify-resolution-vehicle.md",
+    "edges_out": {
+      "depends-on": [
+        "ADR-006"
+      ]
+    },
+    "edges_in": {
+      "anchored-by": [
+        "ADR-010",
+        "ADR-027"
+      ]
+    }
+  },
+  {
+    "id": "ADR-010",
+    "kind": "adr",
+    "title": "Clarify-resolution `work_done.scenario_hashes` scope: strict subset of the resolving dispatch, not of the original",
+    "status": "accepted",
+    "description": "Clarify-resolution `work_done.scenario_hashes` scope: strict subset of the resolving dispatch, not of the original",
+    "tags": [],
+    "path": "adr/010-clarify-resolution-work-done-scope.md",
+    "edges_out": {
+      "anchored-on": [
+        "ADR-009"
+      ]
+    },
+    "edges_in": {
+      "anchored-by": [
+        "ADR-036",
+        "ADR-042"
+      ]
+    }
+  },
+  {
+    "id": "ADR-011",
+    "kind": "adr",
+    "title": "Bead/message field mapping: lead bd schema for projecting shop-msg lifecycle",
+    "status": "accepted",
+    "description": "Bead/message field mapping: lead bd schema for projecting shop-msg lifecycle",
+    "tags": [],
+    "path": "adr/011-bead-message-field-mapping.md",
+    "edges_out": {
+      "anchored-on": [
+        "PDR-010"
+      ]
+    },
+    "edges_in": {
+      "anchored-by": [
+        "ADR-012",
+        "ADR-013",
+        "ADR-016",
+        "ADR-017",
+        "ADR-056"
+      ]
+    }
+  },
+  {
+    "id": "ADR-012",
+    "kind": "adr",
+    "title": "Outbox-pattern atomicity: bd-first writes for shop-msg send/respond",
+    "status": "accepted",
+    "description": "Outbox-pattern atomicity: bd-first writes for shop-msg send/respond",
+    "tags": [],
+    "path": "adr/012-outbox-atomicity-bd-first.md",
+    "edges_out": {
+      "anchored-on": [
+        "ADR-011",
+        "PDR-010"
+      ]
+    },
+    "edges_in": {
+      "anchored-by": [
+        "ADR-013",
+        "ADR-016",
+        "ADR-017",
+        "ADR-051"
+      ]
+    }
+  },
+  {
+    "id": "ADR-013",
+    "kind": "adr",
+    "title": "Dispatch dependencies via `bd dep add` honored by `shop-msg send`",
+    "status": "accepted",
+    "description": "Dispatch dependencies via `bd dep add` honored by `shop-msg send`",
+    "tags": [],
+    "path": "adr/013-dispatch-dependencies-via-bd-dep.md",
+    "edges_out": {
+      "anchored-on": [
+        "ADR-011",
+        "ADR-012",
+        "PDR-010"
+      ]
+    },
+    "edges_in": {}
+  },
+  {
+    "id": "ADR-014",
+    "kind": "adr",
+    "title": "Presence heartbeat collapsed into `shop-msg watch`",
+    "status": "accepted",
+    "description": "Presence heartbeat collapsed into `shop-msg watch`",
+    "tags": [],
+    "path": "adr/014-presence-heartbeat-via-shop-msg-watch.md",
+    "edges_out": {
+      "anchored-on": [
+        "PDR-010"
+      ]
+    },
+    "edges_in": {
+      "anchored-by": [
+        "ADR-015"
+      ]
+    }
+  },
+  {
+    "id": "ADR-015",
+    "kind": "adr",
+    "title": "`nudge` message type for operational liveness",
+    "status": "accepted",
+    "description": "`nudge` message type for operational liveness",
+    "tags": [],
+    "path": "adr/015-nudge-message-type.md",
+    "edges_out": {
+      "anchored-on": [
+        "ADR-014",
+        "PDR-010"
+      ]
+    },
+    "edges_in": {
+      "anchored-by": [
+        "ADR-017",
+        "ADR-036",
+        "ADR-039"
+      ]
+    }
+  },
+  {
+    "id": "ADR-016",
+    "kind": "adr",
+    "title": "shop-msg owns bd integration; state changes via CLI, not agent",
+    "status": "accepted",
+    "description": "shop-msg owns bd integration; state changes via CLI, not agent",
+    "tags": [],
+    "path": "adr/016-shop-msg-owns-bd-integration.md",
+    "edges_out": {
+      "anchored-on": [
+        "ADR-011",
+        "ADR-012",
+        "PDR-010"
+      ]
+    },
+    "edges_in": {
+      "anchored-by": [
+        "ADR-017",
+        "ADR-051"
+      ]
+    }
+  },
+  {
+    "id": "ADR-017",
+    "kind": "adr",
+    "title": "BC-side bead creation on inbox drain; cross-reference via shared work_id",
+    "status": "accepted",
+    "description": "BC-side bead creation on inbox drain; cross-reference via shared work_id",
+    "tags": [],
+    "path": "adr/017-bc-side-bead-creation.md",
+    "edges_out": {
+      "anchored-on": [
+        "ADR-011",
+        "ADR-012",
+        "ADR-015",
+        "ADR-016",
+        "PDR-010"
+      ]
+    },
+    "edges_in": {
+      "anchored-by": [
+        "ADR-018",
+        "ADR-035"
+      ]
+    }
+  },
+  {
+    "id": "ADR-018",
+    "kind": "adr",
+    "title": "\"Verify pre-state empirically\" means the contract/artifact surface; the lead carries no BC code",
+    "status": "accepted",
+    "description": "\"Verify pre-state empirically\" means the contract/artifact surface; the lead carries no BC code",
+    "tags": [],
+    "path": "adr/018-empirical-verification-is-contract-surface.md",
+    "edges_out": {
+      "anchored-on": [
+        "ADR-004",
+        "ADR-017",
+        "PDR-002",
+        "PDR-003",
+        "PDR-004",
+        "PDR-010"
+      ],
+      "pins": [
+        "PDR-011"
+      ]
+    },
+    "edges_in": {
+      "anchored-by": [
+        "ADR-019",
+        "ADR-020",
+        "ADR-021",
+        "ADR-022",
+        "ADR-023",
+        "ADR-024",
+        "ADR-025",
+        "ADR-026",
+        "ADR-028",
+        "ADR-029",
+        "ADR-030",
+        "ADR-033",
+        "ADR-034",
+        "ADR-035",
+        "ADR-036",
+        "ADR-037",
+        "ADR-038",
+        "ADR-039",
+        "ADR-040",
+        "ADR-041",
+        "ADR-042",
+        "ADR-043",
+        "ADR-047",
+        "ADR-048",
+        "ADR-049",
+        "ADR-050",
+        "ADR-051",
+        "ADR-052",
+        "ADR-053",
+        "ADR-054",
+        "ADR-055",
+        "ADR-056",
+        "PDR-015",
+        "PDR-017",
+        "PDR-020",
+        "PDR-021",
+        "PDR-022",
+        "PDR-030"
+      ]
+    }
+  },
+  {
+    "id": "ADR-019",
+    "kind": "adr",
+    "title": "Scenario canonicalization and hash discipline are owned by `shopsystem-scenarios`; messaging transports, it does not re-enact",
+    "status": "accepted",
+    "description": "Scenario canonicalization and hash discipline are owned by `shopsystem-scenarios`; messaging transports, it does not re-enact",
+    "tags": [],
+    "path": "adr/019-canonicalization-ownership-in-scenarios-bc.md",
+    "edges_out": {
+      "anchored-on": [
+        "ADR-006",
+        "ADR-018"
+      ]
+    },
+    "edges_in": {
+      "anchored-by": [
+        "ADR-020",
+        "ADR-026",
+        "ADR-028",
+        "ADR-036",
+        "ADR-042",
+        "ADR-056"
+      ],
+      "pinned-by": [
+        "ADR-023",
+        "ADR-025",
+        "ADR-036"
+      ]
+    }
+  },
+  {
+    "id": "ADR-020",
+    "kind": "adr",
+    "title": "Routing identity is an abstract `<system>/<name>` address; `shop_root` is eliminated from the registry",
+    "status": "accepted",
+    "description": "Routing identity is an abstract `<system>/<name>` address; `shop_root` is eliminated from the registry",
+    "tags": [],
+    "path": "adr/020-routing-identity-is-abstract-system-name-shop-root-eliminated.md",
+    "edges_out": {
+      "anchored-on": [
+        "ADR-006",
+        "ADR-018",
+        "ADR-019"
+      ],
+      "pins": [
+        "PDR-007"
+      ]
+    },
+    "edges_in": {
+      "anchored-by": [
+        "ADR-038",
+        "ADR-048",
+        "ADR-050"
+      ]
+    }
+  },
+  {
+    "id": "ADR-021",
+    "kind": "adr",
+    "title": "The `shopsystem-bc-base` image is owned and built by `shopsystem-bc-launcher`, and auto-rebuilds + republishes `:latest` on framework-utility releases",
+    "status": "accepted",
+    "description": "The `shopsystem-bc-base` image is owned and built by `shopsystem-bc-launcher`, and auto-rebuilds + republishes `:latest` on framework-utility releases",
+    "tags": [],
+    "path": "adr/021-bc-base-image-owned-by-bc-launcher-auto-rebuilds-on-utility-release.md",
+    "edges_out": {
+      "anchored-on": [
+        "ADR-018"
+      ],
+      "pins": [
+        "ADR-040",
+        "PDR-019"
+      ]
+    },
+    "edges_in": {
+      "anchored-by": [
+        "ADR-047",
+        "ADR-050",
+        "ADR-052",
+        "ADR-053",
+        "ADR-054",
+        "ADR-055",
+        "PDR-030"
+      ]
+    }
+  },
+  {
+    "id": "ADR-022",
+    "kind": "adr",
+    "title": "`bc-base` rebuilds are CENTRALIZED in `shopsystem-bc-launcher` (version-bump-then-rebuild), not fan-in `repository_dispatch` from each utility repo",
+    "status": "accepted",
+    "description": "`bc-base` rebuilds are CENTRALIZED in `shopsystem-bc-launcher` (version-bump-then-rebuild), not fan-in `repository_dispatch` from each utility repo",
+    "tags": [],
+    "path": "adr/022-bc-base-rebuild-centralized-in-bc-launcher-not-fan-in-dispatch.md",
+    "edges_out": {
+      "supersedes": [
+        "ADR-021"
+      ],
+      "anchored-on": [
+        "ADR-018"
+      ]
+    },
+    "edges_in": {}
+  },
+  {
+    "id": "ADR-023",
+    "kind": "adr",
+    "title": "The scenario-completion journal is decomposed `scenarios`(KEY) + `messaging`(BC journal store + pull vehicle) + lead-facing snapshot/view on `shop-msg`; incremental and on-demand paths are kept SEPARATE over a shared store",
+    "status": "proposed",
+    "description": "Decomposes the scenario-completion journal into ownership pins (sc01-07); messaging owns the store, scenarios owns the block-only hash key.",
+    "tags": [],
+    "path": "adr/023-scenario-completion-journal-decomposition.md",
+    "edges_out": {
+      "anchored-on": [
+        "ADR-018",
+        "PDR-015"
+      ],
+      "pins": [
+        "ADR-019"
+      ]
+    },
+    "edges_in": {
+      "pinned-by": [
+        "ADR-024"
+      ]
+    }
+  },
+  {
+    "id": "ADR-024",
+    "kind": "adr",
+    "title": "Journal bootstrap/rebuild (sc08) is a new op ON the messaging-owned journal store (≡ ADR-023 secondary-job-a failure-recovery rebuild); the sc06 predicate-tightening is DEFERRED as marginal, sc06 reverted to its landed body to avoid drift",
+    "status": "accepted",
+    "description": "Journal bootstrap/rebuild rides the messaging store; sc06 tightening is deferred to a follow-up.",
+    "tags": [],
+    "path": "adr/024-journal-bootstrap-rebuild-rides-messaging-store-and-sc06-tightening-deferred.md",
+    "edges_out": {
+      "anchored-on": [
+        "ADR-018"
+      ],
+      "pins": [
+        "ADR-023"
+      ]
+    },
+    "edges_in": {}
+  },
+  {
+    "id": "ADR-025",
+    "kind": "adr",
+    "title": "The scenario-completion journal is a FILE owned by `shopsystem-scenarios`; the message bus is not a store; the mis-homed `messaging` journal implementation is retired; sc04–07 are lead-side aggregate tooling",
+    "status": "accepted",
+    "description": "Re-homes the completion journal as a FILE owned by shopsystem-scenarios; retires the mis-homed messaging journal; sc04-07 become lead-side aggregate tooling.",
+    "tags": [],
+    "path": "adr/025-scenario-journal-re-homed-as-file-in-scenarios-bc-messaging-home-retired.md",
+    "edges_out": {
+      "supersedes": [
+        "ADR-023",
+        "ADR-024"
+      ],
+      "anchored-on": [
+        "ADR-018"
+      ],
+      "pins": [
+        "ADR-019"
+      ]
+    },
+    "edges_in": {}
+  },
+  {
+    "id": "ADR-026",
+    "kind": "adr",
+    "title": "BC credentials are brokered through an agent-vault server on the shopsystem network; host-filesystem credential coupling is eliminated for both Claude OAuth and GitHub",
+    "status": "accepted",
+    "description": "BC credentials are brokered through an agent-vault server on the shopsystem network; host-filesystem credential coupling is eliminated for both Claude OAuth and GitHub",
+    "tags": [],
+    "path": "adr/026-agent-vault-brokered-credentials-eliminate-host-filesystem-coupling.md",
+    "edges_out": {
+      "anchored-on": [
+        "ADR-004",
+        "ADR-018",
+        "ADR-019"
+      ]
+    },
+    "edges_in": {
+      "anchored-by": [
+        "ADR-028",
+        "ADR-040",
+        "PDR-017",
+        "PDR-020",
+        "PDR-021",
+        "PDR-022"
+      ]
+    }
+  },
+  {
+    "id": "ADR-027",
+    "kind": "adr",
+    "title": "`shop-msg respond` is BC→lead only; the lead answers clarifies via re-dispatch; `prime --lead` realigned",
+    "status": "accepted",
+    "description": "`shop-msg respond` is BC→lead only; the lead answers clarifies via re-dispatch; `prime --lead` realigned",
+    "tags": [],
+    "path": "adr/027-respond-is-bc-to-lead-only-lead-answers-via-redispatch.md",
+    "edges_out": {
+      "amends": [
+        "ADR-009"
+      ],
+      "anchored-on": [
+        "ADR-009"
+      ]
+    },
+    "edges_in": {}
+  },
+  {
+    "id": "ADR-028",
+    "kind": "adr",
+    "title": "The agent-vault broker is a lead-shop supporting-service (compose alongside postgres), not a BC; its own behaviors are pinned by a lead-owned integration-check surface, and the tautological launcher substitution scenario is retired",
+    "status": "accepted",
+    "description": "The agent-vault broker is a lead-shop supporting-service (compose alongside postgres), not a BC; its own behaviors are pinned by a lead-owned integration-check surface, and the...",
+    "tags": [],
+    "path": "adr/028-agent-vault-broker-is-a-lead-shop-supporting-service-broker-own-behaviors-pinned-by-lead-integration-surface.md",
+    "edges_out": {
+      "anchored-on": [
+        "ADR-004",
+        "ADR-018",
+        "ADR-019",
+        "ADR-026",
+        "PDR-017"
+      ],
+      "pins": [
+        "PDR-017"
+      ]
+    },
+    "edges_in": {
+      "anchored-by": [
+        "ADR-040",
+        "ADR-049",
+        "ADR-054",
+        "ADR-056",
+        "PDR-020"
+      ]
+    }
+  },
+  {
+    "id": "ADR-029",
+    "kind": "adr",
+    "title": "Spike vehicle: extend PDR-014 graduation; reject `request_spike` for now (spike sits upstream of the ADR-018 discriminator)",
+    "status": "accepted",
+    "description": "Spike vehicle: extend PDR-014 graduation; reject `request_spike` for now (spike sits upstream of the ADR-018 discriminator)",
+    "tags": [],
+    "path": "adr/029-spike-vehicle-extend-pdr014-graduation-no-request-spike.md",
+    "edges_out": {
+      "anchored-on": [
+        "ADR-018",
+        "PDR-012",
+        "PDR-014"
+      ],
+      "pins": [
+        "PDR-014",
+        "PDR-016"
+      ]
+    },
+    "edges_in": {
+      "anchored-by": [
+        "ADR-030",
+        "ADR-031",
+        "ADR-032",
+        "ADR-048",
+        "ADR-049",
+        "ADR-050",
+        "ADR-052",
+        "ADR-053",
+        "ADR-054",
+        "ADR-055"
+      ]
+    }
+  },
+  {
+    "id": "ADR-030",
+    "kind": "adr",
+    "title": "Spike isolation contract: `spike-`-prefixed scratch, dummy data, throwaway worktree, teardown-to-findings",
+    "status": "accepted",
+    "description": "Spike isolation contract: `spike-`-prefixed scratch, dummy data, throwaway worktree, teardown-to-findings",
+    "tags": [],
+    "path": "adr/030-spike-isolation-contract-scratch-dummy-teardown-to-findings.md",
+    "edges_out": {
+      "anchored-on": [
+        "ADR-004",
+        "ADR-018",
+        "ADR-029"
+      ],
+      "pins": [
+        "PDR-016"
+      ]
+    },
+    "edges_in": {
+      "anchored-by": [
+        "ADR-031",
+        "ADR-048",
+        "ADR-052"
+      ]
+    }
+  },
+  {
+    "id": "ADR-031",
+    "kind": "adr",
+    "title": "Human-in-the-loop wall protocol for autonomous spikes: detect, do-not-fake, prove-up-to-the-wall, emit as a Phase-2 operational step",
+    "status": "accepted",
+    "description": "Human-in-the-loop wall protocol for autonomous spikes: detect, do-not-fake, prove-up-to-the-wall, emit as a Phase-2 operational step",
+    "tags": [],
+    "path": "adr/031-human-in-the-loop-wall-protocol-for-autonomous-spikes.md",
+    "edges_out": {
+      "anchored-on": [
+        "ADR-029",
+        "ADR-030"
+      ],
+      "pins": [
+        "PDR-016"
+      ]
+    },
+    "edges_in": {}
+  },
+  {
+    "id": "ADR-032",
+    "kind": "adr",
+    "title": "Spikes execute via Workflow and return markdown findings, not large array-heavy StructuredOutput",
+    "status": "accepted",
+    "description": "Spikes execute via Workflow and return markdown findings, not large array-heavy StructuredOutput",
+    "tags": [],
+    "path": "adr/032-spikes-execute-via-workflow-return-markdown-findings.md",
+    "edges_out": {
+      "anchored-on": [
+        "ADR-029"
+      ],
+      "pins": [
+        "PDR-016"
+      ]
+    },
+    "edges_in": {
+      "anchored-by": [
+        "ADR-048",
+        "ADR-050",
+        "ADR-052",
+        "ADR-055"
+      ]
+    }
+  },
+  {
+    "id": "ADR-033",
+    "kind": "adr",
+    "title": "A BC-local architect role brings design sensibility up front (distinct from the Implementer's make-it-pass and the Reviewer's adversarial postures); there is NO BC-local PO",
+    "status": "accepted",
+    "description": "A BC-local architect role brings design sensibility up front (distinct from the Implementer's make-it-pass and the Reviewer's adversarial postures); there is NO BC-local PO",
+    "tags": [],
+    "path": "adr/033-bc-local-architect-role-design-sensibility-up-front-no-bc-po.md",
+    "edges_out": {
+      "anchored-on": [
+        "ADR-018",
+        "PDR-001",
+        "PDR-013"
+      ],
+      "pins": [
+        "PDR-001",
+        "PDR-013"
+      ]
+    },
+    "edges_in": {
+      "pinned-by": [
+        "ADR-035"
+      ]
+    }
+  },
+  {
+    "id": "ADR-034",
+    "kind": "adr",
+    "title": "System-global (cross-BC, per-product, non-framework) architecture decisions live in the lead repo's existing `adr/` tree, tagged by tier; the `adr/` tree is NOT split into a second directory",
+    "status": "accepted",
+    "description": "System-global (cross-BC, per-product, non-framework) architecture decisions live in the lead repo's existing `adr/` tree, tagged by tier; the `adr/` tree is NOT split into a sec...",
+    "tags": [],
+    "path": "adr/034-system-global-adr-home-in-the-lead-repo-distinct-from-framework-adr.md",
+    "edges_out": {
+      "anchored-on": [
+        "ADR-018",
+        "PDR-013"
+      ],
+      "pins": [
+        "ADR-035",
+        "PDR-013"
+      ]
+    },
+    "edges_in": {
+      "pinned-by": [
+        "ADR-035"
+      ],
+      "anchored-by": [
+        "ADR-037"
+      ]
+    }
+  },
+  {
+    "id": "ADR-035",
+    "kind": "adr",
+    "title": "The three-tier ADR hierarchy (framework / system-global / BC-local) and a periodic system-architect review cadence over the BC-local tier",
+    "status": "accepted",
+    "description": "The three-tier ADR hierarchy (framework / system-global / BC-local) and a periodic system-architect review cadence over the BC-local tier",
+    "tags": [],
+    "path": "adr/035-three-tier-adr-hierarchy-and-periodic-system-architect-review-cadence.md",
+    "edges_out": {
+      "anchored-on": [
+        "ADR-017",
+        "ADR-018",
+        "PDR-013"
+      ],
+      "pins": [
+        "ADR-033",
+        "ADR-034",
+        "PDR-013"
+      ]
+    },
+    "edges_in": {
+      "pinned-by": [
+        "ADR-034"
+      ]
+    }
+  },
+  {
+    "id": "ADR-036",
+    "kind": "adr",
+    "title": "Procedural preconditions that can be mechanically checked are CLI-layer (a `shop-templates` emit wrapper enforces them and refuses the emit on failure); judgment behaviors that require natural-language interpretation stay template-prose-layer — and the wrapper's `scenario_hashes-match` check uses scenario-block-only canonicalization",
+    "status": "accepted",
+    "description": "Procedural preconditions that can be mechanically checked are CLI-layer (a `shop-templates` emit wrapper enforces them and refuses the emit on failure); judgment behaviors that...",
+    "tags": [],
+    "path": "adr/036-procedural-preconditions-are-cli-layer-judgment-behaviors-are-template-prose.md",
+    "edges_out": {
+      "anchored-on": [
+        "ADR-010",
+        "ADR-015",
+        "ADR-018",
+        "ADR-019",
+        "PDR-001",
+        "PDR-010"
+      ],
+      "pins": [
+        "ADR-019"
+      ]
+    },
+    "edges_in": {
+      "anchored-by": [
+        "ADR-039",
+        "ADR-042",
+        "ADR-056"
+      ],
+      "pinned-by": [
+        "ADR-042"
+      ]
+    }
+  },
+  {
+    "id": "ADR-037",
+    "kind": "adr",
+    "title": "The framework spec (§1–6) is a system-CONSTRUCTION artifact (it describes the system's own design); it stays in the framework/lead repo and is NOT shipped to product instances — product role templates are self-contained, situational guidance lives in skills",
+    "status": "accepted",
+    "description": "The framework spec (§1–6) is a system-CONSTRUCTION artifact (it describes the system's own design); it stays in the framework/lead repo and is NOT shipped to product instances —...",
+    "tags": [],
+    "path": "adr/037-framework-spec-is-system-construction-not-shipped-to-products.md",
+    "edges_out": {
+      "anchored-on": [
+        "ADR-018",
+        "ADR-034",
+        "PDR-001",
+        "PDR-002",
+        "PDR-014"
+      ]
+    },
+    "edges_in": {}
+  },
+  {
+    "id": "ADR-038",
+    "kind": "adr",
+    "title": "The manifest `product:` field is the canonical product-identity source; the fleet tooling derives the system slug, docker network, BC-name-shape prefix, and image namespace from it, with explicit flag/env overrides layered on top",
+    "status": "accepted",
+    "description": "The manifest `product:` field is the canonical product-identity source; the fleet tooling derives the system slug, docker network, BC-name-shape prefix, and image namespace from...",
+    "tags": [],
+    "path": "adr/038-manifest-product-field-is-the-canonical-product-identity-source.md",
+    "edges_out": {
+      "anchored-on": [
+        "ADR-005",
+        "ADR-018",
+        "ADR-020",
+        "PDR-011",
+        "PDR-018"
+      ],
+      "pins": [
+        "ADR-005"
+      ]
+    },
+    "edges_in": {
+      "anchored-by": [
+        "ADR-040",
+        "ADR-043"
+      ]
+    }
+  },
+  {
+    "id": "ADR-039",
+    "kind": "adr",
+    "title": "Release cadence for lead-facing packages: a version bump is part of the fix, the release is dispatched as `request_maintenance`, and the lead reinstalls (and re-pours the fleet) as a cadence step",
+    "status": "accepted",
+    "description": "Release cadence for lead-facing packages: a version bump is part of the fix, the release is dispatched as `request_maintenance`, and the lead reinstalls (and re-pours the fleet)...",
+    "tags": [],
+    "path": "adr/039-release-cadence-version-bump-is-part-of-the-fix-lead-reinstalls-as-a-cadence-step.md",
+    "edges_out": {
+      "anchored-on": [
+        "ADR-015",
+        "ADR-018",
+        "ADR-036",
+        "PDR-011",
+        "PDR-014"
+      ]
+    },
+    "edges_in": {
+      "anchored-by": [
+        "ADR-040",
+        "ADR-047",
+        "PDR-030"
+      ]
+    }
+  },
+  {
+    "id": "ADR-040",
+    "kind": "adr",
+    "title": "The adopter Footing is a deterministic, agent-less bootstrap script in a `shopsystem-starter` template repo, architecturally distinct from agent-driven Discovery; framework code lives only in the published image, never in the adopter's repo",
+    "status": "accepted",
+    "description": "The adopter Footing is a deterministic, agent-less bootstrap script in a `shopsystem-starter` template repo, architecturally distinct from agent-driven Discovery; framework code...",
+    "tags": [],
+    "path": "adr/040-adopter-footing-is-a-deterministic-agentless-bootstrap-distinct-from-agent-driven-discovery.md",
+    "edges_out": {
+      "anchored-on": [
+        "ADR-018",
+        "ADR-026",
+        "ADR-028",
+        "ADR-038",
+        "ADR-039",
+        "PDR-011",
+        "PDR-019"
+      ]
+    },
+    "edges_in": {
+      "pinned-by": [
+        "ADR-021"
+      ],
+      "anchored-by": [
+        "ADR-043",
+        "ADR-047",
+        "PDR-021"
+      ]
+    }
+  },
+  {
+    "id": "ADR-041",
+    "kind": "adr",
+    "title": "A launch/engage failure writes a host-readable diagnostic file naming the specific failure cause, on the same host-visible per-BC surface the mailbox uses; not stderr-only and not `docker logs`-dependent",
+    "status": "accepted",
+    "description": "A launch/engage failure writes a host-readable diagnostic file naming the specific failure cause, on the same host-visible per-BC surface the mailbox uses; not stderr-only and n...",
+    "tags": [],
+    "path": "adr/041-launch-failure-diagnostic-is-a-host-readable-file-naming-the-failure-cause.md",
+    "edges_out": {
+      "anchored-on": [
+        "ADR-018"
+      ]
+    },
+    "edges_in": {}
+  },
+  {
+    "id": "ADR-042",
+    "kind": "adr",
+    "title": "The ADR-036 procedural-precondition migration is as-built complete through the enforcement layer (the `bc-emit work-done` wrapper landed and shipped); its final leg — retro-retiring the template-prose pins 105-116 — was falsely marked delivered and is hereby re-opened as the one remaining, now-unblocked action",
+    "status": "proposed",
+    "description": "The ADR-036 procedural-precondition migration is as-built complete through the enforcement layer (the `bc-emit work-done` wrapper landed and shipped); its final leg — retro-reti...",
+    "tags": [],
+    "path": "adr/042-bc-emit-precondition-enforcement-reconciliation-and-the-unfinished-105-116-retirement.md",
+    "edges_out": {
+      "anchored-on": [
+        "ADR-010",
+        "ADR-018",
+        "ADR-019",
+        "ADR-036",
+        "PDR-001",
+        "PDR-010"
+      ],
+      "pins": [
+        "ADR-036"
+      ]
+    },
+    "edges_in": {
+      "anchored-by": [
+        "ADR-051",
+        "ADR-056"
+      ]
+    }
+  },
+  {
+    "id": "ADR-043",
+    "kind": "adr",
+    "title": "Every derived bootstrap coordinate is computed ONCE at a canonical point and re-used; nothing recomputes or hardcodes it",
+    "status": "accepted",
+    "description": "Every derived bootstrap coordinate is computed ONCE at a canonical point and re-used; nothing recomputes or hardcodes it",
+    "tags": [],
+    "path": "adr/043-single-source-of-truth-for-derived-bootstrap-coordinates.md",
+    "edges_out": {
+      "anchored-on": [
+        "ADR-018",
+        "ADR-038",
+        "ADR-040"
+      ]
+    },
+    "edges_in": {
+      "pinned-by": [
+        "ADR-046"
+      ],
+      "anchored-by": [
+        "ADR-047",
+        "PDR-022",
+        "PDR-024",
+        "PDR-025"
+      ]
+    }
+  },
+  {
+    "id": "ADR-045",
+    "kind": "adr",
+    "title": "`AGENT_VAULT_CA_PEM` carries inline PEM content, not a filesystem path",
+    "status": "accepted",
+    "description": "`AGENT_VAULT_CA_PEM` carries inline PEM content, not a filesystem path",
+    "tags": [],
+    "path": "adr/045-agent-vault-ca-pem-is-inline-pem-content-not-a-path.md",
+    "edges_out": {},
+    "edges_in": {
+      "anchored-by": [
+        "ADR-049",
+        "ADR-054",
+        "ADR-055",
+        "PDR-024"
+      ]
+    }
+  },
+  {
+    "id": "ADR-046",
+    "kind": "adr",
+    "title": "The framework launcher/leaf image in `bin/shop-shell` is a parameterized, repo-file-defaulted variable; ADR-028's product-neutral-framework-image exemption is OVERRIDDEN",
+    "status": "accepted",
+    "description": "The framework launcher/leaf image in `bin/shop-shell` is a parameterized, repo-file-defaulted variable; ADR-028's product-neutral-framework-image exemption is OVERRIDDEN",
+    "tags": [],
+    "path": "adr/046-framework-image-in-shop-shell-is-parameterized-overriding-adr-028-product-neutral-image-exemption.md",
+    "edges_out": {
+      "amends": [
+        "ADR-028"
+      ],
+      "pins": [
+        "ADR-043"
+      ]
+    },
+    "edges_in": {}
+  },
+  {
+    "id": "ADR-047",
+    "kind": "adr",
+    "title": "The `system-manifest.yaml` BOM mechanics: a `releases:`-history schema, capture-first shop-templates-rendered assemble/validate furniture, and a split advisory/blocking coherence gate reusing the baked-provenance read",
+    "status": "accepted",
+    "description": "The `system-manifest.yaml` BOM mechanics: a `releases:`-history schema, capture-first shop-templates-rendered assemble/validate furniture, and a split advisory/blocking coherenc...",
+    "tags": [],
+    "path": "adr/047-system-version-manifest-bom-schema-release-wiring-and-coherence-gate-mechanics.md",
+    "edges_out": {
+      "anchored-on": [
+        "ADR-005",
+        "ADR-018",
+        "ADR-021",
+        "ADR-039",
+        "ADR-040",
+        "ADR-043",
+        "PDR-006",
+        "PDR-024",
+        "PDR-026",
+        "PDR-030"
+      ]
+    },
+    "edges_in": {
+      "anchored-by": [
+        "ADR-056"
+      ]
+    }
+  },
+  {
+    "id": "ADR-048",
+    "kind": "adr",
+    "title": "Fabro is an alternable in-container BC-orchestration substrate (provider=local); it replaces only the Seam(a) launch+loop, never the three shop-msg/bd invariant surfaces",
+    "status": "accepted",
+    "description": "Fabro is an alternable in-container BC-orchestration substrate: it replaces only the Seam(a) launch+loop under provider='local', never the shop-msg/bd invariants.",
+    "tags": [],
+    "path": "adr/048-fabro-as-alternable-in-container-bc-orchestration-substrate.md",
+    "edges_out": {
+      "anchored-on": [
+        "ADR-006",
+        "ADR-018",
+        "ADR-020",
+        "ADR-029",
+        "ADR-030",
+        "ADR-032",
+        "PDR-010",
+        "PDR-011",
+        "PDR-014",
+        "PDR-016"
+      ]
+    },
+    "edges_in": {
+      "anchored-by": [
+        "ADR-049",
+        "ADR-050",
+        "ADR-051"
+      ]
+    }
+  },
+  {
+    "id": "ADR-049",
+    "kind": "adr",
+    "title": "Agent-vault is the SOLE credential surface under fabro; fabro's native secret system is a FORBIDDEN surface (vault-`__PLACEHOLDER__` + `HTTPS_PROXY` + anthropic-oauth-shim path)",
+    "status": "accepted",
+    "description": "Agent-vault is the sole credential surface under fabro; fabro-native secrets are forbidden.",
+    "tags": [],
+    "path": "adr/049-agent-vault-is-sole-credential-surface-under-fabro-native-secrets-forbidden.md",
+    "edges_out": {
+      "anchored-on": [
+        "ADR-018",
+        "ADR-028",
+        "ADR-029",
+        "ADR-045",
+        "ADR-048",
+        "PDR-011",
+        "PDR-017"
+      ]
+    },
+    "edges_in": {
+      "anchored-by": [
+        "ADR-051",
+        "ADR-054"
+      ]
+    }
+  },
+  {
+    "id": "ADR-050",
+    "kind": "adr",
+    "title": "Fabro launch-interface parity with bc-container: which of the P1–P20 launch properties are KEPT vs REPLACED, the readiness-barrier seam, and the engage-tier replacement",
+    "status": "accepted",
+    "description": "Pins which P1-P20 launch properties fabro KEEPS vs REPLACES, the readiness-barrier seam, and the engage-tier replacement.",
+    "tags": [],
+    "path": "adr/050-fabro-launch-interface-parity-with-bc-container.md",
+    "edges_out": {
+      "anchored-on": [
+        "ADR-018",
+        "ADR-020",
+        "ADR-021",
+        "ADR-029",
+        "ADR-032",
+        "ADR-048",
+        "PDR-011",
+        "PDR-016",
+        "PDR-020"
+      ]
+    },
+    "edges_in": {
+      "anchored-by": [
+        "ADR-051"
+      ]
+    }
+  },
+  {
+    "id": "ADR-051",
+    "kind": "adr",
+    "title": "The fabro DOT loop-graph contract: Implementer-to-Reviewer graph with emit_r as the SOLE gated work_done emitter, outcome-conditional fail-closed edges, ENFORCED by native script= scoping",
+    "status": "accepted",
+    "description": "Fabro's .loop graph contract: the reviewer is the sole gated emitter and the loop fails closed.",
+    "tags": [],
+    "path": "adr/051-fabro-dot-loop-graph-contract-reviewer-sole-gated-emitter-fail-closed.md",
+    "edges_out": {
+      "anchored-on": [
+        "ADR-012",
+        "ADR-016",
+        "ADR-018",
+        "ADR-042",
+        "ADR-048",
+        "ADR-049",
+        "ADR-050",
+        "PDR-011"
+      ]
+    },
+    "edges_in": {}
+  },
+  {
+    "id": "ADR-052",
+    "kind": "adr",
+    "title": "Dagger is the local+CI build/test substrate for bc-base: ONE engineVersion-pinned module over ONE build core, WRAP-not-REPLACE publish-bc-base.yml, adding the real-image tier the structural-only fakes lack",
+    "status": "accepted",
+    "description": "Dagger is the local+CI build/test substrate for bc-base: ONE engineVersion-pinned module over ONE build core, WRAP-not-REPLACE publish-bc-base.yml, adding the real-image tier th...",
+    "tags": [],
+    "path": "adr/052-dagger-is-the-local-and-ci-build-test-substrate-wrap-not-replace-publish-bc-base.md",
+    "edges_out": {
+      "anchored-on": [
+        "ADR-018",
+        "ADR-021",
+        "ADR-029",
+        "ADR-030",
+        "ADR-032",
+        "PDR-011"
+      ]
+    },
+    "edges_in": {
+      "anchored-by": [
+        "ADR-053",
+        "ADR-054",
+        "ADR-055"
+      ]
+    }
+  },
+  {
+    "id": "ADR-053",
+    "kind": "adr",
+    "title": "Same-definition-locally-and-in-CI (no-divergence): the engineVersion pin + identical `dagger call` shape make local == CI, and dual-tag-one-digest is content-addressed",
+    "status": "accepted",
+    "description": "One dagger definition runs locally and in CI with no divergence: engine-version pin, dual-tag, one digest.",
+    "tags": [],
+    "path": "adr/053-same-dagger-definition-runs-locally-and-in-ci-no-divergence-engineversion-pin-dual-tag-one-digest.md",
+    "edges_out": {
+      "anchored-on": [
+        "ADR-018",
+        "ADR-021",
+        "ADR-029",
+        "ADR-052",
+        "ADR-054",
+        "ADR-055",
+        "PDR-011"
+      ]
+    },
+    "edges_in": {
+      "anchored-by": [
+        "ADR-054"
+      ]
+    }
+  },
+  {
+    "id": "ADR-054",
+    "kind": "adr",
+    "title": "Agent-vault is the sole credential surface for the dagger build egress: privileged engine on the shopsystem net, proxy env propagated by BuildKit, NO_PROXY registry apex + dagger-infra whitelist with github proxied, engine config via docker cp",
+    "status": "accepted",
+    "description": "Agent-vault is the sole credential surface for the dagger build egress.",
+    "tags": [],
+    "path": "adr/054-agent-vault-is-sole-credential-surface-for-the-dagger-build-egress.md",
+    "edges_out": {
+      "anchored-on": [
+        "ADR-018",
+        "ADR-021",
+        "ADR-028",
+        "ADR-029",
+        "ADR-045",
+        "ADR-049",
+        "ADR-052",
+        "ADR-053",
+        "ADR-055",
+        "PDR-011"
+      ]
+    },
+    "edges_in": {
+      "anchored-by": [
+        "ADR-053",
+        "ADR-055"
+      ]
+    }
+  },
+  {
+    "id": "ADR-055",
+    "kind": "adr",
+    "title": "The build-time CA-trust prerequisite for the MITM-local dagger loop is local infrastructure, explicitly NOT a shipped-path IS-3 divergence: the real bc-base trusts the agent-vault CA only at runtime; the local MITM loop needs a build-time CA-trust base layer; real CI has public egress and is unaffected",
+    "status": "accepted",
+    "description": "The build-time CA-trust prerequisite for the MITM-local dagger loop is local infrastructure, explicitly NOT a shipped-path IS-3 divergence: the real bc-base trusts the agent-vau...",
+    "tags": [],
+    "path": "adr/055-build-time-ca-trust-is-mitm-local-infra-not-a-shipped-path-is-3-bend.md",
+    "edges_out": {
+      "anchored-on": [
+        "ADR-018",
+        "ADR-021",
+        "ADR-029",
+        "ADR-032",
+        "ADR-045",
+        "ADR-052",
+        "ADR-054",
+        "PDR-011"
+      ]
+    },
+    "edges_in": {
+      "anchored-by": [
+        "ADR-053",
+        "ADR-054"
+      ]
+    }
+  },
+  {
+    "id": "ADR-056",
+    "kind": "adr",
+    "title": "Scenario files conform to a three-dimension schema (off-the-shelf Gherkin + feature-level `@bc` owner + feature-level `@origin` provenance + per-scenario `@scenario_hash`), enforced by `scenarios validate`; a feature = (originating decision × owning context); the in-file tags become authoritative and beads is deauthorized for assignment; a system consistency gate defines DONE",
+    "status": "accepted",
+    "description": "Scenario files conform to a three-dimension schema (off-the-shelf Gherkin + feature-level `@bc` owner + feature-level `@origin` provenance + per-scenario `@scenario_hash`), enfo...",
+    "tags": [],
+    "path": "adr/056-scenario-file-schema-off-the-shelf-gherkin-validation-and-bc-tag-source-of-truth-cutover.md",
+    "edges_out": {
+      "anchored-on": [
+        "ADR-005",
+        "ADR-011",
+        "ADR-018",
+        "ADR-019",
+        "ADR-028",
+        "ADR-036",
+        "ADR-042",
+        "ADR-047",
+        "PDR-011"
+      ]
+    },
+    "edges_in": {}
+  },
+  {
+    "id": "PDR-001",
+    "kind": "pdr",
+    "title": "Lead-shop role templates must be role-complete, identity-first",
+    "status": "draft",
+    "description": "Lead-shop role templates must be role-complete, identity-first",
+    "tags": [],
+    "path": "pdr/001-role-templates-role-complete.md",
+    "edges_out": {},
+    "edges_in": {
+      "pinned-by": [
+        "ADR-033"
+      ],
+      "anchored-by": [
+        "ADR-033",
+        "ADR-036",
+        "ADR-037",
+        "ADR-042",
+        "PDR-013",
+        "PDR-015",
+        "PDR-017"
+      ]
+    }
+  },
+  {
+    "id": "PDR-002",
+    "kind": "pdr",
+    "title": "Lead-shop PO and Architect dispatched as subagents (router pattern)",
+    "status": "draft",
+    "description": "Lead-shop PO and Architect dispatched as subagents (router pattern)",
+    "tags": [],
+    "path": "pdr/002-lead-shop-roles-as-subagents.md",
+    "edges_out": {},
+    "edges_in": {
+      "anchored-by": [
+        "ADR-018",
+        "ADR-037",
+        "PDR-015",
+        "PDR-017"
+      ]
+    }
+  },
+  {
+    "id": "PDR-003",
+    "kind": "pdr",
+    "title": "CLAUDE.md update propagation",
+    "status": "proposed",
+    "description": "CLAUDE.md update propagation",
+    "tags": [],
+    "path": "pdr/003-claude-md-update-propagation.md",
+    "edges_out": {},
+    "edges_in": {
+      "anchored-by": [
+        "ADR-018",
+        "PDR-009"
+      ]
+    }
+  },
+  {
+    "id": "PDR-004",
+    "kind": "pdr",
+    "title": "BC container command ownership",
+    "status": "draft",
+    "description": "BC container command ownership",
+    "tags": [],
+    "path": "pdr/004-bc-container-command-ownership.md",
+    "edges_out": {},
+    "edges_in": {
+      "anchored-by": [
+        "ADR-004",
+        "ADR-018",
+        "PDR-011",
+        "PDR-020"
+      ]
+    }
+  },
+  {
+    "id": "PDR-005",
+    "kind": "pdr",
+    "title": "Architect technical review gate before dispatch",
+    "status": "draft",
+    "description": "Architect technical review gate before dispatch",
+    "tags": [],
+    "path": "pdr/005-architect-technical-review-gate.md",
+    "edges_out": {},
+    "edges_in": {}
+  },
+  {
+    "id": "PDR-006",
+    "kind": "pdr",
+    "title": "BC manifest ownership",
+    "status": "draft",
+    "description": "BC manifest ownership",
+    "tags": [],
+    "path": "pdr/006-bc-manifest-ownership.md",
+    "edges_out": {},
+    "edges_in": {
+      "anchored-by": [
+        "ADR-047",
+        "PDR-030"
+      ]
+    }
+  },
+  {
+    "id": "PDR-007",
+    "kind": "pdr",
+    "title": "Path-to-name addressing migration",
+    "status": "accepted",
+    "description": "Path-to-name addressing migration",
+    "tags": [],
+    "path": "pdr/007-path-to-name-addressing-migration.md",
+    "edges_out": {},
+    "edges_in": {
+      "anchored-by": [
+        "ADR-006",
+        "PDR-009"
+      ],
+      "pinned-by": [
+        "ADR-020"
+      ]
+    }
+  },
+  {
+    "id": "PDR-009",
+    "kind": "pdr",
+    "title": "Implicit CWD-based shop resolution in `shop-msg`",
+    "status": "accepted",
+    "description": "Implicit CWD-based shop resolution in `shop-msg`",
+    "tags": [],
+    "path": "pdr/009-implicit-cwd-shop-resolution.md",
+    "edges_out": {
+      "anchored-on": [
+        "PDR-003",
+        "PDR-007"
+      ]
+    },
+    "edges_in": {}
+  },
+  {
+    "id": "PDR-010",
+    "kind": "pdr",
+    "title": "bd is authoritative for system state; shop-msg is transport + wakeup + liveness",
+    "status": "accepted",
+    "description": "bd is authoritative for system state; shop-msg is transport + wakeup + liveness",
+    "tags": [],
+    "path": "pdr/010-bd-authoritative-shop-msg-transport.md",
+    "edges_out": {},
+    "edges_in": {
+      "anchored-by": [
+        "ADR-011",
+        "ADR-012",
+        "ADR-013",
+        "ADR-014",
+        "ADR-015",
+        "ADR-016",
+        "ADR-017",
+        "ADR-018",
+        "ADR-036",
+        "ADR-042",
+        "ADR-048"
+      ]
+    }
+  },
+  {
+    "id": "PDR-011",
+    "kind": "pdr",
+    "title": "\"Verify pre-state empirically\" means verify the contract surface, not BC code",
+    "status": "draft",
+    "description": "\"Verify pre-state empirically\" means verify the contract surface, not BC code",
+    "tags": [],
+    "path": "pdr/011-empirical-verification-is-contract-surface.md",
+    "edges_out": {
+      "anchored-on": [
+        "PDR-004"
+      ]
+    },
+    "edges_in": {
+      "pinned-by": [
+        "ADR-018"
+      ],
+      "anchored-by": [
+        "ADR-038",
+        "ADR-039",
+        "ADR-040",
+        "ADR-048",
+        "ADR-049",
+        "ADR-050",
+        "ADR-051",
+        "ADR-052",
+        "ADR-053",
+        "ADR-054",
+        "ADR-055",
+        "ADR-056",
+        "PDR-019"
+      ]
+    }
+  },
+  {
+    "id": "PDR-012",
+    "kind": "pdr",
+    "title": "Elevate lead-po to empowered Product-Manager scope; develop lead-architect structurizr-workspace-maintenance",
+    "status": "draft",
+    "description": "Elevate lead-po to empowered Product-Manager scope; develop lead-architect structurizr-workspace-maintenance",
+    "tags": [],
+    "path": "pdr/012-lead-po-product-manager-scope-and-architect-structurizr-maintenance.md",
+    "edges_out": {},
+    "edges_in": {
+      "anchored-by": [
+        "ADR-029",
+        "PDR-013"
+      ]
+    }
+  },
+  {
+    "id": "PDR-013",
+    "kind": "pdr",
+    "title": "BC decomposition/splitting discipline (immediate); BC-local architect role + three-tier ADR hierarchy (structural, architect-owned)",
+    "status": "draft",
+    "description": "BC decomposition/splitting discipline (immediate); BC-local architect role + three-tier ADR hierarchy (structural, architect-owned)",
+    "tags": [],
+    "path": "pdr/013-bc-decomposition-discipline-and-design-quality-structural-bets.md",
+    "edges_out": {
+      "anchored-on": [
+        "PDR-001",
+        "PDR-012"
+      ]
+    },
+    "edges_in": {
+      "pinned-by": [
+        "ADR-033",
+        "ADR-034",
+        "ADR-035"
+      ],
+      "anchored-by": [
+        "ADR-033",
+        "ADR-034",
+        "ADR-035"
+      ]
+    }
+  },
+  {
+    "id": "PDR-014",
+    "kind": "pdr",
+    "title": "Canonical lead skill-group: `shop-templates` pours it, and it is the graduation path for experimental lead skills",
+    "status": "draft",
+    "description": "Canonical lead skill-group: `shop-templates` pours it, and it is the graduation path for experimental lead skills",
+    "tags": [],
+    "path": "pdr/014-lead-skill-group-pour-and-graduation-path.md",
+    "edges_out": {},
+    "edges_in": {
+      "pinned-by": [
+        "ADR-029"
+      ],
+      "anchored-by": [
+        "ADR-029",
+        "ADR-037",
+        "ADR-039",
+        "ADR-048",
+        "PDR-019",
+        "PDR-023"
+      ]
+    }
+  },
+  {
+    "id": "PDR-015",
+    "kind": "pdr",
+    "title": "Scenario-completion journal + lead snapshot: solution-space framing (intent, owner-agnostic)",
+    "status": "draft",
+    "description": "Scenario-completion journal + lead snapshot: solution-space framing (intent, owner-agnostic)",
+    "tags": [],
+    "path": "pdr/015-scenario-completion-journal-solution-space.md",
+    "edges_out": {
+      "anchored-on": [
+        "ADR-018",
+        "PDR-001",
+        "PDR-002"
+      ]
+    },
+    "edges_in": {
+      "anchored-by": [
+        "ADR-023"
+      ]
+    }
+  },
+  {
+    "id": "PDR-016",
+    "kind": "pdr",
+    "title": "Iterative experimentation is a first-class lead capability: the spike lifecycle and findings-driven graduation",
+    "status": "draft",
+    "description": "Iterative experimentation is a first-class lead capability: the spike lifecycle and findings-driven graduation",
+    "tags": [],
+    "path": "pdr/016-iterative-experimentation-first-class-lead-capability.md",
+    "edges_out": {},
+    "edges_in": {
+      "pinned-by": [
+        "ADR-029",
+        "ADR-030",
+        "ADR-031",
+        "ADR-032"
+      ],
+      "anchored-by": [
+        "ADR-048",
+        "ADR-050"
+      ]
+    }
+  },
+  {
+    "id": "PDR-017",
+    "kind": "pdr",
+    "title": "Agent-vault broker standup + fleet credential flip: problem framing (intent, decomposition-deferred)",
+    "status": "draft",
+    "description": "Agent-vault broker standup + fleet credential flip: problem framing (intent, decomposition-deferred)",
+    "tags": [],
+    "path": "pdr/017-agent-vault-broker-standup-and-fleet-credential-flip.md",
+    "edges_out": {
+      "anchored-on": [
+        "ADR-018",
+        "ADR-026",
+        "PDR-001",
+        "PDR-002"
+      ]
+    },
+    "edges_in": {
+      "pinned-by": [
+        "ADR-028"
+      ],
+      "anchored-by": [
+        "ADR-028",
+        "ADR-049"
+      ]
+    }
+  },
+  {
+    "id": "PDR-018",
+    "kind": "pdr",
+    "title": "The dummy-product instantiation spike is the MVP acceptance gate",
+    "status": "draft",
+    "description": "The dummy-product instantiation spike is the MVP acceptance gate",
+    "tags": [],
+    "path": "pdr/018-dummy-product-instantiation-spike.md",
+    "edges_out": {},
+    "edges_in": {
+      "anchored-by": [
+        "ADR-038",
+        "PDR-019"
+      ]
+    }
+  },
+  {
+    "id": "PDR-019",
+    "kind": "pdr",
+    "title": "Adopter bootstrap \"stand-up-product\": the Footing is a deterministic agent-less script; the decomposition + dispatch plan",
+    "status": "draft",
+    "description": "Adopter bootstrap \"stand-up-product\": the Footing is a deterministic agent-less script; the decomposition + dispatch plan",
+    "tags": [],
+    "path": "pdr/019-adopter-bootstrap-stand-up-product.md",
+    "edges_out": {
+      "anchored-on": [
+        "PDR-011",
+        "PDR-014",
+        "PDR-018"
+      ]
+    },
+    "edges_in": {
+      "pinned-by": [
+        "ADR-021"
+      ],
+      "anchored-by": [
+        "ADR-040",
+        "PDR-021"
+      ]
+    }
+  },
+  {
+    "id": "PDR-020",
+    "kind": "pdr",
+    "title": "The lead shell is a `bc-container`-launched `bc-base` session; `bin/shop-shell` becomes a thin ephemeral-`bc-base` wrapper, retiring the hand-rolled brokered-launch reimplementation",
+    "status": "proposed",
+    "description": "The lead shell is a `bc-container`-launched `bc-base` session; `bin/shop-shell` becomes a thin ephemeral-`bc-base` wrapper, retiring the hand-rolled brokered-launch reimplementa...",
+    "tags": [],
+    "path": "pdr/020-lead-shell-is-a-bc-container-launched-bc-base-session.md",
+    "edges_out": {
+      "anchored-on": [
+        "ADR-004",
+        "ADR-018",
+        "ADR-026",
+        "ADR-028",
+        "PDR-004"
+      ]
+    },
+    "edges_in": {
+      "anchored-by": [
+        "ADR-050",
+        "PDR-024"
+      ]
+    }
+  },
+  {
+    "id": "PDR-021",
+    "kind": "pdr",
+    "title": "Unify product bringup on the Footing runway; the starter is README + bin/bootstrap; lead↔broker is local-first",
+    "status": "accepted",
+    "description": "Unify product bringup on the Footing runway; the starter is README + bin/bootstrap; lead↔broker is local-first",
+    "tags": [],
+    "path": "pdr/021-unify-product-bringup-on-the-footing-runway.md",
+    "edges_out": {
+      "anchored-on": [
+        "ADR-018",
+        "ADR-026",
+        "ADR-040",
+        "PDR-019"
+      ]
+    },
+    "edges_in": {
+      "anchored-by": [
+        "PDR-022"
+      ]
+    }
+  },
+  {
+    "id": "PDR-022",
+    "kind": "pdr",
+    "title": "Footing DELEGATES agent-vault credential/service/fleet-token provisioning to `bin/agent-vault-provision` instead of inlining it; credential ops are broker-local docker-exec ONLY",
+    "status": "accepted",
+    "description": "Footing DELEGATES agent-vault credential/service/fleet-token provisioning to `bin/agent-vault-provision` instead of inlining it; credential ops are broker-local docker-exec ONLY",
+    "tags": [],
+    "path": "pdr/022-footing-delegates-credential-provisioning-to-agent-vault-provision.md",
+    "edges_out": {
+      "anchored-on": [
+        "ADR-018",
+        "ADR-026",
+        "ADR-043",
+        "PDR-021"
+      ]
+    },
+    "edges_in": {}
+  },
+  {
+    "id": "PDR-023",
+    "kind": "pdr",
+    "title": "Skills provenance marker: re-pour overwrites only CANONICAL skills, LOCAL skills survive every re-pour",
+    "status": "draft",
+    "description": "Skills provenance marker: re-pour overwrites only CANONICAL skills, LOCAL skills survive every re-pour",
+    "tags": [],
+    "path": "pdr/023-skills-provenance-marker.md",
+    "edges_out": {
+      "anchored-on": [
+        "PDR-014"
+      ]
+    },
+    "edges_in": {}
+  },
+  {
+    "id": "PDR-024",
+    "kind": "pdr",
+    "title": "A rendered `bin/doctor` command validates a bootstrapped shop's credentials and connections and reports one aggregate pass/fail diagnosis",
+    "status": "draft",
+    "description": "A rendered `bin/doctor` command validates a bootstrapped shop's credentials and connections and reports one aggregate pass/fail diagnosis",
+    "tags": [],
+    "path": "pdr/024-doctor-command-validates-bootstrapped-shop-credentials-and-connections.md",
+    "edges_out": {
+      "anchored-on": [
+        "ADR-043",
+        "ADR-045",
+        "PDR-020"
+      ]
+    },
+    "edges_in": {
+      "anchored-by": [
+        "ADR-047",
+        "PDR-025"
+      ]
+    }
+  },
+  {
+    "id": "PDR-025",
+    "kind": "pdr",
+    "title": "`bin/agent-vault-approve-claude` verifies preconditions up front, runs idempotently, and supports updating the Claude OAuth tokens after the fact",
+    "status": "draft",
+    "description": "`bin/agent-vault-approve-claude` verifies preconditions up front, runs idempotently, and supports updating the Claude OAuth tokens after the fact",
+    "tags": [],
+    "path": "pdr/025-approve-claude-precondition-completeness-and-idempotent-token-update.md",
+    "edges_out": {
+      "anchored-on": [
+        "ADR-043",
+        "PDR-024"
+      ]
+    },
+    "edges_in": {}
+  },
+  {
+    "id": "PDR-026",
+    "kind": "pdr",
+    "title": "Published bc-launcher images carry their bc-launcher version and baked shop-templates version as inspectable OCI-label + ENV provenance",
+    "status": "draft",
+    "description": "Published bc-launcher images carry their bc-launcher version and baked shop-templates version as inspectable OCI-label + ENV provenance",
+    "tags": [],
+    "path": "pdr/026-published-images-carry-version-as-inspectable-oci-label-and-env-provenance.md",
+    "edges_out": {},
+    "edges_in": {
+      "anchored-by": [
+        "ADR-047"
+      ]
+    }
+  },
+  {
+    "id": "PDR-027",
+    "kind": "pdr",
+    "title": "Empty-repo detection fires a proactive product-discovery trigger in the lead primer",
+    "status": "draft",
+    "description": "Empty-repo detection fires a proactive product-discovery trigger in the lead primer",
+    "tags": [],
+    "path": "pdr/027-empty-repo-proactive-discovery-trigger.md",
+    "edges_out": {},
+    "edges_in": {}
+  },
+  {
+    "id": "PDR-028",
+    "kind": "pdr",
+    "title": "bin/bootstrap verifies the pulled image's baked shop-templates version before rendering, and refuses a stale image",
+    "status": "draft",
+    "description": "bin/bootstrap verifies the pulled image's baked shop-templates version before rendering, and refuses a stale image",
+    "tags": [],
+    "path": "pdr/028-bootstrap-verifies-pulled-image-baked-version-before-render.md",
+    "edges_out": {},
+    "edges_in": {}
+  },
+  {
+    "id": "PDR-029",
+    "kind": "pdr",
+    "title": "`request_scenario_register` is a distinct vehicle, not an extension of `request_completion_journal`",
+    "status": "accepted",
+    "description": "`request_scenario_register` is a distinct vehicle, not an extension of `request_completion_journal`",
+    "tags": [],
+    "path": "pdr/029-scenario-register-vehicle-distinct-from-completion-journal.md",
+    "edges_out": {},
+    "edges_in": {}
+  },
+  {
+    "id": "PDR-030",
+    "kind": "pdr",
+    "title": "The shopsystem system version is an independent standard semver mapped to a component-version tuple by a lead-owned BOM manifest",
+    "status": "draft",
+    "description": "The shopsystem system version is an independent standard semver mapped to a component-version tuple by a lead-owned BOM manifest",
+    "tags": [],
+    "path": "pdr/030-shopsystem-system-version-manifest-bom.md",
+    "edges_out": {
+      "anchored-on": [
+        "ADR-005",
+        "ADR-018",
+        "ADR-021",
+        "ADR-039",
+        "PDR-006"
+      ]
+    },
+    "edges_in": {
+      "anchored-by": [
+        "ADR-047"
+      ]
+    }
+  },
+  {
+    "id": "BRIEF-001",
+    "kind": "brief",
+    "title": "Brief 001 — Inter-shop messaging encapsulation",
+    "status": "draft",
+    "description": "Brief 001 — Inter-shop messaging encapsulation",
+    "tags": [],
+    "path": "briefs/001-inter-shop-messaging-encapsulation.md",
+    "edges_out": {},
+    "edges_in": {}
+  },
+  {
+    "id": "BRIEF-002",
+    "kind": "brief",
+    "title": "Brief 002 — Shop bootstrap CLI surface",
+    "status": "draft",
+    "description": "Brief 002 — Shop bootstrap CLI surface",
+    "tags": [],
+    "path": "briefs/002-shop-bootstrap-cli-surface.md",
+    "edges_out": {},
+    "edges_in": {}
+  },
+  {
+    "id": "BRIEF-003",
+    "kind": "brief",
+    "title": "Brief 003 — Event-driven shop activation",
+    "status": "draft",
+    "description": "Brief 003 — Event-driven shop activation",
+    "tags": [],
+    "path": "briefs/003-event-driven-shop-activation.md",
+    "edges_out": {},
+    "edges_in": {}
+  },
+  {
+    "id": "BRIEF-004",
+    "kind": "brief",
+    "title": "Brief 004 — BC container isolation",
+    "status": "draft",
+    "description": "Brief 004 — BC container isolation",
+    "tags": [],
+    "path": "briefs/004-bc-container-isolation.md",
+    "edges_out": {},
+    "edges_in": {}
+  },
+  {
+    "id": "BRIEF-005",
+    "kind": "brief",
+    "title": "Brief 005 — BC manifest",
+    "status": "draft",
+    "description": "Brief 005 — BC manifest",
+    "tags": [],
+    "path": "briefs/005-bc-manifest.md",
+    "edges_out": {},
+    "edges_in": {}
+  },
+  {
+    "id": "BRIEF-006",
+    "kind": "brief",
+    "title": "Brief 006 — Messaging name registry and lead inbox",
+    "status": "draft",
+    "description": "Brief 006 — Messaging name registry and lead inbox",
+    "tags": [],
+    "path": "briefs/006-messaging-name-registry-and-lead-inbox.md",
+    "edges_out": {},
+    "edges_in": {}
+  },
+  {
+    "id": "BRIEF-007",
+    "kind": "brief",
+    "title": "Brief 007 — End-user adoption documentation",
+    "status": "accepted",
+    "description": "Brief 007 — End-user adoption documentation",
+    "tags": [],
+    "path": "briefs/007-end-user-adoption-documentation.md",
+    "edges_out": {},
+    "edges_in": {}
+  },
+  {
+    "id": "BRIEF-008",
+    "kind": "brief",
+    "title": "Brief 008 — Single-container bootstrap orchestrator (slice 1: lead-only prove-out)",
+    "status": "draft",
+    "description": "Brief 008 — Single-container bootstrap orchestrator (slice 1: lead-only prove-out)",
+    "tags": [],
+    "path": "briefs/008-single-container-bootstrap-orchestrator.md",
+    "edges_out": {},
+    "edges_in": {}
+  },
+  {
+    "id": "BRIEF-009",
+    "kind": "brief",
+    "title": "Brief 009 — Scenario-completion journal (BC-authoritative) and lead-side system implementation-state snapshot",
+    "status": "draft",
+    "description": "Brief 009 — Scenario-completion journal (BC-authoritative) and lead-side system implementation-state snapshot",
+    "tags": [],
+    "path": "briefs/009-scenario-completion-journal-and-system-state-snapshot.md",
+    "edges_out": {},
+    "edges_in": {}
+  },
+  {
+    "id": "BRIEF-010",
+    "kind": "brief",
+    "title": "Brief 010 — BC session-start beads-health: set up AND validate the work-tracker before work begins",
+    "status": "draft",
+    "description": "Brief 010 — BC session-start beads-health: set up AND validate the work-tracker before work begins",
+    "tags": [],
+    "path": "briefs/010-bc-session-start-beads-health.md",
+    "edges_out": {},
+    "edges_in": {}
+  },
+  {
+    "id": "BRIEF-011",
+    "kind": "brief",
+    "title": "Brief 011 — The end-to-end new-product bootstrap path: empty dir → a working second product",
+    "status": "draft",
+    "description": "Brief 011 — The end-to-end new-product bootstrap path: empty dir → a working second product",
+    "tags": [],
+    "path": "briefs/011-new-product-bootstrap-path.md",
+    "edges_out": {},
+    "edges_in": {}
+  },
+  {
+    "id": "BRIEF-012",
+    "kind": "brief",
+    "title": "Brief 012 — Adopter bootstrap: from \"Use this template\" to a product on its own footing",
+    "status": "draft",
+    "description": "Brief 012 — Adopter bootstrap: from \"Use this template\" to a product on its own footing",
+    "tags": [],
+    "path": "briefs/012-adopter-bootstrap-stand-up-product.md",
+    "edges_out": {},
+    "edges_in": {}
+  },
+  {
+    "id": "BRIEF-013",
+    "kind": "brief",
+    "title": "Brief 013 — A freshly bootstrapped shop comes up healthy: its credentials and connections are wired and checkable, not agent-rediscovered",
+    "status": "draft",
+    "description": "Brief 013 — A freshly bootstrapped shop comes up healthy: its credentials and connections are wired and checkable, not agent-rediscovered",
+    "tags": [],
+    "path": "briefs/013-bootstrapped-shop-health-credentials-and-connections.md",
+    "edges_out": {},
+    "edges_in": {}
+  },
+  {
+    "id": "BRIEF-014",
+    "kind": "brief",
+    "title": "Brief 014 — Scenario-register visibility vehicle (`request_scenario_register`)",
+    "status": "draft",
+    "description": "Brief 014 — Scenario-register visibility vehicle (`request_scenario_register`)",
+    "tags": [],
+    "path": "briefs/014-scenario-register-visibility-vehicle.md",
+    "edges_out": {},
+    "edges_in": {}
+  },
+  {
+    "id": "BRIEF-015",
+    "kind": "brief",
+    "title": "Brief 015 — The shopsystem system-version manifest (Bill of Materials)",
+    "status": "draft",
+    "description": "Brief 015 — The shopsystem system-version manifest (Bill of Materials)",
+    "tags": [],
+    "path": "briefs/015-shopsystem-system-version-manifest-bom.md",
+    "edges_out": {},
+    "edges_in": {}
+  }
+]

@@ -1,3 +1,20 @@
+---
+id: PDR-005
+kind: pdr
+title: Architect technical review gate before dispatch
+status: draft
+date: "2026-05-20"
+description: Architect technical review gate before dispatch
+beads: [lead-po]
+edges:
+  supersedes: []
+  superseded-by: []
+  amends: []
+  depends-on: []
+  anchored-on: []
+  pins: []
+  related: []
+---
 # PDR-005 — Architect technical review gate before dispatch
 
 **Status:** draft (2026-05-20)

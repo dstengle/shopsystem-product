@@ -1,3 +1,20 @@
+---
+id: ADR-033
+kind: adr
+title: A BC-local architect role brings design sensibility up front (distinct from the Implementer's make-it-pass and the Reviewer's adversarial postures); there is NO BC-local PO
+status: accepted
+date: "2026-06-10"
+description: A BC-local architect role brings design sensibility up front (distinct from the Implementer's make-it-pass and the Reviewer's adversarial postures); there is NO BC-local PO
+beads: [lead-5hm1, lead-architect, lead-cnbu, lead-ir9m, lead-shop]
+edges:
+  supersedes: []
+  superseded-by: []
+  amends: []
+  depends-on: []
+  anchored-on: [ADR-018, PDR-001, PDR-013]
+  pins: [PDR-001, PDR-013]
+  related: []
+---
 # ADR-033 — A BC-local architect role brings design sensibility up front (distinct from the Implementer's make-it-pass and the Reviewer's adversarial postures); there is NO BC-local PO
 
 **Status:** accepted (2026-06-10)

@@ -1,3 +1,20 @@
+---
+id: ADR-045
+kind: adr
+title: "`AGENT_VAULT_CA_PEM` carries inline PEM content, not a filesystem path"
+status: accepted
+date: "2026-06-27"
+description: "`AGENT_VAULT_CA_PEM` carries inline PEM content, not a filesystem path"
+beads: [lead-b14a, lead-lu91, lead-qi0q]
+edges:
+  supersedes: []
+  superseded-by: []
+  amends: []
+  depends-on: []
+  anchored-on: []
+  pins: []
+  related: []
+---
 # ADR-045 — `AGENT_VAULT_CA_PEM` carries inline PEM content, not a filesystem path
 
 - Status: Accepted (contract fully established from the artifact surface,

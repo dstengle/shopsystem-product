@@ -1,3 +1,20 @@
+---
+id: ADR-014
+kind: adr
+title: Presence heartbeat collapsed into `shop-msg watch`
+status: accepted
+date: "2026-05-29"
+description: Presence heartbeat collapsed into `shop-msg watch`
+beads: [lead-architect, lead-ji28, lead-nps, lead-tsj]
+edges:
+  supersedes: []
+  superseded-by: []
+  amends: []
+  depends-on: []
+  anchored-on: [PDR-010]
+  pins: []
+  related: []
+---
 # ADR-014 — Presence heartbeat collapsed into `shop-msg watch`
 
 **Status:** accepted (2026-05-29)

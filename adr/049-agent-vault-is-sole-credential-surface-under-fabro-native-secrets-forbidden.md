@@ -1,3 +1,20 @@
+---
+id: ADR-049
+kind: adr
+title: Agent-vault is the SOLE credential surface under fabro; fabro's native secret system is a FORBIDDEN surface (vault-`__PLACEHOLDER__` + `HTTPS_PROXY` + anthropic-oauth-shim path)
+status: accepted
+date: "2026-07-01"
+description: Agent-vault is the sole credential surface under fabro; fabro-native secrets are forbidden.
+beads: [lead-6k1r, lead-f6ta, lead-integration, lead-shop]
+edges:
+  supersedes: []
+  superseded-by: []
+  amends: []
+  depends-on: []
+  anchored-on: [ADR-018, ADR-028, ADR-029, ADR-045, ADR-048, PDR-011, PDR-017]
+  pins: []
+  related: []
+---
 # ADR-049 — Agent-vault is the SOLE credential surface under fabro; fabro's native secret system is a FORBIDDEN surface (vault-`__PLACEHOLDER__` + `HTTPS_PROXY` + anthropic-oauth-shim path)
 
 - Status: Accepted (2026-07-01)

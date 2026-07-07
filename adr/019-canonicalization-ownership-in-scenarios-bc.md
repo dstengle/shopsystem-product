@@ -1,3 +1,20 @@
+---
+id: ADR-019
+kind: adr
+title: Scenario canonicalization and hash discipline are owned by `shopsystem-scenarios`; messaging transports, it does not re-enact
+status: accepted
+date: "2026-06-02"
+description: Scenario canonicalization and hash discipline are owned by `shopsystem-scenarios`; messaging transports, it does not re-enact
+beads: [lead-2ca, lead-architect, lead-ji28, lead-wgv]
+edges:
+  supersedes: []
+  superseded-by: []
+  amends: []
+  depends-on: []
+  anchored-on: [ADR-006, ADR-018]
+  pins: []
+  related: []
+---
 # ADR-019 — Scenario canonicalization and hash discipline are owned by `shopsystem-scenarios`; messaging transports, it does not re-enact
 
 **Status:** accepted (2026-06-02)

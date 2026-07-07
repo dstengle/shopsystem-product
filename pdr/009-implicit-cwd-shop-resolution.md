@@ -1,3 +1,20 @@
+---
+id: PDR-009
+kind: pdr
+title: Implicit CWD-based shop resolution in `shop-msg`
+status: accepted
+date: "2026-05-27"
+description: Implicit CWD-based shop resolution in `shop-msg`
+beads: [lead-po]
+edges:
+  supersedes: []
+  superseded-by: []
+  amends: []
+  depends-on: []
+  anchored-on: [PDR-003, PDR-007]
+  pins: []
+  related: []
+---
 # PDR-009 — Implicit CWD-based shop resolution in `shop-msg`
 
 **Status:** decided (2026-05-27)

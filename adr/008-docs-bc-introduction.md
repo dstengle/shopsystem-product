@@ -1,3 +1,20 @@
+---
+id: ADR-008
+kind: adr
+title: shopsystem-docs as a new Bounded Context
+status: accepted
+date: "2026-05-22"
+description: shopsystem-docs as a new Bounded Context
+beads: [lead-architect]
+edges:
+  supersedes: []
+  superseded-by: []
+  amends: []
+  depends-on: [ADR-001]
+  anchored-on: [ADR-004]
+  pins: []
+  related: []
+---
 # ADR-008 — shopsystem-docs as a new Bounded Context
 
 **Status:** accepted (2026-05-22)

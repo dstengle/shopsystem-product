@@ -1,3 +1,20 @@
+---
+id: ADR-038
+kind: adr
+title: The manifest `product:` field is the canonical product-identity source; the fleet tooling derives the system slug, docker network, BC-name-shape prefix, and image namespace from it, with explicit flag/env overrides layered on top
+status: accepted
+date: "2026-06-12"
+description: The manifest `product:` field is the canonical product-identity source; the fleet tooling derives the system slug, docker network, BC-name-shape prefix, and image namespace from...
+beads: [lead-6ze3, lead-architect, lead-owned, lead-repo, lead-t12k, lead-tgsb, lead-wm2r, lead-xntx]
+edges:
+  supersedes: []
+  superseded-by: []
+  amends: []
+  depends-on: []
+  anchored-on: [ADR-005, ADR-018, ADR-020, PDR-011, PDR-018]
+  pins: [ADR-005]
+  related: []
+---
 # ADR-038 — The manifest `product:` field is the canonical product-identity source; the fleet tooling derives the system slug, docker network, BC-name-shape prefix, and image namespace from it, with explicit flag/env overrides layered on top
 
 **Status:** accepted (2026-06-12)

@@ -1,3 +1,28 @@
+---
+id: ADR-050
+kind: adr
+title: "Fabro launch-interface parity with bc-container: which of the P1–P20 launch properties are KEPT vs REPLACED, the readiness-barrier seam, and the engage-tier replacement"
+status: accepted
+date: "2026-07-01"
+description: Pins which P1-P20 launch properties fabro KEEPS vs REPLACES, the readiness-barrier seam, and the engage-tier replacement.
+beads: [lead-6k1r, lead-capability, lead-f6ta, lead-shell]
+edges:
+  supersedes: []
+  superseded-by: []
+  amends: []
+  depends-on: []
+  anchored-on: [ADR-018, ADR-020, ADR-021, ADR-029, ADR-032, ADR-048, PDR-011, PDR-016, PDR-020]
+  pins: []
+  related: []
+invariants:
+  - id: launch-interface-parity-pin
+    statement: The Slice-1 launch-interface-parity boot scenario is pinned as a fabro-orchestration feature.
+    predicate:
+      kind: path-present
+      path: features/fabro-orchestration/01-launch-interface-parity-boot.gherkin
+    hash: "6609cf101f8c982e"
+    status: unverified
+---
 # ADR-050 -- Fabro launch-interface parity with bc-container: which of the P1–P20 launch properties are KEPT vs REPLACED, the readiness-barrier seam, and the engage-tier replacement
 
 - Status: Accepted (2026-07-01)

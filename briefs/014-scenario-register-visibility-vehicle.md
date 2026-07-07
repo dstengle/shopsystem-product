@@ -1,3 +1,20 @@
+---
+id: BRIEF-014
+kind: brief
+title: Brief 014 — Scenario-register visibility vehicle (`request_scenario_register`)
+status: draft
+date: "2026-06-30"
+description: Brief 014 — Scenario-register visibility vehicle (`request_scenario_register`)
+beads: [lead-cl1u, lead-igzz, lead-oxd8, lead-po]
+edges:
+  supersedes: []
+  superseded-by: []
+  amends: []
+  depends-on: []
+  anchored-on: []
+  pins: []
+  related: []
+---
 # Brief 014 — Scenario-register visibility vehicle (`request_scenario_register`)
 
 **Status:** draft (2026-06-30)

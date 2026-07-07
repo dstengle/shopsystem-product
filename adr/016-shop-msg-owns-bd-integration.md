@@ -1,3 +1,20 @@
+---
+id: ADR-016
+kind: adr
+title: shop-msg owns bd integration; state changes via CLI, not agent
+status: accepted
+date: "2026-05-29"
+description: shop-msg owns bd integration; state changes via CLI, not agent
+beads: [lead-2id, lead-architect, lead-cw7, lead-o6tp]
+edges:
+  supersedes: []
+  superseded-by: []
+  amends: []
+  depends-on: []
+  anchored-on: [ADR-011, ADR-012, PDR-010]
+  pins: []
+  related: []
+---
 # ADR-016 — shop-msg owns bd integration; state changes via CLI, not agent
 
 **Status:** accepted (2026-05-29)

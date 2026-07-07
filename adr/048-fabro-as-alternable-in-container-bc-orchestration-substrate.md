@@ -1,3 +1,20 @@
+---
+id: ADR-048
+kind: adr
+title: Fabro is an alternable in-container BC-orchestration substrate (provider=local); it replaces only the Seam(a) launch+loop, never the three shop-msg/bd invariant surfaces
+status: accepted
+date: "2026-07-01"
+description: "Fabro is an alternable in-container BC-orchestration substrate: it replaces only the Seam(a) launch+loop under provider='local', never the shop-msg/bd invariants."
+beads: [lead-6k1r, lead-capability, lead-f6ta, lead-skill]
+edges:
+  supersedes: []
+  superseded-by: []
+  amends: []
+  depends-on: []
+  anchored-on: [ADR-006, ADR-018, ADR-020, ADR-029, ADR-030, ADR-032, PDR-010, PDR-011, PDR-014, PDR-016]
+  pins: []
+  related: []
+---
 # ADR-048 — Fabro is an alternable in-container BC-orchestration substrate (provider=local); it replaces only the Seam(a) launch+loop, never the three shop-msg/bd invariant surfaces
 
 - Status: Accepted (2026-07-01)

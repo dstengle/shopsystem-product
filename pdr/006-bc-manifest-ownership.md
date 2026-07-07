@@ -1,3 +1,20 @@
+---
+id: PDR-006
+kind: pdr
+title: BC manifest ownership
+status: draft
+date: "2026-05-20"
+description: BC manifest ownership
+beads: [lead-po]
+edges:
+  supersedes: []
+  superseded-by: []
+  amends: []
+  depends-on: []
+  anchored-on: []
+  pins: []
+  related: []
+---
 # PDR-006 — BC manifest ownership
 
 **Status:** draft (2026-05-20)

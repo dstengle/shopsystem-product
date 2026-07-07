@@ -1,3 +1,20 @@
+---
+id: ADR-052
+kind: adr
+title: "Dagger is the local+CI build/test substrate for bc-base: ONE engineVersion-pinned module over ONE build core, WRAP-not-REPLACE publish-bc-base.yml, adding the real-image tier the structural-only fakes lack"
+status: accepted
+date: "2026-07-02"
+description: "Dagger is the local+CI build/test substrate for bc-base: ONE engineVersion-pinned module over ONE build core, WRAP-not-REPLACE publish-bc-base.yml, adding the real-image tier th..."
+beads: [lead-5xnd, lead-fzxt, lead-owned]
+edges:
+  supersedes: []
+  superseded-by: []
+  amends: []
+  depends-on: []
+  anchored-on: [ADR-018, ADR-021, ADR-029, ADR-030, ADR-032, PDR-011]
+  pins: []
+  related: []
+---
 # ADR-052 -- Dagger is the local+CI build/test substrate for bc-base: ONE engineVersion-pinned module over ONE build core, WRAP-not-REPLACE publish-bc-base.yml, adding the real-image tier the structural-only fakes lack
 
 - Status: Accepted (2026-07-02)

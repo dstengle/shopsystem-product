@@ -1,3 +1,20 @@
+---
+id: ADR-028
+kind: adr
+title: The agent-vault broker is a lead-shop supporting-service (compose alongside postgres), not a BC; its own behaviors are pinned by a lead-owned integration-check surface, and the tautological launcher substitution scenario is retired
+status: accepted
+date: "2026-06-10"
+description: The agent-vault broker is a lead-shop supporting-service (compose alongside postgres), not a BC; its own behaviors are pinned by a lead-owned integration-check surface, and the...
+beads: [lead-architect, lead-jkwo, lead-mdng, lead-shop, lead-uhd2, lead-v4ih, lead-vycn]
+edges:
+  supersedes: []
+  superseded-by: []
+  amends: []
+  depends-on: []
+  anchored-on: [ADR-004, ADR-018, ADR-019, ADR-026, PDR-017]
+  pins: [PDR-017]
+  related: []
+---
 # ADR-028 — The agent-vault broker is a lead-shop supporting-service (compose alongside postgres), not a BC; its own behaviors are pinned by a lead-owned integration-check surface, and the tautological launcher substitution scenario is retired
 
 **Status:** accepted (2026-06-10)

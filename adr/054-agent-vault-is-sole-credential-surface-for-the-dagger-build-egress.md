@@ -1,3 +1,20 @@
+---
+id: ADR-054
+kind: adr
+title: "Agent-vault is the sole credential surface for the dagger build egress: privileged engine on the shopsystem net, proxy env propagated by BuildKit, NO_PROXY registry apex + dagger-infra whitelist with github proxied, engine config via docker cp"
+status: accepted
+date: "2026-07-02"
+description: Agent-vault is the sole credential surface for the dagger build egress.
+beads: [lead-fzxt, lead-integration, lead-owned, lead-shop]
+edges:
+  supersedes: []
+  superseded-by: []
+  amends: []
+  depends-on: []
+  anchored-on: [ADR-018, ADR-021, ADR-028, ADR-029, ADR-045, ADR-049, ADR-052, ADR-053, ADR-055, PDR-011]
+  pins: []
+  related: []
+---
 # ADR-054 -- Agent-vault is the sole credential surface for the dagger build egress: privileged engine on the shopsystem net, proxy env propagated by BuildKit, NO_PROXY registry apex + dagger-infra whitelist with github proxied, engine config via docker cp
 
 - Status: Accepted (2026-07-02)

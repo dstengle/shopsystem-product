@@ -1,3 +1,20 @@
+---
+id: BRIEF-010
+kind: brief
+title: "Brief 010 — BC session-start beads-health: set up AND validate the work-tracker before work begins"
+status: draft
+date: "2026-06-11"
+description: "Brief 010 — BC session-start beads-health: set up AND validate the work-tracker before work begins"
+beads: [lead-80t0, lead-po, lead-rply, lead-vlsu]
+edges:
+  supersedes: []
+  superseded-by: []
+  amends: []
+  depends-on: []
+  anchored-on: []
+  pins: []
+  related: []
+---
 # Brief 010 — BC session-start beads-health: set up AND validate the work-tracker before work begins
 
 **Status:** draft (2026-06-11)

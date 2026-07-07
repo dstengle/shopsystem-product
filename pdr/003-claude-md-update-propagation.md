@@ -1,3 +1,20 @@
+---
+id: PDR-003
+kind: pdr
+title: CLAUDE.md update propagation
+status: proposed
+date: "2026-05-14"
+description: CLAUDE.md update propagation
+beads: [lead-5kn, lead-po]
+edges:
+  supersedes: []
+  superseded-by: []
+  amends: []
+  depends-on: []
+  anchored-on: []
+  pins: []
+  related: []
+---
 # PDR-003 — CLAUDE.md update propagation
 
 **Status:** Proposed
@@ -143,7 +160,7 @@ Cons:
   shop-identity imports at the top, so the indirection is visible
   immediately.
 
-## Recommendation
+## Decision
 
 Adopt **alternative F — canonical-managed `CLAUDE.md` with four typed
 imports**. The contract becomes:

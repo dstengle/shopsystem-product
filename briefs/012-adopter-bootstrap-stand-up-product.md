@@ -1,3 +1,20 @@
+---
+id: BRIEF-012
+kind: brief
+title: "Brief 012 — Adopter bootstrap: from \"Use this template\" to a product on its own footing"
+status: draft
+date: "2026-06-18"
+description: "Brief 012 — Adopter bootstrap: from \"Use this template\" to a product on its own footing"
+beads: [lead-5cgv, lead-integration, lead-po, lead-shop, lead-y73x]
+edges:
+  supersedes: []
+  superseded-by: []
+  amends: []
+  depends-on: []
+  anchored-on: []
+  pins: []
+  related: []
+---
 # Brief 012 — Adopter bootstrap: from "Use this template" to a product on its own footing
 
 **Status:** draft (2026-06-18)

@@ -1,3 +1,20 @@
+---
+id: ADR-006
+kind: adr
+title: Messaging name registry design
+status: accepted
+date: "2026-05-20"
+description: Messaging name registry design
+beads: [lead-architect]
+edges:
+  supersedes: []
+  superseded-by: []
+  amends: []
+  depends-on: []
+  anchored-on: [PDR-007]
+  pins: []
+  related: []
+---
 # ADR-006 — Messaging name registry design
 
 **Status:** decided (2026-05-20)
@@ -54,7 +71,7 @@ Pre-state empirical verification (2026-05-20):
 
 ---
 
-## Decisions
+## Decision
 
 ### 1. The registry lives in PostgreSQL (same DB as message storage)
 

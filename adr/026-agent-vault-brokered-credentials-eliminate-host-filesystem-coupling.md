@@ -1,3 +1,20 @@
+---
+id: ADR-026
+kind: adr
+title: BC credentials are brokered through an agent-vault server on the shopsystem network; host-filesystem credential coupling is eliminated for both Claude OAuth and GitHub
+status: accepted
+date: "2026-06-09"
+description: BC credentials are brokered through an agent-vault server on the shopsystem network; host-filesystem credential coupling is eliminated for both Claude OAuth and GitHub
+beads: [lead-architect, lead-jkwo, lead-mdng, lead-odqd, lead-v4ih, lead-vycn]
+edges:
+  supersedes: []
+  superseded-by: []
+  amends: []
+  depends-on: []
+  anchored-on: [ADR-004, ADR-018, ADR-019]
+  pins: []
+  related: []
+---
 # ADR-026 — BC credentials are brokered through an agent-vault server on the shopsystem network; host-filesystem credential coupling is eliminated for both Claude OAuth and GitHub
 
 **Status:** accepted (2026-06-09); D2 open mechanism question RESOLVED (2026-06-10)

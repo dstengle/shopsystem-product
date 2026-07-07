@@ -1,3 +1,20 @@
+---
+id: ADR-022
+kind: adr
+title: "`bc-base` rebuilds are CENTRALIZED in `shopsystem-bc-launcher` (version-bump-then-rebuild), not fan-in `repository_dispatch` from each utility repo"
+status: accepted
+date: "2026-06-09"
+description: "`bc-base` rebuilds are CENTRALIZED in `shopsystem-bc-launcher` (version-bump-then-rebuild), not fan-in `repository_dispatch` from each utility repo"
+beads: [lead-9ja4, lead-9pbc, lead-aj5f, lead-architect, lead-c2kp, lead-czwo, lead-held, lead-pw41, lead-tycv, lead-xq0]
+edges:
+  supersedes: [ADR-021]
+  superseded-by: []
+  amends: []
+  depends-on: []
+  anchored-on: [ADR-018]
+  pins: []
+  related: []
+---
 # ADR-022 — `bc-base` rebuilds are CENTRALIZED in `shopsystem-bc-launcher` (version-bump-then-rebuild), not fan-in `repository_dispatch` from each utility repo
 
 **Status:** accepted (2026-06-09)

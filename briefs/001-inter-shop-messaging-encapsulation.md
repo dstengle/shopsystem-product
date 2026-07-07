@@ -1,3 +1,20 @@
+---
+id: BRIEF-001
+kind: brief
+title: Brief 001 — Inter-shop messaging encapsulation
+status: draft
+date: "2026-05-12"
+description: Brief 001 — Inter-shop messaging encapsulation
+beads: [lead-231, lead-kq0, lead-po]
+edges:
+  supersedes: []
+  superseded-by: []
+  amends: []
+  depends-on: []
+  anchored-on: []
+  pins: []
+  related: []
+---
 # Brief 001 — Inter-shop messaging encapsulation
 
 **Status:** draft, intent gaps resolved (2026-05-12), item C scope

@@ -1,3 +1,20 @@
+---
+id: ADR-043
+kind: adr
+title: Every derived bootstrap coordinate is computed ONCE at a canonical point and re-used; nothing recomputes or hardcodes it
+status: accepted
+date: "2026-06-26"
+description: Every derived bootstrap coordinate is computed ONCE at a canonical point and re-used; nothing recomputes or hardcodes it
+beads: [lead-0j60, lead-21uk, lead-4sg9, lead-7wta, lead-architect, lead-h2rq, lead-kc0k, lead-nhr2, lead-pdsd, lead-yh0s, lead-yudo]
+edges:
+  supersedes: []
+  superseded-by: []
+  amends: []
+  depends-on: []
+  anchored-on: [ADR-018, ADR-038, ADR-040]
+  pins: []
+  related: []
+---
 # ADR-043 — Every derived bootstrap coordinate is computed ONCE at a canonical point and re-used; nothing recomputes or hardcodes it
 
 **Status:** accepted (ratified by dave, 2026-06-26, lead-kc0k); D2 artifact

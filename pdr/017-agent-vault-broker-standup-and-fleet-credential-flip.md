@@ -1,3 +1,20 @@
+---
+id: PDR-017
+kind: pdr
+title: "Agent-vault broker standup + fleet credential flip: problem framing (intent, decomposition-deferred)"
+status: draft
+date: "2026-06-10"
+description: "Agent-vault broker standup + fleet credential flip: problem framing (intent, decomposition-deferred)"
+beads: [lead-jkwo, lead-mdng, lead-po, lead-shop, lead-vycn]
+edges:
+  supersedes: []
+  superseded-by: []
+  amends: []
+  depends-on: []
+  anchored-on: [ADR-018, ADR-026, PDR-001, PDR-002]
+  pins: []
+  related: []
+---
 # PDR-017 — Agent-vault broker standup + fleet credential flip: problem framing (intent, decomposition-deferred)
 
 **Status:** draft (2026-06-10)
@@ -77,6 +94,14 @@ the fleet off the host-mounted credential, so the pinned invariant becomes the
 running reality.
 
 ---
+
+## Decision
+
+Stand up the agent-vault broker as a managed fleet supporting-service and flip
+the BC fleet to brokered credentials, making the pinned-but-not-real credential
+elimination actually real. The success behaviors this commits are enumerated in
+§3 (SB-1..SB-n). The BC-level decomposition of the flip is the open decision
+handed to the Architect (§4) and is deliberately not resolved in this PDR.
 
 ## 3. Outcome / success behaviors (what scenarios will later pin)
 

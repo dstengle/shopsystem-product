@@ -1,3 +1,20 @@
+---
+id: PDR-029
+kind: pdr
+title: "`request_scenario_register` is a distinct vehicle, not an extension of `request_completion_journal`"
+status: accepted
+date: "2026-06-30"
+description: "`request_scenario_register` is a distinct vehicle, not an extension of `request_completion_journal`"
+beads: [lead-cl1u, lead-po]
+edges:
+  supersedes: []
+  superseded-by: []
+  amends: []
+  depends-on: []
+  anchored-on: []
+  pins: []
+  related: []
+---
 # PDR-029 — `request_scenario_register` is a distinct vehicle, not an extension of `request_completion_journal`
 
 **Status:** accepted (2026-06-30)

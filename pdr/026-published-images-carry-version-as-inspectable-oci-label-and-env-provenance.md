@@ -1,3 +1,20 @@
+---
+id: PDR-026
+kind: pdr
+title: Published bc-launcher images carry their bc-launcher version and baked shop-templates version as inspectable OCI-label + ENV provenance
+status: draft
+date: "2026-06-29"
+description: Published bc-launcher images carry their bc-launcher version and baked shop-templates version as inspectable OCI-label + ENV provenance
+beads: [lead-5xnd, lead-h2p0, lead-po]
+edges:
+  supersedes: []
+  superseded-by: []
+  amends: []
+  depends-on: []
+  anchored-on: []
+  pins: []
+  related: []
+---
 # PDR-026 — Published bc-launcher images carry their bc-launcher version and baked shop-templates version as inspectable OCI-label + ENV provenance
 
 **Status:** draft (2026-06-29)

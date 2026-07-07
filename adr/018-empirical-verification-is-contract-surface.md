@@ -1,3 +1,20 @@
+---
+id: ADR-018
+kind: adr
+title: "\"Verify pre-state empirically\" means the contract/artifact surface; the lead carries no BC code"
+status: accepted
+date: "2026-05-30"
+description: "\"Verify pre-state empirically\" means the contract/artifact surface; the lead carries no BC code"
+beads: [lead-6gaj, lead-architect, lead-primer, lead-shop]
+edges:
+  supersedes: []
+  superseded-by: []
+  amends: []
+  depends-on: []
+  anchored-on: [ADR-004, ADR-017, PDR-002, PDR-003, PDR-004, PDR-010]
+  pins: [PDR-011]
+  related: []
+---
 # ADR-018 — "Verify pre-state empirically" means the contract/artifact surface; the lead carries no BC code
 
 **Status:** accepted (2026-05-30)

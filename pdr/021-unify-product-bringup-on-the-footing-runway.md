@@ -1,3 +1,20 @@
+---
+id: PDR-021
+kind: pdr
+title: Unify product bringup on the Footing runway; the starter is README + bin/bootstrap; lead↔broker is local-first
+status: accepted
+date: "2026-06-25"
+description: Unify product bringup on the Footing runway; the starter is README + bin/bootstrap; lead↔broker is local-first
+beads: [lead-27ka, lead-l7uz, lead-mrn2, lead-rs0i, lead-wdvx]
+edges:
+  supersedes: []
+  superseded-by: []
+  amends: []
+  depends-on: []
+  anchored-on: [ADR-018, ADR-026, ADR-040, PDR-019]
+  pins: []
+  related: []
+---
 # PDR-021 — Unify product bringup on the Footing runway; the starter is README + bin/bootstrap; lead↔broker is local-first
 
 **Status:** accepted (dave, 2026-06-25)
@@ -29,7 +46,7 @@ landed only on the footing side. Separately, the published `shopsystem-starter`
 repo carried `compose.yaml` + `.env.example` that drifted stale (last rendered
 v0.14.0 while templates were at v0.25.0).
 
-## Decisions
+## Decision
 
 - **D1 — One canonical bringup path: the Footing runway.** Fork
   `shopsystem-starter` (named `<product>-lead`) → `./bin/bootstrap` → it renders

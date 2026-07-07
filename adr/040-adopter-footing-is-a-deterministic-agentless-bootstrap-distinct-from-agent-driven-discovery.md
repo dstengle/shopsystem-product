@@ -1,3 +1,20 @@
+---
+id: ADR-040
+kind: adr
+title: The adopter Footing is a deterministic, agent-less bootstrap script in a `shopsystem-starter` template repo, architecturally distinct from agent-driven Discovery; framework code lives only in the published image, never in the adopter's repo
+status: accepted
+date: "2026-06-18"
+description: The adopter Footing is a deterministic, agent-less bootstrap script in a `shopsystem-starter` template repo, architecturally distinct from agent-driven Discovery; framework code...
+beads: [lead-2xi3, lead-5cgv, lead-7if5, lead-8vxy, lead-94mn, lead-architect, lead-driveable, lead-integration, lead-okre, lead-reinstalls, lead-repo, lead-shop, lead-yrex]
+edges:
+  supersedes: []
+  superseded-by: []
+  amends: []
+  depends-on: []
+  anchored-on: [ADR-018, ADR-026, ADR-028, ADR-038, ADR-039, PDR-011, PDR-019]
+  pins: []
+  related: []
+---
 # ADR-040 — The adopter Footing is a deterministic, agent-less bootstrap script in a `shopsystem-starter` template repo, architecturally distinct from agent-driven Discovery; framework code lives only in the published image, never in the adopter's repo
 
 **Status:** accepted (2026-06-18)

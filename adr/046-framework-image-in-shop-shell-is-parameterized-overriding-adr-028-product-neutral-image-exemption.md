@@ -1,3 +1,20 @@
+---
+id: ADR-046
+kind: adr
+title: The framework launcher/leaf image in `bin/shop-shell` is a parameterized, repo-file-defaulted variable; ADR-028's product-neutral-framework-image exemption is OVERRIDDEN
+status: accepted
+date: "2026-06-27"
+description: The framework launcher/leaf image in `bin/shop-shell` is a parameterized, repo-file-defaulted variable; ADR-028's product-neutral-framework-image exemption is OVERRIDDEN
+beads: [lead-integration, lead-ml51, lead-mz8v, lead-shop]
+edges:
+  supersedes: []
+  superseded-by: []
+  amends: [ADR-028]
+  depends-on: []
+  anchored-on: []
+  pins: [ADR-043]
+  related: []
+---
 # ADR-046 — The framework launcher/leaf image in `bin/shop-shell` is a parameterized, repo-file-defaulted variable; ADR-028's product-neutral-framework-image exemption is OVERRIDDEN
 
 - Status: Accepted (2026-06-27)

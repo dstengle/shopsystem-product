@@ -1,3 +1,20 @@
+---
+id: ADR-013
+kind: adr
+title: Dispatch dependencies via `bd dep add` honored by `shop-msg send`
+status: accepted
+date: "2026-05-29"
+description: Dispatch dependencies via `bd dep add` honored by `shop-msg send`
+beads: [lead-architect, lead-ji28, lead-pfmb, lead-xscs, lead-ymct]
+edges:
+  supersedes: []
+  superseded-by: []
+  amends: []
+  depends-on: []
+  anchored-on: [ADR-011, ADR-012, PDR-010]
+  pins: []
+  related: []
+---
 # ADR-013 — Dispatch dependencies via `bd dep add` honored by `shop-msg send`
 
 **Status:** accepted (2026-05-29)

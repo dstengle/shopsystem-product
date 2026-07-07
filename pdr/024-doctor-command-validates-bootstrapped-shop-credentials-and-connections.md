@@ -1,3 +1,20 @@
+---
+id: PDR-024
+kind: pdr
+title: A rendered `bin/doctor` command validates a bootstrapped shop's credentials and connections and reports one aggregate pass/fail diagnosis
+status: draft
+date: "2026-06-29"
+description: A rendered `bin/doctor` command validates a bootstrapped shop's credentials and connections and reports one aggregate pass/fail diagnosis
+beads: [lead-j8so, lead-po, lead-q3r1, lead-shell]
+edges:
+  supersedes: []
+  superseded-by: []
+  amends: []
+  depends-on: []
+  anchored-on: [ADR-043, ADR-045, PDR-020]
+  pins: []
+  related: []
+---
 # PDR-024 — A rendered `bin/doctor` command validates a bootstrapped shop's credentials and connections and reports one aggregate pass/fail diagnosis
 
 **Status:** draft (2026-06-29)

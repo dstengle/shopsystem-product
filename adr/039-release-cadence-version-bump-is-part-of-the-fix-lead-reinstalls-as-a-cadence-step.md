@@ -1,3 +1,20 @@
+---
+id: ADR-039
+kind: adr
+title: "Release cadence for lead-facing packages: a version bump is part of the fix, the release is dispatched as `request_maintenance`, and the lead reinstalls (and re-pours the fleet) as a cadence step"
+status: accepted
+date: "2026-06-12"
+description: "Release cadence for lead-facing packages: a version bump is part of the fix, the release is dispatched as `request_maintenance`, and the lead reinstalls (and re-pours the fleet)..."
+beads: [lead-53y0, lead-5wky, lead-architect, lead-facing, lead-m56e, lead-n4r2, lead-repo, lead-skill, lead-slkk, lead-vhfa]
+edges:
+  supersedes: []
+  superseded-by: []
+  amends: []
+  depends-on: []
+  anchored-on: [ADR-015, ADR-018, ADR-036, PDR-011, PDR-014]
+  pins: []
+  related: []
+---
 # ADR-039 — Release cadence for lead-facing packages: a version bump is part of the fix, the release is dispatched as `request_maintenance`, and the lead reinstalls (and re-pours the fleet) as a cadence step
 
 **Status:** accepted (2026-06-12)

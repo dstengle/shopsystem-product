@@ -1,3 +1,20 @@
+---
+id: BRIEF-013
+kind: brief
+title: "Brief 013 — A freshly bootstrapped shop comes up healthy: its credentials and connections are wired and checkable, not agent-rediscovered"
+status: draft
+date: "2026-06-29"
+description: "Brief 013 — A freshly bootstrapped shop comes up healthy: its credentials and connections are wired and checkable, not agent-rediscovered"
+beads: [lead-3lw6, lead-j8so, lead-po, lead-q3r1, lead-shell]
+edges:
+  supersedes: []
+  superseded-by: []
+  amends: []
+  depends-on: []
+  anchored-on: []
+  pins: []
+  related: []
+---
 # Brief 013 — A freshly bootstrapped shop comes up healthy: its credentials and connections are wired and checkable, not agent-rediscovered
 
 **Status:** draft (2026-06-29)

@@ -1,3 +1,19 @@
+---
+id: ADR-002
+kind: adr
+title: Introducing the harness Bounded Context
+status: accepted
+date: "2026-05-11"
+description: Introducing the harness Bounded Context
+edges:
+  supersedes: []
+  superseded-by: []
+  amends: []
+  depends-on: []
+  anchored-on: []
+  pins: []
+  related: []
+---
 # ADR-002 — Introducing the harness Bounded Context
 
 **Status:** accepted (2026-05-11)

@@ -1,3 +1,20 @@
+---
+id: PDR-030
+kind: pdr
+title: The shopsystem system version is an independent standard semver mapped to a component-version tuple by a lead-owned BOM manifest
+status: draft
+date: "2026-06-30"
+description: The shopsystem system version is an independent standard semver mapped to a component-version tuple by a lead-owned BOM manifest
+beads: [lead-5xnd, lead-6b53, lead-h2p0, lead-loos, lead-owned, lead-po, lead-reinstalls, lead-side]
+edges:
+  supersedes: []
+  superseded-by: []
+  amends: []
+  depends-on: []
+  anchored-on: [ADR-005, ADR-018, ADR-021, ADR-039, PDR-006]
+  pins: []
+  related: []
+---
 # PDR-030 — The shopsystem system version is an independent standard semver mapped to a component-version tuple by a lead-owned BOM manifest
 
 **Status:** draft (2026-06-30)

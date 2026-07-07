@@ -1,3 +1,20 @@
+---
+id: BRIEF-011
+kind: brief
+title: "Brief 011 — The end-to-end new-product bootstrap path: empty dir → a working second product"
+status: draft
+date: "2026-06-12"
+description: "Brief 011 — The end-to-end new-product bootstrap path: empty dir → a working second product"
+beads: [lead-8cc2, lead-integration, lead-jdfb, lead-l7uz, lead-po, lead-shop, lead-wm2r]
+edges:
+  supersedes: []
+  superseded-by: []
+  amends: []
+  depends-on: []
+  anchored-on: []
+  pins: []
+  related: []
+---
 # Brief 011 — The end-to-end new-product bootstrap path: empty dir → a working second product
 
 **Status:** draft (2026-06-12)

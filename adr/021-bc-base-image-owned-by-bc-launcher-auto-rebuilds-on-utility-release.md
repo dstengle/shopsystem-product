@@ -1,3 +1,20 @@
+---
+id: ADR-021
+kind: adr
+title: The `shopsystem-bc-base` image is owned and built by `shopsystem-bc-launcher`, and auto-rebuilds + republishes `:latest` on framework-utility releases
+status: accepted
+date: "2026-06-02"
+description: The `shopsystem-bc-base` image is owned and built by `shopsystem-bc-launcher`, and auto-rebuilds + republishes `:latest` on framework-utility releases
+beads: [lead-aj5f, lead-architect, lead-bootstrap, lead-c2kp, lead-out, lead-pw41, lead-u8ip, lead-xq0]
+edges:
+  supersedes: []
+  superseded-by: []
+  amends: []
+  depends-on: []
+  anchored-on: [ADR-018]
+  pins: [ADR-040, PDR-019]
+  related: []
+---
 # ADR-021 — The `shopsystem-bc-base` image is owned and built by `shopsystem-bc-launcher`, and auto-rebuilds + republishes `:latest` on framework-utility releases
 
 **Status:** accepted (2026-06-02)

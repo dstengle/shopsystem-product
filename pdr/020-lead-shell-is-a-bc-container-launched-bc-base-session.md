@@ -1,3 +1,20 @@
+---
+id: PDR-020
+kind: pdr
+title: The lead shell is a `bc-container`-launched `bc-base` session; `bin/shop-shell` becomes a thin ephemeral-`bc-base` wrapper, retiring the hand-rolled brokered-launch reimplementation
+status: proposed
+date: "2026-06-22"
+description: The lead shell is a `bc-container`-launched `bc-base` session; `bin/shop-shell` becomes a thin ephemeral-`bc-base` wrapper, retiring the hand-rolled brokered-launch reimplementa...
+beads: [lead-architect, lead-integration, lead-owned, lead-shop]
+edges:
+  supersedes: []
+  superseded-by: []
+  amends: []
+  depends-on: []
+  anchored-on: [ADR-004, ADR-018, ADR-026, ADR-028, PDR-004]
+  pins: []
+  related: []
+---
 # PDR-020 — The lead shell is a `bc-container`-launched `bc-base` session; `bin/shop-shell` becomes a thin ephemeral-`bc-base` wrapper, retiring the hand-rolled brokered-launch reimplementation
 
 **Status:** Proposed (2026-06-22)

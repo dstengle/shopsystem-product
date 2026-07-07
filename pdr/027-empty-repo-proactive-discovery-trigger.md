@@ -1,3 +1,20 @@
+---
+id: PDR-027
+kind: pdr
+title: Empty-repo detection fires a proactive product-discovery trigger in the lead primer
+status: draft
+date: "2026-06-29"
+description: Empty-repo detection fires a proactive product-discovery trigger in the lead primer
+beads: [lead-po, lead-vglj]
+edges:
+  supersedes: []
+  superseded-by: []
+  amends: []
+  depends-on: []
+  anchored-on: []
+  pins: []
+  related: []
+---
 # PDR-027 — Empty-repo detection fires a proactive product-discovery trigger in the lead primer
 
 **Status:** draft (2026-06-29)

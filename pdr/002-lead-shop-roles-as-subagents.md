@@ -1,3 +1,19 @@
+---
+id: PDR-002
+kind: pdr
+title: Lead-shop PO and Architect dispatched as subagents (router pattern)
+status: draft
+date: "2026-05-12"
+description: Lead-shop PO and Architect dispatched as subagents (router pattern)
+edges:
+  supersedes: []
+  superseded-by: []
+  amends: []
+  depends-on: []
+  anchored-on: []
+  pins: []
+  related: []
+---
 # PDR-002 — Lead-shop PO and Architect dispatched as subagents (router pattern)
 
 **Status:** draft (2026-05-12)

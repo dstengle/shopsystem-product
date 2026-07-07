@@ -1,3 +1,20 @@
+---
+id: ADR-041
+kind: adr
+title: A launch/engage failure writes a host-readable diagnostic file naming the specific failure cause, on the same host-visible per-BC surface the mailbox uses; not stderr-only and not `docker logs`-dependent
+status: accepted
+date: "2026-06-23"
+description: A launch/engage failure writes a host-readable diagnostic file naming the specific failure cause, on the same host-visible per-BC surface the mailbox uses; not stderr-only and n...
+beads: [lead-2qta, lead-63em, lead-architect, lead-held, lead-q3uy, lead-repo]
+edges:
+  supersedes: []
+  superseded-by: []
+  amends: []
+  depends-on: []
+  anchored-on: [ADR-018]
+  pins: []
+  related: []
+---
 # ADR-041 — A launch/engage failure writes a host-readable diagnostic file naming the specific failure cause, on the same host-visible per-BC surface the mailbox uses; not stderr-only and not `docker logs`-dependent
 
 **Status:** accepted (2026-06-23)

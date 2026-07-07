@@ -1,3 +1,20 @@
+---
+id: BRIEF-006
+kind: brief
+title: Brief 006 — Messaging name registry and lead inbox
+status: draft
+date: "2026-05-20"
+description: Brief 006 — Messaging name registry and lead inbox
+beads: [lead-po]
+edges:
+  supersedes: []
+  superseded-by: []
+  amends: []
+  depends-on: []
+  anchored-on: []
+  pins: []
+  related: []
+---
 # Brief 006 — Messaging name registry and lead inbox
 
 **Status:** draft (2026-05-20)

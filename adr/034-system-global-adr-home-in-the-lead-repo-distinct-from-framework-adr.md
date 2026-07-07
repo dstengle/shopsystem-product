@@ -1,3 +1,20 @@
+---
+id: ADR-034
+kind: adr
+title: System-global (cross-BC, per-product, non-framework) architecture decisions live in the lead repo's existing `adr/` tree, tagged by tier; the `adr/` tree is NOT split into a second directory
+status: accepted
+date: "2026-06-10"
+description: System-global (cross-BC, per-product, non-framework) architecture decisions live in the lead repo's existing `adr/` tree, tagged by tier; the `adr/` tree is NOT split into a sec...
+beads: [lead-architect, lead-cnbu, lead-ir9m]
+edges:
+  supersedes: []
+  superseded-by: []
+  amends: []
+  depends-on: []
+  anchored-on: [ADR-018, PDR-013]
+  pins: [ADR-035, PDR-013]
+  related: []
+---
 # ADR-034 — System-global (cross-BC, per-product, non-framework) architecture decisions live in the lead repo's existing `adr/` tree, tagged by tier; the `adr/` tree is NOT split into a second directory
 
 **Status:** accepted (2026-06-10)

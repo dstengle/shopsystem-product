@@ -1,3 +1,20 @@
+---
+id: ADR-055
+kind: adr
+title: "The build-time CA-trust prerequisite for the MITM-local dagger loop is local infrastructure, explicitly NOT a shipped-path IS-3 divergence: the real bc-base trusts the agent-vault CA only at runtime; the local MITM loop needs a build-time CA-trust base layer; real CI has public egress and is unaffected"
+status: accepted
+date: "2026-07-02"
+description: "The build-time CA-trust prerequisite for the MITM-local dagger loop is local infrastructure, explicitly NOT a shipped-path IS-3 divergence: the real bc-base trusts the agent-vau..."
+beads: [lead-fzxt]
+edges:
+  supersedes: []
+  superseded-by: []
+  amends: []
+  depends-on: []
+  anchored-on: [ADR-018, ADR-021, ADR-029, ADR-032, ADR-045, ADR-052, ADR-054, PDR-011]
+  pins: []
+  related: []
+---
 # ADR-055 -- The build-time CA-trust prerequisite for the MITM-local dagger loop is local infrastructure, explicitly NOT a shipped-path IS-3 divergence: the real bc-base trusts the agent-vault CA only at runtime; the local MITM loop needs a build-time CA-trust base layer; real CI has public egress and is unaffected
 
 - Status: Accepted (2026-07-02)

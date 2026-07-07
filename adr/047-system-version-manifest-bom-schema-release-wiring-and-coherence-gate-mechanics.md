@@ -1,3 +1,20 @@
+---
+id: ADR-047
+kind: adr
+title: "The `system-manifest.yaml` BOM mechanics: a `releases:`-history schema, capture-first shop-templates-rendered assemble/validate furniture, and a split advisory/blocking coherence gate reusing the baked-provenance read"
+status: accepted
+date: "2026-06-30"
+description: "The `system-manifest.yaml` BOM mechanics: a `releases:`-history schema, capture-first shop-templates-rendered assemble/validate furniture, and a split advisory/blocking coherenc..."
+beads: [lead-5xnd, lead-h2p0, lead-loos, lead-owned, lead-reinstalls]
+edges:
+  supersedes: []
+  superseded-by: []
+  amends: []
+  depends-on: []
+  anchored-on: [ADR-005, ADR-018, ADR-021, ADR-039, ADR-040, ADR-043, PDR-006, PDR-024, PDR-026, PDR-030]
+  pins: []
+  related: []
+---
 # ADR-047 — The `system-manifest.yaml` BOM mechanics: a `releases:`-history schema, capture-first shop-templates-rendered assemble/validate furniture, and a split advisory/blocking coherence gate reusing the baked-provenance read
 
 - Status: Accepted (2026-06-30)

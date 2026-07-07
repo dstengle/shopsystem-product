@@ -1,3 +1,20 @@
+---
+id: PDR-011
+kind: pdr
+title: "\"Verify pre-state empirically\" means verify the contract surface, not BC code"
+status: draft
+date: "2026-05-29"
+description: "\"Verify pre-state empirically\" means verify the contract surface, not BC code"
+beads: [lead-po]
+edges:
+  supersedes: []
+  superseded-by: []
+  amends: []
+  depends-on: []
+  anchored-on: [PDR-004]
+  pins: []
+  related: []
+---
 # PDR-011 — "Verify pre-state empirically" means verify the contract surface, not BC code
 
 **Status:** draft (2026-05-29)

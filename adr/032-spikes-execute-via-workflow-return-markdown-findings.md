@@ -1,3 +1,20 @@
+---
+id: ADR-032
+kind: adr
+title: Spikes execute via Workflow and return markdown findings, not large array-heavy StructuredOutput
+status: accepted
+date: "2026-06-10"
+description: Spikes execute via Workflow and return markdown findings, not large array-heavy StructuredOutput
+beads: [lead-8mho, lead-architect, lead-capability, lead-f6ta, lead-jkwo]
+edges:
+  supersedes: []
+  superseded-by: []
+  amends: []
+  depends-on: []
+  anchored-on: [ADR-029]
+  pins: [PDR-016]
+  related: []
+---
 # ADR-032 — Spikes execute via Workflow and return markdown findings, not large array-heavy StructuredOutput
 
 **Status:** accepted (2026-06-10)

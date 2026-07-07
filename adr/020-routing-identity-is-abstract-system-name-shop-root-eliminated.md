@@ -1,3 +1,20 @@
+---
+id: ADR-020
+kind: adr
+title: Routing identity is an abstract `<system>/<name>` address; `shop_root` is eliminated from the registry
+status: accepted
+date: "2026-06-02"
+description: Routing identity is an abstract `<system>/<name>` address; `shop_root` is eliminated from the registry
+beads: [lead-0217, lead-3lw6, lead-architect, lead-gf4h, lead-h1tw, lead-pw41]
+edges:
+  supersedes: []
+  superseded-by: []
+  amends: []
+  depends-on: []
+  anchored-on: [ADR-006, ADR-018, ADR-019]
+  pins: [PDR-007]
+  related: []
+---
 # ADR-020 — Routing identity is an abstract `<system>/<name>` address; `shop_root` is eliminated from the registry
 
 **Status:** accepted (2026-06-02)

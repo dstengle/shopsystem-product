@@ -1,3 +1,20 @@
+---
+id: BRIEF-004
+kind: brief
+title: Brief 004 — BC container isolation
+status: draft
+date: "2026-05-20"
+description: Brief 004 — BC container isolation
+beads: [lead-po]
+edges:
+  supersedes: []
+  superseded-by: []
+  amends: []
+  depends-on: []
+  anchored-on: []
+  pins: []
+  related: []
+---
 # Brief 004 — BC container isolation
 
 **Status:** draft (2026-05-20)

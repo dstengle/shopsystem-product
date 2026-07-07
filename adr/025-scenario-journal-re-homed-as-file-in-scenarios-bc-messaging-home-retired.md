@@ -1,3 +1,20 @@
+---
+id: ADR-025
+kind: adr
+title: The scenario-completion journal is a FILE owned by `shopsystem-scenarios`; the message bus is not a store; the mis-homed `messaging` journal implementation is retired; sc04–07 are lead-side aggregate tooling
+status: accepted
+date: "2026-06-08"
+description: Re-homes the completion journal as a FILE owned by shopsystem-scenarios; retires the mis-homed messaging journal; sc04-07 become lead-side aggregate tooling.
+beads: [lead-7hsl, lead-9b3w, lead-9zx1, lead-architect, lead-facing, lead-h4q2, lead-held, lead-if3j, lead-lsbs]
+edges:
+  supersedes: [ADR-023, ADR-024]
+  superseded-by: []
+  amends: []
+  depends-on: []
+  anchored-on: [ADR-018]
+  pins: [ADR-019]
+  related: []
+---
 # ADR-025 — The scenario-completion journal is a FILE owned by `shopsystem-scenarios`; the message bus is not a store; the mis-homed `messaging` journal implementation is retired; sc04–07 are lead-side aggregate tooling
 
 **Status:** accepted (2026-06-08); **amended 2026-06-08** (D3 retirement set

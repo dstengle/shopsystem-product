@@ -1,3 +1,20 @@
+---
+id: ADR-024
+kind: adr
+title: Journal bootstrap/rebuild (sc08) is a new op ON the messaging-owned journal store (≡ ADR-023 secondary-job-a failure-recovery rebuild); the sc06 predicate-tightening is DEFERRED as marginal, sc06 reverted to its landed body to avoid drift
+status: accepted
+date: "2026-06-08"
+description: Journal bootstrap/rebuild rides the messaging store; sc06 tightening is deferred to a follow-up.
+beads: [lead-5p07, lead-7hsl, lead-9b3w, lead-architect, lead-facing, lead-fm9x, lead-held, lead-if3j, lead-onfq, lead-resident]
+edges:
+  supersedes: []
+  superseded-by: []
+  amends: []
+  depends-on: []
+  anchored-on: [ADR-018]
+  pins: [ADR-023]
+  related: []
+---
 # ADR-024 — Journal bootstrap/rebuild (sc08) is a new op ON the messaging-owned journal store (≡ ADR-023 secondary-job-a failure-recovery rebuild); the sc06 predicate-tightening is DEFERRED as marginal, sc06 reverted to its landed body to avoid drift
 
 **Status:** accepted (2026-06-08)

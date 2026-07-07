@@ -1,3 +1,19 @@
+---
+id: PDR-001
+kind: pdr
+title: Lead-shop role templates must be role-complete, identity-first
+status: draft
+date: "2026-05-12"
+description: Lead-shop role templates must be role-complete, identity-first
+edges:
+  supersedes: []
+  superseded-by: []
+  amends: []
+  depends-on: []
+  anchored-on: []
+  pins: []
+  related: []
+---
 # PDR-001 — Lead-shop role templates must be role-complete, identity-first
 
 **Status:** draft (2026-05-12)

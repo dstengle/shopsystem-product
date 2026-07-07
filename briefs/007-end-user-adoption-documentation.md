@@ -1,3 +1,20 @@
+---
+id: BRIEF-007
+kind: brief
+title: Brief 007 — End-user adoption documentation
+status: accepted
+date: "2026-05-22"
+description: Brief 007 — End-user adoption documentation
+beads: [lead-po]
+edges:
+  supersedes: []
+  superseded-by: []
+  amends: []
+  depends-on: []
+  anchored-on: []
+  pins: []
+  related: []
+---
 # Brief 007 — End-user adoption documentation
 
 **Status:** ready for architect dispatch (2026-05-22) — Q1–Q5 resolved by

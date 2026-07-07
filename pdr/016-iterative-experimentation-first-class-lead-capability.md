@@ -1,3 +1,20 @@
+---
+id: PDR-016
+kind: pdr
+title: "Iterative experimentation is a first-class lead capability: the spike lifecycle and findings-driven graduation"
+status: draft
+date: "2026-06-10"
+description: "Iterative experimentation is a first-class lead capability: the spike lifecycle and findings-driven graduation"
+beads: [lead-architect, lead-f6ta, lead-gkhk, lead-mdng, lead-odqd]
+edges:
+  supersedes: []
+  superseded-by: []
+  amends: []
+  depends-on: []
+  anchored-on: []
+  pins: []
+  related: []
+---
 # PDR-016 — Iterative experimentation is a first-class lead capability: the spike lifecycle and findings-driven graduation
 
 **Status:** draft (2026-06-10)
