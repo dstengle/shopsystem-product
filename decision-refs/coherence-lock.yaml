@@ -1,0 +1,16 @@
+ADR-050:
+  accepted_rev: 9ee441c
+  invariants:
+    engage-tier-parity-delta:
+      claim_hash: 66bdf7828f7aa808
+      governed_hashes:
+        features/shopsystem-bc-launcher/bc_container_orchestrator_flag_engage_tier.feature:
+        - 68e14cdcd8b7c145
+        - ee8f4803eb5342f0
+      surface_tokens:
+        flags:
+        - --fabro-path
+        - --foreground
+        - --no-web
+        - --orchestrator
+        lifecycle: []

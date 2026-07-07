@@ -22,6 +22,16 @@ invariants:
       path: features/fabro-orchestration/01-launch-interface-parity-boot.gherkin
     hash: "6609cf101f8c982e"
     status: unverified
+  - id: engage-tier-parity-delta
+    statement: The fabro engage-tier selection surface is claimed at PARITY with the tmux path; its governed engage scenario-set is baselined so any added/removed scenario, flag delta, or launch-lifecycle delta must be re-claimed (additive/retire) before it can pour.
+    predicate:
+      kind: governed-delta
+      claim: parity
+      features:
+        - features/shopsystem-bc-launcher/bc_container_orchestrator_flag_engage_tier.feature
+      surface: "cli:bc-container launch --orchestrator fabro"
+    hash: "66bdf7828f7aa808"
+    status: unverified
 ---
 # ADR-050 -- Fabro launch-interface parity with bc-container: which of the P1–P20 launch properties are KEPT vs REPLACED, the readiness-barrier seam, and the engage-tier replacement
 
