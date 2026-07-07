@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "shopsystem-decisions"
+version = "1.0.0"
+description = "Progressive-disclosure decision system: frontmatter schema, deterministic L0/L1 generator, and an FC1-FC4 coherence gate behind one `decisions` CLI."
+requires-python = ">=3.11"
+license = {text = "MIT"}
+authors = [{name = "David Stenglein"}]
+dependencies = ["PyYAML>=6"]
+
+[project.scripts]
+decisions = "shopsystem_decisions.cli:main"
+
+[project.optional-dependencies]
+test = ["pytest>=7"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+shopsystem_decisions = ["../schema/decision.schema.yaml"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

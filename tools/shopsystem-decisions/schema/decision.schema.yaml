@@ -1,0 +1,112 @@
+# Decision-document frontmatter schema (normative, §1.2).
+# JSON-Schema serialized as YAML. The runnable validator lives in
+# src/shopsystem_decisions/schema.py and is kept in lockstep with this file;
+# each rule maps to a stable COH-LN-* check-id (§1.5).
+$schema: "https://json-schema.org/draft/2020-12/schema"
+$id: "https://shopsystem/decision.schema.yaml"
+title: decision-document-frontmatter
+type: object
+additionalProperties: false
+required: [id, kind, title, status, date, description]
+properties:
+  id:
+    type: string
+    pattern: "^(ADR|PDR|BRIEF)-[0-9]{3,}$"   # number MUST match filename (COH-LN-002)
+  kind:
+    type: string
+    enum: [adr, pdr, brief]                   # MUST match containing directory (COH-LN-002)
+  title:
+    type: string
+    minLength: 1
+  status:
+    type: string
+    enum: [draft, proposed, accepted, amended, superseded, rejected, deprecated]  # R5
+  date:
+    type: string
+    pattern: "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"   # quoted ISO date; FIRST authored date only
+  description:
+    type: string
+    maxLength: 180                            # net-new L0 triage line; no newline (COH-LN-004)
+  authors:
+    type: array
+    items: {type: string}
+  tier:
+    type: string
+    enum: [framework, system-global, bc-local]  # ADR-035 governance ONLY; a disclosure
+                                                 # level here is COH-LN-007
+  tags:
+    type: array
+    items: {type: string, pattern: "^[a-z0-9]+(-[a-z0-9]+)*$"}
+  beads:
+    type: array
+    items: {type: string, pattern: "^[a-z]+-[a-z0-9]+$"}
+  edges:
+    type: object
+    additionalProperties: false
+    properties:
+      supersedes:    {type: array, items: {$ref: "#/$defs/decisionId"}}
+      superseded-by: {type: array, items: {$ref: "#/$defs/decisionId"}}  # written ONLY by supersede
+      amends:        {type: array, items: {$ref: "#/$defs/decisionId"}}
+      depends-on:    {type: array, items: {$ref: "#/$defs/decisionId"}}
+      anchored-on:   {type: array, items: {$ref: "#/$defs/decisionId"}}
+      pins:          {type: array, items: {$ref: "#/$defs/decisionId"}}
+      related:       {type: array, items: {$ref: "#/$defs/decisionId"}}
+  invariants:
+    type: array
+    items:
+      type: object
+      additionalProperties: false
+      required: [id, statement, predicate, hash]
+      properties:
+        id: {type: string, pattern: "^[a-z0-9]+(-[a-z0-9]+)*$"}
+        statement: {type: string, minLength: 1}
+        predicate: {$ref: "#/$defs/predicate"}
+        hash: {type: string, pattern: "^[0-9a-f]{16}$"}
+        status: {type: string, enum: [holds, violated, unverified]}   # volatile; excluded from hash
+        verified_at: {type: string}                                   # volatile
+  pending:
+    type: array
+    items:
+      type: object
+      additionalProperties: false
+      required: [marker, predicate]
+      properties:
+        marker: {type: string, minLength: 1}
+        predicate: {$ref: "#/$defs/pendingPredicate"}
+  # FORBIDDEN keys — presence is a lint error:
+  #   decision  -> COH-LN-006 (L1 comes from the '## Decision' body section, R3)
+$defs:
+  decisionId:
+    type: string
+    pattern: "^(ADR|PDR|BRIEF)-[0-9]{3,}$"
+  hex16:
+    type: string
+    pattern: "^[0-9a-f]{16}$"
+  predicate:
+    oneOf:
+      - {type: object, additionalProperties: false, required: [kind, feature, title, expect],
+         properties: {kind: {const: scenario-hash}, feature: {type: string}, title: {type: string}, expect: {$ref: "#/$defs/hex16"}}}
+      - {type: object, additionalProperties: false, required: [kind, path],
+         properties: {kind: {const: path-absent}, path: {type: string}}}
+      - {type: object, additionalProperties: false, required: [kind, path],
+         properties: {kind: {const: path-present}, path: {type: string}}}
+      - {type: object, additionalProperties: false, required: [kind, file, jsonpath, expect],
+         properties: {kind: {const: manifest-field}, file: {type: string}, jsonpath: {type: string}, expect: {}}}
+      - {type: object, additionalProperties: false, required: [kind, file, section, expect_hash],
+         properties: {kind: {const: property-table}, file: {type: string}, section: {type: string}, expect_hash: {$ref: "#/$defs/hex16"}}}
+      - {type: object, additionalProperties: false, required: [kind, assert, of],
+         properties: {kind: {const: edge}, assert: {enum: [supersedes, superseded-by, amends, depends-on, anchored-on, pins, related]}, of: {$ref: "#/$defs/decisionId"}}}
+      - {type: object, additionalProperties: false, required: [kind, cmd],
+         properties: {kind: {const: cli}, cmd: {type: array, items: {type: string}}, expect_exit: {type: integer}}}
+      - {type: object, additionalProperties: false, required: [kind, claim, features],
+         properties: {kind: {const: governed-delta}, claim: {enum: [parity, additive, retire, breaking]},
+                      features: {type: array, items: {type: string}},
+                      retires: {type: array, items: {$ref: "#/$defs/hex16"}},
+                      surface: {type: string}}}
+  pendingPredicate:
+    oneOf:
+      - {type: object, additionalProperties: false, required: [kind, hash], properties: {kind: {const: scenario-exists}, hash: {$ref: "#/$defs/hex16"}}}
+      - {type: object, additionalProperties: false, required: [kind, id], properties: {kind: {const: decision-exists}, id: {$ref: "#/$defs/decisionId"}}}
+      - {type: object, additionalProperties: false, required: [kind, bead], properties: {kind: {const: bead-closed}, bead: {type: string}}}
+      - {type: object, additionalProperties: false, required: [kind, path], properties: {kind: {const: file-exists}, path: {type: string}}}
+      - {type: object, additionalProperties: false, required: [kind, feature, tag], properties: {kind: {const: feature-has-tag}, feature: {type: string}, tag: {type: string}}}
