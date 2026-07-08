@@ -43,6 +43,9 @@ bcs:
   - name: shopsystem-bc-launcher
     remote: https://github.com/dstengle/shopsystem-bc-launcher
     role: bc
+  - name: shopsystem-knowledge
+    remote: https://github.com/dstengle/shopsystem-knowledge
+    role: bc
 
   # PROVISIONAL — defined but not-live. Kept as defined entries; whether they
   # are in or out as bounded contexts is DEFERRED to the DDD review lead-bh2m.
