@@ -27,6 +27,10 @@ services:
   postgres:
     image: postgres:16
     container_name: shopsystem-postgres
+    # postgres runs as its DEFAULT in-image uid — NO `user:` override (lead-kz4j
+    # revert of 25be1dd7). Forcing the host uid made permissions hard to manage
+    # and the chown forced the FOOTING-container uid (not the real host user)
+    # anyway; the image's normal root->postgres init owns the bind-mounted pgdata.
     networks:
       - shopsystem
     environment:
@@ -40,7 +44,10 @@ services:
     ports:
       - "${SHOPSYSTEM_POSTGRES_PORT:-5829}:5432"
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      # Probe the CONFIGURED POSTGRES_USER (shopsystem), not the literal
+      # "postgres" role, which does not exist here and logs
+      # 'role "postgres" does not exist' every interval (lead-sgxd 87acbbbe).
+      test: ["CMD-SHELL", "pg_isready -U shopsystem"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -70,6 +77,14 @@ services:
       - IPC_LOCK
     environment:
       AGENT_VAULT_MASTER_PASSWORD: "${AGENT_VAULT_MASTER_PASSWORD}"
+      # Credential-injection-proxy rate-limit profile. DISABLED BY DEFAULT,
+      # fleet-wide, opt-in to re-enable (pinned product decision, brief 016):
+      # unset => "off" => the broker does not throttle. The explicit "off"
+      # default (matching this file's ${VAR:-default} idiom) means an unset
+      # instance var renders to "off" with no compose "variable is not set"
+      # warning; any non-off value opts back in and the broker re-enforces a
+      # limit.
+      AGENT_VAULT_RATELIMIT_PROFILE: "${AGENT_VAULT_RATELIMIT_PROFILE:-off}"
     volumes:
       - type: volume
         source: shopsystem-agent-vault-data
