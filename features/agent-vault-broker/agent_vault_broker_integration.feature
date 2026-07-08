@@ -101,3 +101,24 @@ Feature: agent-vault broker lead-owned integration surface
       Then the broker re-opens its vault using the master password from the lead .env file
       And the BC's brokered Claude and GitHub operations succeed again after the restart
       And no human re-paste of any real credential was required to restore brokered auth
+
+  @scenario_hash:3f447c469fc5595f
+    Scenario: with no rate-limit profile configured the broker does not throttle brokered traffic
+      Given the agent-vault broker is running on the shopsystem network with no AGENT_VAULT_RATELIMIT_PROFILE configured
+      When a BC drives brokered outbound requests at a rate that would trip a default rate-limit guardrail
+      Then no brokered request is throttled or rejected for exceeding a rate limit
+      And the broker enforces no rate limit on brokered traffic
+
+  @scenario_hash:6092ee930c01ee56
+    Scenario: AGENT_VAULT_RATELIMIT_PROFILE set to off disables throttling as the explicit form of the default
+      Given the agent-vault broker is running on the shopsystem network with AGENT_VAULT_RATELIMIT_PROFILE set to "off"
+      When a BC drives brokered outbound requests at a rate that would trip a default rate-limit guardrail
+      Then no brokered request is throttled or rejected for exceeding a rate limit
+      And the broker enforces no rate limit on brokered traffic
+
+  @scenario_hash:011f53ba17194dfc
+    Scenario: an opt-in AGENT_VAULT_RATELIMIT_PROFILE value re-enables broker rate limiting
+      Given the agent-vault broker is running on the shopsystem network with AGENT_VAULT_RATELIMIT_PROFILE set to an opt-in re-enable value other than "off"
+      When a BC drives brokered outbound requests beyond the enforced rate limit
+      Then the broker throttles or rejects the brokered requests that exceed the rate limit
+      And brokered requests within the rate limit are still substituted and forwarded successfully

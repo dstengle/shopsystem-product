@@ -27,3 +27,6 @@ agent-vault-ca.pem
 # fabro e2e spike scratch — never commit (ADR-030 rejects committed scratch trees)
 .fabro-e2e-scratch/
 scratchpad/
+
+# Local per-machine Claude Code overrides (not shared)
+.claude/settings.local.json
