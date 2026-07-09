@@ -8,7 +8,14 @@ Feature: shopsystem-knowledge — frontmatter schema conformance (typed artifact
   status enum, and any fields that type additionally requires. A single "type"
   discriminator ranges over the eight artifact types (intent-record, candidate,
   session-record, prioritization-record, brief, pdr, adr, current-state); there is
-  no separate "kind" axis. A conforming document passes; a document that omits a
+  no separate "kind" axis. For decision records the additionally-required set
+  includes derives-from (gate rule 9): a pdr or an adr must carry the field, and an
+  adr must name at least one upstream anchor — an adr whose derives-from is empty is
+  non-conforming, while a pdr may carry an empty list (the empty-pdr case is a gate
+  warning, not a schema failure — see the artifact-lifecycle feature). A pdr may
+  also carry an optional session field. The shared required set retains description
+  (PDR-032 keeps it even though the typedef PoC omitted it) because the L0 card
+  projection depends on it. A conforming document passes; a document that omits a
   required field, carries an out-of-enum status, carries an id that does not match
   its type pattern, or declares an unrecognized type is reported non-conforming
   with a named diagnosis rather than silently accepted. Disclosure level is never
@@ -75,6 +82,20 @@ Feature: shopsystem-knowledge — frontmatter schema conformance (typed artifact
     When the knowledge context validates the artifact's frontmatter against the schema
     Then it reports the artifact as non-conforming
     And the diagnosis names decision-makers as the missing type-required field
+
+  @scenario_hash:cc1cd04c1bf2cbe6
+  Scenario: a pdr omitting the required derives-from field is reported non-conforming and names it
+    Given a pdr artifact whose frontmatter carries every shared required field but omits the derives-from field its type additionally requires
+    When the knowledge context validates the artifact's frontmatter against the schema
+    Then it reports the artifact as non-conforming
+    And the diagnosis names derives-from as the missing type-required field
+
+  @scenario_hash:f40ef843faf4bb62
+  Scenario: an adr whose derives-from list is empty is reported non-conforming for anchoring to nothing
+    Given an adr artifact whose frontmatter carries a derives-from field whose value is an empty list
+    When the knowledge context validates the artifact's frontmatter against the schema
+    Then it reports the artifact as non-conforming for an adr that anchors to no upstream artifact
+    And the diagnosis names derives-from and states that an adr requires at least one anchor
 
   @scenario_hash:290cf40f90b418b4
   Scenario: optional fields may be absent and the artifact still conforms

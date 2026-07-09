@@ -14,6 +14,17 @@ its single-source L0/L1/L2 projections + index, and its opt-in coherence-gate
 posture (typed-edge/supersede-cycle floor always-on; `governed-delta` tripwire
 opt-in) are all preserved and extended, not reversed. See PDR-031's Amended-by
 note.
+**Refined-by:** [ADR-059](../adr/059-knowledge-bc-single-sources-artifact-formats-from-per-type-typedef-yaml-generator-emits-template-and-schema-fragment-generated-files-read-only-check-drift-gate.md)
+(2026-07-09, **implementation refinement**): this PDR's Consequences treated the
+artifact **templates and the frontmatter JSON Schema as hand-authored artifacts
+kept in sync by review**. ADR-059 SUPERSEDES that posture: each format is
+single-sourced from a per-type `typedef/*.yaml`, a generator emits BOTH the
+template and the schema fragment, the generated files are read-only, and a
+`--check` drift gate fails CI on any hand-edit — eliminating template↔schema
+drift by construction. The OWNERSHIP decision and items 1–8 are UNCHANGED; only
+the hand-maintained implementation posture is refined. (ADR-059 also flags a
+required reconciliation: `description` — kept-required per item 3 below — MUST be
+added to the generator's shared-required field set.)
 **Derives-from:** `cand-P01` (from handoff-package `sess-2026-07-09-a`; not yet
 landed in this repo — referenced so the lineage is not dangling).
 **Reconciliation evidence:** [finding 09 —
@@ -219,5 +230,11 @@ new **`candidates/` directory** — it does NOT absorb the existing generic
   `kind`-scenarios accepted for rework/re-hash, pour generalization fenced,
   `candidates/` naming resolved. Bidirectional partial-amendment linkage with
   PDR-031 recorded (this side + PDR-031 Amended-by note).
+- 2026-07-09 refined by ADR-059 (bead `lead-lskh`): the hand-authored
+  templates+schema implementation posture in Consequences is superseded by the
+  typedef single-source generation model (generated read-only files, `--check`
+  drift gate, `x-required-sections`). Ownership + items 1–8 unchanged.
+  Bidirectional linkage recorded (this side Refined-by note + ADR-059
+  Derives-from/Cross-references).
 </content>
 </invoke>
