@@ -1,4 +1,4 @@
-Feature: shopsystem-knowledge — authoring-time discovery via adversarial analysis (architecture-decision kind)
+Feature: shopsystem-knowledge — authoring-time discovery via adversarial analysis (decision artifacts)
 
   The primary, everyday capability. When a new decision is being authored, the
   knowledge context retrieves the relevant existing neighbours via the L0/L1

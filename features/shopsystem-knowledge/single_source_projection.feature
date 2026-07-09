@@ -1,18 +1,17 @@
-Feature: shopsystem-knowledge — single-source projections and index (architecture-decision kind)
+Feature: shopsystem-knowledge — single-source projections and index (decision artifacts)
 
   The knowledge context single-sources each decision document: machine truth in
   YAML frontmatter, rationale in the body. From that one source it generates the
-  L0/L1/L2 projections and a machine+human index for the architecture-decision
-  kind. Generation is a pure function of the parsed corpus — byte-stable and
+  L0/L1/L2 projections and a machine+human index for the decision
+  corpus. Generation is a pure function of the parsed corpus — byte-stable and
   idempotent — so the projections the authoring-time discovery pass consults can
   never drift from the source. L1 is a verbatim slice gated on a recognized
   decision heading, so a non-conforming document is reported, not silently empty.
-  The accessor is parameterized by kind so later kinds register rather than fork.
 
-  @scenario_hash:d121b489919c177e
+  @scenario_hash:a6b4bc6d9efd5377
   Scenario: L0/L1/L2 projections and the index are generated from the single source document
     Given a decision document whose only machine truth lives in its YAML frontmatter and whose body carries a recognized decision section
-    When the knowledge context generates the architecture-decision projections from that single source
+    When the knowledge context generates the decision projections from that single source
     Then it emits an L0 card carrying the id, title, status and description drawn from the frontmatter
     And it emits an L1 extract carrying the verbatim text of the recognized decision section
     And it emits an L2 projection that is the source document itself
@@ -33,17 +32,9 @@ Feature: shopsystem-knowledge — single-source projections and index (architect
     Then the regeneration writes zero changed bytes
     And running the generation in check mode over the unchanged source reports no drift and exits with a success status
 
-  @scenario_hash:dbd9846f04d8e22b
+  @scenario_hash:b04360552695af7c
   Scenario: L1 extraction is convention-gated and a document lacking a recognized decision heading is reported non-conforming
     Given a decision document whose body carries none of the recognized decision headings
-    When the knowledge context generates the architecture-decision projections
+    When the knowledge context generates the decision projections
     Then it reports that document as non-conforming for lacking a recognized decision heading
     And it does not emit a silently empty L1 extract for that document
-
-  @scenario_hash:f4b64423b77dd3e2
-  Scenario: the accessor is parameterized by kind and refuses an unregistered kind
-    Given the knowledge context with the architecture-decision kind registered and no other kind registered
-    When a caller requests projections for kind "architecture-decision"
-    Then the accessor returns the architecture-decision corpus projections
-    When a caller requests projections for kind "development-principle"
-    Then the accessor returns a definite kind-not-registered result rather than defaulting to the architecture-decision corpus

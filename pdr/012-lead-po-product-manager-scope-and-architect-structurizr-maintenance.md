@@ -8,6 +8,17 @@ decision that the PM role is **product-general**, not framework-specific.
 **router-level discovery-dialogue gate (2026-06-19, bead lead-086d)** — adds the
 product-authority discovery-dialogue gate as a first-class discipline and corrects
 an over-correction in the experimental skills' adaptation rule #2.
+**Amended-by:** [PDR-033](033-pm-as-main-session-mode.md) (2026-07-09, **partial —
+clauses a/b/c**): (a) the upstream interactive disciplines (interview/discovery,
+shaping, option facilitation) re-home from the PO charter to the new PM
+main-session mode, the PO retaining the batchable elevation; (b) the router-level
+discovery-dialogue gate (the 2026-06-19 addendum above) is retired in favor of
+PM-mode entry; (c) the 2026-06-05 "market-facing competencies are load-bearing"
+steering is narrowed to product-communication competencies (README/site/value
+narrative), with market research / personas / positioning / pricing / growth
+metrics parked. **Not a full supersession** — the anti-build-trap gate,
+spec-as-contract discipline, and the lead-architect structurizr commitments
+(Decision #6) stand unchanged.
 **Authors:** dstengle, Claude (lead-po)
 **Anchored to:** PO intent expressed in conversation 2026-06-04:
 *"I want the PO to do more product-manager work vs the straightforward

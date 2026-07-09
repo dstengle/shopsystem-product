@@ -2,6 +2,19 @@
 
 **Status:** draft (2026-07-07)
 **Authors:** dstengle, Claude (lead-po)
+**Amended-by:** [PDR-032](032-knowledge-bc-owns-artifact-type-system.md)
+(2026-07-09, **partial**): this PDR's `kind` discriminator axis is **renamed to a
+single `type` axis** over 8 artifact types (not a dual `kind`+`type` hierarchy),
+and the single-source frontmatter field set is enriched (`description` kept and
+still required; `date` → `created`/`updated`; `authors` added as required).
+PDR-032 also layers net-new coherence checks (gate rules 4–8) onto this PDR's
+machinery. **Not a full supersession** — the discovery-first PRIMARY capability
+(authoring-time adversarial covered/contradicts/supersedes, the 5 pinned discovery
+hashes), the single-source L0/L1/L2 projections + index, and the opt-in
+coherence-gate posture (always-on typed-edge/supersede-cycle floor;
+`governed-delta` tripwire opt-in) are preserved and extended. The `type`
+unification requires the ~10 pinned `kind`-referencing scenarios to be reworked and
+re-hashed (Round-1 PO work, bead lead-a56c).
 **Anchored to:** [lead-x7bp](#) (EPIC: progressive disclosure for LLM artifacts) and its DESIGN REFRAME [lead-9lyi](#) — *"the primary value is DISCOVERY, not enforcement."*
 **Reference prototype (NOT the spec):** `tools/shopsystem-decisions/` on branch `pd-consistency-experiments` — a spike that proves the mechanics (frontmatter schema, single-source L0/L1/L2 + index, coherence gate). This PDR deliberately does **not** re-spec its gate-heavy shape.
 
