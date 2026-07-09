@@ -9,21 +9,24 @@ Feature: Lead-shop role templates: role-complete restructure (lead-po and lead-a
     And the byte offset of the identity header is less than the byte offset of the first occurrence of the string "shop-msg"
     And the byte offset of the posture header is less than the byte offset of the first occurrence of the string "shop-msg"
 
-  @scenario_hash:537e7ac9d7a536c7 @bc:shopsystem-templates
-  Scenario: lead-po template names every §3.2 PO activity by name
+  # PDR-033 amendment-a removes the "Interview stakeholder" activity from the
+  # lead-po: interview/discovery re-homes to the lead-pm main-session mode.
+  # The lead-po activity set is now the four convergent-commitment activities.
+  @scenario_hash:3cb958e1572e9532 @bc:shopsystem-templates
+  Scenario: lead-po template names every post-PDR-033 PO activity by name, without the re-homed Interview-stakeholder activity
     When I read the lead-po template via "shop-templates show lead-po"
-    Then the content names the activity "Interview stakeholder"
-    And the content names the activity "Maintain product brief"
+    Then the content names the activity "Maintain product brief"
     And the content names the activity "Write PDR for new functionality"
     And the content names the activity "Write Gherkin scenarios"
     And the content names the activity "Respond to BC `clarify`" with the qualifier "scope" or "vocabulary"
+    And the content does not present "Interview stakeholder" as a lead-po activity, instead attributing interview and discovery to the lead-pm main-session mode
 
-  @scenario_hash:8b0b84013f7855c5 @bc:shopsystem-templates
-  Scenario: every §3.2 PO activity named in the lead-po template carries either one-line guidance or an explicit "guidance pending" marker
-    Given the §3.2 PO activities "Interview stakeholder", "Maintain product brief", "Write PDR for new functionality", "Write Gherkin scenarios as requirements", and "Respond to BC `clarify` (scope, vocabulary)"
+  @scenario_hash:eaa4fc5b6bc7ed75 @bc:shopsystem-templates
+  Scenario: every post-PDR-033 PO activity named in the lead-po template carries either one-line guidance or an explicit "guidance pending" marker
+    Given the post-PDR-033 PO activities "Maintain product brief", "Write PDR for new functionality", "Write Gherkin scenarios as requirements", and "Respond to BC `clarify` (scope, vocabulary)"
     When I read the lead-po template via "shop-templates show lead-po"
     Then for each activity in that list, the content has a contiguous block — either a subsection that names the activity or a line that names the activity — that contains at minimum one sentence of guidance OR an explicit marker of the form "guidance pending" (case-insensitive)
-    And no §3.2 PO activity appears as a bare list item with neither guidance nor a "guidance pending" marker
+    And no post-PDR-033 PO activity appears as a bare list item with neither guidance nor a "guidance pending" marker
 
   @scenario_hash:c7febeb6c2e30325 @bc:shopsystem-templates
   Scenario: procedural shop-msg CLI content in the lead-po template is subordinate to role identity, posture, and activity coverage
