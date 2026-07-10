@@ -33,6 +33,22 @@ option-tradeoff, prioritization, problem-space-mapping, product-narrative) are
 **shop-authored** (not deanpeters-derived) and ship from `shopsystem-templates`
 via the PDR-033 pour — they are unaffected by this removal.
 
+## Canonical PM session skills (poured, bootstrap-managed)
+
+Poured from `shop-templates` v0.51.0 via `shop-templates update` (PDR-033
+re-render). These are **canonical** (owned by the `shopsystem-templates` BC) —
+do not hand-edit; they re-pour on update. Each is a session skill with a
+mandatory terminal artifact:
+
+| Skill | Terminal artifact |
+|---|---|
+| `discovery-dialogue` | intent record |
+| `shaping` | candidate (→ shaped) |
+| `option-tradeoff` | PDR draft / sibling candidates |
+| `prioritization` | prioritization record |
+| `problem-space-mapping` | problem-space map revision |
+| `product-narrative` | README / site / current-state revision |
+
 ## Operational skills (shop-authored, clean)
 
 | Skill | What it does |

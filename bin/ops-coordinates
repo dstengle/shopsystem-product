@@ -1,0 +1,88 @@
+#!/usr/bin/env bash
+# bin/ops-coordinates — the SINGLE SOURCE of this product's ops coordinates
+# (ADR-043 Phase 1, lead-0t5m; lead-ow4d keystone). Every bin/ ops script SOURCES
+# this file and references the OPS_* variables below; no script re-derives a
+# coordinate from the slug or re-spells the broker address. Each derived
+# coordinate is a DEFINING literal HERE (exactly once) and a variable reference
+# everywhere else (D6).
+#
+# PRODUCT-NEUTRAL (166b86d7): rendered from {{OPS_*}} tokens; no cross-product
+# default-slug literal is baked in (the framework image reference, ADR-046, is
+# the single exempt product-neutral literal).
+#
+# ENV-OVERRIDABLE (ADR-038 D3, lead-ow4d / scenario d5d65b9cfedc24c1): EVERY OPS_*
+# coordinate below is written as an environment-overridable parameter expansion
+# OPS_X="${<OVERRIDE>:-<rendered-default>}", so an operator can export an override
+# value before sourcing and it takes precedence over the rendered default — with
+# no need to edit this file.
+#
+# This file is meant to be SOURCED, not executed:  source bin/ops-coordinates
+
+# The product slug — the single identity root. footing reconciles the runtime
+# slug to the manifest "product:" field (D1) and may re-derive these coordinates
+# from that reconciled slug; for non-footing scripts the rendered values below
+# are canonical.
+OPS_SLUG="${SHOPSYSTEM_SLUG:-shopsystem}"
+
+# Docker coordinates.
+OPS_NETWORK="${SHOPSYSTEM_NETWORK:-shopsystem}"
+OPS_POSTGRES_CONTAINER="${SHOPSYSTEM_POSTGRES_CONTAINER:-shopsystem-postgres}"
+# Canonical container key (ADR-043 D2 / scenario d5d65b9cfedc24c1) carrying the
+# defining "<slug>-agent-vault" literal exactly once.
+OPS_VAULT_CONTAINER="${SHOPSYSTEM_VAULT_CONTAINER:-shopsystem-agent-vault}"
+# Back-compat ALIAS (lead-ow4d): bin/footing and scenario 007b386697ae1bef
+# reference the older OPS_AGENT_VAULT_CONTAINER name with no literal fallback;
+# it resolves to OPS_VAULT_CONTAINER so the literal stays defined exactly once.
+OPS_AGENT_VAULT_CONTAINER="${OPS_AGENT_VAULT_CONTAINER:-$OPS_VAULT_CONTAINER}"
+
+# Broker addressing. OPS_BROKER_ADDR is the IN-NETWORK address (containers on
+# OPS_NETWORK). OPS_BROKER_LOCAL_ADDR is the broker's own in-container address
+# (used by broker-local `docker exec` calls). The HOST-reachable address is
+# discovered at runtime by footing via `docker port` (the host port is mapped,
+# not fixed) and recorded as AGENT_VAULT_HOST_ADDR in .env.
+OPS_BROKER_ADDR="${OPS_BROKER_ADDR:-http://shopsystem-agent-vault:14321}"
+# Back-compat ALIAS (lead-ow4d) for bin/footing's OPS_AGENT_VAULT_ADDR reference
+# (no second literal).
+OPS_AGENT_VAULT_ADDR="${OPS_AGENT_VAULT_ADDR:-$OPS_BROKER_ADDR}"
+OPS_BROKER_LOCAL_ADDR="${OPS_BROKER_LOCAL_ADDR:-http://localhost:14321}"
+
+# Vault + beads coordinates.
+OPS_VAULT_NAME="${SHOPSYSTEM_VAULT_NAME:-shopsystem}"
+# The GitHub org the product's beads repositories live under (ADR-043 D2). The
+# framework image's org coincides but is referenced via OPS_FRAMEWORK_IMAGE.
+OPS_ORG="${OPS_ORG:-dstengle}"
+# Lead beads repository (carries the "<slug>-lead-beads" literal exactly once) and
+# the per-BC beads repository format (the "{bc}" placeholder a consumer fills with
+# a bounded-context name).
+OPS_LEAD_BEADS_REPO="${OPS_LEAD_BEADS_REPO:-shopsystem-lead-beads}"
+# PLACEHOLDER-SAFE (ADR-043 D1/D5/D6, lead-0act / scenario 0a3a8267109b5792): the
+# rule's literal "{bc}" placeholder MUST survive sourcing. The naive
+# OPS_BC_BEADS_REPO_FMT="${OPS_BC_BEADS_REPO_FMT:-shopsystem-{bc}-beads}" form
+# is CORRUPT — bash closes the ${:-} default at the FIRST "}" after "{bc",
+# collapsing it to "shopsystem-{bc" then appending the literal "-beads}", so the
+# placeholder becomes "{bc-beads}" and a consumer's later "{bc}" substitution
+# silently no-ops. Keep the literal OUTSIDE any ${...} expansion via a conditional
+# default: a non-empty exported override is honored and skips the assignment;
+# otherwise the single-quoted literal — which preserves "{bc}" verbatim — is used.
+OPS_BC_BEADS_REPO_FMT="${OPS_BC_BEADS_REPO_FMT-}"; [ -n "$OPS_BC_BEADS_REPO_FMT" ] || OPS_BC_BEADS_REPO_FMT='shopsystem-{bc}-beads'
+# Back-compat ALIAS (lead-ow4d) for the older single OPS_BEADS_REPO name (the lead
+# repo); resolves to OPS_LEAD_BEADS_REPO so the literal stays defined exactly once.
+OPS_BEADS_REPO="${OPS_BEADS_REPO:-$OPS_LEAD_BEADS_REPO}"
+
+# Generated host ports (override-aware, 9c8b8b40): SHOPSYSTEM_*_PORT wins.
+OPS_VAULT_API_PORT="${SHOPSYSTEM_VAULT_API_PORT:-15082}"
+OPS_VAULT_PROXY_PORT="${SHOPSYSTEM_VAULT_PROXY_PORT:-14462}"
+OPS_POSTGRES_PORT="${SHOPSYSTEM_POSTGRES_PORT:-5829}"
+
+# Data root (override-aware, 9c8b8b40): SHOPSYSTEM_DATA wins.
+OPS_DATA_ROOT="${SHOPSYSTEM_DATA:-$HOME/.local/share/shopsystem}"
+
+# Framework launcher/leaf-BC runtime image (ADR-046, lead-ml51; renamed to
+# OPS_FRAMEWORK_IMAGE under lead-ow4d / scenario d5d65b9cfedc24c1). The launcher
+# AND the leaf-BC session both run on this image (bc-base + docker CLI). It is
+# PRODUCT-NEUTRAL (the same reference for every product slug, not slug-rewritten),
+# and its DEFINING literal lives HERE, in the single ops-coordinates artifact;
+# every consumer references $OPS_FRAMEWORK_IMAGE. Override-aware: an exported
+# OPS_FRAMEWORK_IMAGE points shop-shell at a different image reference without
+# editing the script.
+OPS_FRAMEWORK_IMAGE="${OPS_FRAMEWORK_IMAGE:-ghcr.io/dstengle/shopsystem-bc-lead:latest}"
