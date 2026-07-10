@@ -1,92 +1,60 @@
 ---
 name: opportunity-solution-tree
-description: Move from a target outcome to opportunities (problems) to candidate solutions to a chosen bet, so a PDR commits to the right problem before converging on a build. Use when turning a validated problem or a strategic outcome into a PDR, especially to avoid feature-factory convergence.
+description: Move from a target outcome down through opportunities (problems) to candidate solutions to a chosen bet, so shaping commits the candidate to the right problem before it converges on a sketch. Reach for it when a request arrives outcome-shaped or solution-shaped and you need to keep "what are we moving?" upstream of "what do we build?"
 ---
 
-# Opportunity Solution Tree (adapted, EXPERIMENTAL)
+# Opportunity Solution Tree (PM technique skill — adapted, EXPERIMENTAL)
 
-**Discipline 1 — Problem discovery & selection** (bridges into Discipline 2,
-outcome ownership). Adapted from
-`deanpeters/Product-Manager-Skills/skills/opportunity-solution-tree` (Teresa
-Torres, *Continuous Discovery Habits*). See [`../README.md`](../README.md).
+**Serves:** shaping · **Emits into:** candidate (`candidates/cand-NNN.md`)
 
-## Why the PO reaches for this
+A *technique skill* (PDR-033): a lens invoked INSIDE the `shaping` PM session; its output lands in the candidate (problem / appetite / solution-sketch / rabbit-holes / no-gos / evidence). No terminal artifact of its own.
 
-It is the structure that keeps "what outcome are we moving?" upstream of "what
-do we build?". It forces **divergence before convergence** — explore multiple
-opportunities and multiple solutions before picking one — which is precisely the
-discipline the build trap erodes when shipping is cheap.
+*Adapted from [`deanpeters/Product-Manager-Skills/skills/opportunity-solution-tree`](https://github.com/deanpeters/Product-Manager-Skills/tree/main/skills/opportunity-solution-tree) — fetched live 2026-07-10. Adaptation rules + experimental status: [`../README.md`](../README.md).*
+
+## Why reach for this in shaping
+
+It keeps "what outcome are we moving?" upstream of "what do we build?". It forces **divergence before convergence** — explore multiple opportunities and multiple solutions before picking one — which is exactly the discipline the build trap erodes when shipping is cheap. In shaping terms, the tree is how you earn the candidate's **solution sketch** honestly instead of pasting in the first idea.
 
 ## The tree
 
 ```
-            Desired Outcome            (1 — measurable; Discipline 2)
+            Desired Outcome            (1 — measurable change in behavior)
                   |
        +----------+----------+
    Opportunity Opportunity Opportunity (≥3 — problems, NOT solutions)
        |          |          |
      S S S      S S S      S S S       (≥3 solutions each — divergent)
                   |
-              Chosen bet                (1 — with hypothesis + success signal)
+              Chosen bet                (1 — carries a hypothesis + success signal)
 ```
 
-- **Outcome** — a measurable change in behavior, not "improve UX". This is the
-  Discipline-2 anchor every downstream item is accountable to.
-- **Opportunities** — customer **problems/needs**, phrased as problems ("users
-  don't reach value in the trial"), never as solutions in disguise ("we need a
-  checklist").
+- **Outcome** — a measurable behavior change, not "improve UX". Every downstream item is accountable to it.
+- **Opportunities** — customer **problems/needs**, phrased as problems ("users don't reach value in the trial"), never solutions in disguise ("we need a checklist").
 - **Solutions** — at least three per opportunity, to force real divergence.
-- **Chosen bet** — the one to pursue first, each carrying a **hypothesis**
-  ("if we [bet], then [outcome] moves from X to Y, because [reason]") and a
-  **success signal**.
+- **Chosen bet** — the one to pursue first, carrying a **hypothesis** ("if we [bet], then [outcome] moves X→Y, because [reason]") and a **success signal**.
 
-## Lands in our artifacts
+## Where it lands in the candidate
 
-- The tree **is the body of a PDR**: outcome → opportunities considered →
-  solutions weighed → the chosen bet and why (this is the PDR's "options
-  considered" + "decision", already our house structure).
-- The chosen bet's **behavior** becomes the Gherkin scenarios (Discipline 4) that
-  get dispatched. The **hypothesis + success signal** stay in the PDR as the
-  outcome the work is accountable to.
-- Rejected opportunities/solutions are recorded, not discarded — they are the
-  legible "we considered and did not build X" that prevents re-litigation.
+- **Outcome → problem.** The measurable outcome sharpens the candidate's *problem* statement (and the appetite it justifies).
+- **Chosen bet → solution sketch.** The bet — at breadboard/fat-marker altitude — becomes the candidate's *solution sketch*; the hypothesis + success signal become the candidate's *evidence* line the shape is judged against.
+- **Rejected branches → no-gos / rabbit-holes.** Opportunities and solutions you weighed and dropped are recorded, not discarded — the legible "we considered and did not build X" that prevents re-litigation and marks explicit *no-gos*.
 
-## The cheap-build adaptation (read this)
+## PM mode is interactive — run the loop, do not batch it
 
-The source skill ends each solution in a costly experiment (A/B test, prototype,
-50 trial users) because in a human shop, building to learn is expensive. Here it
-often isn't — the BC fleet can just build it. **That does not remove the
-hypothesis; it makes it more important.** The temptation when build is free is to
-skip straight to "build all three and see" — that is the build trap wearing a
-lab coat. Still state the hypothesis and the success signal *before* dispatch, so
-that what comes back can be judged against an outcome rather than admired as
-output. "Just build it and look" is permitted only when the build is genuinely
-cheaper than the thinking *and* a success signal is still recorded.
+This is a `shaping` lens, and shaping is a live dialogue with the product authority. Build the tree **with** them: propose the outcome and get it confirmed or corrected; surface candidate opportunities and let them add/kill; diverge solutions out loud before converging. Do not collapse to a single silent "here's the committed bet" move — the divergence has to actually happen in the room. Where the outcome is a genuine strategy call, that is a real question to put to the authority, not an assumption to bury.
 
-## Product-general fork (inputs differ; tree is identical)
+## Build is ~free, so the gate is the whole point
 
-- **Consumer product (primary):** outcome = a customer/business metric
-  (activation, retention, conversion); opportunities from user research; market
-  fit is a real scoring axis.
-- **Framework-as-product (this repo, meta):** outcome = an adoption / developer-
-  experience metric (time-to-first-running-shop, contract clarity, fewer
-  clarifies per dispatch); opportunities are adopter/operator problems; "market
-  fit" = fit against how competing frameworks solve it.
+The source ends each solution in a costly experiment because for humans, building to learn is expensive. Here the BC fleet can often just build it — which makes the hypothesis *more* important, not less. "Build all three and see" is the build trap in a lab coat. Still state the hypothesis and success signal **before** the sketch lands in the candidate, so what comes back is judged against an outcome rather than admired as output. End by sharpening the shape: which bet is worth building, and which branches are explicit no-gos.
 
-## Posture (COMMIT-TO-SPECIFICS, not a workshop)
+## Consumer / framework fork (inputs differ; tree is identical)
 
-The source walks a human through Q1–Q5 with menu picks. You build the tree in one
-move from the available evidence and **commit a chosen bet**, showing the
-opportunities and solutions you weighed. Where the outcome itself is the
-operator's call (a genuine strategy decision), surface that one as a `clarify`;
-otherwise commit and proceed.
+- **Consumer product (primary):** outcome = a customer/business metric (activation, retention, conversion); opportunities from user research; market fit is a real scoring axis.
+- **Framework-as-product (this repo, meta):** outcome = an adoption / developer-experience metric (time-to-first-running-shop, contract clarity, fewer clarifies per dispatch); opportunities are adopter/operator problems; "market fit" = fit against how competing frameworks solve it.
 
 ## Sufficiency check
 
-- The **outcome is measurable** — if you can't state X→Y, you have a theme, not
-  an outcome.
+- The **outcome is measurable** — if you can't state X→Y, you have a theme, not an outcome.
 - Every opportunity is a **problem**, not a solution in disguise.
-- The chosen bet carries a **hypothesis and a success signal** before any
-  scenario is dispatched (no signal = build trap).
-- At least one opportunity and one solution were **explicitly rejected** — a tree
-  with one branch is a foregone conclusion, not discovery.
+- The chosen bet carries a **hypothesis and a success signal** before its sketch lands in the candidate (no signal = build trap).
+- At least one opportunity and one solution were **explicitly rejected** — a one-branch tree is a foregone conclusion, not discovery.
