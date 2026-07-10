@@ -6,12 +6,12 @@
 #   templates BC gains the lead-pm template (main-session mode; showable, so it
 #   counts in `list`), making the list a 5-name set. lead-pm sorts BEFORE lead-po
 #   (LC_ALL=C: "lead-pm" < "lead-po"). New pin computed by `scenarios hash` over
-#   the block-only body = 82c9306989c49724; carried @scenario_hash:pending here
-#   until reconciliation confirms it against the BC's landed register.
+#   the block-only body = 82c9306989c49724; FINALIZED to that pin on
+#   reconciliation of lead-63lp work_done (BC landed register confirmed).
 @bc_internal
 Feature: shopsystem-templates — CLI surface and role-discipline structure
 
-  @scenario_hash:pending @bc:shopsystem-templates
+  @scenario_hash:82c9306989c49724 @bc:shopsystem-templates
   Scenario: shop-templates list outputs the five expected role-template names, one per line, sorted
     When I run "shop-templates list"
     Then the exit code is 0
