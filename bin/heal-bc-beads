@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+# bin/heal-bc-beads <bc-name> — lead-side, AGENT-FREE driver that applies the
+# in-container beads schema heal (bin/heal-bc-beads-schema) to a running BC
+# container. No agent in the container is required; this is pure docker exec.
+#
+# It copies the in-container heal into the target BC container and runs it as the
+# container's workspace user. See lead-4qqi / lead-yy1q and bd upstream #4259.
+#
+#   bin/heal-bc-beads shopsystem-knowledge
+#
+# Idempotent: re-running against an already-healed BC is a no-op ("bd ready
+# already works — nothing to do").
+set -uo pipefail
+
+BC="${1:-}"
+[ -n "$BC" ] || { echo "usage: heal-bc-beads <bc-name>   (e.g. shopsystem-knowledge)" >&2; exit 2; }
+CONTAINER="bc-${BC}"
+EXEC_USER="${HEAL_EXEC_USER:-vscode}"
+
+HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SCRIPT="$HERE/heal-bc-beads-schema"
+[ -f "$SCRIPT" ] || { echo "missing in-container heal: $SCRIPT" >&2; exit 2; }
+
+docker inspect "$CONTAINER" >/dev/null 2>&1 || {
+  echo "container $CONTAINER not found — is the BC launched? (bc-container launch $BC)" >&2; exit 2; }
+
+echo "[heal-bc-beads] copying heal into $CONTAINER ..."
+docker cp "$SCRIPT" "$CONTAINER:/tmp/heal-bc-beads-schema"
+docker exec "$CONTAINER" chmod +x /tmp/heal-bc-beads-schema
+
+echo "[heal-bc-beads] running heal in $CONTAINER as $EXEC_USER ..."
+docker exec -u "$EXEC_USER" -w /workspace "$CONTAINER" bash /tmp/heal-bc-beads-schema
+rc=$?
+echo "[heal-bc-beads] heal exit=$rc"
+exit $rc
