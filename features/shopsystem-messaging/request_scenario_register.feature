@@ -27,3 +27,10 @@ Feature: request_scenario_register — request and response message types
     And the constructed response carries, for each register entry, its block-only canonical hash together with its scenario title and step text, its features/ file location, and its live-or-retired/superseded status
     And these per-entry fields let the requester locate, import, or supersede the pinned scenario from the response alone
     And a register entry supplying only a bare block-only canonical hash, with no title, step text, file location, or status, is rejected as schema-invalid
+
+  @scenario_hash:2c8501835cf1f5f8
+  Scenario: responding to a request_scenario_register carries each register entry back over the wire to the requester
+    Given an inbox holding an unprocessed request_scenario_register request for work_id "lead-402" naming target bounded context "shopsystem-templates"
+    When shop-msg responds to request_scenario_register for work_id "lead-402" with two register entries, each carrying a block-only canonical scenario hash, the scenario's title and step text, the scenario's features/ file location, and a status of either live or retired
+    Then the requester can read a request_scenario_register response for work_id "lead-402" whose register-entries field reproduces those two entries, each carrying its block-only canonical hash together with its scenario title and step text, its features/ file location, and its live-or-retired status
+    And that response validates against the RequestScenarioRegister response schema
