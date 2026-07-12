@@ -24,7 +24,7 @@ Feature: shop-msg computes scenario-block-only canonical hashes (ADR-019)
     When I run shop-msg send assign_scenarios with work-id "lead-blk-B" and feature-title "Some Feature Title" and bc-tag "shop-msg" and that scenario file
     Then the dispatched scenario's gherkin contains no line starting with "Feature:"
 
-  @scenario_hash:17e9342e3cf69969
+  @scenario_hash:9e9c9ae67254984f
   Scenario: shop_msg computes scenario hashes in-process with no scenarios subprocess
     Then the shop_msg cli module contains no subprocess call to the scenarios hash binary
-    And the shop_msg cli module imports compute_scenario_hash from scenarios.hash
+    And the shop_msg cli module imports parse_then_block_only_hash from scenarios.hash

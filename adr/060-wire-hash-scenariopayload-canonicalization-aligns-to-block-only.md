@@ -82,11 +82,33 @@ coincidence and was masked by pure-block test samples; `scenarios 0.3.1` (ADR-05
 D5) merely exposed it. The alignment is therefore carried by a `request_bugfix`
 (existing, 117-pinned behavior brought into conformance), not `assign_scenarios`.
 
-**No scenario-register re-pin.** Because the on-disk `@scenario_hash` pins are
-already block-only, aligning messaging's runtime computation makes the wire
-value MATCH the existing pins — no `@scenario_hash` is retired, superseded, or
-contradicted. The on-wire hash for tag/`Feature:`-wrapped bodies now equals the
-on-disk pin (previously it diverged — the defect).
+**No scenario-register re-pin of hash-VALUE pins.** Because the on-disk
+`@scenario_hash` pins are already block-only, aligning messaging's runtime
+computation makes the wire value MATCH the existing pins — no hash-value
+`@scenario_hash` is retired, superseded, or contradicted. The on-wire hash for
+tag/`Feature:`-wrapped bodies now equals the on-disk pin (previously it diverged
+— the defect).
+
+**CORRECTION (2026-07-12) — ONE structural pin re-authored.** The "all 150 pins
+reproduce block-only" check covered hash-VALUE pins only; it did not cover a
+**structural** meta-scenario in
+`features/shopsystem-messaging/scenario_hash_block_only_canonical.feature`
+(`@origin:adr-019`) whose body asserts *which function shop_msg imports*:
+> `And the shop_msg cli module imports compute_scenario_hash from scenarios.hash`
+
+The ADR-060 migration requires shop_msg to import the **block-only** canonicalizer
+(`parse_then_block_only_hash`, the 0.3.1 in-process block-only fn in
+`scenarios.hash`), not the tag/`Feature:`-insensitive-only `compute_scenario_hash`
+this scenario named — so the migration falsifies that assertion's literal text.
+This scenario is therefore **re-authored** to name `parse_then_block_only_hash`,
+keeping the in-process / no-subprocess-to-the-`scenarios`-binary invariant intact.
+Importing-but-not-using `compute_scenario_hash` to satisfy the stale literal is
+NOT acceptable (it is gaming the pin). The `@scenario_hash` moves
+`17e9342e3cf69969` → **`9e9c9ae67254984f`** (recomputed block-only over the
+re-authored block; verified via the `scenarios hash` contract tool). This is the
+**ONE** structural re-pin ADR-060 requires; it is carried on `lead-14xb.1` as a
+scenario-carrying `request_bugfix` (retire `17e9342e3cf69969`, pin
+`9e9c9ae67254984f`).
 
 **Fleet adopts simultaneously.** The change lands via the bc-base rebuild +
 lead `shop-msg` reinstall gated on `lead-14xb.2`; every BC and the lead pick up
@@ -111,7 +133,11 @@ block-only wire hashing in the same convergence step. Register pins are unchange
   canonicalization sites to block-only (in-process delegation, ADR-019 D2);
   strengthen `test_catalog_scenarios_agreement` to a wrapped body; suite green;
   cut messaging **v0.4.6** (ADR-039).
-- No `@scenario_hash` re-pin across any BC; the register is already block-only.
+- No hash-VALUE `@scenario_hash` re-pin across any BC; the register is already
+  block-only. **Exception (see CORRECTION above):** exactly ONE structural
+  meta-scenario (`scenario_hash_block_only_canonical.feature`, `@origin:adr-019`)
+  is re-authored `17e9342e3cf69969` → `9e9c9ae67254984f` to track the block-only
+  import (`compute_scenario_hash` → `parse_then_block_only_hash`).
 - Fleet-wide adoption is simultaneous via bc-base rebuild + lead reinstall
   (`lead-14xb.2`), unblocking fabro convergence (`lead-14xb`).
 - The mechanism_observation on `lead-14xb.1` (ADR-018 contract-surface analysis
