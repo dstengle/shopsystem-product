@@ -1,0 +1,45 @@
+# dispatcher.toml -- run/environment config for dispatcher.fabro (ADR-058 D2,
+# the reactive-persistent bc-shop dispatcher). Sibling of dispatcher.fabro in
+# the poured /workspace/.fabro/ def dir, alongside the UNCHANGED ADR-051
+# workflow.fabro / workflow.toml child def.
+#
+# The dispatcher takes NO launch-time work id: it discovers work_ids at RUNTIME
+# from `shop-msg pending inbox` and writes each child's concrete WORK_ID into
+# that child's own env overlay at spawn. So this config carries ONLY the
+# constant BC_NAME -- there is deliberately NO WORK_ID here.
+
+_version = 1
+
+[workflow]
+graph = "dispatcher.fabro"
+
+# ---- RUNTIME INPUTS --------------------------------------------------------
+# {{ inputs.BC_NAME }} in the graph goal / agent prompts resolves from
+# `-I BC_NAME=<bc>` at `fabro run`; this default keeps `fabro validate` free of
+# undefined-variable diagnostics. NO WORK_ID: the dispatcher discovers work_ids
+# at runtime (ADR-058 D1/D3).
+[run.inputs]
+BC_NAME = "fabro-throwaway"        # constant BC name; override per BC at run
+
+# ---- ENV OVERLAY into the NATIVE script= sandbox ---------------------------
+# The GLOBAL [run.environment.env] overlay reaches a native
+# `shape=parallelogram, script=` sandbox as real shell env vars (unlike
+# [run.inputs]), so the native `watch` node reads $BC_NAME from here. Per-BC
+# override: `fabro run dispatcher.fabro -I BC_NAME=<bc>` -- the launcher does
+# exactly this. Only BC_NAME is constant here; per-child WORK_ID is written by
+# the launch node into each child's OWN env overlay at spawn (ADR-058 D3).
+[run.environment.env]
+BC_NAME = "fabro-throwaway"
+
+[run.environment]
+id = "local"                       # ephemeral in-container fabro server
+
+[environments.local]
+provider = "local"                 # runs in the current process/cwd INSIDE the
+                                   # BC container; inherits parent env so
+                                   # HTTPS_PROXY -> agent-vault reaches nodes.
+
+[run.pull_request]
+enabled = false                    # the child workflow's `integ` node is the
+                                   # SOLE integration authority; the dispatcher
+                                   # opens no PR.

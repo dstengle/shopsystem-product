@@ -1,0 +1,108 @@
+// ============================================================================
+// bc-shop REACTIVE-PERSISTENT DISPATCHER, as a fabro DOT workflow
+// (ADR-058 AMENDED, lead-b3f0; AMENDMENT 2, lead-3zzu). ONE persistent cyclic
+// poll-loop per container: it OWNS the container's lifecycle, discovers work_ids
+// at RUNTIME, and fans out one DETACHED child per pending inbox work item.
+// Entered through the dispatcher.toml entrypoint (provider=local, in-process) so
+// the sandbox comes up without a docker daemon (scenario A
+// @scenario_hash:24d94274b9cbc2b0).
+//
+// ============================= CYCLIC POLL-LOOP SHAPE (scenario B) ===========
+//   start -> poll                                (enter the loop)
+//   poll -> dispatch                             (hand poll's context to dispatch)
+//   poll -> end   [condition=outcome=failed]     (poll failed => shutdown sink)
+//   dispatch -> wait                             (do not block on children)
+//   wait -> poll                                 (the BACK-EDGE forms the cycle)
+// The run persists -- cycling poll->dispatch->wait->poll -- until shutdown.
+// `poll` and `wait` are NATIVE `script=` nodes (parallelogram, NO LLM). The
+// `dispatch` node is the ONLY agent node in the loop: a NON-LLM ACP script-agent
+// (ADR-058 AMENDMENT 2, below). There is NO long-running `shop-msg watch` node
+// and NO LLM node (no Haiku `launch` node, no model-backed node) ANYWHERE in the
+// loop, so the steady-state loop spends ZERO tokens: the ACP dispatch agent is a
+// NON-LLM python SCRIPT (Fabro injects no model creds), and work is otherwise
+// done only by each child (scenario B @scenario_hash:a5e16a192f755768, reconciled
+// by lead-3zzu / lead-4uo1).
+//
+// ============================= POLL (NATIVE script=, NO LLM) =================
+// `poll` lists the current pending inbox NON-BLOCKINGLY via `shop-msg pending
+// inbox --bc $BC_NAME` (the no-matching-outbox, consumption-robust source) and
+// yields the concrete pending work ids, returning PROMPTLY rather than blocking
+// on a long-running watch. $BC_NAME arrives via the [run.environment.env]
+// overlay (dispatcher.toml). A native node has EXACTLY two outcomes: exit 0 =>
+// succeeded (poll->dispatch), nonzero => failed (poll->end shutdown).
+//
+// ============================= DISPATCH (ACP NON-LLM SCRIPT-AGENT) ===========
+// AMENDMENT 2 (lead-3zzu, ADR-058) REPLACES the pre-fix NATIVE command dispatch
+// (a context-blind `awk | while read wid; do ... fabro run child-$wid.toml
+// --detach; done` that re-fired for EVERY still-pending work id each ~6s poll --
+// so a slow child, pending for minutes until it emits work_done, got a NEW
+// duplicate child each cycle and the duplicates COLLIDED on the shared
+// per-WORK_ID git worktree; observed on shopsystem-knowledge v1, lead-ots3).
+//
+// The `dispatch` node is now an ACP-backed AGENT node -- `backend="acp"` +
+// `acp.command="python3 dispatch_acp_agent.py"` -- so fabro drives it through the
+// agent-client-protocol backend (crate v0.11.1, JSON-RPC over stdio:
+// initialize / session/new / session/prompt). Unlike the native command node,
+// the ACP agent RECEIVES incoming CONTEXT (the pending inbox work ids from `poll`
+// plus the IN-FLIGHT run state -- which work_ids have a live child not yet
+// `work_done`) and RETURNS structured dispatch DECISIONS: for a work id whose
+// child is still in flight -> SKIP (idempotency; no second child, no worktree
+// collision); for a work id with no live child -> SPAWN (exactly once). For each
+// SPAWN it materializes a per-child `.toml` carrying the CONCRETE work id in a
+// [run.environment.env] WORK_ID overlay (the channel that REACHES the child's
+// native script= env; `-I WORK_ID` does NOT) and spawns the child DETACHED via
+// `fabro run child-$wid.toml --detach` -- preserving the lead-b3f0 delivery
+// guarantee (scenario @scenario_hash:f38ab66672151669). The agent is a NON-LLM
+// python SCRIPT: it owns its own idempotency behavior and burns ZERO tokens.
+//
+// ============================= CHILD DEF UNCHANGED (ADR-051 intact) ==========
+// Each spawned child is the UNCHANGED ADR-051 workflow.fabro def running as a
+// distinct run isolated by its own per-run WORK_ID: one child = one work item =
+// one work_done. Children run in PARALLEL with no shared work-id file.
+digraph BcShopDispatcher {
+    graph [
+        goal="Reactive-persistent cyclic poll-loop dispatcher for BC {{ inputs.BC_NAME }}: poll the inbox non-blockingly, hand the pending ids + in-flight run state to the NON-LLM ACP dispatch script-agent which decides SKIP (in-flight) vs SPAWN (no live child), spawn one DETACHED workflow.fabro child per SPAWN (isolated per WORK_ID via a per-child env overlay), wait a short interval, and loop. poll/wait are NATIVE script= nodes and dispatch is a NON-LLM ACP script-agent -- NO LLM node and NO long-running watch, so the steady-state loop spends ZERO tokens; work is done only by each child. This run OWNS the container lifecycle and discovers work_ids at runtime; it takes NO launch-time work id."
+        rankdir=TB
+    ]
+
+    // ---------- terminals ---------------------------------------------------
+    start [shape=Mdiamond, label="Start"]
+    end   [shape=Msquare,  label="Exit: SHUTDOWN\n(poll failed)"]
+
+    // ---------- poll: NATIVE non-blocking pending-inbox lister (NO LLM) ------
+    // $BC_NAME arrives via the [run.environment.env] overlay (dispatcher.toml).
+    // Lists the current pending inbox and yields the concrete pending work ids,
+    // returning PROMPTLY (NOT blocking on a long-running `shop-msg watch`).
+    poll [shape=parallelogram, deterministic=true,
+          label="poll: list pending inbox work ids (non-blocking)",
+          script="shop-msg pending inbox --bc \"$BC_NAME\""]
+
+    // ---------- dispatch: NON-LLM ACP SCRIPT-AGENT (ADR-058 AMENDMENT 2) -----
+    // backend="acp" + acp.command drives dispatch_acp_agent.py -- a NON-LLM
+    // python SCRIPT -- through the agent-client-protocol backend (JSON-RPC over
+    // stdio). It RECEIVES the poll context (pending ids + in-flight run state)
+    // and RETURNS structured decisions: SKIP a work id whose child is still in
+    // flight (idempotency -> no duplicate child, no per-WORK_ID worktree
+    // collision), SPAWN a work id with no live child (exactly once). For each
+    // SPAWN it materializes a per-child .toml carrying the CONCRETE work id in a
+    // [run.environment.env] WORK_ID overlay (the channel that REACHES the child's
+    // native script= env; `-I WORK_ID` does NOT) and spawns the child DETACHED
+    // via `fabro run child-$wid.toml --detach`. The child applies the UNCHANGED
+    // ADR-051 workflow.fabro def. Fabro injects NO model creds into an ACP agent,
+    // and this agent runs no model -> ZERO tokens. NOT a native script= node.
+    dispatch [class="dispatch", backend="acp",
+              acp.command="python3 dispatch_acp_agent.py",
+              label="dispatch: NON-LLM ACP script-agent -- receive poll context (pending ids + in-flight state), return SKIP/SPAWN decisions, materialize each SPAWN child's WORK_ID env overlay and spawn it detached"]
+
+    // ---------- wait: NATIVE short sleep before the back-edge (NO LLM) -------
+    wait [shape=parallelogram, deterministic=true,
+          label="wait: sleep a short interval before looping",
+          script="sleep \"${DISPATCH_POLL_INTERVAL:-5}\""]
+
+    // ---------- edges (cyclic poll-loop, scenario B) ------------------------
+    start    -> poll                                    // enter the loop
+    poll     -> dispatch                                // hand poll context to dispatch
+    poll     -> end       [condition="outcome=failed"]  // poll failed => shutdown
+    dispatch -> wait                                    // do not block on children
+    wait     -> poll                                    // BACK-EDGE forms the cycle
+}
