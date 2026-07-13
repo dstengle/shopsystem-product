@@ -62,13 +62,13 @@ PO contract work (briefs → scenarios) must not be disrupted.
 
 Full go-to-market: no market/competitive research, personas,
 segmentation, positioning, pricing, growth metrics. (Narrows
-PDR-012's 2026-06-05 product-general steering; see pdr-P02.)
+PDR-012's 2026-06-05 product-general steering; see pdr-033.)
 
 ## Appetite signal
 
 Not stated numerically; stakeholder accepted the shaped design as-is
 ("I'm inclined to accept it as-is") and requested drafting. Appetite
-for implementation to be set at cand-P01.
+for implementation to be set at cand-001.
 
 ## Failure conditions
 
