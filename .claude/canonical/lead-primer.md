@@ -248,6 +248,8 @@ discovery gate that required the router to run the discovery dialogue itself
 before dispatching a discovery subagent; the dialogue now has its home in the
 lead-pm main-session mode, not at the router.
 
+**Load the mode body on entry.** The lead-pm mode's operating BODY is not @-loaded by CLAUDE.md — the load chain carries the entry TRIGGER (this block) but not the mode's operating instructions. On PM-mode entry the router MUST load the mode body via `shop-templates show lead-pm` before conducting the dialogue; reading that output is the first act of every PM-mode entry. The body is byte-recoverable from the installed shopsystem-templates package data via that command — a lazy load-on-entry with no standing per-session token cost.
+
 ### Standing rule: effectively-empty product-discovery bootstrap
 
 The **effectively-empty / no-product-defined** repo state is defined by a
