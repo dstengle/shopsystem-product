@@ -1,3 +1,33 @@
+# RETIRED-scenario provenance (brief-017 / lead-ifye3.1, 2026-07-14 —
+# request_bugfix dispatch; bodies below are byte-identical to what was
+# retired, for hash-provenance only):
+#   @scenario_hash:eb8e74495f124e64 RETIRED (lead-ifye3.1)
+#   Asserted an UNBOUND "fabro validate" against the poured def exits zero
+#   with zero diagnostics. Once model_stylesheet carries live per-node-class
+#   "{{ inputs.MODEL_* }}" placeholders (brief-017), this no longer holds —
+#   cand-002's empirical probe proved an unbound validate fails with
+#   "undefined template variable". Superseded jointly by
+#   @scenario_hash:610455d3a0f4e373 (the new unbound-fails-loud behavior) and
+#   @scenario_hash:0435d261be5031fd (the same ADR-051/live-run assertions,
+#   re-anchored to representative-inputs-bound validate), both below.
+#   Original body:
+#     Given the shopsystem-templates BC is installed
+#     And a shop-templates pour has emitted the fabro def into "/workspace/.fabro/"
+#     When "fabro validate" is executed against the poured def using the REAL fabro binary
+#     Then it exits zero and reports zero diagnostics, its "--json" output carrying an empty diagnostics array, and if the real binary genuinely cannot be obtained the leg SKIPs honestly rather than papering a failure over
+#     And the poured def satisfies the ADR-051 graph invariants: "emit_r", the Reviewer emitter, is the SOLE gated work_done(complete) emitter on the success path, every fallible non-terminal node carries an unconditional "outcome=failed" failsafe edge to a halt or blocked-emit sink so no failed node reaches the SUCCEEDED terminal, and "vaults/default/secrets.json" holds only "__PLACEHOLDER__" for every provider-key and token slot (ADR-049)
+#     And where feasible a live "fabro run" preflight exercises the poured def to assert the agent-vs-native node classification authoritatively, because "fabro validate" is permissive on node attrs and confirms graph shape rather than handler classification (spike R2)
+#   @scenario_hash:d08bac49e20111f2 RETIRED (lead-ifye3.1)
+#   Same unbound-zero-diagnostics assertion, framed around the pinned-validity
+#   home rather than the "fabro validate" leg directly. Same contradiction,
+#   same probe. Superseded by @scenario_hash:0bc0fb71534cc0d6 below.
+#   Original body:
+#     Given the shopsystem-templates BC is installed
+#     And a shop-templates pour has emitted the self-contained fabro loop def into "/workspace/.fabro/", not baked into bc-base
+#     When "fabro validate" is executed against the poured fabro def at "/workspace/.fabro/"
+#     Then it exits zero and reports zero diagnostics
+#     And the poured def is a self-contained bc-shop Implementer->Reviewer loop graph per ADR-051: the graph file is present, every node body the graph references is present in the def alongside it so the loop is runnable from the def alone, the Reviewer node is the sole node that can emit a gated work_done on the success path, and every fallible node carries an explicit unconditional failsafe edge to a halt or blocked-emit sink so a failed node never advances to the SUCCEEDED terminal
+#     And the poured def's native fabro vault holds only the value "__PLACEHOLDER__" for each of its provider-key and token slots, with no real credential present in the def (ADR-049), so that any real credential the loop uses is sourced from the agent-vault surface baked in S1 and never from the fabro vault
 @bc:shopsystem-templates @origin:adr-057
 Feature: the shop-templates pour projects the BC work-loop to a NEW /workspace/.fabro/ surface — static ADR-051 skeleton poured verbatim + node bodies generated from the single source (lead-xinb)
 
@@ -58,20 +88,28 @@ Feature: the shop-templates pour projects the BC work-loop to a NEW /workspace/.
     And a "/workspace/.fabro/" committed from one pour is provably equal to a fresh pour of the same source, the no-drift property that makes a committed projection equal a re-pour (the ADR-019 scenarios single-source doctrine and the progressive-disclosure byte-identical precedent)
     And the generation is deterministic by construction — sorted iteration, no timestamps, no randomness — so the byte-identity holds on every re-pour
 
-  @scenario_hash:eb8e74495f124e64
-  Scenario: the poured "/workspace/.fabro/" def passes "fabro validate" on the real binary, satisfies the ADR-051 invariants, and is preflighted with a live "fabro run" where feasible
+  @scenario_hash:610455d3a0f4e373
+  Scenario: the poured "/workspace/.fabro/" def's live model_stylesheet node-class placeholders make an UNBOUND "fabro validate" fail loud with an undefined-template-variable diagnostic, superseding the retired zero-diagnostics-when-unbound assertion
     Given the shopsystem-templates BC is installed
-    And a shop-templates pour has emitted the fabro def into "/workspace/.fabro/"
-    When "fabro validate" is executed against the poured def using the REAL fabro binary
+    And a shop-templates pour has emitted the fabro def into "/workspace/.fabro/", whose model_stylesheet carries the "MODEL_CODING", "MODEL_REVIEW", and "MODEL_DEFAULT" fabro input placeholders (brief-017)
+    When "fabro validate" is executed against the poured def using the REAL fabro binary with no "-I" input bound for any of the three node-class placeholders
+    Then it exits non-zero and reports a diagnostic naming an undefined template variable for the unbound node-class placeholder in the model_stylesheet attribute
+    And this confirms the live "{{ inputs.<NAME> }}" templating is genuinely evaluated by "fabro validate" rather than silently ignored, the same mechanism the cand-002 empirical probe directly proved, and replaces the retired assertion that an unbound "fabro validate" exits zero with zero diagnostics — that assertion no longer holds once model_stylesheet carries live per-node-class placeholders instead of literal model IDs
+
+  @scenario_hash:0435d261be5031fd
+  Scenario: the poured "/workspace/.fabro/" def passes "fabro validate" on the real binary once representative model IDs are bound for its node-class placeholders, satisfies the ADR-051 invariants, and is preflighted with a live "fabro run" where feasible
+    Given the shopsystem-templates BC is installed
+    And a shop-templates pour has emitted the fabro def into "/workspace/.fabro/", whose model_stylesheet carries the "MODEL_CODING", "MODEL_REVIEW", and "MODEL_DEFAULT" fabro input placeholders (brief-017)
+    When "fabro validate" is executed against the poured def using the REAL fabro binary with representative literal model IDs bound via "-I MODEL_CODING", "-I MODEL_REVIEW", and "-I MODEL_DEFAULT"
     Then it exits zero and reports zero diagnostics, its "--json" output carrying an empty diagnostics array, and if the real binary genuinely cannot be obtained the leg SKIPs honestly rather than papering a failure over
     And the poured def satisfies the ADR-051 graph invariants: "emit_r", the Reviewer emitter, is the SOLE gated work_done(complete) emitter on the success path, every fallible non-terminal node carries an unconditional "outcome=failed" failsafe edge to a halt or blocked-emit sink so no failed node reaches the SUCCEEDED terminal, and "vaults/default/secrets.json" holds only "__PLACEHOLDER__" for every provider-key and token slot (ADR-049)
-    And where feasible a live "fabro run" preflight exercises the poured def to assert the agent-vs-native node classification authoritatively, because "fabro validate" is permissive on node attrs and confirms graph shape rather than handler classification (spike R2)
+    And where feasible a live "fabro run" preflight, with the same representative model IDs bound, exercises the poured def to assert the agent-vs-native node classification authoritatively, because "fabro validate" is permissive on node attrs and confirms graph shape rather than handler classification (spike R2)
 
-  @scenario_hash:d08bac49e20111f2
-  Scenario: the fabro loop def whose validity is pinned is the one POURED by shop-templates into "/workspace/.fabro/", and the "fabro validate" plus ADR-051 plus placeholder-vault assertions hold on the poured def
+  @scenario_hash:0bc0fb71534cc0d6
+  Scenario: the fabro loop def whose validity is pinned is the one POURED by shop-templates into "/workspace/.fabro/", and the "fabro validate" plus ADR-051 plus placeholder-vault assertions hold on the poured def once representative model IDs are bound for its node-class placeholders
     Given the shopsystem-templates BC is installed
-    And a shop-templates pour has emitted the self-contained fabro loop def into "/workspace/.fabro/", not baked into bc-base
-    When "fabro validate" is executed against the poured fabro def at "/workspace/.fabro/"
+    And a shop-templates pour has emitted the self-contained fabro loop def into "/workspace/.fabro/", not baked into bc-base, whose model_stylesheet carries the "MODEL_CODING", "MODEL_REVIEW", and "MODEL_DEFAULT" fabro input placeholders (brief-017)
+    When "fabro validate" is executed against the poured fabro def at "/workspace/.fabro/" with representative literal model IDs bound via "-I MODEL_CODING", "-I MODEL_REVIEW", and "-I MODEL_DEFAULT"
     Then it exits zero and reports zero diagnostics
     And the poured def is a self-contained bc-shop Implementer->Reviewer loop graph per ADR-051: the graph file is present, every node body the graph references is present in the def alongside it so the loop is runnable from the def alone, the Reviewer node is the sole node that can emit a gated work_done on the success path, and every fallible node carries an explicit unconditional failsafe edge to a halt or blocked-emit sink so a failed node never advances to the SUCCEEDED terminal
     And the poured def's native fabro vault holds only the value "__PLACEHOLDER__" for each of its provider-key and token slots, with no real credential present in the def (ADR-049), so that any real credential the loop uses is sourced from the agent-vault surface baked in S1 and never from the fabro vault
