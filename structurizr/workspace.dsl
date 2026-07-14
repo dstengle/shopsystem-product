@@ -25,6 +25,9 @@ workspace "shopsystem" "Canonical C4 structural model of the shopsystem framewor
     #   ADR-020  routing identity = abstract <system>/<name>; lead = shopsystem/lead
     #   ADR-021  bc-base image owned by bc-launcher; auto-rebuild on utility release
     #   ADR-022  bc-base rebuilds CENTRALIZED in bc-launcher (supersedes ADR-021 §D2)
+    #   PDR-031  shopsystem-knowledge founded as a kind-extensible knowledge context
+    #   PDR-032  shopsystem-knowledge owns the artifact type system + coherence gate
+    #   ADR-059  knowledge BC single-sources per-type typedef -> generated template + schema
     #   features/messaging, features/messaging-registry  — shop-msg + registry behavior
     #   features/scenarios                                — hash/verify behavior
     #   features/templates                                — roles, bootstrap, image publish
@@ -32,6 +35,7 @@ workspace "shopsystem" "Canonical C4 structural model of the shopsystem framewor
     #   features/docs                                     — adoption docs
     #   features/test-harness                             — experiment/slice/run/evidence
     #   features/bc-manifest                              — BC manifest surface
+    #   features/shopsystem-knowledge                     — typedef/schema/body-section conformance
     # ============================================================================
 
     model {
@@ -84,7 +88,11 @@ workspace "shopsystem" "Canonical C4 structural model of the shopsystem framewor
                 tags "BC"
             }
 
-            bclauncher = container "BC Launcher (shopsystem-bc-launcher)" "Owns `bc-container` (launch/attach/inject/monitor/stop/status/list) and the bc-base image (Dockerfile + publish + centralized rebuild). Sets SHOPMSG_DSN in containers. Subdomain: Platform Operations (ADR-004/021/022)." "Python (bc-container CLI) + Docker" {
+            knowledge = container "Knowledge BC (shopsystem-knowledge)" "Sole owner of the artifact type system: per-type typedef -> generated template + JSON Schema fragment (read-only, drift-gated), frontmatter and body-section (x-required-sections) conformance checking, over the eight recognized artifact types. Exposes that logic externally as the `shop-knowledge` CLI (template/schema/validate). Subdomain: Specification (PDR-031/032, ADR-059; features/shopsystem-knowledge)." "Python (shop-knowledge CLI)" {
+                tags "BC"
+            }
+
+            bclauncher = container "BC Launcher (shopsystem-bc-launcher)" "Owns `bc-container` (launch/attach/inject/monitor/stop/status/list) and the bc-base image (Dockerfile + publish + centralized rebuild). Sets SHOPMSG_DSN in containers. Selects the launch-time LLM provider (Anthropic default / OpenRouter override) and owns the fleet-wide tier+effort->model mapping table used to resolve poured model_stylesheet placeholders (ADR-063). Subdomain: Platform Operations (ADR-004/021/022/063)." "Python (bc-container CLI) + Docker" {
                 tags "BC"
             }
 
@@ -127,6 +135,7 @@ workspace "shopsystem" "Canonical C4 structural model of the shopsystem framewor
         lead -> messaging "assign_scenarios / request_bugfix / request_maintenance / request_scenario_register / request_shop_card; reads work_done/clarify" "shop-msg over postgres"
         lead -> scenarios "Dispatches scenario work; tightenings (ADR-019)" "shop-msg over postgres"
         lead -> templates "Dispatches role-template / bootstrap / image-publish work" "shop-msg over postgres"
+        lead -> knowledge "Dispatches artifact-type/schema/validation-CLI work (PDR-031/032, ADR-059)" "shop-msg over postgres"
         lead -> bclauncher "Dispatches launch + bc-base rebuild work (ADR-021/022)" "shop-msg over postgres"
         lead -> docs "Dispatches adoption-doc scenarios (ADR-008)" "shop-msg over postgres"
         lead -> harness "Dispatches harness scenarios (ADR-002 dogfooding)" "shop-msg over postgres"
@@ -136,6 +145,7 @@ workspace "shopsystem" "Canonical C4 structural model of the shopsystem framewor
         messaging -> lead "work_done / clarify / mechanism_observation / nudge -> lead inbox" "shop-msg over postgres"
         scenarios -> lead "work_done / clarify -> lead inbox" "shop-msg over postgres"
         templates -> lead "work_done / clarify -> lead inbox" "shop-msg over postgres"
+        knowledge -> lead "work_done / clarify -> lead inbox" "shop-msg over postgres"
         bclauncher -> lead "work_done / clarify -> lead inbox" "shop-msg over postgres"
         docs -> lead "work_done / clarify -> lead inbox" "shop-msg over postgres"
         harness -> lead "work_done / clarify -> lead inbox" "shop-msg over postgres"
@@ -146,6 +156,7 @@ workspace "shopsystem" "Canonical C4 structural model of the shopsystem framewor
         messaging -> postgres "Owns + reads/writes messages, shop_registry, bc_presence" "SHOPMSG_DSN"
         scenarios -> postgres "Reads inbox / writes responses (via shop-msg)" "SHOPMSG_DSN"
         templates -> postgres "Reads inbox / writes responses (via shop-msg)" "SHOPMSG_DSN"
+        knowledge -> postgres "Reads inbox / writes responses (via shop-msg)" "SHOPMSG_DSN"
         bclauncher -> postgres "Reads inbox / writes responses (via shop-msg)" "SHOPMSG_DSN"
         docs -> postgres "Reads inbox / writes responses (via shop-msg)" "SHOPMSG_DSN"
         harness -> postgres "Reads inbox / writes responses (via shop-msg)" "SHOPMSG_DSN"
