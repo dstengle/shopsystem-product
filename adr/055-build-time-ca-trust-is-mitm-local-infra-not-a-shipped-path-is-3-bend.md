@@ -227,5 +227,3 @@ concession would be a false read of the evidence: the shipped path is unaffected
   verbatim Dockerfile is correct as-is (pre-state finding 4). The tension is
   MITM-local test infrastructure only; calling it a shipped-path bend would
   mislabel local harness furniture as a release-path concession.
-</content>
-</invoke>

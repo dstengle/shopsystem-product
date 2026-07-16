@@ -223,4 +223,3 @@ read-only into scratchpad only). Repro artifacts live in
 `…/scratchpad/{bc-base-ctx,bc-launcher-ci,bc-tests,structural_gate.py,engine.toml}`. Live objects
 left running for inspection: `dagger-egress-engine` (agent-vault engine, insecure-registry cfg),
 `dagger-spike-registry` (192.168.0.4:5000). Remove with `docker rm -f` when done.
-</content>

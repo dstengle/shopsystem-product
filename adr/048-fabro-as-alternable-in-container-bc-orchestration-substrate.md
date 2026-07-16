@@ -219,5 +219,3 @@ reconcile per the spike's own residual list.
   umbrella (this ADR) + three realizing ADRs keeps each surface's contract
   independently citable and separately amendable, matching the house one-decision-
   per-ADR convention.
-</content>
-</invoke>

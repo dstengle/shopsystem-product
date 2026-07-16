@@ -191,5 +191,3 @@ node after any agent is a native gate that re-verifies and cannot be talked past
 `findings/fabro-spike/fabro-defs/workflow.fabro` (harden split + wdg_r/emit_r fix),
 `fabro-defs/workflow.toml` (env overlay), `fabro-defs/workflow-forcefail.fabro`
 (new). Container `bc-fabro-throwaway` + fabro server + shim left running.
-</content>
-</invoke>

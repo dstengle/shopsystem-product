@@ -245,5 +245,3 @@ follow-on) — remain open and are NOT resolved here.
   `description` MUST be added to the generator's `SHARED_REQUIRED` (PDR-032
   item 3). Bidirectional linkage with PDR-032 recorded (this side +
   PDR-032 Amended-by/Refined-by note).
-</content>
-</invoke>

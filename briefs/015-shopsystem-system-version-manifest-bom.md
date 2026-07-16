@@ -227,5 +227,3 @@ mechanism. The open questions:
 - [ADR-018](../adr/018-empirical-verification-is-contract-surface.md) — the lead
   carries no BC source and cannot tag BC repos directly; why the deferred
   BC-self-tag leg is dispatched-orchestration, not a lead-side edit (§3).
-</content>
-</invoke>

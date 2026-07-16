@@ -236,5 +236,3 @@ new **`candidates/` directory** — it does NOT absorb the existing generic
   drift gate, `x-required-sections`). Ownership + items 1–8 unchanged.
   Bidirectional linkage recorded (this side Refined-by note + ADR-059
   Derives-from/Cross-references).
-</content>
-</invoke>

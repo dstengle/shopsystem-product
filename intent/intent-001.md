@@ -80,5 +80,3 @@ Router prompt growth resuming.
 
 Whether the PM name imports unwanted GTM connotation; stakeholder
 comfortable with PM label scoped by charter.
-</content>
-</invoke>

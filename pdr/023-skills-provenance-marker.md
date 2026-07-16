@@ -172,5 +172,3 @@ nothing; doing it after is durable. The sequencing is load-bearing.
 - Bead **lead-vme1** — the product-authority directive; **lead-22x1** (WS-7
   skills corpus); **lead-1e8d** (the `_mirror_skills` by-name pruning that
   landed).
-</content>
-</invoke>

@@ -126,5 +126,3 @@ template, primer, or router content.
   header); decision content preserved verbatim. Bidirectional partial-
   amendment linkage with PDR-012 recorded (this side + PDR-012 Amended-by
   note).
-</content>
-</invoke>

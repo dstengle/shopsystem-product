@@ -150,5 +150,3 @@ surface to the in-container loop + launch-interface parity.
   "three invariant-surfaces" verbatim; scorecard confirms fabro CLEAN/PARTIAL.
 - `findings/fabro-2pc-as-steps-spike.md` — sharpest-risk partial resolution.
 - ADRs: 006, 012, 016, 018, 020, 021, 022 · PDRs: 010, 011, 017.
-</content>
-</invoke>

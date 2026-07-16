@@ -377,5 +377,3 @@ real-image tier).
    reachability for a live `fabro validate` LEG1.
 5. **Engine-in-BC-container viability** (§5) — resource/perf of a full engine boot nested for
    the Slice-4 dogfood.
-</content>
-</invoke>

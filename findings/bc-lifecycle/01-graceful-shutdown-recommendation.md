@@ -242,5 +242,3 @@ later dispatch chain would order messaging-type + templates-behavior first, skil
    the artifact surface. (The container-removal half via `bc-container stop` **is**
    settled as fabro-compatible per ADR-050 D1 — §2d.) Do not guess; this needs the BC
    that owns the fabro def/loop graph.
-</content>
-</invoke>
