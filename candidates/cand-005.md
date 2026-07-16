@@ -331,6 +331,26 @@ anywhere yet. This is real net-new `shopsystem-knowledge` scope, likely
 the largest single phase — probably warrants its own brief once reached
 rather than being pre-specified here.
 
+**Phase 4 status: dispatched (2026-07-16), not yet landed.** Correction
+to the assumption above: PO brief authoring (`briefs/023-coherence-gate-lead-installable-cli.md`)
+found the gate-check LOGIC for rules 4-8 was already fully authored and
+pinned (`coherence_gate_typed_edges.feature` 11 scenarios,
+`coherence_gate_lifecycle_rules.feature` 13 scenarios,
+`coherence_gate_advisory_blocking.feature` 4 scenarios) — left undispatched
+after a prior attempt (`lead-5oih`) was correctly closed as mis-scoped
+(tried to run the gate inside a BC over lead-held artifacts, an ADR-018 D2
+violation). Real remaining scope was narrower: wire that existing logic
+into a lead-installable CLI (`shop-knowledge gate <corpus-root>`, 6 new
+scenarios), with an honest "unverifiable-legacy" verdict for edges
+pointing at frontmatter-less legacy targets. Architect independently
+verified all 34 scenario hashes (corrected count: 34, not the 33
+originally estimated) and dispatched `assign_scenarios` to
+`shopsystem-knowledge` reusing work_id `lead-iohr` (already open,
+tracking exactly this). Distribution-mode blocking, `bin/doctor` wiring,
+and lifecycle-transition-validity checking (as opposed to current-value
+validity, already covered by Phase 1) are named, deferred follow-ons, not
+dropped.
+
 **Phase 5 — Migrate the legacy corpus.** `cand-004`/PDR-034, unchanged in
 substance, run once phases 1-4 give it a schema and gate actually worth
 migrating onto. `cand-004` is not duplicated here — it is this
