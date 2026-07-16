@@ -11,7 +11,7 @@ derives-from: [intent-006]
 session: sess-2026-07-16-a
 experiments: []
 brief:
-parked-until:
+parked-until: cand-005 phases 1-4 land (typedef correctness, release+repour, minimal enforcement, coherence gate)
 beads: []
 ---
 
@@ -115,7 +115,12 @@ problem).
 
 ## Resolution
 
-(open — awaiting sequencing decision and PDR ratification)
+(open — parked. `lead-6n4j6`'s divergence, initially assumed narrow, was
+found the same session to mean the schema this candidate targets isn't
+actually correct or enforced yet — see `cand-005`, which sequences this
+candidate as its Phase 5, unchanged in substance. Do not dispatch ahead
+of `cand-005` phases 1-4 landing and being verified. PDR-034 remains
+drafted and unratified for the same reason.)
 
 ## Changelog
 
@@ -123,3 +128,8 @@ problem).
   `intent-006`, in direct response to the stakeholder reopening
   `cand-001`'s deferred appetite exclusion after seeing tonight's
   corpus-validation results.
+- 2026-07-16 parked in the same session: the typedef this candidate
+  migrates the legacy corpus onto was found, later the same session, to
+  itself be broken/unenforced (`intent-007`/`cand-005`). Content
+  unchanged; sequenced as `cand-005`'s Phase 5 rather than dispatched
+  standalone.

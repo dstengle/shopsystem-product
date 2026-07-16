@@ -144,8 +144,16 @@ constraint, not subject to appetite trade-off.
   provenance theme this migration's consistency precondition serves.
 - [intent-006](../intent/intent-006.md) — the stakeholder intent this
   PDR directly answers.
+- [cand-005](../candidates/cand-005.md) — found, later the same session,
+  that the typedef this PDR migrates the legacy corpus onto is itself
+  unverified/unenforced (`intent-007`). This PDR is **held**: do not
+  dispatch the Architect feasibility probe below until `cand-005`
+  phases 1-4 land and are verified. Ratification of the decision itself
+  is unaffected — only dispatch timing changes.
 
 ## Changelog
 
 - 2026-07-16 drafted in `sess-2026-07-16-a`, deriving from `cand-004`,
   following the product authority's phased-batches sequencing choice.
+- 2026-07-16 held, same session: sequencing dependency on `cand-005`
+  discovered after drafting. Decision content unchanged.
