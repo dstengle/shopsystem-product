@@ -147,14 +147,29 @@ seed placeholders (criterion 7, partially done — see Changelog), and
 document the artifact lifecycle in graph form (criterion 1 — **done**,
 `artifact-lifecycle.md`).
 
-**Phase 1 status: dispatched, not yet landed.** PO authored 19 pinned
-scenarios across 5 files; Architect independently re-verified all 19
-hash reproductions and the ADR-064 D1/D2-compliant retirement of
+**Phase 1 status: landed and verified (2026-07-16).** PO authored 19
+pinned scenarios across 5 files; Architect independently re-verified all
+19 hash reproductions and the ADR-064 D1/D2-compliant retirement of
 `c07e8db63b3c1b42`→`73c7c146e1fd5dd3`, then dispatched `assign_scenarios`
-to `shopsystem-knowledge` as `lead-x53ez` (2026-07-16). Per this
-candidate's own sequencing discipline, Phase 2 does not start until
-`lead-x53ez`'s `work_done` lands and is independently verified — not
-merely dispatched.
+to `shopsystem-knowledge` as `lead-x53ez` (2026-07-16). `work_done`
+landed at `shopsystem-knowledge` merge `7f24d61`; Architect independently
+verified behaviorally, not just by hash match: installed
+`shopsystem-knowledge@7f24d61` on the lead host (same admissible pattern
+as prior verifications) and confirmed `shop-knowledge template
+intent-record/candidate/session-record` now emit the real 8/9/2-section
+bodies (was the old 2-section stub) with the pinned status enums
+(`intent-record` → `['recorded']`, `candidate` → includes `committed`)
+and the corrected session-record id pattern
+(`sess-\d{4}-\d{2}-\d{2}-[a-z]`); `shop-knowledge validate` now correctly
+passes 6/7 `intent/*.md` (the 7th, `intent-003.md`, fails legitimately on
+a real heading-text mismatch, not a tool defect) and 5/5 `sessions/*.md`.
+`candidates/*.md` (including `cand-005.md` itself) still fail on a
+missing `Verbatim anchors` section — a pre-existing gap pinned earlier by
+brief-018, predating and out of scope for this dispatch, not a defect in
+`lead-x53ez`'s fix. All 19 `scenario_hashes` in the `work_done`
+reproduce exactly against this repo's `features/shopsystem-knowledge/*`
+Gherkin. Per this candidate's own sequencing discipline, Phase 2 is now
+unblocked — the next action, not yet started.
 
 **Phase 2 — Release and repour.** Get `lead-5msa9.2`'s wiring (and the
 other two fixes already riding the same unreleased range, per
@@ -279,3 +294,10 @@ candidate's own Rabbit holes.
   as `lead-x53ez`, after one round of catching and fixing a real ADR-064
   D2 provenance-comment gap in the PO's own retirement of
   `c07e8db63b3c1b42`. Phase 1 now dispatched, awaiting `work_done`.
+- 2026-07-16 `lead-x53ez` `work_done` arrived (merge `7f24d61`);
+  Architect independently verified behaviorally (installed
+  `shopsystem-knowledge@7f24d61`, exercised `template`/`schema`/
+  `validate` against real `intent/`/`sessions/`/`candidates/` files, all
+  19 scenario hashes reproduced), closed `lead-x53ez`, and consumed the
+  outbox row. Phase 1 landed and verified; Phase 2 (release + repour) is
+  now unblocked as the next action.
