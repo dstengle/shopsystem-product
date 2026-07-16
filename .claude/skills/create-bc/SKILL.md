@@ -32,6 +32,33 @@ shop-templates bootstrap --shop-type bc --shop-name <product>-<target> --target 
 `.claude/` files, the role templates, and pours the canonical BC skill tree into
 `.claude/skills/`. The `--shop-name` is the BC's canonical shop-identity slug.
 
+### 1a. Initialize the local repo with `main` as the default branch
+
+Before creating the remote, `git init` the scaffolded directory **with `main`
+as its initial branch** and make the first commit:
+
+```bash
+git init -b main
+git add -A && git commit -m "chore: scaffold BC from shop-templates"
+```
+
+**Force the initial branch to `main` — do not rely on `git init`'s default.**
+A bare `git init` inherits the machine's `init.defaultBranch`, which is
+**`master`** when unset. That `master` then rides through the `gh repo create
+--source . --push` in the next step and becomes the **pushed GitHub repo's
+default branch** — which the downstream bc-launcher / fabro clone+launch tooling
+assumes is `main`, so a `master` default silently breaks launch. If your git is
+older than 2.28 (no `-b` flag), init then rename+set-default and delete
+`master` after the first push instead:
+
+```bash
+git init && git add -A && git commit -m "chore: scaffold BC from shop-templates"
+git branch -M main
+# after `gh repo create ... --push` below:
+gh repo edit <org>/<bc-name> --default-branch main
+git push origin --delete master   # only if a master ref was pushed
+```
+
 ### 2. Create the remote and push
 
 Create the GitHub remote and push the scaffolded repo:

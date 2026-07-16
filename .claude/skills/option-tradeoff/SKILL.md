@@ -60,6 +60,19 @@ lead-pm never ratifies.
 Declare the mode (`deciding`) in the session record and list the PDR draft or the
 candidate fork as the produced artifact.
 
+### 5. Validate the produced artifact against the knowledge BC before closing
+
+Both a PDR and a candidate are among the knowledge BC's eight recognized artifact
+types, so this session's output is gated whichever branch it closes on. Before or
+while producing a PDR, fetch its canonical template with
+`shop-knowledge template pdr`; before or while producing a candidate fork, fetch
+its canonical template with `shop-knowledge template candidate`. Before the
+session closes, validate the produced `pdr` or `candidate` document against its
+schema by running `shop-knowledge validate`; if `shop-knowledge validate` reports
+a validation failure, surface that failure to the product authority rather than
+closing the session silently — a document that fails validation is not a closed
+artifact.
+
 ## Boundaries
 
 Drafting a direction PDR is not ratifying it: the lead-pm drafts and facilitates,

@@ -178,6 +178,51 @@ lead host, and run a full `shop-templates update`/pour — not the narrow
 single-file edits this repo's last two pour commits were — so
 `.claude/skills/*` actually reflects current source.
 
+**Phase 2 status: landed and verified (2026-07-16).** Architect
+re-verified pre-state via `gh api` before dispatching (`origin/main` HEAD
+still `c257e4d`, matching `lead-jqew9`'s prior citation; `releases/latest`
+still `v0.52.6@447e08e`, so no tag had been cut since and the dispatch
+was not redundant), then dispatched `request_maintenance` ->
+`shopsystem-templates` reusing `lead-jqew9` as `work_id`, per the
+`lead-5zwz`/`lead-2c2k`/`lead-0r3y`/`lead-14xm` flat-release-cut
+precedent shape. `work_done` landed reporting tag `v0.53.0`; Architect
+independently re-verified all 4 acceptance criteria via `gh api` (not
+trusting the BC's self-report): tag `v0.53.0` -> annotated tag object ->
+commit `702125a6f7de1eeccf100ad3eef18d9af62a2559`, which is `origin/main`
+HEAD; `compare/<c>...702125a6` for each of `a35c4c0` (lead-1gt5),
+`c110bf0` (lead-bo85), and `c257e4d` (lead-5msa9.2) returns
+`behind_by: 0` (all three are ancestors of the release commit);
+`pyproject.toml` `[project].version` at the tagged commit reads `0.53.0`
+(matches tag); the `release` GitHub Actions run for that commit reports
+`conclusion: success`; the GitHub release object is non-draft,
+non-prerelease, and is `releases/latest`. Consumed the `work_done` row
+(`shop-msg consume outbox`). Upgraded this lead host's installed
+`shop-templates` package `0.52.6` -> `0.53.0` (`pip show shop-templates`
+confirms). Ran a full `shop-templates update --target . --shop-type
+lead` (not a narrow single-file edit) — 8 canonical files changed,
+purely additive: `.claude/agents/lead-architect.md`,
+`.claude/agents/lead-po.md`, and 6 `.claude/skills/*/SKILL.md` files
+(`create-bc`, `discovery-dialogue`, `option-tradeoff`, `prioritization`,
+`product-narrative`, `shaping`). Verified behaviorally, not just that
+files changed: `grep -c shop-knowledge .claude/skills/*/SKILL.md` now
+shows real hits in exactly 5 files (`discovery-dialogue` 3,
+`option-tradeoff` 3, `prioritization` 2, `product-narrative` 4,
+`shaping` 3 — was zero everywhere before this pour), each hit wiring in
+`shop-knowledge template`/`shop-knowledge validate` calls per
+`lead-5msa9.2`'s intent; `.claude/skills/create-bc/SKILL.md` now
+contains the `git init -b main` / `git branch -M main` default-branch
+guidance from `lead-1gt5`, absent before. (`lead-bo85`'s decision-table
+fix lives in the BC-side `bc.md`/`bc-primer` template, not a lead-pour
+target, so it has no lead-host spot-check surface — its landing was
+already verified against `shopsystem-templates`' own published source at
+close time.) Three pre-existing shop-owned-file advisories
+(`bin/shop-shell`, `bin/agent-vault-provision`,
+`bin/agent-vault-check` — drifted from canonical, left untouched by
+`update` per its own advisory) are unrelated to this phase's scope and
+were not actioned. Committed the 8 pour-touched files plus this
+`cand-005.md` update. Phase 3 (minimal enforcement) is now unblocked as
+the next action; not started by this dispatch.
+
 **Phase 3 — Minimal enforcement.** At least one of: skills that run
 `shop-knowledge validate` after producing an artifact and surface
 failure to the product authority rather than closing silently (this is
@@ -301,3 +346,14 @@ candidate's own Rabbit holes.
   19 scenario hashes reproduced), closed `lead-x53ez`, and consumed the
   outbox row. Phase 1 landed and verified; Phase 2 (release + repour) is
   now unblocked as the next action.
+- 2026-07-16 Phase 2 dispatched and landed: `request_maintenance` ->
+  `shopsystem-templates` (`work_id lead-jqew9`, reusing the existing
+  tracking bead per shop precedent) cut release `v0.53.0` carrying
+  `lead-1gt5`/`lead-bo85`/`lead-5msa9.2`; Architect independently
+  re-verified all 4 acceptance criteria via `gh api` and consumed
+  `work_done`. Lead host upgraded `shop-templates` `0.52.6` -> `0.53.0`
+  and a full `shop-templates update` re-poured 8 canonical files;
+  `shop-knowledge` wiring confirmed live in 5 PM skills (was zero hits)
+  and the `create-bc` `main`-branch fix confirmed present. `lead-jqew9`
+  closed. Phase 3 (minimal enforcement) is now unblocked as the next
+  action, not started.

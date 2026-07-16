@@ -182,6 +182,24 @@ scenario-to-BC mapping. Your authoring sufficiency check (below) is what
 keeps the BC's clarify-default posture from firing on under-specified
 scenarios.
 
+**Before authoring or sharpening a scenario, establish what already exists
+in the corpus via the installed `scenarios` CLI — not via ad-hoc grep.**
+Before you author or sharpen a scenario, establish whether an equivalent or
+conflicting scenario already exists in the `features/` corpus by invoking
+the installed `scenarios` CLI's own corpus-wide commands — such as
+`scenarios journal rebuild` over the full `features/` tree, or
+`scenarios validate --aggregate` (whose `--aggregate` flag treats the
+positional argument as a corpus directory) — NOT by a hand-scoped `Grep`
+invocation
+against a single assumed file or directory. A hand-scoped single-file `Grep`
+search is **insufficient** to establish what exists corpus-wide. Plain
+`Grep` or `Read` **is** permitted for reading the full text of a specific,
+already-identified scenario — distinguish that targeted read from
+corpus-wide discovery, which the aggregate `scenarios` commands own. Treat a
+hand-scoped grep that misses a sibling scenario file as a **defect in the
+retrieval method**, not an acceptable outcome: the missed sibling is how a
+duplicate or conflicting scenario slips past authoring.
+
 ### Respond to BC `clarify` (scope, vocabulary)
 
 When a BC-shop emits a `clarify` whose question is about scope ("is X in

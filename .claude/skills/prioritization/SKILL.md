@@ -60,6 +60,17 @@ Declare the mode (`sequencing`) in the session record and list the prioritizatio
 record as the produced artifact. Once ratified, it governs dispatch order until
 superseded.
 
+### 5. Validate the prioritization record against the knowledge BC before closing
+
+The prioritization record is one of the knowledge BC's eight recognized artifact
+types, so it is gated. Before or while producing it, fetch the canonical template
+with `shop-knowledge template prioritization-record` so the record is shaped to
+the typedef the knowledge BC governs. Before the session closes, validate the
+produced `prioritization-record` document against its schema by running
+`shop-knowledge validate`; if `shop-knowledge validate` reports a validation
+failure, surface that failure to the product authority rather than closing the
+session silently — a document that fails validation is not a closed artifact.
+
 ## Boundaries
 
 The lead-pm's prioritization records order the dispatch queue; the Architect's

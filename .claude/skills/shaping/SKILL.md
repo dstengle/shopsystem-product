@@ -64,6 +64,17 @@ When appetite, shape, boundaries, and rabbit holes are pinned down, the candidat
 is **shaped**. Declare the mode (`shaping`) in the session record and list the
 shaped candidate as the produced artifact.
 
+### 6. Validate the candidate against the knowledge BC before closing
+
+The candidate is one of the knowledge BC's eight recognized artifact types, so it
+is gated. Before or while producing it, fetch the canonical template with
+`shop-knowledge template candidate` so the candidate is shaped to the typedef the
+knowledge BC governs. Before the session closes, validate the produced
+`candidate` document against its schema by running `shop-knowledge validate`; if
+`shop-knowledge validate` reports a validation failure, surface that failure to
+the product authority rather than closing the session silently — a document that
+fails validation is not a closed artifact.
+
 ## Boundaries
 
 The lead-pm owns the why and the shape; the lead-po owns the commitment (brief ->

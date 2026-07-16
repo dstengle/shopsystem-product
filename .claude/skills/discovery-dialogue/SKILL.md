@@ -64,6 +64,17 @@ When the conversation has surfaced a problem worth carrying forward, write the
 the open questions that remain. Declare the mode (`discovery`) in the session
 record and list the intent record as the produced artifact.
 
+### 5. Validate the intent record against the knowledge BC before closing
+
+The intent record is one of the knowledge BC's eight recognized artifact types,
+so it is gated. Before or while producing it, fetch the canonical template with
+`shop-knowledge template intent-record` so the record is shaped to the typedef
+the knowledge BC governs. Before the session closes, validate the produced
+`intent-record` document against its schema by running `shop-knowledge validate`;
+if `shop-knowledge validate` reports a validation failure, surface that failure
+to the product authority rather than closing the session silently — a document
+that fails validation is not a closed artifact.
+
 ## Altitude
 
 Stay in the problem space. No env var names, no schemas, no CLI flags. A

@@ -56,6 +56,22 @@ publishable, however true it may feel.
 Declare the mode (`communicating`) in the session record and list the **README,
 site, or current-state revision** as the produced or revised artifact.
 
+### 5. Validate a current-state revision against the knowledge BC before closing
+
+The three outward renderings do not close the same way. The README and site
+renderings are not among the knowledge BC's eight recognized artifact types, so
+the README and site closing branches do not require `shop-knowledge validate`;
+they close on the traceability pass alone.
+
+Only the current-state-revision closing branch requires `shop-knowledge
+validate`, because the current-state document is one of those eight recognized
+artifact types. Before or while producing it, fetch the canonical template with
+`shop-knowledge template current-state`; before the session closes, validate the
+produced `current-state` document against its schema by running
+`shop-knowledge validate`. If `shop-knowledge validate` reports a validation
+failure, surface that failure to the product authority rather than closing the
+session silently — a document that fails validation is not a closed artifact.
+
 ## Boundaries
 
 The README and site are living documents the lead-pm stewards and revises in
