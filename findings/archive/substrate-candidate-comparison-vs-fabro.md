@@ -1,3 +1,5 @@
+> **ARCHIVED** — historical spike record, not current state (ADR-065). Superseded by: informed the fabro-adoption decision recorded in ADR-048; no dedicated graduation ADR of its own.
+
 # Orchestration-substrate evaluation — five candidates vs. the fabro baseline
 
 Initiative: lead-odqd · eval bead: lead-8mho

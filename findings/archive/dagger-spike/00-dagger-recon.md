@@ -1,3 +1,5 @@
+> **ARCHIVED** — historical spike record, not current state (ADR-065). Superseded by: ADR-052, ADR-053, ADR-054, ADR-055 (dagger as build/test substrate).
+
 # Slice 0 — dagger recon (synthesis)
 
 **Date:** 2026-07-02 · **Branch:** `dagger-spike` · **Epic:** lead-fzxt · **Track:** odqd

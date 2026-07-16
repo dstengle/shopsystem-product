@@ -1,3 +1,5 @@
+> **ARCHIVED** — historical spike record, not current state (ADR-065). Superseded by: no dedicated graduation ADR — throwaway WS-0/PDR-018 MVP-gate iteration; the MVP gate itself closed in a later iteration under the same epic (lead-jdfb).
+
 # Findings — dummyco instantiation spike, iteration 6 (THE MVP gate: BC launch + §6.4 loop)
 
 **Spike bead:** lead-jdfb (WS-0, PDR-018 — THE MVP gate). **Iteration:** 6 (the

@@ -1,3 +1,5 @@
+> **ARCHIVED** — historical spike record, not current state (ADR-065). Superseded by: ADR-045, ADR-049 (agent-vault as sole credential surface).
+
 # Spike: agent-vault replacing the host-filesystem credential bind-mount (lead-jkwo)
 
 Initiative lead-odqd. Throwaway spike, 2026-06-09. **Verdict: CONFIRM (go-with-caveats).** Real experiment executed end-to-end against a throwaway agent-vault broker + a `spike-` BC on the `shopsystem` network; live fleet and real credentials never touched. (The structured-emit stage of the workflow agent hung on a large schema; this doc is salvaged from the agent's transcript — the experiment itself completed and all assertions passed.)

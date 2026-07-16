@@ -1,3 +1,5 @@
+> **ARCHIVED** — historical spike record, not current state (ADR-065). Superseded by: informed the fabro-adoption decision recorded in ADR-048; no dedicated graduation ADR of its own.
+
 # Spike: moving the shop-msg bd-first 2PC into separate fabro steps (lead-f6ta)
 
 Initiative lead-odqd. Throwaway spike, 2026-06-09. **Verdict: go-with-caveats.** Real experiment: installed fabro 0.254.0, stood up a local fabro server (non-interactive, no LLM, dev-token auth), and ran a throwaway harness modelling ADR-012's three-step outbox protocol (bd `outbox_pending`+fsync → postgres/SQLite deposit → bd `dispatched`) as distinct fabro nodes against a stealth bd Dolt store + a SQLite outbox carrying ADR-012's exact `UNIQUE(work_id,direction,shop)` backstop. Live shopsystem postgres/fleet untouched.

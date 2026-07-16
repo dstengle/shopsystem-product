@@ -1,3 +1,5 @@
+> **ARCHIVED** — historical spike record, not current state (ADR-065). Superseded by: ADR-048, ADR-050, ADR-051 (fabro as orchestration substrate + engage lifecycle + DOT-loop graph contract).
+
 # Slice 0 — Fabro recon synthesis
 
 **Epic:** lead-6k1r (Fabro spike). **Date:** 2026-07-01. **Branch:** `fabro-spike`.
