@@ -53,10 +53,10 @@ Feature: shopsystem-knowledge — frontmatter schema conformance (typed artifact
     Then it reports the artifact as non-conforming
     And the diagnosis names updated as the missing required field
 
-  @scenario_hash:c07e8db63b3c1b42
+  @scenario_hash:73c7c146e1fd5dd3
   Scenario: a status value outside the type's recognized enum is reported non-conforming and names the offending value
     Given a candidate artifact whose frontmatter carries a status value of "in-progress"
-    And "in-progress" is not a member of the candidate status enum exploring, shaped, briefed, parked or rejected
+    And "in-progress" is not a member of the candidate status enum exploring, shaped, briefed, committed, parked or rejected
     When the knowledge context validates the artifact's frontmatter against the schema
     Then it reports the artifact as non-conforming for an unrecognized status
     And the diagnosis names the offending value "in-progress"
