@@ -2,7 +2,7 @@
 type: candidate
 id: cand-005
 title: Close the knowledge/schema system's precondition chain, end to end
-status: shaped
+status: committed
 created: 2026-07-16
 updated: 2026-07-16
 authors: [dstengle, "Claude (acting lead-pm)"]
@@ -158,8 +158,13 @@ command.
 
 ## Resolution
 
-(open — appetite shape (full chain vs. foundation-first) and Phase 1
-direction awaiting product-authority decision)
+**Committed 2026-07-16** by product authority (dstengle): "Fund it all" —
+full-chain appetite, all five phases, not foundation-first. Phase 1's
+direction (fix the typedef vs. restructure practice) remains an
+Architect feasibility call, not resolved by this ratification — the
+next action is dispatching that probe. Each phase must still be verified
+landed, not just dispatched, before the next starts, per this
+candidate's own Rabbit holes.
 
 ## Changelog
 
@@ -167,3 +172,5 @@ direction awaiting product-authority decision)
   `intent-007`, in direct response to the product authority's
   precondition-chain question following the `ADR-048`/schema-checker
   check earlier the same session.
+- 2026-07-16 committed by product authority: full-chain appetite,
+  routed to Architect for Phase 1 feasibility.
