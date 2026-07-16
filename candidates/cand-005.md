@@ -141,8 +141,20 @@ structure now or treat `Verbatim anchors` as sufficient partial coverage.
 was a content bug in that one document, not a typedef defect; just fix
 the document. Also folds in, same phase (structural gaps found alongside,
 not requiring new typedef work, just authorship/action): create a
-completion-journal artifact for PM sessions (criterion 6), revise
-`current-state.md` past its seed placeholders (criterion 7).
+completion-journal artifact for PM sessions (criterion 6 — origin
+still unconfirmed, see Rabbit holes), revise `current-state.md` past its
+seed placeholders (criterion 7, partially done — see Changelog), and
+document the artifact lifecycle in graph form (criterion 1 — **done**,
+`artifact-lifecycle.md`).
+
+**Phase 1 status: dispatched, not yet landed.** PO authored 19 pinned
+scenarios across 5 files; Architect independently re-verified all 19
+hash reproductions and the ADR-064 D1/D2-compliant retirement of
+`c07e8db63b3c1b42`→`73c7c146e1fd5dd3`, then dispatched `assign_scenarios`
+to `shopsystem-knowledge` as `lead-x53ez` (2026-07-16). Per this
+candidate's own sequencing discipline, Phase 2 does not start until
+`lead-x53ez`'s `work_done` lands and is independently verified — not
+merely dispatched.
 
 **Phase 2 — Release and repour.** Get `lead-5msa9.2`'s wiring (and the
 other two fixes already riding the same unreleased range, per
@@ -260,3 +272,10 @@ candidate's own Rabbit holes.
   exercised prioritizations/, a scenario stuck on a false premise).
   Phase 1 now explicitly folds in completion-journal creation and
   current-state.md revision alongside the typedef work.
+- 2026-07-16 authored `artifact-lifecycle.md` (criterion 1 done) and
+  linked it from `current-state.md`'s Lead shop section.
+- 2026-07-16 PO authored 19 pinned scenarios (5 files); Architect
+  verified and dispatched `assign_scenarios` to `shopsystem-knowledge`
+  as `lead-x53ez`, after one round of catching and fixing a real ADR-064
+  D2 provenance-comment gap in the PO's own retirement of
+  `c07e8db63b3c1b42`. Phase 1 now dispatched, awaiting `work_done`.
