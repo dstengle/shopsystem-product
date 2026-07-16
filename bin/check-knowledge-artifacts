@@ -1,0 +1,109 @@
+#!/usr/bin/env bash
+# bin/check-knowledge-artifacts — minimal enforcement for the knowledge/schema
+# gate (cand-005 Phase 3, lead-repo-owned local tooling, NOT shop-templates
+# rendered furniture — see cand-005.md Phase 3 status for the Architect's
+# determination that this is local authorship, distinct from bin/doctor which
+# IS poured package data).
+#
+# Runs `shop-knowledge validate` (shipped shopsystem-knowledge, lead-x53ez)
+# over every staged file under the six PM-authored artifact directories plus
+# current-state.md, and surfaces failures rather than letting them close
+# silently — the exact gap cand-005's Problem #5 named ("Four non-conforming
+# files were committed this same session with nothing stopping it").
+#
+# SCOPE DISCIPLINE (deliberate, not an oversight): this is Phase 3, not Phase 5
+# (the legacy-corpus migration). As of 2026-07-16, 125 of 136 existing files
+# under these directories fail `shop-knowledge validate` — almost entirely
+# pre-existing debt Phase 5 is scoped to fix, not a Phase 3 regression. A
+# blanket hard-block on ANY touch to these directories would make this repo's
+# git workflow unusable today. So the block/warn split is by git status:
+#
+#   - NEWLY ADDED file (git status "A") that fails validate -> BLOCK (exit
+#     non-zero). A brand-new artifact has no excuse to be non-conforming now
+#     that Phase 1 fixed the typedefs it's checked against.
+#   - MODIFIED pre-existing file (any other status) that fails validate ->
+#     WARN (printed, does not block). Fixing the legacy corpus is Phase 5's
+#     job; this hook does not silently expand into that migration.
+#
+# GATED DIRECTORIES: adr/ pdr/ briefs/ candidates/ sessions/ intent/
+# current-state.md — the same six-plus-one artifact surface cand-005 and
+# artifact-lifecycle.md name throughout.
+#
+# USAGE:
+#   bin/check-knowledge-artifacts              # check files staged for commit
+#   bin/check-knowledge-artifacts <file> ...   # check specific files directly
+#     (direct-file mode treats every file as if newly-added -> always blocking
+#     on failure; used for ad-hoc / CI invocation outside a git-staged context)
+#
+# INSTALL AS A PRE-COMMIT HOOK:
+#   this script IS the hook body; .git/hooks/pre-commit is a thin wrapper that
+#   execs it (see that file's own header). Re-run this install step after a
+#   fresh clone, since .git/hooks/ is not tracked by git:
+#     ln -sf ../../bin/check-knowledge-artifacts .git/hooks/pre-commit
+#     chmod +x .git/hooks/pre-commit
+set -uo pipefail
+
+: "${DOCTOR_SHOP_KNOWLEDGE:=shop-knowledge}"
+
+_GATED_RE='^(adr|pdr|briefs|candidates|sessions|intent)/[^/]+\.md$|^current-state\.md$'
+
+# Resolve the file list. Direct-file-argument mode (CI / ad-hoc) treats every
+# passed file as blocking-on-failure; staged mode (no args, the real pre-commit
+# path) reads `git diff --cached --name-status` and splits by git status.
+declare -a BLOCKING_CANDIDATES=()
+declare -a WARN_CANDIDATES=()
+
+if [[ $# -gt 0 ]]; then
+  for f in "$@"; do
+    if [[ "$f" =~ $_GATED_RE ]]; then
+      BLOCKING_CANDIDATES+=("$f")
+    fi
+  done
+else
+  while IFS=$'\t' read -r status path; do
+    [[ -z "$path" ]] && continue
+    [[ "$path" =~ $_GATED_RE ]] || continue
+    if [[ "$status" == "A" ]]; then
+      BLOCKING_CANDIDATES+=("$path")
+    else
+      WARN_CANDIDATES+=("$path")
+    fi
+  done < <(git diff --cached --name-status --diff-filter=ACM 2>/dev/null)
+fi
+
+any_block_fail=0
+any_warn_fail=0
+
+for f in "${BLOCKING_CANDIDATES[@]}"; do
+  [[ -f "$f" ]] || continue
+  out="$("$DOCTOR_SHOP_KNOWLEDGE" validate "$f" 2>&1)"
+  rc=$?
+  if (( rc != 0 )); then
+    any_block_fail=1
+    printf 'BLOCK: %s\n' "$f"
+    printf '%s\n' "$out" | sed 's/^/  /'
+  fi
+done
+
+for f in "${WARN_CANDIDATES[@]}"; do
+  [[ -f "$f" ]] || continue
+  out="$("$DOCTOR_SHOP_KNOWLEDGE" validate "$f" 2>&1)"
+  rc=$?
+  if (( rc != 0 )); then
+    any_warn_fail=1
+    printf 'WARN (pre-existing, Phase 5 territory — not blocked): %s\n' "$f"
+    printf '%s\n' "$out" | sed 's/^/  /'
+  fi
+done
+
+if (( any_block_fail )); then
+  printf '\ncheck-knowledge-artifacts: BLOCKED — one or more newly-added artifacts failed shop-knowledge validate.\n'
+  printf 'Fix the reported violations, or run `shop-knowledge template <type>` to regenerate the correct shape.\n'
+  exit 1
+fi
+
+if (( any_warn_fail )); then
+  printf '\ncheck-knowledge-artifacts: modified pre-existing artifact(s) above still fail shop-knowledge validate (pre-existing debt, not blocking — see cand-005 Phase 5).\n'
+fi
+
+exit 0

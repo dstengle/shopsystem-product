@@ -232,6 +232,98 @@ gate host, currently absent from this repo) needs an Architect check on
 whether a correct Phase 2 pour already brings it, or whether it needs
 separate action.
 
+**Phase 3 status: landed and verified (2026-07-16).** Architect first
+determined what Phase 2 already delivered vs. what remained. Read all 5
+newly-wired skill files' actual `shop-knowledge` bodies (not just
+grep-counted them): `discovery-dialogue`, `option-tradeoff`,
+`prioritization`, `product-narrative`, and `shaping` each genuinely
+instruct fetching the canonical template (`shop-knowledge template
+<type>`) and, before session close, running `shop-knowledge validate`
+against the produced artifact and surfacing a failure to the product
+authority rather than closing silently — real enforcement instructions,
+not passing mentions. This already satisfies the "skills that call the
+validator" half of Phase 3's "at least one of" framing; not duplicated.
+
+`bin/doctor` and `.github/` were confirmed still absent (`ls bin/`,
+`ls .github/`). Checked ADR-047 and its anchor PDR-024 directly rather
+than guessing: PDR-024 D1 designates `bin/doctor` as
+**shop-templates-rendered** ops furniture, rendered at `bootstrap` time,
+product-neutral (sources `bin/ops-coordinates`, no per-shop templating).
+Confirmed via `pip show -f shop-templates`: the file already ships as
+installed package data at `shop_templates/templates/ops/doctor` in the
+now-installed `0.53.0`, and its embedded scenario references
+(`a6f8c0656a9e1cd9`/`f55aa51f4bd138b3`/`5cf88671d3fab25b`/
+`027a4d836bb1ae43`) match this repo's own `features/shopsystem-templates/
+ops_doctor_connectivity_checks.feature` (`@origin:lead-q3r1`) exactly —
+i.e. this capability was already dispatched and landed upstream; its
+absence here is solely because `shop-templates update` deliberately does
+not touch `bin/` furniture (the same gap Phase 2 flagged as an advisory
+for `bin/shop-shell`/`bin/agent-vault-provision`/`bin/agent-vault-check`).
+So bringing it here required **neither** a further shop-templates
+dispatch **nor** new local authorship — it required pouring the
+byte-identical, already-released package-data file into place (verified
+`diff` against the installed copy: identical), which the Architect did:
+`bin/doctor` now present, executable, and independently verified
+behaviorally (not just presence) via its own dependency-injection knobs
+(`DOCTOR_PSQL`/`DOCTOR_CURL`/`DOCTOR_JQ`/`DOCTOR_FEATURES_DIR`) — an
+all-pass fixture run correctly emits 4 `[PASS]` lines and exits 0, an
+all-fail fixture run correctly emits 3 named `[FAIL]` lines each with a
+remediation hint plus an aggregate `[FAIL]` naming the failed checks and
+exits 1, and a run against this repo's real `features/`/`bc-manifest.yaml`
+correctly surfaces a genuine pre-existing `E_UNKNOWN_ORIGIN` scenario-
+corpus violation (`agent_vault_broker_integration.feature`, `@origin`
+`adr-028` unresolved) — pre-existing debt outside this phase's scope, not
+actioned here. `.github/` remains absent; no CI surface exists in this
+repo and none was added — the pre-commit hook below is the chosen vehicle
+per Phase 3's own "at least one of" framing.
+
+Built the second, still-missing half: a minimal git pre-commit hook.
+Added `bin/check-knowledge-artifacts` (lead-repo-owned local tooling,
+deliberately NOT shop-templates-rendered — this enforcement wiring is
+specific to this candidate's remediation, unlike `bin/doctor` which is
+poured furniture) and installed it as `.git/hooks/pre-commit` (a symlink
+back to the tracked script, since `.git/hooks/` itself is untracked —
+the tracked script's own header documents the one-line reinstall command
+for a fresh clone). The script runs `shop-knowledge validate` over
+staged files under `adr/ pdr/ briefs/ candidates/ sessions/ intent/` and
+`current-state.md`, split by git status: a **newly-added** file that
+fails validate **blocks** the commit (exit non-zero, listing every
+violation); a **modified pre-existing** file that fails validate
+**warns** (printed, does not block). This split is deliberate, not a
+missed edge case: empirically, 125 of 136 currently-tracked files across
+these directories fail `shop-knowledge validate` today (checked directly,
+not estimated) — almost entirely pre-existing debt Phase 5 (the legacy
+corpus migration) is scoped to fix. A blanket hard block would make this
+repo's git workflow unusable before Phase 5 lands; blocking only
+newly-added non-conforming artifacts closes exactly the gap cand-005's
+Problem #5 named ("Four non-conforming files were committed this same
+session with nothing stopping it") without silently expanding into
+Phase 5's migration scope.
+
+Verified the hook against both a failing and a passing case, in both its
+direct-file mode and its real git-staged mode (using `git add`/`git
+reset` scratch fixtures on throwaway files, reverted before commit — no
+residue): a newly-added non-conforming fixture (copied `intent-record`
+template scaffold, missing required frontmatter) correctly **blocks**
+with exit 1 and a full violation list; a newly-added conforming fixture
+(a real `intent-record` instance with a corrected id) correctly passes
+with exit 0 and no false positive; staging a **modification** to an
+already-tracked, already-non-conforming file (`adr/047`, which has no
+YAML frontmatter, consistent with the pre-existing-ADR-corpus gap Phase 1
+did not touch) correctly **warns** without blocking, exiting 0. No CI
+workflow was added (`.github/` stays absent) — the pre-commit hook is the
+concrete Phase 3 vehicle chosen, per its own "at least one of" framing,
+and this repo has no CI runner configured to make a `.github/` addition
+actionable yet.
+
+Committed `bin/doctor`, `bin/check-knowledge-artifacts`, and this
+`cand-005.md` update. (`.git/hooks/pre-commit` itself is a local
+per-clone symlink, not committed — `.git/hooks/` is untracked by design;
+the reinstall command lives in the tracked script's header.) Phase 4
+(the coherence gate) is next — named as the largest, least-specified
+phase, likely warranting its own brief once reached, per this candidate's
+own Rabbit holes — not started by this dispatch.
+
 **Phase 4 — Build the actual coherence gate.** PDR-032's cross-artifact
 gate rules 4-8 (link resolution, bidirectional supersession,
 `incorporates`-claims, lifecycle conditions) have no implementation
@@ -357,3 +449,21 @@ candidate's own Rabbit holes.
   and the `create-bc` `main`-branch fix confirmed present. `lead-jqew9`
   closed. Phase 3 (minimal enforcement) is now unblocked as the next
   action, not started.
+- 2026-07-16 Phase 3 landed and verified: confirmed the 5 Phase-2-wired
+  PM skills already satisfy the "skills call the validator" half of
+  Phase 3 (read their bodies directly, not just grep-counted). Confirmed
+  via ADR-047/PDR-024 that `bin/doctor` is already-released
+  shop-templates package data (matches this repo's own
+  `lead-q3r1`-dispatched `ops_doctor_connectivity_checks.feature`
+  hashes exactly) absent here only because `shop-templates update`
+  doesn't touch `bin/`; poured it byte-identical from the installed
+  package and verified it behaviorally (pass/fail fixture runs, plus a
+  real run against this repo surfacing a genuine pre-existing scenario-
+  corpus violation, out of scope here). Built and installed
+  `bin/check-knowledge-artifacts` as a git pre-commit hook: blocks
+  newly-added non-conforming knowledge artifacts, warns (non-blocking)
+  on modified pre-existing ones, deliberately not a blanket hard block
+  given 125/136 existing files in-scope still fail validate (Phase 5
+  territory). Verified against real failing/passing fixtures in both
+  direct-file and git-staged modes. Phase 4 (the coherence gate) is next,
+  not started by this dispatch.

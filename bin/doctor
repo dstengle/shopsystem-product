@@ -1,0 +1,235 @@
+#!/usr/bin/env bash
+# bin/doctor — operator connectivity & credential diagnostic (shop-owned,
+# PDR-003 path F; lead-q3r1 / tmpl-e44).
+#
+# A one-shot health check a lead-shop operator runs to get ONE clear pass/fail
+# verdict on the three things a brokered Claude session needs before it can do
+# any work:
+#   1. SHOPMSG_DSN / postgres      — the messaging DB is configured and reachable.
+#   2. agent-vault broker / CA trust — the broker is reachable AND its CA is
+#      trusted by the leaf trust store.
+#   3. CLAUDE_OAUTH                 — the Claude credential is present and in a
+#      refreshable/connected state.
+# Each check emits a NAMED line carrying an explicit [PASS]/[FAIL] status and,
+# on failure, a `hint:` naming the corrective action. doctor then prints an
+# aggregate diagnosis DERIVED from the individual results: overall pass requires
+# EVERY check to pass; any single failure forces overall fail (naming which
+# check(s) failed) and a non-zero exit.
+#
+# PRODUCT-NEUTRAL: every product-scoped coordinate (the broker address, ports)
+# is SOURCED from bin/ops-coordinates (ADR-043 Phase 1) — no slug literal is
+# baked in here.
+#
+# DEPENDENCY-INJECTED PROBES: the three external probes resolve by name
+# ($DOCTOR_PSQL=psql, $DOCTOR_CURL=curl, $DOCTOR_JQ=jq) so a test (or an operator
+# with an alternative client) can override them without editing this script.
+#
+# NON-ABORTING per check: doctor deliberately does NOT use `set -e`. A failing
+# probe downgrades to a [FAIL] check line — it never aborts before the remaining
+# checks run — so the operator always sees the full picture in one pass. The
+# overall verdict drives the FINAL exit code.
+set -uo pipefail
+
+# Source the single ops-coordinates artifact — the broker address and ports come
+# from the OPS_* variables defined there.
+source "$(dirname "${BASH_SOURCE[0]}")/ops-coordinates"
+
+# Overridable external probe commands (dependency injection for tests; real
+# operators get the standard clients).
+: "${DOCTOR_PSQL:=psql}"
+: "${DOCTOR_CURL:=curl}"
+: "${DOCTOR_JQ:=jq}"
+: "${DOCTOR_SCENARIOS:=scenarios}"
+
+# Scenario-coherence inputs (ADR-047 / ADR-056 D8). The scenario corpus, the
+# @bc/@service manifest, and the @origin index are LAUNCHER-PROVISIONED
+# artifacts (findings/scenario-integrity 01-02) — this rendered diagnostic
+# references their PROVISIONED paths through env-overridable parameters rather
+# than baking in any one shop's layout. The conventional provisioned defaults
+# resolve against the shop root (the dir that contains bin/); a launcher that
+# provisions elsewhere exports the DOCTOR_* override before running doctor.
+_DOCTOR_SHOP_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+: "${DOCTOR_FEATURES_DIR:=${_DOCTOR_SHOP_ROOT}/features}"
+: "${DOCTOR_BC_MANIFEST:=${_DOCTOR_SHOP_ROOT}/bc-manifest.yaml}"
+: "${DOCTOR_ORIGIN_INDEX:=${_DOCTOR_SHOP_ROOT}/.scenarios/origin-index}"
+
+# Network probe budget (seconds).
+DOCTOR_CONNECT_TIMEOUT="${DOCTOR_CONNECT_TIMEOUT:-5}"
+DOCTOR_MAX_TIME="${DOCTOR_MAX_TIME:-10}"
+
+# Explicit, greppable status tokens. "[PASS]" contains no "FAIL" and vice-versa,
+# so each check line carries an unambiguous status.
+_PASS="[PASS]"
+_FAIL="[FAIL]"
+
+# Names of the checks that FAILED, in run order — the single source the aggregate
+# diagnosis is derived from (027a4d836bb1ae43).
+FAILED_CHECKS=()
+
+emit_pass() {  # <check-name> <detail>
+  printf '%s %s — %s\n' "$_PASS" "$1" "$2"
+}
+
+emit_fail() {  # <check-name> <detail> <remediation-hint>
+  printf '%s %s — %s    hint: %s\n' "$_FAIL" "$1" "$2" "$3"
+  FAILED_CHECKS+=("$1")
+}
+
+# -- Check 1: SHOPMSG_DSN / postgres (a6f8c0656a9e1cd9) ----------------------
+# Pass iff SHOPMSG_DSN is set AND the product postgres answers at that DSN. The
+# fail line names the corrective action: an unset DSN -> "set SHOPMSG_DSN"; a set
+# but unreachable DSN -> "bring up the product postgres".
+check_shopmsg_dsn() {
+  local name="SHOPMSG_DSN / postgres"
+  if [[ -z "${SHOPMSG_DSN:-}" ]]; then
+    emit_fail "$name" \
+      "SHOPMSG_DSN is not set" \
+      "set SHOPMSG_DSN to the product postgres DSN (then bring up the product postgres: docker compose up -d postgres)"
+    return 1
+  fi
+  if "$DOCTOR_PSQL" "$SHOPMSG_DSN" -tAc 'SELECT 1' >/dev/null 2>&1; then
+    emit_pass "$name" "SHOPMSG_DSN is set and the product postgres is reachable at that DSN"
+    return 0
+  fi
+  emit_fail "$name" \
+    "SHOPMSG_DSN is set but the product postgres is not reachable at that DSN" \
+    "bring up the product postgres (docker compose up -d postgres) or correct SHOPMSG_DSN"
+  return 1
+}
+
+# -- Check 2: agent-vault broker / CA trust (f55aa51f4bd138b3) ---------------
+# Pass iff the broker is reachable AND its CA is trusted by the leaf trust store.
+# The cause is DERIVED from two probes against the SAME broker HTTPS endpoint,
+# differing only in TLS verification:
+#   * reachability — a `-k` (insecure) connect that ignores cert trust;
+#   * CA trust     — a verifying connect WITHOUT `-k`.
+# If the insecure connect fails the broker is UNREACHABLE; if it succeeds but the
+# verifying connect fails the broker is reachable but its CA is UNTRUSTED. This
+# is exactly how real curl reports the two cases (connect failure vs SSL cert
+# error), so the fail line names the right corrective action for each cause.
+check_agent_vault() {
+  local name="agent-vault broker / CA trust"
+  # Derive the broker HTTPS endpoint (host from OPS_BROKER_ADDR, the proxy port
+  # whose CA the leaf must trust) unless a probe target is supplied.
+  local host="${OPS_BROKER_ADDR#*://}"
+  host="${host%%/*}"
+  host="${host%%:*}"
+  local url="${DOCTOR_BROKER_URL:-https://${host}:${OPS_VAULT_PROXY_PORT}/}"
+
+  if ! "$DOCTOR_CURL" -sS -k --connect-timeout "$DOCTOR_CONNECT_TIMEOUT" \
+        --max-time "$DOCTOR_MAX_TIME" -o /dev/null "$url" >/dev/null 2>&1; then
+    emit_fail "$name" \
+      "the agent-vault broker is unreachable at ${url}" \
+      "bring up the agent-vault broker (docker compose up -d agent-vault) and check AGENT_VAULT_ADDR / the broker proxy port"
+    return 1
+  fi
+  if ! "$DOCTOR_CURL" -sS --connect-timeout "$DOCTOR_CONNECT_TIMEOUT" \
+        --max-time "$DOCTOR_MAX_TIME" -o /dev/null "$url" >/dev/null 2>&1; then
+    emit_fail "$name" \
+      "the agent-vault broker is reachable but its CA is not trusted by the leaf trust store" \
+      "install/trust the broker CA in the leaf trust store (re-run bin/shop-shell so it delivers the broker CA PEM, then update-ca-certificates)"
+    return 1
+  fi
+  emit_pass "$name" "the agent-vault broker is reachable and its CA is trusted by the leaf"
+  return 0
+}
+
+# -- Check 3: CLAUDE_OAUTH refreshable/connected (5cf88671d3fab25b) ----------
+# Pass iff CLAUDE_OAUTH is present AND in a refreshable/connected state. The
+# credential value is the oauth JSON object bin/agent-vault-approve-claude
+# populates; a populated, non-empty refresh token is what makes it refreshable
+# by construction (lead-al1r), so an absent/empty value or a value carrying no
+# refresh token FAILS, with a hint to re-run the approve-claude provisioning.
+check_claude_oauth() {
+  local name="CLAUDE_OAUTH"
+  local hint="re-run the approve-claude provisioning (bin/agent-vault-approve-claude) to restore a non-empty refreshable credential"
+  local val="${CLAUDE_OAUTH:-}"
+  if [[ -z "$val" ]]; then
+    emit_fail "$name" "CLAUDE_OAUTH is absent or empty" "$hint"
+    return 1
+  fi
+  local refresh
+  refresh="$(printf '%s' "$val" | "$DOCTOR_JQ" -r '(.refresh_token // .refreshToken) // empty' 2>/dev/null || true)"
+  if [[ -z "$refresh" ]]; then
+    emit_fail "$name" \
+      "CLAUDE_OAUTH is present but not in a refreshable/connected state (no refresh token)" \
+      "$hint"
+    return 1
+  fi
+  emit_pass "$name" "CLAUDE_OAUTH is present and in a refreshable, connected state"
+  return 0
+}
+
+# -- Check 4: scenario coherence (ADR-047 / ADR-056 D8) ---------------------
+# Pass iff the scenario corpus is schema-conformant per the v0.3.1
+# system-consistency gate: `scenarios validate --aggregate <features-dir>
+# --manifest <manifest> --origin-index <origin-index>` exits 0. The gate goes
+# RED (non-zero) on ANY violation — E_* per-file schema codes, a transitional
+# @bc:unassigned (W_BC_UNASSIGNED) or @origin:unresolved (W_ORIGIN_UNRESOLVED)
+# marker, or a legacy .gherkin file remaining under the corpus
+# (E_STRAY_GHERKIN). This is what makes the operator's system-consistency
+# diagnostic ENFORCE ADR-056 (the defined end).
+#
+# GRACEFUL DEGRADATION: the manifest / origin-index / features-dir are
+# launcher-provisioned. On a shop where the corpus is not provisioned at all
+# (no features-dir or no manifest at the resolved paths) there is nothing to
+# validate, so the check reports PASS rather than false-failing an
+# unprovisioned shop. Once the launcher provisions the corpus, ANY violation
+# turns the check RED.
+check_scenario_coherence() {
+  local name="scenario coherence"
+  local hint="run 'scenarios validate --aggregate ${DOCTOR_FEATURES_DIR} --manifest ${DOCTOR_BC_MANIFEST} --origin-index ${DOCTOR_ORIGIN_INDEX}' and resolve the reported violations (E_* per-file codes, W_BC_UNASSIGNED, W_ORIGIN_UNRESOLVED, E_STRAY_GHERKIN)"
+
+  if [[ ! -d "$DOCTOR_FEATURES_DIR" || ! -f "$DOCTOR_BC_MANIFEST" ]]; then
+    emit_pass "$name" \
+      "no scenario corpus is provisioned at ${DOCTOR_FEATURES_DIR} / ${DOCTOR_BC_MANIFEST} — nothing to validate (graceful skip)"
+    return 0
+  fi
+
+  local out rc
+  out="$("$DOCTOR_SCENARIOS" validate --aggregate "$DOCTOR_FEATURES_DIR" \
+          --manifest "$DOCTOR_BC_MANIFEST" --origin-index "$DOCTOR_ORIGIN_INDEX" 2>&1)"
+  rc=$?
+  if (( rc == 0 )); then
+    emit_pass "$name" \
+      "the scenario corpus is schema-conformant (scenarios validate --aggregate reports no violation)"
+    return 0
+  fi
+
+  # Non-zero: fold the first reported violation into the fail detail so the
+  # operator sees WHICH violation drove the gate RED without re-running.
+  local first
+  first="$(printf '%s\n' "$out" | head -n 1)"
+  emit_fail "$name" \
+    "the scenario corpus is non-conformant — scenarios validate --aggregate reported a violation: ${first}" \
+    "$hint"
+  return 1
+}
+
+# -- Aggregate diagnosis (027a4d836bb1ae43) ---------------------------------
+# Run every check, then print ONE aggregate verdict DERIVED from the individual
+# results: overall pass requires EVERY check to have passed (FAILED_CHECKS empty);
+# any single failed check forces overall fail, names which check(s) failed, and
+# drives a non-zero exit. The operator gets one clear pass/fail verdict without
+# ad-hoc diagnosing.
+main() {
+  check_shopmsg_dsn
+  check_agent_vault
+  check_claude_oauth
+  check_scenario_coherence
+
+  if (( ${#FAILED_CHECKS[@]} == 0 )); then
+    printf 'doctor: aggregate diagnosis — overall %s (all checks passed)\n' "$_PASS"
+    exit 0
+  fi
+
+  # Join the failed-check names with ", " for the verdict line.
+  local joined="" c
+  for c in "${FAILED_CHECKS[@]}"; do
+    if [[ -z "$joined" ]]; then joined="$c"; else joined="$joined, $c"; fi
+  done
+  printf 'doctor: aggregate diagnosis — overall %s (failed checks: %s)\n' "$_FAIL" "$joined"
+  exit 1
+}
+
+main "$@"
