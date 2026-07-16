@@ -54,6 +54,53 @@ isolation. None of that adds up to a working system, because:
    a typedef known to be wrong, adding an eleventh broken link instead
    of closing the chain.
 
+## Acceptance criteria
+
+Set by the product authority, verbatim, plus what direct investigation
+added:
+
+1. **There is a documented lifecycle flow for artifacts** — not just a
+   status enum per type, but documented valid transitions and, per type,
+   documented required structure. Currently fails: PDR-032/ADR-059 never
+   specify body-section content for any type, and `candidate`'s status
+   enum is itself missing `committed` — the value every real candidate,
+   including this one, uses to mean "ratified."
+2. **Artifacts are checked** — a tool exists (`shop-knowledge validate`,
+   shipped `lead-5msa9.1`) but nothing invokes it automatically, and nothing
+   in the PM-authoring path ever has.
+3. **The documented lifecycle is checked** — not just structure, but that
+   transitions are valid and that a "documented" lifecycle actually
+   exists to check against. Currently fails at the precondition: PDR-032's
+   lifecycle-condition gate rules (4-8) were scoped, never built.
+4. **The gate is passed** — no gate runs anywhere, automatically or
+   on-demand as a project ritual. Not close to passing even if it ran:
+   most of the corpus fails on first check.
+
+Additional gaps surfaced by this candidate's own investigation, not
+originally named but treated as in-scope:
+
+5. Per-type required structure is mostly **never formally specified**,
+   not merely drifted — confirmed by Architect Phase 1 work: `intent-record`
+   and `session-record` have zero governing scenarios for their body
+   structure; `candidate` has exactly one (`Verbatim anchors`, brief-018)
+   covering a fraction of its real structure, and that scenario's own
+   status-enum assumption is itself wrong; `pdr` has no real defect.
+6. **No completion journal exists for PM sessions** — every PM skill
+   instructs reading "the current-state doc and the completion journal"
+   before shaping; the latter has never been created. This precondition
+   has been silently unsatisfiable since PM mode launched.
+7. **`current-state.md` is still seed content** — three `<!-- Seed: -->`
+   placeholders remain despite `status: live`, undermining the one
+   document every session is told to ground itself in first.
+8. **`prioritizations/` has never been created** — zero instances, though
+   its typedef schema and PM skill both exist (already named in
+   `intent-005`; cross-referenced here, not duplicated).
+9. **A scenario can be pinned on a false premise and get silently stuck**
+   — `lead-ptr7a`/brief-018 was deadlocked on two identical non-answers
+   because its own premise (intent-record's typedef already had a
+   `Verbatim anchors` field) was false. Found and unstuck mid-investigation,
+   not by any mechanism designed to catch it.
+
 ## Appetite
 
 **Larger than originally assumed.** `cand-004` was shaped believing the
@@ -78,14 +125,21 @@ Five phases, strictly in dependency order — each phase's output is a
 precondition for the next, so none should start before the one before it
 has actually landed and been verified, not just dispatched.
 
-**Phase 1 — Typedef correctness.** Reconcile the `candidate`/
-`intent-record`/`session-record` typedefs against established practice.
-Direction (fix the typedef to match practice, vs. restructure practice to
-match the typedef) is an Architect feasibility call, not decided here —
-though the evidence (independently-authored instances agreeing with each
-other, disagreeing with the typedef) leans toward the typedef being the
-actual defect. `pdr`'s typedef is already close (two small field/enum
-gaps) and may not need the same depth of reconciliation.
+**Phase 1 — Typedef correctness.** Confirmed by Architect feasibility work
+(2026-07-16), sharper than originally scoped: `intent-record` and
+`session-record` need **PO-authored Gherkin from scratch** (`assign_scenarios`)
+— no scenario currently governs their body structure at all, so this is
+new requirements-authoring, not a bugfix. `candidate` needs a **targeted
+fix**: reconcile its one existing governing scenario's status enum to
+include `committed` (and whatever else the real status vocabulary turns
+out to need), plus a decision on whether to formally pin the rest of its
+structure now or treat `Verbatim anchors` as sufficient partial coverage.
+`pdr` needs **no schema fix** — its one gap (`PDR-034`'s `status: draft`)
+was a content bug in that one document, not a typedef defect; just fix
+the document. Also folds in, same phase (structural gaps found alongside,
+not requiring new typedef work, just authorship/action): create a
+completion-journal artifact for PM sessions (criterion 6), revise
+`current-state.md` past its seed placeholders (criterion 7).
 
 **Phase 2 — Release and repour.** Get `lead-5msa9.2`'s wiring (and the
 other two fixes already riding the same unreleased range, per
@@ -154,7 +208,26 @@ directly against real instances. `grep shop-knowledge` across all 8 poured
 (2026-07-14) touched only `lead-primer.md`. `.github/workflows`, `bin/
 doctor`: absent. `shop-knowledge --help`/bare invocation: only
 `template`/`schema`/`validate` subcommands exist, no gate/coherence
-command.
+command. `shop-knowledge schema adr`/`schema brief`/`schema
+prioritization-record`/`schema current-state`: all return valid schemas
+— type coverage exists for all 8 planned types, resolving one of
+`cand-004`'s open uncertainties (whether adr/pdr/brief typedefs exist at
+all — they do; whether they're *correct* is unverified). `find
+/workspace -iname prioritizations`: does not exist. `current-state.md`:
+3 `<!-- Seed: -->` markers remain.
+
+**2026-07-16 — Architect Phase 1 feasibility (`acf8d399a7d46a9af`):**
+re-verified installed `shop-knowledge` matches `shopsystem-knowledge`
+`main` HEAD (no drift). Read `pdr/032`/`adr/059` directly: neither
+specifies body-section content for any of the three types. Enumerated
+`features/shopsystem-knowledge/*.feature` via `scenarios journal rebuild`
+(not hand-grep, per this shop's own retrieval discipline): exactly one
+governing scenario for `candidate` (`Verbatim anchors`, brief-018,
+hashes `df3a4e715fad03a8`/`2e7f311162e627bc`/`917da713e6101b0d`), zero
+for `intent-record`/`session-record`, `decision-makers` already correctly
+pinned+enforced for `pdr` (`@scenario_hash:2363911877f9f657`). Found and
+unstuck a deadlocked prior thread (`lead-ptr7a`/brief-018) whose premise
+was falsified by the actual landed typedef.
 
 ## Resolution
 
@@ -174,3 +247,13 @@ candidate's own Rabbit holes.
   check earlier the same session.
 - 2026-07-16 committed by product authority: full-chain appetite,
   routed to Architect for Phase 1 feasibility.
+- 2026-07-16 revised, same session: Architect Phase 1 findings folded
+  in (intent-record/session-record need PO-authored scenarios from
+  scratch; candidate needs a targeted status-enum fix; pdr needed no
+  typedef fix). Acceptance criteria section added, restating the
+  product authority's four stated criteria plus five additional gaps
+  this candidate's own investigation surfaced (unspecified-not-drifted
+  structure, missing completion journal, stale current-state.md, never-
+  exercised prioritizations/, a scenario stuck on a false premise).
+  Phase 1 now explicitly folds in completion-journal creation and
+  current-state.md revision alongside the typedef work.
