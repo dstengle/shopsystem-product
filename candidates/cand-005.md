@@ -351,6 +351,32 @@ and lifecycle-transition-validity checking (as opposed to current-value
 validity, already covered by Phase 1) are named, deferred follow-ons, not
 dropped.
 
+**`lead-iohr` `work_done` arrived and was NOT accepted (2026-07-16).**
+All 34 `scenario_hashes` independently reproduced exactly against the 4
+on-disk feature files (no drift), and the BC's own 150-test suite is
+green — but behavioral verification against this repo's real corpus
+(installed `shopsystem-knowledge@69dd0cd10eac48da7d3c6350d49e4e48497a787e`
+on the lead host, then ran the installed `shop-knowledge-gate` command
+directly, per this shop's ADR-018 D1/D2 bar for a new CLI surface) found
+it fails both of brief-023's own named grounding cases (§6): PDR-034's
+`supersedes: [pdr-032]` edge is never evaluated at all — the corpus
+loader's `SUBDIR_TYPES` keys are `"pdrs"`/`"adrs"` (plural), not this
+repo's real `"pdr"`/`"adr"` directories, so PDR-034 itself (a real, fully
+typed file) is invisible to the loader — and `current-state.md`'s
+`incorporates: [pdr-032, pdr-033, adr-059]` is wrongly reported as 3
+`dangling-edge` findings instead of 3 `unverifiable-legacy` findings, a
+second, independent defect (the legacy-id derivation uses the raw
+filename stem, which matches the BC's own `<id>.md` synthetic test
+fixtures but not this repo's real numeric-slug legacy filenames like
+`pdr/032-knowledge-bc-owns-artifact-type-system.md`). Filed as `lead-cea24`
+(P1, full repro) and left `lead-iohr` open/annotated rather than closed.
+A same-work_id `mechanism_observation` (28/34 scenarios were already-
+pinned adoption, not new work — no defect) was filed as low-priority
+`lead-c46ug` per this shop's overnight-triage pattern, not actioned now.
+Both outbox rows consumed. **Phase 4 remains dispatched, not landed** —
+the next action is scoping and dispatching a fix for `lead-cea24`, not
+Phase 5.
+
 **Phase 5 — Migrate the legacy corpus.** `cand-004`/PDR-034, unchanged in
 substance, run once phases 1-4 give it a schema and gate actually worth
 migrating onto. `cand-004` is not duplicated here — it is this
@@ -487,3 +513,17 @@ candidate's own Rabbit holes.
   territory). Verified against real failing/passing fixtures in both
   direct-file and git-staged modes. Phase 4 (the coherence gate) is next,
   not started by this dispatch.
+- 2026-07-16 Phase 4 dispatched: brief-023 authored (28 already-pinned
+  check-logic scenarios + 6 new CLI/loader scenarios), Architect verified
+  and dispatched `assign_scenarios` reusing `lead-iohr` as work_id.
+- 2026-07-16 `lead-iohr` `work_done` arrived and was rejected on
+  reconciliation: all 34 scenario hashes reproduced clean, but behavioral
+  verification of the installed `shop-knowledge-gate` CLI against this
+  repo's real corpus found it fails both of brief-023's own grounding
+  cases (PDR-034's `supersedes` edge invisible to the loader; `current-
+  state.md`'s `incorporates` edges to legacy PDRs/ADRs wrongly reported
+  dangling instead of unverifiable-legacy) — two compounding corpus-loader
+  defects (directory-name mismatch, legacy-id derivation mismatch), both
+  masked by the BC's own synthetic test fixtures. Filed `lead-cea24` (P1)
+  to track the fix; `lead-iohr` left open/annotated. Phase 4 remains
+  dispatched-not-landed; Phase 5 stays blocked.
