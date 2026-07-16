@@ -61,10 +61,13 @@ added:
 
 1. **There is a documented lifecycle flow for artifacts** — not just a
    status enum per type, but documented valid transitions and, per type,
-   documented required structure. Currently fails: PDR-032/ADR-059 never
-   specify body-section content for any type, and `candidate`'s status
-   enum is itself missing `committed` — the value every real candidate,
-   including this one, uses to mean "ratified."
+   documented required structure. **Addressed 2026-07-16:**
+   [`artifact-lifecycle.md`](../artifact-lifecycle.md) — a graph-form
+   cross-type flow plus per-type lifecycle diagrams, explicit about which
+   parts are pinned (scenario-enforced) vs. observed-only. Hand-authored,
+   not generated — flagged in that document itself as something Phase 4
+   (the coherence gate) should eventually supersede with a generated
+   equivalent, so this doesn't become another hand-maintained drift trap.
 2. **Artifacts are checked** — a tool exists (`shop-knowledge validate`,
    shipped `lead-5msa9.1`) but nothing invokes it automatically, and nothing
    in the PM-authoring path ever has.

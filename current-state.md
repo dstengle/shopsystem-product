@@ -68,3 +68,7 @@ each, no deep links. -->
   sessions `sessions/`, prioritizations `prioritizations/`,
   briefs `briefs/`, product decisions `pdr/`,
   architecture decisions `adr/`, findings `findings/`.
+- **Artifact lifecycle:** documented in graph form at
+  [`artifact-lifecycle.md`](artifact-lifecycle.md) (added 2026-07-16,
+  `cand-005`) — cross-type flow plus per-type status lifecycle, marked
+  pinned vs. observed-only.
