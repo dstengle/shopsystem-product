@@ -1,3 +1,24 @@
+# RETIRED-scenario provenance (cand-005 / intent-007, 2026-07-16 —
+# assign_scenarios dispatch; body below is byte-identical to what was
+# retired, for hash-provenance only):
+#   @scenario_hash:c07e8db63b3c1b42 RETIRED (cand-005)
+#   Asserted the candidate status enum as "exploring, shaped, briefed, parked
+#   or rejected" — an illustrative listing that omitted "committed", the
+#   value every ratified candidate in this repo (cand-001 through cand-005)
+#   actually uses to mean "ratified by the product authority". cand-005's own
+#   Phase 1 investigation found this enum, not just this one scenario's
+#   listing of it, was never reconciled against real practice. Superseded by
+#   @scenario_hash:73c7c146e1fd5dd3 below (same scenario, enum listing now
+#   includes "committed").
+#
+#   @scenario_hash:c07e8db63b3c1b42
+#   Scenario: a status value outside the type's recognized enum is reported non-conforming and names the offending value
+#     Given a candidate artifact whose frontmatter carries a status value of "in-progress"
+#     And "in-progress" is not a member of the candidate status enum exploring, shaped, briefed, parked or rejected
+#     When the knowledge context validates the artifact's frontmatter against the schema
+#     Then it reports the artifact as non-conforming for an unrecognized status
+#     And the diagnosis names the offending value "in-progress"
+
 Feature: shopsystem-knowledge — frontmatter schema conformance (typed artifacts)
 
   Every product artifact single-sources its machine truth in YAML frontmatter.
