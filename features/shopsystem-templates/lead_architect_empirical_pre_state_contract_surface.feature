@@ -43,3 +43,19 @@ Feature: lead-architect template grounds empirical pre-state verification in the
     Then the content directs the architect that, for any dispatch that retires, supersedes, or contradicts prior BC-side coverage, the dispatch text must reference each conflicting @scenario_hash entry — as established from the lead-held "features/" surface and the BC's mailbox-reported register — by its hash ID, or carry an explicit retirement instruction for that hash
     And the content frames that requirement as the observable evidence the BC Implementer can use to confirm the architect ran the enumeration step, rather than as optional context for the BC
     And the content directs the architect to cite the enumeration in the dispatch description in the same shape that the contract-surface verification step (ADR-018 D1) is cited, so the Implementer does not have to re-derive the conflicts the architect missed
+
+    @scenario_hash:f1de4dd08ab5abc1 @bc:shopsystem-templates
+    Scenario: lead-architect template directs the architect to cite ADR-064's canonical scenario-retirement convention when composing a retirement instruction, rather than restating the convention from memory
+    When I read the lead-architect template via "shop-templates show lead-architect"
+    Then the content directs the architect that a retirement instruction composed inside a dispatch cites the canonical scenario-retirement convention recorded in an ADR, rather than restating the convention from memory
+    And the content names the two-part convention the citation covers: a retired hash is satisfied only once it is unreachable by block-only recompute from every scenario block under the as-committed "features/" tree, and retirement provenance is recorded in a comment block outside any canonical scenario region
+    And the content names "ADR-064" as the citation target for that convention
+    And the content directs the architect not to assert an unverified variant of the convention, such as keeping a retired scenario body byte-identical on disk, without first verifying it against the cited ADR and the BC's own on-disk provenance comments
+
+    @scenario_hash:b4795e33b958f6e2 @bc:shopsystem-templates
+    Scenario: lead-architect template directs corpus-wide scenario retrieval (existence, ownership, conflict enumeration) through the installed scenarios CLI's own aggregate commands, not a hand-scoped grep against an assumed file or directory
+    When I read the lead-architect template via "shop-templates show lead-architect"
+    Then the content directs the architect that any corpus-wide scenario question — whether a hash is live anywhere in the tree, which BC owns a scenario, or which scenarios conflict with a proposed change — is answered by invoking the installed "scenarios" CLI's own aggregate commands over the full "features/" tree, such as "scenarios journal rebuild" or "scenarios validate --aggregate", not by a hand-scoped "Grep" invocation against a single assumed file or directory
+    And the content names a hand-scoped single-file "Grep" search as insufficient to establish what exists corpus-wide, citing the missed-sibling-file conflict-enumeration gap this discipline exists to prevent
+    And the content permits plain "Grep" or "Read" for retrieving the full text of a specific, already-identified scenario, distinguishing that use from corpus-wide discovery
+    And the content directs the architect to apply this corpus-wide-retrieval requirement to the existing @scenario_hash conflict-enumeration step required whenever a dispatch retires, supersedes, or contradicts prior BC-side coverage
