@@ -12,7 +12,354 @@ derives-from: [adr-004, pdr-004, adr-045, adr-043, adr-038, adr-026, adr-028, ad
 
 ## Summary
 
+The shopsystem framework today has internal documentation that serves internal
+contributors: `INSTALL.md` walks through adding a BC to the existing
+`shopsystem-product`; `README.md` describes that product's outward face; the
+spec files (§1–§6), ADRs, and PDRs explain the framework's rationale. None of
+those is an adoption surface for a downstream user who wants to use the framework
+to build their *own* product. The cost is **closed-set adoption**: the framework
+cannot be evaluated, piloted, or used by anyone without insider context.
+Stakeholder intent commits the framework to having an outward face — a doc
+surface that takes a Docker-equipped user from zero to a running product (their
+own, not shopsystem-product) with minimum friction.
+
+The brief commits **two things together because they are inseparable:** (1) **a
+new doc home — a new BC under the shopsystem product** named `shopsystem-docs`
+(working name; final name is the docs BC's authoring concern), which follows
+standard shopsystem BC mechanisms (`bc-implementer` / `bc-reviewer` cycle;
+scenarios authored by this lead's PO and dispatched via `assign_scenarios`); and
+(2) **the adopter-facing bootstrap UX the docs describe** — concretely, *what*
+the docs walk the adopter through. v1 documents the per-piece **manual
+composition** (postgres compose, `shop-templates bootstrap`, per-BC
+`bc-container launch`, manual `gh repo create`). Sibling **brief 008 has been
+sliced** — slice 1 commits the lead-only prove-out (lead-shop container brought
+up via docker compose + existing primitives), slice 2+ adds BC bring-up — and as
+each slice lands the doc updates incrementally to describe the delivered
+capability instead of the manual step it replaces. The brief does **NOT** commit
+the docs BC's internal toolchain (build pipeline, static-site generator,
+scenario-to-docs export shape), the exact doc text, or the orchestrator's CLI
+shape (that is brief 008's scope).
+
+**Behavioral commitments (what an adopter can do after this lands that they
+cannot today):** (1) land on a single outward-facing page naming what the
+framework *is*, what they need (Docker, a GitHub account), and the next step;
+(2) create their own product's repository set (lead shop, the BCs they need,
+beads companion repos) via an explicit, non-tribal `gh repo create` procedure —
+without reverse-engineering the lead-shop `INSTALL.md`; (3) walk through the
+current manual composition transparently **including any honest gaps** —
+notably that `shop-templates bootstrap --shop-type lead` exists today only as an
+*in-container* primitive with no host-side command to launch the lead container
+that runs it (the Q7 launcher gap), which the v1 doc names explicitly rather than
+papering over until Q7 resolves and brief 008 slice 1 lands; (4) hand the doc to
+a coding agent and have the agent execute the setup (the doc's structure —
+specific commands, arguments, verification steps — supports mechanical execution
+without inferring intent); (5) end in a state they can immediately use — a
+lead-shop container running plus one container per BC in their manifest, all
+registered, ready to open a Claude Code session against the lead shop and
+dispatch their first `assign_scenarios`.
+
+**Resolved decisions and open questions.** Q1–Q5 were closed by the stakeholder
+in session 2026-05-22 (see Scope). **Q6 (scenarios-as-doc-source)** is a parked
+design exploration — can the docs BC's Gherkin scenarios themselves be the source
+from which the published documentation is generated? — surfaced but NOT
+pre-decided; Architect-resolved (likely PDR or ADR) after the docs BC's first
+scenarios are concrete. **Q7 (launcher gap)** is open — no host-side primitive
+launches a lead shop into a container today (`bc-container launch` is BC-only) —
+paired with brief 008 slice 1 as its empirical prove-out; Architect-resolved
+(likely PDR-shaped). **Neither Q6 nor Q7 gates brief 007's dispatch;** Q1–Q5
+being closed, the brief is `ready` for the Architect's discriminator pass.
+
 ## Scope
+
+**Boundaries the PO commits (10).** (1) **Doc home: a net-new repository, a new
+BC** under the shopsystem product (working name `shopsystem-docs`; per resolved
+Q4 a sibling of `shopsystem-messaging`/`shopsystem-templates`/etc. with its own
+`bc-implementer`/`bc-reviewer` cycle — NOT inside the lead-shop repo, NOT inside
+any existing internal BC). (2) **Audience: end-user adopter creating a new
+product** (not an internal contributor extending shopsystem-product, not a BC
+implementer working a dispatched scenario). (3) **The doc covers the full
+adoption surface** the stakeholder named: GitHub repo/org setup; container
+launch; minimum-friction bootstrap UX (v1 documents manual composition per Q3;
+the doc updates incrementally as brief 008's slices land). (4) **Layering, not
+duplication** — one doc, single voice, structured so an agent can mechanically
+execute its setup steps; no two-audience branching, no parallel docs. (5)
+**"Bootstrap done" means lead-shop container + per-BC containers running** (per
+Q2: the adopter's product is fully composed — lead-shop container up, one
+container per BC in the manifest up, all registered, ready to dispatch; brief 008
+slice 1 delivers the lead-shop-container-up half, slice 2+ delivers BC bring-up).
+(6) **One doc, single voice, structured for agent consumption** (headings,
+command blocks, verification steps formatted for agent extraction; a human reads
+it as a normal guide). (7) **`shopsystem-docs` is a new BC** following standard
+BC mechanisms; the lead dispatches `assign_scenarios` for doc work. (8) **Manual
+composition in v1; orchestrator is sibling brief 008 (sliced)** — brief 007 is
+the doc track only; the v1 doc updates incrementally as each brief 008 slice
+lands; the lead-launch step is also shaped by Q7 and notes the gap honestly until
+it closes. (9) **No `repos/` convention for the adopter** (per Q5, BC repos are
+checked out fresh per container instance — cloned inside the
+orchestrator-launched container via `bc-container launch`'s existing `--repo-url`
+pattern; no shared host-side parent directory for BC clones; the host-side mounted
+working directory is for lead-shop + adopter-specific state). (10) **v1 publishing
+format: plain markdown files in the docs BC repo — no documentation site** (the
+adopter reads them directly, e.g. GitHub's rendered markdown view; v1 does NOT
+ship MkDocs/Docusaurus/any static-site generator, GitHub Pages or any hosted
+rendered HTML, or a custom rendering pipeline — a v1-specific narrowing that a
+future iteration may revisit).
+
+**Resolved decisions (session 2026-05-22).** **Q1 — target persona: option (a)**
+single doc, single voice, structured for agent consumption (the PO's prior
+"pilot-then-commit" caveat withdrawn; no per-step "if human do X; if agent do Y"
+forks). **Q2 — "bootstrap done" end state: option (ii)** lead-shop container +
+per-BC containers (one per manifest BC), all registered, adopter can dispatch;
+the stakeholder edited out framework-internal language (the messaging-BC
+parenthetical) as not adopter-relevant; options (i) and (iii) are no longer live.
+**Q3 — empirical pre-state on container-launching-container: separate scope
+(sibling brief 008)** — brief 007 documents current manual composition in v1;
+the single-container orchestrator is brief 008's capability scope; brief 007 is
+what an adopter reads, brief 008 is what an adopter runs. (Subsequent narrowing:
+brief 008 was rewritten in the same session to commit only slice 1, lead-only
+bring-up; the "single-container orchestrator" framing describes brief 008's
+eventual aim across slices, not slice 1 — brief 007's v1 doc updates incrementally
+as slices land; the load-bearing Q3 decision, doc track vs capability track, is
+unchanged.) **Q4 — topology: option (a)** `shopsystem-docs` becomes a new BC
+following standard mechanisms (the PO's non-binding "docs are a product,
+therefore docs deserve a BC" observation is now load-bearing). **Q5 — adopter BC
+layout: per-container-instance checkout** (stakeholder verbatim: repos are checked
+out per container instance; the `repos/` directory goes away in shopsystem once
+relaunched on the new framework) — no shared host-side BC clone tree, no `repos/`
+convention; rationale: the `repos/` sibling-clone convention is a
+shopsystem-product-internal artifact that does not belong in adopter-facing docs,
+and shopsystem-product itself will move off it on relaunch (forward context, not a
+brief 007 commitment).
+
+**Empirical pre-state (session 2026-05-22, the substrate the v1 doc describes,
+NOT open questions).** (1) **Docker-out-of-docker is mechanically available** in
+the shopsystem-product devcontainer (`docker --version` runs, `/var/run/docker.sock`
+is bind-mounted, `docker ps` lists host containers) via the devcontainer default
+plus the explicit `--network=shopsystem` runArg — the substrate brief 008's
+orchestrator builds on. (2) **`shop-templates bootstrap`** takes
+`--shop-type {bc,lead}` and pours a canonical scaffold (agents, CLAUDE.md,
+.claude/, .gitignore, .beads/) into a target directory; it is per-shop in-place
+scaffolding and does NOT clone BC repos, create GitHub repos, launch postgres, or
+launch BC containers. (3) **`bc-container launch <bc>`** exists and is
+one-BC-at-a-time (`--repo-url`, `--shopmsg-dsn`, `--network`, `--startup-prompt`);
+it launches a single BC container, **clones the repo inside that container** (the
+primitive realizing Q5's per-container-instance checkout), initializes beads,
+starts tmux; it does NOT launch multiple BCs, postgres, or the lead shop. (4)
+**Postgres** runs today from the `shopsystem-devcontainer` docker-compose as a
+separate manual `docker compose up -d postgres` step outside the framework CLIs;
+the v1 doc walks the adopter through it explicitly. (5) **Launcher-gap finding —
+no host-side primitive launches a lead shop into a container today**:
+`bc-container launch` is the only per-container shop-launch primitive and is
+BC-only (single positional `bc_name`, required `--repo-url`, manifest subcommands
+assume a BC; no `--shop-type` flag, no `lead` mode, no sibling `lead-launcher`
+CLI). The v1 doc cannot honestly walk an adopter through "launch the lead
+container" until this gap closes; Q7 tracks the resolution options and brief 008
+slice 1 is the empirical prove-out vehicle.
+
+**Operational & security runbook (WS-8 fold-in — review finding 9, bead
+`lead-5l0w`).** The adopter-facing **keep / empty / run** checklist the docs BC
+renders for a host operator standing the product up — the operational counterpart
+to the narrative walkthrough. It consolidates **only already-decided /
+already-validated** facts and opens no new product scope. It is grounded in the
+validated substrate this initiative landed: CA-inline credential delivery
+(ADR-045), the derived-coordinate single source of truth (ADR-043), the `product:`
+manifest field as canonical identity (ADR-038), the agent-vault broker as a
+lead-shop supporting service (ADR-026 / ADR-028), footing's deterministic
+agent-less bring-up with socket-GID symmetry (ADR-040, PDR-021/022), and the
+host-readable launch diagnostic (ADR-041); where it overlaps the per-product
+isolation brief 011 commits and the one-credential-gate brief 012 commits, those
+briefs are the authority and this section is their operator-checklist projection.
+**KEEP (persistent state the operator must not lose or commit):** `.env`
+(gitignored, never committed — carries this product's `AGENT_VAULT_MASTER_PASSWORD`,
+`POSTGRES_PASSWORD`, `SHOPMSG_DSN`, and distinct host ports; produced from
+`.env.example` by brief 011 Step 2); the **two named compose volumes** (postgres
+data and the uid-65532 agent-vault data volume per ADR-028, holding the messaging
+journal and brokered credentials, surviving `compose down`); and the **provisioned
+credentials inside the vault** (the developer's GitHub PAT and the dashboard-set
+Claude OAuth credential per ADR-026 D2/D4, pasted once at the single credential
+gate). **EMPTY (starts blank, provisioned, never hand-authored):** no host
+credential files (per ADR-026 BCs are zero-host-coupled — credentials reach the
+fleet only through the agent-vault proxy as short-lived `av_agt_…` tokens); the
+CA trust material is **inline content, not a path** (ADR-045 — `AGENT_VAULT_CA_PEM`
+carries PEM bytes in the environment, not a filename; a "point at a `.pem` file"
+step would reintroduce host coupling); no `repos/` tree on the host (per ADR-018 /
+Q5). **RUN (bring-up sequence and prerequisites):** (1) host prerequisites are
+**Docker + a GitHub account only** (brief 012 — no host framework tooling); (2)
+identity is declared once via the `product:` field in `bc-manifest.yaml` (ADR-038)
+from which the system slug, docker network name, BC-name prefix, and image
+namespace are derived, each computed once at its canonical point and re-used
+(ADR-043); (3) the product runs on its own docker network named for the derived
+slug (ADR-038), isolated per brief 011 — under footing's topology the bring-up
+path owns network creation (`compose up` + `docker network connect <slug>`,
+PDR-021), but the manual v1 path must name the `docker network create <slug>`
+prerequisite so compose's `external: true` reference resolves; (4) socket-GID
+symmetry (PDR-021, bead lead-27ka) — the bring-up container is launched
+`--group-add <host-socket-gid>` so its non-root user can use the mounted docker
+socket (a privileged surface, see security note); (5) supporting services first —
+postgres + agent-vault (ADR-028) come up as lead-shop supporting-service compose
+entries with persistent volumes and restart policy; **postgres ships a
+`pg_isready` healthcheck** (WS-8 Tier A) and `POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-postgres}`
+documented in `.env.example`, with two verbatim caveats — the healthcheck only
+de-flakes bring-up **if consumers gate on readiness** (BCs gate via bc-launcher's
+`messaging_db_reachable` / `agent_vault_reachable` checks, NOT compose
+`depends_on`), and the postgres password is a **split surface** (BCs connect via
+`SHOPMSG_DSN` which embeds the password independently of `POSTGRES_PASSWORD`, so a
+change is a two-place edit); (6) the **single credential gate** (ADR-026 D4, brief
+011 Step 4, brief 012 Stage 5) — exactly one human-gated step: run
+`bin/agent-vault-provision`, paste the GitHub PAT, set the Claude OAuth credential
+in the agent-vault dashboard (the refreshing-OAuth type is dashboard-set, not
+CLI-expressible per ADR-026 D2); (7) launch the fleet and verify — a failed launch
+writes a **host-readable diagnostic file naming the specific failure cause**
+(ADR-041) on the per-BC mailbox surface (the operator goes there first, not
+`docker logs`), and health is confirmed via `bin/agent-vault-check` and the
+readiness gates. **Security hardening notes:** set a real `POSTGRES_PASSWORD` and
+`AGENT_VAULT_MASTER_PASSWORD` for any non-dev deployment (the shipped `postgres`
+default is a dev convenience; `.env.example` now documents it — WS-8 Tier A); the
+docker-socket-mounted bring-up container is **privileged** (host-root-equivalent
+control, PDR-020 gap (e)) — a deliberate scoped privilege (the lead/bring-up
+surface launches containers, BCs do not get the socket), named so an operator does
+not silently widen it; and a **known resilience limitation** (do NOT reopen) —
+`shop-msg watch` does not survive a Postgres LISTEN drop (`lead-tsj`,
+closed/settled-moot); the operator-facing mitigation is procedural (if the
+lead-inbox watcher goes quiet after a postgres restart, re-arm the Monitor watcher
+/ restart `shop-msg watch`). **Open posture decisions (two WS-8 Tier B items):**
+the first is **RESOLVED by product-authority direction (confirm-and-pin)** —
+`bin/shop-shell` host bind-mounts: **lead-shell zero-host-coupling IS the target
+state** (the lead shell, like a BC container, takes no host dotfile bind-mounts —
+no `~/.claude`, no `~/.gitconfig`; identity/credentials come through the
+agent-vault broker; evidence per ADR-018: `bin/shop-shell`'s `docker run` blocks
+mount only the repo root and the docker socket, neither a credential coupling,
+with Claude/git auth flowing through the broker's `AGENT_VAULT_*` env + MITM
+`HTTPS_PROXY` and git identity via `GIT_*` env; pinned by PDR-020, ADR-026, and
+ADR-028 D4 — ADR-046's parameterized-image exemption is a distinct concern that
+does not reopen the bind-mount question); the second is **still FLAGGED for the
+product authority** — token rotation/revocation policy for the `av_agt_…` proxy
+token (no rotation/revocation runbook exists and `agent-vault-provision` has no
+re-mint subcommand; the *policy* — cadence, revocation triggers, who rotates — is
+a product-authority decision the PO cannot invent, and the re-mint subcommand is a
+separate lead-tooling task; until the policy is set the runbook names rotation as
+an explicit gap).
+
+**Out of scope — named explicitly.** The doc's title, voice details, or section
+structure (authoring choices the docs BC makes after the brief lands); the
+orchestrator's CLI shape (sibling brief 008's scope); the docs BC's internal
+toolchain (build pipeline, static-site generator, scenario-to-docs export shape /
+Q6 — recipient-BC concerns; brief 007 commits the BC's existence and the doc's
+audience/end state, not how the BC produces the published artifact); **a
+documentation site for v1** (per boundary 10, v1 is plain markdown only —
+MkDocs/Docusaurus/GitHub Pages/any hosted rendered HTML, static-site generators,
+custom rendering pipelines are out of v1 scope; a v1-specific narrowing, not a
+permanent exclusion); whether the doc covers Windows/macOS/Linux symmetrically
+(the framework is Linux-container-centric; cross-OS specificity is the docs BC's
+authoring concern, surfaced to the PO if a real adopter question arises); examples
+or tutorials beyond the bootstrap walkthrough ("how do I use the framework once
+adopted" is a follow-on); marketing positioning or framework-vs-alternatives
+content (the doc is operational, not promotional); migration docs for users on a
+predecessor system (e.g. `ddd-product-system` consumers — different audience,
+follow-on if it surfaces); and translating the spec (§1–§6), ADRs, or PDRs into
+adopter-facing prose (reference material remains reference material; the adoption
+doc may link to it, it does not reproduce it).
+
+**Q6 — scenarios-as-doc-source (design exploration, NOT pre-decided).** If
+accepted, the docs BC's Gherkin scenarios would themselves be the source from
+which the published documentation is generated — an adopter-facing instruction
+would be authored as Gherkin, the scenario would be the BC's work artifact, and
+the rendered doc would be generated from those scenarios by a docs-BC-owned build
+step. **What it would commit:** the docs BC's scenarios become dual-purpose (pin
+BC behavior AND author the published doc — the body readable as prose AND testable
+as Gherkin); the docs BC owns a build step consuming its own scenarios; the
+`Then` clauses become the doc's verification steps (well-aligned with the Q1
+agent-consumable commitment). **What it would NOT commit:** it does not change Q4
+(the docs BC remains the home; the export shape is internal to the BC); it does
+not change the scenario authoring contract (the PO still authors, the Architect
+still dispatches); it does not affect any other BC's scenarios. The idea has
+framework-shape reach beyond brief 007 (if it proves workable, other BCs'
+user-facing behavior could be documented from their own scenarios — an ADR/PDR
+question, not this brief's). **Scope note (after boundary 10):** with v1
+publishing as plain markdown, Q6's v1 evaluation surface is just "scenarios →
+markdown files," not "scenarios → rendered website" (the static-site half belongs
+to a future iteration); the design question itself is unchanged. **Who resolves:**
+Architect, after the docs BC's first scenarios are concrete enough to evaluate; a
+PDR if the design is non-obvious, an ADR if the cross-BC implications need pinning.
+
+**Q7 — launcher gap (OPEN, does NOT gate dispatch).** Stakeholder framing: a shop
+can be a BC or the lead, and a tool is needed that can launch either since the
+tools to bootstrap the lead are not available on the host. **The gap concrete:**
+`bc-container launch` is the framework's only per-container shop-launch primitive
+and is BC-only; there is no host-side command (no `lead-launcher`, no
+`shop-launcher`, no `bc-container launch --shop-type lead`) that launches a
+lead-shop container ready to bootstrap from inside. **Candidate resolution shapes
+(NOT pre-decided):** (a) **extend `bc-launcher` to handle either shop type**
+(`--shop-type {bc,lead}`, one BC owns "launch a shop container regardless of
+type"; risk: lead lacks `--repo-url` in the same sense and its first-run scaffold
+is `shop-templates bootstrap --shop-type lead`, so collapsing two lifecycles may
+pollute the CLI shape); (b) **introduce a new `lead-launcher` BC** (clean
+separation; risk: two tools/BCs to maintain — the same trade-off ADR-004 /
+PDR-004 navigated for `shopsystem-bc-launcher`); (c) **compose-only** (slice 1 may
+prove a docker compose file alone is sufficient with no new CLI; risk: pure compose
+may not express the lead-shop bootstrap shape — mounts, first-run idempotency,
+credential passthrough). **Empirical pairing:** brief 008 slice 1's deliverable
+explicitly includes an honest finding on whether a new host-side primitive was
+required; Q7 is informed by that evidence. **In the meantime** the v1 doc's
+"launch the lead container" section is written as an honest manual step, including
+an explicit note that the adopter currently performs the lead-launch by hand
+because the framework ships no primitive for it. **Who resolves:** Architect,
+likely PDR-shaped (a "which BC owns this capability" decision), after slice 1's
+evidence is in.
+
+**Vehicle hints (Architect's call).** **Doc home creation** (the `shopsystem-docs`
+repo itself) — net-new repository under the shopsystem product (per Q4): `gh repo
+create` for the docs BC repo, standard `shop-templates bootstrap --shop-type bc
+--shop-name shopsystem-docs`, and the customary new-BC plumbing (devcontainer,
+beads remote, manifest entry per brief 005); net-new BC creation precedes scenario
+dispatch (the pattern ADR-004 established for `shopsystem-bc-launcher`); an ADR
+documenting the docs-BC introduction is the Architect's call. **Initial doc
+content** — net-new authoring dispatched to the new `shopsystem-docs` BC via
+`assign_scenarios` (Q1 and Q2 shape the Then clauses; Q3 shapes the When clauses).
+**Manifest-driven adopter clone pattern** — Q5 pins BC repos cloned inside their
+per-container instances by `bc-container launch <bc> --repo-url …`; the doc
+describes this directly (no `repos/`, no shared host parent); whether the doc
+references a starter `bc-manifest.yaml` the adopter customizes, and where it ships,
+may surface as a clarify the Architect cross-checks against brief 005. **Q6 is NOT
+a brief 007 dispatch** (a follow-up design decision the Architect resolves after
+the first scenarios are concrete). **Q7 is NOT a brief 007 dispatch either** (a
+framework-level decomposition decision, likely PDR-shaped, after brief 008 slice 1
+produces evidence; brief 007's doc-content scenarios may need a clarify back to PO
+once Q7 lands so the "launch the lead container" prose matches the delivered
+shape).
+
+**Sequencing.** **Q1–Q5 are closed** — the brief is ready for the Architect's
+discriminator pass. **Q6 does NOT gate this brief** (a follow-up design
+exploration). **Q7 does NOT gate this brief either** (it shapes how the v1 doc's
+"launch the lead container" step is eventually written; the doc is honest about the
+gap in the interim; brief 008 slice 1 is the prove-out vehicle). **Within scope
+items:** docs BC creation (ADR + `gh repo create` + shop-templates bootstrap +
+manifest entry) precedes scenario dispatch; doc-content scenarios are then
+dispatched via `assign_scenarios` to the new docs BC. **Brief 008 is a sibling,
+not a dependency, and is now sliced** — the v1 doc describes manual composition and
+updates incrementally as slices land (slice 1 first: lead-only; slice 2+: BC
+bring-up); either brief can land first. **This brief does NOT block on briefs
+003–006** — those improve the substrate; the adoption doc describes whatever is
+there at doc-authoring time (a smoother substrate if they land first, the current
+substrate honestly if not).
+
+**What remains open.** Q6 (scenarios-as-doc-source, Architect-resolved after the
+first scenarios are concrete); Q7 (launcher gap, Architect-resolved likely
+PDR-shaped, paired with brief 008 slice 1 as the empirical prove-out — not a
+gate); the docs BC's exact CLI surface and (post-v1) build pipeline (recipient-shop
+authoring concerns — note that for v1 the build pipeline is empty by commitment
+per boundary 10, so there is no static-site toolchain to author in v1); the doc's
+title, voice details, section ordering, and example product (authoring choices
+after the brief lands). **Forward context for the Architect (NOT a brief 007
+commitment):** the `repos/` sibling-clone convention used by *this product* is
+being deprecated — when shopsystem-product is relaunched on the new framework it
+will also adopt per-container-instance checkout; the Architect should be aware of
+this for any shopsystem-product-internal layout change, but brief 007 itself is
+only concerned with adopter-facing layout. The PO commits intent (a new docs BC
+under the shopsystem product authored against an adopter audience; the adoption
+surface the doc covers; the lead+chosen-BCs end state; the manual composition in
+v1; the per-container-instance BC clone model) and explicitly does NOT commit the
+docs BC's internal toolchain, the exact wording, or the resolution of Q6.
 
 ## Source (pre-modernization)
 

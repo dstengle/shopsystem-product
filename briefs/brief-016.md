@@ -13,7 +13,91 @@ candidate: cand-900
 
 ## Summary
 
+The agent-vault broker (the credential-injection proxy that substitutes real API
+keys/tokens onto outbound requests) rate-limits the traffic passing through it,
+and that throttle is firing on legitimate fleet traffic: the operator (David) hit
+rate limiting during normal work and had to apply a local unblock
+(`AGENT_VAULT_RATELIMIT_PROFILE=off` in `.claude/settings.local.json`) to get
+moving again. The local unblock is a stopgap on one host; the problem is
+fleet-wide — every BC container's outbound Claude/GitHub traffic passes through a
+broker whose default throttle can stall legitimate work, and there is today no
+configuration surface at all to change that posture (no rate-limit /
+rate-limit-profile concept anywhere in the broker's pinned contract surface).
+
+Job-to-be-done: when my fleet does normal agent work through the agent-vault
+broker, I want the credential proxy to not throttle legitimate traffic by default,
+so agents are not stalled by a guardrail I did not ask for — while retaining an
+explicit switch to turn throttling back on when I decide I want it. Outcome
+(observable behavior change): with no `AGENT_VAULT_RATELIMIT_PROFILE` configured,
+brokered traffic across the fleet is not throttled (an operator no longer has to
+discover and apply a per-host unblock), and an operator who wants throttling opts
+back in explicitly by setting `AGENT_VAULT_RATELIMIT_PROFILE` to a non-`off` value,
+whereupon the broker enforces a rate limit again. Output (an env var, a config
+knob) is not the measure; the behavior change — legitimate fleet traffic stops
+being stalled by a default guardrail nobody asked for, and re-enabling is a
+deliberate operator act — is.
+
+The pinned product decision (made explicitly by the product authority David,
+2026-07-08): posture = rate limiting DISABLED BY DEFAULT, fleet-wide, opt-in to
+re-enable. With no configuration the broker does not throttle;
+`AGENT_VAULT_RATELIMIT_PROFILE=off` is the explicit form of that default; any
+non-`off` (opt-in) value re-enables a rate limit. This is not open for the
+Architect or BC to re-litigate — the scenarios pin it. Security tradeoff
+(deliberate authority decision): rate limiting on a credential-injection proxy is
+a guardrail that bounds how fast a compromised or runaway agent can drive
+credential-bearing outbound requests, and this brief removes that guardrail by
+default, fleet-wide (with no configuration nothing throttles brokered traffic on
+any container). It was weighed and accepted explicitly by the product authority as
+the correct posture for this fleet — the throttle was blocking legitimate work
+more than bounding abuse, and the opt-in path preserves restoring the guardrail —
+and is recorded as a deliberate decision, not an oversight, so the "why" is not
+re-asked later. Strategic trace: this serves the agent-vault credential-broker bet
+recorded in ADR-026 / ADR-028 — the broker is the sole credential surface for the
+fleet, so its operational behaviors must serve the fleet's real work rather than
+obstruct it; a guardrail that stalls legitimate agent traffic by default undercuts
+that bet, and the build economics make stalled agent turns pure waste.
+
 ## Scope
+
+In scope: a new broker-owned behavior on the lead integration surface — the
+broker's rate-limit posture is governed by `AGENT_VAULT_RATELIMIT_PROFILE`,
+defaulting to off; pinned by the scenarios below.
+
+Vocabulary (load-bearing): `AGENT_VAULT_RATELIMIT_PROFILE` (the control-surface
+environment variable governing the broker's rate-limit posture — new vocabulary
+that joins the existing pinned agent-vault env set
+`AGENT_VAULT_{CA_PEM,TOKEN,ADDR,VAULT,MASTER_PASSWORD}`); `off` (the profile value
+that disables throttling, also the semantic default when the variable is unset);
+opt-in / re-enable value (any non-`off` profile value, under which the broker
+enforces a rate limit on brokered traffic); and throttle / rate-limit (the broker
+refusing or delaying brokered outbound requests once a request-rate ceiling is
+reached — the guardrail this brief turns off by default).
+
+Out of scope / deferred (named, not decided): the concrete limit values /
+algorithm of the re-enabled profile (requests per interval, burst, token-bucket vs
+fixed-window — the opt-in scenario pins that a limit is enforced when opted in,
+while the specific ceiling is the Architect's/BC's call, and additional named
+profile values beyond `off` vs opt-in are additive scenarios, not this brief);
+per-BC or per-credential profile differentiation (this brief pins a single
+fleet-wide posture via one env var; finer-grained profiles are a separate intent);
+and auto-tuning / adaptive throttling (out of scope entirely).
+
+Pinned scenarios (added to the lead-owned broker integration surface,
+features/agent-vault-broker/agent_vault_broker_integration.feature): default-off
+(no `AGENT_VAULT_RATELIMIT_PROFILE` set ⇒ the broker does not throttle legitimate
+brokered traffic); explicit off (`AGENT_VAULT_RATELIMIT_PROFILE=off` ⇒ no
+throttling, the explicit form of the default); and opt-in re-enable (a non-`off`
+profile value ⇒ the broker enforces a rate limit on brokered traffic again). The
+`@scenario_hash` tags are computed by the `scenarios hash` contract tool at
+dispatch time (per ADR-018 D2 / the lead authoring convention), left to the
+Architect/tooling and not hand-computed in this brief.
+
+What would NOT satisfy the stakeholder: a default posture that still throttles
+(leaves the operator applying per-host unblocks — the problem stays open); making
+`off` a non-default that must be set to get unthrottled behavior (the decision is
+default-off, not opt-out); no re-enable path (the guardrail must remain reachable
+by explicit opt-in); and a per-host-only fix rather than the fleet-wide broker
+default.
 
 ## Source (pre-modernization)
 
