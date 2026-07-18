@@ -5,11 +5,18 @@
 # determination that this is local authorship, distinct from bin/doctor which
 # IS poured package data).
 #
-# Runs `shop-knowledge validate` (shipped shopsystem-knowledge, lead-x53ez)
-# over every staged file under the six PM-authored artifact directories plus
-# current-state.md, and surfaces failures rather than letting them close
-# silently — the exact gap cand-005's Problem #5 named ("Four non-conforming
-# files were committed this same session with nothing stopping it").
+# Two checks run at commit time:
+#   1. `shop-knowledge validate` (shipped shopsystem-knowledge, lead-x53ez)
+#      over every staged file under the six PM-authored artifact directories
+#      plus current-state.md — surfaces per-file schema failures rather than
+#      letting them close silently (the gap cand-005's Problem #5 named:
+#      "Four non-conforming files were committed this same session with
+#      nothing stopping it").
+#   2. `shop-knowledge-gate --mode distribution` (corpus-wide COHERENCE gate)
+#      when the commit touches any gated dir — blocks a commit that would
+#      break cross-artifact coherence (dangling / asymmetric-supersede /
+#      unincorporated-decision / root-anchor edges). Bypass an intentional
+#      transient-broken checkpoint with `git commit --no-verify`.
 #
 # SCOPE DISCIPLINE (deliberate, not an oversight): this is Phase 3, not Phase 5
 # (the legacy-corpus migration). As of 2026-07-16, 125 of 136 existing files
@@ -44,6 +51,7 @@
 set -uo pipefail
 
 : "${DOCTOR_SHOP_KNOWLEDGE:=shop-knowledge}"
+: "${KNOWLEDGE_GATE:=shop-knowledge-gate}"
 
 _GATED_RE='^(adrs|pdrs|briefs|candidates|sessions|intents)/[^/]+\.md$|^current-state\.md$'
 
@@ -100,6 +108,23 @@ if (( any_block_fail )); then
   printf '\ncheck-knowledge-artifacts: BLOCKED — one or more newly-added artifacts failed shop-knowledge validate.\n'
   printf 'Fix the reported violations, or run `shop-knowledge template <type>` to regenerate the correct shape.\n'
   exit 1
+fi
+
+# Corpus-wide COHERENCE gate (distribution mode = blocking). Runs only when the
+# commit touches a gated artifact directory — coherence can only change via a
+# corpus edit, so unrelated commits pay nothing. Unlike the per-file validate
+# above (which only warns on modified pre-existing debt), a coherence violation
+# ALWAYS blocks: a dangling/asymmetric/unincorporated edge is broken regardless
+# of which file introduced it. Bypass an intentional transient-broken state
+# (e.g. a mid-migration checkpoint) with `git commit --no-verify`.
+if (( ${#BLOCKING_CANDIDATES[@]} + ${#WARN_CANDIDATES[@]} > 0 )); then
+  _repo_root="$(git rev-parse --show-toplevel 2>/dev/null || printf '.')"
+  if ! gate_out="$("$KNOWLEDGE_GATE" --mode distribution "$_repo_root" 2>&1)"; then
+    printf '\ncheck-knowledge-artifacts: BLOCKED — coherence gate (distribution mode) found violations:\n'
+    printf '%s\n' "$gate_out" | grep -E '^\[BLOCKING\]|remediation' | sed 's/^/  /'
+    printf '\nFix the coherence violations, or bypass a transient checkpoint with `git commit --no-verify`.\n'
+    exit 1
+  fi
 fi
 
 if (( any_warn_fail )); then
