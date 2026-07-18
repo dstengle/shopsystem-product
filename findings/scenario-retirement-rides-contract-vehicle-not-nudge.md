@@ -53,5 +53,5 @@ surfaces a miss is the failure mode, not the fix.
 ## Cross-references
 
 - `lead-a1u1` (origin bead), `lead-ac1f` (parent epic).
-- [ADR-015](../adr/015-nudge-message-type.md) (nudge is transmission-layer/liveness only).
-- [ADR-064](../adr/064-scenario-retirement-convention-hash-unreachability-plus-out-of-block-provenance-is-the-canonical-citation-target.md) — the mechanical retirement-satisfaction convention this finding's D1 composes with.
+- [ADR-015](../adrs/adr-015.md) (nudge is transmission-layer/liveness only).
+- [ADR-064](../adrs/adr-064.md) — the mechanical retirement-satisfaction convention this finding's D1 composes with.

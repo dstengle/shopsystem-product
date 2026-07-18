@@ -15,7 +15,7 @@ created: 2026-07-12
 updated: 2026-07-12
 authors: [dstengle, "Claude (lead-pm)"]
 description: Living current-state fact sheet for shopsystem-product.
-incorporates: [pdr-032, pdr-033, adr-059]   # every accepted PDR/ADR id; gate-checked
+incorporates: [adr-001, adr-002, adr-004, adr-005, adr-006, adr-008, adr-009, adr-010, adr-011, adr-012, adr-013, adr-014, adr-015, adr-016, adr-017, adr-018, adr-019, adr-020, adr-021, adr-022, adr-024, adr-025, adr-026, adr-027, adr-028, adr-029, adr-030, adr-031, adr-032, adr-033, adr-034, adr-035, adr-036, adr-037, adr-038, adr-039, adr-040, adr-041, adr-043, adr-056, adr-057, adr-059, adr-060, adr-061, adr-063, adr-065, adr-066, pdr-007, pdr-009, pdr-010, pdr-021, pdr-022, pdr-029, pdr-032, pdr-033, pdr-900]   # every accepted PDR/ADR id; gate-checked
 substrate:
   system: shopsystem
   bom-version: self

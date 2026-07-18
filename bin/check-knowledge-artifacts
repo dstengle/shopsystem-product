@@ -25,7 +25,7 @@
 #     WARN (printed, does not block). Fixing the legacy corpus is Phase 5's
 #     job; this hook does not silently expand into that migration.
 #
-# GATED DIRECTORIES: adr/ pdr/ briefs/ candidates/ sessions/ intent/
+# GATED DIRECTORIES: adrs/ pdrs/ briefs/ candidates/ sessions/ intents/
 # current-state.md — the same six-plus-one artifact surface cand-005 and
 # artifact-lifecycle.md name throughout.
 #
@@ -45,7 +45,7 @@ set -uo pipefail
 
 : "${DOCTOR_SHOP_KNOWLEDGE:=shop-knowledge}"
 
-_GATED_RE='^(adr|pdr|briefs|candidates|sessions|intent)/[^/]+\.md$|^current-state\.md$'
+_GATED_RE='^(adrs|pdrs|briefs|candidates|sessions|intents)/[^/]+\.md$|^current-state\.md$'
 
 # Resolve the file list. Direct-file-argument mode (CI / ad-hoc) treats every
 # passed file as blocking-on-failure; staged mode (no args, the real pre-commit

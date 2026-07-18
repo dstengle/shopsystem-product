@@ -1,7 +1,7 @@
 # Consumer wiring (phase 1)
 
 How a consumer product or a BC-shop pulls in the shopsystem framework
-packages in phase-1, per [ADR-001](adr/001-framework-packaging.md)
+packages in phase-1, per [ADR-001](adrs/adr-001.md)
 §Phase-1 wiring.
 
 ## What the consumer depends on
