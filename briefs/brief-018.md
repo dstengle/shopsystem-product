@@ -13,7 +13,152 @@ candidate: cand-001
 
 ## Summary
 
+The `candidate` artifact typedef is missing a `Verbatim anchors` section that
+the `intent-record` typedef already has. Every intent record in this repo
+(intent-001 through intent-005) carries a `## Verbatim anchors` section — a
+dated, verbatim, append-in-place list of stakeholder quotes, positioned
+immediately after the title and before the record's first narrative section
+(`## The goal behind the ask`). No candidate does; a candidate's body sections
+today are Problem, Appetite, Solution sketch, Rabbit holes, No-gos, Evidence /
+experiments, Resolution, Changelog — none of them a verbatim-quote home.
+
+`candidates/cand-002.md` is the concrete, already-realized cost of this gap.
+During its shaping session the stakeholder said things that materially changed
+the candidate's shape — e.g. flagging that literal per-provider model IDs in
+`model_stylesheet` would defeat the candidate's own purpose (provider switches
+would still require hand-rewriting every node-class mapping), and separately
+demanding to know how a feasibility probe would run and insisting on zero
+filesystem footprint. Both interactions were consequential enough to reshape
+the candidate's solution sketch and trigger a correction of a wrong precedent
+citation. They survive today ONLY as the router's own paraphrased prose inside
+cand-002's Evidence and Changelog sections ("product authority flagged...",
+"product authority caught...") — not as structured, dated, verbatim quotes the
+way intent records capture stakeholder input. A reader who wants to know
+exactly what the stakeholder said — not what the PM paraphrased them as having
+said — has no citable source. This is a real, stakeholder-identified gap:
+candidate-shaping sessions lose citation fidelity for everything that happens
+after the intent record closes, precisely the period when a candidate's shape
+is still actively being negotiated.
+
+The job-to-be-done: when a stakeholder says something during a
+candidate-shaping session that materially changes the candidate's shape, that
+statement should be captured verbatim and dated, in the same append-in-place
+way an intent record captures it, so that later readers can cite exactly what
+was said instead of trusting a paraphrase of it.
+
+This brief argues for adding one new `Verbatim anchors` required body section
+to the `candidate` typedef, shaped exactly like intent-record's. The observable
+behavior change — not the output (one new heading in a template) — is the
+measure:
+
+- A candidate document generated after this fix carries a `## Verbatim anchors`
+  section, positioned immediately after the title and before `## Problem` — the
+  same placement discipline intent-record already uses.
+- The section's shape matches intent-record's exactly: dated
+  (`YYYY-MM-DD: "<quote>"`), verbatim, appended to in place as the shaping
+  session progresses — not synthesized after the fact from memory or from the
+  Evidence/Changelog prose.
+- The body-section-conformance check (`x-required-sections`, per adr-059 /
+  `body_section_conformance.feature`) enforces `Verbatim anchors` on candidate
+  documents the same way it already enforces every other required section on
+  every other type: a candidate missing the section is reported non-conforming,
+  naming the missing section; a candidate carrying it passes.
+
+The pinned shape: the `candidate` typedef (`typedef/candidate.yaml`, owned by
+shopsystem-knowledge, not readable from the lead host per adr-018 — no BC
+source clone here) gains one new body section entry, `Verbatim anchors`,
+required, structurally equivalent to the `intent-record` typedef's existing
+entry (same dated/verbatim/append-in-place guidance text, same "required"
+status). Per adr-059 this is a single-source change: editing the typedef
+regenerates BOTH the candidate template (`.md`) and the candidate schema
+fragment's `x-required-sections` list; the generated files are never
+hand-edited (drift-gated). Placement is immediately after the candidate's title
+(`# cand-NNN — ...`), before `## Problem`, mirroring intent-record's placement
+before `## The goal behind the ask`. What does NOT change: every other
+candidate section (Problem, Appetite, Solution sketch, Rabbit holes, No-gos,
+Evidence / experiments, Resolution, Changelog) is untouched — this is an
+addition, not a restructuring; intent-record's own typedef and section shape
+are untouched; no other one of the eight artifact types (session-record,
+prioritization-record, brief, pdr, adr, current-state) is touched.
+
+Strategic trace: this traces to the artifact-type-system strategic bet pdr-032
+records (knowledge BC owns artifact shapes and integrity) and adr-059 refines
+(typedef single-sourcing eliminates format drift by construction). It is not an
+orphan feature — it is a small, bounded gap-fix inside an already-committed
+system, surfaced by using that system in anger (cand-002's own shaping session)
+rather than a new strategic direction; no brief-level strategic reframing is
+claimed.
+
+What would NOT satisfy the stakeholder: adding `Verbatim anchors` to the
+candidate template by hand without touching the typedef (reinstalls exactly the
+hand-authored template/schema-drift defect adr-059 exists to eliminate);
+fabricating verbatim-looking quotes for cand-002 retroactively to "backfill"
+the section (a synthesized quote is not a verbatim quote); a `Verbatim anchors`
+section that is a one-time synthesized narrative written after the fact rather
+than a section shaped for live, dated, append-in-place capture as a shaping
+session progresses; silently changing other candidate sections' required-ness
+or wording while touching this one — this brief is additive only.
+
 ## Scope
+
+**In scope** (pinned by the scenarios below):
+
+- The `candidate` typedef declares a `Verbatim anchors` required body section,
+  shaped like intent-record's.
+- The generated candidate template carries that section in the pinned
+  placement.
+- The body-section-conformance check enforces `Verbatim anchors` on candidate
+  documents (missing ⇒ non-conforming named; present ⇒ conforming).
+
+**Out of scope / explicit non-goals:**
+
+- **Backfilling cand-001/cand-002 (or any existing candidate) with a
+  reconstructed `Verbatim anchors` section.** This brief fixes the format going
+  forward; retroactively reconstructing quotes for candidates already shaped
+  would itself be exactly the paraphrase-not-verbatim failure mode this brief
+  exists to prevent (nobody can reconstruct a verbatim quote after the fact
+  with integrity). If the stakeholder wants cand-002 specifically annotated,
+  that is a separate, explicit request — not assumed here.
+- **Changing intent-record's `Verbatim anchors` shape.** Untouched; it is the
+  reference shape this brief copies, not a co-target.
+- **Any other body-section change to any of the eight types.** Not requested,
+  not in scope.
+- **Legacy corpus migration** of the existing non-conforming candidates against
+  the new required-section set — per pdr-032's existing "legacy corpus
+  migration is deferred to its own future candidate" posture, which this brief
+  inherits rather than re-litigates.
+
+**Dispatch target:** single-BC, **shopsystem-knowledge** — confirmed, not
+assumed (see the derives-from citations and pdr-032 / adr-059). The
+message-type discriminator (capability exists but unpinned ⇒ likely
+`request_bugfix`, versus genuinely new capability ⇒ `assign_scenarios`) is the
+Architect's call at dispatch time, made against empirical pre-state
+verification of the knowledge BC's current typedef/generator surface; not
+decided here.
+
+**Pinned scenarios** (authored, hashed via the installed `scenarios hash` CLI
+with block-only canonicalization, independently reproduced with `scenarios
+verify --hash <h>`, written on-disk directly above each `Scenario:` line) at
+`features/shopsystem-knowledge/candidate_verbatim_anchors_section.feature`:
+
+- `@scenario_hash:df3a4e715fad03a8` — the candidate typedef declares a
+  `Verbatim anchors` section shaped like intent-record's (same
+  dated/verbatim/append-in-place guidance; same pre-first-narrative-section
+  placement).
+- `@scenario_hash:2e7f311162e627bc` — a candidate document missing `Verbatim
+  anchors` is reported non-conforming, naming the missing section (mirrors
+  `body_section_conformance.feature`'s existing missing-section pattern, applied
+  to the newly-required candidate section).
+- `@scenario_hash:917da713e6101b0d` — a candidate document carrying `Verbatim
+  anchors` alongside its other required sections passes conformance.
+
+All three scenarios currently carry `@bc:unassigned @origin:brief-018` at the
+feature level (the adr-056 D8 transitional marker); `scenarios validate`
+currently reports `E_UNKNOWN_ORIGIN` for `brief-018` because this brief and its
+bead are not yet in the origin registry — the same transitional state
+brief-017's own not-yet-dispatched feature files are in as of this writing. The
+Architect resolves this at assignment (real `@bc:shopsystem-knowledge` tag + a
+registered origin), a mechanical step, not a re-derivation.
 
 ## Source (pre-modernization)
 

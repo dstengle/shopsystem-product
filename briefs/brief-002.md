@@ -12,7 +12,180 @@ derives-from: [pdr-002, pdr-001]
 
 ## Summary
 
+A shop is a **shape** the framework defines (§3 for lead, §4 for BC). That
+shape today is reproduced **by hand** every time a new shop is needed — the
+canonical role templates are copied into `.claude/agents/`, a shop-aware
+`CLAUDE.md` is hand-authored, `bd init` is run, `.gitignore` is filled in. The
+cost of doing this manually compounds: it scales linearly with shop count while
+the framework is meant to scale across products, each containing one lead shop
+plus many BC shops.
+
+The brief commits the shop-system to a **single CLI-driven bootstrap surface**
+that takes an existing repository and adds the canonical shop scaffold to it,
+parametrised by shop type (lead or BC). The surface is owned by
+`shopsystem-templates` — extending the existing `shop-templates` CLI (`list`,
+`show`) with bootstrap-related subcommands. This is net-new capability for that
+BC.
+
+The brief carries **one invariant**: **inline `.claude/agents/*.md` copies
+remain CLI-managed.** Per PDR-002 path (a), every shop carries inline copies of
+the canonical role-prompt templates at `.claude/agents/<role>.md`; those copies
+are provisional until path (b) lands (a `shop-templates` subagent export mode),
+and the provisionality turns into drift unless every shop has a mechanical way
+to re-sync its inline copies against the templates BC's canonical source. The
+bootstrap surface **is** that mechanism — the CLI both lays down the inline
+copies at init time and re-pours them at update time, so no shop's
+`.claude/agents/*.md` is hand-edited and the source of truth is always the
+canonical template reached through the `shop-templates` CLI. This is the PDR-002
+/ brief 001 discipline applied to the templates surface: the CLI is the
+integration boundary (from-prototype-1 finding 6), not the filesystem. A
+scaffold reproduced by hand is a transcription error waiting to happen.
+
+The brief commits **intent**, not scenarios. The PO's commit is the invariant
+plus the four scope items plus the explicit out-of-scope boundary plus the
+stance and named gap on E.
+
 ## Scope
+
+**In scope — four scope items (A–D) plus the E stance.** Each is named in
+product terms; CLI command names, flag shapes, and on-disk substitution
+mechanics are scenario-level concerns for the Architect after pre-state.
+
+- **A — Bootstrap subcommand surface (scriptable, non-interactive).**
+  `shop-templates` exposes a bootstrap subcommand that, given an existing repo,
+  adds the canonical scaffold for one shop. It is scriptable (machine-friendly
+  arguments, no interactive prompts, deterministic exit codes), idempotent for
+  the managed surface (re-running re-pours managed files and leaves shop-owned
+  files untouched), and supports **both shop types through the same entry
+  point**, parametrised by a shop-type argument or flag — symmetric across
+  types because the eventual product-setup composition operates over both
+  uniformly. It accepts at minimum: **shop type** (`bc` or `lead`, no default —
+  the caller commits); **shop name** (BC name for a BC, product name for a
+  lead); **target directory** (defaulting to cwd, with explicit override for the
+  product-setup-script case). The Architect picks exact subcommand names
+  (`init` vs `bootstrap` vs `new`) and the flag-vs-positional split; the brief
+  commits the shape, not the spelling.
+
+- **B — Generated surface (tight, named, both shop types).** Bootstrap generates
+  **exactly**: `.claude/agents/<role>.md` (inline copies sourced from
+  `shop_templates.templates`; role set varies by type — `bc-implementer.md` +
+  `bc-reviewer.md` for BC, `lead-po.md` + `lead-architect.md` for lead);
+  `CLAUDE.md` (the shop's router primer, name and role-set references
+  substituted where templating applies — see E); `.beads/` (initialized via
+  `bd init` — **composition mechanic committed:** bootstrap **shells out** to
+  `bd init` as a subprocess, it does NOT import `bd` Python internals, per
+  from-prototype-1 finding 6 that package CLIs are the integration boundary);
+  and `.gitignore` (standard shop-shape entries, BC and lead variants may differ
+  in detail). **NOT generated:** `inbox/`/`outbox/` (shop-msg's private storage,
+  per brief 001 invariant 1 — `shop-msg send`/`respond` create what they need);
+  `features/`/`tests/` (per-shop product concerns); `pyproject.toml` (packaging
+  is a per-shop product concern — lead uses the metapackage trick
+  `packages=[]`, a BC has its own real package); `README.md` (the shop author's
+  call). The generated-vs-not boundary is part of the contract, not a heuristic;
+  the Architect's scenarios pin each item.
+
+- **C — Update mechanism (re-syncs managed surface, leaves shop-owned alone).**
+  When `shopsystem-templates` publishes new canonical prompts or `CLAUDE.md`
+  structure, existing shops pull the new versions into their inline copies
+  without re-bootstrapping. The update operation re-pours every
+  bootstrap-managed file from current `shop-templates` package data,
+  **does not touch** shop-owned files, is **idempotent** (up-to-date shop is a
+  no-op), and is discoverable as part of the **one** CLI surface for the
+  bootstrap concern (separate subcommand like `update` vs a flag like
+  `init --update` is the Architect's call — the brief commits that there is one
+  surface, not two). A consequence to pin: when the canonical set changes shape
+  (a role added or removed), update's behavior against an older scaffold must be
+  specified; the brief commits that the managed set is **always the current
+  canonical set** (implying adds-and-removes), and the Architect names the exact
+  behavior.
+
+- **D — File-management boundary (managed vs. shop-owned).** Every file
+  bootstrap touches is one of two classes. **Bootstrap-managed** (replaceable on
+  update, never hand-edited): `.claude/agents/<role>.md` — every file matching a
+  canonical role template; content always equals the canonical template (with
+  E's substitution). A shop extending its agent set adds files outside the
+  canonical role set, which are shop-owned by definition. **Init-only** (laid
+  down at bootstrap, then shop-owned): `CLAUDE.md` (substitution applied at init;
+  update does NOT overwrite); `.gitignore` (init from canonical entries; update
+  does NOT overwrite); `.beads/` (composed from `bd init`; beads owns it after).
+  The cut is: **content that enforces role discipline is managed; content that
+  expresses per-shop product intent is shop-owned.** `CLAUDE.md` is dual-nature
+  (partly framework product priming the router, partly this shop's particulars)
+  and is placed on the shop-owned side because the cost of overwriting a shop's
+  `CLAUDE.md` customisations is higher than the cost of it going slightly stale —
+  staleness surfaces under use, overwriting silently loses work.
+
+- **E — CLAUDE.md substitution and the lead-shop template question (PO stance +
+  open gap).** **PO stance committed:** (1) **both lead-shop and BC-shop
+  CLAUDE.md primers ship as canonical templates** from the templates BC —
+  bootstrap reads the appropriate canonical primer, substitutes per-shop
+  parameters, and writes the result, which means the current hand-authored
+  BC-router `CLAUDE.md` and lead-shop role-identity `CLAUDE.md` must be
+  **elevated to canonical templates** inside `shop_templates.templates/`
+  (net-new package data alongside the four role-prompt templates); (2) the
+  parameter set is **minimal** (shop name, and the role set inferred from shop
+  type); (3) `CLAUDE.md` is **init-only, not managed** (per D — once laid down,
+  the shop owns it; not re-poured on update); (4) **elevation and
+  bootstrap-consumption ship in ONE dispatch** — the Architect's dispatch for E
+  carries both the elevation step and the bootstrap-CLI consumption step as one
+  `assign_scenarios` to the templates BC, sequenced internally by the
+  Implementer (elevate first, then consume); the brief does NOT split this into
+  a prior maintenance pass. **The residual gap:** the lead-shop `CLAUDE.md` mixes
+  a router-primer half (same across every lead shop) with a per-product half
+  (what this product is, its topology, what "out of scope" means here);
+  elevating it forces a separation that may be clean (router-primer canonical,
+  per-product half substitution-fill or shop-edits-after-init) or may require
+  splitting `CLAUDE.md` into two files (one canonical-managed, one shop-owned),
+  at which point it becomes a **PDR-shaped question about CLAUDE.md
+  architecture**. **Forward path:** the Architect's pre-state extraction of
+  canonical primer content decides whether the separation is clean; if clean,
+  scenarios pin substitution AND elevation (one dispatch per stance item 4); if
+  messy, **a PDR opens before E's scenarios are authored.** The **PDR-escalation
+  trigger fires AT the Architect's pre-state verification on E**, not later (once
+  scenarios are authored, escalation is more expensive). Items A–D are
+  independent of E and proceed regardless of how the E call resolves.
+
+**Out of scope — named explicitly.** **Repository creation** (bootstrap operates
+on an existing repo; `gh repo create`, `git init`, remotes are the caller's —
+"easy to add repo creation later" is acknowledged but non-binding). **Product-level
+bootstrap** (a workflow bootstrapping a lead shop + N BC shops and wiring them
+together is explicitly out of scope; this brief is the per-shop building block a
+product-level workflow composes; a follow-on opens when the ecommerce product
+surfaces concrete composition requirements). **Remote wiring** (sibling clones,
+beads remotes — a bootstrapped shop knows nothing about its siblings; bootstrap
+does not create or manage the `/workspaces/shopsystem-product/repos/`
+sibling-clone location; related lead-zmi (shop-msg-on-PATH) is independent).
+**Bootstrapping a non-repo directory** (bootstrap assumes a git repo; it does not
+commit a "bootstrap also runs `git init`" behavior).
+
+**Sequencing.** Items **A, B, C, D** are independent of the CLAUDE.md-template
+question (E) and can be authored and dispatched once the Architect has verified
+pre-state on the `shop-templates` CLI and confirmed the generated surface
+composes cleanly with `bd init`. Item **E** depends on the Architect's
+extraction of canonical-primer content from the two hand-authored `CLAUDE.md`
+files, proceeds last among the scope items, or escalates to a PDR if pre-state
+warrants. **Soft sequencing constraint:** this brief shares the templates BC
+with brief 001's items B + D (which wait on PDR-001's role-complete restructure,
+lead-kq0); bootstrap's scaffolding also waits on PDR-001 so the copied templates
+land in their post-restructure shape. Authoring may proceed in parallel;
+dispatch should land after lead-kq0.
+
+**Vehicle hints (Architect's call).** The bootstrap surface as a whole is
+**net-new capability** for `shopsystem-templates` (`shop-templates --help`
+today shows only `list` and `show`) → `assign_scenarios`. The single biggest
+pre-state question: **whether the canonical lead-shop `CLAUDE.md` exists as a
+template** in `shop_templates.templates/` — today it (and the BC-router
+`CLAUDE.md`) are hand-authored and live outside the package data; scope item E
+names this, and pre-state confirms what must be elevated to canonical template
+before bootstrap can generate it. The `PRE-STATE DETERMINES VEHICLE — VERIFIED
+EMPIRICALLY` posture stands.
+
+**What remains open (vehicle-level and design-tension, not intent-level).**
+Exact CLI subcommand names and flag shapes for A and C (one subcommand
+parametrised by `--type` vs two parallel `init-bc`/`init-lead`; update as
+subcommand vs flag); substitution-mechanism details for E (placeholder tokens?
+templating-engine syntax? plain string interpolation?); and the PDR-vs-brief
+escalation for E, decided AT pre-state verification on E.
 
 ## Source (pre-modernization)
 
