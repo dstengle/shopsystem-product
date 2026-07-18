@@ -9,7 +9,7 @@ description: The canonical divergence/convergence facilitation pattern for runni
 
 A *technique skill* (PDR-033): a lens invoked INSIDE the `option-tradeoff` PM session; its output lands in the PDR draft. No terminal artifact of its own.
 
-*Adapted, with permission, from [`deanpeters/Product-Manager-Skills/skills/workshop-facilitation`](https://github.com/deanpeters/Product-Manager-Skills/tree/main/skills/workshop-facilitation) by [Dean Peters](https://www.linkedin.com/in/deanpeters/) — fetched live 2026-07-10, direct-grant terms per [ADR-066](../../adr/066-direct-grant-from-dean-peters-authorizes-mit-ingestion-of-deanpeters-derived-pm-skills-attribution-required.md). Adaptation rules + experimental status: [`../README.md`](../README.md).*
+*Adapted, with permission, from [`deanpeters/Product-Manager-Skills/skills/workshop-facilitation`](https://github.com/deanpeters/Product-Manager-Skills/tree/main/skills/workshop-facilitation) by [Dean Peters](https://www.linkedin.com/in/deanpeters/) — fetched live 2026-07-10, direct-grant terms per [ADR-066](../../adrs/adr-066.md). Adaptation rules + experimental status: [`../README.md`](../README.md).*
 
 ## Why the session reaches for this
 

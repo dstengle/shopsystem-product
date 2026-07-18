@@ -9,7 +9,7 @@ description: Enumerate every stakeholder in a problem before engaging anyone —
 
 A *technique skill* (PDR-033): a lens invoked INSIDE the `discovery-dialogue` PM session; its output lands in the intent record. It has no terminal artifact of its own.
 
-*Adapted, with permission, from [`deanpeters/Product-Manager-Skills/skills/stakeholder-identification`](https://github.com/deanpeters/Product-Manager-Skills/tree/main/skills/stakeholder-identification) by [Dean Peters](https://www.linkedin.com/in/deanpeters/) — fetched live 2026-07-10, direct-grant terms per [ADR-066](../../adr/066-direct-grant-from-dean-peters-authorizes-mit-ingestion-of-deanpeters-derived-pm-skills-attribution-required.md). Adaptation rules + experimental status: [`../README.md`](../README.md).*
+*Adapted, with permission, from [`deanpeters/Product-Manager-Skills/skills/stakeholder-identification`](https://github.com/deanpeters/Product-Manager-Skills/tree/main/skills/stakeholder-identification) by [Dean Peters](https://www.linkedin.com/in/deanpeters/) — fetched live 2026-07-10, direct-grant terms per [ADR-066](../../adrs/adr-066.md). Adaptation rules + experimental status: [`../README.md`](../README.md).*
 
 ## When to reach for it
 

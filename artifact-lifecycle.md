@@ -170,11 +170,11 @@ lifecycle has near-zero sample size until that migration runs.
 - [`cand-005`](candidates/cand-005.md) / [`intent-007`](intent/intent-007.md)
   — the investigation that produced this document and the reconciliation
   work it documents.
-- [PDR-032](pdr/032-knowledge-bc-owns-artifact-type-system.md) /
-  [ADR-059](adr/059-knowledge-bc-single-sources-artifact-formats-from-per-type-typedef-yaml-generator-emits-template-and-schema-fragment-generated-files-read-only-check-drift-gate.md)
+- [PDR-032](pdrs/pdr-032.md) /
+  [ADR-059](adrs/adr-059.md)
   — the typedef/schema system this document describes the practiced
   shape of.
-- [ADR-064](adr/064-scenario-retirement-convention-hash-unreachability-plus-out-of-block-provenance-is-the-canonical-citation-target.md)
+- [ADR-064](adrs/adr-064.md)
   — the scenario-retirement convention referenced in the pinned sections
   above.
 - `.claude/skills/{discovery-dialogue,shaping,option-tradeoff,prioritization,problem-space-mapping,product-narrative}/SKILL.md`

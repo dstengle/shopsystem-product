@@ -54,7 +54,7 @@ _**Agent (claude-opus-4-7 2026-05-11 21:30:56Z)**_
 4	the shop system where stakeholders meet the work and where product-level
 5	artifacts live. The shopsystem is itself a product built by a lead shop and
 6	three BC-shops; this repo holds the lead shop's content. Rationale and the
-7	four-repo split are in [`adr/001-framework-packaging.md`](adr/001-framework-packaging.md).
+7	four-repo split are in [`adr/001-framework-packaging.md`](adrs/adr-001.md).
 8	
 9	## What's inside
 10	
@@ -69,7 +69,7 @@ _**Agent (claude-opus-4-7 2026-05-11 21:30:56Z)**_
 19	
 20	Architecture decisions:
 21	
-22	- [`adr/001-framework-packaging.md`](adr/001-framework-packaging.md) — split into four BC-aligned repos.
+22	- [`adr/001-framework-packaging.md`](adrs/adr-001.md) — split into four BC-aligned repos.
 23	
 24	Findings (consolidated per-prototype):
 25	
@@ -98,7 +98,7 @@ _**Agent (claude-opus-4-7 2026-05-11 21:30:56Z)**_
 48	The framework-internal `docs/shop-system/` directory was the lead-shop output
 49	of the shopsystem under its earlier framing; ADR-001 promotes it into this
 50	BC-aligned repo. The migration is tracked by ADR-001 in this repo at
-51	[`adr/001-framework-packaging.md`](adr/001-framework-packaging.md).
+51	[`adr/001-framework-packaging.md`](adrs/adr-001.md).
 52	
 53	## License
 54	
@@ -556,7 +556,7 @@ _**Agent (claude-opus-4-7 2026-05-11 21:31:13Z)**_
 1	# Consumer wiring (phase 1)
 2	
 3	How a consumer product or a BC-shop pulls in the shopsystem framework
-4	packages in phase-1, per [ADR-001](adr/001-framework-packaging.md)
+4	packages in phase-1, per [ADR-001](adrs/adr-001.md)
 5	§Phase-1 wiring.
 6	
 7	## What the consumer depends on

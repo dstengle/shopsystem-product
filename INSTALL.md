@@ -82,7 +82,7 @@ downstream of footing, **not part of it** (ADR-040).
 
 ## Where details live
 
-- Unified bringup decision: [`pdr/021-unify-product-bringup-on-the-footing-runway.md`](pdr/021-unify-product-bringup-on-the-footing-runway.md)
-- Footing vs Discovery split; framework-in-image-only: [`adr/040-adopter-footing-is-a-deterministic-agentless-bootstrap-distinct-from-agent-driven-discovery.md`](adr/040-adopter-footing-is-a-deterministic-agentless-bootstrap-distinct-from-agent-driven-discovery.md)
-- Broker model + the one human gate: [`adr/026-agent-vault-brokered-credentials-eliminate-host-filesystem-coupling.md`](adr/026-agent-vault-brokered-credentials-eliminate-host-filesystem-coupling.md)
+- Unified bringup decision: [`pdr/021-unify-product-bringup-on-the-footing-runway.md`](pdrs/pdr-021.md)
+- Footing vs Discovery split; framework-in-image-only: [`adr/040-adopter-footing-is-a-deterministic-agentless-bootstrap-distinct-from-agent-driven-discovery.md`](adrs/adr-040.md)
+- Broker model + the one human gate: [`adr/026-agent-vault-brokered-credentials-eliminate-host-filesystem-coupling.md`](adrs/adr-026.md)
 - Bootstrap brief: [`briefs/012-adopter-bootstrap-stand-up-product.md`](briefs/012-adopter-bootstrap-stand-up-product.md)

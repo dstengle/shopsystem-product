@@ -1,7 +1,7 @@
 # PM technique skills + lead operations
 
 **Status: EXPERIMENTAL.** These skills are the PM-mode skill furniture under
-[PDR-033](../../pdr/033-pm-as-main-session-mode.md) (PM as a main-session mode),
+[PDR-033](../../pdrs/pdr-033.md) (PM as a main-session mode),
 adopted **experimental-first**: they live in the lead repo and are proven in use
 *before* the canonical `shopsystem-templates` template group formalizes the
 proven subset (LOCAL → CANONICAL, the graduation path the six PM **session**
@@ -22,7 +22,7 @@ repo's MIT license** on its own — NonCommercial contradicts MIT's commercial
 grant, and ShareAlike forbids MIT relicensing of derivatives. On 2026-07-10
 these skills were adopted without checking that, then **removed** once
 diligence caught the mismatch (`a0d5cd6` → `40102a2`; see
-[ADR-061](../../adr/061-external-content-license-compatibility-check-before-ingestion-mit-doctrine.md),
+[ADR-061](../../adrs/adr-061.md),
 the doctrine record for that incident).
 
 On 2026-07-16 the product authority spoke directly with **Dean Peters**, the
@@ -32,7 +32,7 @@ and ShareAlike terms for this specific use, leaving only Attribution —
 functionally CC-BY-equivalent, which ADR-061's own D2 already names as
 MIT-ingestible. The skills are restored here on that basis. Full reasoning,
 the grant's exact terms, and the load-bearing note about what a fork of this
-repo must preserve: **[ADR-066](../../adr/066-direct-grant-from-dean-peters-authorizes-mit-ingestion-of-deanpeters-derived-pm-skills-attribution-required.md)**.
+repo must preserve: **[ADR-066](../../adrs/adr-066.md)**.
 
 **Every file below carrying deanpeters-derived content credits Dean Peters by
 name, links his site (`https://www.linkedin.com/in/deanpeters/`), and links

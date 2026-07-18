@@ -9,7 +9,7 @@ description: Move from a target outcome down through opportunities (problems) to
 
 A *technique skill* (PDR-033): a lens invoked INSIDE the `shaping` PM session; its output lands in the candidate (problem / appetite / solution-sketch / rabbit-holes / no-gos / evidence). No terminal artifact of its own.
 
-*Adapted, with permission, from [`deanpeters/Product-Manager-Skills/skills/opportunity-solution-tree`](https://github.com/deanpeters/Product-Manager-Skills/tree/main/skills/opportunity-solution-tree) by [Dean Peters](https://www.linkedin.com/in/deanpeters/) — fetched live 2026-07-10, direct-grant terms per [ADR-066](../../adr/066-direct-grant-from-dean-peters-authorizes-mit-ingestion-of-deanpeters-derived-pm-skills-attribution-required.md). Adaptation rules + experimental status: [`../README.md`](../README.md).*
+*Adapted, with permission, from [`deanpeters/Product-Manager-Skills/skills/opportunity-solution-tree`](https://github.com/deanpeters/Product-Manager-Skills/tree/main/skills/opportunity-solution-tree) by [Dean Peters](https://www.linkedin.com/in/deanpeters/) — fetched live 2026-07-10, direct-grant terms per [ADR-066](../../adrs/adr-066.md). Adaptation rules + experimental status: [`../README.md`](../README.md).*
 
 ## Why reach for this in shaping
 

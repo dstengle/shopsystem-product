@@ -10,7 +10,7 @@ with permission, from
 `deanpeters/Product-Manager-Skills/skills/user-story-splitting` (Lawrence &
 Green, *Humanizing Work Guide to Splitting User Stories*), by
 [Dean Peters](https://www.linkedin.com/in/deanpeters/) — direct-grant terms
-per [ADR-066](../../adr/066-direct-grant-from-dean-peters-authorizes-mit-ingestion-of-deanpeters-derived-pm-skills-attribution-required.md).
+per [ADR-066](../../adrs/adr-066.md).
 See [`../README.md`](../README.md).
 
 ## Why the PO reaches for this — technique, not artifact

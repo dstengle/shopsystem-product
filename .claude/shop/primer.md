@@ -4,7 +4,7 @@ The product is the shopsystem framework itself; this repo is its outward face.
 
 ## Subagent dispatch specifics
 
-The two subagent roles are dispatched per [PDR-002](pdr/002-lead-shop-roles-as-subagents.md):
+The two subagent roles are dispatched per [PDR-002](pdrs/pdr-002.md):
 
 - **Dispatch to `lead-po`** when the request requires: authoring or sharpening
   Gherkin scenarios; drafting briefs or PDRs; responding to BC `clarify` on
@@ -21,7 +21,7 @@ Subagent definitions: [`.claude/agents/lead-po.md`](.claude/agents/lead-po.md)
 and [`.claude/agents/lead-architect.md`](.claude/agents/lead-architect.md).
 Per PDR-002 path (a) these are inline copies of the canonical templates in
 `shopsystem-templates`; path (b) (`shop-templates` subagent export mode) is a
-follow-up. Per [PDR-001](pdr/001-role-templates-role-complete.md) the templates
+follow-up. Per [PDR-001](pdrs/pdr-001.md) the templates
 themselves are in revision.
 
 ## BC-shop loop and outbox inspection
@@ -41,8 +41,8 @@ repo" below.
 ## What does NOT happen in this repo
 
 - **No implementation code.** This is the lead shop; code lives in BCs.
-- **No BC source on the lead host at all.** Per [ADR-018](adr/018-empirical-verification-is-contract-surface.md)
-  (pinning [PDR-011](pdr/011-empirical-verification-is-contract-surface.md)),
+- **No BC source on the lead host at all.** Per [ADR-018](adrs/adr-018.md)
+  (pinning [PDR-011](pdrs/pdr-011.md)),
   the lead carries no `repos/` directory: no reading, running, or
   git-observing BC code. BCs run as `bc-launcher` containers (cloned inside
   the container) and report via `shop-msg`. Cross-BC changes route through

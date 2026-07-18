@@ -3340,7 +3340,7 @@ adjacent to
   collides with lead-kq0.
 
 - **Templates half (B + D)** **waits on lead-kq0
-  ([PDR-001](../pdr/001-role-templates-role-complete.md))
+  ([PDR-001](../pdrs/pdr-001.md))
   closing.** B and D rewrite the same template surface lead-kq0 is
   currently restructuring. Collision risk is high otherwise:
   lead-kq0's restructure changes the **shape** of the templates; B+D
@@ -3776,7 +3776,7 @@ _**Agent - sidechain (claude-opus-4-7 2026-05-12 18:23:38Z)**_
 198	  collides with lead-kq0.
 199	
 200	- **Templates half (B + D)** **waits on lead-kq0
-201	  ([PDR-001](../pdr/001-role-templates-role-complete.md))
+201	  ([PDR-001](../pdrs/pdr-001.md))
 202	  closing.** B and D rewrite the same template surface lead-kq0 is
 203	  currently restructuring. Collision risk is high otherwise:
 204	  lead-kq0's restructure changes the **shape** of the templates; B+D
@@ -5403,7 +5403,7 @@ _**Agent - sidechain (claude-opus-4-7 2026-05-12 19:19:05Z)**_
 218	  collides with lead-kq0.
 219	
 220	- **Templates half (B + D)** **waits on lead-kq0
-221	  ([PDR-001](../pdr/001-role-templates-role-complete.md))
+221	  ([PDR-001](../pdrs/pdr-001.md))
 222	  closing.** B and D rewrite the same template surface lead-kq0 is
 223	  currently restructuring. Collision risk is high otherwise:
 224	  lead-kq0's restructure changes the **shape** of the templates; B+D
@@ -7056,7 +7056,7 @@ _**Agent - sidechain (claude-opus-4-7 2026-05-12 19:30:15Z)**_
 218	  collides with lead-kq0.
 219	
 220	- **Templates half (B + D)** **waits on lead-kq0
-221	  ([PDR-001](../pdr/001-role-templates-role-complete.md))
+221	  ([PDR-001](../pdrs/pdr-001.md))
 222	  closing.** B and D rewrite the same template surface lead-kq0 is
 223	  currently restructuring. Collision risk is high otherwise:
 224	  lead-kq0's restructure changes the **shape** of the templates; B+D
@@ -8025,7 +8025,7 @@ _**Agent - sidechain (claude-opus-4-7 2026-05-12 19:34:13Z)**_
 239	  collides with lead-kq0.
 240	
 241	- **Templates half (B + D)** **waits on lead-kq0
-242	  ([PDR-001](../pdr/001-role-templates-role-complete.md))
+242	  ([PDR-001](../pdrs/pdr-001.md))
 243	  closing.** B and D rewrite the same template surface lead-kq0 is
 244	  currently restructuring. Collision risk is high otherwise:
 245	  lead-kq0's restructure changes the **shape** of the templates; B+D
@@ -12326,7 +12326,7 @@ _**Agent - sidechain (claude-opus-4-7 2026-05-12 20:49:37Z)**_
 239	  collides with lead-kq0.
 240	
 241	- **Templates half (B + D)** **waits on lead-kq0
-242	  ([PDR-001](../pdr/001-role-templates-role-complete.md))
+242	  ([PDR-001](../pdrs/pdr-001.md))
 243	  closing.** B and D rewrite the same template surface lead-kq0 is
 244	  currently restructuring. Collision risk is high otherwise:
 245	  lead-kq0's restructure changes the **shape** of the templates; B+D
@@ -14107,7 +14107,7 @@ _**Agent - sidechain (claude-opus-4-7 2026-05-12 20:50:12Z)**_
 7	
 8	By default you are the **router** for the lead shop. The two judgment roles
 9	— **PO** and **Architect** per [§3](03-lead-shop.md) — are dispatched as
-10	subagents (per [`pdr/002`](pdr/002-lead-shop-roles-as-subagents.md)). Your
+10	subagents (per [`pdr/002`](pdrs/pdr-002.md)). Your
 11	job is to classify each request and delegate; do not enact the roles
 12	yourself.
 13	
@@ -14131,7 +14131,7 @@ _**Agent - sidechain (claude-opus-4-7 2026-05-12 20:50:12Z)**_
 31	Per PDR-002 path (a) these are inline copies of the canonical templates in
 32	[`shopsystem-templates`](https://github.com/dstengle/shopsystem-templates);
 33	path (b) (a `shop-templates` subagent export mode) is a follow-up. Per
-34	[`pdr/001`](pdr/001-role-templates-role-complete.md) the templates
+34	[`pdr/001`](pdrs/pdr-001.md) the templates
 35	themselves are in revision (role-complete restructure pending).
 36	
 37	## How feature requests get handled
@@ -15667,7 +15667,7 @@ _**Agent - sidechain (claude-opus-4-7 2026-05-12 20:54:49Z)**_
 239	  collides with lead-kq0.
 240	
 241	- **Templates half (B + D)** **waits on lead-kq0
-242	  ([PDR-001](../pdr/001-role-templates-role-complete.md))
+242	  ([PDR-001](../pdrs/pdr-001.md))
 243	  closing.** B and D rewrite the same template surface lead-kq0 is
 244	  currently restructuring. Collision risk is high otherwise:
 245	  lead-kq0's restructure changes the **shape** of the templates; B+D
@@ -17101,7 +17101,7 @@ _**Agent - sidechain (claude-opus-4-7 2026-05-12 20:55:30Z)**_
 7	
 8	By default you are the **router** for the lead shop. The two judgment roles
 9	— **PO** and **Architect** per [§3](03-lead-shop.md) — are dispatched as
-10	subagents (per [`pdr/002`](pdr/002-lead-shop-roles-as-subagents.md)). Your
+10	subagents (per [`pdr/002`](pdrs/pdr-002.md)). Your
 11	job is to classify each request and delegate; do not enact the roles
 12	yourself.
 13	
@@ -17125,7 +17125,7 @@ _**Agent - sidechain (claude-opus-4-7 2026-05-12 20:55:30Z)**_
 31	Per PDR-002 path (a) these are inline copies of the canonical templates in
 32	[`shopsystem-templates`](https://github.com/dstengle/shopsystem-templates);
 33	path (b) (a `shop-templates` subagent export mode) is a follow-up. Per
-34	[`pdr/001`](pdr/001-role-templates-role-complete.md) the templates
+34	[`pdr/001`](pdrs/pdr-001.md) the templates
 35	themselves are in revision (role-complete restructure pending).
 36	
 37	## How feature requests get handled
@@ -18242,7 +18242,7 @@ _**Agent - sidechain (claude-opus-4-7 2026-05-12 21:25:03Z)**_
 239	  collides with lead-kq0.
 240	
 241	- **Templates half (B + D)** **waits on lead-kq0
-242	  ([PDR-001](../pdr/001-role-templates-role-complete.md))
+242	  ([PDR-001](../pdrs/pdr-001.md))
 243	  closing.** B and D rewrite the same template surface lead-kq0 is
 244	  currently restructuring. Collision risk is high otherwise:
 245	  lead-kq0's restructure changes the **shape** of the templates; B+D
@@ -18806,7 +18806,7 @@ _**Agent - sidechain (claude-opus-4-7 2026-05-12 21:25:12Z)**_
 7	
 8	By default you are the **router** for the lead shop. The two judgment roles
 9	— **PO** and **Architect** per [§3](03-lead-shop.md) — are dispatched as
-10	subagents (per [`pdr/002`](pdr/002-lead-shop-roles-as-subagents.md)). Your
+10	subagents (per [`pdr/002`](pdrs/pdr-002.md)). Your
 11	job is to classify each request and delegate; do not enact the roles
 12	yourself.
 13	
@@ -18830,7 +18830,7 @@ _**Agent - sidechain (claude-opus-4-7 2026-05-12 21:25:12Z)**_
 31	Per PDR-002 path (a) these are inline copies of the canonical templates in
 32	[`shopsystem-templates`](https://github.com/dstengle/shopsystem-templates);
 33	path (b) (a `shop-templates` subagent export mode) is a follow-up. Per
-34	[`pdr/001`](pdr/001-role-templates-role-complete.md) the templates
+34	[`pdr/001`](pdrs/pdr-001.md) the templates
 35	themselves are in revision (role-complete restructure pending).
 36	
 37	## How feature requests get handled
@@ -19168,7 +19168,7 @@ out-of-scope boundary.
 
 ### Inline `.claude/agents/*.md` copies remain CLI-managed
 
-Per [PDR-002 path (a)](../pdr/002-lead-shop-roles-as-subagents.md), every
+Per [PDR-002 path (a)](../pdrs/pdr-002.md), every
 shop carries inline copies of the canonical role-prompt templates at
 `.claude/agents/<role>.md`. Those copies are **provisional** until path
 (b) lands (a `shop-templates` subagent export mode). The provisionality
@@ -19182,7 +19182,7 @@ shop's `.claude/agents/*.md` is hand-edited; the source of truth is
 always the canonical template under `shopsystem-templates`, reached
 through the `shop-templates` CLI.
 
-This is the [PDR-002](../pdr/002-lead-shop-roles-as-subagents.md) /
+This is the [PDR-002](../pdrs/pdr-002.md) /
 [brief 001](001-inter-shop-messaging-encapsulation.md) discipline applied
 to the templates surface: the CLI is the integration boundary
 ([`findings/from-prototype-1.md` finding 6](../findings/from-prototype-1.md)),
@@ -19484,10 +19484,10 @@ scope item. Items A–D are independent of E and can proceed regardless.
 
 ## Grounding artifacts
 
-- [`pdr/002-lead-shop-roles-as-subagents.md`](../pdr/002-lead-shop-roles-as-subagents.md)
+- [`pdr/002-lead-shop-roles-as-subagents.md`](../pdrs/pdr-002.md)
   — establishes the inline-copy discipline this brief operationalises;
   path (a) is the basis for "agents are bootstrap-managed."
-- [`pdr/001-role-templates-role-complete.md`](../pdr/001-role-templates-role-complete.md)
+- [`pdr/001-role-templates-role-complete.md`](../pdrs/pdr-001.md)
   — the role-complete restructure that must precede bootstrap dispatch
   so the inline copies land in the right shape.
 - [`briefs/001-inter-shop-messaging-encapsulation.md`](001-inter-shop-messaging-encapsulation.md)
@@ -19746,7 +19746,7 @@ _**Agent - sidechain (claude-opus-4-7 2026-05-12 21:28:09Z)**_
 33	
 34	### Inline `.claude/agents/*.md` copies remain CLI-managed
 35	
-36	Per [PDR-002 path (a)](../pdr/002-lead-shop-roles-as-subagents.md), every
+36	Per [PDR-002 path (a)](../pdrs/pdr-002.md), every
 37	shop carries inline copies of the canonical role-prompt templates at
 38	`.claude/agents/<role>.md`. Those copies are **provisional** until path
 39	(b) lands (a `shop-templates` subagent export mode). The provisionality
@@ -19760,7 +19760,7 @@ _**Agent - sidechain (claude-opus-4-7 2026-05-12 21:28:09Z)**_
 47	always the canonical template under `shopsystem-templates`, reached
 48	through the `shop-templates` CLI.
 49	
-50	This is the [PDR-002](../pdr/002-lead-shop-roles-as-subagents.md) /
+50	This is the [PDR-002](../pdrs/pdr-002.md) /
 51	[brief 001](001-inter-shop-messaging-encapsulation.md) discipline applied
 52	to the templates surface: the CLI is the integration boundary
 53	([`findings/from-prototype-1.md` finding 6](../findings/from-prototype-1.md)),
@@ -20062,10 +20062,10 @@ _**Agent - sidechain (claude-opus-4-7 2026-05-12 21:28:09Z)**_
 349	
 350	## Grounding artifacts
 351	
-352	- [`pdr/002-lead-shop-roles-as-subagents.md`](../pdr/002-lead-shop-roles-as-subagents.md)
+352	- [`pdr/002-lead-shop-roles-as-subagents.md`](../pdrs/pdr-002.md)
 353	  — establishes the inline-copy discipline this brief operationalises;
 354	  path (a) is the basis for "agents are bootstrap-managed."
-355	- [`pdr/001-role-templates-role-complete.md`](../pdr/001-role-templates-role-complete.md)
+355	- [`pdr/001-role-templates-role-complete.md`](../pdrs/pdr-001.md)
 356	  — the role-complete restructure that must precede bootstrap dispatch
 357	  so the inline copies land in the right shape.
 358	- [`briefs/001-inter-shop-messaging-encapsulation.md`](001-inter-shop-messaging-encapsulation.md)
@@ -21193,7 +21193,7 @@ _**Agent - sidechain (claude-opus-4-7 2026-05-12 21:35:33Z)**_
 33	
 34	### Inline `.claude/agents/*.md` copies remain CLI-managed
 35	
-36	Per [PDR-002 path (a)](../pdr/002-lead-shop-roles-as-subagents.md), every
+36	Per [PDR-002 path (a)](../pdrs/pdr-002.md), every
 37	shop carries inline copies of the canonical role-prompt templates at
 38	`.claude/agents/<role>.md`. Those copies are **provisional** until path
 39	(b) lands (a `shop-templates` subagent export mode). The provisionality
@@ -21207,7 +21207,7 @@ _**Agent - sidechain (claude-opus-4-7 2026-05-12 21:35:33Z)**_
 47	always the canonical template under `shopsystem-templates`, reached
 48	through the `shop-templates` CLI.
 49	
-50	This is the [PDR-002](../pdr/002-lead-shop-roles-as-subagents.md) /
+50	This is the [PDR-002](../pdrs/pdr-002.md) /
 51	[brief 001](001-inter-shop-messaging-encapsulation.md) discipline applied
 52	to the templates surface: the CLI is the integration boundary
 53	([`findings/from-prototype-1.md` finding 6](../findings/from-prototype-1.md)),
@@ -21532,10 +21532,10 @@ _**Agent - sidechain (claude-opus-4-7 2026-05-12 21:35:33Z)**_
 372	
 373	## Grounding artifacts
 374	
-375	- [`pdr/002-lead-shop-roles-as-subagents.md`](../pdr/002-lead-shop-roles-as-subagents.md)
+375	- [`pdr/002-lead-shop-roles-as-subagents.md`](../pdrs/pdr-002.md)
 376	  — establishes the inline-copy discipline this brief operationalises;
 377	  path (a) is the basis for "agents are bootstrap-managed."
-378	- [`pdr/001-role-templates-role-complete.md`](../pdr/001-role-templates-role-complete.md)
+378	- [`pdr/001-role-templates-role-complete.md`](../pdrs/pdr-001.md)
 379	  — the role-complete restructure that must precede bootstrap dispatch
 380	  so the inline copies land in the right shape.
 381	- [`briefs/001-inter-shop-messaging-encapsulation.md`](001-inter-shop-messaging-encapsulation.md)
@@ -22719,7 +22719,7 @@ _**Agent - sidechain (claude-opus-4-7 2026-05-12 21:38:53Z)**_
 33	
 34	### Inline `.claude/agents/*.md` copies remain CLI-managed
 35	
-36	Per [PDR-002 path (a)](../pdr/002-lead-shop-roles-as-subagents.md), every
+36	Per [PDR-002 path (a)](../pdrs/pdr-002.md), every
 37	shop carries inline copies of the canonical role-prompt templates at
 38	`.claude/agents/<role>.md`. Those copies are **provisional** until path
 39	(b) lands (a `shop-templates` subagent export mode). The provisionality
@@ -22733,7 +22733,7 @@ _**Agent - sidechain (claude-opus-4-7 2026-05-12 21:38:53Z)**_
 47	always the canonical template under `shopsystem-templates`, reached
 48	through the `shop-templates` CLI.
 49	
-50	This is the [PDR-002](../pdr/002-lead-shop-roles-as-subagents.md) /
+50	This is the [PDR-002](../pdrs/pdr-002.md) /
 51	[brief 001](001-inter-shop-messaging-encapsulation.md) discipline applied
 52	to the templates surface: the CLI is the integration boundary
 53	([`findings/from-prototype-1.md` finding 6](../findings/from-prototype-1.md)),
@@ -23058,10 +23058,10 @@ _**Agent - sidechain (claude-opus-4-7 2026-05-12 21:38:53Z)**_
 372	
 373	## Grounding artifacts
 374	
-375	- [`pdr/002-lead-shop-roles-as-subagents.md`](../pdr/002-lead-shop-roles-as-subagents.md)
+375	- [`pdr/002-lead-shop-roles-as-subagents.md`](../pdrs/pdr-002.md)
 376	  — establishes the inline-copy discipline this brief operationalises;
 377	  path (a) is the basis for "agents are bootstrap-managed."
-378	- [`pdr/001-role-templates-role-complete.md`](../pdr/001-role-templates-role-complete.md)
+378	- [`pdr/001-role-templates-role-complete.md`](../pdrs/pdr-001.md)
 379	  — the role-complete restructure that must precede bootstrap dispatch
 380	  so the inline copies land in the right shape.
 381	- [`briefs/001-inter-shop-messaging-encapsulation.md`](001-inter-shop-messaging-encapsulation.md)
@@ -29824,7 +29824,7 @@ _**Agent - sidechain (claude-opus-4-7 2026-05-13 13:15:46Z)**_
 33	
 34	### Inline `.claude/agents/*.md` copies remain CLI-managed
 35	
-36	Per [PDR-002 path (a)](../pdr/002-lead-shop-roles-as-subagents.md), every
+36	Per [PDR-002 path (a)](../pdrs/pdr-002.md), every
 37	shop carries inline copies of the canonical role-prompt templates at
 38	`.claude/agents/<role>.md`. Those copies are **provisional** until path
 39	(b) lands (a `shop-templates` subagent export mode). The provisionality
@@ -29838,7 +29838,7 @@ _**Agent - sidechain (claude-opus-4-7 2026-05-13 13:15:46Z)**_
 47	always the canonical template under `shopsystem-templates`, reached
 48	through the `shop-templates` CLI.
 49	
-50	This is the [PDR-002](../pdr/002-lead-shop-roles-as-subagents.md) /
+50	This is the [PDR-002](../pdrs/pdr-002.md) /
 51	[brief 001](001-inter-shop-messaging-encapsulation.md) discipline applied
 52	to the templates surface: the CLI is the integration boundary
 53	([`findings/from-prototype-1.md` finding 6](../findings/from-prototype-1.md)),
@@ -30163,10 +30163,10 @@ _**Agent - sidechain (claude-opus-4-7 2026-05-13 13:15:46Z)**_
 372	
 373	## Grounding artifacts
 374	
-375	- [`pdr/002-lead-shop-roles-as-subagents.md`](../pdr/002-lead-shop-roles-as-subagents.md)
+375	- [`pdr/002-lead-shop-roles-as-subagents.md`](../pdrs/pdr-002.md)
 376	  — establishes the inline-copy discipline this brief operationalises;
 377	  path (a) is the basis for "agents are bootstrap-managed."
-378	- [`pdr/001-role-templates-role-complete.md`](../pdr/001-role-templates-role-complete.md)
+378	- [`pdr/001-role-templates-role-complete.md`](../pdrs/pdr-001.md)
 379	  — the role-complete restructure that must precede bootstrap dispatch
 380	  so the inline copies land in the right shape.
 381	- [`briefs/001-inter-shop-messaging-encapsulation.md`](001-inter-shop-messaging-encapsulation.md)
@@ -30981,7 +30981,7 @@ _**Agent - sidechain (claude-opus-4-7 2026-05-13 13:16:37Z)**_
 7	
 8	By default you are the **router** for the lead shop. The two judgment roles
 9	— **PO** and **Architect** per [§3](03-lead-shop.md) — are dispatched as
-10	subagents (per [`pdr/002`](pdr/002-lead-shop-roles-as-subagents.md)). Your
+10	subagents (per [`pdr/002`](pdrs/pdr-002.md)). Your
 11	job is to classify each request and delegate; do not enact the roles
 12	yourself.
 13	
@@ -31005,7 +31005,7 @@ _**Agent - sidechain (claude-opus-4-7 2026-05-13 13:16:37Z)**_
 31	Per PDR-002 path (a) these are inline copies of the canonical templates in
 32	[`shopsystem-templates`](https://github.com/dstengle/shopsystem-templates);
 33	path (b) (a `shop-templates` subagent export mode) is a follow-up. Per
-34	[`pdr/001`](pdr/001-role-templates-role-complete.md) the templates
+34	[`pdr/001`](pdrs/pdr-001.md) the templates
 35	themselves are in revision (role-complete restructure pending).
 36	
 37	## How feature requests get handled
@@ -32534,7 +32534,7 @@ _**Agent - sidechain (claude-opus-4-7 2026-05-13 14:52:47Z)**_
 33	
 34	### Inline `.claude/agents/*.md` copies remain CLI-managed
 35	
-36	Per [PDR-002 path (a)](../pdr/002-lead-shop-roles-as-subagents.md), every
+36	Per [PDR-002 path (a)](../pdrs/pdr-002.md), every
 37	shop carries inline copies of the canonical role-prompt templates at
 38	`.claude/agents/<role>.md`. Those copies are **provisional** until path
 39	(b) lands (a `shop-templates` subagent export mode). The provisionality
@@ -32548,7 +32548,7 @@ _**Agent - sidechain (claude-opus-4-7 2026-05-13 14:52:47Z)**_
 47	always the canonical template under `shopsystem-templates`, reached
 48	through the `shop-templates` CLI.
 49	
-50	This is the [PDR-002](../pdr/002-lead-shop-roles-as-subagents.md) /
+50	This is the [PDR-002](../pdrs/pdr-002.md) /
 51	[brief 001](001-inter-shop-messaging-encapsulation.md) discipline applied
 52	to the templates surface: the CLI is the integration boundary
 53	([`findings/from-prototype-1.md` finding 6](../findings/from-prototype-1.md)),
@@ -32873,10 +32873,10 @@ _**Agent - sidechain (claude-opus-4-7 2026-05-13 14:52:47Z)**_
 372	
 373	## Grounding artifacts
 374	
-375	- [`pdr/002-lead-shop-roles-as-subagents.md`](../pdr/002-lead-shop-roles-as-subagents.md)
+375	- [`pdr/002-lead-shop-roles-as-subagents.md`](../pdrs/pdr-002.md)
 376	  — establishes the inline-copy discipline this brief operationalises;
 377	  path (a) is the basis for "agents are bootstrap-managed."
-378	- [`pdr/001-role-templates-role-complete.md`](../pdr/001-role-templates-role-complete.md)
+378	- [`pdr/001-role-templates-role-complete.md`](../pdrs/pdr-001.md)
 379	  — the role-complete restructure that must precede bootstrap dispatch
 380	  so the inline copies land in the right shape.
 381	- [`briefs/001-inter-shop-messaging-encapsulation.md`](001-inter-shop-messaging-encapsulation.md)
@@ -33794,7 +33794,7 @@ _**Agent - sidechain (claude-opus-4-7 2026-05-13 14:55:09Z)**_
 33	
 34	### Inline `.claude/agents/*.md` copies remain CLI-managed
 35	
-36	Per [PDR-002 path (a)](../pdr/002-lead-shop-roles-as-subagents.md), every
+36	Per [PDR-002 path (a)](../pdrs/pdr-002.md), every
 37	shop carries inline copies of the canonical role-prompt templates at
 38	`.claude/agents/<role>.md`. Those copies are **provisional** until path
 39	(b) lands (a `shop-templates` subagent export mode). The provisionality
@@ -33808,7 +33808,7 @@ _**Agent - sidechain (claude-opus-4-7 2026-05-13 14:55:09Z)**_
 47	always the canonical template under `shopsystem-templates`, reached
 48	through the `shop-templates` CLI.
 49	
-50	This is the [PDR-002](../pdr/002-lead-shop-roles-as-subagents.md) /
+50	This is the [PDR-002](../pdrs/pdr-002.md) /
 51	[brief 001](001-inter-shop-messaging-encapsulation.md) discipline applied
 52	to the templates surface: the CLI is the integration boundary
 53	([`findings/from-prototype-1.md` finding 6](../findings/from-prototype-1.md)),
@@ -34133,10 +34133,10 @@ _**Agent - sidechain (claude-opus-4-7 2026-05-13 14:55:09Z)**_
 372	
 373	## Grounding artifacts
 374	
-375	- [`pdr/002-lead-shop-roles-as-subagents.md`](../pdr/002-lead-shop-roles-as-subagents.md)
+375	- [`pdr/002-lead-shop-roles-as-subagents.md`](../pdrs/pdr-002.md)
 376	  — establishes the inline-copy discipline this brief operationalises;
 377	  path (a) is the basis for "agents are bootstrap-managed."
-378	- [`pdr/001-role-templates-role-complete.md`](../pdr/001-role-templates-role-complete.md)
+378	- [`pdr/001-role-templates-role-complete.md`](../pdrs/pdr-001.md)
 379	  — the role-complete restructure that must precede bootstrap dispatch
 380	  so the inline copies land in the right shape.
 381	- [`briefs/001-inter-shop-messaging-encapsulation.md`](001-inter-shop-messaging-encapsulation.md)
@@ -44012,7 +44012,7 @@ _**Agent - sidechain (claude-opus-4-7 2026-05-13 20:13:14Z)**_
 33	
 34	### Inline `.claude/agents/*.md` copies remain CLI-managed
 35	
-36	Per [PDR-002 path (a)](../pdr/002-lead-shop-roles-as-subagents.md), every
+36	Per [PDR-002 path (a)](../pdrs/pdr-002.md), every
 37	shop carries inline copies of the canonical role-prompt templates at
 38	`.claude/agents/<role>.md`. Those copies are **provisional** until path
 39	(b) lands (a `shop-templates` subagent export mode). The provisionality
@@ -44026,7 +44026,7 @@ _**Agent - sidechain (claude-opus-4-7 2026-05-13 20:13:14Z)**_
 47	always the canonical template under `shopsystem-templates`, reached
 48	through the `shop-templates` CLI.
 49	
-50	This is the [PDR-002](../pdr/002-lead-shop-roles-as-subagents.md) /
+50	This is the [PDR-002](../pdrs/pdr-002.md) /
 51	[brief 001](001-inter-shop-messaging-encapsulation.md) discipline applied
 52	to the templates surface: the CLI is the integration boundary
 53	([`findings/from-prototype-1.md` finding 6](../findings/from-prototype-1.md)),
@@ -44351,10 +44351,10 @@ _**Agent - sidechain (claude-opus-4-7 2026-05-13 20:13:14Z)**_
 372	
 373	## Grounding artifacts
 374	
-375	- [`pdr/002-lead-shop-roles-as-subagents.md`](../pdr/002-lead-shop-roles-as-subagents.md)
+375	- [`pdr/002-lead-shop-roles-as-subagents.md`](../pdrs/pdr-002.md)
 376	  — establishes the inline-copy discipline this brief operationalises;
 377	  path (a) is the basis for "agents are bootstrap-managed."
-378	- [`pdr/001-role-templates-role-complete.md`](../pdr/001-role-templates-role-complete.md)
+378	- [`pdr/001-role-templates-role-complete.md`](../pdrs/pdr-001.md)
 379	  — the role-complete restructure that must precede bootstrap dispatch
 380	  so the inline copies land in the right shape.
 381	- [`briefs/001-inter-shop-messaging-encapsulation.md`](001-inter-shop-messaging-encapsulation.md)
@@ -44656,7 +44656,7 @@ _**Agent - sidechain (claude-opus-4-7 2026-05-13 20:13:15Z)**_
 239	  collides with lead-kq0.
 240	
 241	- **Templates half (B + D)** **waits on lead-kq0
-242	  ([PDR-001](../pdr/001-role-templates-role-complete.md))
+242	  ([PDR-001](../pdrs/pdr-001.md))
 243	  closing.** B and D rewrite the same template surface lead-kq0 is
 244	  currently restructuring. Collision risk is high otherwise:
 245	  lead-kq0's restructure changes the **shape** of the templates; B+D
