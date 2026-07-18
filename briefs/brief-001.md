@@ -12,7 +12,167 @@ derives-from: [pdr-001]
 
 ## Summary
 
+Inter-shop messaging must exist as a **bounded surface** that other parts of
+the shop-system compose with, not a directory layout that other parts inspect.
+Today, templates and subagents reach past the surface and read `inbox/` and
+`outbox/` directly because the surface does not yet expose the operations they
+need. The cost is that `shop-msg`'s storage layout — a filesystem convention
+that should be a private implementation detail of the messaging BC — has become
+a public shape every consumer depends on.
+
+The brief commits the shop-system to **two invariants and a corollary**, and
+names the five scope items the invariants imply.
+
+**Invariant 1 — `shop-msg` is the sole inter-shop messaging surface.** No
+consumer (template, subagent, runbook, ad-hoc script) inspects messaging
+storage directly. The storage representation — PostgreSQL, migrated from the
+earlier filesystem-YAML prototype (a completed-migration note, not a
+forward-look: shop-msg already uses PostgreSQL), and possibly a different
+backend tomorrow — is a private implementation detail of the messaging BC.
+There is a **carve-out for messaging-BC tests**: tests of `shop-msg`'s own
+implementation may freely inspect messaging storage (they *are* the messaging
+BC), but tests of BCs that consume `shop-msg`, and any non-test consumer of any
+kind, must use the CLI for setup and assertion like any other consumer. This is
+the messaging-surface application of from-prototype-1 finding 6 ("package CLIs
+are the integration boundary"), which prototype 1 validated for catalog
+schemas, scenarios canonicalisation, and the test harness; it applies equally
+here. The mechanism observation shopsystem-templates-kin is the evidence that
+it currently does not hold — it enumerates the leak: `ls inbox/ outbox/` to
+enumerate state; "a message is unprocessed when there is no outbox file for its
+`work_id`" (set-difference on filenames); `grep message_type inbox/<work_id>.yaml`
+to decide which subagent to dispatch. These appear in the canonical templates
+this BC ships (`bc-implementer.md`, `bc-reviewer.md`, the BC-router section of
+the shopsystem-templates `CLAUDE.md`). Because those files are the BC's
+**product**, the leak ships to every downstream BC that adopts them.
+
+**Invariant 2 — Inter-shop messages are self-contained.** The receiving shop
+acts on a message without consulting the sending shop's internal artifacts
+(beads, source files, working directories); a message carries everything its
+recipient needs to decide what to do. The local-clone topology currently hides
+violations of this — every shop's repo is reachable on the same filesystem, so
+an implementer that reads sender-side state happens to succeed. Remote-shop
+topology will not be so forgiving.
+
+**Corollary — `shop-msg` and `bd` are decoupled.** Catalog schemas must not
+require participation in `bd`; template language must not instruct creating
+beads as a precondition for messaging. `bd` is each shop's local work-tracker,
+messaging is the inter-shop surface, and the two may compose but neither
+requires the other. The originating observation itself shows the coupling:
+`MechanismObservation.bd_ref` is a required field, and the bc-implementer
+template instructs the BC to create a beads issue before emitting the message —
+so a shop that does not use `bd` cannot emit a `mechanism_observation` today,
+even though `bd` participation is its own concern.
+
+The brief commits **intent**, not scenarios: scenarios come after the Architect
+verifies BC pre-state and picks vehicles per the discriminator. The PO's commit
+is the two invariants plus the five scope items plus the sequencing constraint.
+
 ## Scope
+
+**In scope — five scope items.** Each is named in product terms; vehicle
+selection and implementation specifics are the Architect's call after BC
+pre-state verification.
+
+- **A — `shop-msg` CLI surface (symmetric, both BC and lead sides).** `shop-msg`
+  exposes the operations every consumer needs so no consumer falls back on
+  `ls`/`cat`/`grep` against the mailbox directories. At minimum: **enumerate
+  pending unprocessed work** (a consumer can ask "is there an unprocessed
+  message here, and what is its `message_type`?" without inspecting the
+  filesystem; `--bc <name>` filtering is part of the contract from day one
+  because the lead side needs it); **read inbox by `work_id`** (parallel to the
+  existing `shop-msg read outbox <work_id>`); and a **parity check** so no
+  operation any consumer needs still requires direct file access (the Architect
+  closes this by enumerating call sites during pre-state verification). The
+  contract is **symmetric** between BC side and lead side — the lead never
+  touches BC outboxes directly any more than a BC touches its own inbox
+  directly; both use the same surface.
+
+- **B — Templates rewrite.** The canonical `bc-implementer.md` and
+  `bc-reviewer.md`, together with the BC-router section of the
+  shopsystem-templates `CLAUDE.md`, **use the `shop-msg` CLI only** — no direct
+  references to `inbox/`/`outbox/` directories or their filename conventions,
+  except in conceptual material that describes the protocol at the spec level.
+  The same discipline applies to the lead-side templates (`lead-po.md`,
+  `lead-architect.md`) and the lead-shop `CLAUDE.md`. The intent is uniform
+  across roles: **no role enacts the protocol by inspecting messaging storage.**
+
+- **C — Catalog schema decoupling.** The catalog schemas under `shop-msg`'s
+  `catalog` package are audited in full across the **six currently-implemented
+  message types** (`assign_scenarios`, `request_bugfix`, `request_maintenance`,
+  `clarify`, `work_done`, `mechanism_observation`) for required references to
+  `bd`. `MechanismObservation.bd_ref` is the known instance, but the audit does
+  not presuppose the other five are clean. `request_scenario_register` and
+  `request_shop_card` are **deferred** per from-prototype-1 finding 1 — no
+  Pydantic schema for either lives in `catalog/schemas.py` today, and no open
+  lead-shop bead schedules authoring them (prototype-1 issues `6mk` and `r7u`
+  closed as deferred 2026-05-10); `request_scenario_register`'s schema will
+  ride with lead-otu (the per-BC scenario register surface), and
+  `request_shop_card` awaits its own driver. The decoupling invariant carries
+  forward to those two when eventually authored. The committed outcome for the
+  six in-scope today: `bd` references are **optional or removed**; if retained,
+  they are framed strictly as **provenance metadata**, never as required
+  participation, so a shop that does not use `bd` can emit any message type the
+  catalog defines.
+
+- **D — Template-language decoupling.** The template language is audited in
+  parallel — particularly the `bc-implementer.md` "Surfacing mechanism
+  observations" section, which today instructs creating a beads issue and then
+  emitting the wire message with `--bd-ref`. This is rewritten so **`bd`
+  participation is an independent local-tracker concern, never a precondition
+  for messaging**: if a shop uses `bd` the template may describe how the two
+  compose, but the "bead first, then message" ordering is removed and the
+  message is emit-able regardless of whether a bead exists. The audit covers all
+  four canonical templates (`lead-po.md`, `lead-architect.md`,
+  `bc-implementer.md`, `bc-reviewer.md`) and both `CLAUDE.md` files (lead-shop
+  and the shopsystem-templates BC).
+
+- **E — Spec edits (§4 and §5).** §4 is amended to describe messaging in purely
+  **conceptual terms** — what flows (inbox messages from lead, outbox responses
+  from BC) and what consumers do via the CLI — and does **not** name any
+  filename pattern, directory layout, or on-disk convention; storage shape
+  (including any filename convention like `<work_id>-<response_type>.yaml`) is
+  `shop-msg`'s internal realization. §5 is amended to name the
+  **self-contained-messages invariant** explicitly, alongside §5.6's
+  schema-as-contract principle (or in a new §5.7). Both sections are held to the
+  same discipline: characterise the protocol, never the storage. The principle
+  is from-prototype-1 finding 4's — claims belong where they are enforceable,
+  and conventions not part of the contract are noise inviting slippery-slope
+  dependency.
+
+**Out of scope — named explicitly.** **Auto-loading messages into `bd` (drain
+automation).** The decoupling holds in both directions: messaging does not
+require `bd`, and `bd` does not need to be fed automatically by messaging. If a
+`shop-msg drain` command (or similar) is wanted later, a follow-on brief opens
+when manual-drain friction surfaces in real-product BC use. This is adjacent to
+from-mechanism-observation-v1 §6 ("lead drain formalization"), which stays
+**deferred for now**.
+
+**Sequencing.** The **messaging half (A + C) and spec edits (E)** can be
+authored and dispatched **independently** of templates work — they target
+shopsystem-messaging and the lead-shop spec respectively and do not collide with
+lead-kq0. The **templates half (B + D)** **waits on lead-kq0 (PDR-001) closing**,
+because B and D rewrite the same template surface lead-kq0 is restructuring:
+lead-kq0 changes the **shape** of the templates while B+D changes their
+**content** with respect to messaging storage, and the two interleave badly if
+dispatched in parallel. The ordering is a constraint on **dispatch, not
+authoring** — the Architect may verify pre-state and pick vehicles for B+D
+before lead-kq0 closes, but the B+D dispatches should not land in the templates
+BC's inbox until lead-kq0's `work_done` does.
+
+**Vehicle hints (Architect's call, not a prejudgment of the discriminator).**
+A likely lands as `assign_scenarios` against shopsystem-messaging (net-new
+read-side and enumeration commands). C likely lands as `request_bugfix` against
+shopsystem-messaging (tightening existing schemas). B + D likely land as
+`request_bugfix` against shopsystem-templates (tightening existing templates).
+E likely lands as `request_maintenance` against the lead-shop spec docs (flat
+content change in `04-bc-shop.md` and `05-inter-shop-protocol.md`). The
+`PRE-STATE DETERMINES VEHICLE — VERIFIED EMPIRICALLY` posture stands.
+
+**What remains open (vehicle-level, not intent-level).** Exact CLI command
+names and flag shapes for A; whether `bd_ref` becomes optional, is removed
+entirely, or is renamed to a neutral `provenance_ref`; and whether E is one
+`request_maintenance` or two. These are the Architect's to resolve after
+pre-state.
 
 ## Source (pre-modernization)
 
