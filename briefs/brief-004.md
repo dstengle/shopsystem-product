@@ -12,7 +12,158 @@ derives-from: [pdr-004]
 
 ## Summary
 
+The shopsystem today runs all BC agents on the same host, typically in a single
+devcontainer. Isolation between BCs is **social, not technical**: the spec (§4)
+says a BC-shop agent must not read sibling source trees, but nothing prevents
+it. When a BC agent is curious or confused, the most convenient path is the
+wrong one — reading another BC's code instead of emitting a `clarify`.
+
+This brief commits the framework to **container-level isolation per BC shop**:
+each BC agent runs in its own Docker container, started from the canonical
+devcontainer image, with an agent session accessible via tmux. The behavioral
+goal — work proceeds through `shop-msg` contracts, not code reads — becomes
+enforced at the OS boundary, not just by instruction.
+
+**Stakeholder-satisfying behavior (interview capture):** a single command starts
+a container for one BC shop — pulls/uses a shop image, clones the BC's repo,
+initializes beads, and starts a Claude Code agent session inside; the session
+runs under a named tmux so the container keeps running after the initiating
+terminal exits, a human can attach to observe or type, and an automated driver
+can inject text (the "startup prompt" use case); the container can be directly
+interacted with, not just observed; and work between BCs proceeds through
+`shop-msg` contracts, not source reads. **What would NOT satisfy:** running all
+BCs in one container without process isolation; an agent that reads the lead
+shop's or another BC's source directly (isolation is not just technical but
+behavioral — contracts only); or an opaque container with no attach/observe/inject
+mechanism.
+
+The brief carries **one invariant — isolation is technical, not just
+instructed:** a BC's agent container has no access to the lead shop's working
+directory or to sibling BC source trees; the host may map the BC's own
+repository in, nothing else from the host workspace is mounted, and any
+inter-shop communication goes through `shop-msg` via the shared Docker network
+connecting both sides to the same PostgreSQL backend. This makes the §4
+"no cross-BC code reads" constraint **unenforced-by-instruction →
+enforced-by-mount**: an agent that physically cannot read sibling source is not
+relying on role discipline alone; the architecture does the work.
+
+The brief commits **intent**, not scenarios. It flags PDR-004 (command
+ownership) as the blocker for Architect BC decomposition — until it resolves,
+the scenarios cannot be assigned.
+
 ## Scope
+
+**In scope — four scope items.** Each is named in product terms; command names
+and flag shapes are the Architect's call after pre-state and PDR-004.
+
+- **A — `bc-container launch` command.** Takes a BC name (or repo URL + branch)
+  and: (1) pulls or reuses the canonical devcontainer image; (2) starts a
+  container with the BC's repo (or a volume) mounted as workspace; (3) runs the
+  init sequence inside — clone the repo if absent, `bd init`, install the shop's
+  Python packages (`pip install -e .` or equivalent), arm the Monitor watcher
+  per the canonical `.claude/settings.json` hook (brief 003); (4) starts a
+  **named tmux session** with the Claude Code agent as the foreground process;
+  (5) returns to the host with the container running in the background and the
+  tmux session active. It is **scriptable** (machine-friendly arguments, no
+  interactive prompts, deterministic exit codes), called once per BC per launch
+  (containers are stopped and restarted; the init sequence re-runs on each fresh
+  start), and **idempotent on a running container** (if a container for the named
+  BC is already running, it reports state rather than starting a second).
+
+- **B — Attachment and injection surface.** Three **separate** operations
+  (separate flags or subcommands) targeting an already-running container by BC
+  name: **Attach** (connects a terminal to the named tmux session, full
+  interactive access); **Inject** (sends a string — a startup or follow-up
+  prompt — to the tmux session's active pane without a human attaching; the text
+  lands as if typed); **Monitor** (streams the tmux session's output to stdout
+  on the host without attaching, so a driver or human observes without
+  interfering).
+
+- **C — Shared network connectivity.** The container-side `shop-msg` CLI and the
+  host-side `shop-msg` CLI talk to the **same PostgreSQL instance**, achieved by
+  placing the BC container and the host (or its devcontainer) on a **shared
+  Docker network with a well-known name** (e.g. `shopsystem` — exact name the
+  Architect's call). The BC agent configures its DB connection via an environment
+  variable (e.g. `SHOP_MSG_DB_URL` or equivalent) set at container start,
+  pointing to the PostgreSQL service reachable over the shared network. The
+  committed property is both sides reaching the same DB via a named Docker
+  network; **filesystem mounts and mailbox volume sharing are not part of this
+  scope item.** This must not violate brief 001 invariant 1 — both sides
+  communicate through the `shop-msg` CLI, not direct PostgreSQL access or
+  filesystem inspection; the Docker-network model satisfies this (both call the
+  same CLI, which connects to the same backend), introducing no new
+  filesystem-inspection mechanism.
+
+- **D — Container lifecycle commands.** Alongside `launch`: **Stop** (stop a
+  named BC's container cleanly — flush in-flight tmux activity, then
+  `docker stop`); **Status** (report running/stopped state including tmux session
+  state — active, exited, no session); **List** (report all BC containers this
+  surface knows about, with states). These are operational hygiene so the lead
+  shop or a human operator knows what is running without parsing raw `docker ps`.
+
+**Boundaries the PO commits.** One container **per BC shop** (the unit of
+isolation is one BC, not one product; the command is per-BC); the container is
+started from the shopsystem **devcontainer image** (built/published by
+`shopsystem-devcontainer`); **tmux** is the session manager (human and automated
+access via `attach-session` / `send-keys`); the clone-and-init sequence happens
+**at container start** (ephemeral from the outside; init re-runs on every fresh
+launch); and **work isolation is behavioral, not just technical** (no read access
+to the lead shop's workspace or sibling BC source; all inter-shop traffic through
+`shop-msg`).
+
+**Out of scope — named explicitly.** **Agent session persistence across container
+restarts** (a restarted container starts a fresh session; no conversation history
+is preserved — acceptable because committed repo state persists in the mounted
+volume and the agent recovers context from `bd` and repo state). **Orchestration
+of all BCs at once** (the command launches one BC at a time; a product-level
+bootstrap starting all N BCs is a follow-on — this brief is the per-BC building
+block). **Building the devcontainer image** (built/published by
+`shopsystem-devcontainer`; this brief consumes it, does not extend its build
+pipeline). **Network isolation between containers** (containers on the same bridge
+can reach each other; the committed property is behavioral isolation via no shared
+mounts — network-level isolation, custom bridge-per-BC or `--network none`, is a
+follow-on if the invariant needs strengthening). **Lead shop containerization**
+(the lead shop runs on the host or its own devcontainer; this brief is
+BC-container-only).
+
+**Open questions the PO cannot close without stakeholder clarification or
+Architect pre-state.** The **Docker network name** (stakeholder committed to a
+well-known name; exact name e.g. `shopsystem` is the Architect's call). The
+**DB connection environment variable** (whether `shop-msg` already honours a
+`SHOP_MSG_DB_URL` or equivalent, or whether that support must be added under
+scope C — pre-state determines vehicle). **Message ordering across container
+restarts** (because shop-msg persists to PostgreSQL, not a filesystem volume,
+messages sent by the lead before a BC container launches are already present in
+the DB when it starts; the PO commits this expected behavior, the Architect
+verifies it holds). **Image tag pinning** (always `latest`, pinned semver from a
+config file, or a flag — deferred to the Architect). **Which repo owns the
+`bc-container launch` command** (PO stance: a new BC like `shopsystem-bc-launcher`,
+OR a new subcommand on an existing BC — the Architect's pre-state determines
+whether `shopsystem-templates`, `shopsystem-devcontainer`, or
+`shopsystem-messaging` is the natural owner, or a new BC is warranted; PDR-004
+names the options and the decision). **tmux session naming convention** (the
+brief commits tmux-as-manager; the Architect picks the name, e.g. `bc-<name>-agent`
+or `agent`).
+
+**Sequencing.** **Scope item A** requires the devcontainer image to be built and
+accessible (`shopsystem-devcontainer` work in flight); A's scenarios should not
+be dispatched until that BC's image-build/publish work is closed and a tag is
+pullable. **Scope item B** (attach/inject/monitor) is a pure addition depending
+on A landing first. **Scope item C** (shared network) is the key cross-brief
+dependency: brief 001 invariant 1 still applies — both sides communicate through
+`shop-msg`, satisfied by the Docker-network model. **Scope item D** (lifecycle)
+is independent of B and C and depends only on A (a container must exist to
+stop/inspect).
+
+**Vehicle hints (Architect's call).** `bc-container launch` is **net-new
+capability** (no existing BC owns it today; PDR-004 resolves ownership) →
+`assign_scenarios`; even if it lives in an existing BC, the new subcommand
+surface may still be `assign_scenarios`. Scope C depends on what `shop-msg`
+already supports for its PostgreSQL connection — if it already accepts the DB URL
+via an env var, C may be zero-BC-work (just network placement and a documented env
+var); if it hard-codes the connection and needs a new env-var flag, C lands as
+`assign_scenarios` against `shopsystem-messaging`. The `PRE-STATE DETERMINES
+VEHICLE — VERIFIED EMPIRICALLY` posture stands.
 
 ## Source (pre-modernization)
 

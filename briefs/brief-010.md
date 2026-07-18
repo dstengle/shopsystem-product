@@ -12,7 +12,113 @@ derives-from: [adr-018]
 
 ## Summary
 
+The request arrives solution-shaped ("needs a skill for X"); before converging on
+a skill, name the actual job-to-be-done so the capability is pinned to the
+outcome, not the mechanism. Job-to-be-done: a BC begins its work with a
+trustworthy, writable work-tracker — or it is told clearly, at startup, why it
+cannot, and stops there. The motivating failure is concrete and has recurred.
+Observed pains: (1) silent broken tracker — a BC (shopsystem-templates) launched
+with an embedded-Dolt `bd` backend that had an empty working set and no
+`issue_prefix`, while the committed `.beads/issues.jsonl` carried 23 issues under
+prefix `tmpl`, and nothing at startup flagged it; (2) late discovery — the
+breakage surfaced only at the end of the role loop, where the work-done-gate's
+Check 4 ("≥1 RED plan sub-issue, all closed") was unsatisfiable because no issue
+could be created or read, forcing every `work_done` to `status=blocked` (lead-2bdq
+`mechanism_observation`), paying the cost of the latent fault at the most
+expensive point; (3) deadlocked recovery — once wedged, all five documented `bd`
+recovery commands (`bd init`, `bd init --force`, `bd bootstrap`,
+`bd config set issue_prefix`, `bd rename-prefix`) mutually blocked (lead-vlsu),
+leaving no in-loop forward path and no self-heal without an undocumented
+side-effect. Desired outcome: the work-tracker's trustworthiness is established
+and proven at session-start — the cheapest point — so a wedged or unprovisioned
+tracker is caught-and-healed or caught-and-surfaced before any role work depends
+on it, never discovered downstream at `work_done`. This is load-bearing: the
+entire BC role pipeline (plan sub-issues, red-before-green gate, `work_done`
+emission) sits on a writable tracker.
+
+The heal-vs-block policy was RESOLVED by the stakeholder (2026-06-11), verbatim:
+"Auto-heal and block any work from starting if beads is not healthy (must include
+a test dolt push)." Net settled policy: attempt heal → re-validate (local
+writability AND a successful test `dolt push`) → proceed only if healthy;
+otherwise hard-block ALL role-work at session-start and surface. The heal remains
+non-destructive (adopt committed prefix + import committed registry; never
+fabricate a prefix, never overwrite committed issues). This is the stakeholder's
+explicit decision, not PO vocabulary open to flip.
+
 ## Scope
+
+Committed capability: a BC session-start beads-health capability — when a BC
+shop's agent session begins, before it accepts or advances role work, it runs a
+defined work-tracker health step that (1) DETECTS health, requiring BOTH (a) the
+tracker is locally writable (`bd create` / `bd ready` succeed and a definite
+`issue_prefix` is configured) AND (b) a test `dolt push` to the configured Dolt
+remote succeeds (a proven remote round-trip) — local writability alone is not
+sufficient; (2) HEALS an unhealthy-but-recoverable tracker — the observed wedge
+of empty working set + no prefix + a committed `issues.jsonl` (and/or configured
+`-beads` remote) naming a definite prefix — by adopting the committed prefix and
+importing the committed registry, then re-validating including the test
+`dolt push`; and (3) SURFACES and HARD-BLOCKS when the tracker cannot be made
+healthy after the heal attempt (including a heal that succeeds locally but whose
+test `dolt push` fails) — an explicit, actionable startup health failure that
+blocks ALL role-work: the BC does not begin its role loop and does not emit any
+role work, so the fault is visible at the cheapest point.
+
+Resolved policy detail: (1) auto-heal the recoverable wedge (adopt the committed
+`issue_prefix` + import the committed `issues.jsonl`); (2) re-validate then
+hard-block if still unhealthy for ANY reason — no committed prefix to adopt, or a
+heal that succeeded locally but whose test `dolt push` fails — where "block" is
+the strong form (does not begin the role loop, does not emit any role work; not
+merely refuse at `work_done` time), gated at session-start; (3) health MUST
+include a proven remote round-trip (the test `dolt push` must succeed). Rationale:
+the silent wedge was the worst outcome; the heal path is known and safe (a single
+`bd config set issue_prefix <prefix>` triggered `bd`'s
+auto-import-on-empty-database, importing all 23 committed issues AND adopting the
+prefix — verified per lead-rply / lead-vlsu; non-destructive per scenario 04); and
+the remote round-trip is load-bearing (a locally-writable-but-cannot-push tracker
+is exactly the latent fault class this brief exists to kill).
+
+Delivery vehicle (PO observation, NOT a commitment): this looks like a BC-side
+skill-group member that `bc-container launch` already pours into the BC shop's
+`.claude/skills/` (features/bc-launcher/43), shaped like the lead-side
+`bring-up-bc` skill (features/templates/159–161). The owning BC and the exact
+pour/skill vs launcher-step split are the Architect's discriminator +
+decomposition call; the PO commits the behavior against the BC-startup contract
+surface, not the mechanism.
+
+Relationship (explicitly NOT a duplicate): lead-rply (bug, bc-launcher
+provisioning) prevents the cause on our launch path (launcher adopts the
+committed/remote prefix and imports the jsonl on clone); lead-80t0 (this brief, a
+BC session-start skill) is a defense-in-depth complement that detects + heals or
+surfaces an unhealthy tracker from ANY cause, including paths the launcher fix
+does not cover; lead-vlsu (bug, upstream `bd` tool) wants a documented,
+non-destructive prefix-adoption command for the empty-local + configured-remote
+state instead of the current 5-way deadlock + undocumented side-effect. The three
+are complementary, not redundant — shipping one does not retire the others.
+
+Scenarios (thin, vertical, single-behavior against the BC-startup contract
+surface; features/beads-health/): 01 detects a healthy tracker (locally writable
+AND a successful test `dolt push`) and proceeds; 02 heals a recoverable wedge
+(adopt committed prefix + import committed registry), re-validates including a
+successful test `dolt push`, and only then proceeds; 03 surfaces an unhealable
+tracker (no committed prefix to adopt) as an explicit startup health failure and
+hard-blocks ALL role-work (does not begin the role loop, does not emit any role
+work, not rediscovered at `work_done`); 04 the heal is non-destructive (adopts
+committed state, does not fabricate a prefix or overwrite committed issues); 05 a
+tracker that is locally writable but whose test `dolt push` FAILS is treated as
+unhealthy and hard-blocks ALL role-work (the remote round-trip criterion pinned
+as its own behavior, not overloaded onto 01/03). The `@scenario_hash` and `@bc:`
+tags are the Architect's to add at assignment per ADR-018 D2 — authored tag-free.
+
+Left open (Architect's call at dispatch): owning BC / vehicle (a skill poured by
+`bc-container launch`, sibling of features/bc-launcher/43, vs a launcher
+readiness-barrier step, sibling of features/bc-launcher/34, vs a
+shop-templates-poured BC skill-group member — ADR-shaped if non-obvious); the
+exact health-probe commands (the scenarios pin the outcome — writable, definite
+prefix, a successful test `dolt push` — not the precise command sequence, though
+the test-push round-trip itself is a pinned criterion); and the heal command
+surface (the current side-effect path or, once lead-vlsu lands, a first-class `bd`
+adopt command — scenario 02 pins the effect, not the command). The heal-vs-block
+policy is no longer open — resolved by the stakeholder.
 
 ## Source (pre-modernization)
 

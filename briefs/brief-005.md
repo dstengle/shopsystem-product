@@ -12,7 +12,150 @@ derives-from: [pdr-006, pdr-004]
 
 ## Summary
 
+The shopsystem today has no canonical answer to "which BCs belong to this
+product?" BC membership is inferred from three overlapping sources that do not
+agree: the `repos/` directory (gitignored, contains non-product repos, drifts
+from truth), narrative documents (ADRs, briefs, scenario files — partial, not
+machine-queryable), and message history (`shop-msg pending outbox` — silent about
+idle BCs). The gap is most visible at two operational moments: **`bc-container
+launch --all`** (brief 004 deferred this to "follow-on composition" precisely
+because there is no authoritative list to iterate over) and **`shop-msg registry
+sync`** (if brief 001's DB registry lands without a manifest, registry population
+reverts to ad-hoc `shop-msg registry add` by hand and drifts as BCs are added or
+renamed).
+
+This brief fixes the structural gap: the product defines its BC membership
+**explicitly, in a committed file, once.** Derived representations exist to serve
+operational tools; the manifest exists to tell the truth.
+
+**Stakeholder-satisfying behavior (interview capture):** a single committed,
+machine-readable file says exactly which BCs belong to this product — a script
+can parse it and emit canonical BC names and GitHub remotes without
+interpretation; adding or removing a BC is a PR that edits this file (no editing
+`repos/`, no remembering to update a database, no updating a narrative document);
+the `repos/` clones, the DB registry, and any "launch all" list are all **derived
+from** the manifest, not maintained independently; a CLI takes the manifest and
+produces derived state (clone missing repos, warn about extras, register in the
+DB); and the manifest can be **validated** (every declared BC exists on GitHub,
+`repos/` is in sync, the file is syntactically valid). **What would NOT satisfy:**
+inferring membership from `repos/` (gitignored, drifts, contains non-product repos
+like `ddd-product-system`), from narrative documents (incomplete, not queryable),
+or from message history (silent about non-communicating BCs); a manifest that is a
+section of a larger file (e.g., a list inside `CLAUDE.md`) rather than
+independently parseable; or one requiring human interpretation to determine scope.
+
+The brief carries **one invariant — the manifest file is the single source of
+truth for BC membership:** every BC that belongs to this product is declared in
+the manifest; every BC NOT declared is NOT a member, regardless of `repos/`,
+narrative documents, or the DB. Adding a BC requires a commit to the manifest;
+removing one requires a commit to the manifest; no other action is sufficient and
+no other action is required.
+
+The brief commits **intent**, not scenarios, and flags PDR-006 (CLI ownership) as
+the blocker for assignment.
+
 ## Scope
+
+**Boundaries the PO commits.** The manifest is the **source of truth** for BC
+membership (all other representations derived — if the manifest and `repos/`
+disagree, the manifest wins; if the manifest and the DB disagree, the manifest
+wins). It **lives in the lead shop repo, committed** (not gitignored, not in
+`repos/`, not in a separate repo — the lead shop is the authoritative scope
+manager for the product). Each BC entry carries **at minimum** a canonical name
+(the `shopsystem-X` identifier), a GitHub remote URL, and a role label (e.g. `bc`,
+distinguishing it from future entries that might describe the lead shop itself or
+external dependencies); additional fields (beads remote, devcontainer image tag)
+may be added but are not committed by this brief. The manifest is
+**machine-readable** (a shell script or Python snippet must parse it and extract
+canonical names without an LLM or a PO; format YAML/TOML/JSON is the Architect's
+call, machine-readability is the PO's invariant). The **sync command operates from
+the manifest outward** — it does not read `repos/` and update the manifest; it
+reads the manifest and updates `repos/` (and the DB, if asked); the direction of
+authority is non-negotiable.
+
+**In scope — three scope items.**
+
+- **A — The manifest file.** A structured, machine-readable file committed to the
+  lead shop repo at a well-known path. Each BC entry declares at minimum the
+  canonical BC name, the GitHub remote URL, and a role label identifying the entry
+  as a BC. The file is in version control (not gitignored), parseable by a standard
+  YAML/TOML/JSON library with no custom code, and contains no narrative prose a
+  parser must skip. **All six current product BCs appear in the initial commit.**
+  The PO does **not** commit the exact format, the exact field names beyond the
+  three categories, or the well-known path (adjacent to `CLAUDE.md`, under
+  `.claude/`, or at `bcs.yaml` — the Architect picks after PDR-006).
+
+- **B — The sync command.** A CLI that reads the manifest and produces derived
+  state, supporting at minimum two operations (separate subcommands or flags — the
+  Architect picks): **Clone-sync** (for each declared BC, ensure
+  `repos/<canonical-name>/` is cloned from the declared remote — clone if missing,
+  skip if present with a matching remote, and **warn (do not delete without
+  explicit confirmation)** if `repos/` holds a directory for a BC not in the
+  manifest); **Validate** (check that every declared BC has a GitHub repo reachable
+  at the declared remote and that the manifest is syntactically valid; exit
+  non-zero if any check fails, with a human-readable summary). The command is
+  scriptable (machine-friendly arguments, no interactive prompts, deterministic exit
+  codes — 0 = all passed, non-zero = at least one failure enumerated on stderr).
+  Clone-sync is **idempotent** (running twice on a fully synced workspace produces
+  no changes and exits zero both times).
+
+- **C — Drift detection.** The validate operation must include drift detection
+  between the manifest and `repos/`: any directory in `repos/` matching
+  `shopsystem-*` but not declared is an **unexpected entry**; any declared BC whose
+  `repos/<name>/` is absent is a **missing clone**; any declared BC whose
+  `repos/<name>/` remote does not match the manifest is a **remote mismatch**.
+  `ddd-product-system` in `repos/` is the canonical example of an unexpected entry —
+  it is not a shopsystem BC and validate should flag it.
+
+**Initial manifest contents.** The six current product BCs (known from `repos/`
+inspection and session history) are: `shopsystem-messaging`, `shopsystem-scenarios`,
+`shopsystem-templates`, `shopsystem-test-harness`, `shopsystem-devcontainer`,
+`shopsystem-bc-launcher`. `ddd-product-system` in `repos/` is NOT a shopsystem BC
+and must not appear. The Architect should verify each of the six exists on GitHub
+before populating the manifest.
+
+**Out of scope — named explicitly.** **The DB registry** (populating the DB with BC
+entries for `shop-msg` routing is brief 006's domain; the manifest is the source of
+truth the DB is populated FROM; scope B may include a `--register`/`--db` flag as a
+stretch goal only if the Architect confirms the DB registration API exists at
+pre-state — otherwise B's initial scope is clone-sync and validate only). **Building
+or publishing the devcontainer image** (the manifest declares which BCs exist, not
+how their containers are built; BC-specific image config belongs to the devcontainer
+and bc-launcher BCs). **Automated manifest updates** (the manifest is a committed
+file edited by humans or a PO-directed Architect dispatch; there is no
+self-updating mechanism — new BC creation is a deliberate act that includes a
+manifest PR as a step). **Lead shop manifest** (the manifest is for product BCs;
+the lead shop is not a BC and does not appear; lead-shop metadata lives in the lead
+shop's own configuration).
+
+**Open questions the PO cannot close without Architect pre-state.** **File format**
+(machine-readability committed; YAML vs TOML vs JSON is the Architect's call after
+checking what the ecosystem already uses). **CLI name and flag shape** (behavioral
+language committed; exact names/flags per PDR-006). **Which BC owns the CLI**
+(PDR-006 resolves it; the brief commits the CLI must exist). **DB registration
+scope** (the manifest must exist before `shop-msg registry sync`; the DB registry
+is brief 006's domain). **Initial manifest contents** (the six above, each verified
+on GitHub).
+
+**Sequencing.** **Scope item A** has no blockers — it can land as soon as PDR-006
+resolves the file path and the Architect verifies the six BC GitHub remotes.
+**Scope item B** requires A to exist (the command needs a file to read) and PDR-006
+to name the owning BC. **Scope item C** is part of B's validate operation — same
+command, no separate blockers beyond B. **Brief 006 (DB registry) follows this
+brief** — the manifest is the prerequisite for populating the registry; sequencing
+is strict.
+
+**Vehicle hints (Architect's call).** Scope item A (the manifest file) is a flat
+file committed to the lead shop repo — zero BC work unless the Architect determines
+file-format tooling (a schema validator, a linter) needs authoring by a BC; the
+Architect may author the file directly in the lead shop as part of dispatching.
+Scope items B and C (sync and validate) are net-new capability → `assign_scenarios`,
+with the target BC being PDR-006's answer.
+
+**What remains open (vehicle-level).** Exact file format and field names; the
+well-known file path; whether B's initial scope includes `--register` (depends on
+whether brief 006's DB API exists at pre-state); and which BC owns the CLI (PDR-006,
+the flagged blocker for assignment).
 
 ## Source (pre-modernization)
 

@@ -12,7 +12,170 @@ derives-from: [pdr-007, pdr-006]
 
 ## Summary
 
+The shopsystem messaging layer today uses filesystem paths as addresses.
+`shop-msg send --bc-root repos/shopsystem-messaging` works only when the caller
+and the BC share a filesystem. In a world where BCs run in separate containers —
+which brief 004 explicitly targets — the path `repos/shopsystem-messaging` is
+meaningful only from one host, or only if the lead shop's filesystem is
+bind-mounted everywhere; that assumption cannot hold.
+
+Two gaps compound this. **No stable addresses:** every CLI call encodes a path,
+so moving a BC, containerizing it, or running the lead shop from a different
+directory invalidates every call. **No lead inbox:** the lead shop is not a named
+participant in its own messaging system — it polls each BC's outbox (an inherently
+path-dependent operation), and there is no canonical place to send a message "to
+the lead." Both gaps share a root cause: the messaging layer treats addresses as
+filesystem paths rather than as opaque names the system resolves. The fix is a
+**resolution layer (the registry)** and **symmetric participation** (the lead has
+an inbox; every message carries from/to). The two are inseparable: name-based
+addressing without a lead inbox still requires the lead to know which names to
+poll; a lead inbox without name-based addressing still ties the inbox to a path.
+
+**Stakeholder-satisfying behavior (interview capture):** every `shop-msg` call
+that currently takes `--bc-root <path>` or `--lead-root <path>` is rewritten to
+accept `--bc <name>` and `--lead <name>` — the canonical name is the stable
+address and the filesystem path is an implementation detail `shop-msg` resolves
+internally via the DB registry; a DB-backed registry holds the name→connection
+mapping with management commands (`registry add/remove/list/sync`) called by the
+lead at bootstrap; the lead shop is itself a named participant with a canonical
+name and an inbox in the same storage layer BCs use; every message carries a
+required `from` and `to`; and `shop-msg watch` no longer polls BC outboxes but
+watches the lead's inbox by name. **What would NOT satisfy:** `--bc-root`/
+`--lead-root` continuing as the primary addressing mode; the lead polling each
+BC's outbox (the inbox model must be push-based); a registry that lives only in
+memory or config files (it must be in the same PostgreSQL DB so every party on the
+shared Docker network can resolve names); `from`/`to` fields that are optional or
+convention-populated rather than schema-enforced; or the lead shop appearing in
+the BC manifest (its registry entry is added via `registry add`, not the BC
+manifest sync).
+
+The brief carries **one invariant — shops are addressed by canonical name, not by
+filesystem path:** every `shop-msg` invocation targeting a shop uses a canonical
+name that `shop-msg` resolves internally by querying the registry, and no caller
+ever passes a filesystem path as a shop address. The registry is the resolution
+layer; the BC manifest (brief 005) is the source of truth for BC names; the
+registry is populated from the manifest.
+
 ## Scope
+
+**Boundaries the PO commits.** Shops are **addressed by canonical name**
+(path-based addressing is a legacy concern; the new model uses names throughout).
+The **registry is in PostgreSQL** (the same DB `shop-msg` already uses; `shop-msg`
+owns the registry schema because it needs it to resolve names; the lead shop is
+the authoritative writer). The **BC manifest is the source of canonical names for
+BCs** (brief 005 lists the product's BCs; the registry is populated FROM the
+manifest via `registry sync`; the lead shop's own entry is added separately via
+`registry add`). The **lead shop is a named participant** (it has a registry
+entry, an inbox, and a canonical name; it is not special-cased and uses the same
+message-storage layer as BCs). **`from` and `to` are required on every message**
+(enforced at schema validation time; no message is delivered or accepted without
+both populated).
+
+**In scope — five scope items.**
+
+- **A — Registry management commands on `shop-msg`.** A `registry` subcommand
+  group with at minimum: `registry add <name>` (register a shop by canonical name
+  with the connection info needed to route to it — the lead calls this for its own
+  entry at bootstrap); `registry remove <name>` (deregister; idempotent on unknown
+  names — exits zero with a notice); `registry list` (list registered shops,
+  canonical names, and derivable status like DB-reachability; machine-readable —
+  one shop per line, consistent field order); `registry sync` (read the BC manifest
+  and reconcile — add entries for manifest BCs not yet registered, remove entries
+  for registered BCs no longer in the manifest, leave BCs in both unchanged; the
+  lead shop's own entry is NOT touched by sync since it is not in the manifest;
+  idempotent). The lead calls `registry add` for itself and `registry sync` for
+  BCs at bootstrap; no BC calls registry management commands. The PO does not
+  commit the exact `registry add` flags (what constitutes "connection
+  information" — the Architect verifies what routing needs) or the exact
+  `registry list` output format beyond "machine-readable one shop per line."
+
+- **B — Name-based addressing in `shop-msg`.** Every subcommand currently taking
+  `--bc-root <path>` or `--lead-root <path>` gains a corresponding `--bc <name>`
+  and `--lead <name>` flag; the new flags are name-based (`shop-msg` resolves the
+  name via registry lookup to route). The intent is for `--bc-root`/`--lead-root`
+  to be **replaced** by `--bc`/`--lead`; whether the replacement is a clean break
+  or a deprecation period is **PDR-007's decision** — the PO commits that
+  name-based addressing is the target state, not a new option alongside path-based
+  addressing. Callers needing updating (at minimum): the lead shop `CLAUDE.md`,
+  the `lead-architect.md` and `lead-po.md` agents, the BC primer, and any
+  bootstrap runbooks calling `shop-msg` with path flags.
+
+- **C — Lead inbox.** The lead shop has an inbox in the same storage layer as BC
+  inboxes, identified by the lead's canonical name; BC responses go to the lead's
+  inbox by name, and the lead reads its own inbox via `shop-msg read inbox --lead
+  <name>`. The lead inbox preserves the "stays until consumed" semantic (a message
+  persists until explicitly consumed); `shop-msg pending inbox --lead <name>` lists
+  unconsumed messages and `shop-msg consume inbox --lead <name> --work-id <id>`
+  marks one consumed. The lead no longer needs to know which BC's outbox to poll —
+  it reads its own inbox and all BC responses are there. The PO does not commit the
+  physical storage mechanism (a row in a shared table keyed by `to` name, or a
+  separate table — the Architect picks after pre-state); the PO commits the
+  behavioral surface (`read`/`pending`/`consume inbox --lead <name>`).
+
+- **D — `from` and `to` fields on every message.** Every message carries `from`
+  (canonical name of the sender calling `send`/`respond`) and `to` (canonical name
+  of the intended reader). Both are **required**; `shop-msg` validates their
+  presence on send and receipt; a message missing either is rejected at send time
+  with a non-zero exit and a human-readable error naming the missing field. The
+  messaging BC adds `from`/`to` to all message schemas it owns (`assign_scenarios`,
+  `request_bugfix`, `request_maintenance`, `clarify`, `work_done`,
+  `mechanism_observation`), validated alongside existing required fields. `send`
+  determines `from` from the caller's registered name; `respond` determines `from`
+  from the BC's registered name; neither field requires the caller to pass it
+  explicitly (`shop-msg` injects both from registry state — the Architect verifies
+  whether this injection requires a config file or a new flag at send time).
+
+- **E — `shop-msg watch` by lead name.** `shop-msg watch --lead <name>` watches
+  the lead's inbox by name, firing one notification line to stdout when a new
+  message arrives addressed to the lead, regardless of which BC sent it. The command
+  no longer scans BC outboxes; its watch target is the lead's inbox. The startup
+  drain behavior (draining messages present at startup before entering
+  live-notification mode), the no-exit-on-quiet-inbox behavior, and the
+  DB-unreachable fail-fast behavior are all preserved. The `--lead-root` flag on
+  `watch` is removed or deprecated per PDR-007.
+
+**Out of scope — named explicitly.** **Backward compatibility strategy for
+`--bc-root`/`--lead-root`** (remove immediately vs deprecation period is PDR-007's
+decision; the PO commits the intent, the Architect determines the migration
+approach). **Message routing between BCs** (this brief covers lead-to-BC and
+BC-to-lead; BC-to-BC direct messaging where neither party is the lead is not in
+scope — a future brief covers it if needed). **DB schema design** (exact table
+names, columns, and indexes for the registry and lead inbox are the Architect's
+call after pre-state; the PO commits behavioral contracts, not schema). **Migration
+of existing messages in flight** (messages currently in BC outboxes lack `from`/`to`;
+the migration approach — drop, backfill, cut-over window — is the Architect's call).
+**Lead shop appearing in the BC manifest** (the lead shop is NOT a BC and does NOT
+appear in the manifest; its registry entry is added via `registry add`).
+
+**Open questions the PO cannot close without Architect pre-state.** Backward
+compatibility strategy for `--bc-root`/`--lead-root` (which callers exist; clean
+break vs deprecation — PDR-007). Registry table schema (which columns beyond `name`
+and `connection_info`). Migration of messages in flight (drop, backfill, or cut-over).
+Whether `shop-msg respond` is the BC's send primitive (currently BCs call `respond`
+to write their own outbox; the new model has `respond` write to the lead's inbox by
+name — the Architect verifies whether `respond` needs a new `--to` flag or a behavior
+change). Lead shop canonical name (`shop/name.md` is `shopsystem product` with a
+space; whether the registry key is `shopsystem-product` slug form or the raw name is
+the Architect's call — the PO commits the lead shop has exactly one canonical name
+the registry uses consistently).
+
+**Sequencing.** **Brief 005 (BC manifest) is a prerequisite for scope A** —
+`registry sync` reads the manifest, which must exist before sync can work.
+**Scope A (registry) and B (name addressing) are the foundation** for C, D, and E
+and must be substantially complete first. **Scope C (lead inbox) and D (from/to
+fields) are co-dependent** — a lead inbox without from/to leaves the lead unable to
+identify the sender; from/to without a lead inbox leaves messages with addresses
+that have no delivery target; author and assign them together. **Scope E (watch
+update) depends on C** (the watch command cannot watch the lead inbox until it
+exists).
+
+**Vehicle hints (Architect's call).** Scope A (registry commands) and B (name
+addressing) are net-new capability in `shopsystem-messaging` → `assign_scenarios`.
+Scope C (lead inbox) requires storage changes and new CLI surface →
+`assign_scenarios`. Scope D (from/to fields) is net-new schema validation →
+`assign_scenarios`. Scope E (watch update) modifies existing behavior → TBD: if the
+existing watch scenarios pin the old behavior, this may be `request_bugfix` or a new
+`assign_scenarios` that supersedes them; the Architect verifies.
 
 ## Source (pre-modernization)
 

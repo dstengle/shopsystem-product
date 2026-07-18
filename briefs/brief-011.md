@@ -12,7 +12,128 @@ derives-from: [pdr-018, adr-038, adr-037, adr-026, adr-028, adr-018, adr-029]
 
 ## Summary
 
+The job-to-be-done: a developer standing up a second product from scratch can go
+from an empty target directory to a working lead shop — with its own isolated
+supporting services and at least one BC online doing real work — by following one
+documented path, hitting exactly one human-gated credential step, and hand-editing
+nothing. This is the WS-2 deliverable that the WS-0 dummy-product spike (PDR-018)
+is the acceptance gate for. The independent MVP review (finding 3) named the gap:
+no document walks an adopter from empty `briefs/adr/pdr/features` to a working
+lead shop. This brief is that document.
+
+Three load-bearing constraints are settled. (1) The lead instance owns no code
+(lead-8cc2): every step either runs a `shop-templates` / `bc-container` / `bd` /
+`shop-msg` command or sets a value in instance config (`.env`,
+`bc-manifest.yaml`); no step edits rendered `ops/` code, role templates, or skills
+in place — genericity fixes go to `shop-templates` and re-pour. (2) Full
+per-product isolation: two products on one host share nothing at runtime (distinct
+docker network, host ports, data volume, broker, and postgres), with the product
+slug as the non-collision discriminator. (3) Identity is declared once (ADR-038):
+the product sets `product: <slug>` in its manifest and the fleet tooling derives
+the slug, network, BC-name-shape prefix, and (where applicable) image namespace
+from it. The credentials throughout are the developer's own (same GitHub account,
+same Claude account) — simply held in a per-product broker rather than mounted
+from the host; isolation is about the runtime substrate per product, not about
+separate identities.
+
 ## Scope
+
+Committed (settled, not open): the six-step bootstrap shape and the one human gate
+(Step 4); the isolation invariant (own network, ports, data, broker, postgres,
+slug as discriminator); the no-code-in-the-instance invariant (lead-8cc2); and
+identity-declared-once via `product:` (ADR-038).
+
+The bootstrap walk — six steps, one human gate: (1) scaffold the lead shop
+(`shop-templates bootstrap --shop-type lead --shop-name <product>-product --target
+<dir>`) → a fresh lead repo with empty product-document directories (the only
+inheritance is skills + templates + installed tools, not another product's
+artifacts — PDR-018 condition 1), its own `.beads` registry + `<product>-beads`
+remote, self-contained role templates + skills (ADR-037; the framework spec §1–6
+is NOT shipped, ADR-037 D1), and product-scoped `ops/` rendered through the slug
+(`compose.yaml` with `<product>-postgres` and `<product>-agent-vault` on docker
+network `<product>` at host ports distinct from any other product and a
+product-scoped data volume / `SHOPSYSTEM_DATA` equivalent; `bin/shop-shell`
+broker-wired per ADR-026 with no host `~/.claude` / `~/.gitconfig` mounts;
+`bin/agent-vault-provision` and `bin/agent-vault-check`) — zero `shopsystem-*`
+literals, no collision with the live fleet. (2) Set the instance secret (`cp
+.env.example .env`; set `AGENT_VAULT_MASTER_PASSWORD` to this product's own value)
+→ a gitignored `.env` carrying the broker master password that auto-unlocks the
+encrypted vault (ADR-028 D1); instance config, not code. (3) Bring up supporting
+services (`bin/shop-shell` or `docker compose up -d`) → `<product>-postgres` and
+`<product>-agent-vault` on the `<product>` network at distinct host ports (ADR-026
+D2/D3), alongside any other product with no collision. (4) Provision the broker —
+THE ONE HUMAN GATE (`bin/agent-vault-provision`) → a provisioned `<product>`
+broker vault + a minted `<product>-fleet` agent token; the human, exactly once,
+pastes the GitHub PAT and sets the Claude OAuth credential via the agent-vault
+dashboard (the refreshing-OAuth type is not CLI-expressible, ADR-026 D2 caveat;
+the broker auto-refreshes it), and the script mints the `<product>-fleet` token
+(record the `av_agt_…` value — it wires `shop-shell` and the BC launches); after
+this no real credential ever enters a BC container, and `bin/agent-vault-check`
+confirms the broker is reachable/provisioned before a launch. (5) Declare and
+launch the BC(s) — declare in `bc-manifest.yaml` (carrying `product: <product>`
+per ADR-038 D1 plus one `{name, remote, role}` entry per BC) and run
+`bc-container launch <bc> --image <product-image> [flags]` → the BC online, cloned
+brokered, attached to the `<product>` network, gated on both supporting services
+reachable (ADR-026 D3), with `product:` + `--image` flowing the identity (ADR-038
+D2) so a message addressed to it projects under `<product>`, not
+`shopsystem/<name>` (the silent-routing defeat PDR-018 condition 2 guards).
+(6) Dispatch work — lead-po authors at least one real, buildable scenario;
+lead-architect dispatches via `assign_scenarios`; the BC runs its
+implementer→reviewer loop and emits `work_done` carrying `scenario_hashes`; the
+lead reconciles the register and matches the hashes → the §6.4 reconciliation
+cycle closes under `<product>`, which IS the PDR-018 acceptance gate (conditions
+5–7 + 9–10). The second product is then working.
+
+Left open (Architect's call at dispatch / the spike's call empirically): the
+exact `bc-container launch` flag set and the canonical `--image` reference for a
+non-shopsystem product (ADR-038's open question — whether `product:` also defaults
+the image namespace or `--image`/`BC_IMAGE` stays a fully independent override;
+the conservative reading, `--image` independent, is what this brief documents, and
+the spike confirms or refutes it); and whether any prime-the-pump prerequisite
+(manual `docker network create` vs compose `external: true`, or a hand-clone of
+the launcher before manifest sync) survives once the rendered `ops/` lands
+(PDR-018's WS-2 dependency surface forecasts these as walls; the spike beads each
+one it actually hits).
+
+INSTALL.md rewrite scope: the current `INSTALL.md` is stale against the settled
+architecture and must be rewritten. Defects to remove: (1) it contradicts ADR-018
+/ lead-8cc2 by instructing `pip install -e repos/<bc>` and `git clone …
+repos/<bc-name>` as an adopter path (the lead host carries no `repos/` BC source;
+that entire model must be dropped); (2) it is shopsystem-and-dstengle-hard-coded
+(every command bakes `dstengle/<bc-name>` and the `shopsystem` identity; the
+rewrite must be the generic `<product>` walk with identity from `product: <slug>`
+per ADR-038); (3) it predates the broker (no agent-vault broker, one-time paste,
+or brokered clone; the rewrite must center Step 4 as the single gate and describe
+brokered launch per ADR-026). What `INSTALL.md` should become: a thin pointer to
+this brief as the authoritative bootstrap narrative plus the concrete §2 command
+transcript parameterized on `<product>`. Scope split (deliberate): this brief is
+the authoritative narrative now; the actual `INSTALL.md` file rewrite is carried
+as a follow-up under lead-l7uz (item 2).
+
+Relationship to the WS-0 spike (PDR-018): this brief IS the documented path the
+spike re-executes from empty. The mapping is exact — Step 1 → condition 1 (empty
+start, proven empty); Step 5 → condition 2 (distinct identity end-to-end); Steps
+1–5 → condition 3 (one BC, documented path only); Step 6 → conditions 4–7 (typed
+round-trip + §6.4 cycle); Step 6 + Steps 3/5 → conditions 9–10 (real feature,
+self-contained docker). Each missing or broken step becomes a bead routed to its
+owner (WS-1 fixes to the BC via `request_bugfix`; WS-2 doc/path gaps back to this
+brief); the final clean re-run validates the fixes.
+
+One open scope/vocabulary question for the user: does the throwaway
+dummy-product spike (PDR-018) stand up a REAL per-product broker (full Step 4
+paste), or may it skip the broker for the spike only? The settled architecture
+says every product gets its own broker, but PDR-018 is an explicitly throwaway,
+time-boxed spike whose durable output is a verdict, not a kept product
+(ADR-029/030). Proposed default (PO, pending the user's call): the spike DOES
+stand up a real per-product broker and does the Step 4 paste, because Step 4 — the
+one human gate — is itself part of what the bootstrap path must prove walks
+cleanly under a non-shopsystem slug; skipping it would leave the most
+failure-prone, most identity-coupled step unexercised by the very run that exists
+to prove the path. The cost is one extra credential paste into a throwaway vault;
+the payoff is that the gate covers the whole documented path. If the user prefers
+the spike reuse the existing shopsystem broker (treating own-broker-per-product as
+a graduation-time, not a spike, requirement), §2 / PDR-018's scope amend
+accordingly.
 
 ## Source (pre-modernization)
 

@@ -12,7 +12,110 @@ derives-from: [adr-019, adr-018]
 
 ## Summary
 
+Make per-scenario completion a durable, queryable fact — an authoritative
+append-only journal in each BC, mirrored as a lead-side snapshot — so that "is
+this scenario done?" and "what is outstanding system-wide?" become lookups, not
+manual reconstructions. Today reconciliation is a per-`work_done` sweep: the
+lead recomputes block-only canonical hashes via `scenarios hash`, matches them
+against on-disk `@scenario_hash:` tags, and cross-checks the mailbox — far too
+much recurring labor for what should be a constant-time lookup. The seed story
+the MVP must nail: the lead saw a bead marked READY whose scenario was in fact
+already implemented in a BC, with no cheap way to answer "has this scenario been
+implemented?" The atomic per-scenario completion lookup is the single most
+important behavior; everything else supports it or motivates it.
+
+The direction rests on four accountable stakeholder decisions (inputs, not open
+questions): (1) "Completed" (MVP) = PINNED & DEMONSTRATED — a `work_done` landed
+for the scenario AND its block-only canonical hash equals the on-disk
+`@scenario_hash:` tag; "currently green" and drift-tracking are explicitly
+LATER, so completion is a demonstrated-once historical fact, not a live
+test-status reading. (2) The denominator for "outstanding" = ALL canonical
+scenarios in this repo's `features/`, including scenarios never dispatched to
+any BC — authored-but-not-built-anywhere is the true gap the seed story is a
+symptom of. (3) Mechanism intent (product constraint only, the Architect owns
+the design): the BC holds the authoritative append-only journal of its completed
+scenario hashes; the lead keeps a snapshot it mirrors incrementally from the
+`work_done` messages it already receives AND can fully reconcile on demand by
+pulling BC journals; prefer a lightweight unification of the two paths only if it
+adds no heavy complexity/resource cost, otherwise keep them separate — the brief
+commits the behavioral surface, whether they share a code path is the Architect's
+structural call. (4) Secondary jobs motivate the design but are NOT MVP:
+(a) state/progress recovery after agent failure (the reason the journal is
+BC-authoritative — the lead can rebuild its snapshot from BC journals),
+(b) scenario-level / in-flight progress tracking, and (c) rolling completion up
+into higher-level units (bead → epic → initiative).
+
 ## Scope
+
+The MVP is the atomic per-scenario completion lookup plus exactly the mechanism
+that makes it authoritative and the system-wide outstanding view correct.
+Committed behaviors: (1) atomic lookup "is scenario X implemented?" — a definite
+yes/no keyed on the block-only canonical hash; (2) a BC records a completed
+scenario into its append-only journal on completion (once PINNED & DEMONSTRATED);
+(3) the lead's snapshot reflects a newly-completed scenario incrementally when a
+`work_done` lands — no full sweep; (4) the lead reconciles its snapshot against a
+BC journal on demand (the path that recovers a lost/incomplete snapshot);
+(5) the system-wide outstanding view counts never-dispatched canonical scenarios
+as outstanding (part of the denominator); (6) an orphan (unrecognized) completion
+is flagged as an anomaly — never silently counted, never made first-class —
+excluded from both the coverage count and the outstanding denominator.
+
+Resolved scope decision — orphan completions (stakeholder dave, 2026-06-08,
+option A): canonical `features/` is the sole authority for what counts. An orphan
+completion (a BC-journaled hash with no match in canonical `features/`) is
+flagged and surfaced for investigation, not counted toward coverage and not
+counted in the outstanding denominator, never silently dropped and never promoted
+to first-class. Rationale (empirically grounded, not to be relitigated):
+canonical hashes are content-addressed and retire-and-replace — editing a
+scenario body mints a new hash and the author rewrites the `@scenario_hash:` tag
+(scenario 117-E integrity / edit-detection; 117-D feature-line-edit invariance) —
+so an absent hash is not a legitimate steady state. It can arise only from
+(i) the in-flight hashing-divergence defect (wire `scenarios[].hash` vs on-disk
+`@scenario_hash:` tag) tracked by lead-ji28 (in_progress) and lead-gw60 (open),
+(ii) transient propagation / version-lag (a now-retired hash), or (iii) a
+BC-local / never-promoted scenario. Flagging doubles as a free detector for the
+lead-ji28 divergence class; caveat — until lead-gw60 closes, a flagged orphan
+may be that known defect rather than a true anomaly, which is the desired
+surfacing, not a contradiction.
+
+Vocabulary (load-bearing): completed scenario (PINNED & DEMONSTRATED historical
+fact); block-only canonical hash (the per-scenario identity key defined by
+ADR-019 and pinned by scenario-117 — sha256, first 16 lower-case hex, of the
+scenario-block-only canonical text, computed by the `scenarios hash` contract
+tool); BC journal (a BC's authoritative append-only record of completed hashes);
+lead snapshot (the lead's materialized view, mirrored incrementally and
+reconcilable on demand); outstanding (a canonical `features/` scenario not
+completed, including never-dispatched); orphan (unrecognized) completion.
+
+What would NOT satisfy: a "currently green" / live-test-status reading dressed up
+as completion; an outstanding denominator of "dispatched scenarios only" (hides
+the seed story's class); a lead snapshot treated as source of truth (the BC
+journal is authoritative); a lookup keyed on anything but the block-only
+canonical hash (bead ID, title, dispatch record all reintroduce drift); building
+out secondary jobs (a)/(b)/(c) now.
+
+Product constraints the Architect inherits (NOT decisions this brief makes):
+which BC owns the journal (block-only hash is shopsystem-scenarios territory per
+ADR-019; journal/snapshot transport likely touches shopsystem-messaging; the
+`@scenario_hash:` tag tooling lives in shopsystem-templates); the journal store
+and snapshot store design; the on-demand journal-pull vehicle (new `shop-msg`
+type, extension of an existing one, or a CLI surface); whether the
+incremental-reflect and full-reconcile paths are unified; and the message-type
+discriminator (new capability → `assign_scenarios`, capability-but-unpinned →
+`request_bugfix`, flat → `request_maintenance`), applied after empirical
+pre-state verification per ADR-018.
+
+Out of scope (explicit): "currently green" / drift-tracking; the agent-failure
+recovery workflow (job a — the journal is made authoritative so recovery is
+possible, but the workflow is not authored here); scenario-level / in-flight
+progress tracking (job b); roll-up into higher-level units (job c); and BC
+decomposition, store design, and the journal-pull vehicle (the Architect's
+calls). Future surface, sketched but NOT committed and each its own later brief:
+recovery (built on MVP item 4's on-demand reconcile primitive), progress tracking
+(job b), and roll-ups (job c). Grounding artifacts: ADR-019, scenario-117,
+ADR-018, brief-006 (the lead-inbox / `work_done` transport the incremental path
+consumes), and umbrella bead lead-5p07 (full framing + the four decisions
+verbatim).
 
 ## Source (pre-modernization)
 
