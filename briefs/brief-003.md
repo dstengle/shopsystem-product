@@ -12,7 +12,196 @@ derives-from: [pdr-001]
 
 ## Summary
 
+Today, every shop — lead and BC — communicates via `shop-msg` mailboxes, but
+**no shop is reactive to inbound messages**. Reactivity is approximated by
+manual polling (`shop-msg pending`), scheduled checks (`/loop`), or out-of-band
+human attention. The cost is agent-coordination latency that scales with shop
+count and dispatch cadence: a lead dispatching to four BCs and waiting on four
+`work_done`s pays four manual-check round-trips per cycle, and a BC implementer
+sitting on a fresh inbox message does not know it has work until a human nudges
+it.
+
+The brief commits the shop-system to **event-driven activation as a shop's
+default posture**: every shop, on every session, arms a watcher on its inbound
+mailbox surface so that arrival of a message wakes the session immediately. The
+mechanism rides on top of the filesystem realization `shop-msg` currently uses
+but does not break encapsulation — the event tells the agent *that* something
+happened; reading *what* happened still goes through `shop-msg`.
+
+The brief carries **two invariants**. **Invariant 1 — every shop is reactive on
+session start:** no shop requires polling to discover inbound messages; every
+session-start sequence arms a watcher on the shop's inbound mailbox surface,
+**before the agent does any other work**, so the reactive posture holds across
+the whole session. The watch target is **shop-type-specific**: a **BC shop**
+watches its own `inbox/`; a **lead shop** watches `repos/*/outbox/` (where every
+BC drops responses, and reconciliation fires on any `work_done`, `clarify`, or
+`mechanism_observation`). The mechanism — which filesystem-event subsystem, tool,
+and pipeline shape — is realization detail the Architect commits in scenarios;
+the end-to-end property the invariant pins is sub-second event-fire when an
+inbound message lands. **Invariant 2 — activation honors brief 001's
+encapsulation:** the mechanism fires a **wake signal**, it does not deliver
+content — when the watcher fires, the agent learns "something arrived," then
+reads the actual message via `shop-msg read inbox <work_id>` (BC side) or
+`shop-msg read outbox <work_id> --bc <name>` (lead side), the same surface every
+consumer uses per brief 001 invariant 1. The watch path is **incidentally** the
+filesystem realization shop-msg happens to use today; that is acceptable because
+activation operates **below** the messaging layer — it does not parse YAML,
+extract `message_type`, or act on file content; it only signals "wake up."
+**Corollary — activation adapts when the transport changes:** when shop-msg's
+storage shifts (filesystem → SQLite → daemon → queue), the mechanism's
+realization shifts with it, and a future `shop-msg watch` subcommand is the
+natural home for that abstraction — this brief does not commit to it but permits
+and anticipates it. The brief's scope is: make every shop reactive on the
+current transport, in a shape that can evolve when the transport evolves.
+
+The brief commits **intent**, not scenarios. The PO's commit is the two
+invariants plus the five scope items plus the explicit out-of-scope boundary.
+
 ## Scope
+
+**In scope — three core scope items (A–C) plus two adjacent (D, E).**
+
+- **A — Canonical `.claude/settings.json` template per shop type.** Two new
+  package-data files ship via `shopsystem-templates`, parallel to the
+  role-prompt templates: a **lead-shop variant** carrying a `SessionStart` hook
+  that arms a Monitor watching `repos/*/outbox/`, and a **BC-shop variant**
+  arming a Monitor watching the shop's own `inbox/`. Each is canonical
+  (PO-authored framework-property), versioned alongside the role templates, and
+  **delivered exclusively through the `shop-templates` CLI** — the same
+  encapsulation discipline brief 002 applies to inline `.claude/agents/*.md`
+  copies; no shop hand-edits its `.claude/settings.json`. The two variants share
+  the same JSON shape (so brief 002 scope-item-C substitution/update mechanics
+  apply uniformly) and differ only in the hook content. The hook shape
+  (`command`-type running a script, `prompt`-type executing arm-Monitor
+  instructions, or another) is the Architect's call during pre-state on Claude
+  Code's hook surface. The current lead-shop `.claude/settings.json` already
+  carries a `SessionStart bd prime` hook; the canonical lead-shop variant
+  **composes** them — the existing hook remains, the activation hook is added
+  alongside it (two-hook composition is the canonical shape).
+
+- **B — SessionStart hook content (reference realization).** The hook arms a
+  Claude Code `Monitor` on a validated pipeline shape (the empirical work used
+  `stdbuf -oL inotifywait -m -e create,moved_to --format '%w%f' <dir> 2>&1 |
+  stdbuf -oL /usr/bin/grep -E '\.yaml$|inotifywait:'`, with the lead side
+  watching `repos/*/outbox/` and the BC side watching `inbox/`). The Architect
+  may deviate in **form** but must preserve four **properties**: (1)
+  **line-buffered output** (`stdbuf -oL` on every stage — without it libc
+  block-buffers piped stdout and single low-volume events never reach the
+  Monitor harness); (2) **alias bypass for `grep`** (the shell snapshot aliases
+  `grep` to `ugrep`, whose `--line-buffered` does not flush reliably here;
+  `/usr/bin/grep` does — the filter must bypass the alias and use a flushing
+  implementation, `awk` being another valid shape); (3) **startup-chatter and
+  error visibility** (`2>&1` merges `inotifywait` diagnostics into stdout and
+  the filter passes both message-arrival and `inotifywait:` lines so silent
+  failures — no permission, missing `inotify-tools`, watch-limit exhausted —
+  surface as notifications rather than a black-hole watcher); (4)
+  **Monitor-as-persistent-arming** (`inotifywait -m` monitor mode plus Monitor
+  `persistent: true` so arming is once-per-session and behavior is
+  for-the-session). Watch directories are named **explicitly per shop type** in
+  the canonical hook content (lead hardcodes `repos/*/outbox/`, BC hardcodes
+  `inbox/`); the brief does NOT parametrise the watch path — a lead is a lead
+  and a BC is a BC, and their watch targets are framework property.
+
+- **C — Bootstrap writes `.claude/settings.json`.** This brief extends brief
+  002's bootstrap surface: the **generated surface** (brief 002 scope B) gains
+  `.claude/settings.json` (per shop type), laid down at init alongside the other
+  managed files; the **update operation** (brief 002 scope C) re-pours it from
+  the current canonical variant when the canonical evolves. The file is
+  **bootstrap-managed** (not init-only, unlike `CLAUDE.md`) — a **delta from
+  brief 002 scope item D**'s cut: the activation hook IS framework discipline
+  (nothing about it expresses per-shop intent), and letting a shop drift means
+  the shop is silently no longer reactive, the failure mode this brief prevents.
+  A shop wanting to extend `settings.json` beyond the canonical set faces the
+  same constraint `.claude/agents/*.md` faces (canonical content is replaceable;
+  extensions live elsewhere — whether "elsewhere" means an additional file, a
+  project-local override, or something else is a Claude-Code-hook-surface
+  question the Architect addresses or escalates).
+
+- **D — Prereqs naming (adjacent).** The mechanism depends on host-level
+  packages: `inotify-tools` (for `inotifywait`) and `coreutils` (for `stdbuf`,
+  almost always present). The bootstrap surface **names these prereqs** in the
+  generated scaffold so a downstream operator hitting a missing tool has a
+  documented expectation. Realization is the Architect's call (a section of the
+  generated `CLAUDE.md`, a generated `PREREQS.md`, or inline `settings.json`
+  comments if the schema permits — itself a pre-state question). **Out of scope
+  under D:** installing the prereqs — that is host infrastructure (devcontainer
+  `postCreate`, Dockerfile, NixOS module); the brief acknowledges devcontainer
+  postCreate as the natural install site but does NOT commit to writing it.
+
+- **E — Venv install drift mitigation (adjacent).** lead-xq0 (P2) names the
+  venv drift problem: the product venv's installed CLIs (`shop-msg`,
+  `shop-templates`) drift from BC source as BCs land work, because the install
+  mode is non-editable (the lead-79q Architect worked around it by direct `ls`
+  of `inbox/`, a brief-001-invariant-1 violation forced by tooling staleness;
+  `pip install -e repos/shopsystem-messaging/` fixed it). **PO stance
+  committed:** this brief **folds** the mitigation in — the canonical
+  `SessionStart` hook also ensures the product venv reflects current BC source,
+  so the first thing every fresh session does is sync the venv before arming the
+  watcher and before any `shop-msg` operation; the committed property is: **on
+  session start, the venv's installed BCs are equivalent to their current
+  source.** Realization is the Architect's call among three candidate shapes:
+  (1) **hook-time `pip install -e repos/*/`** (closes drift even if bootstrap
+  installed non-editable, but paid every session); (2) **bootstrap-time editable
+  install** (zero per-session cost, but does not help pre-existing shops); (3)
+  **both** (belt-and-suspenders, at the cost of complexity). PO leaning (not a
+  commit): option 2 long-term, option 1 as a transition safety net, option 3
+  the likely realization if pre-state surfaces cases not covered by 2 alone —
+  **the PO commits the property (venv-source equivalence on session start) and
+  the folding (this brief subsumes lead-xq0); the Architect commits the shape.**
+  If pre-state on E surfaces that "venv setup" belongs cleanly to the
+  product-level workflow (brief 002's explicit out-of-scope) rather than
+  per-shop bootstrap or per-shop SessionStart, **E escalates to its own brief or
+  a PDR without blocking A–D.**
+
+**Out of scope — named explicitly.** **Session supervision** (the user starts
+and restarts sessions manually; no automated restart, devcontainer auto-launch,
+tmux/screen wrapper, or systemd unit — until the next session arms the watcher,
+the shop is unreactive). **Cloud / distributed activation** (filesystem events
+do not cross hosts; cross-host activation is a follow-on brief with a different
+primitive — HTTP webhook, queue notify, `shop-msg watch` daemon). **Long-running
+persistent-session optimization** (no daemon mode, persistent agent process, or
+context-window strategy; session length is managed via normal Claude Code
+controls). **Replacing `inotify` with something else** (the mechanism IS
+`inotifywait` on the filesystem because that is what the empirical work
+validated against the current transport; a future `shop-msg watch` abstraction
+is adjacent future work anticipated by invariant 2's corollary). **devcontainer
+`postCreate` host installation** (per D, prereqs are named but not installed by
+this brief). **Lead-shop drain automation** (`shop-msg drain` remains deferred
+per brief 001; event-driven activation makes manual-drain friction more visible
+but the brief does not commit drain automation — a follow-on opens when the
+friction surfaces under real-product BC use).
+
+**Sequencing.** **A, B, C, D** are a coherent unit targeting
+`shopsystem-templates` and extending brief 002's bootstrap surface; they can be
+dispatched together once the Architect verifies pre-state on (1) Claude Code's
+`SessionStart` hook surface, (2) `inotify-tools` availability, (3) brief 002's
+current bootstrap pre-state. **E** depends on the venv install-mode pre-state and
+may escalate to its own brief or a PDR (the **PDR-escalation trigger fires AT the
+Architect's pre-state verification on E**, per the brief 002 pattern). **Dispatch
+may proceed immediately on brief close** — no in-flight chain blocks brief 003
+(brief 002's dispatch chain lead-1uo/lead-03r is complete, the BC inbox is empty,
+and PDR-001's lead-kq0 is in progress but does not collide because this brief
+adds new package data). **Soft sequencing relative to brief 002:** scope item C
+extends brief 002's surface, so dispatch ordering should let brief 002's
+bootstrap-surface scenarios land first — a **hint, not a hard constraint** (the
+Architect may bundle both briefs' scope into one `assign_scenarios` if cleaner).
+
+**Vehicle hints (Architect's call).** The activation hook is **net-new framework
+property** on `shopsystem-templates` (no canonical `.claude/settings.json`
+template exists today) → `assign_scenarios`. Scope C lands as `request_bugfix`
+if brief 002's surface is already dispatched/built, otherwise folds into the
+brief 002 `assign_scenarios`. Scope E's vehicle depends on realization —
+hook-time `pip install` (option 1) is a behavior change parallel to A/B/C (same
+`assign_scenarios`), bootstrap-time editable install (option 2) tightens brief
+002's behavior (likely `request_bugfix`). The `PRE-STATE DETERMINES VEHICLE —
+VERIFIED EMPIRICALLY` posture stands.
+
+**What remains open (vehicle-level and design-tension).** Claude Code hook
+surface details for A and B (`command` vs `prompt`, exact JSON shape, inline vs
+referenced script); the `inotify-tools` packaging assumption (hard prereq with
+loud fail vs soft prereq with fallback — and any fallback to polling must be
+**loud**, since a silent fallback violates invariant 1); the venv-install
+realization for E; and the PDR-vs-brief escalation for E.
 
 ## Source (pre-modernization)
 
