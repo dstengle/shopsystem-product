@@ -12,7 +12,230 @@ derives-from: []
 
 ## Summary
 
+**Slice 1: prove out launching and bootstrapping the lead shop in a container,
+using primitives that already exist.** That is the entirety of this brief's
+capability commitment. Concretely: an adopter (or, equivalently, the framework's
+own test posture) can bring up a **lead-shop container** — a container in which a
+lead-shop working tree is scaffolded and ready for a Claude Code session — using
+**docker compose** as the composition primitive (already used by the framework
+today; the `shopsystem-devcontainer` docker-compose declares the postgres
+service, and slice 1 extends that pattern rather than introducing a new
+composition mechanism). The lead-shop container does its own first-run bootstrap
+**from inside**: the container's entrypoint (or compose-driven init step) runs the
+existing `shop-templates bootstrap --shop-type lead --shop-name <product>` against
+a mounted working directory, so the adopter does not have to install
+`shop-templates` on their host. **Postgres comes up alongside** — same compose
+file, same `shopsystem` Docker network, same image as today (not reinvented, the
+existing service is composed). **BCs are explicitly NOT in slice 1's scope:** after
+slice 1 lands, an adopter has a running lead-shop container and a running postgres
+but no BC containers; BC bring-up is slice 2+ territory.
+
+The point of slice 1 is to **test the load-bearing assumption**: can the framework
+launch its own lead shop into a container, using primitives that already exist,
+with whatever minimal new piece is required to invoke that launch from the host?
+If that assumption holds, the broader orchestrator story is a series of additive
+composition steps. If it does not — e.g. the lead-launch path requires a primitive
+that does not exist on the adopter's host (brief 007's launcher gap), or
+`shop-templates bootstrap --shop-type lead` exposes a gap when run from inside a
+container against a mounted working tree — those findings materially change what
+slice 2+ should commit to. **Why slice this way (the stakeholder's framing):** too
+many decisions in one brief produces re-work when early assumptions don't hold;
+slicing isolates the assumptions that must be tested first and defers decisions
+whose shape depends on those assumptions until the evidence is in. Pre-committing
+slice 2+'s shape now would risk locking in decisions (credential model,
+repo-creation responsibility, BC selection, orchestrator image pipeline) before
+the underlying primitives have been proven to compose. **Slice 1's empirical
+result governs slice 2+'s shape.** The PO commits the slice; the Architect
+resolves slice 1's dispatch details and produces the evidence; the slice 2+ briefs
+are authored later, on the evidence, by whoever holds the PO seat then.
+
 ## Scope
+
+**Boundaries the PO commits, for slice 1 only.** (1) Slice 1 scope is **lead-shop
+container + postgres, brought up together via docker compose**, with the lead-shop
+container performing its own first-run scaffold via `shop-templates bootstrap
+--shop-type lead`. (2) **No BC bring-up in slice 1** (slice 2+ adds BCs; slice 1
+does not pre-decide the shape). (3) **Compose what exists** — the postgres service
+is the one already declared in `repos/shopsystem-devcontainer/docker-compose.yml`
+(extend/reference it, or copy its declaration into a new compose file the framework
+ships — the authoring shop picks; either way the bring-up is the existing one, not
+a reinvention). (4) **Bootstrap from inside the container is non-negotiable** (the
+adopter does not run `shop-templates bootstrap` on their host; the container does
+it). (5) **No host-side framework install** (the host needs Docker with the Compose
+v2 plugin — `docker compose ...`, not the legacy `docker-compose` — and nothing
+else). (6) **Slice 1's success criterion is empirical and observable** (see "Slice
+1 done"). (7) **Slice 1's findings explicitly inform slice 2+** (if slice 1
+surfaces that the lead-launch path needs a new primitive per brief 007's
+launcher-gap finding, that primitive's existence and shape is part of slice 1's
+deliverable evidence base, not a slice 2 commitment).
+
+**Stakeholder-satisfying behavior for slice 1.** The adopter (or the framework's
+own test) does **one** thing on their host that brings up a lead-shop container
+plus postgres on the `shopsystem` network — allowed to be a `docker compose up`
+against a framework-shipped compose file or a thin wrapper (slice 1 does not
+pre-decide the exact CLI shape, but it is bounded: one host command, no follow-up
+host commands before the container is ready for a Claude Code session). The
+lead-shop container, on first run, bootstraps its own working tree via
+`shop-templates bootstrap --shop-type lead --shop-name <product>` against a
+host-mounted directory (the adopter installs no Python/`shop-templates`/framework
+tool on their host — those live in the container image). **Docker-out-of-docker is
+NOT required for slice 1** (the container does its scaffold work in-process and
+postgres is brought up by the same compose, not by the container shelling out;
+docker-out-of-docker re-enters in slice 2+ when BC launches are added). Postgres
+comes up via the existing compose service referencing the same image/env/network
+the framework already runs. **What would NOT satisfy:** a "kitchen-sink"
+orchestrator that brings up BCs, manages credentials, creates GitHub repos, or does
+anything beyond lead + postgres in slice 1; a net-new composition mechanism when
+docker compose already exists (if the author finds themselves writing a Python
+orchestrator that shells out to `docker run` for postgres rather than using the
+existing compose service, the slice has drifted — come back to PO); a slice 1 that
+commits the slice 2+ shape (image pipeline, credential model, BC subset semantics);
+or a slice 1 that requires the adopter to hand-scaffold the lead-shop working tree
+on their host before the container starts.
+
+**"Slice 1 done" — the observable end state (ALL hold).** Running the documented
+slice 1 host command from a clean host (Docker installed; no other framework
+tooling) brings up: a **postgres** container on the `shopsystem` network backed by
+the existing devcontainer compose postgres definition (or an equivalent
+composition referencing the same image/env/network); and a **lead-shop container**
+on the same network with a host-mounted working directory that, after first-run
+bootstrap, is a valid scaffolded lead-shop tree (the same shape `shop-templates
+bootstrap --shop-type lead --shop-name <product>` produces today). The lead-shop
+container is **reachable for the adopter to attach a Claude Code session** (via
+`docker exec`, attach, or equivalent — the exact attach shape is the authoring
+shop's call, but the affordance must exist and be documented). The lead-shop
+container **can reach postgres** on the `shopsystem` network (smoke test: a
+`shop-msg`-equivalent reachability check from inside the container succeeds, or an
+equivalent observable demonstrates network connectivity). The deliverable
+**includes an honest finding** about whether a new host-side primitive was required
+to invoke the lead-shop container's launch (brief 007's launcher-gap finding
+predicts one will be needed; slice 1 confirms or refutes empirically — the finding
+need not *resolve* the launcher question, that is brief 007's open Q7, but it must
+surface the evidence). **"Slice 1 done" explicitly does NOT include:** BC
+containers running; a messaging registry populated with the adopter's BCs; the
+adopter's GitHub repos created; a credential model for GitHub or private
+registries; a pinned image pipeline (which image, registry, tag convention); an
+"orchestrator BC" decided as the home; or idempotent re-run semantics for the full
+orchestrator (slice 1 idempotency is scoped to "re-running slice 1's compose
+against an existing state does not corrupt; either skips or refuses cleanly").
+
+**What slice 1 must NOT do** (collapsed into the single defining principle: slice 1
+commits the lead-only prove-out and nothing else). Specifically it must NOT: (1)
+bring up BCs (slice 2+); (2) create the adopter's GitHub repos (deferred, not
+pre-decided); (3) implement a credential model (deferred); (4) decide the
+orchestrator's owning BC (slice 1's lead-launch piece has its own ownership
+question resolved by the Architect at dispatch; the full orchestrator's home is
+deferred); (5) decide the orchestrator image pipeline (slice 1 may need a thin image
+to host the scaffold-on-startup behavior but picks the minimum that works — e.g.
+extending the existing devcontainer image or composing against it — and leaves the
+long-term image question to slice 2+); (6) re-implement primitives that exist
+(`shop-templates bootstrap` is called, not re-implemented; docker compose is used,
+not replaced); (7) commit slice 2+'s shape (even a clear intuition about how BCs
+should be added next is evidence for the slice-2 authoring conversation, not a
+commitment in this brief).
+
+**Empirical pre-state evidence (slice 1-relevant only).** **Docker compose is
+already used by the framework** — the `shopsystem-devcontainer` docker-compose
+declares the postgres service (`image: postgres:16`, env `POSTGRES_USER/PASSWORD/DB`,
+on the `shopsystem` network with `attachable: true`); slice 1 extends or composes
+against this. **`shop-templates bootstrap --shop-type lead` is the lead scaffold
+today** — the `shop-templates` CLI exposes `bootstrap --shop-type lead --shop-name
+<product> --target <dir>` as the in-place scaffold for a lead-shop working tree;
+slice 1's "bootstrap from inside the container" invokes it against a mounted target.
+**The launcher gap (brief 007 cross-reference)** — `bc-container launch` is the
+canonical per-container launch primitive for BCs only (`bc_name` positional,
+`--repo-url`, assumes a BC); there is no analogous host-side primitive that
+launches a lead shop into a container; slice 1 is the empirical proving ground
+(launching from a clean host with no framework tools requires either docker compose
+alone or a small new wrapper that brief 007's open Q7 will resolve into "extend
+`bc-launcher` to `--shop-type {bc,lead}`" or "introduce a new `lead-launcher` BC" —
+slice 1 does NOT pre-decide, it produces evidence). **Docker-out-of-docker is NOT
+needed for slice 1** — the prior substrate evidence (devcontainer docker socket
+bind-mount, `docker ps` works inside) remains true and relevant to slice 2+, but
+slice 1 does not launch sibling containers from inside the lead-shop container; by
+deferring the BC-launch piece, slice 1 isolates the lead-bootstrap assumptions from
+the orchestrator's container-launching-container assumptions so each can be tested
+independently.
+
+**Open for slice 1's authoring shop (Architect's call at dispatch — NOT the
+deferred slice 2+ questions).** **Compose file shape and home** (ship a new compose
+file, extend the existing devcontainer compose, or expose a `shop-templates`-published
+starter compose — the PO commits only that postgres bring-up references the existing
+service, not a reinvention). **Lead-shop container image** (an image whose entrypoint
+or compose `command:` runs `shop-templates bootstrap --shop-type lead` against a
+mounted directory — the existing devcontainer image with a startup script, a thin new
+image, or `shop-templates`-provided — the PO commits only that the adopter does not
+install `shop-templates` on their host). **First-run idempotency for slice 1** (if the
+mounted directory already contains a scaffolded tree: skip, refuse, or overwrite with
+a `--force` opt-in — PO lean: "skip with a clear log line; never silently overwrite").
+**The host-side invocation shape** (`docker compose -f <path> up` directly, or a thin
+`shopsystem-bootstrap` wrapper — the Architect's call subject to brief 007's open Q7;
+the PO commits only that the host invocation is bounded to one command and requires no
+framework tooling on the host). **Slice 1's owning BC** (candidates:
+`shopsystem-templates` — slice 1's heaviest work is calling `shop-templates bootstrap`;
+`shopsystem-bc-launcher` — the launcher-gap resolution may move this here;
+`shopsystem-devcontainer` — the compose file lives there today; Architect-resolved at
+dispatch, ADR-shaped if non-obvious; non-binding PO observation: slice 1's ownership is
+naturally coupled with brief 007's Q7 resolution — if Q7 lands on "extend `bc-launcher`,"
+`shopsystem-bc-launcher` is the natural home; if "new `lead-launcher` BC," slice 1 may
+seed that BC).
+
+**Future slices — sketched, NOT committed** (enumerated so the slice 1 author and the
+Architect see the direction, but the brief commits none of these; their shape is left
+to be re-decided once slice 1's evidence is in — pre-resolving them now is exactly the
+failure mode the stakeholder's correction prevents). **Slice 2 (sketch):** add BC
+bring-up — once slice 1 demonstrates a working lead-in-a-container, explore adding a
+single BC container (likely `shopsystem-messaging`, since `shop-msg` is non-functional
+without it) launched from inside the lead-shop container via the existing
+`bc-container launch` primitive (where docker-out-of-docker re-enters); slice 2's shape
+depends on slice 1's findings. **Slice 3 (sketch):** add the full BC set per the
+adopter's manifest (per brief 005); the "all declared vs subset" question is re-opened
+here, not pre-decided. **Slice 4 (sketch):** credential and repo-creation surface —
+once the bring-up flow is proven end-to-end, the credential model and GitHub
+repo-creation responsibility become worth committing to, materially shaped by the
+empirical evidence from slices 1–3. **Each future slice is its own brief, authored
+after the prior slice's evidence is in;** this brief does NOT package them.
+
+**Cross-brief coherence with brief 007.** Brief 007 (the doc track) and this brief
+(the capability track) are siblings. Brief 007's v1 manual-composition walkthrough
+remains the adopter's story until slice 1 lands (with slice 1 narrowing, brief 007's
+doc updates only to describe the lead-only prove-out when slice 1 lands; the manual
+composition for BCs remains until slice 2+ delivers BC bring-up). Brief 007's
+launcher-gap finding (open Q7) points at slice 1 as its empirical answer source (brief
+007 surfaces the gap; slice 1 produces the evidence; whoever authors the Q7 resolution
+consumes slice 1's findings). **The slice 1 ↔ Q7 coupling is the most important
+cross-brief detail:** if Q7 lands on "extend `bc-launcher` to `--shop-type {bc,lead}`,"
+slice 1's lead-launch wrapper is the vehicle; if "new `lead-launcher` BC," slice 1 may
+seed that BC — the brief does NOT pre-decide, it commits the empirical prove-out and
+trusts the evidence to inform Q7.
+
+**Out of scope for this brief — named explicitly** (everything committed by the prior
+brief shape and NOT in slice 1, listed so the slice 1 author cannot accidentally pull
+it in and the slice 2+ authors know what is still on the table): BC containers running
+(slice 2+); credential model (formerly Q1 — slice 4 sketch); GitHub repo creation
+responsibility (formerly Q2 — slice 4 sketch); the orchestrator's full BC home (formerly
+Q3 — re-decided once the full orchestrator's scope is concrete, slice 2+); orchestrator
+image pipeline (formerly Q4 — slice 2+ at earliest; slice 1 picks the minimum that works
+for lead-only); all-declared-BCs vs subset (formerly Q6 — slice 3 sketch); lifecycle
+management (stop, restart, credential-rotate — not in any sketched slice; a separate
+brief if it surfaces); multi-product orchestration on a single host (not in any sketched
+slice).
+
+**Sequencing.** Slice 1 is dispatched as its own scope item (the brief is ready for the
+Architect's discriminator pass on slice 1 only). Slice 2+ briefs are authored AFTER
+slice 1's evidence is in (not bundled here, not pre-resolved). Briefs 004, 005, 006
+remain relevant in spirit but not as slice 1 blockers (slice 1 does not consume the BC
+manifest or the registry sync because it does not bring up BCs; slices 2+ will). Brief
+007 is a sibling, not a dependency, and vice versa (either brief can advance; brief
+007's open Q7 is the named follow-up that slice 1's evidence informs).
+
+**What remains open.** Slice 1's narrow Architect-resolved details (compose file shape
+and home; lead-shop container image; first-run idempotency; host-side invocation shape;
+slice 1's owning BC — resolved at dispatch). Brief 007's open Q7 (launcher gap — paired
+with slice 1, which produces empirical evidence to inform Q7, but the resolution lives
+in brief 007 or its own PDR, not here). Every deferred slice 2+ decision (listed under
+"Future slices" and "Out of scope"). The brief commits **slice 1 intent**, not slice 2+
+intent and not slice 1 scenarios.
 
 ## Source (pre-modernization)
 
