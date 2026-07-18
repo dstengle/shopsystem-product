@@ -147,7 +147,7 @@ _**Agent (claude-sonnet-4-6 2026-05-21 19:37:43Z)**_
 4	
 5	## Subagent dispatch specifics
 6	
-7	The two subagent roles are dispatched per [PDR-002](pdrs/pdr-002.md):
+7	The two subagent roles are dispatched per [PDR-002](pdr/002-lead-shop-roles-as-subagents.md):
 8	
 9	- **Dispatch to `lead-po`** when the request requires: authoring or sharpening
 10	  Gherkin scenarios; drafting briefs or PDRs; responding to BC `clarify` on
@@ -164,7 +164,7 @@ _**Agent (claude-sonnet-4-6 2026-05-21 19:37:43Z)**_
 21	and [`.claude/agents/lead-architect.md`](.claude/agents/lead-architect.md).
 22	Per PDR-002 path (a) these are inline copies of the canonical templates in
 23	`shopsystem-templates`; path (b) (`shop-templates` subagent export mode) is a
-24	follow-up. Per [PDR-001](pdrs/pdr-001.md) the templates
+24	follow-up. Per [PDR-001](pdr/001-role-templates-role-complete.md) the templates
 25	themselves are in revision.
 26	
 27	## BC-shop loop and outbox inspection

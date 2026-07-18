@@ -10,7 +10,7 @@ description: Build a cited, bounded intelligence brief on a competitor, peer pro
 named). Adapted, with permission, from
 `deanpeters/Product-Manager-Skills/skills/company-research`, by
 [Dean Peters](https://www.linkedin.com/in/deanpeters/) — direct-grant terms
-per [ADR-066](../../adrs/adr-066.md).
+per [ADR-066](../../adr/066-direct-grant-from-dean-peters-authorizes-mit-ingestion-of-deanpeters-derived-pm-skills-attribution-required.md).
 See [`../README.md`](../README.md).
 
 ## Why the PO reaches for this
