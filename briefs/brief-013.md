@@ -12,7 +12,50 @@ derives-from: [pdr-024, pdr-019]
 
 ## Summary
 
+On a freshly bootstrapped product the lead Claude shell comes up, but its plumbing
+is not wired or knowable. `SHOPMSG_DSN` is not set in its environment, so
+`shop-msg` cannot reach postgres on first use and the agent wastes a turn
+self-diagnosing and working around it. The deeper problem is that this is one
+instance of a class: a bootstrapped shop has several credential/connection
+preconditions (messaging-DB, agent-vault broker + CA trust, Claude OAuth) that,
+when one is missing, are discovered reactively and ad-hoc by an agent rather than
+reported by a deterministic check. The build economics make this acute — agent
+turns are the scarce resource, and spending them rediscovering a fixed, knowable
+precondition set is pure waste.
+
+Job-to-be-done: when I bring up a freshly bootstrapped shop, I want its
+credentials and connections wired correctly and checkable in one command, so the
+lead agent can do product work on its first turn instead of self-diagnosing broken
+plumbing. Outcome (observable behavior change): a freshly-launched lead-shell
+agent's first `shop-msg` call reaches postgres — no self-diagnosis, no manual
+`export SHOPMSG_DSN=...` — and an operator (or a session-start hook) runs one
+command, `bin/doctor`, and gets a named pass/fail per credential/connection plus
+one aggregate verdict, instead of an agent improvising a diagnosis. Output (a DSN
+export line, a `doctor` script) is not the measure; the behavior change — agents
+stop spending turns rediscovering preconditions — is. Strategic trace: both items
+serve the adopter-footing strategic bet recorded in brief-012 / PDR-019 (an
+adopter can stand a product up and have it work); a footing that produces a lead
+which cannot reach its own message bus, with no way to check why, undercuts that
+bet, and this brief makes the footing's result healthy and self-verifying.
+
 ## Scope
+
+In scope: lead-j8so (bugfix) — the rendered bringup path (`bin/shop-shell`)
+delivers a non-empty `SHOPMSG_DSN`, derived from the single ops-coordinates
+postgres coordinates, into the launched lead-shell session so `shop-msg` reaches
+the product postgres on first use; pinned by scenario 214. lead-q3r1 (feature) — a
+shop-templates-rendered `bin/doctor` command that validates credentials and
+connections and reports a clear aggregate pass/fail diagnosis; decomposed and
+recorded in PDR-024; pinned by scenarios 215 (messaging-DB), 216 (agent-vault + CA
+trust), 217 (`CLAUDE_OAUTH`), and 218 (aggregate pass/fail).
+
+Out of scope / deferred (named, not decided): the `bin/doctor` update-path render
+(parallel to ops-coordinates scenario 213) — bootstrap-render is pinned,
+update-render is an architect follow-on if wanted; auto-remediation — doctor
+diagnoses (name + status + remediation hint), it does not auto-fix, and a
+self-healing variant is a separate intent, not this brief; and any check beyond
+the three the product authority enumerated (additional checks are additive
+scenarios under PDR-024 D3's diagnosis surface).
 
 ## Source (pre-modernization)
 
