@@ -167,7 +167,7 @@ lifecycle has near-zero sample size until that migration runs.
 
 ## Cross-references
 
-- [`cand-005`](candidates/cand-005.md) / [`intent-007`](intent/intent-007.md)
+- [`cand-005`](candidates/cand-005.md) / [`intent-007`](intents/intent-007.md)
   — the investigation that produced this document and the reconciliation
   work it documents.
 - [PDR-032](pdrs/pdr-032.md) /
