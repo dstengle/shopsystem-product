@@ -8,6 +8,7 @@ updated: 2026-07-17
 authors: [David Stenglein (product authority), Claude (lead-po)]
 description: 'Two confirmed, empirical gaps compound into one failure mode:'
 derives-from: [pdr-033, adr-059, adr-056, pdr-032]
+candidate: cand-005
 ---
 
 ## Summary

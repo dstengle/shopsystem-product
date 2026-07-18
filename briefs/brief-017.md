@@ -8,6 +8,7 @@ updated: 2026-07-17
 authors: [David Stenglein (product authority), Claude (lead-po)]
 description: 'fabro''s LLM provider/model choice is baked into release-gated artifacts today:'
 derives-from: [adr-057, adr-049, adr-028, adr-056]
+candidate: cand-002
 ---
 
 ## Summary

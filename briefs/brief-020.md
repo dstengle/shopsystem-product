@@ -8,6 +8,7 @@ updated: 2026-07-17
 authors: [David Stenglein (product authority), Claude (lead-po)]
 description: '`lead-ifye3.2` shipped a mapping table (`src/bc_launcher/fabro/llm_provider.py`)'
 derives-from: [adr-028]
+candidate: cand-002
 ---
 
 ## Summary

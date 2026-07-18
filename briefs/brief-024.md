@@ -8,6 +8,7 @@ updated: 2026-07-17
 authors: ["David Stenglein (product authority)", "Claude (lead-po)"]
 description: Executable migration spec for moving this repo's ~119 pre-modernization pdr/adr/brief files (bold-label statuses, no frontmatter, numeric-slug filenames) forward onto the modern typed-artifact system (PDR-032/ADR-059) so the knowledge coherence gate — correct as built — runs green over the real corpus. Folds in all 2026-07-17 product-authority decisions — uniform-plural directories, synthetic legacy grounding in place of a legacyRoot exemption, findings-plane exclusion, and unincorporated-decision wiring. This is cand-005's promoted Phase 5.
 derives-from: [cand-005, intent-007]
+candidate: cand-005
 ---
 
 ## Summary

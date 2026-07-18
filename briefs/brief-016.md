@@ -8,6 +8,7 @@ updated: 2026-07-17
 authors: [David Stenglein (stakeholder / product authority), Claude (lead-po)]
 description: The agent-vault broker (the credential-injection proxy that substitutes real
 derives-from: [adr-018, adr-026, adr-028]
+candidate: cand-900
 ---
 
 ## Summary

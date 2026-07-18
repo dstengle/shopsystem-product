@@ -8,6 +8,7 @@ updated: 2026-07-17
 authors: [David Stenglein (product authority), Claude (lead-po)]
 description: Brief-020 corrected the provider-registration shape (native `openai` identity
 derives-from: [adr-058, adr-063, adr-049, adr-010, adr-064]
+candidate: cand-002
 ---
 
 ## Summary

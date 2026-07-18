@@ -8,6 +8,7 @@ updated: 2026-07-17
 authors: [David Stenglein (product authority), Claude (lead-po)]
 description: The task that produced this brief assumed the coherence gate has "no
 derives-from: [adr-047, adr-059, pdr-032, adr-018, pdr-033, pdr-034]
+candidate: cand-005
 ---
 
 ## Summary

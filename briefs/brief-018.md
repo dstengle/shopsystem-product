@@ -8,6 +8,7 @@ updated: 2026-07-17
 authors: [David Stenglein (product authority), Claude (lead-po)]
 description: The `candidate` artifact typedef is missing a `Verbatim anchors` section
 derives-from: [adr-059, adr-018, pdr-032, adr-056]
+candidate: cand-001
 ---
 
 ## Summary

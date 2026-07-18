@@ -8,6 +8,7 @@ updated: 2026-07-17
 authors: [David Stenglein (product authority), Claude (lead-po)]
 description: Subagent retrieval against `features/` (this shop's scenario corpus) is
 derives-from: [adr-056, adr-064, adr-018]
+candidate: cand-003
 ---
 
 ## Summary
