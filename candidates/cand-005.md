@@ -527,3 +527,48 @@ candidate's own Rabbit holes.
   masked by the BC's own synthetic test fixtures. Filed `lead-cea24` (P1)
   to track the fix; `lead-iohr` left open/annotated. Phase 4 remains
   dispatched-not-landed; Phase 5 stays blocked.
+- 2026-07-17 `lead-cea24` REFRAMED by product authority as a
+  mis-diagnosis marker: the coherence-gate CLI is correct-as-built for the
+  MODERN (uniformly-plural) layout; do NOT backport legacy dir/filename
+  parsing into the tool. Correct direction is forward corpus migration
+  (the `cand-004`/PDR-034 Phase 5 work). The `intent`→`intents` mirror of
+  the pdr/adr key mismatch was split out as `lead-yy0xy` (P1) and
+  dispatched `request_bugfix` → `shopsystem-knowledge`. Branch
+  `migrate/legacy-corpus-modernization` executed the repo-side rename
+  (`adr`→`adrs`, `pdr`→`pdrs`, `intent`→`intents`) plus artifact-file
+  renames to `<id>.md` and a frontmatter backfill of the legacy corpus.
+- **2026-07-18 Phase 4 VERIFIED-LANDED (lead-architect reconciliation).**
+  Provenance: the installed lead-host `shopsystem-knowledge` is a clean
+  VCS install pinned exactly to `origin/main` HEAD `5f5ac8a`
+  (`dist-info/direct_url.json`: `url=github.com/dstengle/shopsystem-knowledge`,
+  `commit=5f5ac8ad8f4336fc330b87d793ef67d79682d0d9`; `gh api compare
+  main...5f5ac8a` → `status: identical`, `ahead_by/behind_by: 0`). NOT an
+  editable/local install — the pip-reported `0.0.0` is merely an unset
+  pyproject version, not a provenance flag. The plural-`SUBDIR_TYPES`
+  loader fix is therefore properly landed on BC main: `lead-yy0xy` landed
+  via a proper `request_bugfix` TDD loop (commits `ba376f1` test-red /
+  `e8d6f8c` green / `5f5ac8a` feat, 2026-07-18, `dispatch_state=consumed`);
+  the pdr/adr half needed no BC change (the loader already carried plural
+  `pdrs`/`adrs` keys, correct-as-built once the repo renamed forward).
+  Behavioral re-verify against this repo's REAL corpus:
+  `shop-knowledge-gate --mode authoring .` AND `--mode distribution .`
+  both report `no coherence findings`, exit 0; `load_corpus(".")` yields
+  142 typed artifacts + 21 legacy_ids (all 21 are repo furniture/spec docs
+  — `.env`, `README`, `01-principles`, `CLAUDE`, `pyproject`, etc. — NOT
+  one pdr/adr/brief artifact, i.e. the artifact-corpus backfill is
+  complete). Both brief-023 §6 grounding-case DEFECTS are gone:
+  (a) PDR-034 now loads `typed=True` (no longer invisible); its
+  `supersedes: [pdr-032]` frontmatter edge was deliberately deferred by
+  the author to acceptance-time (PDR-034 is still `status: proposed`), so
+  there is no edge to evaluate — not a loader miss; (b) `current-state.md`
+  `incorporates: [..., pdr-032, pdr-033, adr-059]` resolves clean as typed
+  edges (the migration made those three targets typed), NOT false-dangling.
+  Reconciled and CLOSED `lead-iohr`, `lead-cea24`, `lead-yy0xy` with the
+  landing evidence above. NOTE on the output-shape discrepancy: the
+  "135 conforming / 7 known-modern-gaps" reading is from `shop-knowledge
+  validate` (per-file structural), a DIFFERENT tool than the cross-artifact
+  `shop-knowledge-gate` (coherence); the 7 validate failures
+  (`cand-001..005` missing `Verbatim anchors`, `intent-003` heading
+  mismatch, `current-state.md` structure) are pre-existing per-type
+  structural gaps, not coherence-gate findings, and the coherence gate is
+  clean in BOTH modes. Phase 4 is verified-landed; Phase 5 is unblocked.
