@@ -64,10 +64,10 @@ each, no deep links. -->
 
 - **Name:** shopsystem-product
 - **Product authority:** dstengle
-- **Artifacts:** intent `intent/`, candidates `candidates/`,
+- **Artifacts:** intents `intents/`, candidates `candidates/`,
   sessions `sessions/`, prioritizations `prioritizations/`,
-  briefs `briefs/`, product decisions `pdr/`,
-  architecture decisions `adr/`, findings `findings/`.
+  briefs `briefs/`, product decisions `pdrs/`,
+  architecture decisions `adrs/`, findings `findings/`.
 - **Artifact lifecycle:** documented in graph form at
   [`artifact-lifecycle.md`](artifact-lifecycle.md) (added 2026-07-16,
   `cand-005`) — cross-type flow plus per-type status lifecycle, marked
