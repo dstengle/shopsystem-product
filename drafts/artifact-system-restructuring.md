@@ -6,6 +6,11 @@ from the 2026-07-19/20 sessions so it isn't lost; it is a planning capture, not
 a decision (non-authoritative per ADR-065). When the initiative starts, this
 decomposes into the separate intents below.
 
+> **Entry point when picked up: START WITH INTENT #1** — the foundational
+> artifact-system needs PDR. It is the anchor the rest supersede into or
+> reference, and it states the two-views/self-containment requirement the
+> schema (#2) then serves. Do not open #2–#7 before #1 is shaped.
+
 ## Why deferred
 
 The migration branch already put the corpus in largely the state we need
