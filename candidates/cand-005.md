@@ -452,6 +452,22 @@ next action is dispatching that probe. Each phase must still be verified
 landed, not just dispatched, before the next starts, per this
 candidate's own Rabbit holes.
 
+**Closed 2026-07-25** by product authority (dstengle). All five phases are
+verified-landed — the knowledge/schema precondition chain now holds end to
+end: typedefs correct (Ph1), shop-templates `v0.53.0` released + repoured
+(Ph2), minimal enforcement live via `bin/doctor` + the
+`check-knowledge-artifacts` pre-commit hook (Ph3), the `shop-knowledge-gate`
+coherence CLI verified-landed and green in both authoring and distribution
+modes (Ph4), and the legacy corpus migrated forward to the uniformly-plural
+typed corpus and merged to `main` (Ph5, brief-024). The remaining
+`shop-knowledge validate` structural gaps (`cand-001..005` `Verbatim
+anchors`, `intent-003` heading, `current-state.md` structure) are per-type
+schema decisions carried forward into the artifact-system restructuring
+initiative (`lead-uhxoc`), not preconditions of this chain. Candidate status
+stays `committed` (the terminal shaped-candidate state; there is no "done"
+status — completion lives here in Resolution). Closing this un-gates the
+deferred vocabulary-dev-model work per the 2026-07-19 sequencing directive.
+
 ## Changelog
 
 - 2026-07-16 opened and shaped in `sess-2026-07-16-a`, deriving from
@@ -572,3 +588,13 @@ candidate's own Rabbit holes.
   mismatch, `current-state.md` structure) are pre-existing per-type
   structural gaps, not coherence-gate findings, and the coherence gate is
   clean in BOTH modes. Phase 4 is verified-landed; Phase 5 is unblocked.
+- 2026-07-18 **Phase 5 delivered + merged to `main`** (`brief-024`
+  legacy-corpus modernization): 118 docs content-filled, corpus renamed
+  forward to uniform-plural (`adrs`/`pdrs`/`intents`), coherence gate wired
+  into pre-commit (`shop-knowledge-gate --mode distribution`, blocking,
+  scoped, `--no-verify` escape hatch), gate green. Merge `cb3e2a7` +
+  gate-wire `6139af9` on `main`. `lead-ptr7a` closed (superseded by
+  `lead-6n4j6`, the known modern-validate gaps, out of scope).
+- 2026-07-25 **cand-005 CLOSED** (see Resolution). All five phases
+  verified-landed; the precondition chain holds end to end. Recorded in
+  `sess-2026-07-25-a`.
