@@ -1,8 +1,9 @@
 Feature: shopsystem-knowledge — body-section conformance (x-required-sections)
 
   Beyond frontmatter validation, each artifact type declares a required body-section
-  set — the x-required-sections list its typedef generates (for a pdr: The question,
-  Context, Options considered, Decision, Consequences, Changelog). The knowledge
+  set — the x-required-sections list its typedef generates (for a pdr, per ADR-069 D2
+  and the live `shop-knowledge schema pdr` output: Context, Options considered,
+  Decision, Consequences). The knowledge
   context checks a document's body headings against its type's required-section set:
   a document missing a required section is reported non-conforming with the missing
   section named; a document carrying its type's full section set passes. The check is

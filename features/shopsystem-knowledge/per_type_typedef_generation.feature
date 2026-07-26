@@ -1,3 +1,18 @@
+# RETIRED @scenario_hash:d038584b238f2fee — superseded by ADR-069 D7 (bead lead-4vvdo, slice #3).
+#   ADR-069 D7 resolves the standing three-way current-state conflict by deciding current-state
+#   is VERSIONED (a numbered, supersede-able instance), NOT a single living stewarded document
+#   rewritten in place. This scenario pinned the LIVING-document model and is directly
+#   contradicted by that ratified decision; its replacement is pinned in
+#   current_state_versioned_schema.feature. Retirement follows ADR-064 D1/D2: the body is deleted
+#   from the live scenario-block region (so the hash is unreachable by block-only recompute) and
+#   this provenance note lives outside any canonical scenario region (above the Feature line).
+#   Original body (for audit only — comment region, not canonicalized):
+#     Scenario: the current-state typedef generates a living stewarded document rather than an append-only instance
+#       Given the current-state typedef, which declares a single living document stewarded in place with an incorporates list rather than an append-only numbered-series record
+#       When the knowledge context runs the format generator over the current-state typedef
+#       Then it emits a current-state template shaped as a single stewarded living document carrying an incorporates list
+#       And it emits a schema fragment for current-state from the same typedef
+#       And the generated current-state template and schema fragment are marked generated and read-only under the same drift check as every other type
 @bc:shopsystem-knowledge @origin:lead-mfnt
 Feature: shopsystem-knowledge — per-type typedef single-sources every artifact type
 
@@ -11,12 +26,12 @@ Feature: shopsystem-knowledge — per-type typedef single-sources every artifact
   The generic drift-gate behavior (matches passes, hand-edit fails, regeneration is
   byte-stable) is pinned once in the typedef drift-check feature; this feature pins
   the per-type coverage — that no type is missing a typedef and no extra typedef
-  models a type outside the recognized eight. The shape is type-general with one
-  documented exception: current-state is a single living document stewarded in
-  place (its incorporates list is what the accepted-decision lifecycle rule keys
-  on), not an append-only numbered-series instance like the record and decision
-  types — so its generated template reflects the living-document shape while still
-  riding the same generated/read-only/drift-gated discipline. Every generated
+  models a type outside the recognized eight. The shape is type-general across all
+  eight kinds; the former current-state living-document exception has been RETIRED
+  (see the retirement note above the Feature line): ADR-069 D7 resolves current-state
+  to a VERSIONED, supersede-able instance (current-state-NNN, status current |
+  superseded), and its versioned schema model is pinned in
+  current_state_versioned_schema.feature rather than here. Every generated
   schema fragment requires the shared field set including description (the ADR-059
   reconciliation that keeps the L0 card projection's fields present). Behavior
   altitude: per-type typedef existence, generated template and schema fragment, and
@@ -49,14 +64,6 @@ Feature: shopsystem-knowledge — per-type typedef single-sources every artifact
     Then the enumerated set is exactly intent-record, candidate, session-record, prioritization-record, brief, pdr, adr and current-state
     And no recognized artifact type lacks a typedef
     And no typedef declares a type outside the eight recognized artifact types
-
-  @scenario_hash:d038584b238f2fee
-  Scenario: the current-state typedef generates a living stewarded document rather than an append-only instance
-    Given the current-state typedef, which declares a single living document stewarded in place with an incorporates list rather than an append-only numbered-series record
-    When the knowledge context runs the format generator over the current-state typedef
-    Then it emits a current-state template shaped as a single stewarded living document carrying an incorporates list
-    And it emits a schema fragment for current-state from the same typedef
-    And the generated current-state template and schema fragment are marked generated and read-only under the same drift check as every other type
 
   @scenario_hash:3bcea617f9a026d9
   Scenario: every type's generated schema fragment requires the shared field set including description
