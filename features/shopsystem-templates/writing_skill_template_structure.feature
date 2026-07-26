@@ -1,4 +1,4 @@
-@origin:lead-2lxya
+@bc:shopsystem-templates @origin:lead-2lxya
 Feature: shopsystem-templates — per-kind writing skills follow one common structure, generated read-only and referencing the live template/schema surface (adr-070)
 
   ADR-070 (slice #4, authoring-guidance lane) decides that every one of the
@@ -22,6 +22,7 @@ Feature: shopsystem-templates — per-kind writing skills follow one common stru
   the blocking enforcement (that is adr-071, pinned in
   writing_skill_enforcement.feature).
 
+  @scenario_hash:210aafd52ca34318
   Scenario Outline: a poured per-kind "write-<kind>" writing skill carries the five required parts of the common structure
     Given an existing git repository at a target directory "<target>" with no ".claude/skills/" directory
     When I invoke the "shop-templates" bootstrap entry point with shop type "lead", shop name "shopsystem-product", and target directory "<target>"
@@ -44,6 +45,7 @@ Feature: shopsystem-templates — per-kind writing skills follow one common stru
       | current-state         | /tmp/example-lead-shop |
       | prioritization-record | /tmp/example-lead-shop |
 
+  @scenario_hash:617923c8aa748acb
   Scenario: a poured "write-<kind>" skill references the live shop-knowledge template and schema surface rather than embedding a frozen copy
     Given a "lead" shop bootstrapped by "shop-templates" that has poured the per-kind writing skill at ".claude/skills/write-adr/SKILL.md"
     When I inspect how the "write-adr" skill obtains the "adr" template and schema
@@ -51,6 +53,7 @@ Feature: shopsystem-templates — per-kind writing skills follow one common stru
     And the skill does not inline a verbatim copy of the "adr" template body or schema body in its own SKILL.md
     And a change to the "adr" typedef that alters the live "shop-knowledge template adr" output flows into the skill's guidance without a second hand-edit of the skill
 
+  @scenario_hash:718c0cd3edd23d91
   Scenario: the eight per-kind writing skills are generated read-only from one common structure so they are consistent and cannot drift
     Given a "lead" shop bootstrapped by "shop-templates" that pours the per-kind writing skills for the eight recognized artifact kinds
     When I compare the poured "write-<kind>" skills across the eight kinds

@@ -36,8 +36,6 @@ Feature: shopsystem-knowledge — read-only corpus-access CLI over the frontmatt
   loaded corpus, not the loader's, edge-resolver's, or projection module's
   internal implementation, which is pinned elsewhere in this directory.
 
-  # ---- navigate -----------------------------------------------------------
-
   @scenario_hash:6197383392195e90
   Scenario: navigate returns the edge-neighbourhood of a document from its materialized frontmatter edges
     Given a corpus whose document "adr-068" carries materialized edges to several neighbours across the three edge pairs
@@ -86,8 +84,6 @@ Feature: shopsystem-knowledge — read-only corpus-access CLI over the frontmatt
       | json   |
       | yaml   |
 
-  # ---- render (view filtering on the status axis) -------------------------
-
   @scenario_hash:4cd6d3d6dc4fcd33
   Scenario: render current-system view emits only the accepted content sections of a document
     Given a corpus whose document "adr-068" has status "accepted" and carries content sections plus a changelog section
@@ -131,8 +127,6 @@ Feature: shopsystem-knowledge — read-only corpus-access CLI over the frontmatt
       | md     | the rendered document markdown body                                |
       | json   | a json envelope wrapping the rendered body plus the frontmatter facets |
       | yaml   | a yaml envelope wrapping the rendered body plus the frontmatter facets |
-
-  # ---- query --------------------------------------------------------------
 
   @scenario_hash:7706494f82e8ee1c
   Scenario Outline: query selects documents by a single frontmatter facet and returns a compact list
@@ -178,8 +172,6 @@ Feature: shopsystem-knowledge — read-only corpus-access CLI over the frontmatt
     Then the exit code is 0
     And the result is an empty list
     And the CLI does not report the empty match as an error
-
-  # ---- read-only invariant ------------------------------------------------
 
   @scenario_hash:02e612708e0de104
   Scenario Outline: every read verb leaves the corpus artifacts and edges unchanged

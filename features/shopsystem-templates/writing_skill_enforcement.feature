@@ -1,4 +1,4 @@
-@origin:lead-2lxya
+@bc:shopsystem-templates @origin:lead-2lxya
 Feature: shopsystem-templates — BLOCKING enforcement that every recognized kind has a valid per-kind writing skill (adr-071)
 
   ADR-071 (slice #4, enforcement half) decides that shop-templates enforces,
@@ -21,6 +21,7 @@ Feature: shopsystem-templates — BLOCKING enforcement that every recognized kin
   writing_skill_template_structure.feature), or the deeper prose-quality validity
   fork flagged below.
 
+  @scenario_hash:ef445d7bf63d271b
   Scenario: every recognized kind has a valid writing skill so the enforcement passes with a per-kind PASS line and exit 0
     Given a shop where every recognized artifact kind has a per-kind writing skill at ".claude/skills/write-<kind>/" that references the live "shop-knowledge template / schema / validate" surface and covers its kind's required sections
     When "shop-templates" runs the writing-skill coverage and validity enforcement over the recognized kind set
@@ -28,6 +29,7 @@ Feature: shopsystem-templates — BLOCKING enforcement that every recognized kin
     And the aggregate verdict is an overall pass
     And the enforcement exits with code 0
 
+  @scenario_hash:776802406cff551f
   Scenario: a recognized kind with no writing skill fails the coverage check with a named FAIL line and a non-zero exit
     Given a shop where the recognized kind "candidate" has no writing skill directory at ".claude/skills/write-candidate/"
     When "shop-templates" runs the writing-skill coverage enforcement over the recognized kind set
@@ -35,6 +37,7 @@ Feature: shopsystem-templates — BLOCKING enforcement that every recognized kin
     And the aggregate verdict is an overall fail that names "candidate" as the offending kind
     And the enforcement exits non-zero
 
+  @scenario_hash:ca27d16dbba30756
   Scenario: a writing skill that embeds a frozen copy of the template instead of the live reference fails the validity check with a named FAIL line and a non-zero exit
     Given a shop where the writing skill at ".claude/skills/write-adr/SKILL.md" inlines a verbatim copy of the "adr" template body rather than referencing "shop-knowledge template adr"
     When "shop-templates" runs the writing-skill validity enforcement over the recognized kind set
@@ -42,6 +45,7 @@ Feature: shopsystem-templates — BLOCKING enforcement that every recognized kin
     And the aggregate verdict is an overall fail that names "adr" as the offending kind
     And the enforcement exits non-zero
 
+  @scenario_hash:e22aefbf2c4d838c
   Scenario: a writing skill that omits a required section for its kind fails the validity check with a named FAIL line and a non-zero exit
     Given a shop where the writing skill at ".claude/skills/write-adr/SKILL.md" omits a section that "shop-knowledge schema adr" reports as required for the "adr" kind
     When "shop-templates" runs the writing-skill validity enforcement over the recognized kind set
@@ -49,6 +53,7 @@ Feature: shopsystem-templates — BLOCKING enforcement that every recognized kin
     And the aggregate verdict is an overall fail that names "adr" as the offending kind
     And the enforcement exits non-zero
 
+  @scenario_hash:258b8a4777cffde9
   Scenario: the writing-skill enforcement is blocking not advisory — a failing kind blocks with no warn-tier downgrade
     Given a shop where at least one recognized kind lacks a valid writing skill
     When "shop-templates" runs the writing-skill enforcement in its distribution / blocking gate posture
