@@ -1,6 +1,7 @@
 ---
 type: intent-record
 id: intent-009
+derived-by: [cand-007]
 title: The artifact corpus needs programmatic access — navigate, render (with view filtering), and query the frontmatter graph
 status: recorded
 created: 2026-07-25

@@ -1,6 +1,7 @@
 ---
 type: intent-record
 id: intent-002
+derived-by: [cand-002]
 title: Operator-configurable, release-independent LLM provider/model selection for fabro
 status: recorded
 created: 2026-07-14

@@ -1,6 +1,7 @@
 ---
 type: intent-record
 id: intent-011
+derived-by: [cand-009]
 title: Each artifact kind needs a writing skill that guides authoring through its lifecycle, and the system must enforce that every kind has a valid one
 status: recorded
 created: 2026-07-25

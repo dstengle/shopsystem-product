@@ -8,6 +8,7 @@ updated: 2026-07-16
 authors: [dstengle, "Claude (acting lead-pm)"]
 description: Shaped candidate closing the appetite gap cand-001 deliberately deferred — bring the ~90-file legacy brief/PDR/ADR corpus onto the same YAML-frontmatter typed schema PDR-032/ADR-059 already gave the newer six artifact types, so progressive-disclosure/retrieval tooling has one consistent corpus to index instead of two.
 derives-from: [intent-006]
+derived-by: [pdr-034]
 session: sess-2026-07-16-a
 experiments: []
 brief:

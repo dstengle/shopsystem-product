@@ -1,6 +1,7 @@
 ---
 type: intent-record
 id: intent-004
+derived-by: [cand-003]
 title: Tier/provenance-aware retrieval and citation-validation discipline for roles and subagents
 status: recorded
 created: 2026-07-14

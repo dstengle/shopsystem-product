@@ -7,6 +7,7 @@ created: 2026-05-11
 authors: [dstengle, Claude (synthetic reconstruction 2026-07-17)]
 description: Synthetic candidate grounding pre-intent-system framework decisions.
 derives-from: [intent-900]
+derived-by: [pdr-001, pdr-003, pdr-025, pdr-026, pdr-027, pdr-900]
 updated: 2026-07-17
 ---
 

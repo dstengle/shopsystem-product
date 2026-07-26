@@ -8,6 +8,7 @@ updated: 2026-07-25
 authors: [dstengle, "Claude (lead-pm)"]
 description: "Shape for slice #4: each of the eight kinds gets a writing skill that bundles its per-type template and schema checks (reusing shop-knowledge template/schema/validate, not a fork) so authoring is guided to the typedef and lifecycle; shop-templates enforces that every kind has a writing skill and that each skill's content is valid. The authoring-guidance layer that prevents lifecycle jumps at creation time."
 derives-from: [intent-011]
+derived-by: [pdr-038]
 session: sess-2026-07-25-a
 experiments: []
 brief:

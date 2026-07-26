@@ -1,6 +1,7 @@
 ---
 type: intent-record
 id: intent-010
+derived-by: [cand-008]
 title: Each artifact kind needs its own stated needs and schema — explode the bundled taxonomy into per-type docs on top of the base schema
 status: recorded
 created: 2026-07-25

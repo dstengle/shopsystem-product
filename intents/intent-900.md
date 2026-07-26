@@ -1,6 +1,7 @@
 ---
 type: intent-record
 id: intent-900
+derived-by: [cand-900]
 title: 'Legacy: construct the shopsystem framework (pre-intent-record era)'
 status: recorded
 created: 2026-05-11

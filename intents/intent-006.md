@@ -1,6 +1,7 @@
 ---
 type: intent-record
 id: intent-006
+derived-by: [cand-004]
 title: Legacy corpus (brief/PDR/ADR) migrates into the typed artifact system
 status: recorded
 created: 2026-07-16

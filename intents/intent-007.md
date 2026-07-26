@@ -1,6 +1,7 @@
 ---
 type: intent-record
 id: intent-007
+derived-by: [brief-024, cand-005]
 title: The knowledge/schema system's full precondition chain must actually hold, not just its individual pieces
 status: recorded
 created: 2026-07-16

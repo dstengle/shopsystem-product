@@ -1,6 +1,7 @@
 ---
 type: intent-record
 id: intent-001
+derived-by: [cand-001]
 title: Interactive product-direction capability with disciplined artifacts
 status: recorded
 created: 2026-07-09

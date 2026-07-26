@@ -8,6 +8,7 @@ updated: 2026-07-25
 authors: [dstengle, "Claude (lead-pm)"]
 description: "Shape for slice #3: explode PDR-032's bundled taxonomy into per-type needs and per-type schema for the eight kinds (adr, pdr, brief, intent-record, candidate, session-record, current-state, prioritization-record). Each per-type schema is additive on slice #2's base schema (sections, status enum, edge participation only — never re-declaring base fields). Resolves the current-state versioned-vs-singleton typedef conflict."
 derives-from: [intent-010]
+derived-by: [pdr-037]
 session: sess-2026-07-25-a
 experiments: []
 brief:

@@ -1,6 +1,7 @@
 ---
 type: intent-record
 id: intent-008
+derived-by: [cand-006]
 title: The artifact system needs an authoritative foundational statement — what artifacts are for, the kinds and how they compose, and the two-views requirement
 status: recorded
 created: 2026-07-25

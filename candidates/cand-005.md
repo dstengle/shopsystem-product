@@ -8,6 +8,7 @@ updated: 2026-07-16
 authors: [dstengle, "Claude (acting lead-pm)"]
 description: Shaped candidate sequencing every broken or unwired precondition the knowledge/schema/progressive-disclosure system depends on, in dependency order, so each phase is built on ground that actually holds rather than on parts that individually pass their own test while the system around them stays broken.
 derives-from: [intent-007]
+derived-by: [brief-024]
 session: sess-2026-07-16-a
 experiments: []
 brief:

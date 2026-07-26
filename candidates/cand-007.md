@@ -8,6 +8,7 @@ updated: 2026-07-25
 authors: [dstengle, "Claude (lead-pm)"]
 description: "Shape for the folded tooling slice (#5/#6/#7): a single read-only CLI over the artifact frontmatter graph with three verbs — navigate edges from a document, render a document filtered to the current-system or transformation view, and query the corpus by frontmatter — with outputs in md/json/yaml. Makes the two-views requirement obtainable mechanically."
 derives-from: [intent-009]
+derived-by: [pdr-036]
 session: sess-2026-07-25-a
 experiments: []
 brief:

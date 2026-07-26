@@ -8,6 +8,7 @@ updated: 2026-07-25
 authors: [dstengle, "Claude (lead-pm)"]
 description: "Shape for slice #1 of the artifact-system restructuring: a foundational needs statement that names why artifacts exist, the eight kinds and how they compose, and the two-views/self-containment requirement with its changelog exception — requirement-only, no schema mechanics — and that formally supersedes PDR-031 and PDR-032's founding portion so the accepted set stays self-consistent."
 derives-from: [intent-008]
+derived-by: [pdr-035]
 session: sess-2026-07-25-a
 experiments: []
 brief:
