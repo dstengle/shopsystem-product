@@ -1,4 +1,4 @@
-@origin:adr-068
+@bc:shopsystem-knowledge @origin:adr-068
 Feature: shopsystem-knowledge — read-only corpus-access CLI over the frontmatter graph (navigate, render, query)
 
   ADR-068 is the read-side mechanism for the corpus: one strictly read-only
@@ -38,6 +38,7 @@ Feature: shopsystem-knowledge — read-only corpus-access CLI over the frontmatt
 
   # ---- navigate -----------------------------------------------------------
 
+  @scenario_hash:6197383392195e90
   Scenario: navigate returns the edge-neighbourhood of a document from its materialized frontmatter edges
     Given a corpus whose document "adr-068" carries materialized edges to several neighbours across the three edge pairs
     When I run the navigate verb on document id "adr-068"
@@ -45,6 +46,7 @@ Feature: shopsystem-knowledge — read-only corpus-access CLI over the frontmatt
     And each listed neighbour carries its id, type, status, and title
     And the neighbourhood is answered from "adr-068"'s own frontmatter without scanning the corpus for inbound edges
 
+  @scenario_hash:8cb7314c14694005
   Scenario Outline: navigate's direction filter selects which half of the edge pairs the neighbourhood returns
     Given a corpus whose document "adr-068" carries both forward edges and materialized back-edges
     When I run the navigate verb on document id "adr-068" with a direction filter of "<direction>"
@@ -57,18 +59,21 @@ Feature: shopsystem-knowledge — read-only corpus-access CLI over the frontmatt
       | back      | back             | forward          |
       | both      | forward and back |                  |
 
+  @scenario_hash:cb9dab0549acdf38
   Scenario: navigate surfaces an unresolved or legacy-target edge faithfully rather than hiding it
     Given a corpus whose document "adr-068" carries an edge to a target whose resolution is false or whose target is a legacy artifact
     When I run the navigate verb on document id "adr-068"
     Then the neighbourhood includes that edge with its resolved flag reported as false
     And the CLI does not silently drop the unresolved edge from the neighbourhood
 
+  @scenario_hash:74bdefca5008a645
   Scenario: navigate on an unknown document id fails and names the offending id
     Given a corpus that contains no document with id "adr-999"
     When I run the navigate verb on document id "adr-999"
     Then the exit code is non-zero
     And stderr names "adr-999" as a document id not present in the corpus
 
+  @scenario_hash:3150738158b1dc32
   Scenario Outline: navigate emits its neighbourhood in the selected output format
     Given a corpus whose document "adr-068" carries materialized edges to several neighbours
     When I run the navigate verb on document id "adr-068" requesting "<format>" output
@@ -83,12 +88,14 @@ Feature: shopsystem-knowledge — read-only corpus-access CLI over the frontmatt
 
   # ---- render (view filtering on the status axis) -------------------------
 
+  @scenario_hash:4cd6d3d6dc4fcd33
   Scenario: render current-system view emits only the accepted content sections of a document
     Given a corpus whose document "adr-068" has status "accepted" and carries content sections plus a changelog section
     When I run the render verb on document id "adr-068" in the current-system view
     Then the exit code is 0
     And the rendered output contains the document's accepted content sections
 
+  @scenario_hash:3f752398f17674a4
   Scenario: render current-system view DROPS the changelog and supersede-chain transformation material and does not leak it
     Given a corpus whose document "adr-068" has status "accepted", carries a changelog section naming a superseded predecessor, and carries supersede-chain transformation material
     When I run the render verb on document id "adr-068" in the current-system view
@@ -96,6 +103,7 @@ Feature: shopsystem-knowledge — read-only corpus-access CLI over the frontmatt
     And the rendered output does not contain the named superseded predecessor reference
     And the rendered output does not contain the supersede-chain transformation material
 
+  @scenario_hash:335eb88e9c9fb357
   Scenario: render transformation view emits the full document including changelog and supersede-chain material
     Given a corpus whose document "adr-068" has status "accepted", carries a changelog section, and carries supersede-chain transformation material
     When I run the render verb on document id "adr-068" in the transformation view
@@ -104,12 +112,14 @@ Feature: shopsystem-knowledge — read-only corpus-access CLI over the frontmatt
     And the rendered output contains the changelog section
     And the rendered output contains the supersede-chain transformation material
 
+  @scenario_hash:7583e99ef2647bd4
   Scenario: render current-system view has no rendering for a document whose status is not accepted
     Given a corpus whose document "adr-034" has status "superseded"
     When I run the render verb on document id "adr-034" in the current-system view
     Then the CLI reports that "adr-034" has no current-system rendering because it is not in the accepted set
     And no accepted content is emitted for "adr-034"
 
+  @scenario_hash:d98873c76ac4b175
   Scenario Outline: render emits either document markdown or a structured envelope carrying the rendered body and frontmatter facets
     Given a corpus whose document "adr-068" has status "accepted"
     When I run the render verb on document id "adr-068" in the current-system view requesting "<format>" output
@@ -124,6 +134,7 @@ Feature: shopsystem-knowledge — read-only corpus-access CLI over the frontmatt
 
   # ---- query --------------------------------------------------------------
 
+  @scenario_hash:7706494f82e8ee1c
   Scenario Outline: query selects documents by a single frontmatter facet and returns a compact list
     Given a corpus containing documents that vary by type, status, tag, and distribution
     When I run the query verb selecting documents whose "<facet>" equals "<value>" requesting a compact list
@@ -138,6 +149,7 @@ Feature: shopsystem-knowledge — read-only corpus-access CLI over the frontmatt
       | tag          | restructuring |
       | distribution | product-wide  |
 
+  @scenario_hash:d8899babf8bbc0aa
   Scenario Outline: query selects documents by edge participation
     Given a corpus in which some documents participate in the materialized "<edge>" relationship and some do not
     When I run the query verb selecting documents that participate in the "<edge>" edge
@@ -151,6 +163,7 @@ Feature: shopsystem-knowledge — read-only corpus-access CLI over the frontmatt
       | references    |
       | referenced-by |
 
+  @scenario_hash:876d46bdef2f8311
   Scenario: query with rendered output emits matching documents under the same current-system view filter as render
     Given a corpus containing accepted documents that carry changelog sections and match a query facet
     When I run the query verb selecting those documents requesting rendered output in the current-system view
@@ -158,6 +171,7 @@ Feature: shopsystem-knowledge — read-only corpus-access CLI over the frontmatt
     And each matching document is rendered with its accepted content sections
     And no rendered match contains its changelog section or supersede-chain transformation material
 
+  @scenario_hash:a374f3f98e20bb25
   Scenario: query whose facet matches no document returns an empty result rather than an error
     Given a corpus that contains no document whose tag equals "nonexistent-tag"
     When I run the query verb selecting documents whose tag equals "nonexistent-tag"
@@ -167,6 +181,7 @@ Feature: shopsystem-knowledge — read-only corpus-access CLI over the frontmatt
 
   # ---- read-only invariant ------------------------------------------------
 
+  @scenario_hash:02e612708e0de104
   Scenario Outline: every read verb leaves the corpus artifacts and edges unchanged
     Given a corpus whose artifact files and materialized frontmatter edges are recorded before the run
     When I run the "<verb>" verb over that corpus
