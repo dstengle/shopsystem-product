@@ -2,7 +2,7 @@
 type: candidate
 id: cand-009
 title: Per-type writing skills that bundle template + schema checks, with shop-templates enforcing every kind has a valid one
-status: shaped
+status: committed
 created: 2026-07-25
 updated: 2026-07-25
 authors: [dstengle, "Claude (lead-pm)"]

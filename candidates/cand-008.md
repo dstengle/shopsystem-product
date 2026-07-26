@@ -2,7 +2,7 @@
 type: candidate
 id: cand-008
 title: Per-type needs and schema for the eight kinds — additive on the base schema, with the current-state conflict resolved
-status: shaped
+status: committed
 created: 2026-07-25
 updated: 2026-07-25
 authors: [dstengle, "Claude (lead-pm)"]

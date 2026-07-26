@@ -2,7 +2,7 @@
 type: candidate
 id: cand-006
 title: A foundational artifact-system needs statement — the anchor the restructuring supersedes into
-status: shaped
+status: committed
 created: 2026-07-25
 updated: 2026-07-25
 authors: [dstengle, "Claude (lead-pm)"]

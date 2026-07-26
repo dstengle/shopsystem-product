@@ -2,7 +2,7 @@
 type: candidate
 id: cand-007
 title: One read-only CLI over the frontmatter graph — navigate, render-with-view-filtering, query
-status: shaped
+status: committed
 created: 2026-07-25
 updated: 2026-07-25
 authors: [dstengle, "Claude (lead-pm)"]
