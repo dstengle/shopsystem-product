@@ -1,3 +1,4 @@
+@bc:shopsystem-knowledge @origin:lead-4vvdo
 Feature: shopsystem-knowledge — per-type status enums (ADR-069 additive deltas)
 
   ADR-069 states each artifact kind's status enum as a per-type delta on ADR-067's
@@ -17,6 +18,7 @@ Feature: shopsystem-knowledge — per-type status enums (ADR-069 additive deltas
   Behavior altitude: frontmatter validation against the per-type status enum, not
   the lifecycle semantics of who moves a document between statuses.
 
+  @scenario_hash:b718f46bba84455d
   Scenario Outline: a status value inside its kind's enum conforms
     Given a <kind> artifact whose frontmatter carries a status value of "<status>"
     And "<status>" is a member of the <kind> status enum
@@ -44,6 +46,7 @@ Feature: shopsystem-knowledge — per-type status enums (ADR-069 additive deltas
       | prioritization-record | active     |
       | prioritization-record | superseded |
 
+  @scenario_hash:4ad1f47ccbd15b91
   Scenario Outline: a status value outside its kind's enum is reported non-conforming and names the offending value
     Given a <kind> artifact whose frontmatter carries a status value of "<status>"
     And "<status>" is not a member of the <kind> status enum

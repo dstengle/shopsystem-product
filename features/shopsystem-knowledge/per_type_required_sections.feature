@@ -1,3 +1,4 @@
+@bc:shopsystem-knowledge @origin:lead-4vvdo
 Feature: shopsystem-knowledge — per-type required body sections (ADR-069 additive deltas)
 
   ADR-069 adds a required body-section set per artifact kind, on top of ADR-067's
@@ -16,6 +17,7 @@ Feature: shopsystem-knowledge — per-type required body sections (ADR-069 addit
   authoring report). Behavior altitude: the structural body-heading check against
   the type's required-section set, not prose quality.
 
+  @scenario_hash:2fcf4828a7d65a84
   Scenario Outline: a document of its kind missing a required body section is reported non-conforming and names the section
     Given a <kind> document whose body omits the <section> section its type's required-section set demands
     When the knowledge context checks the document's body against its type's required-section set
@@ -32,6 +34,7 @@ Feature: shopsystem-knowledge — per-type required body sections (ADR-069 addit
       | prioritization-record | Ranking      |
       | prioritization-record | Rationale    |
 
+  @scenario_hash:2514a9afbc1cf9c1
   Scenario Outline: a document carrying its kind's full net-new required-section set passes
     Given a <kind> document whose body carries <sections>
     When the knowledge context checks the document's body against its type's required-section set

@@ -1,3 +1,4 @@
+@bc:shopsystem-knowledge @origin:lead-4vvdo
 Feature: shopsystem-knowledge — derives-from requiredness is a per-type constraint (ADR-069 finding 2)
 
   ADR-069 finding 2 establishes that derives-from requiredness is a PER-TYPE
@@ -17,6 +18,7 @@ Feature: shopsystem-knowledge — derives-from requiredness is a per-type constr
   the architect (see authoring report). Behavior altitude: frontmatter validation
   against the per-type required-field set.
 
+  @scenario_hash:074dabd350908eda
   Scenario Outline: a kind that does not schema-require derives-from conforms when the field is absent
     Given a <kind> artifact that carries every field its type additionally requires but carries no derives-from field
     When the knowledge context validates the artifact's frontmatter against the schema
