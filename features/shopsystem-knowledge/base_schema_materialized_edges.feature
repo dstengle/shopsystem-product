@@ -1,4 +1,4 @@
-@origin:lead-qa76u
+@bc:shopsystem-knowledge @origin:lead-qa76u
 Feature: shopsystem-knowledge — base-schema materialized bidirectional edges (typed artifacts)
 
   ADR-067's base schema stores BOTH directions of three relationship pairs in
@@ -17,6 +17,7 @@ Feature: shopsystem-knowledge — base-schema materialized bidirectional edges (
   doctor form — check name + check-id + the offending artifacts by id + a remediation
   — and folds into the one aggregate verdict; a clean corpus exits zero.
 
+  @scenario_hash:c42c3e9b4b327e60
   Scenario Outline: a materialized forward edge with no reciprocal back-edge is flagged
     Given an artifact corpus in which artifact A declares a <forward-field> edge naming artifact B
     And artifact B carries no <back-field> edge back to A
@@ -30,6 +31,7 @@ Feature: shopsystem-knowledge — base-schema materialized bidirectional edges (
       | derives-from  | derived-by    | asymmetric-derivation |
       | references    | referenced-by | asymmetric-reference  |
 
+  @scenario_hash:b52b179a925b732a
   Scenario Outline: a materialized forward edge whose reciprocal back-edge is present passes
     Given an artifact corpus in which artifact A declares a <forward-field> edge naming artifact B
     And artifact B carries a <back-field> edge back to A
@@ -42,6 +44,7 @@ Feature: shopsystem-knowledge — base-schema materialized bidirectional edges (
       | derives-from  | derived-by    | asymmetric-derivation |
       | references    | referenced-by | asymmetric-reference  |
 
+  @scenario_hash:d3e55f9b80099eb5
   Scenario: a predecessor jointly superseded by several successors, each carrying its supersedes back-edge, passes
     Given an artifact corpus in which artifact B declares a superseded-by list naming successors A and C
     And artifacts A and C each declare a supersedes edge naming B
@@ -50,6 +53,7 @@ Feature: shopsystem-knowledge — base-schema materialized bidirectional edges (
     Then it reports no asymmetric-supersede finding for the joint supersession of B
     And the aggregate verdict exits zero
 
+  @scenario_hash:bb316e39954e3ce9
   Scenario: a joint superseded-by list missing one successor's supersedes back-edge is flagged
     Given an artifact corpus in which artifact B declares a superseded-by list naming successors A and C
     And artifact A declares a supersedes edge naming B
@@ -59,12 +63,14 @@ Feature: shopsystem-knowledge — base-schema materialized bidirectional edges (
     And it reports no asymmetric-supersede finding for the resolved B and A pair
     And the aggregate verdict exits non-zero
 
+  @scenario_hash:ebcd6ee47aed6f6d
   Scenario: the referenced-by back-edge is answered from frontmatter and not computed by corpus scan
     Given an artifact corpus in which artifact B carries a materialized referenced-by edge naming artifact A in its frontmatter
     When the knowledge context resolves what references artifact B
     Then it answers from artifact B's own referenced-by frontmatter field
     And it does not compute the answer by scanning the corpus for forward references edges
 
+  @scenario_hash:fd98c4d9e26162f0
   Scenario Outline: a materialized back-edge field pointing to a target absent from the corpus is flagged dangling
     Given an artifact corpus in which an artifact declares a <link-field> edge to a target id that is not present in the corpus
     When the knowledge context runs the typed-edge coherence checks over the corpus
