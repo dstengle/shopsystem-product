@@ -18,6 +18,16 @@ beads: []
 
 # cand-004 — Migrate the legacy brief/PDR/ADR corpus into the typed system
 
+## Verbatim anchors
+
+Recovered from the derives-from intent (intent-006); this candidate
+predates the Verbatim-anchors section requirement, so the originating
+stakeholder verbatim that shaped it is cited here by date:
+
+2026-07-16: "Wow, I don't remember the exclusion, given that this was
+meant to fix consistency issues it doesn't make sense either. Let's get
+it all fixed or the progressive disclosure tools will be pretty useless."
+
 ## Problem
 
 `cand-001` shaped the six-type artifact system (intent record, candidate,

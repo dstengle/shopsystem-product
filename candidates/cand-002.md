@@ -17,6 +17,24 @@ beads: [lead-obfub, lead-txhou]
 
 # cand-002 — Operator-configurable fabro LLM provider/model selection, proven via OpenRouter
 
+## Verbatim anchors
+
+Recovered from the derives-from intent (intent-002); this candidate
+predates the Verbatim-anchors section requirement, so the originating
+stakeholder verbatims that shaped it are cited here by date:
+
+2026-07-14: "It is time to look at using multiple model providers with
+fabro, starting with openrouter."
+
+2026-07-14: "Oauth gates are happening really fast and unlikely to be
+minimized. I want configurable and dynamic model choices. It should be
+possible to select models without requiring software releases."
+
+2026-07-14: "Build with intent for provider selection and build for
+openrouter first."
+
+2026-07-14: "Leave the dial with the operator for simplicity."
+
 ## Problem
 
 fabro's LLM provider/model choice is baked into release-gated

@@ -17,6 +17,21 @@ beads: []
 
 # cand-003 — Structured-corpus query tools as the primary retrieval interface
 
+## Verbatim anchors
+
+Recovered from the derives-from intent (intent-004); this candidate
+predates the Verbatim-anchors section requirement, so the originating
+stakeholder verbatims that shaped it are cited here by date:
+
+2026-07-14: "The progressive disclosure and knowledge system don't seem
+to be helping prevent grep pulling in everything. Do we have roles use
+skills that use tools with limited access patterns based on document
+types and linkage?"
+
+2026-07-14: "Additionally, there needs to be prompt adjustment to
+challenge citation sources and validate that they are acceptable, or
+there could even be mechanical checks."
+
 ## Problem
 
 `intent-004` recorded that subagent retrieval (`lead-po`/`lead-architect`

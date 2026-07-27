@@ -17,6 +17,26 @@ beads: []
 
 # cand-001 — PM mode + artifact type system + coherence gate
 
+## Verbatim anchors
+
+Recovered from the derives-from intent (intent-001); this candidate
+predates the Verbatim-anchors section requirement, so the originating
+stakeholder verbatims that shaped it are cited here by date:
+
+2026-07-09: "it feels like I'm missing a product manager. There is a
+product owner that keeps after the PDRs, but there isn't really a role
+or activity that is brainstorming with a product direction outcome as
+opposed to a specific incremental feature implementation."
+
+2026-07-09: "There is also a lot of things that seem to fall back on
+the router since it is the only interactive role, but it is often
+acting like far more than a simple router."
+
+2026-07-09 (scope): "I'm currently trying to create a system for
+people who have an idea of what they want to build and want to use
+spec-driven methods to accomplish that. I'm not currently trying to
+create a full system for taking a product to market."
+
 ## Problem
 
 The system has no interactive product-direction capability: the PO's

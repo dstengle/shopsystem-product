@@ -18,6 +18,22 @@ beads: []
 
 # cand-005 — Close the knowledge/schema system's precondition chain
 
+## Verbatim anchors
+
+Recovered from the derives-from intent (intent-007); this candidate
+predates the Verbatim-anchors section requirement, so the originating
+stakeholder verbatims that shaped it are cited here by date:
+
+2026-07-16: "Put it this way, what are all of the necessary preconditions
+for the knowledge and schema system to work properly? Templates in the
+lead, skills that don't skip schema checks, skills that use the templates
+properly, etc. Knowledge was supposed to add a gate as well."
+
+2026-07-16 (immediately prior, motivating the question): "Before we do
+that, I'm concerned that adr/048-... doesn't look right to me. It doesn't
+have properly formatted front-matter. Does it pass the schema checker? If
+so, the schema checker has bugs."
+
 ## Problem
 
 Checking one file (`ADR-048`) against `shop-knowledge validate` answered

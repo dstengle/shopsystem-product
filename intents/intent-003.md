@@ -77,7 +77,9 @@ to support.
   visibility); the stakeholder explicitly accepts a coarser starting
   granularity.
 
-## Non-goals (for the first slice; not permanent)
+## Non-goals
+
+_(For the first slice; not permanent.)_
 
 - Cross-provider/cross-model cost comparison (roadmap, not MVP).
 - Non-LLM cost tracking.
