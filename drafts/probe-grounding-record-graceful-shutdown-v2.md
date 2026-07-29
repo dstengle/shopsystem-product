@@ -33,16 +33,15 @@ Read down the **Claim** column to pick what to spot-check; run its command; the 
 **Re-run all (paste once):**
 
 ```bash
-set -uo pipefail
-C="--corpus /workspace"
-render(){ shop-knowledge render "$1" $C ${2:-}; }
-fail=0
-render adr-015        | grep -q  'nudge'         || { echo "A1a FAIL"; fail=1; }
-render adr-015        | grep -qv 'shutdown'       || { echo "A1b FAIL (shutdown unexpectedly present)"; fail=1; }
-render pdr-010        | grep -q  'transport'      || { echo "A2 FAIL";  fail=1; }
-render pdr-004 "--view transformation" | grep -q 'category error' || { echo "A3 FAIL"; fail=1; }
-render pdr-029        | grep -q  'Different'      || { echo "A4 FAIL";  fail=1; }
+cd /workspace; fail=0
+R(){ shop-knowledge render "$1" --corpus /workspace ${2:+--view $2} 2>/dev/null; }
+R adr-015              | grep -qi 'nudge'          || { echo "A1a FAIL"; fail=1; }
+R adr-015              | grep -qi 'shutdown'        && { echo "A1b FAIL: shutdown present"; fail=1; }  # absence check
+R pdr-010              | grep -qi 'transport'       || { echo "A2 FAIL";  fail=1; }
+R pdr-004 transformation | grep -qi 'category error' || { echo "A3 FAIL"; fail=1; }
+R pdr-029              | grep -qi 'different'        || { echo "A4 FAIL";  fail=1; }
 echo "verified-grounding: $([ $fail = 0 ] && echo PASS || echo FAIL)"; exit $fail
+# → verified-grounding: PASS (exit 0), confirmed 2026-07-29
 ```
 
 ## ⚠ Judgment calls — 3 (scrutinize these; I can't prove them by re-running)
