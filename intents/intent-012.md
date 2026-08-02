@@ -106,3 +106,35 @@ multi-slice initiative on the scale of the artifact-system restructuring.
 - **Residual-correction diagnosis** — the writing-style (`lead-nvs7i`) and
   artifact-quality axes as candidate roots to separate from grounding once this
   lands.
+
+## Shaping status (2026-08-02) — proven spine, ready for a candidate
+
+Shaping surfaced and empirically proved the solution's shape (epic `lead-fb3vk`);
+do not re-derive it:
+
+- **The FORM of verifiable grounding is settled:** a grounding record traces
+  **the question → the terms derived from it (THE audit surface — a reviewer
+  attacks the term list first) → per-term interrogation → the assembled set →
+  the decision**, with a *hard link* on every included artifact (question → term →
+  exact command → full candidate set → explicit selection rule). Readability rules
+  came from a four-persona review (summary box, glossary, one-idea sentences,
+  tables, and a verified section that is a runnable `checks` block, not prose).
+- **The problem decomposes, proven by a 5-round adversarial experiment (5/5 FAIL;
+  the researcher prompt grew from ~2.6K to ~25.6K chars and still failed):**
+  - **(a) Traceable inclusion** ("no artifact from thin air") is a **discipline /
+    skill** win — the hard-link form closed it (thin-air count → 0 by round 5).
+  - **(b) Complete + correct selection** ("did you find everything, read it
+    right") is a **tool** problem discipline cannot close — it needs **full-text /
+    body search**, **populated tags**, and a **complete-enumeration guarantee**;
+    plus an **adversarial-verification pass** (an independent agent that re-runs
+    and disproves) as part of the answer.
+- **Open forks for shaping (product-authority calls, not to be decided alone):**
+  the graph-as-domain question (`lead-3gyuq`, recasts corpus-scope);
+  the bd-coupling audit (`lead-d0jmz`); the scope of the *first* bet (tools vs. the
+  record-form skill vs. the adversarial verifier vs. a thin slice spanning them);
+  and reconciling prior art `intent-004` / `cand-003` (tier/provenance-aware
+  retrieval + citation-validation, 2026-07-15) rather than reinventing. Note:
+  tagging and freeform search are two distinct problems.
+- **Artifacts:** `drafts/knowledge-tools-and-skills-analysis.md` (tool/skill/
+  doctrine gap analysis); `drafts/grounding-record-exp-iter1-5.md` (the experiment
+  records, tightening round to round); `drafts/grounding-researcher-prompt-hardened.md`.
