@@ -10,6 +10,7 @@ description: "The product authority is a mandatory participant in operating the 
 stakeholder: dstengle
 session: sess-2026-07-27-a
 superseded-by:
+derived-by: [cand-010]
 beads: [lead-fb3vk]
 ---
 
