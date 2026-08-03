@@ -21,11 +21,11 @@ Fetch the current-state's canonical shape from the live template with `shop-know
 
 ## Draft against the live schema surface
 
-Name the current-state's schema surface with `shop-knowledge schema current-state` and draft each section it reports. For the current-state kind those required sections are: Summary, Capabilities, Gaps.
+Name the current-state's schema surface with `shop-knowledge schema current-state` and draft each section it reports. For the current-state kind those required sections are: Current decisions, Stewardship.
 
 ## Walk the kind's lifecycle
 
-Open the current-state at its starting status: `current`. The current-state supersedes the prior current-state entry — record that provenance edge. Cover every required section that `shop-knowledge schema current-state` reports for current-state: Summary, Capabilities, Gaps.
+Open the current-state at its starting status: `current`. The current-state supersedes the prior current-state entry — record that provenance edge. Cover every required section that `shop-knowledge schema current-state` reports for current-state: Current decisions, Stewardship.
 
 ## Reuse discipline
 

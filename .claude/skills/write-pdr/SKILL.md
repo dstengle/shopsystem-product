@@ -21,11 +21,11 @@ Fetch the pdr's canonical shape from the live template with `shop-knowledge temp
 
 ## Draft against the live schema surface
 
-Name the pdr's schema surface with `shop-knowledge schema pdr` and draft each section it reports. For the pdr kind those required sections are: Context, Decision, Consequences.
+Name the pdr's schema surface with `shop-knowledge schema pdr` and draft each section it reports. For the pdr kind those required sections are: Context, Options considered, Decision, Consequences.
 
 ## Walk the kind's lifecycle
 
-Open the pdr at its starting status: `proposed`. The pdr supersedes / superseded-by another PDR — record that provenance edge. Cover every required section that `shop-knowledge schema pdr` reports for pdr: Context, Decision, Consequences.
+Open the pdr at its starting status: `proposed`. The pdr supersedes / superseded-by another PDR — record that provenance edge. Cover every required section that `shop-knowledge schema pdr` reports for pdr: Context, Options considered, Decision, Consequences.
 
 ## Reuse discipline
 

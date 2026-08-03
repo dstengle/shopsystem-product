@@ -21,11 +21,11 @@ Fetch the intent-record's canonical shape from the live template with `shop-know
 
 ## Draft against the live schema surface
 
-Name the intent-record's schema surface with `shop-knowledge schema intent-record` and draft each section it reports. For the intent-record kind those required sections are: Problem, Evidence, Whose problem.
+Name the intent-record's schema surface with `shop-knowledge schema intent-record` and draft each section it reports. For the intent-record kind those required sections are: Verbatim anchors, The goal behind the ask, Who it serves, Constraints, Non-goals, Appetite signal, Failure conditions, Open threads.
 
 ## Walk the kind's lifecycle
 
-Open the intent-record at its starting status: `captured`. The intent-record originates a candidate — record that provenance edge. Cover every required section that `shop-knowledge schema intent-record` reports for intent-record: Problem, Evidence, Whose problem.
+Open the intent-record at its starting status: `recorded`. The intent-record originates a candidate — record that provenance edge. Cover every required section that `shop-knowledge schema intent-record` reports for intent-record: Verbatim anchors, The goal behind the ask, Who it serves, Constraints, Non-goals, Appetite signal, Failure conditions, Open threads.
 
 ## Reuse discipline
 

@@ -21,11 +21,11 @@ Fetch the candidate's canonical shape from the live template with `shop-knowledg
 
 ## Draft against the live schema surface
 
-Name the candidate's schema surface with `shop-knowledge schema candidate` and draft each section it reports. For the candidate kind those required sections are: Problem, Appetite, Solution outline, Boundaries, Rabbit holes.
+Name the candidate's schema surface with `shop-knowledge schema candidate` and draft each section it reports. For the candidate kind those required sections are: Verbatim anchors, Problem, Appetite, Solution sketch, Rabbit holes, No-gos, Evidence / experiments, Resolution, Changelog.
 
 ## Walk the kind's lifecycle
 
-Open the candidate at its starting status: `sketched`. The candidate shaped from an intent record and committed by a brief — record that provenance edge. Cover every required section that `shop-knowledge schema candidate` reports for candidate: Problem, Appetite, Solution outline, Boundaries, Rabbit holes.
+Open the candidate at its starting status: `exploring`. The candidate shaped from an intent record and committed by a brief — record that provenance edge. Cover every required section that `shop-knowledge schema candidate` reports for candidate: Verbatim anchors, Problem, Appetite, Solution sketch, Rabbit holes, No-gos, Evidence / experiments, Resolution, Changelog.
 
 ## Reuse discipline
 

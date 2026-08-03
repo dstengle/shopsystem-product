@@ -21,11 +21,11 @@ Fetch the brief's canonical shape from the live template with `shop-knowledge te
 
 ## Draft against the live schema surface
 
-Name the brief's schema surface with `shop-knowledge schema brief` and draft each section it reports. For the brief kind those required sections are: Problem, Scope, Out of scope, Acceptance.
+Name the brief's schema surface with `shop-knowledge schema brief` and draft each section it reports. For the brief kind those required sections are: Summary, Scope.
 
 ## Walk the kind's lifecycle
 
-Open the brief at its starting status: `drafted`. The brief commits a shaped candidate and anchors its scenarios — record that provenance edge. Cover every required section that `shop-knowledge schema brief` reports for brief: Problem, Scope, Out of scope, Acceptance.
+Open the brief at its starting status: `draft`. The brief commits a shaped candidate and anchors its scenarios — record that provenance edge. Cover every required section that `shop-knowledge schema brief` reports for brief: Summary, Scope.
 
 ## Reuse discipline
 

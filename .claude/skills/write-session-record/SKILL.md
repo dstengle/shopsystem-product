@@ -21,11 +21,11 @@ Fetch the session-record's canonical shape from the live template with `shop-kno
 
 ## Draft against the live schema surface
 
-Name the session-record's schema surface with `shop-knowledge schema session-record` and draft each section it reports. For the session-record kind those required sections are: Mode, Produced artifacts, Outcome.
+Name the session-record's schema surface with `shop-knowledge schema session-record` and draft each section it reports. For the session-record kind those required sections are: Outcome, Open threads.
 
 ## Walk the kind's lifecycle
 
-Open the session-record at its starting status: `open`. The session-record records the session's produced artifacts — record that provenance edge. Cover every required section that `shop-knowledge schema session-record` reports for session-record: Mode, Produced artifacts, Outcome.
+Open the session-record at its starting status: `open`. The session-record records the session's produced artifacts — record that provenance edge. Cover every required section that `shop-knowledge schema session-record` reports for session-record: Outcome, Open threads.
 
 ## Reuse discipline
 

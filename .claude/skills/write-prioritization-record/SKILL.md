@@ -25,7 +25,7 @@ Name the prioritization-record's schema surface with `shop-knowledge schema prio
 
 ## Walk the kind's lifecycle
 
-Open the prioritization-record at its starting status: `recorded`. The prioritization-record orders candidates and intents by priority — record that provenance edge. Cover every required section that `shop-knowledge schema prioritization-record` reports for prioritization-record: Ranking, Rationale.
+Open the prioritization-record at its starting status: `draft`. The prioritization-record orders candidates and intents by priority — record that provenance edge. Cover every required section that `shop-knowledge schema prioritization-record` reports for prioritization-record: Ranking, Rationale.
 
 ## Reuse discipline
 
