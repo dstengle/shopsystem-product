@@ -13,7 +13,7 @@ session: sess-2026-08-02-b
 experiments: []
 brief:
 parked-until:
-beads: []
+beads: [lead-cx7w9]
 ---
 
 # cand-010 — corpus entry-point finding as a composable, tag-based skill set
