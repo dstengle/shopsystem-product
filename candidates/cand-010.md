@@ -194,7 +194,7 @@ loop is the vocabulary-ratification checkpoint — both on a selection, before s
 ## Evidence / experiments
 
 - **5-round adversarial hardening experiment** (wf_b6d2c8b3, 2026-08-01):
-  `drafts/grounding-record-exp-iter1-5.md`, `drafts/grounding-researcher-prompt-hardened.md`.
+  `drafts/grounding-record-exp-iter{1,2,3,4,5}.md`, `drafts/grounding-researcher-prompt-hardened.md`.
   Establishes the (a)/(b) decomposition and that complete+correct selection is a
   tool problem — the direct warrant for taking the FIND half as a tool/skill bet.
 - **This session's empirical grounding** (2026-08-02), dogfooded via
