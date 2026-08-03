@@ -74,14 +74,19 @@ the safety net that catches the miss.
 ## Appetite
 
 **Medium — one vertical slice through a composition architecture, not the
-initiative.** The bet is bounded to: populate the corpus's existing `tags` field
-via an inference bootstrap; author the *few* atomic corpus-command skills the find
-flow needs plus one composite that combines them; and a single inference
-completeness sweep. It is deliberately sized well under intent-012's "large,
-multi-slice" appetite — it proves the decompose-then-compose pattern and closes
-the find-relevant-documents priority, and nothing more. If the shape starts
-pulling in semantic-search infrastructure, the record-form skill, or the full
-skill library, the appetite has been blown and the extra is out (see No-gos).
+initiative — and, at commit, an *evidence-first* slice that proves on a
+selection before it populates at scale.** The bet is bounded to: author the *few*
+atomic corpus-command skills the find flow needs plus one composite that combines
+them; a tagging skill; tags applied to a **selected subset** of documents (not the
+whole corpus) with human feedback on those tags; a test that the skills work; and
+a **re-run of the discovery probe to measure the impact of tagging** before any
+full-corpus population is trusted. Full inference-bootstrap population is therefore
+**gated on measured impact**, not part of the first cut. It is deliberately sized
+well under intent-012's "large, multi-slice" appetite — it proves the
+decompose-then-compose pattern and that tagging moves the needle, and nothing
+more. If the shape starts pulling in semantic-search infrastructure, the
+record-form skill, or the full skill library, the appetite has been blown and the
+extra is out (see No-gos).
 
 ## Solution sketch
 
@@ -124,6 +129,22 @@ mechanism thus both **bootstraps population** and **guards completeness**.
 Net: a question yields a reproducible, reviewable set of entry points, produced by
 skills that run commands rather than rediscover them.
 
+**Committed build sequence (authority-directed, 2026-08-03).** The slice is built
+and proved in this order — cheapest proof first, full population last and gated:
+
+1. **Tag-query command skill(s)** — the atomic skill(s) that run the tag query, so
+   tags are queryable and visible first.
+2. **Tagging skill** — the skill that writes/refreshes a document's tags.
+3. **Tag a *selection* of documents** — apply tags to a chosen subset (not the
+   whole corpus), then **get human feedback on those tags**.
+4. **Test** that the tagging skills work as expected.
+5. **Re-run the discovery probe and measure the impact of tagging** — the gate:
+   full-corpus population is only trusted once this shows tagging moved the needle.
+
+This ordering *is* the resolution of the "PoL probe before corpus-scale
+population" rabbit hole: step 5's probe re-run is that gate, and step 3's feedback
+loop is the vocabulary-ratification checkpoint — both on a selection, before scale.
+
 ## Rabbit holes
 
 - **Tag vocabulary provenance and quality.** A badly-populated tag space just
@@ -137,10 +158,11 @@ skills that run commands rather than rediscover them.
   an Architect call at brief time and does not block convergence* — tags are
   frontmatter and are gate-validated either way.
 - **Inference tagging/relevance quality.** Whether a simple, cheap model produces
-  usably-consistent tags and relevance verdicts is a real risk. It is testable in
-  the build and a candidate for a bounded Proof-of-Life probe before the
-  population pass is trusted at scale; it is not a convergence blocker for the
-  shape.
+  usably-consistent tags and relevance verdicts is a real risk. *Resolved by the
+  committed build sequence:* tags are applied to a **selection** first, with human
+  feedback on them (step 3) and a discovery-probe re-run to measure impact (step 5)
+  **before** any full-corpus population is trusted — the probe re-run is the
+  Proof-of-Life gate.
 - **Question → tag extraction reproducibility.** Extracting a question to tags is
   itself a judgment step; if it varies, reproducibility leaks upstream of the tag
   match. *Bound:* the composite **records the terms and tags it chose**, so the
@@ -203,10 +225,14 @@ search; the deliverable is a **composition of atomic command-skills + one
 composite**, not a monolith; graph-as-domain and bd-coupling stay deferred; the
 full skill library and semantic search are the named follow-on program.
 
-**Awaiting the product authority's commit decision.** On commit this routes to
+**Committed 2026-08-03** by the product authority (dstengle), who directed the
+evidence-first build sequence recorded in the Solution sketch (query skill →
+tagging skill → tag a selection + human feedback → test → re-run the discovery
+probe to measure impact, with full population gated on that impact). Routed to
 `lead-po` for brief authoring; the brief's Architect input should resolve the tag
-write-path/gate rabbit hole and decide whether a Proof-of-Life probe gates the
-inference-population pass before it runs at corpus scale.
+write-path/gate rabbit hole. The Proof-of-Life question is answered by the
+directed sequence — step 5's probe re-run is that gate — so the brief carries the
+sequence as the intended work-split rather than reopening it.
 
 ## Changelog
 
@@ -216,3 +242,9 @@ inference-population pass before it runs at corpus scale.
   prior art `cand-003` (absorbs its knowledge-corpus element; discharges its open
   query-interface rabbit hole). Companion follow-ons named: the grounding-record
   skill, semantic search, the full atomic-skill / operational-skills library.
+- 2026-08-03 committed by the product authority, who directed an evidence-first
+  build sequence: tag-query skill → tagging skill → tag a *selection* + human
+  feedback → test → re-run the discovery probe to measure impact, with full-corpus
+  population gated on that impact. Appetite narrowed to selection-first; the
+  inference-quality rabbit hole is resolved by step 5's probe-re-run gate. Routed
+  to `lead-po` for brief authoring.
