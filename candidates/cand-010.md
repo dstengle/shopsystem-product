@@ -4,14 +4,14 @@ id: cand-010
 title: Corpus entry-point finding as a composable, tag-based skill set — a question resolves to a reproducible, reviewable set of relevant artifacts
 status: shaped
 created: 2026-08-02
-updated: 2026-08-02
+updated: 2026-08-03
 authors: [dstengle, "Claude (lead-pm)"]
 description: "First bet under intent-012 (verifiable grounding). Attacks the FIND half of the proven decomposition — complete+correct selection of the relevant artifacts for a question — which the 5-round adversarial experiment proved discipline alone cannot close. Tags (schema-native per ADR-067, 0/153 populated today) become the reproducible selection surface, populated via an inference bootstrap and queried through thin atomic corpus-command skills combined by one find-entry-points composite; an inference completeness sweep flags relevant-but-untagged docs so reproducible tag-selection is not a silent-false-negative machine. Deliberately excludes the grounding-record-form skill, semantic search, the full atom library, and the graph-as-domain / bd-coupling decisions."
 derives-from: [intent-012]
-derived-by:
+derived-by: [brief-025]
 session: sess-2026-08-02-b
 experiments: []
-brief:
+brief: brief-025
 parked-until:
 beads: [lead-cx7w9]
 ---
@@ -248,3 +248,15 @@ sequence as the intended work-split rather than reopening it.
   population gated on that impact. Appetite narrowed to selection-first; the
   inference-quality rabbit hole is resolved by step 5's probe-re-run gate. Routed
   to `lead-po` for brief authoring.
+- 2026-08-03 briefed as `brief-025` (bead `lead-cx7w9`). The brief carries the
+  authority-directed sequence verbatim as its work-split and flags the tag
+  write-path rabbit hole as the one open Architect question. Re-verification
+  against the live 167-artifact corpus: the 0-populated-`tags` claim **holds and
+  strengthens** (the key is absent from all 167, not merely empty, root-caused to
+  the write surface — no generated `template <kind>` emits a `tags:` key); the
+  `tag`-facet-with-nothing-to-query claim **holds**; the "`--help` … exits 0"
+  claim **partially drifted** — the error strings hold (no usage text anywhere)
+  but every error path now exits **2**, so that specific silent-failure argument
+  is retired and replaced by a real one (`render`'s default current-system view
+  returns a prose miss and exit 0 for 107 of 167 artifacts — pinned behavior, and
+  the reason invocation must live in the skill).
