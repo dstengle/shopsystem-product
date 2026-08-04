@@ -6,6 +6,7 @@ status: recorded
 created: 2026-08-04
 updated: 2026-08-04
 authors: [dstengle, "Claude (lead-pm)"]
+derived-by: [pdr-039]
 description: "Records the product authority's direction after the 2026-08-03 trust break and the full-system assessment that grounded it: re-found the typed-artifact system in four phases — a scoped freeze with triage, a shrink of the governed core, enforcement that makes green meaningful, then automated carriers and corpus repair — under two amendments the authority set: the quality bar is defined at Phase 0 and applied manually to everything authored during re-founding, and doctrine is captured through an iterative review loop rather than authored one-shot. Automation of quality transfers enforcement off the authority only after the machinery has earned it."
 ---
 
