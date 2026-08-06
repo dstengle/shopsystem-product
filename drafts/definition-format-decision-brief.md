@@ -16,8 +16,9 @@ follow. You asked, before that drafting starts, whether the world already
 provides these formats, and whether your Gherkin fitness-test idea holds up.
 **The answer: every element has an established external form to adopt or
 adapt — nothing structural needs inventing — and the Gherkin idea is sound
-with three guardrails.** Six asks follow, and all of them gate the seed-layer
-drafting. Nothing here commits you to any tool: tooling choices for the
+with three guardrails.** Six asks follow. **Only Ask 0 requires your answer**
+— drafting waits on it; the five choices after it resolve by their stated
+defaults if you say nothing. Nothing here commits you to any tool: tooling choices for the
 fitness-test machinery, and the cadence of your own quality sampling, are
 deferred to the sitting where that machinery is actually built.
 
@@ -28,7 +29,8 @@ The seven rows below are the recommended construction formats.
 No default — the seed-layer drafting waits on this ratification.
 What ratification binds: the **structures and their sources**. The numeric
 caps in the rows (3–8 outcomes, 5–9 checklist items, 200-line primers, and
-similar) and the sampling loop are **drafting defaults**, each revisable at
+similar), the sampling loop, and row 7's gated release step — a process
+commitment, not a structure — are **drafting defaults**, each revisable at
 the ratification of the document that carries it.
 
 | Element | Recommended form | Source | What we'd still invent |
