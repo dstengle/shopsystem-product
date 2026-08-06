@@ -1,81 +1,89 @@
 # Definition formats — decision brief
 
-**Sitting material, 2026-08-06.** Everything needed to decide is on these two
-pages. Full verified research:
-[`definition-format-research.md`](definition-format-research.md) (reference
-annex, optional). Presented per the `stakeholder-presentation` skill.
+**Sitting material, 2026-08-06 (rev. 2).** Everything needed to decide is on
+these two pages. The full verified research is
+[`definition-format-research.md`](definition-format-research.md) — a
+reference annex, not required reading.
 
 ## The answer first
 
-We are re-founding the quality layer on the rule that construction definitions
-precede checks, and you asked — before any seed-layer drafting — whether the
-world already has the formats we need, and whether your Gherkin fitness-test
-idea holds up. The research is done and source-verified. **The answer: adopt
-or adapt established forms for every element — no container format needs
-inventing** — and **your Gherkin proposal is sound with three guardrails**.
-Eight choices need your ratification; each carries my recommendation and a
-default, so you can accept or override rather than open-solve.
+We are rebuilding the system's quality foundations on one rule: before
+anything is produced or checked, there must be an explicit definition of what
+good construction looks like. The first act is a **seed layer** — a small,
+hand-ratified set of documents: the updated founding principles, plus the
+format that every later definition (process, role, artifact, guideline) will
+follow. You asked, before that drafting starts, whether the world already
+provides these formats, and whether your Gherkin fitness-test idea holds up.
+**The answer: every element has an established external form to adopt or
+adapt — nothing structural needs inventing — and the Gherkin idea is sound
+with three guardrails.** Six asks follow; all of them gate the seed-layer
+drafting. Two choices from the earlier draft — which evaluation tool runs the
+judged tests, and how often you grade samples — are **deferred** to the
+sitting where that machinery is actually built, so nothing here commits you
+to tooling.
 
-## The seven formats (recommended)
+## Ask 0 — ratify the format table as a block
 
-| Element | Recommended form | Source | Bespoke residue |
+The seven rows below are the recommended construction formats.
+**Ask: ratify the table as a block; flag any row you want re-opened.**
+No default — the seed-layer drafting waits on this ratification.
+
+| Element | Recommended form | Source | What we'd still invent |
 |---|---|---|---|
-| Process definitions | Name + purpose + 3–8 observable outcomes; each activity an entry/task/validation/exit cell; loops terminate on reached states, not step counts | ISO 24774, ETVX, Essence | none |
-| Role definitions | Our existing subagent file: frontmatter = capability contract, body = 4–8 accountability bullets; RACI only as a derived consulted/informed overlay compiled into role files — never a standalone chart | Claude Code, Scrum, RACI | none |
-| Artifact schemas | Generic type + per-kind required content (the shape `write-*` already has), plus one DoD-style quality commitment per kind and a worked sample in frontmatter | ISO 15289, Scrum, Prompty | field content only |
-| Principles | Name / Statement / Rationale / Implications, with normative-keyword discipline | TOGAF, BCP 14 | fitness rubric assembled from published criteria |
-| Quality guidelines | Every rule = test + criterion + yes/no decision; single-point rubrics; 5–9-item checklists; style guide + prose linter | Deming, rubric practice, Gawande, Vale | none |
-| Fitness tests | 3–10 Gherkin scenarios per output kind, LLM-judged | your proposal, over the established judge pattern | the Gherkin surface |
-| Context/skill governance | One activity per skill; 200-line role primers; gated template promotion; ISO 9001 document control as the audit rubric | Anthropic, ISO 9001 §7.5 | none |
+| Process definitions | Name + purpose + 3–8 observable outcomes; each activity a cell of entry conditions / tasks / validation / exit conditions; long-running loops end on reached states, not step counts | ISO 24774, IBM's ETVX frame, OMG Essence | nothing |
+| Role definitions | Our existing agent-role file: frontmatter as the capability contract, body as 4–8 accountability bullets; consulted/informed assignments derived into role files, never a standalone chart | Claude Code roles, Scrum, RACI matrices | nothing |
+| Artifact schemas | Generic type + required content per kind (the shape our writing skills already enforce), plus one Definition-of-Done-style quality commitment per kind and a worked example in the header | ISO 15289, Scrum, Microsoft's prompt-asset format | only each kind's field content |
+| Principles | Name / Statement / Rationale / Implications, with strict keyword discipline for MUST/SHOULD | TOGAF, IETF BCP 14 | a principle checklist assembled from five published criteria sets |
+| Quality guidelines | Every rule = test + criterion + yes/no decision; rubrics that state only the pass standard; checklists capped at 5–9 items; a style guide enforced by a prose linter | Deming, rubric practice, checklist research (Gawande), the Vale linter | nothing |
+| Fitness tests | 3–10 Gherkin scenarios per output kind, evaluated by an LLM reviewer instead of executed as code | your proposal, over established LLM-evaluation patterns | only the Gherkin syntax layer |
+| Skill & context governance | One activity per skill file; role primers capped at 200 lines; skills promoted to shared templates only through a gated release step; document-control rules from ISO 9001 as the audit checklist | Anthropic skill format, ISO 9001 | nothing |
 
-## Gherkin fitness tests: adopt, with guardrails
+## The Gherkin guardrails (inside Ask 0, row 6)
 
-The pattern underneath (scenario + plain-language criteria + LLM judge) is
-established shipping practice; only the Gherkin syntax is ours, justified by
-reusing the shop's proven contract vocabulary. Three guardrails are
-non-negotiable — without them it degrades into vibes: every `Then` names a
-falsifiable observable property; judged scenarios live outside `features/`
-and are marked non-executable; each `Then` compiles 1:1 into an established
-judge format. Judges are pinned, and you spot-grade a sample on a standing
-loop (ask 6).
+The pattern underneath — scenario, plain-language criteria, LLM judge — is
+established practice; only the Gherkin syntax is ours, justified because it
+is already the shop's contract vocabulary. Three guardrails are
+non-negotiable: every `Then` names an observable property a reviewer could
+point at when violated; judged scenarios live outside `features/` and are
+marked non-executable; each `Then` translates one-for-one into an existing
+LLM-evaluation format, so we never build our own evaluation engine. The
+judge's model and prompt version are fixed and recorded with each test set,
+and you grade a sample of its verdicts on a standing loop (cadence decided
+when the machinery is built).
 
-## Your eight decisions
+## The five format choices
 
-**Format choices**
-1. **Normative keywords** — BCP 14 (MUST/SHOULD in caps) or ISO
-   (shall/should)? *Recommend BCP 14*: directly lintable, native to the
-   agent-tooling world. Default: BCP 14.
-2. **Decision records** — keep our Nygard ADR form or switch to MADR?
-   *Recommend keep Nygard, add MADR's "Confirmation" section* (how compliance
-   is verified) *and a one-line summary field*. Default: as recommended.
+1. **Requirement keywords** — IETF style (MUST/SHOULD in capitals) or ISO
+   style (shall/should)? *Recommend IETF*: machine-checkable by a linter and
+   native to the tooling world we operate in. Default: IETF.
+2. **Decision records** — keep our current ADR form, or adopt MADR (a
+   community Markdown ADR template with options-considered and a
+   how-compliance-is-verified section)? *Recommend keep ours, add MADR's
+   verification section and a one-line summary field.* Default: as
+   recommended.
+3. **Pass/fail or graded** — are artifact quality verdicts binary gates, or
+   graded ladders (draft / ship / exemplary)? *Recommend binary to start*;
+   add a ladder only where a kind demonstrably needs stages. Default: binary.
+4. **Traceability weight** — does every process definition carry an explicit
+   outcome-to-check table, or do checks just link back to the outcome they
+   test? *Recommend links only*; full tables just for the seed-layer
+   documents themselves, where the derivation is the point. Default: links.
+5. **Principle set size** — cap at roughly ten, as one single set?
+   Operated public principle sets run at this size (GOV.UK's eleven; TOGAF
+   warns against sprawl). *Recommend ~10, one set*; split into
+   framework-wide vs shop-local only if sharing across shops later demands
+   it. Default: one set of ~10.
 
-**Strictness**
-3. **Verdicts per artifact kind** — binary pass/fail or graded ladders
-   (draft/ship/exemplary)? *Recommend binary to start*; add ladders only
-   where a kind demonstrably needs stages. Default: binary.
-4. **Traceability ceremony** — explicit outcome→check tables per process, or
-   by-convention links? *Recommend links*; tables only for the seed-layer
-   processes themselves. Default: links.
+## Deferred, deliberately
 
-**Operations**
-5. **Judge runner** — adopt promptfoo (established) or build a minimal
-   in-house harness? *Recommend promptfoo first*: zero bespoke-runner risk;
-   revisit if the coupling hurts. Default: promptfoo.
-6. **Calibration cadence** — you grade a sample of judge verdicts: batched at
-   sittings, or continuously? *Recommend batched at sittings, recorded in the
-   session record.* This is a call about your own time — no default.
-
-**Scope**
-7. **State vocabulary** (the named states our long-running concerns move
-   through) — decide now, or per-process as each definition is drafted?
-   *Recommend per-process, deferred.* Default: defer.
-8. **Principle set** — target size ~10; one set, or split
-   canonical-vs-shop-local? *Recommend ~10, single set now*; split later only
-   if template promotion requires it. Default: single set.
-
-*(These regroup the annex's §4 open questions by decision type.)*
+Three items from the research are not asked here. Which evaluation tool runs
+the judged fitness tests, and your sample-grading cadence, are deferred to
+the sitting where the judging machinery is built — deciding tooling before a
+single judged scenario exists would be premature. The naming of the shop's
+workflow states is decided per-process as each definition is drafted.
 
 ## On ratification
 
-I draft the seed layer — the principles update and the definition-format
-meta-definition — in the forms you ratify, as the next sitting material.
+With Ask 0 and the five choices settled, I draft the seed layer — the
+principles update and the definition-format meta-definition — in the ratified
+forms, as the next sitting material.
