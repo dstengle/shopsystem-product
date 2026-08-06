@@ -57,7 +57,7 @@ those outcomes; a measurement framework adds rated process attributes. Checks
 are formally derived from, and traceable to, purpose+outcome definitions.
 
 ETVX (Radice, Roth, O'Hara, Ciarfella, "A Programming Process Architecture",
-IBM Systems Journal 24(2), 1985, pp. 79–90) is the lightest classic
+IBM Systems Journal 24(2), 1985, pp. 79–90) is a classic
 per-activity frame: Entry criteria, Task set, Validation conditions, eXit
 criteria per activity cell, composable by chaining, with no ordering engine.
 (Corrected: the original expansion is Validation, not Verification; both
@@ -136,7 +136,8 @@ paywalled; ancestry in the Linear Responsibility Chart, Cleland & King,
 Systems Analysis and Project Management, McGraw-Hill, 1968). The matrix
 crosses work items (rows) with roles (columns), one involvement status per
 cell. The one-Accountable-per-row rule — exactly one A per deliverable — is
-stated as hard doctrine throughout PMI-affiliated practitioner literature,
+stated as hard doctrine in PMI-affiliated practitioner literature
+(observation from this research pass, not a cited survey),
 though the PMBOK glossary itself defines only the four statuses; the R-A-C-I
 lettering has no documented originator (folklore attributions to GE/1950s are
 unverified). Practitioner criticism records recurring failure modes: multiple
@@ -166,7 +167,8 @@ plus three optional typed parts: Purpose ("a capacity, potential, or goal that
 the Role will pursue or express"), Domains (things the role exclusively
 controls and regulates as its property), and Accountabilities ("ongoing
 activities the Role will manage and enact in service of others"), by
-documented HolacracyOne convention phrased as gerunds. Role and person are
+HolacracyOne convention phrased as gerunds (a practice convention with no
+single defining document identified in this pass). Role and person are
 strictly separated: a person filling a role is its Role Lead (§1.2), assigned
 by a Circle Lead (§1.4.1), many-to-many in both directions. Definitions change
 only through the governance process (Article 5): proposals must be grounded in
@@ -269,7 +271,7 @@ types or schemas.
 
 TOGAF (The Open Group, TOGAF 9.2, "Architecture Principles" chapter, carried
 into the 10th Edition ADM Techniques volume; pubs.opengroup.org) is, among the
-sources this survey examined, the only broadly adopted formal template
+sources this survey examined, the only formal template
 specifically for principles: Name / Statement
 (one-sentence unambiguous rule) / Rationale (business-language why) /
 Implications (required actions and impacts), plus five quality criteria for
@@ -471,7 +473,8 @@ handbook treatment in Kubiak & Benbow, The Certified Six Sigma Black Belt
 Handbook, 3rd ed., ASQ Quality Press, 2016; GE-lineage practice in Pande,
 Neuman & Cavanagh, The Six Sigma Way, McGraw-Hill, 2000; matrix ancestor
 Hauser & Clausing, "The House of Quality", HBR 66(3), May–June 1988, pp.
-63–73; no single primary inventor source exists for the tree itself) —
+63–73; no single primary inventor source for the tree itself surfaced in
+this pass's search of the ASQ materials and handbook literature cited here) —
 derives in three fixed levels: a need stated in the customer's qualitative
 language; the drivers by which the customer will judge the need met; and
 per-driver measurable performance requirements, each with a specification
@@ -488,9 +491,9 @@ validated against the baseline), Control (control plan, process standardized
 into controlled documentation, monitoring installed, ownership transferred).
 Phase boundaries carry tollgate reviews — phase deliverables reviewed by an
 authority seat distinct from the performing team (sponsor/champion/Master
-Black Belt) before the next phase is authorized; the tollgate form is
-standard in the Six Sigma practice literature rather than on the cited ASQ
-page. The Control-phase termination rule converges with PDCA's Act: in this
+Black Belt) before the next phase is authorized; the tollgate form appears
+in the Six Sigma practice literature (e.g., the cited handbook) rather than
+on the cited ASQ page. The Control-phase termination rule converges with PDCA's Act: in this
 lineage, improvement work terminates in a document-control action on a
 governed surface.
 
