@@ -10,6 +10,13 @@ Conventions: every claim carries a citation to a verified source. Where the
 research corpus contained a described inaccuracy, the corrected fact is used
 here and marked "(corrected)".
 
+Revision note (2026-08-06 repair pass, day after first draft): a
+completeness-critique repair added the quality-management lineage (new §1.6),
+role-assignment and role-anatomy forms (§1.2), and document-typing traditions
+(§1.3), with matching deltas in §2, and repaired cited inconsistencies
+(Essence 2.0 status, §2.4/open-question-1 alignment, evaluative and uncited
+claims in section 1).
+
 ---
 
 ## 1. Survey
@@ -55,11 +62,13 @@ per-activity frame: Entry criteria, Task set, Validation conditions, eXit
 criteria per activity cell, composable by chaining, with no ordering engine.
 (Corrected: the original expansion is Validation, not Verification; both
 renderings circulate in CMM-lineage secondary literature. A free scan exists at
-bitsavers.org despite the IBM Systems Journal paywall.) It is the only classic
-form that builds verification into the definition cell itself.
+bitsavers.org despite the IBM Systems Journal paywall.) The frame places
+validation conditions inside the activity definition cell itself.
 
-OMG Essence 1.2 (SEMAT; OMG formal/18-10-02, 2018; Essence 2.0 in beta with
-formal publication scheduled March 2026; omg.org/spec/Essence/1.2) defines
+OMG Essence 1.2 (SEMAT; OMG formal/18-10-02, 2018; omg.org/spec/Essence —
+1.2 remains the current formal version; Essence 2.0 is still an in-process
+beta, its beta 2 published March 2026 and not yet formally published as of
+August 2026, per the OMG specification page — corrected) defines
 progress and health rather than workflow: Alphas (essential trackable concerns)
 with ordered named states, each state carrying a short qualitative checklist;
 activities whose completion criteria are expressed in terms of alpha states and
@@ -84,13 +93,16 @@ BPMN 2.0 (OMG formal/2011-01-03; ISO/IEC 19510:2013, which is technically BPMN
 2.0.1) with its Descriptive vs Analytic vs Common Executable conformance
 sub-classes; CMMN 1.0/1.1 (OMG, 2014; Marin, arXiv:1608.05011) — declarative
 case plans with sentries (entry/exit criteria), milestones, and discretionary
-items, the standards world's clearest vocabulary for unpredictable
-knowledge-work; IDEF0 (NIST FIPS PUB 183, 1993, withdrawn as a federal
+items, addressed to case work whose activities cannot be fully pre-sequenced;
+IDEF0 (NIST FIPS PUB 183, 1993, withdrawn as a federal
 standard in 2008; IEEE 1320.1-1998; ISO/IEC/IEEE 31320-1:2012) with its
 Input/Control/Output/Mechanism arrow typing; and PMBOK 6th ed. ITTOs (PMI,
 2017), which the PMBOK 7th ed. (2021) itself dropped from the core. ISO/IEC
 24744:2014 (SEMDM) models method-level and endeavor-level views of one concept
-via powertypes; its uptake is essentially academic.
+via powertypes; this survey found no practitioner process corpus written in it
+comparable to the 15288/12207 corpus, the application literature encountered
+being academic method-engineering work (observation from this research pass,
+not a cited measurement).
 
 ### 1.2 Role definition formats
 
@@ -100,8 +112,8 @@ hard structural line between Method Content — reusable Role Definitions
 Guidance including checklists — and Process, which arranges content occurrences
 into lifecycles. A full knowledge base of role/task/artifact definitions can be
 maintained without ever creating a process. Eclipse EPF Composer
-(projects.eclipse.org/projects/technology.epf; archived, last release 2018) is
-the working proof: method plugins publish role/task/work-product/guidance pages
+(projects.eclipse.org/projects/technology.epf; archived, last release 2018)
+implements the split in tooling: method plugins publish role/task/work-product/guidance pages
 as a browsable static site, no engine. RUP (Kruchten, The Rational Unified
 Process: An Introduction, 3rd ed., Addison-Wesley, 2003, ch. 3) is the
 ancestor form: roles carry responsibilities plus required competencies, and
@@ -110,6 +122,72 @@ every artifact has exactly one responsible role.
 The Scrum Guide (Schwaber & Sutherland, November 2020, scrumguides.org) defines
 roles as short accountability lists — 4–8 bullets of what the holder is
 answerable for, not task scripts.
+
+Responsibility assignment across roles has its own established forms, distinct
+from the definition containers above. The responsibility assignment matrix
+(RAM) and its common type, the RACI chart, are carried in the PMBOK Guide: a
+RAM is "a grid that shows the project resources assigned to each work
+package"; a RACI chart is "a common type of RAM that uses responsible,
+accountable, consult, and inform statuses to define the involvement of
+stakeholders in project activities" (PMI, PMBOK Guide, 6th ed., 2017, §9.1
+data-representation tools and glossary — definitions confirmed via
+PMI-affiliated PMP literature quoting the Guide, the Guide itself being
+paywalled; ancestry in the Linear Responsibility Chart, Cleland & King,
+Systems Analysis and Project Management, McGraw-Hill, 1968). The matrix
+crosses work items (rows) with roles (columns), one involvement status per
+cell. The one-Accountable-per-row rule — exactly one A per deliverable — is
+stated as hard doctrine throughout PMI-affiliated practitioner literature,
+though the PMBOK glossary itself defines only the four statuses; the R-A-C-I
+lettering has no documented originator (folklore attributions to GE/1950s are
+unverified). Practitioner criticism records recurring failure modes: multiple
+As dissolving accountability, R/A conflation, team-level unnamed assignments,
+consulted-list bloat, and shelfware charts drafted once and never consulted
+(e.g. tallyfy.com/raci-matrix — criticism in circulation, not authority).
+Letter-set variants extend the cell vocabulary on the same skeleton: RASCI
+(S = Support, splitting doer from helper), RACI-VSL (V = Verifier against
+acceptance criteria, S = Signatory), CAIRO (O = explicitly Omitted), RACIQ
+(Q = Quality review), PARIS (variant inventory per the Wikipedia RAM article,
+en.wikipedia.org/wiki/Responsibility_assignment_matrix). A decision-rights
+fork re-targets the matrix from tasks to decisions: Bain's RAPID — Recommend /
+Agree / Perform / Input / Decide, "one person who must decide — the single
+point of accountability", plus a four-locus taxonomy of decision bottlenecks
+(Rogers & Blenko, "Who Has the D?", HBR 84(1), January 2006;
+bain.com/insights/who-has-the-d/) — and DACI — Driver / Approver /
+Contributors / Informed, one Approver, splitting process ownership (Driver)
+from final authority (Approver) (Atlassian Team Playbook,
+atlassian.com/team-playbook/plays/daci; the commonly repeated Intuit-1980s
+origin is an unverified secondary attribution).
+
+Holacracy constitutionalizes the role definition itself (Holacracy
+Constitution v5.0, holacracy.org/constitution/5-0; source text at
+github.com/holacracyone/Holacracy-Constitution, CC BY-SA 4.0; Robertson,
+Holacracy, Henry Holt, 2015). Its §1.1 defines a Role as a descriptive name
+plus three optional typed parts: Purpose ("a capacity, potential, or goal that
+the Role will pursue or express"), Domains (things the role exclusively
+controls and regulates as its property), and Accountabilities ("ongoing
+activities the Role will manage and enact in service of others"), by
+documented HolacracyOne convention phrased as gerunds. Role and person are
+strictly separated: a person filling a role is its Role Lead (§1.2), assigned
+by a Circle Lead (§1.4.1), many-to-many in both directions. Definitions change
+only through the governance process (Article 5): proposals must be grounded in
+a concrete tension with an example (§5.3.1), are processed by integrative
+decision-making (§5.4.5), and objections must pass defined validity tests
+(§5.3.2–5.3.3); amendments are recorded, giving the role set an audit trail.
+A documented exit exists: Medium abandoned Holacracy in 2016, reporting that
+"the act of codifying responsibilities in explicit detail hindered a proactive
+attitude and sense of communal ownership" (Doyle, "Management and Organization
+at Medium", Medium blog, 4 March 2016).
+
+Team Topologies (Skelton & Pais, IT Revolution, 2019; concept definitions at
+teamtopologies.com/key-concepts) types teams — stream-aligned, enabling,
+complicated-subsystem, platform — and types the relationship between any two
+teams into three interaction modes: collaboration ("working together for a
+defined period of time to discover new things"), X-as-a-Service ("one team
+provides and one team consumes something 'as a Service'"), and facilitating
+("one team helps and mentors another team"), with a designed evolution —
+collaboration is deliberately time-bounded and expected to decay into
+X-as-a-Service as interfaces stabilize. It is the one surveyed form that types
+role-to-role interaction rather than involvement in a deliverable.
 
 In current agent practice, the Claude Code subagent definition
 (code.claude.com/docs/en/sub-agents) is a Markdown file whose YAML frontmatter
@@ -142,11 +220,57 @@ per-input sample/default data. The MCP resources primitive (Model Context
 Protocol spec 2025-06-18) standardizes inclusion-decision metadata on context
 artifacts: audience, priority 0.0–1.0, lastModified.
 
+Two traditions govern how document kinds themselves are derived and bounded.
+DITA 1.3 (OASIS Standard, 17 December 2015; Errata 02, 2018;
+docs.oasis-open.org/dita/dita/v1.3) types every topic as one of a small set of
+information types sharing one structural envelope (title + prolog metadata +
+body): the base triad concept / task / reference, extended in the 1.3
+technical-content set by glossaryEntry (introduced in DITA 1.1 — corrected: an
+earlier research pass dated it to 1.3) and troubleshooting (the type actually
+new in 1.3). Typing exists to "keep documentation focused and modular"; mixing
+information types within one topic is the named anti-pattern; and a document's
+root element must be <topic> or a specialization, <map> or a specialization,
+or <dita> (corrected: <dita> is also a permitted root). Maps — separate
+documents that "organize topics and other resources into structured
+collections" — carry hierarchy, inter-topic relationships, and key-resolution
+context, so organization is fully separated from content. DITA's
+specialization architecture (archSpec "Specialization"; the definition sits in
+the spec's terminology section) is a governed derivation mechanism: "defining
+new element or attribute types as a semantic refinement of existing element or
+attribute types". Every specialized type declares its full ancestry (@class),
+so a processor that knows only the base type can still process the derived one
+(generic fallback); vocabulary compatibility between documents is decidable
+(@domains); each type is declared in exactly one vocabulary module; and
+constraint modules restrict an existing type's content model as a distinct,
+lighter operation than creating a new type (fallback and constraint rules
+specified in adjacent archSpec sections).
+
+Diátaxis (Procida, diataxis.fr; authorship per the site's colophon — the
+homepage does not name the author) classifies on an axis orthogonal to
+15289's content genres: by the user's need at the moment of use. Two axes —
+action/cognition crossed with acquisition/application ("at work" vs "at
+study") — generate exactly four types: tutorial, how-to guide, reference,
+explanation. The type determines "documentation content (what to write),
+style (how to write it) and architecture (how to organise it)"; the named
+failure mode is the blurring or collapse of the forms into one document,
+which the site prescribes keeping apart (an each-document-serves-one-type
+rule in paraphrase — the site states it as failure-mode avoidance, not in
+those words). Adjacent: arc42 (Hruschka & Starke, arc42.org, in practice
+since 2005) is a fixed 12-section skeleton for one composite artifact kind —
+the architecture description — with explicit tailoring permission and a
+decision-record slot (its section 9) embedding the ADR kind by reference; and
+docs-as-code (Write the Docs, writethedocs.org/guide/docs-as-code; Gentle,
+Docs Like Code) names the substrate practice — documentation in plain-text
+markup under version control, peer-reviewed via the code-review mechanism,
+gated by automated tests in CI — while deliberately prescribing no document
+types or schemas.
+
 ### 1.4 Principle statement formats
 
 TOGAF (The Open Group, TOGAF 9.2, "Architecture Principles" chapter, carried
-into the 10th Edition ADM Techniques volume; pubs.opengroup.org) is the only
-broadly adopted formal template specifically for principles: Name / Statement
+into the 10th Edition ADM Techniques volume; pubs.opengroup.org) is, among the
+sources this survey examined, the only broadly adopted formal template
+specifically for principles: Name / Statement
 (one-sentence unambiguous rule) / Rationale (business-language why) /
 Implications (required actions and impacts), plus five quality criteria for
 the set — Understandable, Robust (enables good decisions and enforceable
@@ -204,8 +328,8 @@ to Create and Use Rubrics, ASCD, 2013) — criteria about the quality of the
 work, crossed with 3–5 prose performance-level descriptors of observable
 features (not evaluative adjectives); analytic (per-criterion judgment) vs
 holistic (single judgment) variants. The AAC&U VALUE rubrics (aacu.org/value/
-rubrics; 15 rubrics developed 2007–2009, a 16th added 2013 — corrected) are the
-mature exemplar artifact: Definition + Framing Language + Glossary preamble,
+rubrics; 15 rubrics developed 2007–2009, a 16th added 2013 — corrected) are a
+fully worked, operated artifact set: Definition + Framing Language + Glossary preamble,
 then a criteria-by-levels matrix with named ordered levels Capstone /
 Milestones / Benchmark, with an explicit localization instruction. The
 single-point rubric (Fluckiger, Delta Kappa Gamma Bulletin 76(4), 2010)
