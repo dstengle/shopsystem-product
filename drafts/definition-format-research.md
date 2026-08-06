@@ -1,5 +1,10 @@
 # Definition-format research: established forms for the quality-layer seed
 
+**Reference annex — optional reading.** The decision surface is
+[`definition-format-decision-brief.md`](definition-format-decision-brief.md);
+read that first. This document is the full verified research behind it and is
+not required for the decision.
+
 **Status: SITTING MATERIAL — not ratified, decides nothing.** This document
 describes established external forms and recommends candidates; every decision
 in it belongs to the product authority. Date: 2026-08-05. Produced by the
