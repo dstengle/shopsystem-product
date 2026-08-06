@@ -380,7 +380,121 @@ Writing Act of 2010, Pub. L. 111-274; originally plainlanguage.gov/guidelines,
 now hosted at digital.gov/guides/plain-language — corrected URL) contribute the
 imperative one-behavior-per-rule granularity with before/after example pairs.
 
-### 1.6 Qualitative fitness-test formats for LLM output
+### 1.6 Quality-management lineage: document control, improvement loops, derivation trees
+
+This is the one surveyed tradition whose core artifact is the controlled
+definition itself. ISO 9001:2015 clause 7.5 (Quality management systems —
+Requirements; iso.org/standard/62085.html — current edition, confirmed 2021,
+revision in progress; clause detail cross-verified via the official ISO/TC
+176/SC2/N1286 guidance, iso.org/iso/documented_information.pdf, the standard
+text itself being paywalled) is the established requirements regime for
+controlled documents. The 2015 edition merged "documents" and "records" into
+one concept, documented information, with two verbs carrying the old
+distinction: maintain (keep current — definitional documents) vs retain (keep
+as evidence — records). Clause 7.5.1 scopes the regime two ways — information
+the standard requires plus whatever the organization determines necessary,
+extent proportional to organization size, process complexity, and competence.
+7.5.2 requires on creation and update: identification and description (title,
+date, author, reference number), format and media, and review and approval
+for suitability and adequacy. 7.5.3 requires that information be available
+and suitable for use where and when needed and adequately protected, with
+control activities as applicable: distribution, access (view-only vs
+view-and-change), retrieval and use, storage and preservation including
+legibility, control of changes (version control named explicitly), retention
+and disposition; documented information of external origin is identified and
+controlled, and information retained as evidence of conformity is protected
+from unintended alteration. (The 2008 edition's explicit
+prevent-unintended-use-of-obsolete-documents provision, 4.2.3(g), survives in
+2015 only by implication of availability plus change control — corrected: an
+earlier pass read it as explicit 2015 text.) Beneath it, ISO 9000:2015
+(Fundamentals and vocabulary, 4th ed., September 2015;
+iso.org/standard/45481.html) supplies the term system: document =
+"information and the medium on which it is contained" (3.8.5); documented
+information (3.8.6); record = "document stating results achieved or providing
+evidence of activities performed" (3.8.10); conformity = fulfilment of a
+requirement; objective evidence as the admissibility condition; and the
+verification/validation split — confirmation via objective evidence that
+specified requirements are fulfilled vs that requirements for a specific
+intended use are fulfilled. ISO 10013:2021 (Guidance for documented
+information, 1st ed., March 2021; iso.org/standard/75736.html) is the
+non-binding how-to companion, updated for digitized documentation and
+automated workflow; the traditional documentation-hierarchy pyramid (policy →
+procedure → work instruction → form/record) belongs to its predecessor
+ISO/TR 10013:2001 — the 2021 foreword states "the original hierarchy of
+documentation is no longer used but left open for the user" (corrected: an
+earlier pass attributed the pyramid to the 2021 edition).
+
+The improvement-loop lineage is documented end-to-end in Moen, "Foundation
+and History of the PDSA Cycle" (Associates in Process Improvement;
+deming.org/wp-content/uploads/2020/06/PDSA_History_Ron_Moen.pdf; retrieved in
+full for this report). Shewhart (Statistical Method from the Viewpoint of
+Quality Control, The Graduate School, USDA, 1939, p. 45; edited by Deming) is
+the original statement that specification precedes production precedes
+inspection, and that the line closes into a loop: "These three steps must go
+in a circle instead of in a straight line... specification, production, and
+inspection correspond respectively to making a hypothesis, carrying out an
+experiment, and testing the hypothesis." Deming's 1950 JUSE wheel (design
+with tests → make → sell → test in service through market research →
+redesign) was recast by Japanese executives as Plan–Do–Check–Act (Imai,
+Kaizen, Random House, 1986, p. 60; Ishikawa, What Is Total Quality Control?
+The Japanese Way, Prentice-Hall, 1985, pp. 56–61 — Plan subdivided into goals
+plus methods, Do into training plus implementation). PDCA's terminal phase is
+a document-control action: Act is "back to plan if the results are
+unsatisfactory, or standardization if the results are satisfactory"; the form
+"emphasized the prevention of error recurrence by establishing standards and
+the ongoing modification of those standards" (Moen), with Ishikawa adding
+that standards are revised continuously from consumer voices and next-process
+requirements; in Japanese practice loop turns are documented in the QC-story
+format (Lillrank & Kano 1989, per Moen). Deming himself held his cycle apart
+from PDCA ("They bear no relation to each other", GAO roundtable 1980; "be
+sure to call it PDSA, not the corruption PDCA", letter to Moen, 17 November
+1990): PDSA (Out of the Crisis, MIT Press, 1986, p. 88; The New Economics,
+MIT Press, 1993, p. 135) plans a change with a stated prediction and its
+theory (Moen, Nolan, Provost, Improving Quality Through Planned
+Experimentation, McGraw-Hill, 1991, p. 11), runs it — small-scale, per the
+1993 cycle figure — Studies observed results against the prediction (not
+"Check", which Deming read as "hold back"), and then adopts, abandons, or
+re-runs under changed conditions. The Model for Improvement (Langley, Nolan,
+Nolan, "The Foundation of Improvement", Quality Progress, June 1994, p. 81;
+Langley et al., The Improvement Guide, 2nd ed., Jossey-Bass, 2009, p. 24)
+frames every cycle with three questions, the second — "How will we know that
+a change is an improvement?" — an explicit check-derivation question. Moen's
+division of labor: PDCA for implementation and compliance; PDSA for testing
+and learning.
+
+Six Sigma contributes the qualitative-to-checkable derivation tree and the
+phase-gated improvement process. The CTQ (critical-to-quality) tree — CTQs
+being, in paraphrase of the ASQ Quality Glossary entry, the key measurable
+characteristics of a product or process whose performance standards must be
+met to satisfy the customer (asq.org/quality-resources/quality-glossary;
+handbook treatment in Kubiak & Benbow, The Certified Six Sigma Black Belt
+Handbook, 3rd ed., ASQ Quality Press, 2016; GE-lineage practice in Pande,
+Neuman & Cavanagh, The Six Sigma Way, McGraw-Hill, 2000; matrix ancestor
+Hauser & Clausing, "The House of Quality", HBR 66(3), May–June 1988, pp.
+63–73; no single primary inventor source exists for the tree itself) —
+derives in three fixed levels: a need stated in the customer's qualitative
+language; the drivers by which the customer will judge the need met; and
+per-driver measurable performance requirements, each with a specification
+limit or target. Leaves must be measurable or the derivation is unfinished;
+every leaf traces up through a driver to a stated need; and coverage is
+testable in both directions (a need with no leaves is unmeasured, a leaf with
+no need is unauthorized). DMAIC (ASQ, asq.org/quality-resources/dmaic; Kubiak
+& Benbow 2016, organized to the DMAIC-structured ASQ Body of Knowledge)
+specifies five phases by their exit deliverables: Define (charter, voice of
+customer and CTQs, process map), Measure (baseline, operational definitions
+of the measures, measurement-system validation — before any judgment of the
+process), Analyze (root causes verified with data), Improve (solutions
+validated against the baseline), Control (control plan, process standardized
+into controlled documentation, monitoring installed, ownership transferred).
+Phase boundaries carry tollgate reviews — phase deliverables reviewed by an
+authority seat distinct from the performing team (sponsor/champion/Master
+Black Belt) before the next phase is authorized; the tollgate form is
+standard in the Six Sigma practice literature rather than on the cited ASQ
+page. The Control-phase termination rule converges with PDCA's Act: in this
+lineage, improvement work terminates in a document-control action on a
+governed surface.
+
+### 1.7 Qualitative fitness-test formats for LLM output
 
 The research base: Zheng et al., "Judging LLM-as-a-Judge with MT-Bench and
 Chatbot Arena" (NeurIPS 2023; arXiv:2306.05685) established LLM-judge viability
@@ -421,11 +535,14 @@ expectations, and a Judge Agent returning verdict + reasoning, CI-runnable.
 The BDD×LLM literature runs the opposite direction from the shop's proposal —
 LLMs generating or assessing Gherkin (arXiv:2403.14965; arXiv:2508.20744;
 arXiv:2607.01980; arXiv:2512.01232, "LLM-as-a-Judge for Scalable Test Coverage
-Evaluation"). No established named standard exists for authoring Gherkin as
-fitness specifications judged (not executed) by an LLM; the pattern exists only
-as the near-neighbors above. See section 3.
+Evaluation"). No established named standard was found for authoring Gherkin as
+fitness specifications judged (not executed) by an LLM — a negative claim
+grounded in this research pass's search scope: arXiv (BDD × LLM ×
+judge/evaluation queries), the Cucumber/SmartBear Gherkin documentation, and
+the documentation of each eval framework surveyed above; the pattern exists
+only as the near-neighbors listed. See section 3.
 
-### 1.7 Compiled-context and skill governance
+### 1.8 Compiled-context and skill governance
 
 Anthropic Agent Skills (platform.claude.com/docs — "Skill authoring best
 practices"; anthropic.com/engineering — "Equipping agents for the real world",
@@ -479,13 +596,24 @@ Each shop process definition: a noun-phrase name, one-sentence purpose, and
 3–8 observable outcomes per 24774:2021 clause 5.3, phrased in the 15288/12207
 outcome style ("An X is produced/defined"); each activity inside it an ETVX
 cell — entry criteria (the trigger side of "resulting actions"), tasks,
-validation conditions, exit criteria (Radice et al. 1985). Long-running loops
+validation conditions, exit criteria (Radice et al. 1985). ETVX is preferred
+among the classic activity frames surveyed precisely because it is the one
+that builds validation into the definition cell itself. Long-running loops
 terminate by definition-level state, not step count: exit criteria expressed as
 reached states with short checklists (Essence 1.2 alpha-state form; CMMN's
 "milestone with entry criteria" and "exit criterion on a stage" as citable
-vocabulary — vocabulary only, not the notation). Checks derive per the 330xx
-pattern: outcomes → assessment indicators → rubric items, with traceability but
-without capability levels, maturity staging, or assessor machinery (delta).
+vocabulary — the clearest standards vocabulary surveyed for unpredictable
+knowledge-work termination, but vocabulary only, not the notation). Checks
+derive per the 330xx pattern: outcomes → assessment indicators → rubric items,
+with traceability but without capability levels, maturity staging, or assessor
+machinery (delta). Six Sigma's CTQ tree (§1.6) is adapted as the second
+external anchor for the same derivation: need → driver → measurable
+requirement, with the leaf-admissibility rule (a leaf is measurable — which is
+Deming's operational definition, 2.5(a) — or the derivation is unfinished) and
+both coverage tests (an outcome with no derived check is unmeasured; a check
+tracing to no outcome is unauthorized), recorded as a small per-kind
+need→driver→check table without sigma targets or statistical capability
+apparatus (delta).
 CMMI's required/expected/informative trichotomy separates what must be true
 (checkable) from typical ways to do it (guidance) inside each definition.
 BPMN/IDEF0/PMBOK ITTO are not adopted; a descriptive-class diagram may
@@ -504,6 +632,40 @@ is the governing rule: roles and skills are Method Content; no ordering or
 lifecycle text lives in a role definition. RUP's one-responsible-role-per-
 artifact rule binds each artifact kind to exactly one accountable role.
 
+RACI (§1.2) — adapt, as an assignment overlay, not a role-definition
+container. The A column is already decided: RUP's one-responsible-role-per-
+artifact rule is a standing one-Accountable-per-row constraint over artifact
+kinds, so a shop RACI's Accountable assignments must reproduce the existing
+artifact→role bindings (a consistency check, not a new decision); what the
+matrix genuinely adds is the C/I dimension — who is Consulted on a scope
+clarify, who is Informed of a work_done — which today lives only implicitly
+in the clarify-routing and Monitor-event rules. Two conditions keep it clear
+of the documented failure modes (§1.2): every letter carries a Deming-style
+operational definition, and the matrix is derived into role frontmatter and
+primers rather than kept as a standalone page (shelfware is the documented
+death of RACI charts; a matrix that compiles into agent context cannot rot
+unread). RACI-VSL's Verifier is the one variant letter worth carrying: a
+per-artifact-kind Verifier column names the seat that runs the derived
+checks, keeping judge separate from generator as section 3's Goodharting
+mitigations already require. All of this bears directly on the pending
+PO-vs-Architect contract investigation (bead lead-jozud.2): rows = artifact
+kinds and decision points (brief, PDR, scenario set, dispatch, clarify
+response, reconciliation), columns = lead-po, lead-architect, router, BC —
+and where the question is decision rights rather than task involvement,
+RAPID/DACI vocabulary (a single Decider per decision; Driver vs Approver —
+the router drives classification and dispatch to conclusion, the product
+authority alone approves) is the cleaner frame (§1.2). From Holacracy (§1.2),
+two elements fold into the role container itself rather than the matrix:
+Domains as the formal name for exclusive artifact bindings (stating "this
+role exclusively controls features/ scenarios" inside the role definition
+makes the one-A property structural rather than matrix-side), and the
+tension-grounded amendment protocol as an established form for changing role
+definitions under change control (converging with TOGAF's
+stable-but-amendable, 2.4); Medium's documented exit is the standing caution
+against over-codification in a system that compiles role text into context —
+Holacracy's own all-parts-optional minimalism plus the existing 200-line
+primer budget (2.7) are the counterweights.
+
 **2.3 Artifact/document-type schemas — adopt the 15289 two-level scheme; adapt
 with Scrum commitments and Prompty-style validated frontmatter.**
 Concretely: a small set of shop generic types (description, plan, record,
@@ -518,7 +680,24 @@ checklist precedent); (b) frontmatter is schema-validated and declares expected
 inputs/outputs plus at least one worked sample (Prompty), and carries
 audience/priority/lastModified-style inclusion metadata (MCP resources
 annotation vocabulary); (c) 15289-style mapping tables tie each process
-definition's outcomes to the artifact kinds it produces.
+definition's outcomes to the artifact kinds it produces. Neither DITA nor
+Diátaxis (§1.3) displaces 15289 as the content anchor; each adds a dimension
+it lacks. DITA specialization is adapted as the second external anchor for
+deriving new kinds: every artifact kind declares its base generic type and
+ancestry in frontmatter (the @class analogue), so a validator that knows only
+the generic types can still check any future kind at the generic level —
+DITA's generic-fallback rule, which is what keeps the kind set safely
+open-ended; and tightening an existing kind is a constraint-module-style
+operation, a distinct and cheaper governance action than minting a new kind.
+From Diátaxis: each kind-schema declares which user-need quadrant the kind
+serves, and the one-type-per-document discipline becomes a lintable fitness
+check — a mixed-quadrant document fails its kind (the write-* guides are
+how-to-shaped while the schemas they enforce are reference-shaped; the
+vocabulary keeps the two separated). DITA's XML machinery and Diátaxis's four
+documentation types themselves are not adopted; docs-as-code (§1.3) is
+adopted trivially as the name of the substrate the shop already runs —
+Markdown in git, reviewed, schema-validated in CI — on which every mechanical
+check in this report becomes enforceable.
 
 **2.4 Principles — adopt the TOGAF four-part template and BCP 14 keywords;
 adapt ISO Directives rules; keep decisions in ADRs, separate.**
@@ -548,7 +727,12 @@ review form, and the style-guide + Vale enforcement anatomy.**
 Concretely: (a) Deming's three elements (test procedure, criterion, yes/no
 decision — Out of the Crisis ch. 9) are the acceptance test applied to every
 definition the seed layer produces; an unoperationalized adjective is not yet a
-check. (b) Per-artifact-kind fitness sets take single-point rubric form
+check. CTQ's leaf-admissibility rule (§1.6) is the same meta-rule in Six Sigma
+form — a derivation is unfinished until its leaves are measurable — and ISO
+9000:2015's verification/validation split (§1.6) names the two check families
+this layer produces: derived mechanical checks verify against stated
+requirements; judged fitness tests (2.6) validate against intended use —
+naming the distinction prevents category errors in check design. (b) Per-artifact-kind fitness sets take single-point rubric form
 (Fluckiger 2010) — the proficient-standard column IS the construction
 definition, reusable verbatim in generator context and reviewer rubric; where a
 graded verdict is wanted, an analytic rubric with written per-level anchors
@@ -580,7 +764,13 @@ human calibration sampled per EvalGen). Judge conventions: one dimension per
 judgment, constrained verdicts with anchored meanings (autoevals choice_scores;
 Ragas anchors), reasoning before verdict, judge model and prompt version pinned
 (Zheng 2023; arXiv:2410.07137). CheckList's capability×test-type matrix is the
-ideation device when deriving cases from a construction definition.
+ideation device when deriving cases from a construction definition. The
+required calibration loop is an established form, not an invention: it is a
+PDSA cycle (§1.6) — a fitness-set or judge-prompt revision records a
+prediction (which verdicts will change, and why) before deployment, and its
+Study step compares sampled product-authority grading against that prediction
+(Moen/Nolan/Provost 1991; EvalGen's iterative human-calibration loop is this
+cycle unnamed).
 
 **2.7 Compiled-context and skill governance — adopt Agent Skills + Claude Code
 memory discipline; adapt the Cursor activation taxonomy, llms.txt index, and
@@ -588,7 +778,11 @@ Langfuse promotion algebra.**
 Concretely: one activity per skill in SKILL.md form with the authoring rules
 and evaluation-first loop (Anthropic best practices; the {skills, query, files,
 expected_behavior[]} eval structure is the fitness-set container, run via a
-promptfoo-style colocated config since Anthropic ships no runner); role primers
+promptfoo-style colocated config, since Anthropic provides no built-in runner
+for these evaluations — the authoring doc states "There is not currently a
+built-in way to run these evaluations. Users can create their own evaluation
+system" (Skill authoring best practices, platform.claude.com/docs, confirmed
+2026-08-06)); role primers
 under the 200-line budget with the standing-facts-vs-procedure discriminator
 and verifiable-specificity rule (Claude Code memory docs); the context-vs-
 enforcement boundary maps onto definitions-vs-mechanical-checks. Deltas from
@@ -604,7 +798,26 @@ checks derive from — nothing mechanical can be derived from a file with no
 required structure (agents.md). Anthropic's context-engineering principles
 (smallest high-signal token set; right altitude; named sections; condensed
 subagent summaries) are adopted as citable principle statements from which
-these format choices derive.
+these format choices derive. The governance regime itself now has an external
+anchor: ISO 9001:2015 clause 7.5 (§1.6) maps one-to-one onto this layer — the
+definition corpus is documented information determined necessary; ratification
+is review-and-approval for suitability and adequacy; the compiled-context
+assembly guarantee is the available-at-point-of-use rule, and the
+stale-compiled-prompt hazard is the obsolete-document hazard; canonical
+templates from shopsystem-templates are documents of external origin under
+control; and the maintain/retain verb pair names the split 2.4 already draws
+(principles maintained under change control; ADRs and session records
+retained as evidence, protected from unintended alteration). Clause 7.5 is
+adapted as a derivable audit rubric for the governance layer — the
+requirements checklist and the maintain/retain distinction, not the
+certification machinery, with git supplying the mechanics ISO leaves to
+procedure; audit traceability (which definition version was in force when an
+artifact was produced) restates the version-pinning requirement of 2.6.
+PDCA's Act-as-standardization (§1.6) supplies the closure rule the promotion
+algebra needs: a finding from any check or reconciliation is closed only when
+the governed surface is revised and re-promoted, or explicitly sent back to
+plan — improvement terminates in a document-control action, the rule DMAIC's
+Control phase states independently.
 
 **Bespoke residue.** No container format needs inventing. The bespoke elements
 are: the shop-native content of the schemas (which outcomes, states, and fields
@@ -696,9 +909,10 @@ into vibes-with-keywords and should not proceed.
 
 ## 4. Open questions for the authority
 
-1. Normative-language style: BCP 14 ALL-CAPS keywords or ISO shall/should —
-   one must be chosen and enforced; both are established, they cannot be mixed
-   (RFC 8174; ISO/IEC Directives Part 2).
+1. Normative-language style: ratify 2.4's recommended BCP 14 ALL-CAPS keyword
+   discipline, or override it with ISO shall/should — one must be chosen and
+   enforced; both are established, they cannot be mixed (RFC 8174; ISO/IEC
+   Directives Part 2).
 2. Decision-record house form: stay pure Nygard (current practice), or move to
    MADR v4.0.0 for its Confirmation section and machine-parseable front matter?
 3. Shop-native state vocabulary: which Essence-style alphas/states name the
@@ -712,9 +926,13 @@ into vibes-with-keywords and should not proceed.
    same compiled form? (Tool coupling vs bespoke-runner risk.)
 6. How much 330xx-style traceability ceremony to carry: explicit
    outcome→indicator→rubric tables per process, or by-convention linking only?
+   (The CTQ need→driver→check table, §1.6/2.1, is the candidate concrete
+   form if tables are chosen.)
 7. Calibration governance: who grades sampled judge verdicts, at what cadence,
    and where is the calibration record kept (per EvalGen the loop is
-   non-optional; its ownership is a judgment call)?
+   non-optional; its ownership is a judgment call)? PDSA (§1.6, 2.6) supplies
+   the phase form — prediction before deployment, Study against sampled
+   grading — leaving only ownership and cadence to decide.
 8. Scope of the principle set: target size (order of ten per GOV.UK/TOGAF
    guidance) and whether shop principles are one set or split
    canonical-vs-shop-local along the existing .claude/canonical vs .claude/shop
