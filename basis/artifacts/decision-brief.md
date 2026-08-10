@@ -1,3 +1,16 @@
+---
+type: artifact-kind-schema
+id: basis-schema-decision-brief
+title: decision-brief — artifact-schema format slice
+status: experiment
+created: 2026-08-10
+updated: 2026-08-10
+authors: [dstengle, "Claude (lead-pm)"]
+description: ISO 15289 two-level schema with DITA-style ancestry (request → decision-brief), a Definition-of-Done commitment with consequence, and a worked sample.
+generic-type: request
+ancestry: [request, decision-brief]
+---
+
 # Artifact kind: decision-brief
 
 **Format slice: artifact schema.** Two-level scheme per ISO/IEC/IEEE 15289:

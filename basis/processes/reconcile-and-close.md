@@ -1,3 +1,15 @@
+---
+type: process-definition
+id: basis-process-reconcile-and-close
+title: Reconcile and close — loop-free process example
+status: experiment
+created: 2026-08-10
+updated: 2026-08-10
+authors: [dstengle, "Claude (lead-pm)"]
+description: Convert a BC's completed dispatch into reconciled shop state; atomic consume+close; the finite per-message shape fabro runs.
+annotations-namespace: runtime
+---
+
 # Process: Reconcile and close
 
 **Format slice: the loop-free example** — proving the format on a small,

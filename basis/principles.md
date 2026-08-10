@@ -1,3 +1,14 @@
+---
+type: principle-set
+id: basis-principles
+title: Founding principles — format slice (three examples)
+status: experiment
+created: 2026-08-10
+updated: 2026-08-10
+authors: [dstengle, "Claude (lead-pm)"]
+description: Three example principles in TOGAF four-part form with BCP 14 keywords; composed fitness screen applied.
+---
+
 # Principles — format slice
 
 **Format:** TOGAF four-part (Name / Statement / Rationale / Implications),

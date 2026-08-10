@@ -3,6 +3,13 @@ name: cold-reviewer
 description: Fresh-context stakeholder-persona reviewer for presentations. Invoke one per review round, never reusing a prior round's agent — the value is the cold read. Reads the presentation alone; must not read the annex or any earlier draft.
 tools: Read
 maxTurns: 8
+type: role-definition
+id: basis-role-cold-reviewer
+title: Cold reviewer — role-definition format slice
+status: experiment
+created: 2026-08-10
+updated: 2026-08-10
+authors: [dstengle, "Claude (lead-pm)"]
 ---
 
 <!-- Format slice: role definition. Container = Claude Code subagent file

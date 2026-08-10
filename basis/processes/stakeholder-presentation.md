@@ -1,3 +1,17 @@
+---
+type: process-definition
+id: basis-process-stakeholder-presentation
+title: Stakeholder presentation — loop-bearing process example
+status: experiment
+created: 2026-08-10
+updated: 2026-08-10
+authors: [dstengle, "Claude (lead-pm)"]
+description: Turn source material into a decidable presentation, verified by an independent cold read; ISO 24774 header + ETVX cells + dual-exit loop.
+annotations-namespace: runtime
+produces: [decision-brief]
+carried-by: skills/stakeholder-presentation/SKILL.md
+---
+
 # Process: Stakeholder presentation
 
 **Format slice: the loop-bearing example.** Header per ISO/IEC/IEEE 24774

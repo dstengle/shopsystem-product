@@ -1,17 +1,23 @@
 ---
 name: stakeholder-presentation
 description: Reform any document or message aimed at the product authority into a decision-first presentation, then verify it with an independent cold read before delivery. Use before delivering any report, sitting material, or status update longer than ~300 words.
+type: skill
+id: basis-skill-stakeholder-presentation
+title: Stakeholder presentation skill — derived-projection format slice
+status: experiment
+created: 2026-08-10
+updated: 2026-08-10
+authors: [dstengle, "Claude (lead-pm)"]
+derived-from: basis-process-stakeholder-presentation
+conformance-checked: 2026-08-10
+activation: model-judged
+promotion: experiment-local
 ---
 
-<!-- Format slice: skill & context governance. This skill is a DERIVED
-     PROJECTION of basis/processes/stakeholder-presentation.md — the
-     definition is the source of truth; this file compiles its practice for
-     Claude Code. Conformance-checked 2026-08-10 (this projection includes
-     the A3 4-round failsafe cap the pre-experiment skill on main lacked —
-     drift found BY the conformance check, which is the point).
-     Governance metadata: activation: model-judged (description-triggered);
-     promotion: experiment-local (branch experiment/new-basis), promotes to
-     shared templates only through the gated release step. -->
+<!-- Derived projection: the process definition is the source of truth; this
+     file compiles its practice for Claude Code. The conformance check that
+     produced `conformance-checked` above caught real drift — the
+     pre-experiment skill on main lacks A3's 4-round failsafe cap. -->
 
 # Stakeholder presentation (derived from the process definition)
 

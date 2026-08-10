@@ -1,3 +1,14 @@
+---
+type: experiment-index
+id: basis-readme
+title: The new-basis experiment — slice map, linking model, review surface
+status: experiment
+created: 2026-08-10
+updated: 2026-08-10
+authors: [dstengle, "Claude (lead-pm)"]
+description: One experimental slice per foundational format, interlocked on the stakeholder-presentation domain; isolated on branch experiment/new-basis.
+---
+
 # The new-basis experiment
 
 **Branch `experiment/new-basis`, worktree-isolated. Nothing here touches
@@ -36,6 +47,18 @@ verified by the **fitness set** (slice 6) → all of it operates under the
 diagram promise. Projection metadata (`runtime.*` annotations) carries the
 fabro/Claude-Code translation layer per the source-of-truth requirement
 (recorded on bead lead-jozud.5).
+
+## Review rulings (accumulated as the review proceeds)
+
+- **R1 (2026-08-10, authority): all markdown MUST have front-matter.**
+  Applied to every file in `basis/`, using the shared field set the live
+  corpus already carries (type, id, title, status, created, updated,
+  authors, description) plus per-kind fields. Consequence found on
+  application: governance declarations that lived in HTML comments (the
+  fitness set's judged/non-executable markers, the skill's derived-from and
+  promotion state) moved into front-matter, where derived checks can
+  actually read them. Joins the base schema at ratification; propagates to
+  all markdown system-wide at rollout.
 
 ## Review asks (all default-free — this is the experiment)
 
