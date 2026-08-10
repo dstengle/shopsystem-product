@@ -1,5 +1,10 @@
 # Process-definition pilot — the stakeholder-presentation process
 
+**Superseded by the full basis experiment on branch `experiment/new-basis`
+(`basis/` — one slice per foundational format; this pilot's content became
+`basis/processes/stakeholder-presentation.md`). Kept here as the original
+single-slice draft; review happens on the branch.**
+
 **Experiment, 2026-08-10, for authority review.** This is the first real
 process written in the composed definition format, so the format can be
 judged on an exemplar before anything rolls out. It sits in `drafts/`
