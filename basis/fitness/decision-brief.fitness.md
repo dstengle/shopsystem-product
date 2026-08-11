@@ -1,25 +1,22 @@
 ---
 type: fitness-set
-id: basis-fitness-decision-brief
-title: decision-brief fitness set — judged Gherkin format slice
+id: decision-brief-fitness
 status: experiment
 created: 2026-08-10
-updated: 2026-08-10
-authors: [dstengle, "Claude (lead-pm)"]
-description: Judged qualitative fitness scenarios for the decision-brief kind, with a 1:1 compile mapping to judge-rubric assertions.
+updated: 2026-08-11
 target-kind: decision-brief
 judged: true
 executable: false
-judged-by: basis-role-cold-reviewer
-judge-pinning: model and prompt version recorded with each round verdict
+judged-by: cold-reviewer
 ---
 
 # Fitness set: decision-brief @judged
 
 Non-executable — no step definitions exist or will exist; the front-matter
 above is the schema-level marker. Segregated: this tree (`basis/fitness/`)
-is never `features/`. Each Then compiles 1:1 to a judge-rubric assertion —
-the mapping table below proves the compile.
+is never `features/`. The judge's model and prompt version are recorded
+with each round verdict. Each Then compiles 1:1 to a judge-rubric
+assertion — the mapping table below proves the compile.
 
 Scenario: decidable without the annex
   Given the decision-brief and its labeled annex

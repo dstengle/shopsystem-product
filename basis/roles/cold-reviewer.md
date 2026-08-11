@@ -4,12 +4,10 @@ description: Fresh-context stakeholder-persona reviewer for presentations. Invok
 tools: Read
 maxTurns: 8
 type: role-definition
-id: basis-role-cold-reviewer
-title: Cold reviewer — role-definition format slice
+id: cold-reviewer
 status: experiment
 created: 2026-08-10
-updated: 2026-08-10
-authors: [dstengle, "Claude (lead-pm)"]
+updated: 2026-08-11
 ---
 
 # Cold reviewer

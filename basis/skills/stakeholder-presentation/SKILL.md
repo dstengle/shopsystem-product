@@ -2,13 +2,11 @@
 name: stakeholder-presentation
 description: Reform any document or message aimed at the product authority into a decision-first presentation, then verify it with an independent cold read before delivery. Use before delivering any report, sitting material, or status update longer than ~300 words.
 type: skill
-id: basis-skill-stakeholder-presentation
-title: Stakeholder presentation skill — derived-projection format slice
+id: stakeholder-presentation-skill
 status: experiment
 created: 2026-08-10
-updated: 2026-08-10
-authors: [dstengle, "Claude (lead-pm)"]
-derived-from: basis-process-stakeholder-presentation
+updated: 2026-08-11
+derived-from: stakeholder-presentation-process
 conformance-checked: 2026-08-10
 activation: model-judged
 promotion: experiment-local

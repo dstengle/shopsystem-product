@@ -1,12 +1,9 @@
 ---
 type: quality-guideline
-id: basis-guideline-stakeholder-communication
-title: Stakeholder communication — quality-guideline format slice
+id: stakeholder-communication-guideline
 status: experiment
 created: 2026-08-10
-updated: 2026-08-10
-authors: [dstengle, "Claude (lead-pm)"]
-description: Style-guide anatomy; five example rules, each with before/after pair, test/criterion/decision, and a named derived check.
+updated: 2026-08-11
 ---
 
 # Guideline: stakeholder communication
