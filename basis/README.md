@@ -60,6 +60,30 @@ fabro/Claude-Code translation layer per the source-of-truth requirement
   actually read them. Joins the base schema at ratification; propagates to
   all markdown system-wide at rollout.
 
+- **R2 (2026-08-11, authority observation): no HTML comments in markdown.**
+  Comments are invisible when rendered but still load verbatim into any
+  agent context that reads the file — an ungoverned channel one audience
+  can't see and the other obeys — and nothing mechanical can validate them.
+  Rule: machine-relevant statements live in front-matter; human-facing
+  commentary lives in the index or annex; document bodies contain only
+  rendered-visible text. Applied: the two remaining comments (role file,
+  skill) moved to Slice notes below. Rollout consequence: the live corpus's
+  generated-file banners (`<!-- GENERATED ... DO NOT EDIT -->`) become
+  front-matter fields (`generated: true`, `read-only: true`) — which the
+  generated write-* schema surface already half-carries.
+
+## Slice notes (moved from in-file comments per R2)
+
+- **Role definitions (slice 3):** container = the Claude Code subagent file,
+  frontmatter as capability contract; body discipline = Scrum-style
+  accountability bullets + a Holacracy-style exclusive domain + RUP-style
+  competencies. No lifecycle or sequencing text lives in a role — ordering
+  belongs to the process definition (SPEM content/process split).
+- **Skills (slice 7):** the skill is a derived projection; the process
+  definition is the source of truth. The conformance check recorded in its
+  front-matter caught real drift on day one: the pre-experiment skill on
+  `main` lacks A3's 4-round failsafe cap.
+
 ## Review asks (all default-free — this is the experiment)
 
 Per slice: does the format hold on a real example — anything missing,

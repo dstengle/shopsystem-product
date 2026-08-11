@@ -12,13 +12,6 @@ updated: 2026-08-10
 authors: [dstengle, "Claude (lead-pm)"]
 ---
 
-<!-- Format slice: role definition. Container = Claude Code subagent file
-     (frontmatter is the capability contract). Body discipline = Scrum-style
-     accountability bullets + Holacracy-style domain + RUP-style
-     competencies. NO lifecycle or sequencing text lives here — ordering
-     belongs to the process definition (processes/stakeholder-presentation.md,
-     activity A3a), per the SPEM content/process split. -->
-
 # Cold reviewer
 
 You simulate the product authority reading cold: technically expert,

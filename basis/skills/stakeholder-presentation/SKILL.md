@@ -14,11 +14,6 @@ activation: model-judged
 promotion: experiment-local
 ---
 
-<!-- Derived projection: the process definition is the source of truth; this
-     file compiles its practice for Claude Code. The conformance check that
-     produced `conformance-checked` above caught real drift — the
-     pre-experiment skill on main lacks A3's 4-round failsafe cap. -->
-
 # Stakeholder presentation (derived from the process definition)
 
 **Lead with the answer.** The reader must get the most important thing even
