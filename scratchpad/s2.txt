@@ -1,0 +1,6 @@
+  Scenario: the tmux-default autonomous engage processes only DISPATCHED inbox work and synthesizes no unrequested follow-on work
+    Given the container "bc-shopsystem-messaging" is launched on the DEFAULT "--orchestrator tmux" engage
+    And the BC inbox lists exactly the dispatched work_ids present at engage and no others
+    When the tmux-default engage drains and processes its pending inbox work autonomously to work_done
+    Then every "work_done" the engage emits corresponds to a work_id that was dispatched into the inbox, so the autonomy is bounded to dispatched work
+    And the engage emits NO "work_done" for any work_id that was not dispatched into the inbox, synthesizing no unrequested follow-on work beyond what was dispatched

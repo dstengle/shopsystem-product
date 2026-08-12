@@ -1,0 +1,6 @@
+  Scenario: autonomous drain-and-process is the tmux DEFAULT while the operator-driven interactive session is a distinct, explicitly-selected non-default mode
+    Given the shopsystem-bc-launcher BC is installed
+    When the container "bc-shopsystem-messaging" is launched on the DEFAULT "--orchestrator tmux" engage with no explicit interactive-startup override supplied
+    Then the autonomous drain-and-process behavior is the DEFAULT for the tmux engage, beginning to process dispatched inbox work with no operator "go" required
+    And the await-direction / operator-driven interactive behavior is NOT the tmux default and is reached ONLY by an explicit interactive-startup override (for example an explicit startup-prompt that selects an operator-driven session)
+    And when that explicit interactive override IS supplied the engage runs the operator-driven interactive session instead of autonomously processing the inbox, confirming the two modes are distinct and separately selected

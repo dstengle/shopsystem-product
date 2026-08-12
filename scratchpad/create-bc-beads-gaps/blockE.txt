@@ -1,0 +1,8 @@
+  Scenario: after create-bc standup the new BC's session-start work-tracker health gate reports healthy on the first pass and the BC begins its role loop
+    Given a BC stood up end-to-end via "create-bc" with its beads tracker repo created, its functional bd dolt remote resolved to the derived "<owner>/<bc>-beads", and a committed issue_prefix
+    When the new BC's session-start work-tracker health gate runs its probe spine of "bd create" with the configured prefix, then "bd ready", then a test "bd dolt push"
+    Then "bd create" exits zero and yields an id carrying the configured issue_prefix
+    And "bd ready" exits zero
+    And the test "bd dolt push" to the configured Dolt remote exits zero
+    And the health gate reports the tracker healthy on the first pass, taking neither the unprovisioned-heal branch nor the unhealable-block branch
+    And the BC proceeds past the gate to begin its role loop and reach online

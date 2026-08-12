@@ -1,0 +1,7 @@
+  Scenario: the BC scaffold runs bd init with a prefix and commits a registry naming that issue_prefix so a newly stood-up BC's tracker is not unhealable
+    Given a new BC whose shop-name slug is "<bc>" is scaffolded and provisioned via "shop-templates" bootstrap with shop type "bc"
+    When the scaffold initializes the beads tracker and commits the ".beads" registry
+    Then the scaffold "bd init" invocation passes a "--prefix <prefix>" argument that sets a definite issue_prefix
+    And the committed ".beads" registry names that definite issue_prefix rather than carrying no issue_prefix
+    And "bd create" run in the stood-up BC's workspace exits zero and yields an id carrying that prefix instead of failing "issue_prefix config is missing"
+    And the session-start work-tracker health gate can adopt the committed issue_prefix so it does not classify the tracker "unhealable"
