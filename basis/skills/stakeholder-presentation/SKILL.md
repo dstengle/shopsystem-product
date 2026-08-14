@@ -5,14 +5,14 @@ type: skill
 id: stakeholder-presentation-skill
 status: experiment
 created: 2026-08-10
-updated: 2026-08-11
+updated: 2026-08-14
 derived-from: stakeholder-presentation-process
 conformance-checked: 2026-08-10
 activation: model-judged
 promotion: experiment-local
 ---
 
-# Stakeholder presentation (derived from the process definition)
+# Stakeholder presentation
 
 **Lead with the answer.** The reader must get the most important thing even
 if they stop after the first paragraph, and must be able to make every

@@ -3,17 +3,10 @@ type: quality-guideline
 id: stakeholder-communication-guideline
 status: experiment
 created: 2026-08-10
-updated: 2026-08-11
+updated: 2026-08-14
 ---
 
 # Guideline: stakeholder communication
-
-**Format slice: quality guideline.** Anatomy per the Google/Microsoft
-style-guide convergence: voice principle → condensed highlights (the
-compiled-into-context layer) → rules with before/after pairs → precedence.
-Every rule carries Deming's three elements — test procedure, criterion,
-yes/no decision — and names its derived check (cite-or-delete). Example set:
-five rules; a full guideline grows by the same shape.
 
 **Voice principle.** Write for a reader with five minutes and full authority:
 answer first, evidence inline, nothing that requires another document.
