@@ -3,27 +3,19 @@ type: artifact-kind-schema
 id: decision-brief-schema
 status: experiment
 created: 2026-08-10
-updated: 2026-08-11
+updated: 2026-08-14
 ancestry: [request, decision-brief]
 ---
 
 # Artifact kind: decision-brief
 
-**Format slice: artifact schema.** Two-level scheme per ISO/IEC/IEEE 15289:
-a generic document type carrying generic requirements, a named kind carrying
-specific required content. Ancestry is declared DITA-style so a validator
-knowing only the generic type can still check this kind. One
-Definition-of-Done-style commitment with a stated consequence (Scrum
-artifact-commitment pairing). A worked sample is part of the schema
-(prompt-asset practice).
-
 ## Identity and ancestry
 
 - **Kind:** `decision-brief`
-- **Generic type (15289):** request — it requests decisions.
+- **Generic type:** request — it requests decisions.
   **Ancestry:** `request → decision-brief` (generic fallback: any validator
   that knows `request` may check this kind at that level).
-- **User-need quadrant (Diátaxis discipline):** action + work — the reader
+- **User-need quadrant:** action + work — the reader
   is deciding, now. One quadrant per document; a brief that drifts into
   explanation fails its kind.
 - **Produced by:** [`../processes/stakeholder-presentation.md`](../processes/stakeholder-presentation.md).
