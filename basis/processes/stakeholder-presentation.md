@@ -3,13 +3,19 @@ type: process-definition
 id: stakeholder-presentation-process
 status: experiment
 created: 2026-08-10
-updated: 2026-08-14
+updated: 2026-08-11
 produces: [decision-brief]
 carried-by: stakeholder-presentation-skill
 annotation-namespace: runtime
 ---
 
 # Process: Stakeholder presentation
+
+**Format slice: the loop-bearing example.** Header per ISO/IEC/IEEE 24774
+(name, purpose, observable outcomes); activities as ETVX cells (entry /
+tasks / validation / exit); loop with dual exit (Essence-style reached-state
+success + round-cap failsafe). `runtime.*` annotations are projection
+metadata only — translators consume them, definition semantics ignore them.
 
 **Purpose:** Turn source material into a presentation the product authority
 can decide from in one short sitting, verified by an independent cold read
