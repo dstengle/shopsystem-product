@@ -3,7 +3,7 @@ type: fitness-set
 id: decision-brief-fitness
 status: experiment
 created: 2026-08-10
-updated: 2026-08-14
+updated: 2026-08-11
 target-kind: decision-brief
 judged: true
 executable: false
@@ -12,10 +12,11 @@ judged-by: cold-reviewer
 
 # Fitness set: decision-brief @judged
 
-These scenarios are evaluated by the `cold-reviewer` role, never executed —
-no step definitions exist or will exist. The judge's model and prompt
-version are recorded with each round verdict. The mapping table at the end
-compiles each Then into the judge-rubric assertion the reviewer scores.
+Non-executable — no step definitions exist or will exist; the front-matter
+above is the schema-level marker. Segregated: this tree (`basis/fitness/`)
+is never `features/`. The judge's model and prompt version are recorded
+with each round verdict. Each Then compiles 1:1 to a judge-rubric
+assertion — the mapping table below proves the compile.
 
 Scenario: decidable without the annex
   Given the decision-brief and its labeled annex

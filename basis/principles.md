@@ -3,10 +3,16 @@ type: principle-set
 id: principles
 status: experiment
 created: 2026-08-10
-updated: 2026-08-14
+updated: 2026-08-11
 ---
 
-# Founding principles
+# Principles — format slice
+
+**Format:** TOGAF four-part (Name / Statement / Rationale / Implications),
+imperative titles with stable handles, BCP 14 keywords (MUST/SHOULD/MAY,
+capitals normative). **Example set:** three principles from the re-founding
+dialogue — enough to prove the format; the full set (~10) is drafted only
+after ratification. The composed fitness screen is applied at the end.
 
 The key words MUST, SHOULD, and MAY are to be interpreted as described in
 BCP 14 (RFC 2119, RFC 8174) when, and only when, they appear in capitals.
@@ -67,7 +73,7 @@ excuse. Loops without declared exits do not pass review.
 
 ---
 
-## Fitness screen (TOGAF; Spool; Rumelt; Lencioni)
+## Fitness screen applied (the composed checklist — TOGAF, Spool, Rumelt, Lencioni)
 
 | Screen | construction-precedes-inspection | governed-context | no-orphan-activities |
 |---|---|---|---|
