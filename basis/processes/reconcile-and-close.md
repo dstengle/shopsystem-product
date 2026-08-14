@@ -3,16 +3,11 @@ type: process-definition
 id: reconcile-and-close-process
 status: experiment
 created: 2026-08-10
-updated: 2026-08-11
+updated: 2026-08-14
 annotation-namespace: runtime
 ---
 
 # Process: Reconcile and close
-
-**Format slice: the loop-free example** — proving the format on a small,
-mechanical, already-real shop process (the existing `reconcile-and-close`
-skill and wrapper are its current carrier). Same composed format as the
-loop-bearing example; no loop, so no exit machinery beyond activity exits.
 
 **Purpose:** Convert a BC's completed dispatch into reconciled shop state:
 response consumed, work item closed with a traceable reason, contract

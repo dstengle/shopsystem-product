@@ -3,7 +3,7 @@ type: experiment-index
 id: basis
 status: experiment
 created: 2026-08-10
-updated: 2026-08-11
+updated: 2026-08-14
 ---
 
 # The new-basis experiment — a walkthrough
@@ -14,7 +14,10 @@ format from the decision brief's Ask 0. The slices are not seven samples:
 they all come from **one real domain** — making a presentation the product
 authority can decide from — so you can read them as a story, in the order
 the files come into play. That story is below; each stop says what the file
-is, why it exists, and when it gets used.
+is, why it exists, when it gets used — and which established forms it is
+built from, because per ruling R4 the documents themselves no longer carry
+that provenance: they read exactly as they would in the final system, and
+this index is where the show-and-tell lives.
 
 ## The story: one run, seven formats
 
@@ -31,7 +34,10 @@ and at every review where someone asks "does this rule earn its place?"
 [`processes/stakeholder-presentation.md`](processes/stakeholder-presentation.md).**
 The source of truth for the whole run: a purpose, four observable outcomes
 (O1–O4), and four activities (A1 Frame → A2 Compose → A3 cold-read loop →
-A4 Deliver), each written as an entry / tasks / validation / exit cell. The
+A4 Deliver), each written as an entry / tasks / validation / exit cell. Its
+format is the amalgam at work — ISO 24774's name/purpose/outcomes header,
+IBM ETVX's activity cells, Essence-style state exits, each part intact from
+its named source. The
 A3 loop shows the dual-exit rule you asked for: a reached-state success
 exit *and* a 4-round failsafe cap. The `runtime.*` annotation lines are the
 translation layer — metadata that fabro or Claude Code projections consume
@@ -63,14 +69,16 @@ What the produced document must be: its ancestry (`request →
 decision-brief`, so a validator that only knows the generic type can still
 check it), required front-matter and sections, and a Definition-of-Done
 commitment with a stated consequence — a brief that fails it returns to the
-author and is not deliverable. *Comes into play:* at A2 while the author
+author and is not deliverable. (Format: ISO 15289's generic-type scheme,
+DITA-style ancestry declaration, Scrum's artifact-commitment pairing.) *Comes into play:* at A2 while the author
 writes, and at review as the source of the derived checklist.
 
 **"Well-written" is defined, not vibed —
 [`guidelines/stakeholder-communication.md`](guidelines/stakeholder-communication.md).**
-Five rules in style-guide anatomy, each with a before/after pair and
-Deming's three elements: a test, a criterion, a yes/no decision — plus the
-derived check each rule feeds. *Comes into play:* while writing (its
+Five rules in the Google/Microsoft style-guide anatomy (voice principle →
+compiled highlights → rules with before/after pairs → precedence), each rule
+carrying Deming's three elements: a test, a criterion, a yes/no decision —
+plus the derived check each rule feeds. *Comes into play:* while writing (its
 Highlights block is the layer compiled into the author's context) and
 whenever a mechanical style check needs a rule to cite.
 
@@ -116,6 +124,15 @@ just took you.
   data fields; no titles or descriptions duplicating the body, no
   sentence-valued fields. Runnable surfaces keep their functional contract
   keys (`name`, `tools`, `maxTurns`) first.
+- **R4 (2026-08-14): exemplar documents carry no experiment commentary.**
+  The "format slice" openers explaining which format a file demonstrates
+  were scaffolding inside would-be-real documents. An exemplar reads
+  exactly as it would in the final system; format provenance belongs to the
+  format's specification (carried by this index until the seed layer's
+  format spec exists), and show-and-tell lives only here. Applied: openers
+  stripped from the principles, both processes, the artifact schema, the
+  guideline, and the fitness set's body; citations remain only where they
+  are real content (an ask's evidence, a rule's cited source).
 
 ## Review asks (all default-free — this is the experiment)
 
