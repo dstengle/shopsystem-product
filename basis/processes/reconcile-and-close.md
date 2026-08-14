@@ -10,8 +10,8 @@ annotation-namespace: runtime
 # Process: Reconcile and close
 
 **Purpose:** Convert a BC's completed dispatch into reconciled shop state:
-response consumed, work item closed with a traceable reason, contract
-surface confirmed, follow-ups filed.
+the response consumed, the work item closed with a traceable reason, the
+scenario contract confirmed, and follow-ups filed.
 
 **Outcomes:**
 - O1. The BC's `work_done` response is consumed (no longer pending).
@@ -19,7 +19,7 @@ surface confirmed, follow-ups filed.
   demonstration evidence.
 - O3. The scenario register and pinned hashes are confirmed consistent with
   what was dispatched.
-- O4. Every defect or follow-up surfaced by the response exists as a filed
+- O4. Every defect or follow-up the response reports exists as a filed
   work item.
 
 **Roles:** router (Accountable — executes); lead-architect (Consulted —
@@ -55,9 +55,9 @@ carrier would be conformance-checked against).
 
 ### R3 — File the tail
 - **Entry:** R2 exit.
-- **Tasks:** file follow-up items for every surfaced defect, observation,
-  or deferred scenario; link them to the closed item.
-- **Validation:** count of surfaced items == count of filed items.
+- **Tasks:** file follow-up items for every defect, observation, or
+  deferred scenario the response reports; link them to the closed item.
+- **Validation:** every reported item has a filed work item (counts match).
 - **Exit:** O4 holds; instance closed.
 
 ## Derived checks
@@ -67,4 +67,4 @@ carrier would be conformance-checked against).
 | O1+O2 | no consumed-but-open or closed-but-pending state after run | mechanical |
 | O2 | close reason cites demonstration evidence | mechanical presence + judged |
 | O3 | register/hash comparison recorded | mechanical |
-| O4 | surfaced-vs-filed count match | mechanical |
+| O4 | reported-vs-filed count match | mechanical |

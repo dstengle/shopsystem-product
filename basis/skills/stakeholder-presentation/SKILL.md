@@ -34,7 +34,9 @@ evidence → default. State which asks gate and which default on silence.
 Block-ratifications state what they bind. Gloss every proper noun at first
 mention. No commitments outside asks; no process citations or
 revision-delta talk; numbers over adjectives; "e.g." on every illustrative
-example. Style detail: `basis/guidelines/stakeholder-communication.md`.
+example. Style detail: `basis/guidelines/stakeholder-communication.md`,
+which layers on `basis/guidelines/base-writing-style.md` — the base always
+applies.
 
 ## A3 — Cold-read loop (activity A3)
 

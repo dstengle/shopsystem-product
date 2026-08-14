@@ -34,10 +34,10 @@ and at every review where someone asks "does this rule earn its place?"
 [`processes/stakeholder-presentation.md`](processes/stakeholder-presentation.md).**
 The source of truth for the whole run: a purpose, four observable outcomes
 (O1–O4), and four activities (A1 Frame → A2 Compose → A3 cold-read loop →
-A4 Deliver), each written as an entry / tasks / validation / exit cell. Its
-format is the amalgam at work — ISO 24774's name/purpose/outcomes header,
-IBM ETVX's activity cells, Essence-style state exits, each part intact from
-its named source. The
+A4 Deliver), each written as an entry / tasks / validation / exit cell. The
+format composes named parts, each taken unchanged from its source: ISO
+24774's name/purpose/outcomes header, IBM ETVX's activity cells,
+Essence-style state exits. The
 A3 loop shows the dual-exit rule you asked for: a reached-state success
 exit *and* a 4-round failsafe cap. The `runtime.*` annotation lines are the
 translation layer — metadata that fabro or Claude Code projections consume
@@ -78,7 +78,12 @@ writes, and at review as the source of the derived checklist.
 Five rules in the Google/Microsoft style-guide anatomy (voice principle →
 compiled highlights → rules with before/after pairs → precedence), each rule
 carrying Deming's three elements: a test, a criterion, a yes/no decision —
-plus the derived check each rule feeds. *Comes into play:* while writing (its
+plus the derived check each rule feeds. It layers on the authority-authored
+[`guidelines/base-writing-style.md`](guidelines/base-writing-style.md) —
+the rules for *all* human-readable prose (conclusion first at every scale,
+one idea per sentence, active voice with named actors, no metaphors as
+technical terms, insider references explained or cut) — and adds only what
+is specific to decision documents. *Comes into play:* while writing (its
 Highlights block is the layer compiled into the author's context) and
 whenever a mechanical style check needs a rule to cite.
 
@@ -122,23 +127,33 @@ just took you.
 - **R3 (2026-08-11): front-matter is identity plus data — never prose.**
   Uniform base (`type`, `id`, `status`, `created`, `updated`) plus per-kind
   data fields; no titles or descriptions duplicating the body, no
-  sentence-valued fields. Runnable surfaces keep their functional contract
-  keys (`name`, `tools`, `maxTurns`) first.
+  sentence-valued fields. Runnable files (roles, skills) keep their
+  functional contract keys (`name`, `tools`, `maxTurns`) first.
 - **R4 (2026-08-14): exemplar documents carry no experiment commentary.**
   The "format slice" openers explaining which format a file demonstrates
-  were scaffolding inside would-be-real documents. An exemplar reads
+  were experiment commentary inside documents meant to read as real. An
+  exemplar reads
   exactly as it would in the final system; format provenance belongs to the
   format's specification (carried by this index until the seed layer's
   format spec exists), and show-and-tell lives only here. Applied: openers
   stripped from the principles, both processes, the artifact schema, the
   guideline, and the fitness set's body; citations remain only where they
   are real content (an ask's evidence, a rule's cited source).
+- **R5 (2026-08-14): the authority's base writing style governs all
+  human-readable prose.** Landed verbatim as
+  [`guidelines/base-writing-style.md`](guidelines/base-writing-style.md);
+  every document type is a format layer on top of it and never overrides
+  it. Applied across `basis/`: banned metaphor-terms removed ("scar
+  tissue", "load-bearing", "surface" as a noun for inputs), insider
+  references now explained in one plain sentence each, passive
+  constructions given named actors.
 
 ## Review asks (all default-free — this is the experiment)
 
 Per slice: does the format hold on a real example — anything missing,
 anything over-engineered? Across slices: does the linking model read as one
-system? Standing from the pilot: amalgam coherence; annotation shape for
+system? Standing from the pilot: does the composed format read as one
+format; annotation shape for
 the fabro source-of-truth requirement; the dual-exit loop rule; the
 derived-carrier rule for process-shaped skills.
 

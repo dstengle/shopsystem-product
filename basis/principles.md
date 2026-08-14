@@ -19,11 +19,11 @@ BCP 14 (RFC 2119, RFC 8174) when, and only when, they appear in capitals.
 good construction before it runs; checks and review rubrics MUST be derived
 from that definition and MUST NOT be invented independently of it.
 
-**Rationale.** Checks without a stated definition are scar tissue: each gate
-encodes a fragment of an unstated standard, the gaps between fragments are
-where gaming lives, and rejection-sampling bad output costs multiples of
-generating good output. (Deming: cease dependence on inspection; build
-quality in.)
+**Rationale.** A check written without a stated definition encodes a
+fragment of a standard no one wrote down. Agents find the gaps between
+fragments and pass bad work through them. Rejecting bad output after
+generation also costs several times more than defining good output before
+generation. (Deming: cease dependence on inspection; build quality in.)
 
 **Implications.** New activities enter the system with their definition, or
 not at all. A check that cannot cite the definition clause it projects is
@@ -37,16 +37,17 @@ definition-or-check fix, not only an artifact fix.
 prompts, skills, memories, primers — MUST trace to a ratified definition or
 a governed record; unsanctioned context channels MUST NOT accumulate.
 
-**Rationale.** The generating context defines the distribution work is
-sampled from; an ungoverned surface is an ungoverned generator. The 67
-unsanctioned bd memories are the observed failure: a feedback loop with no
-consumer re-routed into the nearest ungoverned channel and became
-load-bearing without ever being reviewed.
+**Rationale.** What an agent reads determines what it produces, so an
+ungoverned context input is an ungoverned generator. This shop observed the
+failure directly: agents accumulated 67 notes in a memory tool no process
+governed, and session handoffs came to depend on those notes even though no
+one had ever reviewed them.
 
-**Implications.** Context surfaces are versioned, promoted through a gated
-step, and auditable (which definition version was in force when an artifact
-was produced). Memory channels get a defined process with a consumer, or
-they are closed. Skills ship with the tools they wrap, in lockstep.
+**Implications.** Maintainers version every context input, promote changes
+through a gated step, and can audit which definition version was in force
+when an artifact was produced. Memory channels get a defined process with a
+consumer, or they are closed. Tool owners ship each tool's skill with the
+tool, in lockstep.
 
 ## Every activity belongs to a process (`no-orphan-activities`)
 
@@ -55,15 +56,17 @@ process with stated expected outcomes, expected outputs, and possible
 resulting actions; every long-running loop MUST declare its exit — a
 reached-state success exit, a round or budget cap, or both.
 
-**Rationale.** An activity outside a process has no consumer for its output,
-so the output accumulates or vents uselessly (mechanism_observation died
-this way; the memory pile grew this way). Definition-level process contracts
-are followable by any runtime — this is a definition requirement, not a
-workflow-engine prescription.
+**Rationale.** An activity outside a process has no consumer for its
+output, so the output piles up unread or is thrown away. This shop saw
+both: agents stopped sending a feedback message type (mechanism_observation)
+because nothing consumed it, and instead accumulated unreviewed notes in an
+ungoverned memory tool. Any runtime can follow a process defined at this
+level — the requirement is a definition, not a workflow engine.
 
-**Implications.** Orphan activities are findings, not conveniences. Process
-definitions are cheap to write (header + activity cells) so cost is no
-excuse. Loops without declared exits do not pass review.
+**Implications.** Reviewers treat an activity with no process as a defect,
+not a convenience. Process definitions are cheap to write (a header plus
+activity cells), so cost is no excuse. A loop without a declared exit does
+not pass review.
 
 ---
 

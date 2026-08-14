@@ -16,8 +16,10 @@ answer · gloss every proper noun at first mention · every ask carries
 recommendation + evidence + default · say what gates and what defaults ·
 nothing committed outside an ask.
 
-**Precedence:** this guideline < the artifact kind's schema < a ratified
-principle. (Nearest-specific wins downward; principles win upward.)
+**Layers:** this guideline adds decision-document rules on top of the
+[base writing style](base-writing-style.md); the base always applies and is
+never overridden. When rules conflict, a ratified principle beats the
+artifact kind's schema, which beats this guideline.
 
 ---
 
@@ -55,8 +57,8 @@ an ask.
 *Test:* list every commitment of time, tooling, or process. *Criterion:*
 each sits in an ask or a named drafting default. *Decision:* yes/no per
 commitment.
-*Derived check:* judged — cold-reviewer smuggle hunt (role's accountability
-list).
+*Derived check:* judged — the cold reviewer searches for commitments stated
+outside asks (part of the role's accountability list).
 
 **5. Numbers over adjectives.**
 Before: "the report is long." After: "the report is 939 lines."
