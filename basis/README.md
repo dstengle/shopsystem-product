@@ -3,7 +3,7 @@ type: experiment-index
 id: basis
 status: experiment
 created: 2026-08-10
-updated: 2026-08-14
+updated: 2026-08-18
 ---
 
 # The new-basis experiment — a walkthrough
@@ -32,27 +32,43 @@ and at every review where someone asks "does this rule earn its place?"
 
 **The work is defined once, in one place —
 [`processes/stakeholder-presentation.md`](processes/stakeholder-presentation.md).**
-The source of truth for the whole run: a purpose, four observable outcomes
-(O1–O4), and four activities (A1 Frame → A2 Compose → A3 cold-read loop →
-A4 Deliver), each written as an entry / tasks / validation / exit cell. The
-format composes named parts, each taken unchanged from its source: ISO
-24774's name/purpose/outcomes header, IBM ETVX's activity cells,
-Essence-style state exits. The
-A3 loop shows the dual-exit rule you asked for: a reached-state success
-exit *and* a 4-round failsafe cap. The `runtime.*` annotation lines are the
-translation layer — metadata that fabro or Claude Code projections consume
-and the definition itself ignores. *Comes into play:* whenever anyone asks
-"what is this activity supposed to do, and when is it done?" — and as the
-compile source for the two projections below.
+The source of truth for the whole run, and per ruling R6 it compiles: after
+the ISO 24774 header (purpose, outcomes, roles), the definition is a typed
+data section and a steps section, both plain YAML. Every step names its
+inputs and outputs against the declared types; branch conditions are CEL
+(Common Expression Language, the expression standard Kubernetes uses)
+expressions a runtime can execute directly; the only prose inside the
+steps is the prompt each agent step feeds its agent. The step shape
+composes GitHub Actions' step/typed-io form with CNCF Serverless
+Workflow's data-condition transitions — deliberately between loose prose
+and full BPMN. The dual-exit loop is now two labeled branch rows on
+`route-verdict`: a success condition and a `round >= 4` failsafe. The
+first compiled output sits in the document itself: the "Flow (compiled)"
+Mermaid diagram, generated from the steps by
+[`tools/compile_process.py`](tools/compile_process.py). Per-step
+`annotations` carry the fabro/Claude-Code metadata the definition itself
+ignores. *Comes into play:* whenever anyone asks "what is this step
+supposed to do, and when is it done?" — and as the compile source for the
+projections below.
+
+**A small compiler proves the format carries enough data —
+[`tools/compile_process.py`](tools/compile_process.py).**
+Experiment apparatus (the production compiler is a BC deliverable): it
+parses a definition's front-matter, data, and steps, regenerates the
+in-document flow diagram, and generates the skill below outright. If the
+compile fails or the outputs are wrong, the format is missing data — that
+is the test. *Comes into play:* on every change to a process definition.
 
 **An agent actually runs it through the compiled skill —
 [`skills/stakeholder-presentation/SKILL.md`](skills/stakeholder-presentation/SKILL.md).**
-This is what Claude Code loads at runtime. It is a *derived projection* of
-the process definition — its front-matter records `derived-from` and
-`conformance-checked`, and that conformance check earned its keep on day
-one: the pre-experiment skill on `main` lacks the round cap the definition
-requires. *Comes into play:* at runtime, every time the process runs; and
-at release time, when conformance against its definition is re-checked.
+This is what Claude Code loads at runtime, and nobody wrote it: the
+compiler generated it, front-matter (`generated: true`, `source-digest`)
+and body alike. The body is the diagram plus one section per step —
+run-by, typed reads/writes, checks, routing, and the prompt copied
+verbatim; runtime steps appear as their raw `set`/`run`/`branches`
+records. Conformance checking is now mechanical: re-run the compiler and
+diff. *Comes into play:* at runtime, every time the process runs; and at
+release time, when the digest is re-checked against the definition.
 
 **A second seat verifies the output —
 [`roles/cold-reviewer.md`](roles/cold-reviewer.md).**
@@ -60,8 +76,10 @@ The reviewer role in the role-definition format: front-matter is the
 capability contract (read-only tools, a turn cap), the body is 4–6
 accountability bullets plus one exclusive domain (the round's verdict).
 Deliberately absent: any sequencing text — *when* the reviewer acts belongs
-to the process definition, not the role. *Comes into play:* once per A3
-review round, always as a fresh instance — the value is the cold read.
+to the process definition, not the role. *Comes into play:* once per
+`cold-read` round, always as a fresh instance — the value is the cold
+read, and the step's typed inputs enforce it: the reviewer receives the
+brief and nothing else.
 
 **The output itself has a schema —
 [`artifacts/decision-brief.md`](artifacts/decision-brief.md).**
@@ -70,8 +88,9 @@ decision-brief`, so a validator that only knows the generic type can still
 check it), required front-matter and sections, and a Definition-of-Done
 commitment with a stated consequence — a brief that fails it returns to the
 author and is not deliverable. (Format: ISO 15289's generic-type scheme,
-DITA-style ancestry declaration, Scrum's artifact-commitment pairing.) *Comes into play:* at A2 while the author
-writes, and at review as the source of the derived checklist.
+DITA-style ancestry declaration, Scrum's artifact-commitment pairing.)
+*Comes into play:* at `compose` while the author writes, and at review as
+the source of the derived checklist.
 
 **"Well-written" is defined, not vibed —
 [`guidelines/stakeholder-communication.md`](guidelines/stakeholder-communication.md).**
@@ -94,15 +113,17 @@ reviewer scores. The front-matter is the schema-level guardrail
 (`judged: true`, `executable: false`), the tree is segregated from
 `features/`, and the closing table compiles each `Then` one-for-one into a
 judge-rubric assertion — proving the tests rest on established evaluation
-practice, not a bespoke engine. *Comes into play:* at every A3a round, and
-any time a delivered brief is re-verified later.
+practice, not a bespoke engine. *Comes into play:* at every `cold-read`
+round, and any time a delivered brief is re-verified later.
 
 **And a second process proves the format generalizes —
 [`processes/reconcile-and-close.md`](processes/reconcile-and-close.md).**
-Loop-free, mechanical, three activities with an atomicity rule
-(consume+close as one act) — the finite per-message shape fabro runs. Same
-header, same cells, no loop machinery needed. *Comes into play:* every time
-a BC's `work_done` returns; here, it is the control case showing the format
+Loop-free, mechanical — the finite per-message shape fabro runs. Same
+header, same data and steps sections, no loop machinery needed; its
+runtime steps show the other half of the format: `run` command templates
+with `${...}` interpolation from typed inputs, and an `atomic: true` flag
+binding consume+close into one act. *Comes into play:* every time a BC's
+`work_done` returns; here, it is the control case showing the format
 isn't shaped around one example.
 
 ## How the files point at each other
@@ -147,6 +168,17 @@ just took you.
   tissue", "load-bearing", "surface" as a noun for inputs), insider
   references now explained in one plain sentence each, passive
   constructions given named actors.
+- **R6 (2026-08-18): process definitions compile.** The ETVX prose cells
+  were too loose to construct a workflow from; full BPMN would cost too
+  much processing. The middle: every step is a YAML record with named,
+  typed inputs and outputs; branch conditions are CEL expressions a
+  runtime can translate to code mechanically; the only prose in a step is
+  the prompt an agent step feeds its agent; runtime steps carry `set`
+  assignments or `run` command templates instead of prose. The first
+  compiled output is the flow diagram in the definition itself, and the
+  skill is now genuinely generated by `tools/compile_process.py` — not
+  hand-written to look derived. Applied to both processes; the old
+  hand-written skill is replaced by compiler output.
 
 ## Review asks (all default-free — this is the experiment)
 
@@ -155,7 +187,11 @@ anything over-engineered? Across slices: does the linking model read as one
 system? Standing from the pilot: does the composed format read as one
 format; annotation shape for
 the fabro source-of-truth requirement; the dual-exit loop rule; the
-derived-carrier rule for process-shaped skills.
+derived-carrier rule for process-shaped skills. New with R6: is CEL the
+right condition language; is the step record (GitHub-Actions-shaped io +
+Serverless-Workflow-shaped transitions) the right weight; should the
+header's purpose and outcomes stay prose or structure too; is the
+compiled SKILL.md the right runtime carrier shape for Claude Code.
 
 ## After review
 

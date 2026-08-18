@@ -3,8 +3,8 @@ type: process-definition
 id: reconcile-and-close-process
 status: experiment
 created: 2026-08-10
-updated: 2026-08-14
-annotation-namespace: runtime
+updated: 2026-08-18
+condition-language: cel
 ---
 
 # Process: Reconcile and close
@@ -14,57 +14,164 @@ the response consumed, the work item closed with a traceable reason, the
 scenario contract confirmed, and follow-ups filed.
 
 **Outcomes:**
-- O1. The BC's `work_done` response is consumed (no longer pending).
+- O1. The BC's `work_done` response is consumed (no longer pending) —
+  witnessed by the atomic `consume-close` step.
 - O2. The originating work item is closed with a reason that cites the
-  demonstration evidence.
-- O3. The scenario register and pinned hashes are confirmed consistent with
-  what was dispatched.
+  demonstration evidence — witnessed by the same step's `run` template,
+  which takes the reason from `verification.evidence`.
+- O3. The scenario register and pinned hashes are confirmed consistent
+  with what was dispatched — witnessed by the check on `verify`.
 - O4. Every defect or follow-up the response reports exists as a filed
-  work item.
+  work item — witnessed by the check on `file-tail`.
 
 **Roles:** router (Accountable — executes); lead-architect (Consulted —
-scenario-register discrepancies only).
-
-**Artifacts:** in — the `work_done` outbox row; the originating work item.
-out — closed work item; follow-up work items; reconciliation note.
+receives escalated register discrepancies).
 
 **Carried by:** the existing `reconcile-and-close` skill + executable
 wrapper (already an atomic consume+close — this definition is what that
-carrier would be conformance-checked against).
+carrier is conformance-checked against).
 
-## Activities
+## Flow (compiled)
 
-### R1 — Verify the demonstration
-- **Entry:** a `work_done` row is pending for a dispatched work_id.
-- **Tasks:** read the response; check the demonstration against the
-  dispatched scenarios; compare pinned hashes to the register.
-- **Validation:** every dispatched scenario is addressed (done, blocked, or
-  explicitly deferred) — silence on a scenario fails validation.
-- **Exit:** verdict formed: reconcile, or route a discrepancy.
-- **Annotations:** `runtime.fabro: {model: mid-tier (e.g.); this is the
-  finite per-message run shape fabro already executes}`
+Generated from the steps below by `tools/compile_process.py`; do not
+edit by hand.
 
-### R2 — Consume and close (atomic)
-- **Entry:** R1 verdict = reconcile.
-- **Tasks:** consume the outbox row and close the work item with a
-  reason citing the demonstration — one atomic act (a consumed-but-open or
-  closed-but-pending split state is the known failure mode this process
-  exists to prevent).
-- **Validation:** neither half succeeded without the other.
-- **Exit:** O1 and O2 hold.
+```mermaid
+flowchart TD
+  verify(["Verify the demonstration — agent: router"])
+  route{"Route on the verdict"}
+  consume_close["Consume and close — runtime"]
+  escalate["File the discrepancy — runtime"]
+  file_tail(["File the tail — agent: router"])
+  __end(("end"))
+  __start(("start")) --> verify
+  verify --> route
+  route -->|reconcile| consume_close
+  route -->|else| escalate
+  consume_close --> file_tail
+  escalate --> __end
+  file_tail --> __end
+```
 
-### R3 — File the tail
-- **Entry:** R2 exit.
-- **Tasks:** file follow-up items for every defect, observation, or
-  deferred scenario the response reports; link them to the closed item.
-- **Validation:** every reported item has a filed work item (counts match).
-- **Exit:** O4 holds; instance closed.
+
+## Data
+
+Types use JSON Schema names; `artifact` types reference a kind schema by
+id. Conditions are CEL expressions over these names.
+
+```yaml
+data:
+  response:
+    type: artifact
+    kind: work-done-response
+  work_item:
+    type: artifact
+    kind: work-item
+  register:
+    type: artifact
+    kind: scenario-register
+  verification:
+    type: object
+    fields:
+      verdict: {type: string, enum: [reconcile, discrepancy]}
+      evidence: {type: string}
+      scenario_status:
+        type: array
+        items:
+          type: object
+          fields:
+            scenario_id: {type: string}
+            status: {type: string, enum: [done, blocked, deferred]}
+      reported_items:
+        type: array
+        items:
+          type: object
+          fields:
+            kind: {type: string, enum: [defect, observation, deferred-scenario]}
+            summary: {type: string}
+  discrepancy_item: {type: string}
+  filed: {type: array, items: {type: string}}
+```
+
+## Steps
+
+```yaml
+start: verify
+steps:
+  - id: verify
+    name: Verify the demonstration
+    run-by: {role: router, execution: agent}
+    inputs: [response, work_item, register]
+    outputs: [verification]
+    checks:
+      - size(verification.scenario_status) == size(work_item.scenarios)
+    prompt: |
+      Read the response. Check the demonstration against every dispatched
+      scenario and record a status for each: done, blocked, or explicitly
+      deferred. Silence on a scenario is a discrepancy, not a pass.
+      Compare the pinned hashes in the response to the register. Verdict
+      "reconcile" only if every scenario has a status and the hashes
+      match; otherwise verdict "discrepancy", with the evidence stating
+      exactly what differs.
+    next: route
+    annotations:
+      fabro: {model: mid-tier}
+
+  - id: route
+    name: Route on the verdict
+    run-by: {execution: runtime}
+    inputs: [verification]
+    branches:
+      - label: "reconcile"
+        when: verification.verdict == "reconcile"
+        next: consume-close
+      - else: escalate
+
+  - id: consume-close
+    name: Consume and close
+    run-by: {execution: runtime}
+    atomic: true
+    inputs: [response, work_item, verification]
+    run: |
+      shop-msg consume outbox --bc ${response.bc} --work-id ${response.work_id}
+      bd close ${work_item.id} --reason "${verification.evidence}"
+    next: file-tail
+
+  - id: escalate
+    name: File the discrepancy
+    run-by: {execution: runtime}
+    inputs: [work_item, verification]
+    outputs: [discrepancy_item]
+    run: |
+      bd create --type task --assign lead-architect \
+        --title "Register discrepancy on ${work_item.id}" \
+        --body "${verification.evidence}" --link ${work_item.id}
+    next: end
+
+  - id: file-tail
+    name: File the tail
+    run-by: {role: router, execution: agent}
+    inputs: [verification, work_item]
+    outputs: [filed]
+    checks:
+      - size(filed) == size(verification.reported_items)
+    prompt: |
+      File a follow-up work item for every entry in the reported items —
+      each defect, observation, and deferred scenario — and link each new
+      item to the closed work item.
+    next: end
+```
+
+The `atomic: true` flag on `consume-close` binds its `run` lines into one
+all-or-nothing act: a consumed-but-open or closed-but-pending split state
+is the known failure this process exists to prevent, so a runtime that
+cannot guarantee the pair rolls back the half it completed.
 
 ## Derived checks
 
-| Outcome | Check | Kind |
-|---|---|---|
-| O1+O2 | no consumed-but-open or closed-but-pending state after run | mechanical |
-| O2 | close reason cites demonstration evidence | mechanical presence + judged |
-| O3 | register/hash comparison recorded | mechanical |
-| O4 | reported-vs-filed count match | mechanical |
+| Outcome | Check | Kind | Where |
+|---|---|---|---|
+| O1+O2 | no consumed-but-open or closed-but-pending state after run | mechanical | `consume-close.atomic` |
+| O2 | close reason cites demonstration evidence | mechanical presence + judged | `consume-close.run` |
+| O3 | every dispatched scenario has a recorded status | mechanical | `verify.checks` |
+| O4 | reported-vs-filed count match | mechanical | `file-tail.checks` |

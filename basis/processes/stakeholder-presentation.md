@@ -3,10 +3,17 @@ type: process-definition
 id: stakeholder-presentation-process
 status: experiment
 created: 2026-08-10
-updated: 2026-08-14
+updated: 2026-08-18
 produces: [decision-brief]
 carried-by: stakeholder-presentation-skill
-annotation-namespace: runtime
+condition-language: cel
+condition-functions:
+  words: "string -> int"
+annotations:
+  claude-code:
+    activation: model-judged
+    promotion: experiment-local
+    use-when: "before delivering any report, sitting material, or status update longer than ~300 words"
 ---
 
 # Process: Stakeholder presentation
@@ -16,78 +23,229 @@ can decide from in one short sitting, verified by an independent cold read
 before delivery.
 
 **Outcomes:**
-- O1. A presentation exists within budget: decision layer ≤ ~400 words,
-  decision + support ≤ ~1,500.
+- O1. A presentation exists within budget — witnessed by the checks on
+  `compose`.
 - O2. Every ask carries a recommendation, inline evidence, and a default,
-  and states whether it gates work or resolves on silence.
+  and states whether it gates work or resolves on silence — witnessed by
+  the check on `frame` and the
+  [fitness set](../fitness/decision-brief.fitness.md).
 - O3. An independent cold read has returned clean, or flags only
-  author-accepted tradeoffs.
-- O4. The original material survives intact as a labeled, linked annex.
+  author-accepted tradeoffs — witnessed by `route-verdict` and the
+  `round_log`.
+- O4. The original material survives intact as a labeled, linked annex —
+  witnessed by the `annex` output of `compose`.
 
 **Roles:** author — lead-pm (Accountable). cold reviewer —
 [`../roles/cold-reviewer.md`](../roles/cold-reviewer.md) (Verifier; never
 the author).
 
-**Artifacts:** in — source material with named reader and decisions. out —
-a [`decision-brief`](../artifacts/decision-brief.md) (+ annex, + round
-verdicts).
-
 **Carried by:**
 [`../skills/stakeholder-presentation/SKILL.md`](../skills/stakeholder-presentation/SKILL.md)
-— a derived projection of this definition, never the source of truth.
+— generated from this definition by
+[`../tools/compile_process.py`](../tools/compile_process.py), never edited
+by hand.
 
-## Activities
+## Flow (compiled)
 
-### A1 — Frame
-- **Entry:** source material exists; reader and decision(s) named.
-- **Tasks:** enumerate asks; scope to the decision horizon (defer what does
-  not gate the next unit of work); group, order by consequence; split the
-  material if the budget cannot hold it.
-- **Validation:** each ask names the decision it serves; ≤7 asks after
-  grouping.
-- **Exit:** ask list meeting validation exists.
-- **Annotations:** `runtime.claude-code: {carrier: SKILL.md §Decision-asks}`
-  · `runtime.fabro: {model: high-reasoning tier (e.g.), max_attempts: 2}`
+Generated from the steps below by `tools/compile_process.py`; do not
+edit by hand.
 
-### A2 — Compose
-- **Entry:** A1 exit.
-- **Tasks:** write decision + support layers fresh; gloss every proper noun
-  at first mention; attach every block to an ask or label it informational;
-  demote the original to a labeled annex.
-- **Validation:** budgets met (O1); no unglossed coinages; no commitments
-  outside asks.
-- **Exit:** complete draft + labeled annex.
-- **Annotations:** `runtime.claude-code: {carrier: SKILL.md §Structure,
-  §Style}` · `runtime.fabro: {model: high-reasoning tier (e.g.)}`
+```mermaid
+flowchart TD
+  frame(["Frame — agent: lead-pm"])
+  compose(["Compose — agent: lead-pm"])
+  cold_read(["Cold read — agent: cold-reviewer"])
+  log_round["Record the round — runtime"]
+  route_verdict{"Route on the verdict"}
+  revise(["Revise — agent: lead-pm"])
+  advance_round["Advance the round counter — runtime"]
+  deliver(["Deliver — agent: lead-pm"])
+  __end(("end"))
+  __start(("start")) --> frame
+  frame --> compose
+  compose --> cold_read
+  cold_read --> log_round
+  log_round --> route_verdict
+  route_verdict -->|success exit: clean or tradeoffs accepted| deliver
+  route_verdict -->|failsafe exit: round >= 4| deliver
+  route_verdict -->|else| revise
+  revise --> advance_round
+  advance_round --> cold_read
+  deliver --> __end
+```
 
-### A3 — Cold-read loop (A3a review → A3b revise, repeat)
-- **A3a Review:** a fresh-context cold reviewer (no annex, no prior-round
-  memory) reads the presentation alone; reports stumbles, unintroduced
-  terms, per-ask decidability, overload verdict, top changes.
-- **A3b Revise:** author repairs findings; consistency sweep (counts,
-  cross-references, promises held against every later line).
-- **Success exit (reached state):** a round returns clean or
-  author-accepted-tradeoffs only.
-- **Failsafe exit (cap):** 4 rounds — deliver with open findings attached
-  rather than loop on. (Count-only exits are legal where rounds are the
-  semantics.)
-- **Annotations:** `runtime.claude-code: {A3a: fresh subagent per round}` ·
-  `runtime.fabro: {A3a/A3b: separate nodes, separate contexts; loop: cyclic
-  edge, guard = success exit, counter = cap}`
 
-### A4 — Deliver
-- **Entry:** A3 exited (either exit).
-- **Tasks:** deliver; record round verdicts; on failsafe exit, state open
-  findings first.
-- **Validation:** O1–O4 hold.
-- **Exit:** stakeholder has the presentation; instance closed.
+## Data
 
-## Derived checks (full traceability — seed-document rule)
+Types use JSON Schema names; `artifact` types reference a kind schema by
+id, and field access in conditions follows that schema. Conditions are CEL
+(Common Expression Language) expressions over these names.
 
-| Outcome | Check | Kind |
-|---|---|---|
-| O1 | word counts vs budgets | mechanical |
-| O2 | ask structure parse (rec + evidence + default + gate marker) | mechanical |
-| O2 | ask decidability | judged — [`../fitness/decision-brief.fitness.md`](../fitness/decision-brief.fitness.md) |
-| O3 | round verdicts recorded; final round clean or tradeoffs marked | mechanical + judged |
-| O4 | annex present, labeled, linked | mechanical |
+```yaml
+data:
+  request:
+    type: artifact
+    kind: request
+  frame:
+    type: object
+    fields:
+      reader: {type: string}
+      decisions: {type: array, items: {type: string}}
+      asks: {type: array, items: {type: string}}
+      deferrals: {type: array, items: {type: string}}
+  brief:
+    type: artifact
+    kind: decision-brief
+  annex:
+    type: string
+    format: uri-reference
+  review:
+    type: object
+    fields:
+      verdict: {type: string, enum: [clean, tradeoffs-accepted, findings]}
+      stumbles: {type: array, items: {type: string}}
+      unintroduced_terms: {type: array, items: {type: string}}
+      ask_decidability:
+        type: array
+        items: {type: string, enum: [confident, wobbly, cannot-decide]}
+      top_changes: {type: array, items: {type: string}, maxItems: 3}
+  round: {type: integer, initial: 1}
+  round_log: {type: array, items: {type: ref, ref: review}, initial: []}
+  delivery:
+    type: object
+    fields:
+      delivered: {type: boolean}
+      open_findings_stated: {type: boolean}
+```
+
+## Steps
+
+```yaml
+start: frame
+steps:
+  - id: frame
+    name: Frame
+    run-by: {role: lead-pm, execution: agent}
+    inputs: [request]
+    outputs: [frame]
+    checks:
+      - size(frame.asks) <= 7
+    prompt: |
+      Read the request. Name the reader and every decision the
+      presentation must enable. Enumerate the asks; keep only the asks
+      that gate the next unit of work, and record the rest as deferrals —
+      a deferral is a note, never an ask. Group related asks and order
+      them by consequence. If the material holds more decisions than one
+      sitting can carry, split it by decision, not by topic, and frame
+      only the first split.
+    next: compose
+    annotations:
+      fabro: {model: high-reasoning, max_attempts: 2}
+
+  - id: compose
+    name: Compose
+    run-by: {role: lead-pm, execution: agent}
+    inputs: [request, frame]
+    outputs: [brief, annex]
+    checks:
+      - words(brief.decision_layer) <= 400
+      - words(brief.decision_layer) + words(brief.support_layer) <= 1500
+    prompt: |
+      Write the decision and support layers fresh — never abridge the
+      source by deletion. Open with situation, complication, question,
+      answer in at most four sentences, then the recommendations and the
+      asks. Write each ask in four parts: question, recommendation,
+      inline evidence, default. State which asks gate work and which
+      resolve by default on silence; a block-ratification states what it
+      binds. Gloss every proper noun at first mention. Attach every block
+      to an ask or label it informational. Demote the original material
+      to a labeled annex and link it. Style rules:
+      guidelines/stakeholder-communication.md, layered on
+      guidelines/base-writing-style.md.
+    next: cold-read
+    annotations:
+      fabro: {model: high-reasoning}
+
+  - id: cold-read
+    name: Cold read
+    run-by: {role: cold-reviewer, execution: agent, fresh-context: true}
+    inputs: [brief]
+    outputs: [review]
+    prompt: |
+      Read the presentation alone; you have not seen the annex or any
+      earlier round, and that is the point. Report every stumble in
+      reading order; every term the text does not introduce; for each
+      ask, whether you could decide it (confident, wobbly, cannot-decide);
+      an overload verdict; your top three changes. Verdict "clean" only
+      if you found nothing. Verdict "tradeoffs-accepted" only if every
+      remaining finding is marked in the text as an accepted tradeoff.
+      Otherwise verdict "findings".
+    next: log-round
+    annotations:
+      fabro: {model: high-reasoning, node: separate-context-per-round}
+
+  - id: log-round
+    name: Record the round
+    run-by: {execution: runtime}
+    inputs: [review, round_log]
+    set:
+      round_log: round_log + [review]
+    next: route-verdict
+
+  - id: route-verdict
+    name: Route on the verdict
+    run-by: {execution: runtime}
+    inputs: [review, round]
+    branches:
+      - label: "success exit: clean or tradeoffs accepted"
+        when: review.verdict in ["clean", "tradeoffs-accepted"]
+        next: deliver
+      - label: "failsafe exit: round >= 4"
+        when: round >= 4
+        next: deliver
+      - else: revise
+
+  - id: revise
+    name: Revise
+    run-by: {role: lead-pm, execution: agent}
+    inputs: [brief, review]
+    outputs: [brief]
+    prompt: |
+      Repair every finding in the review. Then run the consistency
+      sweep: counts and cross-references match, and every promise the
+      text makes holds against every line that follows it. Mark any
+      finding you will not repair as an accepted tradeoff, in the text,
+      with one sentence saying why.
+    next: advance-round
+
+  - id: advance-round
+    name: Advance the round counter
+    run-by: {execution: runtime}
+    inputs: [round]
+    set:
+      round: round + 1
+    next: cold-read
+
+  - id: deliver
+    name: Deliver
+    run-by: {role: lead-pm, execution: agent}
+    inputs: [brief, annex, review, round_log]
+    outputs: [delivery]
+    prompt: |
+      Deliver the presentation to the reader with the annex linked. If
+      the final verdict is "findings" (the failsafe exit fired), state
+      the open findings before anything else. Attach the round log: one
+      line per round with the verdict and the judge's model and prompt
+      version.
+    next: end
+```
+
+## Derived checks
+
+| Outcome | Check | Kind | Where |
+|---|---|---|---|
+| O1 | word counts vs budgets | mechanical | `compose.checks` |
+| O2 | ask cap after grouping | mechanical | `frame.checks` |
+| O2 | ask structure and decidability | judged | [`../fitness/decision-brief.fitness.md`](../fitness/decision-brief.fitness.md), scored in `cold-read` |
+| O3 | every round recorded; final verdict is a success exit or marked failsafe | mechanical | `log-round` output, `route-verdict` branches |
+| O4 | annex present, labeled, linked | mechanical | `compose` output `annex` |
