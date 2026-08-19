@@ -97,25 +97,56 @@ def branch_label(branch: dict) -> str:
     return branch.get("label", "")
 
 
+def display_type(data: dict, name: str) -> str:
+    entry = data.get(name, {})
+    if "$ref" in entry:
+        return entry["$ref"]
+    dtype = entry.get("type", "?")
+    if dtype == "array":
+        items = entry.get("items", {})
+        inner = items.get("$ref") or items.get("type", "?")
+        return f"{inner}[]"
+    return dtype
+
+
+def io_lines(step: dict, data: dict) -> list:
+    def typed(names):
+        return ", ".join(f"{n}: {display_type(data, n)}" for n in names)
+
+    lines = []
+    if step.get("inputs"):
+        lines.append(f"in — {typed(step['inputs'])}")
+    if step.get("outputs"):
+        lines.append(f"out — {typed(step['outputs'])}")
+    if step.get("set"):
+        lines.append(f"sets — {typed(step['set'].keys())}")
+    return lines
+
+
 def mermaid(spec: dict) -> str:
+    data = spec.get("data", {})
     nodes, edges = ["flowchart TD"], []
     edges.append(f'  __start(("start")) --> {node_id(spec["start"])}')
     for step in spec["steps"]:
         sid = node_id(step["id"])
         run_by = step.get("run-by", {})
+        io = io_lines(step, data)
         if "branches" in step:
-            nodes.append(f'  {sid}{{"{step["name"]}"}}')
+            label = "<br/>".join([step["name"]] + io)
+            nodes.append(f'  {sid}{{"{label}"}}')
             for branch in step["branches"]:
                 target = node_id(branch_target(branch))
-                label = branch_label(branch)
-                arrow = f"-->|{label}|" if label else "-->"
+                blabel = branch_label(branch)
+                arrow = f"-->|{blabel}|" if blabel else "-->"
                 edges.append(f"  {sid} {arrow} {target}")
         else:
             if run_by.get("execution") == "agent":
-                role = run_by.get("role", "agent")
-                nodes.append(f'  {sid}(["{step["name"]} — agent: {role}"])')
+                head = f"{step['name']} — agent: {run_by.get('role', 'agent')}"
             else:
-                nodes.append(f'  {sid}["{step["name"]} — runtime"]')
+                head = f"{step['name']} — runtime"
+            label = "<br/>".join([head] + io)
+            shape = f'(["{label}"])' if run_by.get("execution") == "agent" else f'["{label}"]'
+            nodes.append(f"  {sid}{shape}")
             if step.get("next"):
                 edges.append(f'  {sid} --> {node_id(step["next"])}')
     nodes.append('  __end(("end"))')

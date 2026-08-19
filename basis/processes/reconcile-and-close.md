@@ -39,11 +39,11 @@ edit by hand.
 
 ```mermaid
 flowchart TD
-  verify(["Verify the demonstration — agent: router"])
-  route{"Route on the verdict"}
-  consume_close["Consume and close — runtime"]
-  escalate["File the discrepancy — runtime"]
-  file_tail(["File the tail — agent: router"])
+  verify(["Verify the demonstration — agent: router<br/>in — response: work-done-response, work_item: work-item, register: scenario-register<br/>out — verification: verification"])
+  route{"Route on the verdict<br/>in — verification: verification"}
+  consume_close["Consume and close — runtime<br/>in — response: work-done-response, work_item: work-item, verification: verification"]
+  escalate["File the discrepancy — runtime<br/>in — work_item: work-item, verification: verification<br/>out — discrepancy_item: string"]
+  file_tail(["File the tail — agent: router<br/>in — verification: verification, work_item: work-item<br/>out — filed: string[]"])
   __end(("end"))
   __start(("start")) --> verify
   verify --> route

@@ -57,14 +57,14 @@ edit by hand.
 
 ```mermaid
 flowchart TD
-  frame(["Frame — agent: lead-pm"])
-  compose(["Compose — agent: lead-pm"])
-  cold_read(["Cold read — agent: cold-reviewer"])
-  log_round["Record the round — runtime"]
-  route_verdict{"Route on the verdict"}
-  revise(["Revise — agent: lead-pm"])
-  advance_round["Advance the round counter — runtime"]
-  deliver(["Deliver — agent: lead-pm"])
+  frame(["Frame — agent: lead-pm<br/>in — request: request<br/>out — frame: frame"])
+  compose(["Compose — agent: lead-pm<br/>in — request: request, frame: frame<br/>out — brief: decision-brief, annex: string"])
+  cold_read(["Cold read — agent: cold-reviewer<br/>in — brief: decision-brief<br/>out — review: review"])
+  log_round["Record the round — runtime<br/>in — review: review, round_log: review[]<br/>sets — round_log: review[]"]
+  route_verdict{"Route on the verdict<br/>in — review: review, round: integer"}
+  revise(["Revise — agent: lead-pm<br/>in — brief: decision-brief, review: review<br/>out — brief: decision-brief"])
+  advance_round["Advance the round counter — runtime<br/>in — round: integer<br/>sets — round: integer"]
+  deliver(["Deliver — agent: lead-pm<br/>in — brief: decision-brief, annex: string, review: review, round_log: review[]<br/>out — delivery: delivery"])
   __end(("end"))
   __start(("start")) --> frame
   frame --> compose
