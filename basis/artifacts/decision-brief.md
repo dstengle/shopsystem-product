@@ -48,11 +48,6 @@ the producing process). **Consequence on failure:** the brief returns to the
 author for re-forming — it is not deliverable, and decisions made from a
 failed brief are not recorded as ratifications.
 
-## Worked sample
-
-[`drafts/definition-format-decision-brief.md`](../../drafts/definition-format-decision-brief.md)
-(rev. 3, on `main`) — three cold-read rounds, final verdict "ready."
-
 ## Derived review checklist (from this schema — cite-or-delete rule)
 
 - Frontmatter validates; unknown keys rejected. *(schema)*

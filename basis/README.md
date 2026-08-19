@@ -261,6 +261,13 @@ any of them and you land where the tour just took you.
   validates that `result` names a declared data value, prints it on the
   diagram's end node, and states it in the compiled skill, so the
   artifact's path from `compose` to the reader is visible start to end.
+- **R11 (2026-08-19): typedefs carry no pinned example links.** The
+  decision-brief typedef pointed at a worked sample that stopped
+  conforming shortly after it was written — a pinned example is a copy of
+  the schema's intent that drifts as the artifact collection changes. The
+  section is removed. Examples are found, not pinned: the validator can
+  list conforming instances of a type on demand, so the registry always
+  shows current examples and never a stale one.
 
 ## Review asks (all default-free — this is the experiment)
 
@@ -277,6 +284,7 @@ compiled SKILL.md the right runtime carrier shape for Claude Code.
 
 ## After review
 
-Refine here, on this branch, until the formats settle. Ratification happens
-on the refined exemplars; only then does anything migrate into the live
-corpus or roll out across the system.
+The authority declared this review stage complete on 2026-08-19, after
+eleven rulings (R1–R11). The formats stand as refined on this branch.
+Ratification happens on these refined exemplars; only then does anything
+migrate into the live corpus or roll out across the system.
