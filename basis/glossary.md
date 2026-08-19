@@ -19,18 +19,18 @@ terms uses one of these when one fits.
 - **simple type** — a JSON Schema primitive (`string`, `integer`,
   `boolean`, `array`, `object`), usable inline without registration.
 - **typedef** — the single source a type is generated from; templates and
-  schema fragments are its projections (owned by shopsystem-knowledge).
+  schema fragments are its renderings (owned by shopsystem-knowledge).
 - **schema** — the machine-checkable shape of a type: fields, types,
   enums, required sections.
 - **process definition** — the source of truth for a process: header
   (purpose, outcomes, roles), data section, steps section.
 - **step** — one unit of a process: an agent step (carries a prompt) or a
   runtime step (carries `set`, `run`, or `branches`; no prose).
-- **projection** — a generated output of a definition (a skill, a
+- **rendering** — a generated output of a definition (a skill, a
   diagram, a template); never edited by hand, never the source of truth.
 - **guiding statement** — an optional header element of a process
   definition that directs judgment across the whole process; compiled
-  into every projection.
+  into every rendering.
 - **fitness set** — judged (never executed) Given/When/Then scenarios
   scoring an artifact type's quality.
 - **guideline** — prose quality rules for an artifact type, each with a

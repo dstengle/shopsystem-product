@@ -63,7 +63,7 @@ Mermaid diagram, generated from the steps by
 `annotations` carry the fabro/Claude-Code metadata the definition itself
 ignores. *Comes into play:* whenever anyone asks "what is this step
 supposed to do, and when is it done?" — and as the compile source for the
-projections below.
+renderings below.
 
 **A small compiler proves the format carries enough data —
 [`tools/compile_process.py`](tools/compile_process.py).**
@@ -209,10 +209,10 @@ any of them and you land where the tour just took you.
 - **R7 (2026-08-19): a process definition may carry a guiding statement.**
   R6's compile dropped the old skill's opener ("Lead with the answer…"),
   and that loss was a defect: a directional statement belongs in the
-  definition, not only in a projection. Home: a **Guiding statement**
+  definition, not only in a rendering. Home: a **Guiding statement**
   element in the definition header, beside Purpose — the prose zone, since
   it directs judgment rather than executes. The compiler copies it into
-  every generated projection right after the purpose, so it always lands
+  every generated rendering right after the purpose, so it always lands
   in the generating context. Optional per process: the loop-free
   reconcile-and-close carries none.
 - **R8 (2026-08-19): the first principle is reoriented, and principles
