@@ -76,7 +76,7 @@ with the tool, in lockstep.
 ## Every activity belongs to a process (`no-orphan-activities`)
 
 **Statement.** Every activity in the system MUST be part of a defined
-process with stated expected outcomes, expected outputs, and possible
+process with stated expected inputs, expected outcomes, expected outputs, and possible
 resulting actions; every long-running loop MUST declare its exit — a
 reached-state success exit, a round or budget cap, or both.
 
