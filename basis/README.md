@@ -26,7 +26,7 @@ The document opens by defining what a good principle looks like — the
 statement carries the rules and the only normative keywords; the rationale
 carries the why; the implications are the price tag, derivable and
 actor-named — and then holds three principles in that TOGAF four-part
-form. The first — *One definition, two seats* — is why every other file
+form. The first — *Define what good looks like up front* — is why every other file
 on this tour exists before any output does, and why the cold reviewer is
 never the author. At the bottom, the fitness screen applies the intro's
 own tests to the principles above it, so the definition and its derived
@@ -193,8 +193,10 @@ just took you.
   in the generating context. Optional per process: the loop-free
   reconcile-and-close carries none.
 - **R8 (2026-08-19): the first principle is reoriented, and principles
-  now define themselves before the reader meets one.** Renamed
-  `one-definition-two-seats`: one definition of good MUST drive both the
+  now define themselves before the reader meets one.** Named *Define what
+  good looks like up front* (`define-good-up-front`; the review's first
+  pass tried "one definition, two seats" and the authority renamed it):
+  one definition of good MUST drive both the
   performing and the checking of every activity, with the check in a
   different role holding different motivations — definition only on
   checks buys expensive rework after implementation; definition only up

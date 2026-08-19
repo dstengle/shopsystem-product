@@ -32,7 +32,7 @@ to the principles above it.
 
 ---
 
-## One definition, two seats (`one-definition-two-seats`)
+## Define what good looks like up front (`define-good-up-front`)
 
 **Statement.** Every activity MUST operate from a stated definition of
 what good looks like. That definition MUST drive both the performance of
@@ -96,7 +96,7 @@ without a declared exit.
 
 ## Fitness screen (the intro's tests; sources: TOGAF, Spool, Rumelt, Lencioni)
 
-| Screen | one-definition-two-seats | governed-context | no-orphan-activities |
+| Screen | define-good-up-front | governed-context | no-orphan-activities |
 |---|---|---|---|
 | Statement testable (TOGAF: understandable, complete, consistent) | pass | pass | pass |
 | Helps you say no (Spool) | yes: rejects definition-less checks and self-checked work | yes: rejects unsanctioned channels | yes: rejects orphan activities |
