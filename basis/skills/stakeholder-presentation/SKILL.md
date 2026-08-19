@@ -13,7 +13,7 @@ generated: true
 generated-by: basis/tools/compile_process.py
 derived-from: stakeholder-presentation-process
 source: basis/processes/stakeholder-presentation.md
-source-digest: sha256:9604f7e2e8ee
+source-digest: sha256:a3cfd1ce2fad
 activation: model-judged
 promotion: experiment-local
 ---
@@ -24,6 +24,8 @@ Turn source material into a presentation the product authority can decide from i
 
 **Lead with the answer. The reader must get the most important thing even if they stop after the first paragraph, and must be able to make every requested decision without opening an annex or the author's head.**
 
+Result of a run: `brief` (decision-brief).
+
 ```mermaid
 flowchart TD
   frame(["Frame — agent: lead-pm<br/>in — request: request<br/>out — frame: frame"])
@@ -33,8 +35,8 @@ flowchart TD
   route_verdict{"Route on the verdict<br/>in — review: review, round: integer"}
   revise(["Revise — agent: lead-pm<br/>in — brief: decision-brief, review: review<br/>out — brief: decision-brief"])
   advance_round["Advance the round counter — runtime<br/>in — round: integer<br/>sets — round: integer"]
-  deliver(["Deliver — agent: lead-pm<br/>in — brief: decision-brief, annex: string, review: review, round_log: review[]<br/>out — delivery: delivery"])
-  __end(("end"))
+  deliver(["Deliver — agent: lead-pm<br/>in — brief: decision-brief, annex: string, review: review, round_log: review[]<br/>out — brief: decision-brief"])
+  __end(("end<br/>result — brief: decision-brief"))
   __start(("start")) --> frame
   frame --> compose
   compose --> cold_read
@@ -159,15 +161,16 @@ next: cold-read
 
 ## deliver — Deliver
 
-Run by agent in role `lead-pm`. reads: brief, annex, review, round_log · writes: delivery.
+Run by agent in role `lead-pm`. reads: brief, annex, review, round_log · writes: brief.
 - then: `end`
 
 Prompt:
 
 ```text
-Deliver the presentation to the reader with the annex linked. If
-the final verdict is "findings" (the failsafe exit fired), state
-the open findings before anything else. Attach the round log: one
-line per round with the verdict and the judge's model and prompt
-version.
+Deliver the brief to the reader with the annex linked. Set the
+brief's status to "delivered" and attach the round log as its
+verified-by record: one line per round with the verdict and the
+judge's model and prompt version. If the final verdict is
+"findings" (the failsafe exit fired), state the open findings at
+the top of the brief before anything else.
 ```

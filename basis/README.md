@@ -109,7 +109,7 @@ the source of the derived checklist.
 **Not every value is a document — [`types/`](types/).**
 Data types: named, schema-defined structures that pass between process
 steps but are not human-readable artifacts — `review`, `frame`,
-`verification`, `delivery`. Each lives in its own file, so a process
+`verification`. Each lives in its own file, so a process
 `data` block never defines a structured shape inline: simple types
 (JSON Schema primitives) inline, everything else a `$ref` to a defined
 type. In the live system these resolve through the schema registry
@@ -252,6 +252,15 @@ any of them and you land where the tour just took you.
   types' schemas will change as processes evolve, and new types will be
   added); the glossary lands as a governed artifact; the compiler grows
   the resolver check (`$ref` must name a defined type).
+- **R10 (2026-08-19): the process result is the artifact, not a status
+  record.** The `deliver` step had returned a `delivery` structure of two
+  booleans, hiding the decision-brief's continuity through the run. Now
+  the steps declare `result: brief`; `deliver` outputs the brief itself —
+  status set to "delivered", the round log attached as its `verified-by`
+  record — and the `delivery` data type is deleted. The compiler
+  validates that `result` names a declared data value, prints it on the
+  diagram's end node, and states it in the compiled skill, so the
+  artifact's path from `compose` to the reader is visible start to end.
 
 ## Review asks (all default-free — this is the experiment)
 

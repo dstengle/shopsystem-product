@@ -81,6 +81,9 @@ def check_refs(source: pathlib.Path, front: dict, spec: dict) -> None:
             "defined type (a `defines:` in artifacts/ or types/, or an entry "
             "in the definition's `external-refs`)"
         )
+    result = spec.get("result")
+    if result and result not in spec.get("data", {}):
+        sys.exit(f"{source}: result '{result}' is not a declared data value")
 
 
 def node_id(step_id: str) -> str:
@@ -149,7 +152,12 @@ def mermaid(spec: dict) -> str:
             nodes.append(f"  {sid}{shape}")
             if step.get("next"):
                 edges.append(f'  {sid} --> {node_id(step["next"])}')
-    nodes.append('  __end(("end"))')
+    result = spec.get("result")
+    if result:
+        end_label = f"end<br/>result — {result}: {display_type(data, result)}"
+    else:
+        end_label = "end"
+    nodes.append(f'  __end(("{end_label}"))')
     return "\n".join(nodes + edges)
 
 
@@ -230,6 +238,10 @@ def generate_skill(front: dict, spec: dict, purpose: str, guiding: str, diagram:
     ]
     if guiding:
         parts.append(f"**{guiding}**")
+    result = spec.get("result")
+    if result:
+        rtype = display_type(spec.get("data", {}), result)
+        parts.append(f"Result of a run: `{result}` ({rtype}).")
     parts.append(f"```mermaid\n{diagram}\n```")
     parts += [skill_step_section(step) for step in spec["steps"]]
     return "\n\n".join(parts) + "\n"
