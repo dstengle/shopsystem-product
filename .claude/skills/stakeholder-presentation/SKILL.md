@@ -62,6 +62,14 @@ decision, not by topic.
 
 ## Style rules
 
+- **The authority's base writing style (2026-08-14) applies beneath
+  everything here and is never overridden.** Conclusion first at every
+  scale — document, section, paragraph. One idea per sentence. Active
+  voice with a named actor. Short common words. Never a metaphor as a
+  technical term; banned in any form: "load-bearing", "surface" (as a noun
+  for inputs/config), "seam", "scar tissue". Explain every insider
+  reference in one plain sentence or cut it. Canonical text:
+  `basis/guidelines/base-writing-style.md` on branch `experiment/new-basis`.
 - ◆ **Standalone means proper nouns too.** Gloss every proper noun, tool
   name, standard, and coinage at first mention — one clause each. Never
   condition an ask on machinery the document does not explain. Terms the
