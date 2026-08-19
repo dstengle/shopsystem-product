@@ -1,7 +1,9 @@
 ---
 type: quality-guideline
 id: base-writing-style
-status: experiment
+owner: product-authority
+status: ratified
+ratified: 2026-08-19
 created: 2026-08-14
 updated: 2026-08-14
 ---

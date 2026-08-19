@@ -1,7 +1,10 @@
 ---
 type: process-definition
 id: reconcile-and-close-process
-status: experiment
+produces: []
+owner: product-authority
+status: ratified
+ratified: 2026-08-19
 created: 2026-08-10
 updated: 2026-08-19
 condition-language: cel

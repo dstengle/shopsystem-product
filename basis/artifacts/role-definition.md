@@ -1,0 +1,62 @@
+---
+type: artifact-typedef
+id: role-definition-typedef
+defines: role-definition
+owner: product-authority
+status: draft
+created: 2026-08-19
+updated: 2026-08-19
+ancestry: [definition, role-definition]
+---
+
+# Artifact type: role-definition
+
+## Identity and ancestry
+
+- **Type:** `role-definition` — a named seat: its capability contract and
+  its accountabilities. A role says *who* and *what for* — never *when*;
+  sequencing lives in process definitions, which name roles in their
+  steps.
+- **Produced by:** the author of the first process that needs the seat.
+  **Consumed by:** the runtime that instantiates the seat (the
+  frontmatter is the machine contract); process definitions (by name);
+  reviewers checking the one-responsible-seat rule.
+
+## Required frontmatter
+
+Functional contract keys first — `name`, `description`, `tools` (the
+capability boundary, e.g. read-only), `maxTurns` — then the identity
+base: `type: role-definition`, `id`, `owner`, `status`, `created`,
+`updated`.
+
+## Required sections
+
+1. **Accountabilities** — 4–6 bullets: what the seat answers for.
+2. **Exclusive domain** — the one thing only this seat may decide (e.g. a
+   review round's verdict); derived from the rule that every decision has
+   exactly one responsible seat.
+
+## Rules
+
+- **No sequencing text.** Any sentence saying when the role acts is a
+  misfiled process step.
+- The capability contract enforces the role's stance mechanically where
+  it can (read-only tools for a reviewer; a turn cap against drift).
+
+## Commitment (Definition of Done)
+
+A role definition is done when the seat can be instantiated from the file
+alone and no line says when to act. **Consequence on failure:** processes
+naming the role do not pass loop and conformance review.
+
+## Sources
+
+Capability-contract practice from the Claude Code subagent format
+(frontmatter as machine contract); the exclusive domain derives from
+RACI's one-Accountable rule.
+
+## Derived review checklist
+
+- Functional keys present and first. *(§Required frontmatter)*
+- 4–6 accountabilities; exactly one exclusive domain. *(§Required sections)*
+- No sequencing text — judged scan. *(§Rules)*

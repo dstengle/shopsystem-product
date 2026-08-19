@@ -1,16 +1,22 @@
 ---
 type: glossary
 id: glossary
-status: experiment
+owner: product-authority
+status: ratified
+ratified: 2026-08-19
 created: 2026-08-19
 updated: 2026-08-19
 ---
 
 # Glossary
 
+## How the list combines
+
 The defined-term list is this glossary combined with every schema element
 name. Per the `use-defined-terms` principle, a writer choosing between
 terms uses one of these when one fits.
+
+## Terms
 
 - **artifact type** — a named, schema-defined document type (e.g.
   `decision-brief`); the term the schema registry uses. Not "kind".
@@ -40,3 +46,7 @@ terms uses one of these when one fits.
 - **principle** — a standing rule about how we work: name, statement,
   rationale, implications (see the principles document's opening
   definition).
+- **seed layer** — the hand-ratified definitions the regress terminates
+  at: the principle set plus one typedef per definition document type.
+- **owner** — the seat that ratifies changes to a definition; named in
+  every definition's frontmatter.

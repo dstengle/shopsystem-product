@@ -2,7 +2,9 @@
 type: artifact-typedef
 id: request-typedef
 defines: request
-status: experiment
+owner: product-authority
+status: ratified
+ratified: 2026-08-19
 created: 2026-08-19
 updated: 2026-08-19
 ancestry: [request]
@@ -27,6 +29,11 @@ ancestry: [request]
 
 1. **What is requested** — named early, not implied.
 2. **From whom** — the reader, named.
+
+## Sources
+
+ISO/IEC/IEEE 15289 (generic content types); DITA-style ancestry (this is
+the root type specializations declare).
 
 ## Commitment (Definition of Done)
 

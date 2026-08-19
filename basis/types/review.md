@@ -2,7 +2,9 @@
 type: data-type
 id: review
 defines: review
-status: experiment
+owner: product-authority
+status: ratified
+ratified: 2026-08-19
 created: 2026-08-19
 updated: 2026-08-19
 ---

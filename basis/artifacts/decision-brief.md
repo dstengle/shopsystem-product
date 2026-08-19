@@ -2,7 +2,9 @@
 type: artifact-typedef
 id: decision-brief-typedef
 defines: decision-brief
-status: experiment
+owner: product-authority
+status: ratified
+ratified: 2026-08-19
 created: 2026-08-10
 updated: 2026-08-19
 ancestry: [request, decision-brief]
@@ -47,6 +49,12 @@ from the brief alone in one short sitting; budgets hold (decision layer
 the producing process). **Consequence on failure:** the brief returns to the
 author for re-forming — it is not deliverable, and decisions made from a
 failed brief are not recorded as ratifications.
+
+## Sources
+
+ISO/IEC/IEEE 15289 (generic content types); DITA-style ancestry
+declaration; Scrum's artifact-commitment pairing; layer and ask structure
+from Minto/SCQA, BLUF, and government briefing-note practice.
 
 ## Derived review checklist (from this schema — cite-or-delete rule)
 

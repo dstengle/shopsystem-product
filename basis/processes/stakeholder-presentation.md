@@ -1,7 +1,9 @@
 ---
 type: process-definition
 id: stakeholder-presentation-process
-status: experiment
+owner: product-authority
+status: ratified
+ratified: 2026-08-19
 created: 2026-08-10
 updated: 2026-08-19
 produces: [decision-brief]

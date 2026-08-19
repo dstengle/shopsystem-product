@@ -285,6 +285,41 @@ compiled SKILL.md the right runtime carrier shape for Claude Code.
 ## After review
 
 The authority declared this review stage complete on 2026-08-19, after
-eleven rulings (R1–R11). The formats stand as refined on this branch.
-Ratification happens on these refined exemplars; only then does anything
-migrate into the live corpus or roll out across the system.
+eleven rulings (R1–R11), and **ratified the refined exemplar formats the
+same day**. Every exemplar now carries `status: ratified`,
+`ratified: 2026-08-19`, and an `owner` in its front-matter.
+
+## The seed layer (drafted on ratification — awaiting review)
+
+The definition regress terminates at a hand-ratified seed: the
+[principle set](principles.md) plus one artifact-typedef per definition
+document type, each drafted in the ratified typedef format itself. This
+closes R4's open loop — format provenance now lives in each typedef's
+Sources section, not in this index (the story above keeps narrative
+copies only). All are `status: draft` until the authority reviews them:
+
+- [`artifacts/definition.md`](artifacts/definition.md) — the generic root
+  every definition type specializes.
+- [`artifacts/artifact-typedef.md`](artifacts/artifact-typedef.md) — the
+  typedef of typedefs; conforms to itself; where the regress stops.
+- [`artifacts/process-definition.md`](artifacts/process-definition.md) —
+  the compiled-process format (R6–R10) as a spec: step records, CEL
+  conditions, dual exits, result, rendering contract.
+- [`artifacts/principle-set.md`](artifacts/principle-set.md) — the
+  four-part principle format plus the screen (R8).
+- [`artifacts/data-type.md`](artifacts/data-type.md) — registered
+  non-document structures (R9).
+- [`artifacts/role-definition.md`](artifacts/role-definition.md) —
+  capability contract + accountabilities, no sequencing.
+- [`artifacts/quality-guideline.md`](artifacts/quality-guideline.md) —
+  voice, highlights, layered rules with Deming's three elements.
+- [`artifacts/fitness-set.md`](artifacts/fitness-set.md) — judged G/W/T
+  with the guardrail front-matter and compile mapping.
+- [`artifacts/glossary-typedef.md`](artifacts/glossary-typedef.md) — the
+  restricted-language list (R9).
+
+After the seed is ratified: migration into the live corpus — the PDR-032
+registry amendment (open, versioned type set), the ADR-059 wording
+alignment ("projection" → "rendering"), generated-file banners to
+front-matter (R2), and system-wide application of the base writing style
+(R5).

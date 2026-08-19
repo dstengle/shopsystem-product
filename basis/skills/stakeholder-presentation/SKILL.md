@@ -6,14 +6,14 @@ description: Turn source material into a presentation the product authority can 
   ~300 words.
 type: skill
 id: stakeholder-presentation-skill
-status: experiment
+status: ratified
 created: 2026-08-10
 updated: 2026-08-19
 generated: true
 generated-by: basis/tools/compile_process.py
 derived-from: stakeholder-presentation-process
 source: basis/processes/stakeholder-presentation.md
-source-digest: sha256:a3cfd1ce2fad
+source-digest: sha256:6241c6b717fa
 activation: model-judged
 promotion: experiment-local
 ---
