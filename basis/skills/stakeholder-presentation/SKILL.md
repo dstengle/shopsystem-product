@@ -13,7 +13,7 @@ generated: true
 generated-by: basis/tools/compile_process.py
 derived-from: stakeholder-presentation-process
 source: basis/processes/stakeholder-presentation.md
-source-digest: sha256:6c03e47e0e27
+source-digest: sha256:97321a861f39
 activation: model-judged
 promotion: experiment-local
 ---

@@ -44,6 +44,45 @@ def parse(path: pathlib.Path):
     return text, front, spec, purpose, guiding
 
 
+def collect_refs(node) -> set:
+    refs = set()
+    if isinstance(node, dict):
+        for key, value in node.items():
+            if key == "$ref":
+                refs.add(value)
+            else:
+                refs |= collect_refs(value)
+    elif isinstance(node, list):
+        for item in node:
+            refs |= collect_refs(item)
+    return refs
+
+
+def defined_types(basis_dir: pathlib.Path) -> set:
+    defined = set()
+    for tree in ("artifacts", "types"):
+        for path in (basis_dir / tree).glob("*.md"):
+            fm_match = re.match(r"---\n(.*?)\n---\n", path.read_text(), re.S)
+            if fm_match:
+                front = yaml.safe_load(fm_match.group(1))
+                if front.get("defines"):
+                    defined.add(front["defines"])
+    return defined
+
+
+def check_refs(source: pathlib.Path, front: dict, spec: dict) -> None:
+    refs = collect_refs(spec.get("data", {}))
+    known = defined_types(source.parent.parent)
+    known |= set(front.get("external-refs", []))
+    unresolved = sorted(refs - known)
+    if unresolved:
+        sys.exit(
+            f"{source}: unresolved $ref {unresolved} — every $ref must name a "
+            "defined type (a `defines:` in artifacts/ or types/, or an entry "
+            "in the definition's `external-refs`)"
+        )
+
+
 def node_id(step_id: str) -> str:
     return "__end" if step_id == "end" else step_id.replace("-", "_")
 
@@ -174,6 +213,7 @@ def main() -> None:
         args = args[:i] + args[i + 2:]
     source = pathlib.Path(args[0])
     text, front, spec, purpose, guiding = parse(source)
+    check_refs(source, front, spec)
     diagram = mermaid(spec)
     write_flow(source, text, diagram)
     print(f"{source}: flow diagram regenerated ({len(spec['steps'])} steps)")

@@ -1,29 +1,30 @@
 ---
-type: artifact-kind-schema
-id: decision-brief-schema
+type: artifact-typedef
+id: decision-brief-typedef
+defines: decision-brief
 status: experiment
 created: 2026-08-10
-updated: 2026-08-14
+updated: 2026-08-19
 ancestry: [request, decision-brief]
 ---
 
-# Artifact kind: decision-brief
+# Artifact type: decision-brief
 
 ## Identity and ancestry
 
-- **Kind:** `decision-brief`
+- **Type:** `decision-brief`
 - **Generic type:** request — it requests decisions.
   **Ancestry:** `request → decision-brief` (generic fallback: any validator
-  that knows `request` may check this kind at that level).
+  that knows `request` may check this type at that level).
 - **User-need quadrant:** action + work — the reader
   is deciding, now. One quadrant per document; a brief that drifts into
-  explanation fails its kind.
+  explanation fails its type.
 - **Produced by:** [`../processes/stakeholder-presentation.md`](../processes/stakeholder-presentation.md).
   **Consumed by:** the product authority, at a sitting.
 
 ## Required frontmatter
 
-`kind`, `status` (draft | delivered | decided), `date`, `reader`,
+`type`, `status` (draft | delivered | decided), `date`, `reader`,
 `decisions-requested` (count), `annex` (link), `verified-by` (cold-read
 round record). Schema-validated; unknown keys rejected (closed field set,
 per the authority's strictness directive).

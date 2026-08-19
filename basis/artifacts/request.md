@@ -1,0 +1,35 @@
+---
+type: artifact-typedef
+id: request-typedef
+defines: request
+status: experiment
+created: 2026-08-19
+updated: 2026-08-19
+ancestry: [request]
+---
+
+# Artifact type: request
+
+## Identity and ancestry
+
+- **Type:** `request` — the generic root for documents that ask a reader
+  to act or decide. Specializations (e.g. `decision-brief`) declare it in
+  their ancestry so a validator that knows only `request` can still check
+  them at this level.
+- **Produced by:** any process whose output asks for action or decision.
+  **Consumed by:** the named reader.
+
+## Required frontmatter
+
+`type`, `status`, `date`, `reader`.
+
+## Required sections
+
+1. **What is requested** — named early, not implied.
+2. **From whom** — the reader, named.
+
+## Commitment (Definition of Done)
+
+A request is done when the named reader can tell what is being asked of
+them from the document alone. **Consequence on failure:** the request
+returns to the author; no obligation attaches to the reader.

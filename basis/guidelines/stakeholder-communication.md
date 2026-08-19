@@ -3,7 +3,7 @@ type: quality-guideline
 id: stakeholder-communication-guideline
 status: experiment
 created: 2026-08-10
-updated: 2026-08-14
+updated: 2026-08-19
 ---
 
 # Guideline: stakeholder communication
@@ -19,7 +19,7 @@ nothing committed outside an ask.
 **Layers:** this guideline adds decision-document rules on top of the
 [base writing style](base-writing-style.md); the base always applies and is
 never overridden. When rules conflict, a ratified principle beats the
-artifact kind's schema, which beats this guideline.
+artifact type's schema, which beats this guideline.
 
 ---
 

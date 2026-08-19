@@ -82,45 +82,23 @@ flowchart TD
 
 ## Data
 
-Types use JSON Schema names; `artifact` types reference a kind schema by
-id, and field access in conditions follows that schema. Conditions are CEL
-(Common Expression Language) expressions over these names.
+Each entry names a process-local value. Simple types use JSON Schema
+names inline; every structured shape is a `$ref` to a defined type —
+an artifact type in [`../artifacts/`](../artifacts/) or a data type in
+[`../types/`](../types/) — never defined here. Field access in conditions
+follows the referenced schema; conditions are CEL (Common Expression
+Language) expressions over these names.
 
 ```yaml
 data:
-  request:
-    type: artifact
-    kind: request
-  frame:
-    type: object
-    fields:
-      reader: {type: string}
-      decisions: {type: array, items: {type: string}}
-      asks: {type: array, items: {type: string}}
-      deferrals: {type: array, items: {type: string}}
-  brief:
-    type: artifact
-    kind: decision-brief
-  annex:
-    type: string
-    format: uri-reference
-  review:
-    type: object
-    fields:
-      verdict: {type: string, enum: [clean, tradeoffs-accepted, findings]}
-      stumbles: {type: array, items: {type: string}}
-      unintroduced_terms: {type: array, items: {type: string}}
-      ask_decidability:
-        type: array
-        items: {type: string, enum: [confident, wobbly, cannot-decide]}
-      top_changes: {type: array, items: {type: string}, maxItems: 3}
+  request: {$ref: request}
+  frame: {$ref: frame}
+  brief: {$ref: decision-brief}
+  annex: {type: string, format: uri-reference}
+  review: {$ref: review}
   round: {type: integer, initial: 1}
-  round_log: {type: array, items: {type: ref, ref: review}, initial: []}
-  delivery:
-    type: object
-    fields:
-      delivered: {type: boolean}
-      open_findings_stated: {type: boolean}
+  round_log: {type: array, items: {$ref: review}, initial: []}
+  delivery: {$ref: delivery}
 ```
 
 ## Steps

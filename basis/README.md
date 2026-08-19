@@ -25,14 +25,24 @@ this index is where the show-and-tell lives.
 The document opens by defining what a good principle looks like — the
 statement carries the rules and the only normative keywords; the rationale
 carries the why; the implications are the price tag, derivable and
-actor-named — and then holds three principles in that TOGAF four-part
+actor-named — and then holds four principles in that TOGAF four-part
 form. The first — *Define what good looks like up front* — is why every other file
 on this tour exists before any output does, and why the cold reviewer is
-never the author. At the bottom, the fitness screen applies the intro's
+never the author; the newest — *Use defined terms* — is why the next stop
+exists. At the bottom, the fitness screen applies the intro's
 own tests to the principles above it, so the definition and its derived
 check are shown together. *Comes into play:* whenever a definition is
 written or judged, and at every review where someone asks "does this rule
 earn its place?"
+
+**The words themselves are governed — [`glossary.md`](glossary.md).**
+The defined-term list is the glossary combined with every schema element
+name; when a defined term fits, writers use it instead of coining one.
+The restricted language is the `use-defined-terms` principle in practice,
+and its first conviction happened during this review: the data format
+had coined "kind" beside the already-defined "artifact type", and the
+synonym was removed everywhere. *Comes into play:* before any term is
+coined, and at review whenever two words might mean one thing.
 
 **The work is defined once, in one place —
 [`processes/stakeholder-presentation.md`](processes/stakeholder-presentation.md).**
@@ -96,6 +106,18 @@ DITA-style ancestry declaration, Scrum's artifact-commitment pairing.)
 *Comes into play:* at `compose` while the author writes, and at review as
 the source of the derived checklist.
 
+**Not every value is a document — [`types/`](types/).**
+Data types: named, schema-defined structures that pass between process
+steps but are not human-readable artifacts — `review`, `frame`,
+`verification`, `delivery`. Each lives in its own file, so a process
+`data` block never defines a structured shape inline: simple types
+(JSON Schema primitives) inline, everything else a `$ref` to a defined
+type. In the live system these resolve through the schema registry
+(shopsystem-knowledge's typedef system, the shop-msg catalog); the files
+here stand in for that registry. *Comes into play:* whenever a step
+declares what it reads and writes, and whenever a condition dereferences
+a field.
+
 **"Well-written" is defined, not vibed —
 [`guidelines/stakeholder-communication.md`](guidelines/stakeholder-communication.md).**
 Five rules in the Google/Microsoft style-guide anatomy (voice principle →
@@ -132,11 +154,12 @@ isn't shaped around one example.
 
 ## How the files point at each other
 
-Process → role (who verifies), skill (what runs it), artifact kind (what it
-produces). Artifact kind → guideline (what good prose is) and fitness set
-(how quality is judged). Everything → principles. Every arrow above is a
-real link inside the files — follow any of them and you land where the tour
-just took you.
+Process → role (who verifies), skill (what runs it), and every type its
+steps read and write (`$ref` into `artifacts/` and `types/`). Artifact
+type → guideline (what good prose is) and fitness set (how quality is
+judged). Every term → the glossary or a schema element. Everything →
+principles. Every arrow above is a real link inside the files — follow
+any of them and you land where the tour just took you.
 
 ## Review rulings (accumulated as the review proceeds)
 
@@ -150,7 +173,7 @@ just took you.
   live corpus's generated-file banners become front-matter fields
   (`generated: true`, `read-only: true`).
 - **R3 (2026-08-11): front-matter is identity plus data — never prose.**
-  Uniform base (`type`, `id`, `status`, `created`, `updated`) plus per-kind
+  Uniform base (`type`, `id`, `status`, `created`, `updated`) plus per-type
   data fields; no titles or descriptions duplicating the body, no
   sentence-valued fields. Runnable files (roles, skills) keep their
   functional contract keys (`name`, `tools`, `maxTurns`) first.
@@ -208,6 +231,27 @@ just took you.
   implications were refiled — enforcement norms out of implications,
   actors named ("Reviewers compare work to the written definition; their
   own taste is not the standard").
+- **R9 (2026-08-19): schemas live apart from processes and are
+  referenced; terms come from the defined list.** New authority-authored
+  principle `use-defined-terms`: important terms MUST be defined in the
+  system — the term list is the glossary plus every schema element name —
+  and a defined term MUST be used when one is available. Its first
+  conviction was this review's own data format: "kind", coined beside the
+  already-defined "artifact type", is removed everywhere; JSON Schema's
+  own `$ref` replaces it as the reference word. Process `data` blocks now
+  define no structured shapes: simple types (JSON Schema primitives)
+  inline, everything else a `$ref` to a defined type — artifact types in
+  `artifacts/`, and data types in `types/` for structures that are not
+  human-readable documents (a `review`, a `verification`). This replaces
+  the rejected promotion-on-second-use idea: "no inline structured types"
+  is a one-line mechanical check, enforceable at compile. The live-system
+  home is the registry that already exists — shopsystem-knowledge's
+  typedef system (PDR-032, ADR-059) plus the shop-msg catalog schemas —
+  not a new one. Rollout consequences: PDR-032's fixed set of eight
+  artifact types must open into an evolving, versioned registry (existing
+  types' schemas will change as processes evolve, and new types will be
+  added); the glossary lands as a governed artifact; the compiler grows
+  the resolver check (`$ref` must name a defined type).
 
 ## Review asks (all default-free — this is the experiment)
 

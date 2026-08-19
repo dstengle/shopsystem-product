@@ -76,7 +76,7 @@ with the tool, in lockstep.
 ## Every activity belongs to a process (`no-orphan-activities`)
 
 **Statement.** Every activity in the system MUST be part of a defined
-process with stated expected inputs, expected outcomes, expected outputs, and possible
+process with stated expected outcomes, expected outputs, and possible
 resulting actions; every long-running loop MUST declare its exit — a
 reached-state success exit, a round or budget cap, or both.
 
@@ -92,16 +92,37 @@ not a convenience. Authors have no cost excuse: a process definition is a
 header plus a data section and a steps section. Reviewers fail any loop
 without a declared exit.
 
+## Use defined terms (`use-defined-terms`)
+
+**Statement.** Important terms MUST be defined in the system, in the
+glossary or as a schema element. When more than one term could carry a
+statement, the writer MUST use a defined term if one is available.
+
+**Rationale.** The defined-term list — glossary entries plus schema
+element names — restricts the available language, and a restricted
+language aids clarity and reduces drift. The failure is cheap to reach
+and this review reached it: the process format introduced "kind" beside
+the already-defined "artifact type" — two words for one thing inside a
+week, and every reader of both had to learn they were the same.
+(Controlled-vocabulary practice: ASD-STE100, ISO 704.)
+
+**Implications.** Writers check the glossary and the schemas before
+coining a term; an undefined important term is a defect the author
+repairs by defining it or replacing it with a defined one. Schema authors
+are vocabulary authors: naming a field adds a term to the restricted
+language. Reviewers flag near-synonym pairs as drift; the losing term is
+removed everywhere, not deprecated in place.
+
 ---
 
 ## Fitness screen (the intro's tests; sources: TOGAF, Spool, Rumelt, Lencioni)
 
-| Screen | define-good-up-front | governed-context | no-orphan-activities |
-|---|---|---|---|
-| Statement testable (TOGAF: understandable, complete, consistent) | pass | pass | pass |
-| Helps you say no (Spool) | yes: rejects definition-less checks and self-checked work | yes: rejects unsanctioned channels | yes: rejects orphan activities |
-| Not fluff, not a goal-in-disguise (Rumelt) | directs and constrains without prescribing method | same | same |
-| Not permission-to-play (Lencioni) | pass — most systems do NOT work this way | pass | pass |
-| Implies ≥1 practice and ≥1 check (shop rule) | shared-definition practice; role-separation check | promotion gate; provenance audit | process-membership lint; loop-exit review |
-| Normative keywords in statements only (mechanical) | pass | pass | pass |
-| Implications derivable and actor-named (judged) | pass | pass | pass |
+| Screen | define-good-up-front | governed-context | no-orphan-activities | use-defined-terms |
+|---|---|---|---|---|
+| Statement testable (TOGAF: understandable, complete, consistent) | pass | pass | pass | pass |
+| Helps you say no (Spool) | yes: rejects definition-less checks and self-checked work | yes: rejects unsanctioned channels | yes: rejects orphan activities | yes: rejects undefined coinages and synonym pairs |
+| Not fluff, not a goal-in-disguise (Rumelt) | directs and constrains without prescribing method | same | same | same |
+| Not permission-to-play (Lencioni) | pass — most systems do NOT work this way | pass | pass | pass |
+| Implies ≥1 practice and ≥1 check (shop rule) | shared-definition practice; role-separation check | promotion gate; provenance audit | process-membership lint; loop-exit review | term lookup before writing; undefined-term and near-synonym lint |
+| Normative keywords in statements only (mechanical) | pass | pass | pass | pass |
+| Implications derivable and actor-named (judged) | pass | pass | pass | pass |

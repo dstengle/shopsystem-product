@@ -3,8 +3,9 @@ type: process-definition
 id: reconcile-and-close-process
 status: experiment
 created: 2026-08-10
-updated: 2026-08-18
+updated: 2026-08-19
 condition-language: cel
+external-refs: [work-done-response, work-item, scenario-register]
 ---
 
 # Process: Reconcile and close
@@ -56,39 +57,19 @@ flowchart TD
 
 ## Data
 
-Types use JSON Schema names; `artifact` types reference a kind schema by
-id. Conditions are CEL expressions over these names.
+Each entry names a process-local value. Simple types use JSON Schema
+names inline; every structured shape is a `$ref` to a defined type,
+never defined here. `verification` is a data type in
+[`../types/`](../types/); `work-done-response` resolves to the shop-msg
+catalog schema, and `work-item` and `scenario-register` to their owning
+systems' schemas. Conditions are CEL expressions over these names.
 
 ```yaml
 data:
-  response:
-    type: artifact
-    kind: work-done-response
-  work_item:
-    type: artifact
-    kind: work-item
-  register:
-    type: artifact
-    kind: scenario-register
-  verification:
-    type: object
-    fields:
-      verdict: {type: string, enum: [reconcile, discrepancy]}
-      evidence: {type: string}
-      scenario_status:
-        type: array
-        items:
-          type: object
-          fields:
-            scenario_id: {type: string}
-            status: {type: string, enum: [done, blocked, deferred]}
-      reported_items:
-        type: array
-        items:
-          type: object
-          fields:
-            kind: {type: string, enum: [defect, observation, deferred-scenario]}
-            summary: {type: string}
+  response: {$ref: work-done-response}
+  work_item: {$ref: work-item}
+  register: {$ref: scenario-register}
+  verification: {$ref: verification}
   discrepancy_item: {type: string}
   filed: {type: array, items: {type: string}}
 ```

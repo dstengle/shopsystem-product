@@ -3,8 +3,8 @@ type: fitness-set
 id: decision-brief-fitness
 status: experiment
 created: 2026-08-10
-updated: 2026-08-14
-target-kind: decision-brief
+updated: 2026-08-19
+target-type: decision-brief
 judged: true
 executable: false
 judged-by: cold-reviewer
