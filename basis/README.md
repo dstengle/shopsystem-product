@@ -22,13 +22,17 @@ this index is where the show-and-tell lives.
 ## The story: one run, seven formats
 
 **It starts with rules about how we work — [`principles.md`](principles.md).**
-Three principles in the TOGAF four-part form (Name / Statement / Rationale /
-Implications, MUST/SHOULD per BCP 14). The first one — *Define before you
-build* — is why every other file on this tour exists before any output
-does. At the bottom, the composed fitness screen is applied to the
-principles themselves, so the format and its own quality check are shown
-together. *Comes into play:* whenever a definition is written or judged,
-and at every review where someone asks "does this rule earn its place?"
+The document opens by defining what a good principle looks like — the
+statement carries the rules and the only normative keywords; the rationale
+carries the why; the implications are the price tag, derivable and
+actor-named — and then holds three principles in that TOGAF four-part
+form. The first — *One definition, two seats* — is why every other file
+on this tour exists before any output does, and why the cold reviewer is
+never the author. At the bottom, the fitness screen applies the intro's
+own tests to the principles above it, so the definition and its derived
+check are shown together. *Comes into play:* whenever a definition is
+written or judged, and at every review where someone asks "does this rule
+earn its place?"
 
 **The work is defined once, in one place —
 [`processes/stakeholder-presentation.md`](processes/stakeholder-presentation.md).**
@@ -188,6 +192,20 @@ just took you.
   every generated projection right after the purpose, so it always lands
   in the generating context. Optional per process: the loop-free
   reconcile-and-close carries none.
+- **R8 (2026-08-19): the first principle is reoriented, and principles
+  now define themselves before the reader meets one.** Renamed
+  `one-definition-two-seats`: one definition of good MUST drive both the
+  performing and the checking of every activity, with the check in a
+  different role holding different motivations — definition only on
+  checks buys expensive rework after implementation; definition only up
+  front invites gaming and loses outside perspective. The document now
+  opens with "What a good principle looks like": normative keywords live
+  in statements only, implications are the derived price tag (every one
+  traceable to a statement clause and named to the actor who absorbs it),
+  and the fitness screen gained the two matching rows. Misfiled
+  implications were refiled — enforcement norms out of implications,
+  actors named ("Reviewers compare work to the written definition; their
+  own taste is not the standard").
 
 ## Review asks (all default-free — this is the experiment)
 
