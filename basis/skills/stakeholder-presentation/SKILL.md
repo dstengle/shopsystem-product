@@ -8,12 +8,12 @@ type: skill
 id: stakeholder-presentation-skill
 status: experiment
 created: 2026-08-10
-updated: 2026-08-18
+updated: 2026-08-19
 generated: true
 generated-by: basis/tools/compile_process.py
 derived-from: stakeholder-presentation-process
 source: basis/processes/stakeholder-presentation.md
-source-digest: sha256:77480c14286d
+source-digest: sha256:6c03e47e0e27
 activation: model-judged
 promotion: experiment-local
 ---
@@ -21,6 +21,8 @@ promotion: experiment-local
 # Stakeholder presentation (compiled from `stakeholder-presentation-process`)
 
 Turn source material into a presentation the product authority can decide from in one short sitting, verified by an independent cold read before delivery.
+
+**Lead with the answer. The reader must get the most important thing even if they stop after the first paragraph, and must be able to make every requested decision without opening an annex or the author's head.**
 
 ```mermaid
 flowchart TD

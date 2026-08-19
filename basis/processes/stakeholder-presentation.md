@@ -3,7 +3,7 @@ type: process-definition
 id: stakeholder-presentation-process
 status: experiment
 created: 2026-08-10
-updated: 2026-08-18
+updated: 2026-08-19
 produces: [decision-brief]
 carried-by: stakeholder-presentation-skill
 condition-language: cel
@@ -21,6 +21,11 @@ annotations:
 **Purpose:** Turn source material into a presentation the product authority
 can decide from in one short sitting, verified by an independent cold read
 before delivery.
+
+**Guiding statement:** Lead with the answer. The reader must get the most
+important thing even if they stop after the first paragraph, and must be
+able to make every requested decision without opening an annex or the
+author's head.
 
 **Outcomes:**
 - O1. A presentation exists within budget — witnessed by the checks on

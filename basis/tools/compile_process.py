@@ -39,7 +39,9 @@ def parse(path: pathlib.Path):
         sys.exit(f"{path}: no `steps`/`start` yaml block found")
     purpose_match = re.search(r"\*\*Purpose:\*\*\s*(.*?)\n\n", text, re.S)
     purpose = " ".join(purpose_match.group(1).split()) if purpose_match else ""
-    return text, front, spec, purpose
+    guiding_match = re.search(r"\*\*Guiding statement:\*\*\s*(.*?)\n\n", text, re.S)
+    guiding = " ".join(guiding_match.group(1).split()) if guiding_match else ""
+    return text, front, spec, purpose, guiding
 
 
 def node_id(step_id: str) -> str:
@@ -127,8 +129,8 @@ def skill_step_section(step: dict) -> str:
     return "\n".join(lines)
 
 
-def generate_skill(front: dict, spec: dict, purpose: str, diagram: str, digest: str,
-                   source_rel: str) -> str:
+def generate_skill(front: dict, spec: dict, purpose: str, guiding: str, diagram: str,
+                   digest: str, source_rel: str) -> str:
     cc = (front.get("annotations") or {}).get("claude-code", {})
     description = purpose
     if cc.get("use-when"):
@@ -155,8 +157,10 @@ def generate_skill(front: dict, spec: dict, purpose: str, diagram: str, digest: 
         "---\n" + yaml.safe_dump(fm, sort_keys=False).rstrip() + "\n---",
         f"# {title} (compiled from `{front['id']}`)",
         purpose,
-        f"```mermaid\n{diagram}\n```",
     ]
+    if guiding:
+        parts.append(f"**{guiding}**")
+    parts.append(f"```mermaid\n{diagram}\n```")
     parts += [skill_step_section(step) for step in spec["steps"]]
     return "\n\n".join(parts) + "\n"
 
@@ -169,7 +173,7 @@ def main() -> None:
         skill_out = pathlib.Path(args[i + 1])
         args = args[:i] + args[i + 2:]
     source = pathlib.Path(args[0])
-    text, front, spec, purpose = parse(source)
+    text, front, spec, purpose, guiding = parse(source)
     diagram = mermaid(spec)
     write_flow(source, text, diagram)
     print(f"{source}: flow diagram regenerated ({len(spec['steps'])} steps)")
@@ -178,7 +182,7 @@ def main() -> None:
         source_rel = f"basis/processes/{source.name}"
         skill_out.parent.mkdir(parents=True, exist_ok=True)
         skill_out.write_text(
-            generate_skill(front, spec, purpose, diagram, digest, source_rel)
+            generate_skill(front, spec, purpose, guiding, diagram, digest, source_rel)
         )
         print(f"{skill_out}: generated from {front['id']} (digest {digest})")
 
