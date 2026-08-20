@@ -286,6 +286,15 @@ any of them and you land where the tour just took you.
   principle-set typedef gains `scope` (working | architecture) plus the
   rule that undefined-format content enters a set only by rewrite, never
   as-is.
+- **R13 (2026-08-20): the principles load into every prompt, not only
+  into documents.** A working-scope principle set is compiled into the
+  session prompt chain: `tools/compile_principles.py` renders the
+  statements (name, slug, statement — norms only; rationales stay in the
+  source) into a generated file with source digest, placed at
+  `.claude/shop/principles.md` on `main` and included by `CLAUDE.md`
+  ahead of the primers. Single source holds: the rendering is generated,
+  never edited; the source document wins on conflict. Regeneration is
+  part of any principle amendment landing.
 
 ## Review asks (all default-free — this is the experiment)
 
