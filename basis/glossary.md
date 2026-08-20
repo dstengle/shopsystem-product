@@ -5,7 +5,7 @@ owner: product-authority
 status: ratified
 ratified: 2026-08-19
 created: 2026-08-19
-updated: 2026-08-19
+updated: 2026-08-20
 ---
 
 # Glossary
@@ -50,3 +50,17 @@ terms uses one of these when one fits.
   at: the principle set plus one typedef per definition document type.
 - **owner** — the seat that ratifies changes to a definition; named in
   every definition's frontmatter.
+- **definition chain** — the six linked definitions of good for one
+  artifact type (typedef, guideline, fitness set, process, roles,
+  compiled skill); required before any instance is authored or rewritten.
+- **keeper** — a corpus record the rebaseline bill keeps; rewritten
+  forward through its type's ratified chain, never used as-is.
+- **rewrite-forward** — the default keeper disposition: re-author to the
+  ratified standard on the new baseline; repair-in-place only for records
+  already at the bar.
+- **rebaseline** — Phase 1 of the re-founding arc: the active tree comes
+  to hold only chain-conforming records; retired mass moves to the
+  archive.
+- **scope** (of a principle set) — the level the set governs and whose
+  context it loads into: working (every activity) or architecture (the
+  designed system).

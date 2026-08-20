@@ -3,7 +3,7 @@ type: experiment-index
 id: basis
 status: experiment
 created: 2026-08-10
-updated: 2026-08-19
+updated: 2026-08-20
 ---
 
 # The new-basis experiment — a walkthrough
@@ -268,6 +268,24 @@ any of them and you land where the tour just took you.
   section is removed. Examples are found, not pinned: the validator can
   list conforming instances of a type on demand, so the registry always
   shows current examples and never a stale one.
+- **R12 (2026-08-20): proposals obey the principles they propose under.**
+  The authority audited the migration proposal against the principle set:
+  it failed three of four — chat prose instead of a defined process, no
+  exits or failure paths, ungoverned context, coined terms. Remediation,
+  applied: the migration now exists as a draft process definition
+  (`processes/definition-chain-migration.md`) with failsafe and park
+  paths, compiled; a new implication on `define-good-up-front` makes the
+  rule standing (a proposal for an activity is written as a draft
+  instance of the activity's type, so its checks run before review); the
+  four working principles converged in dialogue but never drafted —
+  external-standards-first, single-source-of-truth,
+  feedback-loops-with-consumers, delivery-verified — are now in the set;
+  the principle set therefore returns to `status: draft` for
+  re-ratification; coined terms are in the glossary; step seats now
+  include `execution: human` for authority sittings; and the
+  principle-set typedef gains `scope` (working | architecture) plus the
+  rule that undefined-format content enters a set only by rewrite, never
+  as-is.
 
 ## Review asks (all default-free — this is the experiment)
 

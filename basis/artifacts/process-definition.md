@@ -5,7 +5,7 @@ defines: process-definition
 owner: product-authority
 status: draft
 created: 2026-08-19
-updated: 2026-08-19
+updated: 2026-08-20
 ancestry: [definition, process-definition]
 ---
 
@@ -52,12 +52,14 @@ the shop-msg catalog).
 Top-level keys: `start` (first step id), optional `result` (the data
 value a run returns — the artifact, not a status record). Each step:
 
-- `id`, `name`; `run-by` — `{role, execution: agent}` or
-  `{execution: runtime}`; `fresh-context: true` where a seat must not
-  carry memory between runs.
+- `id`, `name`; `run-by` — `{role, execution: agent}`,
+  `{role, execution: human}` (a seat a person holds, e.g. an authority
+  sitting), or `{execution: runtime}`; `fresh-context: true` where a seat
+  must not carry memory between runs.
 - `inputs` / `outputs` — lists of declared data names; the typed contract
   is the isolation mechanism (a step reads only what it lists).
-- Agent steps carry `prompt` — **the only prose allowed in a step**.
+- Agent and human steps carry `prompt` — **the only prose allowed in a
+  step** (for a human step it is the sitting's ask).
 - Runtime steps carry `set` (CEL assignments), `run` (command templates
   with `${...}` interpolation from typed inputs; `atomic: true` binds the
   lines into one all-or-nothing act), or `branches`.

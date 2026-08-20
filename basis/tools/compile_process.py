@@ -143,12 +143,18 @@ def mermaid(spec: dict) -> str:
                 arrow = f"-->|{blabel}|" if blabel else "-->"
                 edges.append(f"  {sid} {arrow} {target}")
         else:
-            if run_by.get("execution") == "agent":
-                head = f"{step['name']} — agent: {run_by.get('role', 'agent')}"
+            execution = run_by.get("execution", "runtime")
+            if execution in ("agent", "human"):
+                head = f"{step['name']} — {execution}: {run_by.get('role', execution)}"
             else:
                 head = f"{step['name']} — runtime"
             label = "<br/>".join([head] + io)
-            shape = f'(["{label}"])' if run_by.get("execution") == "agent" else f'["{label}"]'
+            if execution == "agent":
+                shape = f'(["{label}"])'
+            elif execution == "human":
+                shape = f'[["{label}"]]'
+            else:
+                shape = f'["{label}"]'
             nodes.append(f"  {sid}{shape}")
             if step.get("next"):
                 edges.append(f'  {sid} --> {node_id(step["next"])}')
@@ -188,9 +194,10 @@ def fmt_io(step: dict) -> str:
 def skill_step_section(step: dict) -> str:
     lines = [f"## {step['id']} — {step['name']}", ""]
     run_by = step.get("run-by", {})
-    if run_by.get("execution") == "agent":
+    if run_by.get("execution") in ("agent", "human"):
         fresh = " (fresh context every run)" if run_by.get("fresh-context") else ""
-        lines.append(f"Run by agent in role `{run_by.get('role')}`{fresh}. {fmt_io(step)}.")
+        seat = "agent" if run_by["execution"] == "agent" else "human seat"
+        lines.append(f"Run by {seat} in role `{run_by.get('role')}`{fresh}. {fmt_io(step)}.")
         for check in step.get("checks", []):
             lines.append(f"- check: `{check}`")
         if step.get("next"):

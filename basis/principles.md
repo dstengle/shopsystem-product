@@ -1,11 +1,12 @@
 ---
 type: principle-set
 id: principles
+scope: working
 owner: product-authority
-status: ratified
+status: draft
 ratified: 2026-08-19
 created: 2026-08-10
-updated: 2026-08-19
+updated: 2026-08-20
 ---
 
 # Founding principles
@@ -55,7 +56,10 @@ it without a new decision. Reviewers compare work to the written
 definition; their own taste is not the standard. The same role never both
 performs and checks an activity — process definitions name both roles, so
 this is checkable mechanically. A failed spot check sends the maintainer
-to the definition or the check, not only to the artifact.
+to the definition or the check, not only to the artifact. Whoever
+proposes a new activity writes the proposal as a draft instance of the
+activity's type, so the type's derived checks run on the proposal before
+any reviewer reads it.
 
 ## Govern the generating context (`governed-context`)
 
@@ -115,16 +119,84 @@ are vocabulary authors: naming a field adds a term to the restricted
 language. Reviewers flag near-synonym pairs as drift; the losing term is
 removed everywhere, not deprecated in place.
 
+## Use external standards first (`external-standards-first`)
+
+**Statement.** A definition MUST adopt an established external form where
+one fits; bespoke structure MUST be justified by a recorded gap in the
+form it rejects.
+
+**Rationale.** Established forms carry decades of failure-tested
+decisions no fresh invention can match, and readers arrive already
+knowing them. The format research proved the point here: every element of
+the definition system had an established form, and the only bespokeness
+that survived review was the composition of adopted parts.
+
+**Implications.** Authors search prior art before drafting and name every
+adopted form in the definition's Sources section. Reviewers ask "what
+standard is this from" and treat unjustified invention as a defect.
+
+## Single source of truth (`single-source-of-truth`)
+
+**Statement.** Every fact, rule, or definition MUST have exactly one
+authoritative home; every other appearance MUST be a reference or a
+generated rendering.
+
+**Rationale.** Copies drift and each drifting copy trains a different
+behavior. This shop measured it: consuming repos copied schema files
+instead of referencing the registry and drifted from the real schemas,
+and a typedef's pinned example link stopped conforming within days of
+being written.
+
+**Implications.** Writers link or `$ref` instead of restating. Only the
+compiler touches renderings; a hand edit to a rendering is reverted, not
+merged. Reviewers treat a second authoritative statement of one rule as a
+defect and remove the losing copy everywhere.
+
+## Feedback loops have consumers (`feedback-loops-with-consumers`)
+
+**Statement.** Every feedback channel MUST name its consumer and the
+resulting action; the effectiveness of processes, tools, and prompts MUST
+be measured, and their definitions MUST be updated from what is measured.
+
+**Rationale.** A channel without a consumer dies silently and takes its
+signal with it: this shop's agents stopped sending mechanism_observation
+because nothing consumed it, and the improvement signal moved into an
+ungoverned memory tool. Judged checks decay the same way when no one
+grades the judge.
+
+**Implications.** Whoever opens a channel names its consumer and resulting
+action at creation, or the router closes it. Owners of judged checks
+grade a sample of verdicts on a standing calibration schedule. Definition
+owners treat measured ineffectiveness as an obligation to update the
+definition, not as background noise.
+
+## Delivery is verified in the running system (`delivery-verified`)
+
+**Statement.** Work MUST be counted done only when its effect is
+demonstrated in the running system; artifacts existing, checks passing,
+or reviews approving MUST NOT count as done on their own.
+
+**Rationale.** The gap between green artifacts and working systems is
+where this fleet's worst defects lived: six fabro-launcher defects
+surfaced only at live end-to-end because CI built and published without
+ever running the image, and the 2026-08-03 trust break traced to checks
+green while decisions were unrealized.
+
+**Implications.** Definition authors name the runtime demonstration in
+every Definition of Done. Reviewers reject completion claims that cite
+only artifacts. Whoever closes work cites the demonstration evidence in
+the close reason — the reconcile process already enforces this shape.
+
 ---
 
 ## Fitness screen (the intro's tests; sources: TOGAF, Spool, Rumelt, Lencioni)
 
-| Screen | define-good-up-front | governed-context | no-orphan-activities | use-defined-terms |
-|---|---|---|---|---|
-| Statement testable (TOGAF: understandable, complete, consistent) | pass | pass | pass | pass |
-| Helps you say no (Spool) | yes: rejects definition-less checks and self-checked work | yes: rejects unsanctioned channels | yes: rejects orphan activities | yes: rejects undefined coinages and synonym pairs |
-| Not fluff, not a goal-in-disguise (Rumelt) | directs and constrains without prescribing method | same | same | same |
-| Not permission-to-play (Lencioni) | pass — most systems do NOT work this way | pass | pass | pass |
-| Implies ≥1 practice and ≥1 check (shop rule) | shared-definition practice; role-separation check | promotion gate; provenance audit | process-membership lint; loop-exit review | term lookup before writing; undefined-term and near-synonym lint |
-| Normative keywords in statements only (mechanical) | pass | pass | pass | pass |
-| Implications derivable and actor-named (judged) | pass | pass | pass | pass |
+| Screen | define-good-up-front | governed-context | no-orphan-activities | use-defined-terms | external-standards-first | single-source-of-truth | feedback-loops-with-consumers | delivery-verified |
+|---|---|---|---|---|---|---|---|---|
+| Statement testable (TOGAF: understandable, complete, consistent) | pass | pass | pass | pass | pass | pass | pass | pass |
+| Helps you say no (Spool) | yes: rejects definition-less checks and self-checked work | yes: rejects unsanctioned channels | yes: rejects orphan activities | yes: rejects undefined coinages and synonym pairs | yes: rejects unjustified invention | yes: rejects duplicate authorities | yes: rejects consumer-less channels | yes: rejects artifact-only done claims |
+| Not fluff, not a goal-in-disguise (Rumelt) | directs and constrains without prescribing method | same | same | same | same | same | same | same |
+| Not permission-to-play (Lencioni) | pass — most systems do NOT work this way | pass | pass | pass | pass | pass | pass | pass |
+| Implies ≥1 practice and ≥1 check (shop rule) | shared-definition practice; role-separation check | promotion gate; provenance audit | process-membership lint; loop-exit review | term lookup before writing; undefined-term and near-synonym lint | prior-art search; Sources-section audit | link-or-ref practice; duplicate-statement review | consumer named at creation; calibration schedule | demonstration named in DoD; close-reason citation check |
+| Normative keywords in statements only (mechanical) | pass | pass | pass | pass | pass | pass | pass | pass |
+| Implications derivable and actor-named (judged) | pass | pass | pass | pass | pass | pass | pass | pass |

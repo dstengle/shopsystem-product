@@ -5,7 +5,7 @@ defines: principle-set
 owner: product-authority
 status: draft
 created: 2026-08-19
-updated: 2026-08-19
+updated: 2026-08-20
 ancestry: [definition, principle-set]
 ---
 
@@ -22,7 +22,18 @@ ancestry: [definition, principle-set]
 
 ## Required frontmatter
 
-`type: principle-set`, `id`, `owner`, `status`, `created`, `updated`.
+`type: principle-set`, `id`, `scope` (the level the set governs and whose
+context it loads into: `working` — how every activity is performed, loads
+everywhere — or `architecture` — how the system is designed, loads where
+design work happens), `owner`, `status`, `created`, `updated`.
+
+## Rules
+
+- Content in an undefined format never enters a set as-is: it is source
+  material for a rewrite through this typedef, or it retires.
+- Where a principle in one set applies another set's principle to its own
+  level, it declares the lineage (`derives-from`) rather than restating
+  the rule as a second authority.
 
 ## Required sections
 
