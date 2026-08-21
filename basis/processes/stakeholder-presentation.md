@@ -2,8 +2,8 @@
 type: process-definition
 id: stakeholder-presentation-process
 owner: product-authority
-status: ratified
-ratified: 2026-08-19
+status: approved
+approved: 2026-08-19
 created: 2026-08-10
 updated: 2026-08-19
 produces: [decision-brief]
@@ -141,7 +141,7 @@ steps:
       answer in at most four sentences, then the recommendations and the
       asks. Write each ask in four parts: question, recommendation,
       inline evidence, default. State which asks gate work and which
-      resolve by default on silence; a block-ratification states what it
+      resolve by default on silence; a block-approval states what it
       binds. Gloss every proper noun at first mention. Attach every block
       to an ask or label it informational. Demote the original material
       to a labeled annex and link it. Style rules:

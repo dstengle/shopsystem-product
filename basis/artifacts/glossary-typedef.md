@@ -34,7 +34,7 @@ ancestry: [definition, glossary]
 
 ## Commitment (Definition of Done)
 
-A glossary is done when every important term used in ratified documents
+A glossary is done when every important term used in approved documents
 resolves here or to a schema element. **Consequence on failure:** the
 undefined term is a defect the author repairs by defining or replacing
 it.
@@ -49,5 +49,5 @@ restricted language); the `use-defined-terms` principle.
 - Combination rule stated. *(§Required sections 1)*
 - Definitions ≤2 lines; banned near-synonyms named where rulings created
   them. *(§Required sections 2)*
-- Sampled terms from ratified documents resolve — judged spot-check plus
+- Sampled terms from approved documents resolve — judged spot-check plus
   mechanical lint. *(Commitment)*

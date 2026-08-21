@@ -2,8 +2,8 @@
 type: quality-guideline
 id: base-writing-style
 owner: product-authority
-status: ratified
-ratified: 2026-08-19
+status: approved
+approved: 2026-08-19
 created: 2026-08-14
 updated: 2026-08-14
 ---

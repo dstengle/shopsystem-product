@@ -14,30 +14,30 @@ external-refs: []
 
 **Purpose:** Convert one artifact type from the frozen corpus into the new
 baseline: build its definition chain, prove the chain on a real keeper,
-ratify it, rewrite every keeper through it, and move what does not survive
+approve it, rewrite every keeper through it, and move what does not survive
 to the archive.
 
 **Guiding statement:** Nothing enters the new baseline except through a
-ratified definition. A document in an undefined format is source material
+approved definition. A document in an undefined format is source material
 for a rewrite, never a usable artifact.
 
 **Outcomes:**
-- O1. The type's definition chain is ratified by the authority — witnessed
-  by the check on `ratify-chain`.
+- O1. The type's definition chain is approved by the authority — witnessed
+  by the check on `approve-chain`.
 - O2. Every keeper is rewritten or demoted, none silently dropped —
   witnessed by the check on `rewrite-keepers`.
 - O3. Retired and demoted records leave the active tree — witnessed by
   the `archive-retired` run.
-- O4. A chain the authority cannot ratify parks with a filed finding
+- O4. A chain the authority cannot approve parks with a filed finding
   instead of looping — witnessed by the failsafe branch of
   `route-review` and the `park` step.
 
-**Roles:** product-authority (human seat — reviews, ratifies,
+**Roles:** product-authority (human seat — reviews, approves,
 spot-checks). lead-pm (author seat — drafts the chain, runs rewrites).
-The per-instance reviewer seats come from the chain itself once ratified.
+The per-instance reviewer seats come from the chain itself once approved.
 
 **Scope note:** one run migrates one artifact type. The order of runs
-comes from the ratified rebaseline bill at its review; keepers for the
+comes from the approved rebaseline bill at its review; keepers for the
 run are the bill's keep-rewrite records of that type.
 
 ## Flow (compiled)
@@ -53,7 +53,7 @@ flowchart TD
   route_review{"Route on the verdict<br/>in — review: review, round: integer"}
   revise_chain(["Revise the chain — agent: lead-pm<br/>in — chain: definition-chain, review: review<br/>out — chain: definition-chain"])
   advance_round["Advance the round counter — runtime<br/>in — round: integer<br/>sets — round: integer"]
-  ratify_chain[["Ratify the chain — human: product-authority<br/>in — chain: definition-chain<br/>out — chain: definition-chain"]]
+  approve_chain[["Approve the chain — human: product-authority<br/>in — chain: definition-chain<br/>out — chain: definition-chain"]]
   rewrite_keepers(["Rewrite every keeper through the chain — agent: lead-pm<br/>in — chain: definition-chain, keepers: string[], exemplar: string<br/>out — rewritten: string[], demoted: string[]"])
   archive_retired["Archive what leaves — runtime<br/>in — artifact_type: string, demoted: string[]"]
   park["Park the type with a finding — runtime<br/>in — artifact_type: string, chain: definition-chain, review: review<br/>sets — chain.status: field of definition-chain"]
@@ -62,12 +62,12 @@ flowchart TD
   build_chain --> exemplar_rewrite
   exemplar_rewrite --> authority_review
   authority_review --> route_review
-  route_review -->|success exit: clean or tradeoffs accepted| ratify_chain
+  route_review -->|success exit: clean or tradeoffs accepted| approve_chain
   route_review -->|failsafe exit: round >= 3| park
   route_review -->|else| revise_chain
   revise_chain --> advance_round
   advance_round --> authority_review
-  ratify_chain --> rewrite_keepers
+  approve_chain --> rewrite_keepers
   rewrite_keepers --> archive_retired
   archive_retired --> __end
   park --> __end
@@ -94,7 +94,7 @@ data:
 ## Steps
 
 The `archive-move` command in `archive-retired` is the archive contract
-tool the bill's mechanism review must ratify (in-repo archive branch
+tool the bill's mechanism review must approve (in-repo archive branch
 plus snapshot tag). Until it exists the step blocks — which is correct:
 mass moves are mechanical or they do not happen.
 
@@ -146,7 +146,7 @@ steps:
       One review, one type: the chain and the exemplar rewritten through
       it, side by side. Rule on both — the chain's definitions and what
       they actually produced. Findings land as rulings; verdict "clean"
-      or "tradeoffs-accepted" ratifies, "findings" sends the chain back.
+      or "tradeoffs-accepted" approves, "findings" sends the chain back.
     next: route-review
 
   - id: route-review
@@ -156,7 +156,7 @@ steps:
     branches:
       - label: "success exit: clean or tradeoffs accepted"
         when: review.verdict in ["clean", "tradeoffs-accepted"]
-        next: ratify-chain
+        next: approve-chain
       - label: "failsafe exit: round >= 3"
         when: round >= 3
         next: park
@@ -182,15 +182,15 @@ steps:
       round: round + 1
     next: authority-review
 
-  - id: ratify-chain
-    name: Ratify the chain
+  - id: approve-chain
+    name: Approve the chain
     run-by: {role: product-authority, execution: human}
     inputs: [chain]
     outputs: [chain]
     checks:
-      - chain.status == "ratified"
+      - chain.status == "approved"
     prompt: |
-      Ratification stamps every link: status ratified, ratified date,
+      Approval stamps every link: status approved, approved date,
       owner. From this point the chain is the standard the mass rewrite
       is checked against, and changes to it go through you.
     next: rewrite-keepers
@@ -203,7 +203,7 @@ steps:
     checks:
       - size(rewritten) + size(demoted) == size(keepers)
     prompt: |
-      Run the type's ratified authoring process once per keeper: author
+      Run the type's approved authoring process once per keeper: author
       seat and fresh reviewer seat per the chain, authority spot-checks
       per the attention architecture. A keeper that cannot reach the bar
       after two attempts is demoted: file it for retirement with a note
@@ -234,7 +234,7 @@ steps:
 
 | Outcome | Check | Kind | Where |
 |---|---|---|---|
-| O1 | chain status ratified before any mass rewrite | mechanical | `ratify-chain.checks` |
+| O1 | chain status approved before any mass rewrite | mechanical | `approve-chain.checks` |
 | O2 | rewritten + demoted counts equal keepers | mechanical | `rewrite-keepers.checks` |
 | O3 | after the run no demoted id remains in the active tree | mechanical post-run audit | `archive-retired.run` |
 | O4 | parked types carry a filed finding | mechanical | `park.run` |

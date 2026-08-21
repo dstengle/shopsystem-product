@@ -6,8 +6,8 @@ maxTurns: 8
 type: role-definition
 id: cold-reviewer
 owner: product-authority
-status: ratified
-ratified: 2026-08-19
+status: approved
+approved: 2026-08-19
 created: 2026-08-10
 updated: 2026-08-11
 ---

@@ -3,8 +3,8 @@ type: quality-guideline
 id: stakeholder-communication-guideline
 target-type: decision-brief
 owner: product-authority
-status: ratified
-ratified: 2026-08-19
+status: approved
+approved: 2026-08-19
 created: 2026-08-10
 updated: 2026-08-21
 ---
@@ -21,7 +21,7 @@ nothing committed outside an ask.
 
 **Layers:** this guideline adds decision-document rules on top of the
 [base writing style](base-writing-style.md); the base always applies and is
-never overridden. When rules conflict, a ratified principle beats the
+never overridden. When rules conflict, a approved principle beats the
 artifact type's typedef, which beats this guideline.
 
 ---

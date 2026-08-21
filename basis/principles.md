@@ -4,7 +4,7 @@ id: principles
 scope: working
 owner: product-authority
 status: draft
-ratified: 2026-08-19
+approved: 2026-08-19
 created: 2026-08-10
 updated: 2026-08-21
 ---
@@ -64,7 +64,7 @@ any reviewer reads it.
 ## Govern the generating context (`governed-context`)
 
 **Statement.** Everything loaded into an agent's generating context —
-prompts, skills, memories, primers — MUST trace to a ratified definition or
+prompts, skills, memories, primers — MUST trace to a approved definition or
 a governed record; an unsanctioned context channel MUST NOT
 be created or retained.
 

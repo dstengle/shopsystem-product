@@ -281,7 +281,7 @@ any of them and you land where the tour just took you.
   external-standards-first, single-source-of-truth,
   feedback-loops-with-consumers, delivery-verified — are now in the set;
   the principle set therefore returns to `status: draft` for
-  re-ratification; coined terms are in the glossary; step seats now
+  re-approval; coined terms are in the glossary; step seats now
   include `execution: human` for authority sittings; and the
   principle-set typedef gains `scope` (working | architecture) plus the
   rule that undefined-format content enters a set only by rewrite, never
@@ -289,7 +289,7 @@ any of them and you land where the tour just took you.
 - **R14 (2026-08-21): memory writes frozen; handoff is a defined
   process; the second seat runs on everything.** Rulings from the
   principles validation: all memory writes frozen (recorded in the shop
-  primer, loaded every session) pending the disposition ruling; session
+  primer, loaded every session) pending the memory ruling; session
   handoff standardized as
   [`processes/session-handoff.md`](processes/session-handoff.md) — the
   session record is the only cross-session carrier, durable corrections
@@ -321,6 +321,13 @@ any of them and you land where the tour just took you.
   rebound to conversation close — a transcript ending mid-conversation is
   a checkpoint, not a close. The journal-as-branch mechanism lands with
   the archive machinery at the bill review.
+- **R16 (2026-08-21): "approve" replaces "ratify"; "disposition" is
+  banned as overly complicated.** Swept corpus-wide: prose, the
+  front-matter field (`approved:` dates), the status value
+  (`draft | approved | superseded`), the migration step (`approve-chain`),
+  the chain status enum, and every rendering regenerated. The glossary
+  entries that used "disposition" were reworked to plain sentences; the
+  replacement noun for the per-record table awaits the authority's pick.
 - **R13 (2026-08-20): the principles load into every prompt, not only
   into documents.** A working-scope principle set is compiled into the
   session prompt chain: `tools/compile_principles.py` renders the
@@ -347,15 +354,15 @@ compiled SKILL.md the right runtime carrier shape for Claude Code.
 ## After review
 
 The authority declared this review stage complete on 2026-08-19, after
-eleven rulings (R1–R11), and **ratified the refined exemplar formats the
-same day**. Every exemplar now carries `status: ratified`,
-`ratified: 2026-08-19`, and an `owner` in its front-matter.
+eleven rulings (R1–R11), and **approved the refined exemplar formats the
+same day**. Every exemplar now carries `status: approved`,
+`approved: 2026-08-19`, and an `owner` in its front-matter.
 
-## The seed layer (drafted on ratification — awaiting review)
+## The seed layer (drafted on approval — awaiting review)
 
-The definition regress terminates at a hand-ratified seed: the
+The definition regress terminates at a hand-approved seed: the
 [principle set](principles.md) plus one artifact-typedef per definition
-document type, each drafted in the ratified typedef format itself. This
+document type, each drafted in the approved typedef format itself. This
 closes R4's open loop — format provenance now lives in each typedef's
 Sources section, not in this index (the story above keeps narrative
 copies only). All are `status: draft` until the authority reviews them:
@@ -380,7 +387,7 @@ copies only). All are `status: draft` until the authority reviews them:
 - [`artifacts/glossary-typedef.md`](artifacts/glossary-typedef.md) — the
   restricted-language list (R9).
 
-After the seed is ratified: migration into the live corpus — the PDR-032
+After the seed is approved: migration into the live corpus — the PDR-032
 registry amendment (open, versioned type set), the ADR-059 wording
 alignment ("projection" → "rendering"), generated-file banners to
 front-matter (R2), and system-wide application of the base writing style

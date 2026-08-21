@@ -18,7 +18,7 @@ ancestry: [definition, artifact-typedef]
   sections, and commitment. Templates, schema fragments, and validators
   are its renderings; the typedef is the only hand-edited form.
 - **This document conforms to itself.** The definition regress terminates
-  here: the product authority ratifies this typedef and the principle set
+  here: the product authority approves this typedef and the principle set
   by hand; everything else is checked against a typedef.
 - **Produced by:** seed drafting or a governed registry amendment.
   **Consumed by:** authors (via the rendered template), validators (via
@@ -30,7 +30,7 @@ ancestry: [definition, artifact-typedef]
 in their `type` field), `owner`, `status`, `created`, `updated`,
 `ancestry` (from the generic root to the type this document defines).
 Every instance also carries the identity base `definition` requires
-(`owner`, `status`, `ratified` when applicable); a type's field set is
+(`owner`, `status`, `approved` when applicable); a type's field set is
 closed over that base plus its own list.
 
 ## Required sections
@@ -56,7 +56,7 @@ closed over that base plus its own list.
   validator lists currently-conforming instances on demand; a pinned
   example drifts as the collection changes.
 - Schemas of existing types evolve and new types are added through the
-  owner's ratification — the registry is open and versioned, never fixed.
+  owner's approval — the registry is open and versioned, never fixed.
 
 ## Commitment (Definition of Done)
 

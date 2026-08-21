@@ -19,15 +19,15 @@ ancestry: [definition]
   `artifact-typedef`) declare it in their ancestry, so a validator that
   knows only `definition` can check any definition document against the
   two requirements below.
-- **Produced by:** seed drafting, or governed evolution of a ratified
+- **Produced by:** seed drafting, or governed evolution of a approved
   definition. **Consumed by:** every agent whose work the definition
   governs; compilers and validators that render or check against it.
 
 ## Required frontmatter
 
-`type`, `id`, `status` (draft | ratified | superseded), `owner` (the seat
-that ratifies changes), `created`, `updated`; `ratified` (date of the most recent ratification) once ratified — retained
-through a later draft amendment to mark the last ratified version.
+`type`, `id`, `status` (draft | approved | superseded), `owner` (the seat
+that approves changes), `created`, `updated`; `approved` (date of the most recent approval) once approved — retained
+through a later draft amendment to mark the last approved version.
 
 ## Required sections
 

@@ -19,7 +19,7 @@ field holds the id of the definition document filling it; the skill link
 is the compiled rendering of the process link, never hand-written.
 Produced by the `build-chain` step of
 [`../processes/definition-chain-migration.md`](../processes/definition-chain-migration.md);
-consumed by that process's `authority-review`, `ratify-chain`,
+consumed by that process's `authority-review`, `approve-chain`,
 `rewrite-keepers`, and `park` steps.
 
 ## Schema
@@ -35,5 +35,5 @@ schema:
     process: {type: string}
     roles: {type: array, items: {type: string}}
     skill: {type: string}
-    status: {type: string, enum: [draft, ratified, parked]}
+    status: {type: string, enum: [draft, approved, parked]}
 ```

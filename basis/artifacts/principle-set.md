@@ -14,7 +14,7 @@ ancestry: [definition, principle-set]
 ## Identity and ancestry
 
 - **Type:** `principle-set` — the document holding the standing rules
-  about how we work. Hand-ratified by the owner; everything else in the
+  about how we work. Hand-approved by the owner; everything else in the
   system traces to it.
 - **Produced by:** seed drafting; amended only by the owner's ruling.
   **Consumed by:** every definition author and reviewer; the fitness

@@ -34,7 +34,7 @@ base style, which governs all prose).
 2. **Highlights** — the compressed layer compiled into the author's
    context.
 3. **Layers** — what this guideline sits on and the precedence order when
-   rules conflict (a ratified principle beats the artifact type's typedef, which beats
+   rules conflict (a approved principle beats the artifact type's typedef, which beats
    any guideline; the base writing style is a guideline other guidelines
    never override, and it yields to principles and typedefs like any
    guideline).

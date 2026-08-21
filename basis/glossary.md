@@ -2,8 +2,8 @@
 type: glossary
 id: glossary
 owner: product-authority
-status: ratified
-ratified: 2026-08-19
+status: approved
+approved: 2026-08-19
 created: 2026-08-19
 updated: 2026-08-20
 ---
@@ -46,16 +46,16 @@ terms uses one of these when one fits.
 - **principle** — a standing rule about how we work: name, statement,
   rationale, implications (see the principles document's opening
   definition).
-- **seed layer** — the hand-ratified definitions the regress terminates
+- **seed layer** — the hand-approved definitions the regress terminates
   at: the principle set plus one typedef per definition document type.
-- **owner** — the seat that ratifies changes to a definition; named in
+- **owner** — the seat that approves changes to a definition; named in
   every definition's frontmatter.
 - **definition chain** — the six linked definitions of good for one
   artifact type; required before instances are authored or rewritten.
 - **keeper** — a corpus record the rebaseline bill keeps; rewritten
-  forward through its type's ratified chain, never used as-is.
-- **rewrite-forward** — the default keeper disposition: re-author to the
-  ratified standard; repair-in-place only for records already at the bar.
+  forward through its type's approved chain, never used as-is.
+- **rewrite-forward** — the default for keepers: re-author to the
+  approved standard; repair-in-place only for records already at the bar.
 - **rebaseline** — Phase 1 of the re-founding arc: the active tree comes
   to hold only chain-conforming records; retired mass moves to the
   archive.
@@ -77,11 +77,11 @@ terms uses one of these when one fits.
   presented and the rulings issued.
 - **ruling** — a decision the authority records during a review; numbered
   (Rn) in the experiment index and binding on the corpus it governs.
-- **park** — the failsafe disposition for work that cannot pass review
-  within its round cap: set aside with a filed finding.
+- **park** — the failsafe for work that cannot pass review within its
+  round cap: set aside with a filed finding.
 - **round cap** — the declared maximum review rounds before a loop's
   failsafe exit fires.
-- **rebaseline bill** — the ratified disposition table (keep-rewrite,
-  retire, or terminal per corpus record) that drives the rebaseline.
+- **rebaseline bill** — the approved per-record table (keep-rewrite,
+  retire, or terminal for each corpus record) that drives the rebaseline.
 - **experiment index** — the new-basis experiment's README: the
   walkthrough, the numbered rulings, and the review state.

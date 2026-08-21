@@ -3,8 +3,8 @@ type: artifact-typedef
 id: decision-brief-typedef
 defines: decision-brief
 owner: product-authority
-status: ratified
-ratified: 2026-08-19
+status: approved
+approved: 2026-08-19
 created: 2026-08-10
 updated: 2026-08-19
 ancestry: [request, decision-brief]
@@ -36,7 +36,7 @@ per the authority's strictness directive).
 1. **The answer first** — SCQA opening, ≤4 sentences, then the
    recommendation; states which asks gate work and which default on silence.
 2. **Asks** — each: question → recommendation → inline evidence → default.
-   Block-ratification asks state what ratification binds vs what stays a
+   Block-approval asks state what approval binds vs what stays a
    drafting default.
 3. **Deferred** (if anything is) — deferrals are notes, never asks.
 4. **Annex link** — the full material, labeled optional.
@@ -48,7 +48,7 @@ from the brief alone in one short reading; budgets hold (decision layer
 ≤ ~400 words, total ≤ ~1,500); an independent cold read has passed it (O3 of
 the producing process). **Consequence on failure:** the brief returns to the
 author for re-forming — it is not deliverable, and decisions made from a
-failed brief are not recorded as ratifications.
+failed brief are not recorded as approvals.
 
 ## Sources
 

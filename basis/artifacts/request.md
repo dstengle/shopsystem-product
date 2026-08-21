@@ -3,8 +3,8 @@ type: artifact-typedef
 id: request-typedef
 defines: request
 owner: product-authority
-status: ratified
-ratified: 2026-08-19
+status: approved
+approved: 2026-08-19
 created: 2026-08-19
 updated: 2026-08-19
 ancestry: [request]

@@ -2,8 +2,8 @@
 type: fitness-set
 id: decision-brief-fitness
 owner: product-authority
-status: ratified
-ratified: 2026-08-19
+status: approved
+approved: 2026-08-19
 created: 2026-08-10
 updated: 2026-08-21
 target-type: decision-brief
