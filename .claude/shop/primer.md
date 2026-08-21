@@ -76,7 +76,7 @@ repo" below.
 
 All memory writes are frozen: no `bd remember`, no `bd forget`, no writes
 to Claude auto-memory. The 67 existing memories are read-only pending the
-authority's disposition ruling. Session state crosses sessions only
+authority's memory ruling. Session state crosses sessions only
 through governed artifacts — the session record and the session-handoff
 process (`basis/processes/session-handoff.md` on `experiment/new-basis`).
 A durable correction amends the definition it corrects; it is never

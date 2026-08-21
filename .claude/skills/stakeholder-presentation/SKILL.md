@@ -6,14 +6,14 @@ description: Turn source material into a presentation the product authority can 
   ~300 words.
 type: skill
 id: stakeholder-presentation-skill
-status: ratified
+status: approved
 created: 2026-08-10
 updated: 2026-08-19
 generated: true
 generated-by: basis/tools/compile_process.py
 derived-from: stakeholder-presentation-process
 source: basis/processes/stakeholder-presentation.md
-source-digest: sha256:b5b7939e68a2
+source-digest: sha256:063eeb670f51
 activation: model-judged
 promotion: experiment-local
 ---
@@ -83,7 +83,7 @@ source by deletion. Open with situation, complication, question,
 answer in at most four sentences, then the recommendations and the
 asks. Write each ask in four parts: question, recommendation,
 inline evidence, default. State which asks gate work and which
-resolve by default on silence; a block-ratification states what it
+resolve by default on silence; a block-approval states what it
 binds. Gloss every proper noun at first mention. Attach every block
 to an ask or label it informational. Demote the original material
 to a labeled annex and link it. Style rules:
