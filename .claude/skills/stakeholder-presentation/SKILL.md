@@ -1,8 +1,8 @@
 ---
 name: stakeholder-presentation
 description: Turn source material into a presentation the product authority can decide
-  from in one short sitting, verified by an independent cold read before delivery.
-  Use before delivering any report, sitting material, or status update longer than
+  from in one short reading, verified by an independent cold read before delivery.
+  Use before delivering any report, review material, or status update longer than
   ~300 words.
 type: skill
 id: stakeholder-presentation-skill
@@ -13,14 +13,14 @@ generated: true
 generated-by: basis/tools/compile_process.py
 derived-from: stakeholder-presentation-process
 source: basis/processes/stakeholder-presentation.md
-source-digest: sha256:6241c6b717fa
+source-digest: sha256:b5b7939e68a2
 activation: model-judged
 promotion: experiment-local
 ---
 
 # Stakeholder presentation (compiled from `stakeholder-presentation-process`)
 
-Turn source material into a presentation the product authority can decide from in one short sitting, verified by an independent cold read before delivery.
+Turn source material into a presentation the product authority can decide from in one short reading, verified by an independent cold read before delivery.
 
 **Lead with the answer. The reader must get the most important thing even if they stop after the first paragraph, and must be able to make every requested decision without opening an annex or the author's head.**
 
@@ -64,7 +64,7 @@ presentation must enable. Enumerate the asks; keep only the asks
 that gate the next unit of work, and record the rest as deferrals —
 a deferral is a note, never an ask. Group related asks and order
 them by consequence. If the material holds more decisions than one
-sitting can carry, split it by decision, not by topic, and frame
+reading can carry, split it by decision, not by topic, and frame
 only the first split.
 ```
 

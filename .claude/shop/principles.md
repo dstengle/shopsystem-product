@@ -6,7 +6,7 @@ generated: true
 generated-by: basis/tools/compile_principles.py
 derived-from: principles
 source: basis/principles.md@experiment/new-basis
-source-digest: sha256:b61834348259
+source-digest: sha256:647f6ba6eefb
 scope: working
 ---
 
@@ -24,3 +24,4 @@ named in the front-matter; on conflict the source wins.
 - **Single source of truth** (`single-source-of-truth`): Every fact, rule, or definition MUST have exactly one authoritative home; every other appearance MUST be a reference or a generated rendering.
 - **Feedback loops have consumers** (`feedback-loops-with-consumers`): Every feedback channel MUST name its consumer and the resulting action; the effectiveness of processes, tools, and prompts MUST be measured, and their definitions MUST be updated from what is measured.
 - **Delivery is verified in the running system** (`delivery-verified`): Work MUST be counted done only when its effect is demonstrated in the running system; artifacts existing, checks passing, or reviews approving MUST NOT count as done on their own.
+- **Load the least context** (`least-context`): An activity MUST load the minimum context necessary to accomplish its task. The activity's process MUST name what loads into context and the source each input comes from; context from an unapproved source MUST NOT be loaded.
