@@ -28,8 +28,8 @@ statement, a rationale, and implications.
   rule.
 
 A principle is good when its statement is testable, it rejects something
-we would otherwise do, it directs without prescribing method, it is not a
-claim every shop would make, and it implies at least one practice and one
+we would otherwise do (Spool), it directs without prescribing method
+(Rumelt), it is not a claim every shop would make (Lencioni), and it implies at least one practice and one
 check. The fitness screen at the end of this document applies these tests
 to the principles above it.
 
@@ -40,7 +40,7 @@ to the principles above it.
 **Statement.** Every activity MUST operate from a stated definition of
 what good looks like. That definition MUST drive both the performance of
 the activity and its check, and the check MUST sit with a different role
-holding different motivations.
+holding a different accountability.
 
 **Rationale.** A definition applied only at the check puts the full weight
 of quality after implementation, where rework is most frequent and most
@@ -65,7 +65,8 @@ any reviewer reads it.
 
 **Statement.** Everything loaded into an agent's generating context —
 prompts, skills, memories, primers — MUST trace to a ratified definition or
-a governed record; unsanctioned context channels MUST NOT accumulate.
+a governed record; an unsanctioned context channel MUST NOT
+be created or retained.
 
 **Rationale.** What an agent reads determines what it produces, so an
 ungoverned context input is an ungoverned generator. This shop observed the
@@ -117,7 +118,9 @@ coining a term; an undefined important term is a defect the author
 repairs by defining it or replacing it with a defined one. Schema authors
 are vocabulary authors: naming a field adds a term to the restricted
 language. Reviewers flag near-synonym pairs as drift; the losing term is
-removed everywhere, not deprecated in place.
+removed everywhere, not deprecated in place. A term is important when a
+reader must know it to perform or check the work; when in doubt, the
+writer defines it.
 
 ## Use external standards first (`external-standards-first`)
 
@@ -195,8 +198,8 @@ the close reason — the reconcile process already enforces this shape.
 |---|---|---|---|---|---|---|---|---|
 | Statement testable (TOGAF: understandable, complete, consistent) | pass | pass | pass | pass | pass | pass | pass | pass |
 | Helps you say no (Spool) | yes: rejects definition-less checks and self-checked work | yes: rejects unsanctioned channels | yes: rejects orphan activities | yes: rejects undefined coinages and synonym pairs | yes: rejects unjustified invention | yes: rejects duplicate authorities | yes: rejects consumer-less channels | yes: rejects artifact-only done claims |
-| Not fluff, not a goal-in-disguise (Rumelt) | directs and constrains without prescribing method | same | same | same | same | same | same | same |
+| Not fluff, not a goal-in-disguise (Rumelt) | pass — directs without prescribing method | pass | pass | pass | pass | pass | pass | pass |
 | Not permission-to-play (Lencioni) | pass — most systems do NOT work this way | pass | pass | pass | pass | pass | pass | pass |
 | Implies ≥1 practice and ≥1 check (shop rule) | shared-definition practice; role-separation check | promotion gate; provenance audit | process-membership lint; loop-exit review | term lookup before writing; undefined-term and near-synonym lint | prior-art search; Sources-section audit | link-or-ref practice; duplicate-statement review | consumer named at creation; calibration schedule | demonstration named in DoD; close-reason citation check |
-| Normative keywords in statements only (mechanical) | pass | pass | pass | pass | pass | pass | pass | pass |
+| Normative keywords used in statements only; capitals elsewhere only as the opening's mentions (mechanical) | pass | pass | pass | pass | pass | pass | pass | pass |
 | Implications derivable and actor-named (judged) | pass | pass | pass | pass | pass | pass | pass | pass |

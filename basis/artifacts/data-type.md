@@ -30,8 +30,11 @@ ancestry: [definition, data-type]
 
 1. **Purpose** — one short paragraph: what the structure carries, which
    step produces it, which steps consume it, with links.
-2. **Schema** — one `yaml` block: JSON Schema type names; `fields` with
-   types, enums, and constraints; `$ref` allowed for nesting.
+2. **Schema** — one `yaml` block in the registry's compact dialect:
+   JSON Schema type names; `fields` maps field names to types (the
+   `properties` equivalent); every field is required unless it carries
+   `optional: true`; enum value lists are closed (exhaustive); `$ref`
+   allowed for nesting.
 
 ## Commitment (Definition of Done)
 

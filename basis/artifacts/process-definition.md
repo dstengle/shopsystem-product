@@ -15,8 +15,9 @@ ancestry: [definition, process-definition]
 
 - **Type:** `process-definition` — the single source of truth for a
   process: what it is for, what a run produces, and every step in a form
-  a runtime can construct a workflow from. Skills, flow diagrams, and
-  fabro graphs are its renderings.
+  a runtime can construct a workflow from. Skills, flow
+  diagrams, and fabro graphs (fabro is the fleet's workflow-orchestrator
+  runtime) are its renderings.
 - **Produced by:** seed drafting or governed evolution. **Consumed by:**
   the compiler (renderings), agents (via the rendered skill), reviewers
   (conformance and loop-exit review), fabro (via annotations).
@@ -24,7 +25,9 @@ ancestry: [definition, process-definition]
 ## Required frontmatter
 
 `type: process-definition`, `id`, `owner`, `status`, `created`,
-`updated`; `produces` (artifact types a run creates);
+`updated`; `produces` (artifact
+types a run creates; the generic root `definition` covers runs creating
+definition documents; empty when the run's value is state change);
 `condition-language: cel`; optional: `carried-by` (the rendered skill's
 id), `condition-functions` (declared extensions, name and signature),
 `annotations` (process-level rendering metadata, keyed by rendering
@@ -43,14 +46,23 @@ the shop-msg catalog).
    edited by hand.
 6. **Data** — process-local value names. Simple types (JSON Schema
    primitives) inline; every structured shape is a `$ref` to a defined
-   type; no structured shape is ever defined here.
+   type; no structured shape is ever defined here. A value may declare
+   `initial` — its value at run start.
 7. **Steps** — the executable part (shape below).
-8. **Derived checks** — outcome → check → where, cite-or-delete.
+8. **Derived checks** — a table: outcome, check, kind, where; every row
+   cites its clause or is deleted.
+
+Header elements 1–4 are bolded labels before the first heading; 5–8 are
+markdown headings in order (a section is a heading, per the
+artifact-typedef rule).
 
 ## The steps section
 
-Top-level keys: `start` (first step id), optional `result` (the data
-value a run returns — the artifact, not a status record). Each step:
+Top-level keys: `start` (first step id); optional `parameters` (data
+values supplied at instantiation rather than produced by any step);
+optional `result` (the data value a run returns — the artifact, not a
+status record; omit only when the outcomes pin the run's value). `end`
+is the reserved terminator id for `next`. Each step:
 
 - `id`, `name`; `run-by` — `{role, execution: agent}`,
   `{role, execution: human}` (a seat a person holds, e.g. an authority
@@ -60,7 +72,8 @@ value a run returns — the artifact, not a status record). Each step:
   is the isolation mechanism (a step reads only what it lists).
 - Agent and human steps carry `prompt` — **the only prose allowed in a
   step** (for a human step it is the sitting's ask).
-- Runtime steps carry `set` (CEL assignments), `run` (command templates
+- Runtime steps carry `set` (CEL assignments to data values or their
+  fields), `run` (command templates
   with `${...}` interpolation from typed inputs; `atomic: true` binds the
   lines into one all-or-nothing act), or `branches`.
 - `checks` — CEL expressions over declared data.
@@ -98,7 +111,8 @@ round cap (the dual-exit rule).
 
 - Compiles clean: refs resolve, diagram and renderings regenerate
   byte-stable. *(Commitment)*
-- No prose outside `prompt` fields in the steps. *(§The steps section)*
+- No prose inside step records outside `prompt` fields; section
+  introduction prose is body text, not step content. *(§The steps section)*
 - Every loop has labeled success and/or cap exits. *(§The steps section)*
 - Outcomes each name a witness. *(§Required sections 3)*
 - `result`, if absent, is justified by outcomes that pin the run's value.

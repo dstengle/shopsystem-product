@@ -16,7 +16,7 @@ ancestry: [definition, quality-guideline]
 - **Type:** `quality-guideline` — the definition of well-made prose for
   an artifact type or for all prose (the base writing style is a
   quality-guideline every other one layers on and never overrides).
-- **Produced by:** the owner (authority-authored styles land verbatim) or
+- **Produced by:** the owner (authority-authored styles are stored verbatim as guideline documents) or
   a definition author deriving type-specific rules. **Consumed by:**
   authors at write time (the Highlights block is the layer compiled into
   generating context); mechanical style checks and judges, which cite
@@ -24,7 +24,9 @@ ancestry: [definition, quality-guideline]
 
 ## Required frontmatter
 
-`type: quality-guideline`, `id`, `owner`, `status`, `created`, `updated`.
+`type: quality-guideline`, `id`, `owner`, `status`, `created`,
+`updated`; `target-type` (the artifact type governed; absent for the
+base style, which governs all prose).
 
 ## Required sections
 
@@ -32,16 +34,20 @@ ancestry: [definition, quality-guideline]
 2. **Highlights** — the compressed layer compiled into the author's
    context.
 3. **Layers** — what this guideline sits on and the precedence order when
-   rules conflict (principle beats typedef beats guideline; the base
-   style is never overridden).
+   rules conflict (a ratified principle beats the artifact type's typedef, which beats
+   any guideline; the base writing style is a guideline other guidelines
+   never override, and it yields to principles and typedefs like any
+   guideline).
 4. **Rules** — each numbered, with a before/after pair and Deming's three
    elements: a test, a criterion, a yes/no decision — plus the derived
    check it feeds (mechanical, judged, or both).
 
 ## Commitment (Definition of Done)
 
-A quality guideline is done when every rule is decidable yes/no on real
-text and feeds a named check. **Consequence on failure:** the rule is
+A quality guideline is done when every rule
+is decidable yes/no on real text and feeds a named check — a check that
+exists, or a filed work item for the tool that will run it; "tool chosen
+later" with no work item fails. **Consequence on failure:** the rule is
 advice, not a definition, and is removed.
 
 ## Sources

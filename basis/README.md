@@ -286,6 +286,26 @@ any of them and you land where the tour just took you.
   principle-set typedef gains `scope` (working | architecture) plus the
   rule that undefined-format content enters a set only by rewrite, never
   as-is.
+- **R14 (2026-08-21): memory writes frozen; handoff is a defined
+  process; the second seat runs on everything.** Rulings from the
+  principles validation: all memory writes frozen (recorded in the shop
+  primer, loaded every session) pending the disposition ruling; session
+  handoff standardized as
+  [`processes/session-handoff.md`](processes/session-handoff.md) — the
+  session record is the only cross-session carrier, durable corrections
+  amend the definitions they correct, and the validate loop has dual
+  exits with a filed-defect failsafe. Three fresh-context cold reviews of
+  the fifteen basis documents returned zero clean; the repair pass
+  landed: section identity defined (a section is a heading), the
+  frontmatter identity base made additive, the keyword check's
+  mentions-versus-uses hole closed, "different motivations" replaced with
+  the checkable "different accountability", process `parameters` and the
+  `end` terminator and `initial` added to the typedef, the schema
+  dialect declared (compact `fields`, required-by-default,
+  `optional: true`), precedence unified (principle beats typedef beats
+  guideline; base style never overridden by guidelines), the fitness
+  compile-mapping made one-for-one with numbered scenarios, and the
+  glossary brought up to its own Definition of Done.
 - **R13 (2026-08-20): the principles load into every prompt, not only
   into documents.** A working-scope principle set is compiled into the
   session prompt chain: `tools/compile_principles.py` renders the

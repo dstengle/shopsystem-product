@@ -113,8 +113,14 @@ def display_type(data: dict, name: str) -> str:
 
 
 def io_lines(step: dict, data: dict) -> list:
+    def one(name):
+        if "." in name:
+            base = name.split(".", 1)[0]
+            return f"{name}: field of {display_type(data, base)}"
+        return f"{name}: {display_type(data, name)}"
+
     def typed(names):
-        return ", ".join(f"{n}: {display_type(data, n)}" for n in names)
+        return ", ".join(one(n) for n in names)
 
     lines = []
     if step.get("inputs"):

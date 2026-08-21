@@ -25,7 +25,7 @@ ancestry: [definition, role-definition]
 ## Required frontmatter
 
 Functional contract keys first — `name`, `description`, `tools` (the
-capability boundary, e.g. read-only), `maxTurns` — then the identity
+capability boundary: the list of allowed tool names), `maxTurns` — then the identity
 base: `type: role-definition`, `id`, `owner`, `status`, `created`,
 `updated`.
 
@@ -47,7 +47,7 @@ base: `type: role-definition`, `id`, `owner`, `status`, `created`,
 
 A role definition is done when the seat can be instantiated from the file
 alone and no line says when to act. **Consequence on failure:** processes
-naming the role do not pass loop and conformance review.
+naming the role do not pass conformance review.
 
 ## Sources
 
@@ -59,4 +59,4 @@ RACI's one-Accountable rule.
 
 - Functional keys present and first. *(§Required frontmatter)*
 - 4–6 accountabilities; exactly one exclusive domain. *(§Required sections)*
-- No sequencing text — judged scan. *(§Rules)*
+- No sequencing text — judged check. *(§Rules)*

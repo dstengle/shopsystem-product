@@ -5,7 +5,7 @@ owner: product-authority
 status: draft
 created: 2026-08-20
 updated: 2026-08-20
-produces: []
+produces: [definition]
 condition-language: cel
 external-refs: []
 ---
@@ -56,7 +56,7 @@ flowchart TD
   ratify_chain[["Ratify the chain — human: product-authority<br/>in — chain: definition-chain<br/>out — chain: definition-chain"]]
   rewrite_keepers(["Rewrite every keeper through the chain — agent: lead-pm<br/>in — chain: definition-chain, keepers: string[], exemplar: string<br/>out — rewritten: string[], demoted: string[]"])
   archive_retired["Archive what leaves — runtime<br/>in — artifact_type: string, demoted: string[]"]
-  park["Park the type with a finding — runtime<br/>in — artifact_type: string, review: review"]
+  park["Park the type with a finding — runtime<br/>in — artifact_type: string, chain: definition-chain, review: review<br/>sets — chain.status: field of definition-chain"]
   __end(("end<br/>result — chain: definition-chain"))
   __start(("start")) --> build_chain
   build_chain --> exemplar_rewrite
@@ -100,6 +100,7 @@ mass moves are mechanical or they do not happen.
 
 ```yaml
 start: build-chain
+parameters: [artifact_type, keepers]
 result: chain
 steps:
   - id: build-chain
@@ -128,8 +129,9 @@ steps:
     outputs: [exemplar]
     prompt: |
       Rewrite one real keeper through the drafted chain's authoring
-      process, exactly as mass rewriting would run it. Pick the keeper
-      whose current state is most representative, not the easiest. Record
+      process, exactly as mass rewriting would run it. Pick a keeper of median size
+      among the type's keepers, preferring the most recently active —
+      representative by measure, not by ease. Record
       every point where the chain failed to decide something — that
       friction is a finding about the chain, and it goes to the authority
       with the exemplar.
@@ -219,7 +221,9 @@ steps:
   - id: park
     name: Park the type with a finding
     run-by: {execution: runtime}
-    inputs: [artifact_type, review]
+    inputs: [artifact_type, chain, review]
+    set:
+      chain.status: '"parked"'
     run: |
       bd create --title "Chain parked: ${artifact_type} after 3 review rounds" \
         --body "${review.top_changes}"
@@ -232,6 +236,6 @@ steps:
 |---|---|---|---|
 | O1 | chain status ratified before any mass rewrite | mechanical | `ratify-chain.checks` |
 | O2 | rewritten + demoted counts equal keepers | mechanical | `rewrite-keepers.checks` |
-| O3 | archive move ran for every demotion | mechanical | `archive-retired.run` |
+| O3 | after the run no demoted id remains in the active tree | mechanical post-run audit | `archive-retired.run` |
 | O4 | parked types carry a filed finding | mechanical | `park.run` |
 | all | this definition compiles and screens against the principle set | mechanical + judged | the compiler; the principles screen |

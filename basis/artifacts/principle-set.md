@@ -61,13 +61,16 @@ failing principle is repaired or removed before the set is citable.
 
 TOGAF architecture principles (Name/Statement/Rationale/Implications);
 BCP 14 (RFC 2119/8174 keywords); the screen composes Spool (helps you
-say no), Rumelt (not fluff, not a goal in disguise), Lencioni (not
-permission-to-play), and Deming (build quality in).
+say no), Rumelt (not fluff, not a goal in disguise), and Lencioni (not
+permission-to-play); Deming grounds the first principle's rationale, not
+a screen row.
 
 ## Derived review checklist
 
 - Opening self-definition present before any principle. *(§Required sections 1)*
-- BCP 14 capitals appear in statements only — mechanical grep. *(§Required sections 2)*
+- BCP 14 capitals outside statements appear only in the opening's
+  keyword-definition sentence (mentions, not uses) — mechanical grep with
+  that single exemption. *(§Required sections 1–2)*
 - Each implication traceable to a statement clause and actor-named —
   judged. *(§Required sections 2)*
 - Screen table has a column per principle and rows for every test.

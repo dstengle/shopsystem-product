@@ -51,13 +51,11 @@ terms uses one of these when one fits.
 - **owner** — the seat that ratifies changes to a definition; named in
   every definition's frontmatter.
 - **definition chain** — the six linked definitions of good for one
-  artifact type (typedef, guideline, fitness set, process, roles,
-  compiled skill); required before any instance is authored or rewritten.
+  artifact type; required before instances are authored or rewritten.
 - **keeper** — a corpus record the rebaseline bill keeps; rewritten
   forward through its type's ratified chain, never used as-is.
 - **rewrite-forward** — the default keeper disposition: re-author to the
-  ratified standard on the new baseline; repair-in-place only for records
-  already at the bar.
+  ratified standard; repair-in-place only for records already at the bar.
 - **rebaseline** — Phase 1 of the re-founding arc: the active tree comes
   to hold only chain-conforming records; retired mass moves to the
   archive.
@@ -69,5 +67,10 @@ terms uses one of these when one fits.
 - **ruling** — a decision the authority records during review; numbered
   (Rn) in the experiment index and binding on the corpus it governs.
 - **park** — the failsafe disposition for work that cannot pass review
-  within its round cap: set aside with a filed finding, never looped
-  further.
+  within its round cap: set aside with a filed finding.
+- **round cap** — the declared maximum review rounds before a loop's
+  failsafe exit fires.
+- **rebaseline bill** — the ratified disposition table (keep-rewrite,
+  retire, or terminal per corpus record) that drives the rebaseline.
+- **experiment index** — the new-basis experiment's README: the
+  walkthrough, the numbered rulings, and the review state.

@@ -16,8 +16,9 @@ ancestry: [definition]
 - **Type:** `definition` — the generic root for documents that state what
   good looks like for something else: a process, a document type, a role,
   a term list, a rule set. Specializations (e.g. `process-definition`,
-  `artifact-typedef`) declare it in their ancestry so a validator that
-  knows only `definition` can still check them at this level.
+  `artifact-typedef`) declare it in their ancestry, so a validator that
+  knows only `definition` can check any definition document against the
+  two requirements below.
 - **Produced by:** seed drafting, or governed evolution of a ratified
   definition. **Consumed by:** every agent whose work the definition
   governs; compilers and validators that render or check against it.
@@ -25,14 +26,16 @@ ancestry: [definition]
 ## Required frontmatter
 
 `type`, `id`, `status` (draft | ratified | superseded), `owner` (the seat
-that ratifies changes), `created`, `updated`; `ratified` (date) once
-status is ratified.
+that ratifies changes), `created`, `updated`; `ratified` (date of the most recent ratification) once ratified — retained
+through a later draft amendment to mark the last ratified version.
 
 ## Required sections
 
-1. **What it defines** — named early, not implied.
-2. **Derived checks** — every definition implies at least one check; a
-   definition no check can cite does not govern anything.
+1. An **opening** that states what the document defines before the
+   first section heading.
+2. A closing **checks section** (its heading contains "check") — every
+   definition implies at least one check; a definition no check can cite
+   does not govern anything.
 
 ## Commitment (Definition of Done)
 
@@ -49,5 +52,5 @@ test, criterion, decision); the `define-good-up-front` principle.
 ## Derived review checklist
 
 - Frontmatter complete; owner named. *(schema)*
-- What it defines is stated in the opening. *(§Required sections 1)*
+- The opening states what the document defines. *(§Required sections 1)*
 - At least one derived check exists and cites a clause. *(§Required sections 2)*

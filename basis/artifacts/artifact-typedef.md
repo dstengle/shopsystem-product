@@ -28,7 +28,10 @@ ancestry: [definition, artifact-typedef]
 
 `type: artifact-typedef`, `id`, `defines` (the type name instances carry
 in their `type` field), `owner`, `status`, `created`, `updated`,
-`ancestry` (from the generic root to this type). Closed field set.
+`ancestry` (from the generic root to the type this document defines).
+Every instance also carries the identity base `definition` requires
+(`owner`, `status`, `ratified` when applicable); a type's field set is
+closed over that base plus its own list.
 
 ## Required sections
 
@@ -46,6 +49,9 @@ in their `type` field), `owner`, `status`, `created`, `updated`,
 
 ## Rules
 
+- A **section** is a markdown heading. Required sections appear as
+  headings in the listed order; intro prose and additional sections may
+  sit between them without breaking the order.
 - **No pinned example links.** Examples are found, not pinned: the
   validator lists currently-conforming instances on demand; a pinned
   example drifts as the collection changes.
