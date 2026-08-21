@@ -12,9 +12,9 @@ external-refs: [session-record]
 
 # Process: Session handoff
 
-**Purpose:** End a working session so the next session starts from
-governed records alone — no memory channel and no chat summary as the
-carrier.
+**Purpose:** Close a conversation so later work starts from governed
+records alone — no memory channel, no chat summary, and no transcript as
+the carrier.
 
 **Guiding statement:** State crosses sessions only inside governed
 artifacts. A fact worth remembering has a governed home; a durable
@@ -32,9 +32,16 @@ correction amends the definition it corrects, never a memory.
   with a filed defect, so the handoff never silently fails — witnessed by
   the failsafe branch and `file-defect`.
 
-**Roles:** router (Accountable — runs the handoff at session end). The
-consumer is the next session's router: the session-start drain reads the
-latest session record before accepting work.
+**Roles:** router (Accountable — runs the handoff when a conversation
+closes). The consumer is the router that next touches the work: the
+start drain reads the anchor before accepting it.
+
+**Scope note:** one run closes one discovery conversation, whose anchor
+is a session record. Review and work conversations close through their
+own anchors — rulings land in the review record, work discussion lands
+on the work item — under the same discipline: the anchor is the only
+carrier. A transcript that ends mid-conversation is not a close; the
+conversation stays open until its anchor says otherwise.
 
 ## Flow (compiled)
 

@@ -65,13 +65,12 @@ status record; omit only when the outcomes pin the run's value). `end`
 is the reserved terminator id for `next`. Each step:
 
 - `id`, `name`; `run-by` — `{role, execution: agent}`,
-  `{role, execution: human}` (a seat a person holds, e.g. an authority
-  sitting), or `{execution: runtime}`; `fresh-context: true` where a seat
+  `{role, execution: human}` (a seat a person holds, e.g. an authority review), or `{execution: runtime}`; `fresh-context: true` where a seat
   must not carry memory between runs.
 - `inputs` / `outputs` — lists of declared data names; the typed contract
   is the isolation mechanism (a step reads only what it lists).
 - Agent and human steps carry `prompt` — **the only prose allowed in a
-  step** (for a human step it is the sitting's ask).
+  step** (for a human step it is the review's ask).
 - Runtime steps carry `set` (CEL assignments to data values or their
   fields), `run` (command templates
   with `${...}` interpolation from typed inputs; `atomic: true` binds the

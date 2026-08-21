@@ -22,7 +22,7 @@ ancestry: [request, decision-brief]
   is deciding, now. One quadrant per document; a brief that drifts into
   explanation fails its type.
 - **Produced by:** [`../processes/stakeholder-presentation.md`](../processes/stakeholder-presentation.md).
-  **Consumed by:** the product authority, at a sitting.
+  **Consumed by:** the product authority, at a review.
 
 ## Required frontmatter
 
@@ -44,7 +44,7 @@ per the authority's strictness directive).
 ## Commitment (Definition of Done)
 
 A decision-brief is done when: the reader can make every requested decision
-from the brief alone in one short sitting; budgets hold (decision layer
+from the brief alone in one short reading; budgets hold (decision layer
 ≤ ~400 words, total ≤ ~1,500); an independent cold read has passed it (O3 of
 the producing process). **Consequence on failure:** the brief returns to the
 author for re-forming — it is not deliverable, and decisions made from a

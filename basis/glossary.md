@@ -62,9 +62,20 @@ terms uses one of these when one fits.
 - **scope** (of a principle set) — the level the set governs and whose
   context it loads into: working (every activity) or architecture (the
   designed system).
-- **sitting** — one bounded review session in which the product authority
-  rules on presented material; the unit review work is scoped to.
-- **ruling** — a decision the authority records during review; numbered
+- **transcript** — the runtime log of turns; unscoped, not a governed
+  artifact, never loaded into context.
+- **conversation** — a scoped, bounded discussion attached to exactly one
+  anchor; every conversation belongs to a process.
+- **conversation type** — discovery (anchor: a session record), review
+  (anchor: a review record and its rulings), or work (anchor: a work
+  item).
+- **session record** — the anchor record of a discovery conversation:
+  outcome, produced and revised lists, open threads, select quotes.
+- **review** — one bounded conversation in which the authority rules on
+  presented material. Replaces "sitting".
+- **review record** — the anchor record of a review: the material
+  presented and the rulings issued.
+- **ruling** — a decision the authority records during a review; numbered
   (Rn) in the experiment index and binding on the corpus it governs.
 - **park** — the failsafe disposition for work that cannot pass review
   within its round cap: set aside with a filed finding.

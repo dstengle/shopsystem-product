@@ -15,13 +15,13 @@ annotations:
   claude-code:
     activation: model-judged
     promotion: experiment-local
-    use-when: "before delivering any report, sitting material, or status update longer than ~300 words"
+    use-when: "before delivering any report, review material, or status update longer than ~300 words"
 ---
 
 # Process: Stakeholder presentation
 
 **Purpose:** Turn source material into a presentation the product authority
-can decide from in one short sitting, verified by an independent cold read
+can decide from in one short reading, verified by an independent cold read
 before delivery.
 
 **Guiding statement:** Lead with the answer. The reader must get the most
@@ -121,7 +121,7 @@ steps:
       that gate the next unit of work, and record the rest as deferrals —
       a deferral is a note, never an ask. Group related asks and order
       them by consequence. If the material holds more decisions than one
-      sitting can carry, split it by decision, not by topic, and frame
+      reading can carry, split it by decision, not by topic, and frame
       only the first split.
     next: compose
     annotations:

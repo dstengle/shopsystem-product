@@ -37,7 +37,7 @@ spot-checks). lead-pm (author seat — drafts the chain, runs rewrites).
 The per-instance reviewer seats come from the chain itself once ratified.
 
 **Scope note:** one run migrates one artifact type. The order of runs
-comes from the ratified rebaseline bill at its sitting; keepers for the
+comes from the ratified rebaseline bill at its review; keepers for the
 run are the bill's keep-rewrite records of that type.
 
 ## Flow (compiled)
@@ -94,7 +94,7 @@ data:
 ## Steps
 
 The `archive-move` command in `archive-retired` is the archive contract
-tool the bill's mechanism sitting must ratify (in-repo archive branch
+tool the bill's mechanism review must ratify (in-repo archive branch
 plus snapshot tag). Until it exists the step blocks — which is correct:
 mass moves are mechanical or they do not happen.
 
@@ -143,7 +143,7 @@ steps:
     inputs: [chain, exemplar]
     outputs: [review]
     prompt: |
-      One sitting, one type: the chain and the exemplar rewritten through
+      One review, one type: the chain and the exemplar rewritten through
       it, side by side. Rule on both — the chain's definitions and what
       they actually produced. Findings land as rulings; verdict "clean"
       or "tradeoffs-accepted" ratifies, "findings" sends the chain back.

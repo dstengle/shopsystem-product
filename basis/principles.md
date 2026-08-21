@@ -6,7 +6,7 @@ owner: product-authority
 status: draft
 ratified: 2026-08-19
 created: 2026-08-10
-updated: 2026-08-20
+updated: 2026-08-21
 ---
 
 # Founding principles
@@ -190,16 +190,36 @@ every Definition of Done. Reviewers reject completion claims that cite
 only artifacts. Whoever closes work cites the demonstration evidence in
 the close reason — the reconcile process already enforces this shape.
 
+## Load the least context (`least-context`)
+
+**Statement.** An activity MUST load the minimum context necessary to
+accomplish its task. The activity's process MUST name what loads into
+context and the source each input comes from; context from an unapproved
+source MUST NOT be loaded.
+
+**Rationale.** Extraneous context costs twice: tokens spent carrying it,
+and drift when the agent follows something it was never meant to read.
+This shop's evidence: 67 unreviewed memories loaded into every session
+regardless of task, and unscoped conversations no one could associate
+with specific work. (Least privilege, applied to context.)
+
+**Implications.** Process authors declare a step's context inputs the way
+they declare data inputs — the declared list is the load list. The router
+loads a conversation's anchor and its definition chain, nothing ambient.
+Maintainers keep the journal and the archive out of ambient context;
+reading either is a deliberate, declared act. Reviewers treat an
+undeclared context load as a defect.
+
 ---
 
 ## Fitness screen (the intro's tests; sources: TOGAF, Spool, Rumelt, Lencioni)
 
-| Screen | define-good-up-front | governed-context | no-orphan-activities | use-defined-terms | external-standards-first | single-source-of-truth | feedback-loops-with-consumers | delivery-verified |
-|---|---|---|---|---|---|---|---|---|
-| Statement testable (TOGAF: understandable, complete, consistent) | pass | pass | pass | pass | pass | pass | pass | pass |
-| Helps you say no (Spool) | yes: rejects definition-less checks and self-checked work | yes: rejects unsanctioned channels | yes: rejects orphan activities | yes: rejects undefined coinages and synonym pairs | yes: rejects unjustified invention | yes: rejects duplicate authorities | yes: rejects consumer-less channels | yes: rejects artifact-only done claims |
-| Not fluff, not a goal-in-disguise (Rumelt) | pass — directs without prescribing method | pass | pass | pass | pass | pass | pass | pass |
-| Not permission-to-play (Lencioni) | pass — most systems do NOT work this way | pass | pass | pass | pass | pass | pass | pass |
-| Implies ≥1 practice and ≥1 check (shop rule) | shared-definition practice; role-separation check | promotion gate; provenance audit | process-membership lint; loop-exit review | term lookup before writing; undefined-term and near-synonym lint | prior-art search; Sources-section audit | link-or-ref practice; duplicate-statement review | consumer named at creation; calibration schedule | demonstration named in DoD; close-reason citation check |
-| Normative keywords used in statements only; capitals elsewhere only as the opening's mentions (mechanical) | pass | pass | pass | pass | pass | pass | pass | pass |
-| Implications derivable and actor-named (judged) | pass | pass | pass | pass | pass | pass | pass | pass |
+| Screen | define-good-up-front | governed-context | no-orphan-activities | use-defined-terms | external-standards-first | single-source-of-truth | feedback-loops-with-consumers | delivery-verified | least-context |
+|---|---|---|---|---|---|---|---|---|---|
+| Statement testable (TOGAF: understandable, complete, consistent) | pass | pass | pass | pass | pass | pass | pass | pass | pass |
+| Helps you say no (Spool) | yes: rejects definition-less checks and self-checked work | yes: rejects unsanctioned channels | yes: rejects orphan activities | yes: rejects undefined coinages and synonym pairs | yes: rejects unjustified invention | yes: rejects duplicate authorities | yes: rejects consumer-less channels | yes: rejects artifact-only done claims | yes: rejects ambient loads and unapproved sources |
+| Not fluff, not a goal-in-disguise (Rumelt) | pass — directs without prescribing method | pass | pass | pass | pass | pass | pass | pass | pass |
+| Not permission-to-play (Lencioni) | pass — most systems do NOT work this way | pass | pass | pass | pass | pass | pass | pass | pass |
+| Implies ≥1 practice and ≥1 check (shop rule) | shared-definition practice; role-separation check | promotion gate; provenance audit | process-membership lint; loop-exit review | term lookup before writing; undefined-term and near-synonym lint | prior-art search; Sources-section audit | link-or-ref practice; duplicate-statement review | consumer named at creation; calibration schedule | demonstration named in DoD; close-reason citation check | per-step context declaration; undeclared-load audit |
+| Normative keywords used in statements only; capitals elsewhere only as the opening's mentions (mechanical) | pass | pass | pass | pass | pass | pass | pass | pass | pass |
+| Implications derivable and actor-named (judged) | pass | pass | pass | pass | pass | pass | pass | pass | pass |

@@ -306,6 +306,21 @@ any of them and you land where the tour just took you.
   guideline; base style never overridden by guidelines), the fitness
   compile-mapping made one-for-one with numbered scenarios, and the
   glossary brought up to its own Definition of Done.
+- **R15 (2026-08-21): conversations are typed and scoped; context loads
+  least-first.** Authority rulings on the "session" vocabulary conflict:
+  **transcript** (the runtime turn log — unscoped, ungoverned, never
+  loaded), **conversation** (scoped, bounded, attached to exactly one
+  anchor, always part of a process), and **session record** (the anchor
+  of a discovery conversation) split the overloaded word. Conversation
+  types: discovery → session record; review → review record + rulings;
+  work → work item. "Sitting" ruled awkward and replaced by **review**
+  (the reading-span sense became "reading"); "ruling" kept. New working
+  principle `least-context`, authority-worded: an activity loads the
+  minimum context its task needs, the process names what loads and from
+  which sources, unapproved sources never load. The handoff process is
+  rebound to conversation close — a transcript ending mid-conversation is
+  a checkpoint, not a close. The journal-as-branch mechanism lands with
+  the archive machinery at the bill review.
 - **R13 (2026-08-20): the principles load into every prompt, not only
   into documents.** A working-scope principle set is compiled into the
   session prompt chain: `tools/compile_principles.py` renders the
