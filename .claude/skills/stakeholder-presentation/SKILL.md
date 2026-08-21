@@ -1,125 +1,176 @@
 ---
 name: stakeholder-presentation
-description: Reform any document or message aimed at the product authority (or another human stakeholder) into a decision-first presentation — answer first, layered depth, bounded length, asks that carry recommendations and defaults — then verify it with an independent cold read before delivery. Use BEFORE delivering any report, sitting material, or status update longer than ~300 words, and to reform an existing document that fails the accessibility bar.
+description: Turn source material into a presentation the product authority can decide
+  from in one short sitting, verified by an independent cold read before delivery.
+  Use before delivering any report, sitting material, or status update longer than
+  ~300 words.
+type: skill
+id: stakeholder-presentation-skill
+status: ratified
+created: 2026-08-10
+updated: 2026-08-19
+generated: true
+generated-by: basis/tools/compile_process.py
+derived-from: stakeholder-presentation-process
+source: basis/processes/stakeholder-presentation.md
+source-digest: sha256:6241c6b717fa
+activation: model-judged
+promotion: experiment-local
 ---
 
-# Stakeholder presentation (communication style guide skill)
+# Stakeholder presentation (compiled from `stakeholder-presentation-process`)
 
-**LOCAL skill** (provenance: lead-local, not canonical; candidate for promotion
-to shopsystem-templates once proven). Directed by the product authority
-2026-08-06: *"I expect a report to be a presentation, not a compiled list of
-research results… make sure all communication and documents are as accessible
-as possible."* Adopts established forms per
-[`drafts/definition-format-research.md`](../../../drafts/definition-format-research.md):
-Minto pyramid / SCQA, BLUF, government briefing-note asks, Amazon-memo annex
-separation, Federal Plain Language rules. Calibrated 2026-08-06 by three
-adversarial stakeholder-persona rounds; the rules below marked ◆ were earned
-from failures those rounds caught.
+Turn source material into a presentation the product authority can decide from in one short sitting, verified by an independent cold read before delivery.
 
-## The one rule
+**Lead with the answer. The reader must get the most important thing even if they stop after the first paragraph, and must be able to make every requested decision without opening an annex or the author's head.**
 
-**Lead with the answer.** The reader must get the most important thing even if
-they stop after the first paragraph — and must be able to make every requested
-decision without opening an annex **or the author's head**.
+Result of a run: `brief` (decision-brief).
 
-## Structure — three layers, strict
+```mermaid
+flowchart TD
+  frame(["Frame — agent: lead-pm<br/>in — request: request<br/>out — frame: frame"])
+  compose(["Compose — agent: lead-pm<br/>in — request: request, frame: frame<br/>out — brief: decision-brief, annex: string"])
+  cold_read(["Cold read — agent: cold-reviewer<br/>in — brief: decision-brief<br/>out — review: review"])
+  log_round["Record the round — runtime<br/>in — review: review, round_log: review[]<br/>sets — round_log: review[]"]
+  route_verdict{"Route on the verdict<br/>in — review: review, round: integer"}
+  revise(["Revise — agent: lead-pm<br/>in — brief: decision-brief, review: review<br/>out — brief: decision-brief"])
+  advance_round["Advance the round counter — runtime<br/>in — round: integer<br/>sets — round: integer"]
+  deliver(["Deliver — agent: lead-pm<br/>in — brief: decision-brief, annex: string, review: review, round_log: review[]<br/>out — brief: decision-brief"])
+  __end(("end<br/>result — brief: decision-brief"))
+  __start(("start")) --> frame
+  frame --> compose
+  compose --> cold_read
+  cold_read --> log_round
+  log_round --> route_verdict
+  route_verdict -->|success exit: clean or tradeoffs accepted| deliver
+  route_verdict -->|failsafe exit: round >= 4| deliver
+  route_verdict -->|else| revise
+  revise --> advance_round
+  advance_round --> cold_read
+  deliver --> __end
+```
 
-1. **Decision layer** (≤ 1 page, ~400 words): an SCQA opening — Situation,
-   Complication, Question, Answer — in at most four sentences, then the
-   recommendation(s) and the asks.
-2. **Support layer** (with layer 1, ≤ ~1,500 words total): reasoning, options,
-   tradeoffs. Tables for option comparisons; prose only for causal reasoning.
-3. **Reference annex**: the full research or detail — separate file or clearly
-   separated back-matter, linked, labeled optional. Never required for the
-   decision.
+## frame — Frame
 
-If the material cannot fit the budget, the scope is too big: split by
-decision, not by topic.
+Run by agent in role `lead-pm`. reads: request · writes: frame.
+- check: `size(frame.asks) <= 7`
+- then: `compose`
 
-## Decision asks
+Prompt:
 
-- Each ask is four lines: **question → recommendation → one-line why →
-  default if unanswered**. Never hand the stakeholder an open research
-  question when a recommendation is possible; they accept or override.
-- At most 7 asks; group related asks; order by consequence.
-- ◆ **Scope asks to the decision horizon.** Ask only what gates the next unit
-  of work. Tool adoptions and operational commitments are deferred to the
-  sitting where that machinery is actually built. A deferral is a note, never
-  an ask — "ratify my recommendation to defer" is a null decision.
-- ◆ **Say which asks gate and which default.** State plainly which asks
-  require an answer before work proceeds and which resolve by their default
-  on silence — "all of these gate X" is false if defaults exist.
-- ◆ **Every substantive content block attaches to an ask** or is explicitly
-  labeled informational. The largest commitment in a document must never ride
-  in on no decision. Block-ratification ("ratify this table; flag rows") is a
-  legitimate ask, but it must state **what ratification binds** and what
-  remains a drafting default revisable later.
-- ◆ **No smuggled commitments.** Anything that costs the stakeholder ongoing
-  time, adopts a tool, or fixes a process must appear inside an ask or be
-  named a drafting default — never only in prose between asks.
-- Asks carry their evidence inline ("operated sets run ~10: GOV.UK's eleven"),
-  not by reference.
+```text
+Read the request. Name the reader and every decision the
+presentation must enable. Enumerate the asks; keep only the asks
+that gate the next unit of work, and record the rest as deferrals —
+a deferral is a note, never an ask. Group related asks and order
+them by consequence. If the material holds more decisions than one
+sitting can carry, split it by decision, not by topic, and frame
+only the first split.
+```
 
-## Style rules
+## compose — Compose
 
-- **The authority's base writing style (2026-08-14) applies beneath
-  everything here and is never overridden.** Conclusion first at every
-  scale — document, section, paragraph. One idea per sentence. Active
-  voice with a named actor. Short common words. Never a metaphor as a
-  technical term; banned in any form: "load-bearing", "surface" (as a noun
-  for inputs/config), "seam", "scar tissue". Explain every insider
-  reference in one plain sentence or cut it. Canonical text:
-  `basis/guidelines/base-writing-style.md` on branch `experiment/new-basis`.
-- ◆ **Standalone means proper nouns too.** Gloss every proper noun, tool
-  name, standard, and coinage at first mention — one clause each. Never
-  condition an ask on machinery the document does not explain. Terms the
-  stakeholder demonstrably owns (their own product vocabulary) are exempt.
-- World-standard vocabulary; headings state conclusions, not topics.
-- One idea per sentence; no forward references — "see below" means
-  restructure. No new coinages in the closing.
-- Numbers over adjectives. State uncertainty once, precisely.
-- ◆ **No process citations or revision deltas.** Do not cite the skill or
-  method that produced the document; do not spend the reader's attention on
-  differences from a draft they never saw.
-- Illustrative examples are marked as such ("e.g.") — an unmarked example
-  reads as a commitment.
-- Chat replies follow the same rules: outcome first, no process narration.
+Run by agent in role `lead-pm`. reads: request, frame · writes: brief, annex.
+- check: `words(brief.decision_layer) <= 400`
+- check: `words(brief.decision_layer) + words(brief.support_layer) <= 1500`
+- then: `cold-read`
 
-## Reforming an existing document
+Prompt:
 
-1. Name the reader and the decision(s) the document must enable.
-2. Write the decision and support layers fresh — re-present; never abridge by
-   deletion.
-3. Demote the original intact to reference annex, labeled as such at its top.
-4. Run the verification protocol below.
+```text
+Write the decision and support layers fresh — never abridge the
+source by deletion. Open with situation, complication, question,
+answer in at most four sentences, then the recommendations and the
+asks. Write each ask in four parts: question, recommendation,
+inline evidence, default. State which asks gate work and which
+resolve by default on silence; a block-ratification states what it
+binds. Gloss every proper noun at first mention. Attach every block
+to an ask or label it informational. Demote the original material
+to a labeled annex and link it. Style rules:
+guidelines/stakeholder-communication.md, layered on
+guidelines/base-writing-style.md.
+```
 
-## Verification — independent cold read (mandatory)
+## cold-read — Cold read
 
-◆ **The author cannot cold-read their own text**: terms pass the author's eye
-because the context lives in the author's head. Before delivery, a
-fresh-context reviewer (subagent persona simulating the stakeholder: expert,
-~5 minutes, has NOT read the annex, allergic to unintroduced terms) reads the
-presentation alone and reports: stumbles in order, unintroduced terms,
-per-ask decidability (confident / wobbly / cannot decide), overload verdict,
-top 3 changes. Revise and repeat with a fresh reviewer until a round returns
-clean or flags only accepted tradeoffs. A consistency sweep rides along:
-counts and cross-references match; stated promises ("nothing commits you to
-tooling") hold against every line that follows them.
+Run by agent in role `cold-reviewer` (fresh context every run). reads: brief · writes: review.
+- then: `log-round`
 
-## Fitness checks (judged by the cold reviewer, not executed — no step definitions)
+Prompt:
 
-- Given the presentation and its annex, when the stakeholder reads only
-  layers 1–2, then every requested decision can be made without opening the
-  annex.
-- Given the first paragraph alone, when the reader stops there, then it
-  states the answer or recommendation, not background.
-- Given any section in layers 1–2, when asked "which ask does this serve?",
-  then a specific ask can be named — otherwise the section belongs in the
-  annex.
-- Given any proper noun or coinage, when it first appears, then a gloss
-  appears with it or the stakeholder demonstrably owns the term.
-- Given each ask, when read in isolation, then it carries a recommendation,
-  its evidence, and a default — and the set states which asks gate work and
-  which resolve on silence.
-- Given the word counts, when measured, then layer 1 ≤ ~400 words and layers
-  1–2 together ≤ ~1,500.
+```text
+Read the presentation alone; you have not seen the annex or any
+earlier round, and that is the point. Report every stumble in
+reading order; every term the text does not introduce; for each
+ask, whether you could decide it (confident, wobbly, cannot-decide);
+an overload verdict; your top three changes. Verdict "clean" only
+if you found nothing. Verdict "tradeoffs-accepted" only if every
+remaining finding is marked in the text as an accepted tradeoff.
+Otherwise verdict "findings".
+```
+
+## log-round — Record the round
+
+Run by the runtime — no agent, no prose. reads: review, round_log · writes: —.
+
+```yaml
+set:
+  round_log: round_log + [review]
+next: route-verdict
+```
+
+## route-verdict — Route on the verdict
+
+Run by the runtime — no agent, no prose. reads: review, round · writes: —.
+
+```yaml
+branches:
+- label: 'success exit: clean or tradeoffs accepted'
+  when: review.verdict in ["clean", "tradeoffs-accepted"]
+  next: deliver
+- label: 'failsafe exit: round >= 4'
+  when: round >= 4
+  next: deliver
+- else: revise
+```
+
+## revise — Revise
+
+Run by agent in role `lead-pm`. reads: brief, review · writes: brief.
+- then: `advance-round`
+
+Prompt:
+
+```text
+Repair every finding in the review. Then run the consistency
+sweep: counts and cross-references match, and every promise the
+text makes holds against every line that follows it. Mark any
+finding you will not repair as an accepted tradeoff, in the text,
+with one sentence saying why.
+```
+
+## advance-round — Advance the round counter
+
+Run by the runtime — no agent, no prose. reads: round · writes: —.
+
+```yaml
+set:
+  round: round + 1
+next: cold-read
+```
+
+## deliver — Deliver
+
+Run by agent in role `lead-pm`. reads: brief, annex, review, round_log · writes: brief.
+- then: `end`
+
+Prompt:
+
+```text
+Deliver the brief to the reader with the annex linked. Set the
+brief's status to "delivered" and attach the round log as its
+verified-by record: one line per round with the verdict and the
+judge's model and prompt version. If the final verdict is
+"findings" (the failsafe exit fired), state the open findings at
+the top of the brief before anything else.
+```
