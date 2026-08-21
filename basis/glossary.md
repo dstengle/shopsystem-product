@@ -64,3 +64,10 @@ terms uses one of these when one fits.
 - **scope** (of a principle set) — the level the set governs and whose
   context it loads into: working (every activity) or architecture (the
   designed system).
+- **sitting** — one bounded review session in which the product authority
+  rules on presented material; the unit review work is scoped to.
+- **ruling** — a decision the authority records during review; numbered
+  (Rn) in the experiment index and binding on the corpus it governs.
+- **park** — the failsafe disposition for work that cannot pass review
+  within its round cap: set aside with a filed finding, never looped
+  further.
