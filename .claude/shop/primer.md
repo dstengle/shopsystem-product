@@ -72,6 +72,16 @@ repo" below.
   (cloned inside the container) and report via `shop-msg`. To address a BC
   mailbox use `--bc <name>`, not a `repos/<bc>` path.
 
+## Memory freeze (authority ruling, 2026-08-21)
+
+All memory writes are frozen: no `bd remember`, no `bd forget`, no writes
+to Claude auto-memory. The 67 existing memories are read-only pending the
+authority's disposition ruling. Session state crosses sessions only
+through governed artifacts — the session record and the session-handoff
+process (`basis/processes/session-handoff.md` on `experiment/new-basis`).
+A durable correction amends the definition it corrects; it is never
+stored as a memory.
+
 ## Operational hygiene
 
 **Session close.** Work is not done until `git push` succeeds. Before saying
