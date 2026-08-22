@@ -2,7 +2,8 @@
 type: process-definition
 id: session-handoff-process
 owner: product-authority
-status: draft
+status: approved
+approved: 2026-08-22
 created: 2026-08-21
 updated: 2026-08-21
 produces: [session-record]

@@ -3,7 +3,8 @@ type: data-type
 id: validation-report
 defines: validation-report
 owner: product-authority
-status: draft
+status: approved
+approved: 2026-08-22
 created: 2026-08-21
 updated: 2026-08-21
 ---

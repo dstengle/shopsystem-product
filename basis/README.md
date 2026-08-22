@@ -418,31 +418,19 @@ copies only). All are `status: draft` until the authority reviews them:
 ## The full approval surface (every file on this branch)
 
 What approving means per group: an **approved** file is the standard work
-is checked against; a **draft** file becomes that on your approval; a
-**rendering** is generated and carries its source's status; **apparatus**
-is not approved — it exists to prove the formats and its production home
-is a BC.
+is checked against; a **rendering** is generated and carries its
+source's status; **apparatus** is not approved — it exists to prove the
+formats and its production home is a BC. Nothing on this branch remains
+in draft.
 
-**Draft — awaiting your approval:**
-
-- The nine seed typedefs listed above.
-- [`principles.md`](principles.md) — amended: nine working principles
-  (R12 added four; R15 added `least-context`); re-approval needed.
-- [`processes/definition-chain-migration.md`](processes/definition-chain-migration.md)
-  — one run migrates one artifact type; authority reviews are `human`
-  steps; the chain it builds is **derived, never hand-written** (see
-  below).
-- [`processes/session-handoff.md`](processes/session-handoff.md) — closes
-  a discovery conversation onto its session record; `session-record`
-  resolves as `pkg:shopsystem-knowledge/session-record` (fetched through
-  that package's contract tool, `shop-knowledge schema session-record`).
-- [`types/definition-chain.md`](types/definition-chain.md) — the derived
-  chain shape: the linter assembles it from references the documents
-  already carry (`defines`, `target-type`, `produces`, step roles,
-  `derived-from`); its status is derived from its links' statuses.
-- [`types/correction.md`](types/correction.md),
-  [`types/validation-report.md`](types/validation-report.md) — the
-  handoff process's structures.
+**Approved 2026-08-22 (the seed layer, R23):** the nine seed typedefs
+listed above; [`principles.md`](principles.md) (nine working
+principles); the
+[`definition-chain-migration`](processes/definition-chain-migration.md)
+and [`session-handoff`](processes/session-handoff.md) processes;
+[`types/definition-chain.md`](types/definition-chain.md) (derived, never
+hand-written), [`types/correction.md`](types/correction.md), and
+[`types/validation-report.md`](types/validation-report.md).
 
 **Approved 2026-08-22 (the conversation model, R20 + R21):** all three
 conversation types —

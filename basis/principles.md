@@ -3,8 +3,8 @@ type: principle-set
 id: principles
 scope: working
 owner: product-authority
-status: draft
-approved: 2026-08-19
+status: approved
+approved: 2026-08-22
 created: 2026-08-10
 updated: 2026-08-21
 ---

@@ -3,7 +3,8 @@ type: data-type
 id: definition-chain
 defines: definition-chain
 owner: product-authority
-status: draft
+status: approved
+approved: 2026-08-22
 created: 2026-08-20
 updated: 2026-08-22
 ---

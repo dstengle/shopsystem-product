@@ -66,9 +66,17 @@ the ledger's opening span. From R19 the ledger lives in this record.
   bulk forget completed — `bd memories` returns zero. The memory channel
   is closed; conversation anchors own cross-session state.
 
+- **R23 (2026-08-22).** The remaining approval surface is approved: the
+  nine-principle working set (`approved: 2026-08-22` — the prompt
+  rendering regenerated with it), all nine seed typedefs, the
+  definition-chain-migration and session-handoff processes, and the
+  three supporting data types. Nothing on the branch remains in draft.
+  The seed layer stands; migration is unblocked behind the migration
+  plan's regeneration.
+
 ## State
 
-Open. Next ready action: the standing approval surface — the amended
-nine-principle set, the seed typedefs, the migration and handoff
-processes. After that, the migration plan's regeneration against the
-current tree.
+Open. Next ready action: regenerate the migration plan against the
+current tree — the census and action table that give
+definition-chain-migration its run order and keepers — and bring it as
+review material.

@@ -3,7 +3,8 @@ type: artifact-typedef
 id: process-definition-typedef
 defines: process-definition
 owner: product-authority
-status: draft
+status: approved
+approved: 2026-08-22
 created: 2026-08-19
 updated: 2026-08-20
 ancestry: [definition, process-definition]
