@@ -187,7 +187,7 @@ the ledger's opening span. From R19 the ledger lives in this record.
   approved; the five definitions are stamped approved
   (`definition-chain-migration`, `corpus-close-out`, `action-table`,
   `close-out-report`, the `migration-plan` typedef) along with the
-  glossary amendments; the archive contract is ratified
+  glossary amendments; the archive contract is approved
   (`archive/migration-2026-08` + `pre-migration` tag; `archive-move`
   to be built to spec before first use); the attention contract,
   provisional type set, and done-standard stand as recommended. The
