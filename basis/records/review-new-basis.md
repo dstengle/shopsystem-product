@@ -76,7 +76,8 @@ the ledger's opening span. From R19 the ledger lives in this record.
 
 ## State
 
-Open. Next ready action: regenerate the migration plan against the
-current tree — the census and action table that give
-definition-chain-migration its run order and keepers — and bring it as
-review material.
+Open. Next ready action: the authority rules on the migration plan
+(`drafts/migration-plan.md` on `main`, rev 2, cold-read verified): Ask 1
+approves the action table and run order as a block; Ask 2 rules three
+authority calls (adr-033, adr-046, the system-BOM bundle). On approval,
+Phase 1 begins with run 1 (architecture principle set).
