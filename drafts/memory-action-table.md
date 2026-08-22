@@ -3,7 +3,7 @@ type: action-table
 id: memory-action-table
 subject: bd-memories
 rows: 67
-revision: 3
+revision: 4
 owner: product-authority
 status: draft
 created: 2026-08-22
@@ -21,21 +21,22 @@ contents.
 
 ## How to rule
 
-One block decision closes this table (rev 3, after the authority's
-rulings of 2026-08-22): **approve all 67 rows** — 55 retire, 12
-route-to-chain. No memory becomes a new document now. On approval,
-execution is mechanical: all 67 export verbatim to
-`findings/memory-archive-2026-08.md`, `bd forget` runs in bulk (the
-single sanctioned exception to the write freeze), and the 12
-route-to-chain rows get a pointer note filed on the work of the
-definition chain that will consume them — where the question "is this
-discipline still needed?" is decided with full context, at chain review.
+One block decision closes this table (rev 4, per the authority's
+rulings of 2026-08-22): **approve all 67 rows** — 55 retire, 11
+route-to-chain, 1 to backlog. No memory becomes a new document. All 67
+export verbatim to the archive branch `archive/memory-2026-08` — never
+stored on `main`, so it cannot poison context; reachable deliberately.
+`bd forget` runs in bulk (the single sanctioned exception to the write
+freeze). The 11 route-to-chain rows get a pointer note on the work of
+the definition chain that will consume them — where "is this discipline
+still needed?" is decided with full context, at chain review. The sc06
+scenario body goes into a backlog work item carrying the verbatim text.
 Classification was performed 2026-08-22 by four independent agents
 searching the corpus per memory; the authority then ruled that
 disciplines and process-bound rules route to chains rather than becoming
 old-format records.
 
-## Route-to-chain (12 rows)
+## Route-to-chain (11 rows) and backlog (1 row)
 
 Retired from the memory channel like every other row (archived, then
 forgotten); each additionally gets a pointer note on the work item of
@@ -55,7 +56,7 @@ still needed is decided at that chain's review.
 | router-architect-effectiveness-the-17e9342e-re-pin-ruling | cross-version import-source assertions confirmed against the actual target version | dispatch process chain (architect pre-state verification) |
 | router-effectiveness-i-missed-a-real-2nd-blocked | on a Monitor event, verify the BC substrate, never just the mailbox snapshot | router monitor-handling process |
 | resume-2026-07-04-lead-architect-handoff-before | scenario-ownership model: `@bc` owner on the scenario; cross-BC scenario owned by one integration-point BC | scenario/feature typedef chain |
-| deferred-revised-sc06-body-5174e405a19358fa-per-adr-024 | the deferred revised sc06 scenario body (adr-024 D2 cites only its hash); the archive carries the verbatim text | adr-024 D2 follow-up work item |
+| deferred-revised-sc06-body-5174e405a19358fa-per-adr-024 | the deferred revised sc06 scenario body (adr-024 D2 cites only its hash) | **backlog work item carrying the verbatim body** (authority ruling: content rides in the registry, not the archive) |
 
 ## Retire (55 rows)
 
@@ -126,11 +127,13 @@ The original 53:
 
 ## Execution on approval
 
-1. Export all 67 memories verbatim to `findings/memory-archive-2026-08.md`
-   (out of ambient context; reachable deliberately).
-2. File one pointer note per route-to-chain row on its consuming chain's
+1. Export all 67 memories verbatim to the archive branch
+   `archive/memory-2026-08` (never on `main`; reachable deliberately by
+   checkout).
+2. File the sc06 backlog work item carrying the verbatim scenario body.
+3. File one pointer note per route-to-chain row on its consuming chain's
    work item (creating the item where none exists yet), citing the
-   archive entry.
-3. `bd forget` all 67 in bulk — the sanctioned exception to the write
+   archive branch and key.
+4. `bd forget` all 67 in bulk — the sanctioned exception to the write
    freeze. The channel stays closed to writes; conversation anchors own
    cross-session state. No new documents are written now.
