@@ -147,9 +147,34 @@ the ledger's opening span. From R19 the ledger lives in this record.
   pattern. Brief-026 is superseded as the decision surface by the
   forthcoming rev 4 brief.
 
+- **R28 (2026-08-22).** The framework spec dissolves into the typed
+  system; retirement requires named coverage. Authority direction over
+  three exchanges: (a) the framework spec (02–06, artifact-lifecycle,
+  consumer-wiring, README, current-state, structurizr) gets NO bespoke
+  artifact type — its binding content re-homes into instances of the
+  new artifact types (role definitions, process definitions, glossary,
+  data types), authored through those types' chains; Phase 3's
+  framework-spec run becomes a dissolution run. The principles alone
+  have a dedicated home (the principle set, Phase 0). The scenario
+  discipline reaches the branch as CONTENT of the Phase 1 PO/Architect
+  process definitions (03/04 + scenario ADRs as curated source), which
+  is how Phase 2 knows to pin capabilities with Gherkin. (b) A record
+  with binding content MUST NOT retire unless each binding claim has a
+  named covering home — new action treatment retire-with-coverage,
+  plus a mechanical coverage check in the dissolution run; an unmapped
+  claim blocks the retirement. 05-inter-shop-protocol retires against
+  verified F3/schema/pin coverage. (c) Structurizr routes as: an ADR
+  (the decision to maintain an architecture model as code), a
+  sub-process definition (its maintenance/regeneration), operational
+  import of the 3 source files under that process; only the generated
+  cache is terminal. README/current-state re-authoring routes through
+  the product-narrative path, late. Still open (recommendation
+  standing, not ruled): completing the role-definition and
+  process-definition meta-chains as Phase 1's first act.
+
 ## State
 
-Open — **rev 4 delivered; awaiting the authority's rulings**
+Open — **rev 4 delivered; rev 5 amendment in flight (R28)**
 (2026-08-22).
 
 Rev 3 was delivered via `briefs/brief-026.md`; before ruling, the
