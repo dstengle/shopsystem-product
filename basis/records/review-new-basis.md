@@ -35,10 +35,24 @@ the ledger's opening span. From R19 the ledger lives in this record.
   (run, hold, checkpoint, branched conversation), compiler sub-process
   rendering.
 
+- **R20 (2026-08-22).** The conversation-model package is approved:
+  [`review-record`](../artifacts/review-record.md) and
+  [`review-conversation`](../processes/review-conversation.md) carry
+  `approved: 2026-08-22`; the run-lifecycle and sub-process amendments
+  ride the process-definition typedef's own pending approval. Directed
+  and applied: the remaining two conversation types —
+  [`discovery-conversation`](../processes/discovery-conversation.md)
+  (interlocutor dialogue; closes onto a session record by invoking
+  session-handoff as the first sub-process step; nothing operationalized
+  before the authority converges) and
+  [`work-conversation`](../processes/work-conversation.md) (scoped to
+  one work item; every exchange lands as a comment on it; closing the
+  conversation does not close the item). Both draft, compiled, linted.
+
 ## State
 
-Open. Next ready action: the authority reviews the conversation-model
-package (run lifecycle, review-record, review-conversation, this record)
-alongside the standing approval surface — the amended nine-principle
-set, the seed typedefs, the migration and handoff processes — and the
-frozen-memories ruling remains outstanding.
+Open. Next ready action: the authority reviews the two draft
+conversation types (discovery, work) alongside the standing approval
+surface — the amended nine-principle set, the seed typedefs, the
+migration and handoff processes — and the frozen-memories ruling remains
+outstanding.

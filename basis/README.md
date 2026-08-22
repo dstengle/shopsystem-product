@@ -443,17 +443,22 @@ is a BC.
 - [`types/correction.md`](types/correction.md),
   [`types/validation-report.md`](types/validation-report.md) — the
   handoff process's structures.
-- [`artifacts/review-record.md`](artifacts/review-record.md) — the anchor
-  type for review conversations: material, an append-only ruling ledger,
-  and a State section that makes hold and resume possible.
-- [`processes/review-conversation.md`](processes/review-conversation.md)
-  — the definition of the conversation this review has been all along:
-  observe → route → apply loop, authority-only close and cancel exits,
-  `hold-after: P7D` auto-park. Other processes invoke it as a
-  sub-process step.
-- [`records/review-new-basis.md`](records/review-new-basis.md) — this
-  conversation's own record: the first review-record instance, work item
-  `lead-kmrd4`, carrying the ledger from R19.
+- [`processes/discovery-conversation.md`](processes/discovery-conversation.md)
+  — the interlocutor dialogue; closes onto a session record by invoking
+  session-handoff as a sub-process; nothing operationalized before the
+  authority converges.
+- [`processes/work-conversation.md`](processes/work-conversation.md) —
+  operational discussion scoped to one work item; every exchange lands
+  on the item.
+
+**Approved 2026-08-22 (the conversation model, R20):**
+[`artifacts/review-record.md`](artifacts/review-record.md) (anchor type:
+material, append-only ruling ledger, State for hold/resume),
+[`processes/review-conversation.md`](processes/review-conversation.md)
+(observe → route → apply, authority-only exits, `hold-after` auto-park).
+Its first instance is this conversation's own record,
+[`records/review-new-basis.md`](records/review-new-basis.md) (work item
+`lead-kmrd4`, ledger from R19).
 
 **Approved 2026-08-19 (the exemplar set):** `principles`' four original
 principles (superseded by the amended draft above), `glossary.md` (since

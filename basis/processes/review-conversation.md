@@ -2,7 +2,8 @@
 type: process-definition
 id: review-conversation-process
 owner: product-authority
-status: draft
+status: approved
+approved: 2026-08-22
 created: 2026-08-22
 updated: 2026-08-22
 produces: [review-record]
