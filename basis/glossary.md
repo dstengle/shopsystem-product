@@ -82,28 +82,26 @@ terms uses one of these when one fits.
 - **round cap** — the declared maximum review rounds before a loop's
   failsafe exit fires.
 - **action** — the approved choice for one record: keep-rewrite, keep,
-  retire, or terminal, with its target. *(draft amendment 2026-08-22,
-  pending approval: extended from the three-value set to match the
+  retire, or terminal, with its target. *(amended 2026-08-22, approved R30: extended from the three-value set to match the
   migration plan's use of keep; `authority-call` is not an action — see
   its entry.)*
 - **authority-call** — a row marker on a migration-plan row awaiting a
   ruling from the authority; not an action — the row has no effect and
-  is out of scope for any run until ruled. *(draft addition 2026-08-22,
-  pending approval.)*
+  is out of scope for any run until ruled. *(amended 2026-08-22, approved R30)*
 - **action table** — the table of records and their actions; approved row
   by row or in blocks at a review. Drives any bulk record change.
-  *(draft amendment 2026-08-22, pending approval: schema-defined as the
+  *(amended 2026-08-22, approved R30: schema-defined as the
   `action-table` data type in `types/action-table.md` — the governed
   channel for per-keeper directives and family nominations.)*
 - **close-out** — the mechanical execution of the migration plan's
   pre-decided retire and terminal actions: snapshot, delete, archive
-  move, and a loud post-check; no review loop. Runs staged, `pre-run`
-  once then `post-run:<run-id>` per migration run. *(draft addition
-  2026-08-22, pending approval.)*
+  move, a loud post-check, and the branch promotion; no review loop.
+  All stages run consecutively at cut-over (R27). *(added 2026-08-22,
+  approved R30.)*
 - **snapshot tag** — the annotated git tag (`pre-migration`) on `main`'s
   pre-execution commit, preserving the full corpus for terminal-recovery;
-  after close-out a terminal record exists only there. *(draft addition
-  2026-08-22, pending approval.)*
+  after close-out a terminal record exists only there. *(added
+  2026-08-22, approved R30.)*
 - **migration plan** — the rebaseline's action table plus the order of
   the per-type migration runs. Replaces "rebaseline bill".
 - **experiment index** — the new-basis experiment's README: the

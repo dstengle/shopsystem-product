@@ -4,7 +4,7 @@ id: migration-plan
 revision: 5
 supersedes: rebaseline-bill (2026-08-04)
 owner: product-authority
-status: draft
+status: approved
 created: 2026-08-22
 updated: 2026-08-22
 ---
@@ -291,10 +291,10 @@ units and never mix into the records total.
 
 | lane | records (md) | keep-rewrite | keep | retire | terminal | authority-call rows |
 |---|---|---|---|---|---|---|
-| A — decisions (adrs, pdrs) | 108 | 87 | — | 17 | 0 | 4 |
-| B — PM records (intents, candidates, briefs, sessions) | 67 | 28 | — | 31 | 7 | 1 |
+| A — decisions (adrs, pdrs) | 108 | 87 | — | 21 | 0 | 0 |
+| B — PM records (intents, candidates, briefs, sessions) | 67 | 28 | — | 32 | 7 | 0 |
 | D — docs, findings, drafts, root | 135 | 14 | 5 | 116 | 0 | 0 |
-| **records total (md)** | **310** | **129** | **5** | **164** | **7** | **5** |
+| **records total (md)** | **310** | **129** | **5** | **169** | **7** | **0** |
 
 Rev 5 (R28) count note: `05-inter-shop-protocol.md` flipped from
 keep-rewrite to retire-with-coverage — hence lane D 15→14 keep-rewrite
@@ -319,11 +319,11 @@ Separate units, not in the records total:
   61 in `.fabro-e2e-scratch/`, 21 in `.specstory/`); they are counted
   as trees, never as records.
 - **Scenarios (lane C):** 893 pins across 291 feature files in
-  `features/` — 860 keep, 27 retire, 6 authority-call.[^pins]
+  `features/` — 860 keep, 33 retire, 0 authority-call.[^pins]
   `features-provisional/` holds 23 further files (17 devcontainer +
   5 docs + 1 README), all retire.
 
-[^pins]: The 6 authority-call pins (features/system-manifest/) are
+[^pins]: The 6 system-manifest pins (ruled retire, R30) are
 pins, not records; they ride the system-BOM record ruling (call 3) and
 appear in no record total.
 
@@ -600,6 +600,11 @@ Every point where the authority sees, and can reject, migration work:
 
 ## Authority calls (record-level)
 
+**All three calls RULED per the recommendation (R30, 2026-08-22,
+brief-028 ask 6): retire.** The rows above carry the rulings; the
+adr-046 fresh-decision and system-BOM-intent backlog items are filed.
+The original calls are preserved below for the record.
+
 1. **adr-033 (BC-local architect role)** — never realized; the pinned
    loop is Implementer→Reviewer only. *Recommend retire*: the role
    system re-founds through chains; a needed seat gets decided fresh.
@@ -672,7 +677,7 @@ family.
 | adr-030 | accepted | keep-rewrite | F7 spike isolation contract; pinned scenarios |
 | adr-031 | accepted | keep-rewrite | F7 wall protocol; pinned |
 | adr-032 | accepted | keep-rewrite | F7 spike output form; pinned |
-| adr-033 | accepted | authority-call | Role never realized; pinned loop is Implementer-Reviewer only |
+| adr-033 | accepted | retire | RULED R30: role never realized; pinned loop is Implementer-Reviewer only |
 | adr-034 | superseded | retire | Superseded by adr-067 |
 | adr-035 | superseded | retire | Superseded by adr-067 |
 | adr-036 | accepted | keep-rewrite | F8 CLI-vs-prose enforcement; wrapper live |
@@ -684,8 +689,8 @@ family.
 | adr-042 | proposed | retire | Status-correction non-decision; open leg stale |
 | adr-043 | accepted | keep-rewrite | F10 compute-once coordinates; 2nd-most origin-cited |
 | adr-045 | proposed | keep-rewrite | F9 CA transport realized at shop-shell; needs terminal state |
-| adr-046 | proposed | authority-call | Decided image parameterization never implemented; `bin/shop-shell:136` still bakes the literal |
-| adr-047 | proposed | authority-call | Scenarios pinned; system-manifest.yaml still nonexistent |
+| adr-046 | proposed | retire | RULED R30: decided image parameterization never implemented (`bin/shop-shell:136`); fresh decision carried by backlog item |
+| adr-047 | proposed | retire | RULED R30 (system-BOM): never built; intent carried verbatim by backlog item |
 | adr-048 | proposed | keep-rewrite | F12 fabro substrate realized; recover dates at rewrite |
 | adr-049 | proposed | keep-rewrite | F12 vault-sole-credential; may fold into F9 |
 | adr-050 | proposed | keep-rewrite | F12 launch parity; realized |
@@ -739,7 +744,7 @@ family.
 | pdr-027 | proposed | keep-rewrite | F6 empty-repo discovery trigger; live standing rule |
 | pdr-028 | proposed | keep-rewrite | F2 bootstrap version check; live |
 | pdr-029 | accepted | keep-rewrite | F3 vehicle catalog; live |
-| pdr-030 | proposed | authority-call | System BOM pinned yet unrealized; rides adr-047 ruling |
+| pdr-030 | proposed | retire | RULED R30 (system-BOM): rides adr-047 retirement |
 | pdr-031 | rejected | retire | Rejected; its scenario surface retires with it |
 | pdr-032 | superseded | retire | Superseded by pdr-035/037 line |
 | pdr-033 | accepted | keep-rewrite | F6 PM-mode re-cut; only accepted RACI record |
@@ -797,7 +802,7 @@ on disk.
 | brief-012 | draft | terminal | Draft never ready; never advanced |
 | brief-013 | draft | keep-rewrite | Origin-cited x5; healthy-bootstrap live |
 | brief-014 | draft | keep-rewrite | Origin-cited x2; rides F3 catalog rewrite |
-| brief-015 | draft | authority-call | Rides the system-BOM ruling |
+| brief-015 | draft | retire | RULED R30 (system-BOM): rides adr-047 retirement |
 | brief-016 | draft | terminal | Draft never ready; re-homes per RACI specimen |
 | brief-017 | draft | keep-rewrite | Origin-cited x2; live capability |
 | brief-018 | draft | keep-rewrite | Origin-cited x1; re-homes in F14 rewrite |
@@ -848,7 +853,7 @@ never records.
 | features/shopsystem-templates/writing_skill_enforcement.feature | 1 | 5 | retire | Same |
 | features/shopsystem-templates/lead_skill_artifact_validation_gate.feature | 1 | 4 | retire | Same |
 | features/spike-lifecycle/ | 1 | 8 | keep | @origin:pdr-016; live |
-| features/system-manifest/ | 1 | 6 | authority-call | Rides the system-BOM ruling (call 3); 6 pins, not records |
+| features/system-manifest/ | 1 | 6 | retire | RULED R30 (system-BOM): 6 pins retire with the bundle |
 | features/test-harness/ | 1 | 5 | keep | Resolved: shopsystem-test-harness now in bc-manifest.yaml |
 | features-provisional/devcontainer/ | 17 | — | retire | Authority 2026-07-04: no current use |
 | features-provisional/docs/ | 5 | — | retire | Retires with adr-008 (shopsystem-docs dead letter) |
@@ -856,7 +861,7 @@ never records.
 | scenario-refs/origin-index.txt | 1 | — | keep | Stale since 2026-07-04; bin/gen-scenario-refs regenerates it mechanically at close-out |
 
 Pin arithmetic: 893 total = 860 keep + 27 retire (15 pdr-031 + 12
-writing-skill) + 6 authority-call.
+writing-skill) + 6 system-manifest (RULED R30).
 
 ## Action table — docs, findings, drafts, root (lane D, 135 md records + trees)
 

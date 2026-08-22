@@ -1,6 +1,6 @@
 ---
 type: decision-brief
-status: delivered
+status: decided
 date: 2026-08-22
 reader: product-authority
 decisions-requested: 7

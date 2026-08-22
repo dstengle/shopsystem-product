@@ -3,7 +3,8 @@ type: data-type
 id: close-out-report
 defines: close-out-report
 owner: product-authority
-status: draft
+status: approved
+approved: 2026-08-22
 created: 2026-08-22
 updated: 2026-08-22
 ---

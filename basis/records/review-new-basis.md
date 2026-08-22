@@ -182,24 +182,34 @@ the ledger's opening span. From R19 the ledger lives in this record.
   ruling: deliver brief-028 as the decision surface, superseding
   brief-027.
 
+- **R30 (2026-08-22).** Brief-028 is APPROVED on all seven asks; the
+  authority directed the Seed to start. Applied: the plan (rev 5) is
+  approved; the five definitions are stamped approved
+  (`definition-chain-migration`, `corpus-close-out`, `action-table`,
+  `close-out-report`, the `migration-plan` typedef) along with the
+  glossary amendments; the archive contract is ratified
+  (`archive/migration-2026-08` + `pre-migration` tag; `archive-move`
+  to be built to spec before first use); the attention contract,
+  provisional type set, and done-standard stand as recommended. The
+  three record-level calls are ruled retire: adr-033; adr-046 (fresh
+  decision carried by backlog item lead-b7cn6); the system-BOM bundle
+  (intent carried verbatim by backlog item lead-msm4m; its 6 pins
+  retire). Action-table rows and counts updated (310 records:
+  129 keep-rewrite / 5 keep / 169 retire / 7 terminal / 0 awaiting;
+  pins 893: 860 keep / 33 retire). Brief-028 is decided — the first
+  stakeholder-presentation run to complete through decision.
+
 ## State
 
-Open — **rev 5 delivered via brief-028; awaiting the authority's
-rulings** (2026-08-22).
+Open — **migration executing: Seed in progress** (2026-08-22).
 
-Rev 5 applies R28 (dissolution run with routing, retire-with-coverage
-+ mechanical coverage check, 05 retired against F3/schema/pin
-coverage, structurizr → ADR + sub-process + operational import,
-counts 310: 129/5/164/7/5) and R29 (meta-chains as Phase 1's ruled
-first act). Brief-028 (stakeholder-presentation, 4 cold-read rounds
-in `verified-by`, delivered at the round cap with residuals repaired
-post-round and a disclosed ~1,700-word budget overage) supersedes
-brief-027 as the decision surface.
-
-Resume point: the authority rules on brief-028's seven asks — asks
-1–2 gate the Seed, ask 3 gates archiving/deletion/promotion, asks 4–7
-resolve on silence by their stated defaults. The Seed does not begin
-before asks 1–2 are approved.
+Resume point: the Seed per the approved plan — branch `rebaseline`
+(orphan), seeded additively with `basis/` (including its tools) and a
+`.claude/` surface regenerated from the basis; exit: the branch holds
+exactly that and lint passes on it. Then Phase 0: the first
+`definition-chain-migration` run (`artifact_type: principle-set`,
+keepers `01-principles.md`), the authority at its chain-and-exemplar
+review. The shop is frozen (R27): no dispatches, mailboxes queue.
 
 Rev 3 was delivered via `briefs/brief-026.md`; before ruling, the
 authority redirected the execution model (R27), and the plan was

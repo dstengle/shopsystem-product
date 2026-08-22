@@ -2,7 +2,8 @@
 type: process-definition
 id: definition-chain-migration-process
 owner: product-authority
-status: draft
+status: approved
+approved: 2026-08-22
 created: 2026-08-20
 updated: 2026-08-22
 produces: [definition]
@@ -13,7 +14,8 @@ external-refs: []
 # Process: Definition-chain migration
 
 > Amended 2026-08-22 (R24 remediation: flow fix F2, actions channel F4,
-> archive-contract reference F1/F16); pending authority re-approval.
+> archive-contract reference F1/F16; R27: demotions queue to cut-over).
+> Re-approved by the authority 2026-08-22 (R30, brief-028 ask 2).
 
 **Purpose:** Convert one artifact type from the frozen corpus into the new
 baseline: build its definition chain, prove the chain on a real keeper,
