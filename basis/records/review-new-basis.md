@@ -215,12 +215,25 @@ principles compiler's hardcoded `@experiment/new-basis` source
 citation was corrected to the in-tree path (main and branch); the
 branch README's record links point at `main` as the record's home.
 
-Resume point: Phase 0 — the first `definition-chain-migration` run
-(`artifact_type: principle-set`, keepers `01-principles.md`, actions
-from the approved table), running on the `rebaseline` worktree at
-`/home/vscode/rebaseline`. The build-chain step drafts the six links;
-the authority reviews chain + exemplar (round cap 3, then park). The
-shop is frozen (R27): no dispatches, mailboxes queue.
+Phase 0 build steps complete (branch commit `9d5b02b`): the
+principle-set chain's five missing links drafted (guideline, fitness
+set, authoring process, cold-reviewer reused, compiled skill digest
+fed20c3027db); derivation reports all six links; the exemplar (the
+approved nine-principle set) passes all fitness scenarios with one
+accepted tradeoff. Central discovery: the keeper `01-principles.md`
+is ARCHITECTURE-scope while the approved set is WORKING-scope — two
+instances of one type; the run's material records deltas D1–D10 and
+friction findings F1–F7
+(`rebaseline:basis/records/principle-set-chain-review-material.md`).
+
+Resume point: the authority rules on brief-029 (delivered,
+stakeholder-presentation, 4 cold-read rounds) — ask 1 the
+chain-and-exemplar verdict (gates the stamps), ask 2 charter the
+architecture principle set (gates Phase 0 exit), asks 3–7 resolve on
+silence. On the rulings: stamp the chain links, apply the ask-4
+amendments, file the F-findings as beads, move the review material to
+`main` record-keeping, and start the architecture-set authoring
+through the approved chain. The shop is frozen (R27).
 
 Rev 3 was delivered via `briefs/brief-026.md`; before ruling, the
 authority redirected the execution model (R27), and the plan was
