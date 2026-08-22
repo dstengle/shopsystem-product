@@ -149,19 +149,25 @@ the ledger's opening span. From R19 the ledger lives in this record.
 
 ## State
 
-Open — **rev 4 restructure in flight** (2026-08-22).
+Open — **rev 4 delivered; awaiting the authority's rulings**
+(2026-08-22).
 
-Rev 3 was delivered via `briefs/brief-026.md` (first conforming
-stakeholder-presentation run, 4 cold-read rounds); before ruling, the
-authority redirected the execution model (R27). In flight: migration
-plan rev 4 restructured to the R27 phase model (census and action
-tables carry over intact; the action table gains import stages for
-keep rows and curated-feed duty for keep-rewrite rows), then a fresh
-stakeholder-presentation run delivering brief-027, which supersedes
-brief-026 as the decision surface.
+Rev 3 was delivered via `briefs/brief-026.md`; before ruling, the
+authority redirected the execution model (R27), and the plan was
+restructured to rev 4 (phases Seed/0/1/2/3; census and action tables
+carried over intact; the action table now also carries import stages
+and the curated feed; `definition-chain-migration` gained the
+queue-demoted amendment and `corpus-close-out` the cut-over staging
+with branch promotion — drafts, lint-clean). Rev 4 was delivered via
+`briefs/brief-027.md` (stakeholder-presentation, 4 cold-read rounds
+logged in `verified-by`, delivered at the round cap with residuals
+repaired post-round and disclosed at the top). Brief-026 is superseded
+by brief-027 as the decision surface.
 
-Resume point: brief-027's asks, once delivered. Phase 0 does not begin
-before the authority approves rev 4.
+Resume point: the authority rules on brief-027's seven asks — asks 1–2
+gate the Seed, ask 3 gates archiving/deletion/promotion, asks 4–7
+resolve on silence by their stated defaults. The Seed does not begin
+before asks 1–2 are approved.
 
 For the resuming session: the basis lives on `main` under `basis/`
 (R25); the ledger above plus README rulings R1–R18 are the review's
