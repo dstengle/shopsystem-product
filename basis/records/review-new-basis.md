@@ -118,30 +118,50 @@ the ledger's opening span. From R19 the ledger lives in this record.
   the literal), not a certificate-authority exemption; corrected in
   plan rev 3 and the brief, verified against the live script.
 
+- **R27 (2026-08-22).** The execution model is restructured by
+  authority direction, superseding rev 3's in-place model (the
+  authority's concern: mid-migration confusion on `main`):
+  (a) **Greenfield migration branch, additive seed ("branch plus"):**
+  the migration runs on a new, mostly-empty branch; nothing exists on
+  it unless an explicit import step brings it in with a precondition
+  and a verification — no subtractive "main minus" seeding, and no
+  features or keeps before progressive disclosure exists. Frozen
+  `main` stays the contract of record for BC shops until cut-over.
+  (b) **Total freeze:** the shop has no activity until the migration
+  completes; in-flight dispatches are not being worked; mailboxes
+  queue durably; no reconcile carve-out.
+  (c) **Phase structure:** Seed (basis + tools + branch-native
+  `.claude/` surface regenerated from the basis) → Phase 0
+  architecture principles (everything derives from them) → Phase 1
+  PM/PO/Architect definitions + chain → Phase 2 progressive
+  disclosure built as the FIRST FEATURE through the new
+  PM/PO/Architect flow, providing feedback and refinement of the
+  Phase 1 definitions → Phase 3 the corpus migration runs, subject to
+  an authority review before executing, after Phase 2. Root cause
+  named: resetting the corpus without repairing the growth-mode
+  problems (ad-hoc pre-state verification, context bloat) would hit
+  the same limit again — supporting mechanisms come first.
+  (d) **Code handoff:** lead-side bootstrap code (basis tools, PD
+  implementation) is scenario-pinned during the migration and handed
+  to a bounded context at migration end, per the spike-graduation
+  pattern. Brief-026 is superseded as the decision surface by the
+  forthcoming rev 4 brief.
+
 ## State
 
-Open — **rev 3 delivered; awaiting the authority's rulings**
-(2026-08-22).
+Open — **rev 4 restructure in flight** (2026-08-22).
 
-The R24 remediation is complete. The adversarial review (18 findings,
-5 blockers, 17 required conditions) and the isolated cold read ran;
-`definition-chain-migration` was amended (flow fix — its `derive-chain`
-step had no exit, so no rewrite could ever run; plus a governed
-`actions` input); `corpus-close-out`, `action-table`,
-`close-out-report`, and the `migration-plan` typedef were authored
-(all drafts pending approval); the archive contract is specced
-(`archive/migration-2026-08` + `pre-migration` tag; `archive-move`
-specced, not built). Migration plan rev 3 addresses all findings, and
-its delivery went through the stakeholder-presentation process for the
-first time: `briefs/brief-026.md`, status delivered, seven asks, four
-cold-read rounds logged in `verified-by`, delivered at the round cap
-with the residual round-4 findings repaired post-round and disclosed
-at the top of the brief.
+Rev 3 was delivered via `briefs/brief-026.md` (first conforming
+stakeholder-presentation run, 4 cold-read rounds); before ruling, the
+authority redirected the execution model (R27). In flight: migration
+plan rev 4 restructured to the R27 phase model (census and action
+tables carry over intact; the action table gains import stages for
+keep rows and curated-feed duty for keep-rewrite rows), then a fresh
+stakeholder-presentation run delivering brief-027, which supersedes
+brief-026 as the decision surface.
 
-Resume point: the authority rules on brief-026's seven asks — asks 1–2
-gate run 1, ask 3 gates archiving and deletion, asks 4–7 resolve on
-silence by their stated defaults. Phase 1 does not begin before asks
-1–2 are approved.
+Resume point: brief-027's asks, once delivered. Phase 0 does not begin
+before the authority approves rev 4.
 
 For the resuming session: the basis lives on `main` under `basis/`
 (R25); the ledger above plus README rulings R1–R18 are the review's
