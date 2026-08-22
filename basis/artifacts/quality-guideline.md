@@ -42,6 +42,10 @@ base style, which governs all prose).
    elements: a test, a criterion, a yes/no decision — plus the derived
    check it feeds (mechanical, judged, or both).
 
+Sections 1–3 may appear as bolded labels; Rules is a heading. The base
+writing style is stored verbatim, so its structure is the authority's
+own and is exempt from the section requirements.
+
 ## Commitment (Definition of Done)
 
 A quality guideline is done when every rule

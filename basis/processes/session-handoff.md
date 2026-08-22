@@ -7,7 +7,6 @@ created: 2026-08-21
 updated: 2026-08-21
 produces: [session-record]
 condition-language: cel
-external-refs: [session-record]
 ---
 
 # Process: Session handoff
@@ -74,14 +73,16 @@ flowchart TD
 ## Data
 
 Each entry names a process-local value. Simple types use JSON Schema
-names inline; structured shapes are a `$ref` to a defined type.
-`session-record` resolves to the shopsystem-knowledge registry.
+names inline; every structured shape is a `$ref` to a defined type with
+an explicit source — `from:` links the defining file, or names the owning
+package as `pkg:<package>/<type>` (fetched through that package's
+contract tool).
 
 ```yaml
 data:
-  session_record: {$ref: session-record}
-  corrections: {type: array, items: {$ref: correction}}
-  validation: {$ref: validation-report}
+  session_record: {$ref: session-record, from: pkg:shopsystem-knowledge/session-record}
+  corrections: {type: array, items: {$ref: correction, from: ../types/correction.md}}
+  validation: {$ref: validation-report, from: ../types/validation-report.md}
   round: {type: integer, initial: 1}
 ```
 

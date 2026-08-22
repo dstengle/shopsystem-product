@@ -47,19 +47,21 @@ edit by hand.
 
 ```mermaid
 flowchart TD
-  build_chain(["Build the definition chain — agent: lead-pm<br/>in — artifact_type: string, keepers: string[]<br/>out — chain: definition-chain"])
+  build_chain(["Build the definition chain — agent: lead-pm<br/>in — artifact_type: string, keepers: string[]<br/>out — authored: string[]"])
+  derive_chain["Derive the chain from references — runtime<br/>in — artifact_type: string, authored: string[]<br/>out — chain: definition-chain"]
   exemplar_rewrite(["Prove the chain on one keeper — agent: lead-pm<br/>in — chain: definition-chain, keepers: string[]<br/>out — exemplar: string"])
   authority_review[["Authority reviews chain and exemplar — human: product-authority<br/>in — chain: definition-chain, exemplar: string<br/>out — review: review"]]
   route_review{"Route on the verdict<br/>in — review: review, round: integer"}
   revise_chain(["Revise the chain — agent: lead-pm<br/>in — chain: definition-chain, review: review<br/>out — chain: definition-chain"])
   advance_round["Advance the round counter — runtime<br/>in — round: integer<br/>sets — round: integer"]
-  approve_chain[["Approve the chain — human: product-authority<br/>in — chain: definition-chain<br/>out — chain: definition-chain"]]
+  approve_chain[["Approve the chain's documents — human: product-authority<br/>in — chain: definition-chain"]]
+  rederive_chain["Re-derive the approved chain — runtime<br/>in — artifact_type: string<br/>out — chain: definition-chain"]
   rewrite_keepers(["Rewrite every keeper through the chain — agent: lead-pm<br/>in — chain: definition-chain, keepers: string[], exemplar: string<br/>out — rewritten: string[], demoted: string[]"])
   archive_retired["Archive what leaves — runtime<br/>in — artifact_type: string, demoted: string[]"]
-  park["Park the type with a finding — runtime<br/>in — artifact_type: string, chain: definition-chain, review: review<br/>sets — chain.status: field of definition-chain"]
+  park["Park the type with a finding — runtime<br/>in — artifact_type: string, review: review"]
   __end(("end<br/>result — chain: definition-chain"))
   __start(("start")) --> build_chain
-  build_chain --> exemplar_rewrite
+  build_chain --> derive_chain
   exemplar_rewrite --> authority_review
   authority_review --> route_review
   route_review -->|success exit: clean or tradeoffs accepted| approve_chain
@@ -67,7 +69,8 @@ flowchart TD
   route_review -->|else| revise_chain
   revise_chain --> advance_round
   advance_round --> authority_review
-  approve_chain --> rewrite_keepers
+  approve_chain --> rederive_chain
+  rederive_chain --> rewrite_keepers
   rewrite_keepers --> archive_retired
   archive_retired --> __end
   park --> __end
@@ -77,15 +80,19 @@ flowchart TD
 ## Data
 
 Each entry names a process-local value. Simple types use JSON Schema
-names inline; every structured shape is a `$ref` to a defined type.
+names inline; every structured shape is a `$ref` to a defined type with
+an explicit source — `from:` links the defining file, or names the owning
+package as `pkg:<package>/<type>` (fetched through that package's
+contract tool).
 
 ```yaml
 data:
   artifact_type: {type: string}
   keepers: {type: array, items: {type: string}}
-  chain: {$ref: definition-chain}
+  authored: {type: array, items: {type: string}}
+  chain: {$ref: definition-chain, from: ../types/definition-chain.md}
   exemplar: {type: string}
-  review: {$ref: review}
+  review: {$ref: review, from: ../types/review.md}
   round: {type: integer, initial: 1}
   rewritten: {type: array, items: {type: string}}
   demoted: {type: array, items: {type: string}}
@@ -107,10 +114,9 @@ steps:
     name: Build the definition chain
     run-by: {role: lead-pm, execution: agent}
     inputs: [artifact_type, keepers]
-    outputs: [chain]
+    outputs: [authored]
     checks:
-      - chain.artifact_type == artifact_type
-      - chain.status == "draft"
+      - size(authored) >= 6
     prompt: |
       Draft every link of the definition chain for this artifact type:
       typedef, quality guideline, fitness set, authoring process, roles,
@@ -118,9 +124,19 @@ steps:
       recorded rulings and verbatim anchors, an autopsy of the best and
       worst existing instances among the keepers, and established
       external standards; name every adopted form in each document's
-      Sources section. A document in an undefined format is source
-      material only — nothing is used as-is.
-    next: exemplar-rewrite
+      Sources section. A document in an undefined format is source      material only — nothing is used as-is.
+    next: derive-chain
+
+  - id: derive-chain
+    name: Derive the chain from references
+    run-by: {execution: runtime}
+    inputs: [artifact_type, authored]
+    outputs: [chain]
+    checks:
+      - chain.typedef != "" && chain.guideline != "" && chain.fitness != ""
+      - chain.process != "" && chain.skill != ""
+    run: |
+      python3 tools/lint_basis.py --derive-chain ${artifact_type}
 
   - id: exemplar-rewrite
     name: Prove the chain on one keeper
@@ -183,16 +199,27 @@ steps:
     next: authority-review
 
   - id: approve-chain
-    name: Approve the chain
+    name: Approve the chain's documents
     run-by: {role: product-authority, execution: human}
     inputs: [chain]
+    outputs: []
+    prompt: |
+      Approval stamps every linked document: status approved, approved
+      date, owner. The chain's own status is derived — it reads approved
+      only when every link does. From this point the chain is the
+      standard the mass rewrite is checked against, and changes to any
+      link go through you.
+    next: rederive-chain
+
+  - id: rederive-chain
+    name: Re-derive the approved chain
+    run-by: {execution: runtime}
+    inputs: [artifact_type]
     outputs: [chain]
     checks:
       - chain.status == "approved"
-    prompt: |
-      Approval stamps every link: status approved, approved date,
-      owner. From this point the chain is the standard the mass rewrite
-      is checked against, and changes to it go through you.
+    run: |
+      python3 tools/lint_basis.py --derive-chain ${artifact_type}
     next: rewrite-keepers
 
   - id: rewrite-keepers
@@ -221,9 +248,7 @@ steps:
   - id: park
     name: Park the type with a finding
     run-by: {execution: runtime}
-    inputs: [artifact_type, chain, review]
-    set:
-      chain.status: '"parked"'
+    inputs: [artifact_type, review]
     run: |
       bd create --title "Chain parked: ${artifact_type} after 3 review rounds" \
         --body "${review.top_changes}"

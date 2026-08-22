@@ -3,7 +3,7 @@ type: experiment-index
 id: basis
 status: experiment
 created: 2026-08-10
-updated: 2026-08-20
+updated: 2026-08-22
 ---
 
 # The new-basis experiment — a walkthrough
@@ -334,6 +334,23 @@ any of them and you land where the tour just took you.
   plus the per-type run order — is the **migration plan**, replacing
   "rebaseline bill". The stale 2026-08-04 draft is source material for
   the plan's regeneration against the current tree, never used as-is.
+- **R18 (2026-08-22): references carry sources; chains are derived; the
+  corpus gets a linter.** Authority findings on the review surface:
+  (1) every `$ref` now carries `from:` — a relative link to the defining
+  file or `pkg:<package>/<type>` resolved through the owning package's
+  contract tool; the compiler and the new linter verify local sources
+  define what they claim. (2) `definition-chain` is derived, never
+  hand-written: `lint_basis.py --derive-chain <type>` assembles it from
+  `defines`, `target-type`, `produces`, step roles, and `derived-from`,
+  and its status follows its links — the migration process gained
+  `derive-chain`/`rederive-chain` runtime steps and lost the hand-set
+  status. (3) `tools/lint_basis.py` lints structure (identity base,
+  required headings per type), references (`from:` sources, `defines`
+  uniqueness, markdown links), and vocabulary (banned terms); it caught
+  four real conformance gaps on its first run (three data types without
+  their required headings, `request` without its checklist), all
+  repaired; the branch lints clean. (4) The README now lists the full
+  approval surface, grouped by what approval means.
 - **R13 (2026-08-20): the principles load into every prompt, not only
   into documents.** A working-scope principle set is compiled into the
   session prompt chain: `tools/compile_principles.py` renders the
@@ -392,6 +409,57 @@ copies only). All are `status: draft` until the authority reviews them:
   with the guardrail front-matter and compile mapping.
 - [`artifacts/glossary-typedef.md`](artifacts/glossary-typedef.md) — the
   restricted-language list (R9).
+
+## The full approval surface (every file on this branch)
+
+What approving means per group: an **approved** file is the standard work
+is checked against; a **draft** file becomes that on your approval; a
+**rendering** is generated and carries its source's status; **apparatus**
+is not approved — it exists to prove the formats and its production home
+is a BC.
+
+**Draft — awaiting your approval:**
+
+- The nine seed typedefs listed above.
+- [`principles.md`](principles.md) — amended: nine working principles
+  (R12 added four; R15 added `least-context`); re-approval needed.
+- [`processes/definition-chain-migration.md`](processes/definition-chain-migration.md)
+  — one run migrates one artifact type; authority reviews are `human`
+  steps; the chain it builds is **derived, never hand-written** (see
+  below).
+- [`processes/session-handoff.md`](processes/session-handoff.md) — closes
+  a discovery conversation onto its session record; `session-record`
+  resolves as `pkg:shopsystem-knowledge/session-record` (fetched through
+  that package's contract tool, `shop-knowledge schema session-record`).
+- [`types/definition-chain.md`](types/definition-chain.md) — the derived
+  chain shape: the linter assembles it from references the documents
+  already carry (`defines`, `target-type`, `produces`, step roles,
+  `derived-from`); its status is derived from its links' statuses.
+- [`types/correction.md`](types/correction.md),
+  [`types/validation-report.md`](types/validation-report.md) — the
+  handoff process's structures.
+
+**Approved 2026-08-19 (the exemplar set):** `principles`' four original
+principles (superseded by the amended draft above), `glossary.md` (since
+extended by rulings), both original processes, `types/frame|review|verification`,
+`artifacts/decision-brief|request`, `roles/cold-reviewer.md`, both
+guidelines, `fitness/decision-brief.fitness.md`.
+
+**Renderings (generated, never edited):** the flow diagrams inside every
+process definition;
+[`skills/stakeholder-presentation/SKILL.md`](skills/stakeholder-presentation/SKILL.md);
+`.claude/shop/principles.md` on `main`.
+
+**Apparatus:** [`tools/compile_process.py`](tools/compile_process.py)
+(diagrams + skills), [`tools/compile_principles.py`](tools/compile_principles.py)
+(the prompt rendering), [`tools/lint_basis.py`](tools/lint_basis.py)
+(structure, references, vocabulary — and `--derive-chain`). The linter
+runs clean on this branch; production homes are BC deliverables.
+
+**Reference sources:** every `$ref` in a process data block now carries
+an explicit `from:` — a relative link to the defining file, or
+`pkg:<package>/<type>` for a type owned by another package; the linter
+and compiler verify local sources actually define the referenced type.
 
 After the seed is approved: migration into the live corpus — the PDR-032
 registry amendment (open, versioned type set), the ADR-059 wording

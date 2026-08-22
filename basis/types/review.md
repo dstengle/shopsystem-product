@@ -11,6 +11,8 @@ updated: 2026-08-19
 
 # Data type: review
 
+## Purpose
+
 One cold-read round's verdict and findings. Produced by the `cold-read`
 step of
 [`../processes/stakeholder-presentation.md`](../processes/stakeholder-presentation.md);
@@ -18,6 +20,8 @@ consumed by its routing and revision steps and appended to the round log.
 The judge output scored against
 [`../fitness/decision-brief.fitness.md`](../fitness/decision-brief.fitness.md)
 conforms to this same shape.
+
+## Schema
 
 ```yaml
 schema:

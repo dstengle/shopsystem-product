@@ -11,10 +11,14 @@ updated: 2026-08-19
 
 # Data type: verification
 
+## Purpose
+
 The verdict of checking a BC's `work_done` demonstration against the
 dispatched scenarios and the register. Produced by the `verify` step of
 [`../processes/reconcile-and-close.md`](../processes/reconcile-and-close.md);
 consumed by its routing, consume-close, and file-tail steps.
+
+## Schema
 
 ```yaml
 schema:

@@ -11,10 +11,14 @@ updated: 2026-08-19
 
 # Data type: frame
 
+## Purpose
+
 The framing of a presentation: who reads it, what they must decide, which
 asks gate the next unit of work. Produced by the `frame` step of
 [`../processes/stakeholder-presentation.md`](../processes/stakeholder-presentation.md);
 consumed by `compose`.
+
+## Schema
 
 ```yaml
 schema:

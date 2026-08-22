@@ -85,19 +85,20 @@ flowchart TD
 ## Data
 
 Each entry names a process-local value. Simple types use JSON Schema
-names inline; every structured shape is a `$ref` to a defined type —
-an artifact type in [`../artifacts/`](../artifacts/) or a data type in
-[`../types/`](../types/) — never defined here. Field access in conditions
-follows the referenced schema; conditions are CEL (Common Expression
-Language) expressions over these names.
+names inline; every structured shape is a `$ref` to a defined type with
+an explicit source — `from:` links the defining file, or names the owning
+package as `pkg:<package>/<type>` (fetched through that package's
+contract tool). Field access in conditions follows
+the referenced schema; conditions are CEL (Common Expression Language)
+expressions over these names.
 
 ```yaml
 data:
-  request: {$ref: request}
-  frame: {$ref: frame}
-  brief: {$ref: decision-brief}
+  request: {$ref: request, from: ../artifacts/request.md}
+  frame: {$ref: frame, from: ../types/frame.md}
+  brief: {$ref: decision-brief, from: ../artifacts/decision-brief.md}
   annex: {type: string, format: uri-reference}
-  review: {$ref: review}
+  review: {$ref: review, from: ../types/review.md}
   round: {type: integer, initial: 1}
   round_log: {type: array, items: {$ref: review}, initial: []}
 ```

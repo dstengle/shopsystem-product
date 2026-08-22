@@ -44,43 +44,37 @@ def parse(path: pathlib.Path):
     return text, front, spec, purpose, guiding
 
 
-def collect_refs(node) -> set:
-    refs = set()
+def collect_ref_sources(node, refs: set, sourced: dict) -> None:
     if isinstance(node, dict):
-        for key, value in node.items():
-            if key == "$ref":
-                refs.add(value)
-            else:
-                refs |= collect_refs(value)
+        if "$ref" in node:
+            refs.add(node["$ref"])
+            if node.get("from"):
+                sourced[node["$ref"]] = node["from"]
+        for value in node.values():
+            collect_ref_sources(value, refs, sourced)
     elif isinstance(node, list):
         for item in node:
-            refs |= collect_refs(item)
-    return refs
-
-
-def defined_types(basis_dir: pathlib.Path) -> set:
-    defined = set()
-    for tree in ("artifacts", "types"):
-        for path in (basis_dir / tree).glob("*.md"):
-            fm_match = re.match(r"---\n(.*?)\n---\n", path.read_text(), re.S)
-            if fm_match:
-                front = yaml.safe_load(fm_match.group(1))
-                if front.get("defines"):
-                    defined.add(front["defines"])
-    return defined
+            collect_ref_sources(item, refs, sourced)
 
 
 def check_refs(source: pathlib.Path, front: dict, spec: dict) -> None:
-    refs = collect_refs(spec.get("data", {}))
-    known = defined_types(source.parent.parent)
-    known |= set(front.get("external-refs", []))
-    unresolved = sorted(refs - known)
-    if unresolved:
-        sys.exit(
-            f"{source}: unresolved $ref {unresolved} — every $ref must name a "
-            "defined type (a `defines:` in artifacts/ or types/, or an entry "
-            "in the definition's `external-refs`)"
-        )
+    refs, sourced = set(), {}
+    collect_ref_sources(spec.get("data", {}), refs, sourced)
+    for ref in sorted(refs):
+        src = sourced.get(ref)
+        if not src:
+            sys.exit(f"{source}: $ref `{ref}` has no `from:` source "
+                     "(process-definition typedef §Data)")
+        if src.startswith("pkg:"):
+            if not re.match(r"^pkg:[a-z0-9-]+/[a-z0-9_-]+$", src):
+                sys.exit(f"{source}: `{src}` is not pkg:<package>/<type>")
+            continue
+        target = (source.parent / src).resolve()
+        if not target.exists():
+            sys.exit(f"{source}: from `{src}` does not exist")
+        fm_match = re.match(r"---\n(.*?)\n---\n", target.read_text(), re.S)
+        if not fm_match or yaml.safe_load(fm_match.group(1)).get("defines") != ref:
+            sys.exit(f"{source}: from `{src}` does not define `{ref}`")
     result = spec.get("result")
     if result and result not in spec.get("data", {}):
         sys.exit(f"{source}: result '{result}' is not a declared data value")

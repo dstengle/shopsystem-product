@@ -40,3 +40,9 @@ the root type specializations declare).
 A request is done when the named reader can tell what is being asked of
 them from the document alone. **Consequence on failure:** the request
 returns to the author; no obligation attaches to the reader.
+
+## Derived review checklist
+
+- The opening names what is requested. *(§Required sections 1)*
+- The reader is named. *(§Required sections 2)*
+- Frontmatter carries `type`, `status`, `date`, `reader`. *(§Required frontmatter)*

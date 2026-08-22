@@ -31,8 +31,7 @@ definition documents; empty when the run's value is state change);
 `condition-language: cel`; optional: `carried-by` (the rendered skill's
 id), `condition-functions` (declared extensions, name and signature),
 `annotations` (process-level rendering metadata, keyed by rendering
-target), `external-refs` (types that resolve in other registries, e.g.
-the shop-msg catalog).
+target).
 
 ## Required sections
 
@@ -46,8 +45,13 @@ the shop-msg catalog).
    edited by hand.
 6. **Data** — process-local value names. Simple types (JSON Schema
    primitives) inline; every structured shape is a `$ref` to a defined
-   type; no structured shape is ever defined here. A value may declare
-   `initial` — its value at run start.
+   type with an explicit source: `from:` is a relative link to the
+   defining file, or `pkg:<package>/<type>` when the type lives in
+   another package and is fetched through that package's contract tool
+   (e.g. `shop-knowledge schema session-record`). Every distinct `$ref`
+   carries `from:` at least once; the linter verifies local sources
+   define the referenced type. No structured shape is ever defined here.
+   A value may declare `initial` — its value at run start.
 7. **Steps** — the executable part (shape below).
 8. **Derived checks** — a table: outcome, check, kind, where; every row
    cites its clause or is deleted.
