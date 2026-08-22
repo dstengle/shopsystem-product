@@ -74,19 +74,39 @@ the ledger's opening span. From R19 the ledger lives in this record.
   The seed layer stands; migration is unblocked behind the migration
   plan's regeneration.
 
+- **R24 (2026-08-22).** Migration plan rev 2 is returned with findings —
+  not approved. The authority's findings: (1) the plan uses "kind" where
+  the glossary rules the term is "artifact type" (glossary, "Not
+  'kind'"); (2) the F-codes are under-explained — the collapse of many
+  decision records into one rewritten record per family both threatens
+  to overload what a single decision record can carry and is being
+  decided before the decision-record chain exists to define what one
+  record may hold, and the plan does not show where the authority's
+  review input lands for each migrated artifact; (3) the plan's
+  presentation leaned on opaque work-item references (`lead-kmrd4`)
+  a reader cannot resolve; (4) readiness is not demonstrated — the
+  definitions of the artifact types being migrated do not yet exist
+  (the current basis artifacts are the meta-layer for creating those
+  definitions, processes, and skills), so no rewrite could run today
+  and the plan does not say how or when each run acquires its chain.
+  Standing rule affirmed: a reader's misunderstanding of the plan is a
+  defect of the plan, not of the reader — rev 2's "cold-read verified"
+  claim is itself discredited and the cold-read check is a finding.
+  Directed: an adversarial review of the migration plan together with
+  the new basis, producing the required conditions to proceed; work
+  continues until the plan is executable under the principles.
+
 ## State
 
-Open — **checkpoint 2026-08-22** (transcript boundary; not a close).
+Open — **R24 remediation in flight** (2026-08-22).
 
-Resume point: the authority rules on the migration plan
-(`drafts/migration-plan.md` on `main`, rev 2, cold-read verified).
-Ask 1: approve the action table and run order as a block. Ask 2: three
-authority calls — adr-033 (recommend retire), adr-046 (recommend
-retire), the system-BOM bundle (recommend retire + one backlog item
-carrying the intent). Silence on a call carries it into the
-decision-chain review; nothing retires by silence. On approval, Phase 1
-begins with run 1: the architecture principle set through
-`definition-chain-migration`, the authority at its review steps.
+Resume point: migration plan rev 2 returned with findings (R24). In
+flight: the directed adversarial review (plan + basis, executability
+and required-conditions lens; plus an isolated cold read of the plan
+alone), then plan remediation to rev 3. Rev 3 returns to the authority
+with the required-conditions list; the prior Ask 1 / Ask 2 asks are
+withdrawn until rev 3 stands. Phase 1 does not begin before the
+authority approves rev 3.
 
 For the resuming session: the basis worktree is at
 `/home/vscode/basis-experiment` (branch `experiment/new-basis`); the
