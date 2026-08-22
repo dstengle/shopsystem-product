@@ -172,10 +172,20 @@ the ledger's opening span. From R19 the ledger lives in this record.
   standing, not ruled): completing the role-definition and
   process-definition meta-chains as Phase 1's first act.
 
+- **R29 (2026-08-22).** The meta-chains complete as Phase 1's first
+  act — authority ruling, resolving the open point from R28: before
+  authoring the PM/PO/Architect definitions, Phase 1 first completes
+  the role-definition and process-definition chains (quality guideline
+  and fitness set for each; only their typedefs exist today), with the
+  existing basis processes as exemplars. No meta-level authoring
+  proceeds against a partial definition of good. Directed in the same
+  ruling: deliver brief-028 as the decision surface, superseding
+  brief-027.
+
 ## State
 
-Open — **rev 4 delivered; rev 5 amendment in flight (R28)**
-(2026-08-22).
+Open — **rev 5 amendment in flight (R28/R29); brief-028 delivery
+queued** (2026-08-22).
 
 Rev 3 was delivered via `briefs/brief-026.md`; before ruling, the
 authority redirected the execution model (R27), and the plan was
