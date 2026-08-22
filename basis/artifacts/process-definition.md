@@ -31,7 +31,9 @@ definition documents; empty when the run's value is state change);
 `condition-language: cel`; optional: `carried-by` (the rendered skill's
 id), `condition-functions` (declared extensions, name and signature),
 `annotations` (process-level rendering metadata, keyed by rendering
-target).
+target); `hold-after` (ISO 8601 duration — the inactivity window after
+which the runtime holds a run; required for any process that carries a
+conversation).
 
 ## Required sections
 
@@ -85,6 +87,26 @@ is the reserved terminator id for `next`. Each step:
   a reached-state success exit, a round or budget cap, or both.
 - `annotations` — per-step rendering metadata keyed by target (e.g.
   `fabro: {model, max_attempts}`); the definition itself ignores them.
+- `run-by: {execution: sub-process, process: <process-id>, from: <source>}`
+  runs another process definition as one step: the step's inputs map to
+  the child's parameters and its outputs receive the child's result. A
+  conversation invoked this way is a branched conversation: the child's
+  anchor records the parent run.
+
+## Run lifecycle
+
+A run is one execution of a process, anchored to a work item in the
+registry. Run states: `running`, `held`, `done`, `cancelled`.
+
+- **Hold** pauses a run: the current step and every data value persist in
+  the run's anchor, and the work item records the state. A held run is
+  resumed at its recorded step or cancelled with a reason — never
+  silently dropped.
+- The `hold-after` window makes parking automatic: a run with no activity
+  inside the window is held by the runtime. Unfinished work parks itself
+  with a named resume point; nothing dangles in the lead repo.
+- **Cancel** closes the run's work item with a reason and files the
+  resulting actions the outcomes demand.
 
 ## Rendering contract
 

@@ -89,3 +89,11 @@ terms uses one of these when one fits.
   the per-type migration runs. Replaces "rebaseline bill".
 - **experiment index** — the new-basis experiment's README: the
   walkthrough, the numbered rulings, and the review state.
+- **run** — one execution of a process, anchored to a work item; states:
+  running, held, done, cancelled.
+- **hold** — a run state: paused with its step and data preserved in its
+  anchor; a held run is resumed or cancelled, never dropped.
+- **checkpoint** — updating a conversation's anchor when a transcript
+  ends mid-conversation; a checkpoint is not a close.
+- **branched conversation** — a conversation run as a sub-process of
+  another run; its anchor records the parent (`branched-from`).

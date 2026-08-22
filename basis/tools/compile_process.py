@@ -146,6 +146,8 @@ def mermaid(spec: dict) -> str:
             execution = run_by.get("execution", "runtime")
             if execution in ("agent", "human"):
                 head = f"{step['name']} — {execution}: {run_by.get('role', execution)}"
+            elif execution == "sub-process":
+                head = f"{step['name']} — sub-process: {run_by.get('process')}"
             else:
                 head = f"{step['name']} — runtime"
             label = "<br/>".join([head] + io)
@@ -153,6 +155,8 @@ def mermaid(spec: dict) -> str:
                 shape = f'(["{label}"])'
             elif execution == "human":
                 shape = f'[["{label}"]]'
+            elif execution == "sub-process":
+                shape = f'{{{{"{label}"}}}}'
             else:
                 shape = f'["{label}"]'
             nodes.append(f"  {sid}{shape}")

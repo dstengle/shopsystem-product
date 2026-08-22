@@ -161,7 +161,12 @@ judged). Every term → the glossary or a schema element. Everything →
 principles. Every arrow above is a real link inside the files — follow
 any of them and you land where the tour just took you.
 
-## Review rulings (accumulated as the review proceeds)
+## Review rulings (R1–R18; the ledger then moved)
+
+From R19 onward, rulings live in this conversation's anchor —
+[`records/review-new-basis.md`](records/review-new-basis.md) — per the
+review-conversation process. R1–R18 below are grandfathered here and
+linked from that record.
 
 - **R1 (2026-08-10): all markdown MUST have front-matter.** Applied
   everywhere; moved governance declarations (judged/non-executable,
@@ -438,6 +443,17 @@ is a BC.
 - [`types/correction.md`](types/correction.md),
   [`types/validation-report.md`](types/validation-report.md) — the
   handoff process's structures.
+- [`artifacts/review-record.md`](artifacts/review-record.md) — the anchor
+  type for review conversations: material, an append-only ruling ledger,
+  and a State section that makes hold and resume possible.
+- [`processes/review-conversation.md`](processes/review-conversation.md)
+  — the definition of the conversation this review has been all along:
+  observe → route → apply loop, authority-only close and cancel exits,
+  `hold-after: P7D` auto-park. Other processes invoke it as a
+  sub-process step.
+- [`records/review-new-basis.md`](records/review-new-basis.md) — this
+  conversation's own record: the first review-record instance, work item
+  `lead-kmrd4`, carrying the ledger from R19.
 
 **Approved 2026-08-19 (the exemplar set):** `principles`' four original
 principles (superseded by the amended draft above), `glossary.md` (since

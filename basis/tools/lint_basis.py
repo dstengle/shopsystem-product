@@ -37,7 +37,7 @@ import yaml
 BASIS = pathlib.Path(__file__).resolve().parent.parent
 
 IDENTITY_BASE = ["type", "id", "status", "created", "updated"]
-OWNER_EXEMPT = {"experiment-index", "skill", "principles-rendering"}
+OWNER_EXEMPT = {"experiment-index", "skill", "principles-rendering", "review-record"}
 REQUIRED_HEADINGS = {
     # artifact-typedef §Required sections 1-6
     "artifact-typedef": ["Identity and ancestry", "Required frontmatter",
@@ -51,6 +51,8 @@ REQUIRED_HEADINGS = {
     "fitness-set": ["Scenarios", "Compile mapping"],
     # glossary typedef §Required sections 1-2
     "glossary": ["How the list combines", "Terms"],
+    # review-record typedef §Required sections 1-3
+    "review-record": ["Material", "Rulings", "State"],
 }
 BANNED = ["ratif", "disposition", "rebaseline bill"]
 PKG_RE = re.compile(r"^pkg:[a-z0-9-]+/[a-z0-9_-]+$")
