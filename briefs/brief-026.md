@@ -14,6 +14,11 @@ verified-by:
 
 # Brief 026 — Rebaseline migration: rule on rev 3 and its preconditions
 
+> **Superseded as the decision surface by
+> [brief-027](brief-027.md)** (2026-08-22): the authority restructured
+> the execution model (ruling R27) after this brief was delivered and
+> before it was ruled. Do not rule from this document.
+
 **Delivered at the round cap (4 cold-read rounds, final verdict
 "findings").** The round-4 findings (first-mention glosses in ask 1,
 "terminal" undefined, ask 5's unnamed types) were repaired after the

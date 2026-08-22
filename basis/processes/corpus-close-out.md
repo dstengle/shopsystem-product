@@ -13,13 +13,16 @@ external-refs: []
 # Process: Corpus close-out
 
 > Authored 2026-08-22 (R24 remediation: F3 — the pre-decided
-> retire/terminal mass had no process); pending authority approval.
+> retire/terminal mass had no process); amended 2026-08-22 (R27: all
+> stages re-homed to cut-over at the end of the migration plan's
+> Phase 3; branch-becomes-main promotion added as the final step);
+> pending authority approval.
 
 **Purpose:** Execute the migration plan's pre-decided retire and
-terminal actions mechanically: snapshot the corpus, delete the terminal
-trees, move each run's retired rows to the archive, regenerate the
-scenario refs at the end, and verify every actioned row landed where its
-action says.
+terminal actions mechanically, at cut-over: snapshot the corpus, delete
+the terminal trees, move each run's retired rows to the archive,
+regenerate the scenario refs, verify every actioned row landed where
+its action says, and finally promote the migration branch to `main`.
 
 **Guiding statement:** The rulings were made at the review; this process
 only carries them out. Mass moves are mechanical or they do not happen —
@@ -39,13 +42,18 @@ it should be fails the run loudly, by id.
 - O4. A misplaced row fails the run loudly, listed by id in the
   close-out report, never silently — witnessed by the check on
   `post-check`.
+- O5. The migration branch is promoted to `main` only at the final
+  stage and only after `post-check` passes — witnessed by the step
+  order `post-check` → `route-promote` → `promote-branch`.
 
 **Declared exits:** the flow is a straight line — no review loop, so no
 round cap. The reached-state success exit is `post-check` passing:
 every actioned row verifiably absent from the active tree and present
-on the archive branch (retire) or in the snapshot tag only (terminal).
-The failure exit is the same step's check failing, which halts the run
-with the `failed` list naming every misplaced row.
+on the archive branch (retire) or in the snapshot tag only (terminal) —
+followed, at the final stage only, by the `promote-branch` run that
+makes the migration branch `main`. The failure exit is `post-check`'s
+check failing, which halts the run with the `failed` list naming every
+misplaced row; a halted run never reaches promotion.
 
 **Roles:** runtime (every step is mechanical — no agent seat, no
 judgment in the run). product-authority (human seat — owns and approves
@@ -53,11 +61,21 @@ this definition and rules on the archive contract below; takes no step
 in a run).
 
 **Scope note:** one run executes one close-out stage of the approved
-migration plan: the `pre-run` stage once before any migration run, then
-one `post-run:<run-id>` stage after each completed per-type migration
-run. Actions come from the approved action table; a row carrying the
-`authority-call` row marker has no action yet and is out of scope until
-ruled.
+migration plan. Under the ruled execution model (R27) ALL stages
+execute consecutively at cut-over — the end of the migration plan's
+Phase 3 — never at execution start or between migration runs: first
+the `pre-run` stage (the snapshot tag and the terminal deletions; the
+stage name is retained from the superseded per-run design and now
+means "before the archive stages"), then one `post-run:<run-id>` stage
+per completed migration run, the last carrying `final: true`, which
+also regenerates the scenario refs and, after its `post-check` passes,
+promotes the migration branch to `main`. The deletions and archive
+moves execute against the frozen `main` tree (on the branch-plus model
+the retire and terminal rows were never imported to the migration
+branch); the promotion then replaces `main`'s content with the
+branch's. Actions come from the approved action table; a row carrying
+the `authority-call` row marker has no action yet and is out of scope
+until ruled.
 
 ## Archive contract (recommended — pending authority ruling)
 
@@ -71,9 +89,11 @@ contract below is **recommended, pending the authority's ruling**:
   merged to `main`.
 - One commit on that branch per close-out stage, preserving the moved
   files **verbatim at their original paths**.
-- One annotated snapshot tag **`pre-migration`** on `main`'s
-  pre-execution commit, for terminal-recovery: after close-out a
-  terminal row exists there and nowhere else.
+- One annotated snapshot tag **`pre-migration`** on `main`'s frozen
+  head at cut-over, before any deletion, for terminal-recovery: after
+  close-out a terminal row exists there and nowhere else. (The tree is
+  frozen for the whole migration, so this is the same content the
+  migration started from.)
 
 `archive-move` semantics against this contract:
 
@@ -87,6 +107,11 @@ contract below is **recommended, pending the authority's ruling**:
   present at its original path on the archive branch, and each terminal
   id is absent from both and present in the `pre-migration` tag; emit a
   close-out-report on stdout; exit non-zero when `failed` is non-empty.
+- `archive-move --queue --type <t> --ids <ids>` — *queue*: flip each
+  id's action-table row to retire (recording the demoting run and the
+  failing check), moving nothing. Used by
+  `definition-chain-migration`'s `queue-demoted` step; the queued rows
+  are moved by the ordinary *move* form at cut-over.
 
 The tool does not exist yet — this is a spec, not a build. The steps
 that call it block until the tool exists and this contract is approved.
@@ -107,6 +132,8 @@ flowchart TD
   route_final{"Route on the final stage<br/>in — final: boolean"}
   regen_scenario_refs["Regenerate the scenario refs — runtime"]
   post_check["Verify every actioned row landed — runtime<br/>in — stage: string, retire_ids: string[], terminal_ids: string[]<br/>out — report: close-out-report"]
+  route_promote{"Route on promotion<br/>in — final: boolean"}
+  promote_branch["Promote the migration branch to main — runtime<br/>in — branch: string"]
   __end(("end<br/>result — report: close-out-report"))
   __start(("start")) --> derive_run_type
   derive_run_type --> select_rows
@@ -119,7 +146,10 @@ flowchart TD
   route_final -->|final stage: regenerate scenario refs| regen_scenario_refs
   route_final -->|else| post_check
   regen_scenario_refs --> post_check
-  post_check --> __end
+  post_check --> route_promote
+  route_promote -->|final stage: promote the migration branch to main| promote_branch
+  route_promote -->|else| __end
+  promote_branch --> __end
 ```
 
 
@@ -134,13 +164,16 @@ contract tool).
 `stage` is `pre-run` or `post-run:<run-id>`, where the run-id is the
 artifact type the completed migration run converted (one run migrates
 one artifact type). `final` is true only on the close-out of the plan's
-last run.
+last run; only that stage regenerates the scenario refs and runs the
+promotion. `branch` is the migration branch to promote at the final
+stage (the name comes from the approved migration plan).
 
 ```yaml
 data:
   actions: {$ref: action-table, from: ../types/action-table.md}
   stage: {type: string}
   final: {type: boolean, initial: false}
+  branch: {type: string}
   run_type: {type: string}
   terminal_ids: {type: array, items: {type: string}}
   terminal_paths: {type: array, items: {type: string}}
@@ -157,7 +190,7 @@ moves are mechanical or they do not happen.
 
 ```yaml
 start: derive-run-type
-parameters: [actions, stage, final]
+parameters: [actions, stage, final, branch]
 result: report
 steps:
   - id: derive-run-type
@@ -243,6 +276,26 @@ steps:
       - size(report.failed) == 0
     run: |
       archive-move --verify --stage ${stage} --retire ${retire_ids} --terminal ${terminal_ids}
+    next: route-promote
+
+  - id: route-promote
+    name: Route on promotion
+    run-by: {execution: runtime}
+    inputs: [final]
+    branches:
+      - label: "final stage: promote the migration branch to main"
+        when: final
+        next: promote-branch
+      - else: end
+
+  - id: promote-branch
+    name: Promote the migration branch to main
+    run-by: {execution: runtime}
+    inputs: [branch]
+    run: |
+      git checkout main
+      git reset --hard ${branch}
+      git push --force-with-lease origin main
     next: end
 ```
 
@@ -254,4 +307,5 @@ steps:
 | O2 | retire rows on the archive branch, terminal rows in the tag only, none in the active tree | mechanical | `post-check.run` and `post-check.checks` |
 | O3 | scenario refs regenerated at the final stage | mechanical | `regen-scenario-refs.run` |
 | O4 | a non-empty `failed` list halts the run naming every misplaced row | mechanical | `post-check.checks` |
+| O5 | promotion runs only at the final stage, only after `post-check` passes | mechanical | step order `post-check` → `route-promote` → `promote-branch`; the `route-promote` branch on `final` |
 | all | this definition compiles and screens against the principle set | mechanical + judged | the compiler; the principles screen |

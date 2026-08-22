@@ -30,7 +30,7 @@ for a rewrite, never a usable artifact.
 - O2. Every keeper is rewritten or demoted, none silently dropped —
   witnessed by the check on `rewrite-keepers`.
 - O3. Retired and demoted records leave the active tree — witnessed by
-  the `archive-retired` run.
+  the `queue-demoted` run and the cut-over close-out's post-check.
 - O4. A chain the authority cannot approve parks with a filed finding
   instead of looping — witnessed by the failsafe branch of
   `route-review` and the `park` step.
@@ -63,7 +63,7 @@ flowchart TD
   approve_chain[["Approve the chain's documents — human: product-authority<br/>in — chain: definition-chain"]]
   rederive_chain["Re-derive the approved chain — runtime<br/>in — artifact_type: string<br/>out — chain: definition-chain"]
   rewrite_keepers(["Rewrite every keeper through the chain — agent: lead-pm<br/>in — chain: definition-chain, keepers: string[], exemplar: string, actions: action-table<br/>out — rewritten: string[], demoted: string[]"])
-  archive_retired["Archive what leaves — runtime<br/>in — artifact_type: string, demoted: string[]"]
+  queue_demoted["Queue demotions for the cut-over close-out — runtime<br/>in — artifact_type: string, demoted: string[]"]
   park["Park the type with a finding — runtime<br/>in — artifact_type: string, review: review"]
   __end(("end<br/>result — chain: definition-chain"))
   __start(("start")) --> build_chain
@@ -78,8 +78,8 @@ flowchart TD
   advance_round --> authority_review
   approve_chain --> rederive_chain
   rederive_chain --> rewrite_keepers
-  rewrite_keepers --> archive_retired
-  archive_retired --> __end
+  rewrite_keepers --> queue_demoted
+  queue_demoted --> __end
   park --> __end
 ```
 
@@ -108,12 +108,16 @@ data:
 
 ## Steps
 
-The `archive-move` command in `archive-retired` follows the archive
+The `archive-move` command in `queue-demoted` follows the archive
 contract stated once in [`corpus-close-out.md`](corpus-close-out.md)
 (§Archive contract — recommended, pending authority ruling); it is not
-restated here. Until the tool exists and the contract is approved the
-step blocks — which is correct: mass moves are mechanical or they do
-not happen.
+restated here. Under the R27 cut-over model no archive move happens
+per run: a demoted keeper's file lives on frozen `main`, so the run
+only QUEUES the demotion (`--queue` flips the keeper's action-table
+row to retire, recording the failing check); the actual move runs once,
+at the Phase 3 cut-over close-out. Until the tool exists and the
+contract is approved the step blocks — which is correct: mass moves
+are mechanical or they do not happen.
 
 ```yaml
 start: build-chain
@@ -260,14 +264,14 @@ steps:
       cannot reach the bar
       after two attempts is demoted: file it for retirement with a note
       naming the failing check. Never lower a check to pass a keeper.
-    next: archive-retired
+    next: queue-demoted
 
-  - id: archive-retired
-    name: Archive what leaves
+  - id: queue-demoted
+    name: Queue demotions for the cut-over close-out
     run-by: {execution: runtime}
     inputs: [artifact_type, demoted]
     run: |
-      archive-move --type ${artifact_type} --ids ${demoted}
+      archive-move --queue --type ${artifact_type} --ids ${demoted}
     next: end
 
   - id: park
@@ -286,6 +290,6 @@ steps:
 |---|---|---|---|
 | O1 | chain status approved before any mass rewrite | mechanical | `approve-chain.checks` |
 | O2 | rewritten + demoted counts equal keepers | mechanical | `rewrite-keepers.checks` |
-| O3 | after the run no demoted id remains in the active tree | mechanical post-run audit | `archive-retired.run` |
+| O3 | every demoted id is queued as a retire row; it leaves the active tree at cut-over | mechanical — `queue-demoted.run` now, close-out post-check at cut-over | `queue-demoted.run` |
 | O4 | parked types carry a filed finding | mechanical | `park.run` |
 | all | this definition compiles and screens against the principle set | mechanical + judged | the compiler; the principles screen |
