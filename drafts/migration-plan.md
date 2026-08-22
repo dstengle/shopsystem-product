@@ -1,7 +1,7 @@
 ---
 type: migration-plan
 id: migration-plan
-revision: 4
+revision: 5
 supersedes: rebaseline-bill (2026-08-04)
 owner: product-authority
 status: draft
@@ -20,7 +20,11 @@ greenfield migration branch with an additive seed, a total freeze on
 shop activity, and the phase sequence Seed → Phase 0 → Phase 1 →
 Phase 2 → Phase 3 defined in "Execution phases" below. Approving this
 plan's Ask 1 starts Seed, subject to the entry conditions in
-"Execution readiness" below.
+"Execution readiness" below. Rev 5 applies R28 (2026-08-22, same
+record): the framework spec dissolves into instances of existing
+artifact types — Phase 3's framework-spec run is re-scoped as a
+dissolution run — and retiring a record with binding content now
+requires named coverage (the new retire-with-coverage treatment).
 
 **Phase-vocabulary note (collision fixed at rev 4):** "phase" in this
 plan means one of this plan's execution phases — Seed, 0, 1, 2, 3.
@@ -40,7 +44,11 @@ the appendices is pasted from its output, none by hand.[^counts]
 `@scenario_hash:` tag lines per features directory, and files per
 terminal tree, and cross-sums lanes A/B/D against their action splits.
 It lives in the session scratchpad, not the repo; its full output is
-reproducible from the commands it contains.
+reproducible from the commands it contains. Rev 5 adjusts exactly two
+figures against that baseline — lane D keep-rewrite 15→14 and retire
+115→116 (and the column totals) — by arithmetic on the single R28 row
+flip (05-inter-shop-protocol), not by a recount; no file moved on
+disk.
 
 ## How to rule
 
@@ -49,7 +57,9 @@ this plan as the execution instrument — approval starts Seed.** Every
 row carries its lane's one-line evidence. The execution model itself —
 the greenfield branch, the total freeze, the phase structure, and the
 Phase 3 run order — is already RULED (R27, 2026-08-22) and is restated
-here, not re-asked. Approval fixes three things: which records are
+here, not re-asked; R28 (2026-08-22) re-scopes Phase 3's third run as
+a dissolution run and adds the retire-with-coverage treatment —
+likewise restated, not re-asked. Approval fixes three things: which records are
 keepers, which retire, and which are terminal (the census rows); the
 F-family groupings **as nominations only**; and the action table's
 import-stage assignments (the table's second use — see "Execution
@@ -111,11 +121,22 @@ defined here for this document.
   as-is, no rewrite (scenarios and operational files) — under the
   ruled branch model a keep row crosses to the branch at its import
   stage rather than "staying in place"; *retire* —
-  value passed, moves to the archive branch (never `main`); *terminal*
+  value passed with nothing binding, moves to the archive branch
+  (never `main`); *retire-with-coverage* (new at rev 5, R28) — a
+  retire whose record carries binding content: the row MUST name the
+  covering home (receiving record, process definition, schema, or
+  scenario pin) for each binding claim, and the dissolution run runs a
+  mechanical coverage check — any unmapped claim blocks the
+  retirement. Rows tagged retire-with-coverage outside the dissolution
+  run get the same check at close-out, before their archive move; in
+  every count, retire-with-coverage rows count in the retire column.
+  Plain *retire* remains for records whose value has passed with
+  nothing binding; *terminal*
   — junk or never-advanced, deleted or closed as never-accepted.
   (Vocabulary note: the glossary's `action` enum is keep-rewrite /
   retire / terminal; this plan extends it with *keep* for records
-  already in native format — flagged for glossary amendment.)
+  already in native format and *retire-with-coverage* per R28 —
+  flagged for glossary amendment.)
 - **authority-call** — a row MARKER, not an action: the row awaits an
   authority ruling and neither rewrites nor retires until ruled.
 - **lane** — one of the four independent census passes (A decisions,
@@ -198,7 +219,12 @@ freeze on shop activity, the Seed → 0 → 1 → 2 → 3 phase sequence with
 progressive disclosure as the first feature, the Phase 3 entry review,
 and the end-of-migration code handoff to a bounded context. Rev 3's
 in-place execution model (rewrites landing beside the frozen mass on
-`main`) is superseded. Within the ruled model, the migration branch's
+`main`) is superseded. R28 (2026-08-22, same record) is likewise
+RULED: the framework spec gets no bespoke artifact type — its binding
+content re-homes into instances of existing artifact types, and Phase
+3's third run becomes a dissolution run — and a record with binding
+content must not retire without a named covering home per claim
+(retire-with-coverage). Within the ruled model, the migration branch's
 NAME — proposed `rebaseline` — remains a drafting default, not a
 ruling. This plan's own type standing is likewise RULED (2026-08-22):
 no bootstrap exception; the typedef is authored at
@@ -214,9 +240,13 @@ Still open:
    typedef, guideline, and fitness set exist (built in Phase 2 as the
    demonstration vehicle); this plan's families are nominations only.
    — *Default:* nominations stand as written until that review rules.
-2. **Provisional artifact-type set for the decisions, framework-spec,
-   and PM-records runs.** These runs must write records as SOME type
-   before lead-jozud.2 settles the final set. — *Recommend:* the
+2. **Provisional artifact-type set for the decisions and PM-records
+   runs.** These runs must write records as SOME type before
+   lead-jozud.2 settles the final set. (Rev 5, R28: the framework-spec
+   provisional TYPE is gone — the dissolution run needs no new type;
+   it authors instances of existing types through those types' chains,
+   and its outward-narrative slot's type is defined by the run that
+   needs it.) — *Recommend:* the
    decision-record chain built in Phase 2 is provisional as to the
    type set, and the ADR/PDR boundary is a decisions-run chain-review
    question; the PM-records run carries the current PM type names
@@ -263,14 +293,28 @@ units and never mix into the records total.
 |---|---|---|---|---|---|---|
 | A — decisions (adrs, pdrs) | 108 | 87 | — | 17 | 0 | 4 |
 | B — PM records (intents, candidates, briefs, sessions) | 67 | 28 | — | 31 | 7 | 1 |
-| D — docs, findings, drafts, root | 135 | 15 | 5 | 115 | 0 | 0 |
-| **records total (md)** | **310** | **130** | **5** | **163** | **7** | **5** |
+| D — docs, findings, drafts, root | 135 | 14 | 5 | 116 | 0 | 0 |
+| **records total (md)** | **310** | **129** | **5** | **164** | **7** | **5** |
+
+Rev 5 (R28) count note: `05-inter-shop-protocol.md` flipped from
+keep-rewrite to retire-with-coverage — hence lane D 15→14 keep-rewrite
+and 115→116 retire, totals 130→129 / 163→164; records total unchanged
+at 310. Retire-with-coverage rows count in the retire column: 05
+(lane D), pdr-012 and pdr-013 (lane A), brief-007 (lane B) — the lane
+A and B rows were already retire, so their counts are unchanged.
 
 Separate units, not in the records total:
 
-- **Trees:** `structurizr/` — keep-rewrite as one tree (44 files, of
-  which 3 are source: README.md, workspace.dsl, workspace.json; the
-  rest is generated `.structurizr/` cache). Seven junk trees —
+- **Trees:** `structurizr/` (44 files) — re-routed at rev 5 per R28,
+  no longer keep-rewrite as one tree: one new ADR authored in the
+  decisions run (the decision to maintain an architecture model as
+  code, in structurizr — currently documented nowhere; only a passing
+  mention in adr-037), one sub-process definition (model
+  maintenance/regeneration), operational import of the 3 source files
+  (README.md, workspace.dsl, workspace.json) at the operational-keeps
+  stage under that process, and the 41 generated `.structurizr/`
+  cache files terminal. Counted as a tree throughout — its files
+  enter no record total. Seven junk trees —
   terminal, deleted whole (653 files total, 82 md files among them:
   61 in `.fabro-e2e-scratch/`, 21 in `.specstory/`); they are counted
   as trees, never as records.
@@ -353,6 +397,22 @@ processes, authored through the already-approved meta-chains (the
 role-definition and process-definition typedefs, approved R23).
 **Exit:** the authority approves the definitions.
 
+**Entry condition (RULED — R29, 2026-08-22):** complete the
+role-definition and process-definition meta-chains — a quality
+guideline plus a fitness set for each; only their typedefs exist today
+(on disk, `basis/fitness/` holds only `decision-brief.fitness.md` and
+`basis/guidelines/` only the brief-writing pair) — as Phase 1's first
+act, before authoring the PM/PO/Architect definitions. The existing
+basis processes serve as exemplars. No meta-level authoring proceeds
+against a partial definition of good.
+
+**Scope note (R28):** the PO and Architect process definitions CARRY
+the scenario discipline — capabilities pinned as Gherkin scenarios,
+the PO authors them, the Architect dispatches against hashes — as
+their own content, sourced from 03/04 plus the scenario-discipline
+ADRs via the curated feed. This is how Phase 2 knows to pin its
+feature with Gherkin.
+
 ### Phase 2 — progressive disclosure, the FIRST FEATURE
 
 Progressive disclosure is built as the first feature THROUGH the new
@@ -404,10 +464,36 @@ Phase 2. Order within Phase 3:
    artifact-type-set question (ADR vs PDR boundary, RACI) with the
    lead-jozud.2 evidence — the old separate gate is absorbed into this
    review — and fixes the final granularity of the F-family
-   nominations (Appendix B), as before.
-3. **Framework-spec run (02–06 + artifact-lifecycle, consumer-wiring,
-   README, current-state, structurizr)** — the outward face, rewritten
-   once decisions are stable.
+   nominations (Appendix B), as before. It also authors the new
+   structurizr architecture-model ADR (R28 — see the dissolution
+   run's routing below).
+3. **Dissolution run (R28 — replaces rev 4's framework-spec run)** —
+   the framework spec gets NO bespoke type; once decisions are
+   stable, its binding content re-homes into INSTANCES of existing
+   artifact types, authored through those types' chains. Routing:
+   `03-lead-shop.md` / `04-bc-shop.md` → role definitions, process
+   definitions, glossary entries (much already consumed by Phase 1 as
+   curated source — this run verifies coverage rather than
+   re-authoring); `02-bounded-contexts-and-subdomains.md` /
+   `06-work-tracking.md` → process definitions, data types, glossary;
+   `05-inter-shop-protocol.md` → RETIRES with coverage
+   (retire-with-coverage): channel/routing → the adr-006/adr-020
+   rewrites (F3), message catalogue → the F3 vehicle-catalog record,
+   wire format + schema invariants → the shop-msg schemas, scenario
+   delivery → the scenario pins, cross-references → the adr-017
+   rewrite — the run's mechanical coverage check blocks the
+   retirement on any unmapped claim; `structurizr/` → one new ADR
+   authored in the decisions run (the decision to maintain an
+   architecture model as code, in structurizr — currently documented
+   nowhere; only a passing mention in adr-037), one sub-process
+   definition (model maintenance/regeneration), operational import of
+   the 3 source files (README.md, workspace.dsl, workspace.json) at
+   the operational-keeps stage under that process, and the 41
+   generated `.structurizr/` cache files terminal; `README.md` /
+   `current-state.md` / `artifact-lifecycle.md` / `consumer-wiring.md`
+   → the run's outward-narrative slot: still keep-rewrite,
+   re-authored late through the product-narrative path, their type
+   defined by the run that needs it.
 4. **PM-records run (intent, candidate, brief, session)** — 28
    keepers plus `drafts/artifact-system-restructuring.md`, which this
    plan assigns to this run: it is the initiative record this plan
@@ -416,10 +502,12 @@ Phase 2. Order within Phase 3:
 5. **Findings run** — the 4 ADR-cited keepers get the finding chain;
    the other 95 retire without one (99 findings md files on disk − 4
    keepers = 95).
-6. **Operational keeps import** — `bin/`, compose, manifests — when
-   the migration-level done-demonstration needs a running system;
-   precondition: the demonstration step that needs each keep;
-   verification: the demonstration runs on the branch.
+6. **Operational keeps import** — `bin/`, compose, manifests, plus
+   the 3 structurizr source files under the model-maintenance
+   sub-process (R28) — when the migration-level done-demonstration
+   needs a running system; precondition: the demonstration step that
+   needs each keep; verification: the demonstration runs on the
+   branch.
 7. **Close-out / cut-over (mechanical, not a chain run)** — the
    `corpus-close-out` process runs all its stages at cut-over:
    snapshot tag `pre-migration` on `main`, terminal deletions, retire
@@ -449,9 +537,9 @@ Per-phase entry conditions and exits:
 |---|---|---|---|---|
 | Seed | this plan approved (Ask 1); the five draft definitions approved (ruling 5); action table transcribed as the governed `actions` input | n/a — no chain work in Seed | `basis/` + its tools (lint passes on `main` → whole-basis lint passes on the branch); branch-native `.claude/` surface regenerated from the basis (basis imported → regenerated files match compiler output and a session loads under them). Beads: no import — dolt continuity is free | branch exists and holds exactly the seed; whole-basis lint passes on it |
 | 0 | Seed exit | principle-set 1/6 — typedef only (seed layer) | curated feed only: the principle-set keeper (`01-principles.md`) per its action-table row | principle-set chain approved; rewritten principle set approved |
-| 1 | Phase 0 exit | meta-chains approved (R23): role-definition and process-definition typedefs; the three role chains themselves 0/6 | curated feed only: source material named by the meta-chain authoring processes | authority approves the PM, PO, and Architect definitions and their processes |
+| 1 | Phase 0 exit; RULED (R29): meta-chains completed (guideline + fitness per meta-type) as this phase's first act | meta-chains approved (R23): role-definition and process-definition typedefs; the three role chains themselves 0/6 | curated feed only: source material named by the meta-chain authoring processes, including 03/04 + the scenario-discipline ADRs — the scenario discipline lands as PO/Architect process content (R28) | authority approves the PM, PO, and Architect definitions and their processes |
 | 2 | Phase 1 exit; PD scenario pins exist (lead-iixm's scenario sets, sharpened as this phase's first PO work if not yet complete) | decision-record 0/6 — built IN this phase as the demonstration vehicle | curated feed only: one decision record from the frozen corpus (the demonstration keeper); PD bootstrap code lands under the spike-isolation contract | the verbatim Phase 2 exit demonstration passes and the authority approves it |
-| 3 | Phase 2 exit; the explicit Phase 3 entry review passes; hash verification tooling on the branch (features import); `archive-move` tool built + archive contract ruled (ruling 4 — gates the close-out step, not the runs) | decision-record chain proven (Phase 2); framework-spec, PM types, finding 0/6 (session-record 2/6 — process + role exist); scenarios need no chain (native format) | features import (PD in place + hash tooling → every pin's hash recomputes clean, scenario-refs regenerate); per-run curated feeds (87 decisions, framework-spec set, 28 PM + artifact-system-restructuring, 4 findings); operational keeps (`bin/`, compose, manifests — when the done-demonstration needs them → the demonstration runs) | every run done; migration done demonstrated ON the branch; close-out report accounts for every row; cut-over: branch becomes `main` |
+| 3 | Phase 2 exit; the explicit Phase 3 entry review passes; hash verification tooling on the branch (features import); `archive-move` tool built + archive contract ruled (ruling 4 — gates the close-out step, not the runs) | decision-record chain proven (Phase 2); PM types, finding 0/6 (session-record 2/6 — process + role exist); the dissolution run needs no bespoke chain — it authors instances of existing types (R28); scenarios need no chain (native format) | features import (PD in place + hash tooling → every pin's hash recomputes clean, scenario-refs regenerate); per-run curated feeds (87 decisions, the dissolution set, 28 PM + artifact-system-restructuring, 4 findings); operational keeps (`bin/`, compose, manifests — when the done-demonstration needs them → the demonstration runs) | every run done; migration done demonstrated ON the branch; close-out report accounts for every row; cut-over: branch becomes `main` |
 
 Standing preconditions carried from rev 3, now placed at their gates:
 the amended `definition-chain-migration` process and its governed
@@ -473,8 +561,9 @@ Every point where the authority sees, and can reject, migration work:
    approval STARTS SEED. Rejectable here: any row, any family
    nomination, any import stage. Not decided here: final record
    granularity, final artifact-type set, archive execution. (The
-   phase structure and Phase 3 run order are ruled, R27 — restated,
-   not re-asked.)
+   phase structure and Phase 3 run order are ruled, R27; the
+   dissolution re-scope and the retire-with-coverage treatment, R28 —
+   restated, not re-asked.)
 2. **Phase gates.** Each phase exits only on authority approval: the
    Seed exit (branch holds exactly the seed, lint passes), the Phase 0
    and Phase 1 approvals, the Phase 2 exit demonstration, and — an
@@ -632,8 +721,8 @@ family.
 | pdr-009 | accepted | keep-rewrite | F3 CWD resolution; live |
 | pdr-010 | accepted | keep-rewrite | F3 bd/shop-msg authority split; live |
 | pdr-011 | proposed | keep-rewrite | F5; collapses into ADR-018 discipline record |
-| pdr-012 | proposed | retire | PM half superseded by pdr-033; structurizr half carried to F6 |
-| pdr-013 | proposed | retire | Three-tier half died with adr-067; splitting lives as skill |
+| pdr-012 | proposed | retire-with-coverage | PM half superseded by pdr-033; binding structurizr half's covering home: the F6 rewrite (carry noted in Appendix B) |
+| pdr-013 | proposed | retire-with-coverage | Three-tier half died with adr-067; splitting half's covering home: the work-splitting skill (compiled, live) |
 | pdr-014 | proposed | keep-rewrite | F8 skill-group pour/graduation; live |
 | pdr-015 | proposed | keep-rewrite | F4 journal intent; joins journal record |
 | pdr-016 | proposed | keep-rewrite | F7 spike lifecycle; 8 pinned scenarios |
@@ -700,7 +789,7 @@ on disk.
 | brief-004 | draft | keep-rewrite | Origin-cited x2; container isolation live |
 | brief-005 | draft | keep-rewrite | Origin-cited x1; manifest live |
 | brief-006 | draft | keep-rewrite | Origin-cited x3; registry/inbox live |
-| brief-007 | ready | retire | Never dispatched; its anchored ADRs keep their content through the F-family rewrites |
+| brief-007 | ready | retire-with-coverage | Never dispatched; covering home: its anchored ADRs' F-family rewrites carry the binding content |
 | brief-008 | draft | terminal | Orphan draft; never advanced |
 | brief-009 | draft | keep-rewrite | Origin-cited x5; journal shipped |
 | brief-010 | draft | terminal | Draft never ready; never advanced |
@@ -777,10 +866,17 @@ drafts. **Self-exclusion:** `drafts/migration-plan.md` — this document
 — is excluded from its own census (a register cannot disposition
 itself); its type standing is RULED (see the Open rulings preamble;
 the typedef rides ruling 5's approval set). Trees are counted
-separately below, never as records.
+separately below, never as records. Rev 5 (R28) flipped
+`05-inter-shop-protocol.md` from keep-rewrite to retire-with-coverage
+and re-routed the `structurizr/` tree; the counts below reflect
+exactly those flips.
 
-Keep-rewrite (15 md): spec 01–06; README.md; current-state.md;
-artifact-lifecycle.md; consumer-wiring.md;
+Keep-rewrite (14 md): spec 01–04 and 06 (01 → Phase 0; 02–04 and 06
+re-home as instances of existing artifact types in the dissolution
+run — routing in Execution phases run 3); README.md;
+current-state.md; artifact-lifecycle.md; consumer-wiring.md (these
+four re-home to the dissolution run's outward-narrative slot,
+re-authored late through the product-narrative path);
 drafts/artifact-system-restructuring.md (the initiative record this
 plan executes — assigned to the PM-records run, see Execution phases);
 findings/adopter-journey-exploration-2026-06-18.md,
@@ -789,9 +885,16 @@ findings/iterative-experimentation-capability.md,
 findings/bc-workloop-single-source/02-oq1-generation-spike.md (the four
 ADR-cited findings).
 
-Keep-rewrite (1 tree): structurizr/ (44 files; 3 source files —
-README.md, workspace.dsl, workspace.json — the rest generated cache);
-rewrites in the framework-spec run with the framework spec.
+Structurizr tree (44 files — re-routed at rev 5 per R28, no longer
+keep-rewrite as one tree): one new ADR authored in the decisions run
+(the decision to maintain an architecture model as code, in
+structurizr — currently documented nowhere; only a passing mention in
+adr-037); one sub-process definition (model
+maintenance/regeneration); the 3 source files (README.md,
+workspace.dsl, workspace.json) import at the operational-keeps stage
+under that process; the 41 generated `.structurizr/` cache files are
+terminal. Counted as a tree throughout — its files enter no record
+total.
 
 Keep as-is (5 md): CLAUDE.md, INSTALL.md, AGENTS.md, both
 docs/runbooks.
@@ -803,10 +906,16 @@ scratchpad-bodies/ — 653 files, of which 82 are md (61 + 21 in the
 first two; the rest hold 4 or 0 files). Counted as trees; the md files
 inside them appear in no record total.
 
-Retire (115 md): all other findings (95 = 99 on disk − 4 keepers), all
-other drafts (19), and work-summary.md (1) — the full per-file list is
-Appendix A; every row's reason is "value passed / consumed /
-superseded" with no ADR citing it as governing.
+Retire (116 md): 05-inter-shop-protocol.md (retire-with-coverage —
+flipped from keep-rewrite at rev 5 per R28; its coverage map is the
+dissolution run's routing: channel/routing → adr-006/adr-020 rewrites
+(F3), message catalogue → the F3 vehicle-catalog record, wire format
++ schema invariants → the shop-msg schemas, scenario delivery → the
+scenario pins, cross-references → the adr-017 rewrite), all other
+findings (95 = 99 on disk − 4 keepers), all other drafts (19), and
+work-summary.md (1) — the full per-file list is Appendix A; every
+plain-retire row's reason is "value passed / consumed / superseded"
+with no ADR citing it as governing.
 
 ## The two-tree model (replaces rev 3's "interim consistency")
 
@@ -846,7 +955,10 @@ runs and close-out.
 **Per run (within Phase 3, and the Phase 0 principle-set run), done
 means:** the chain is approved (stamps on all six links) AND the
 exemplar and every rewritten keeper pass the type's fitness set AND
-lint runs clean over the branch tree.
+lint runs clean over the branch tree. For the dissolution run — which
+builds no chain of its own (R28) — done means every authored instance
+passes its receiving type's fitness set AND the mechanical coverage
+check passes with zero unmapped claims.
 
 **For the migration as a whole, done is demonstrated ON THE BRANCH,
 before cut-over:** the compiled skills regenerate from the new
@@ -873,8 +985,11 @@ does cut-over promote the branch to `main`.
 - Keeper counts by run: the decisions run carries 87 decision records;
   the PM-records run carries 28 PM records plus
   artifact-system-restructuring; the principle-set (Phase 0),
-  framework-spec, and findings runs are small (1 principle set; 15 md
-  + 1 tree; 4 findings).
+  dissolution, and findings runs are small (1 principle set; the
+  dissolution set — 8 keep-rewrite md: 02–04 and 06 re-homing as
+  instances, plus the four outward-narrative files — plus the 05
+  retire-with-coverage check and the structurizr routing; 4
+  findings).
 - Edge closure verified: every keep-rewrite child has a keep-rewrite
   parent on the provenance spine.
 
@@ -903,7 +1018,11 @@ analogue. The form's typedef is authored at
 `basis/artifacts/migration-plan.md` per the 2026-08-22 ruling (see
 Open rulings preamble); its approval rides ruling 5's set.
 
-## Appendix A — lane D retire rows (115 md files)
+## Appendix A — lane D retire rows (116 md files)
+
+spec (1): 05-inter-shop-protocol (retire-with-coverage, flipped at
+rev 5 per R28 — the only non-plain retire in this list; its coverage
+map lives in the dissolution run's routing, Execution phases run 3).
 
 drafts/ (19 = 17 md + 2 skill files): artifact-definition-packet,
 definition-format-decision-brief, definition-format-research,
@@ -953,7 +1072,8 @@ fabro-spike/ (19 at top level); fabro-spike/fabro-defs/ (14).
 
 root (1): work-summary.md.
 
-Sum: 19 + 12 + 1 + 1 + 5 + 6 + 10 + 5 + 55 + 1 = 115.
+Sum: 1 + 19 + 12 + 1 + 1 + 5 + 6 + 10 + 5 + 55 + 1 = 116 (115 plain
+retire + the 05 retire-with-coverage row).
 Findings check: 12 + 1 + 1 + 5 + 6 + 10 + 5 + 55 = 95 = 99 on disk −
 4 keepers.
 

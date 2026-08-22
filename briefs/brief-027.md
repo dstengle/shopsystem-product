@@ -14,6 +14,12 @@ verified-by:
 
 # Brief 027 — Rebaseline migration, rev 4: rule on the plan under your phased model
 
+> **Superseded as the decision surface by
+> [brief-028](brief-028.md)** (2026-08-22): the authority ruled the
+> framework-spec dissolution (R28) and the meta-chain entry condition
+> (R29) after this brief was delivered and before it was ruled. Do
+> not rule from this document.
+
 **Delivered at the round cap (4 cold-read rounds; final round: all
 seven asks decidable, findings limited to readability).** The round-4
 residuals — the nested "terminal" definition, the ungrounded "~15"

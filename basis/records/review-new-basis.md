@@ -184,8 +184,22 @@ the ledger's opening span. From R19 the ledger lives in this record.
 
 ## State
 
-Open — **rev 5 amendment in flight (R28/R29); brief-028 delivery
-queued** (2026-08-22).
+Open — **rev 5 delivered via brief-028; awaiting the authority's
+rulings** (2026-08-22).
+
+Rev 5 applies R28 (dissolution run with routing, retire-with-coverage
++ mechanical coverage check, 05 retired against F3/schema/pin
+coverage, structurizr → ADR + sub-process + operational import,
+counts 310: 129/5/164/7/5) and R29 (meta-chains as Phase 1's ruled
+first act). Brief-028 (stakeholder-presentation, 4 cold-read rounds
+in `verified-by`, delivered at the round cap with residuals repaired
+post-round and a disclosed ~1,700-word budget overage) supersedes
+brief-027 as the decision surface.
+
+Resume point: the authority rules on brief-028's seven asks — asks
+1–2 gate the Seed, ask 3 gates archiving/deletion/promotion, asks 4–7
+resolve on silence by their stated defaults. The Seed does not begin
+before asks 1–2 are approved.
 
 Rev 3 was delivered via `briefs/brief-026.md`; before ruling, the
 authority redirected the execution model (R27), and the plan was
