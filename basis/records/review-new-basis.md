@@ -59,7 +59,8 @@ the ledger's opening span. From R19 the ledger lives in this record.
 
 ## State
 
-Open. Next ready action: the authority rules on the frozen memories
-(option C is on the table), and the standing approval surface remains —
-the amended nine-principle set, the seed typedefs, the migration and
-handoff processes.
+Open. Next ready action: the authority rules on the memory action table
+(`drafts/memory-action-table.md` on `main`, rev 2, cold-read verified:
+14 rescue rows to approve individually, 53 retire rows as a block). The
+standing approval surface remains — the amended nine-principle set, the
+seed typedefs, the migration and handoff processes.
