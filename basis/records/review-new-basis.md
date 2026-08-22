@@ -96,20 +96,39 @@ the ledger's opening span. From R19 the ledger lives in this record.
   the new basis, producing the required conditions to proceed; work
   continues until the plan is executable under the principles.
 
+- **R25 (2026-08-22).** The basis merges to `main` before further work —
+  authority directive on discovering the split state: the `basis/` tree
+  lived only on `experiment/new-basis` while `main` already carried its
+  compiled projections (the principles rendering, the compiled skills),
+  a single-source-of-truth break. Executed: merge commit `c5f1495`
+  (clean, purely additive), pushed; `lint_basis` passes on `main`. From
+  this ruling the basis's home is `main` — the experiment branch is
+  history, and this record lives at `basis/records/` on `main`. This
+  settles the where-do-outputs-land half of the adversarial review's
+  branch question; the migration plan must now name `main` as the
+  target tree.
+
 ## State
 
 Open — **R24 remediation in flight** (2026-08-22).
 
-Resume point: migration plan rev 2 returned with findings (R24). In
-flight: the directed adversarial review (plan + basis, executability
-and required-conditions lens; plus an isolated cold read of the plan
-alone), then plan remediation to rev 3. Rev 3 returns to the authority
-with the required-conditions list; the prior Ask 1 / Ask 2 asks are
-withdrawn until rev 3 stands. Phase 1 does not begin before the
-authority approves rev 3.
+The directed adversarial review returned 18 findings (5 blockers) and
+17 required conditions; the isolated cold read confirmed the plan is
+not rulable from its own text. Landed so far, as drafts pending the
+authority's re-approval: `definition-chain-migration` amended (flow fix
+— the `derive-chain` step had no exit, so no rewrite could ever run;
+plus a governed `actions` input), new `corpus-close-out` process for
+the pre-decided retire/terminal mass, new `action-table` and
+`close-out-report` types, glossary additions, single archive-contract
+spec (`archive/migration-2026-08` + `pre-migration` tag,
+`archive-move` specced not built). In flight: migration plan rev 3
+addressing all findings; its delivery goes through a full
+stakeholder-presentation run (brief, fresh cold read, round log
+attached — rev 2's "cold-read verified" was unwitnessed, a finding in
+itself). The prior Ask 1 / Ask 2 are withdrawn until rev 3 stands.
+Phase 1 does not begin before the authority approves rev 3.
 
-For the resuming session: the basis worktree is at
-`/home/vscode/basis-experiment` (branch `experiment/new-basis`); the
-ledger above plus README rulings R1–R18 are the review's full history;
-the memory channel is closed (R22) — state lives only in governed
-records; standing session protocol is in the shop primer.
+For the resuming session: the basis lives on `main` under `basis/`
+(R25); the ledger above plus README rulings R1–R18 are the review's
+full history; the memory channel is closed (R22) — state lives only in
+governed records; standing session protocol is in the shop primer.
