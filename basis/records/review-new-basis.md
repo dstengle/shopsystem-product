@@ -76,8 +76,20 @@ the ledger's opening span. From R19 the ledger lives in this record.
 
 ## State
 
-Open. Next ready action: the authority rules on the migration plan
-(`drafts/migration-plan.md` on `main`, rev 2, cold-read verified): Ask 1
-approves the action table and run order as a block; Ask 2 rules three
-authority calls (adr-033, adr-046, the system-BOM bundle). On approval,
-Phase 1 begins with run 1 (architecture principle set).
+Open — **checkpoint 2026-08-22** (transcript boundary; not a close).
+
+Resume point: the authority rules on the migration plan
+(`drafts/migration-plan.md` on `main`, rev 2, cold-read verified).
+Ask 1: approve the action table and run order as a block. Ask 2: three
+authority calls — adr-033 (recommend retire), adr-046 (recommend
+retire), the system-BOM bundle (recommend retire + one backlog item
+carrying the intent). Silence on a call carries it into the
+decision-chain review; nothing retires by silence. On approval, Phase 1
+begins with run 1: the architecture principle set through
+`definition-chain-migration`, the authority at its review steps.
+
+For the resuming session: the basis worktree is at
+`/home/vscode/basis-experiment` (branch `experiment/new-basis`); the
+ledger above plus README rulings R1–R18 are the review's full history;
+the memory channel is closed (R22) — state lives only in governed
+records; standing session protocol is in the shop primer.
