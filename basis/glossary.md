@@ -5,7 +5,7 @@ owner: product-authority
 status: approved
 approved: 2026-08-19
 created: 2026-08-19
-updated: 2026-08-20
+updated: 2026-08-22
 ---
 
 # Glossary
@@ -81,10 +81,29 @@ terms uses one of these when one fits.
   round cap: set aside with a filed finding.
 - **round cap** — the declared maximum review rounds before a loop's
   failsafe exit fires.
-- **action** — the approved choice for one record: keep-rewrite, retire,
-  or terminal, with its target.
+- **action** — the approved choice for one record: keep-rewrite, keep,
+  retire, or terminal, with its target. *(draft amendment 2026-08-22,
+  pending approval: extended from the three-value set to match the
+  migration plan's use of keep; `authority-call` is not an action — see
+  its entry.)*
+- **authority-call** — a row marker on a migration-plan row awaiting a
+  ruling from the authority; not an action — the row has no effect and
+  is out of scope for any run until ruled. *(draft addition 2026-08-22,
+  pending approval.)*
 - **action table** — the table of records and their actions; approved row
   by row or in blocks at a review. Drives any bulk record change.
+  *(draft amendment 2026-08-22, pending approval: schema-defined as the
+  `action-table` data type in `types/action-table.md` — the governed
+  channel for per-keeper directives and family nominations.)*
+- **close-out** — the mechanical execution of the migration plan's
+  pre-decided retire and terminal actions: snapshot, delete, archive
+  move, and a loud post-check; no review loop. Runs staged, `pre-run`
+  once then `post-run:<run-id>` per migration run. *(draft addition
+  2026-08-22, pending approval.)*
+- **snapshot tag** — the annotated git tag (`pre-migration`) on `main`'s
+  pre-execution commit, preserving the full corpus for terminal-recovery;
+  after close-out a terminal record exists only there. *(draft addition
+  2026-08-22, pending approval.)*
 - **migration plan** — the rebaseline's action table plus the order of
   the per-type migration runs. Replaces "rebaseline bill".
 - **experiment index** — the new-basis experiment's README: the
