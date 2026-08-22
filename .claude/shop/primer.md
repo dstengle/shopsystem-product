@@ -82,6 +82,15 @@ process (`basis/processes/session-handoff.md` on `experiment/new-basis`).
 A durable correction amends the definition it corrects; it is never
 stored as a memory.
 
+## Open conversations at session start
+
+After the watcher and drains, check for open conversation anchors and
+resume from their State sections — they, not transcripts, carry the
+work: review records under `basis/records/` on `experiment/new-basis`
+(status `open` or `held`), and any open discovery or work conversation
+items in the registry. The currently open review conversation is
+anchored at `basis/records/review-new-basis.md` (work item lead-kmrd4).
+
 ## Operational hygiene
 
 **Session close.** Work is not done until `git push` succeeds. Before saying
