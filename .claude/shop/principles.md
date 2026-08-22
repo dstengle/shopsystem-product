@@ -1,12 +1,12 @@
 ---
 type: principles-rendering
 id: principles-rendering
-status: draft
+status: approved
 generated: true
 generated-by: basis/tools/compile_principles.py
 derived-from: principles
 source: basis/principles.md@experiment/new-basis
-source-digest: sha256:ea7058175c1a
+source-digest: sha256:1e00df3daee9
 scope: working
 ---
 
