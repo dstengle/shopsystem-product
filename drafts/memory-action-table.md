@@ -3,6 +3,7 @@ type: action-table
 id: memory-action-table
 subject: bd-memories
 rows: 67
+revision: 3
 owner: product-authority
 status: draft
 created: 2026-08-22
@@ -20,41 +21,52 @@ contents.
 
 ## How to rule
 
-Two decisions close this table. **Ask 1 (row by row): approve the 14
-rescue rows** — each names the decision at stake and the governed record
-that will receive it; overriding a row to retire means the decision is
-knowingly dropped. **Ask 2 (as a block): approve the 53 retire rows** —
-every justification cites the governed file that covers the memory or
-names it operational or stale. On approval, execution is mechanical:
-rescues are rewritten into their target records, all 67 memories are
-exported to one archived document, and `bd forget` runs in bulk — the
-single sanctioned exception to the write freeze. Classification was
-performed 2026-08-22 by four independent agents searching the corpus per
-memory; each row's justification is their finding.
+One block decision closes this table (rev 3, after the authority's
+rulings of 2026-08-22): **approve all 67 rows** — 55 retire, 12
+route-to-chain. No memory becomes a new document now. On approval,
+execution is mechanical: all 67 export verbatim to
+`findings/memory-archive-2026-08.md`, `bd forget` runs in bulk (the
+single sanctioned exception to the write freeze), and the 12
+route-to-chain rows get a pointer note filed on the work of the
+definition chain that will consume them — where the question "is this
+discipline still needed?" is decided with full context, at chain review.
+Classification was performed 2026-08-22 by four independent agents
+searching the corpus per memory; the authority then ruled that
+disciplines and process-bound rules route to chains rather than becoming
+old-format records.
 
-## Rescue (14 rows — Ask 1)
+## Route-to-chain (12 rows)
 
-Rows sharing a target cluster into one new record; ten target records
-total.
+Retired from the memory channel like every other row (archived, then
+forgotten); each additionally gets a pointer note on the work item of
+the definition chain that will consume it. Whether the discipline is
+still needed is decided at that chain's review.
 
-| key | decision at stake | target record |
+| key | rule or content carried | consuming chain |
 |---|---|---|
-| lead-shop-ownership-rule-david-2026-07-08 | authority-issued boundary: "looks like code → templates-BC-owned"; the lead-owned file list | new ADR: lead-shop code-artifact ownership |
-| operational-hazard-david-2026-07-08-never-recreate | authority-issued safety rule: broker recreate is operator-only; in-session bounce kills the live session | new runbook: docs/runbooks/agent-vault-operations.md |
-| standing-directive-david-2026-07-06-from-now | authority-issued standing rule: every new BC launches under `--orchestrator fabro` (dogfood) | new ADR or runbook standing rule |
-| resume-2026-07-04-lead-architect-handoff-before | scenario-ownership model: a feature may span BCs; `@bc` owner belongs on the scenario; a cross-BC scenario is owned by one integration-point BC | new ADR: scenario-level ownership |
-| silent-agent-exit-failure-mode-a | bc-status must gate on agent-process liveness; stale-checks probe `ps`, never trust bc-status; agent supervisor/auto-restart | new bc-launcher liveness ADR + scenarios (cluster) |
-| confirmed-correcting-my-earlier-ret | the silent agent-exit model: bc-status tracks watch registration, not agent liveness; marker-inject is the authoritative liveness test | same liveness record (cluster) |
-| bc-container-start-agent-also-false | start-agent's liveness gate must check the actual claude process, not the session | same liveness record (cluster) |
-| fabro-fixes-stranded-by-delivery-path | verification rule: work_done + green release + green rebuild are not proof; a scout relaunch/runtime-inspect is mandatory after fabro-path releases (adr-063 cites this memory by name) | new verification-discipline finding (cluster) |
-| shopsystem-effectiveness-the-fabro-engage-was-never-validate | unit-scenario proof is insufficient; the router scout-launches end-to-end after first delivery | same verification-discipline finding (cluster) |
-| duplicate-dispatch-check-closed-beads | pre-dispatch rule: search closed work items before any request_bugfix | new dispatch-discipline finding (cluster) |
-| router-pre-dispatch-gap-lead-qi0q-2026-06 | reconcile a stale work-item premise against adr/ and pdr/ before dispatch (adr-045 cites "the lead-qi0q lesson" with no record of its substance) | same dispatch-discipline finding (cluster) |
-| router-architect-effectiveness-the-17e9342e-re-pin-ruling | cross-version import-source assertions must be confirmed against the actual target version | new architect pre-state verification finding |
-| router-effectiveness-i-missed-a-real-2nd-blocked | on a Monitor event, verify the BC substrate, never just the mailbox snapshot | new router-discipline finding |
-| deferred-revised-sc06-body-5174e405a19358fa-per-adr-024 | the deferred revised sc06 scenario body itself — adr-024 D2 cites only its hash; the text exists nowhere governed | features-provisional/outstanding-view-sc06-revised.feature (the adr-024 D2 follow-up) |
+| operational-hazard-david-2026-07-08-never-recreate | authority-issued safety rule: broker recreate is operator-only; in-session bounce kills the live session | agent-vault / broker operations process |
+| silent-agent-exit-failure-mode-a | bc-status must gate on agent-process liveness; stale-checks probe `ps`; supervisor/auto-restart | bc-launcher liveness process + scenarios |
+| confirmed-correcting-my-earlier-ret | bc-status tracks watch registration, not agent liveness; marker-inject is the authoritative liveness test | bc-launcher liveness process + scenarios |
+| bc-container-start-agent-also-false | start-agent's liveness gate must check the actual claude process | bc-launcher liveness process + scenarios |
+| fabro-fixes-stranded-by-delivery-path | work_done + green release + green rebuild are not proof; scout relaunch/runtime-inspect after fabro-path releases (adr-063 cites this memory by name) | reconcile-and-close / delivery-verification chain |
+| shopsystem-effectiveness-the-fabro-engage-was-never-validate | unit-scenario proof insufficient; router scout-launches end-to-end after first delivery | reconcile-and-close / delivery-verification chain |
+| duplicate-dispatch-check-closed-beads | pre-dispatch rule: search closed work items before any request_bugfix | dispatch process chain |
+| router-pre-dispatch-gap-lead-qi0q-2026-06 | reconcile a stale work-item premise against adr/ and pdr/ before dispatch (adr-045 cites the lesson by name) | dispatch process chain |
+| router-architect-effectiveness-the-17e9342e-re-pin-ruling | cross-version import-source assertions confirmed against the actual target version | dispatch process chain (architect pre-state verification) |
+| router-effectiveness-i-missed-a-real-2nd-blocked | on a Monitor event, verify the BC substrate, never just the mailbox snapshot | router monitor-handling process |
+| resume-2026-07-04-lead-architect-handoff-before | scenario-ownership model: `@bc` owner on the scenario; cross-BC scenario owned by one integration-point BC | scenario/feature typedef chain |
+| deferred-revised-sc06-body-5174e405a19358fa-per-adr-024 | the deferred revised sc06 scenario body (adr-024 D2 cites only its hash); the archive carries the verbatim text | adr-024 D2 follow-up work item |
 
-## Retire (53 rows — Ask 2, block approval)
+## Retire (55 rows)
+
+Two rows moved here by the authority's rulings:
+
+| key | justification |
+|---|---|
+| standing-directive-david-2026-07-06-from-now | fabro-dogfood directive was overridden in practice; the authority recognizes the override — retire |
+| lead-shop-ownership-rule-david-2026-07-08 | the ownership boundary will resurface and be re-decided fresh; rescuing the stale rule would prejudge it — retire |
+
+The original 53:
 
 | key | justification |
 |---|---|
@@ -114,10 +126,11 @@ total.
 
 ## Execution on approval
 
-1. Write the ten target records (rescue rows, clustered) as drafts for
-   normal review.
-2. Export all 67 memories verbatim to `findings/memory-archive-2026-08.md`
+1. Export all 67 memories verbatim to `findings/memory-archive-2026-08.md`
    (out of ambient context; reachable deliberately).
+2. File one pointer note per route-to-chain row on its consuming chain's
+   work item (creating the item where none exists yet), citing the
+   archive entry.
 3. `bd forget` all 67 in bulk — the sanctioned exception to the write
    freeze. The channel stays closed to writes; conversation anchors own
-   cross-session state.
+   cross-session state. No new documents are written now.
