@@ -108,25 +108,40 @@ the ledger's opening span. From R19 the ledger lives in this record.
   branch question; the migration plan must now name `main` as the
   target tree.
 
+- **R26 (2026-08-22).** The migration-plan type gets a definition —
+  authority ruling: migrations happen periodically and should have a
+  definition; no bootstrap exception. Executed: typedef authored at
+  `basis/artifacts/migration-plan.md` (status draft), joining the
+  re-approval set of brief-026 ask 2. During the same remediation the
+  adr-046 authority call was found mislabeled — it is the unimplemented
+  framework-image parameterization (`bin/shop-shell:136` still bakes
+  the literal), not a certificate-authority exemption; corrected in
+  plan rev 3 and the brief, verified against the live script.
+
 ## State
 
-Open — **R24 remediation in flight** (2026-08-22).
+Open — **rev 3 delivered; awaiting the authority's rulings**
+(2026-08-22).
 
-The directed adversarial review returned 18 findings (5 blockers) and
-17 required conditions; the isolated cold read confirmed the plan is
-not rulable from its own text. Landed so far, as drafts pending the
-authority's re-approval: `definition-chain-migration` amended (flow fix
-— the `derive-chain` step had no exit, so no rewrite could ever run;
-plus a governed `actions` input), new `corpus-close-out` process for
-the pre-decided retire/terminal mass, new `action-table` and
-`close-out-report` types, glossary additions, single archive-contract
-spec (`archive/migration-2026-08` + `pre-migration` tag,
-`archive-move` specced not built). In flight: migration plan rev 3
-addressing all findings; its delivery goes through a full
-stakeholder-presentation run (brief, fresh cold read, round log
-attached — rev 2's "cold-read verified" was unwitnessed, a finding in
-itself). The prior Ask 1 / Ask 2 are withdrawn until rev 3 stands.
-Phase 1 does not begin before the authority approves rev 3.
+The R24 remediation is complete. The adversarial review (18 findings,
+5 blockers, 17 required conditions) and the isolated cold read ran;
+`definition-chain-migration` was amended (flow fix — its `derive-chain`
+step had no exit, so no rewrite could ever run; plus a governed
+`actions` input); `corpus-close-out`, `action-table`,
+`close-out-report`, and the `migration-plan` typedef were authored
+(all drafts pending approval); the archive contract is specced
+(`archive/migration-2026-08` + `pre-migration` tag; `archive-move`
+specced, not built). Migration plan rev 3 addresses all findings, and
+its delivery went through the stakeholder-presentation process for the
+first time: `briefs/brief-026.md`, status delivered, seven asks, four
+cold-read rounds logged in `verified-by`, delivered at the round cap
+with the residual round-4 findings repaired post-round and disclosed
+at the top of the brief.
+
+Resume point: the authority rules on brief-026's seven asks — asks 1–2
+gate run 1, ask 3 gates archiving and deletion, asks 4–7 resolve on
+silence by their stated defaults. Phase 1 does not begin before asks
+1–2 are approved.
 
 For the resuming session: the basis lives on `main` under `basis/`
 (R25); the ledger above plus README rulings R1–R18 are the review's

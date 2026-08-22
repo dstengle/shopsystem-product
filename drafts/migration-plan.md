@@ -1,7 +1,7 @@
 ---
 type: migration-plan
 id: migration-plan
-revision: 2
+revision: 3
 supersedes: rebaseline-bill (2026-08-04)
 owner: product-authority
 status: draft
@@ -14,102 +14,381 @@ updated: 2026-08-22
 Census run 2026-08-22 by four independent lanes over the live tree,
 verifying the 2026-08-04 census where it overlapped and judging
 everything after it fresh. This plan is the rebaseline's action table
-plus the run order for `definition-chain-migration`; approving it starts
-Phase 1.
+plus the run order for the `definition-chain-migration` process.
+"Phase 1" throughout means the rebaseline phase of intent-013's
+four-phase re-founding arc (freeze → shrink → enforce → standard);
+approving this plan's Ask 1 opens Phase 1 execution, subject to the
+entry conditions in "Execution readiness" below.
+
+All counts in this document were derived mechanically on 2026-08-22 by
+a scratch script (`counts.sh`, session scratchpad) run against the
+working tree; every figure in the Summary, the run order, and the
+appendices is pasted from its output, none by hand.[^counts]
+
+[^counts]: The script counts `*.md` files per directory, anchored
+`@scenario_hash:` tag lines per features directory, and files per
+terminal tree, and cross-sums lanes A/B/D against their action splits.
+It lives in the session scratchpad, not the repo; its full output is
+reproducible from the commands it contains.
 
 ## How to rule
 
-**Vocabulary for this document.** A *chain* is a type's full definition
-of good (typedef, guideline, fitness set, process, roles, compiled
-skill); one `definition-chain-migration` run builds a chain and rewrites
-that type's keepers through it. Actions: *keep-rewrite* — content still
-binding, re-authored through the chain; *keep* — stays as-is, no rewrite
-(scenarios and operational files); *retire* — value passed, moves to an
-archive branch (never `main`); *terminal* — junk or never-advanced,
-deleted or closed as never-accepted. The *F-codes* in reason cells are
-the census's rewrite families — clusters of decision records that
-collapse into one rewritten record each (F2 fleet … F15 licensing). The
-*trust break* is the 2026-08-03 quality failure that triggered the
-re-founding (intent-013).
+**Ask 1 (block): approve the action table, the family nominations, and
+the run order.** Every row carries its lane's one-line evidence.
+Approval fixes three things: which records are keepers, which retire,
+and which are terminal (the census rows); the sequence of the
+per-type runs; and the F-family groupings **as nominations only**.
+Approval does NOT fix: the final granularity of rewritten records
+(decided at the run-2 chain review, after the decision-record typedef,
+guideline, and fitness set exist — see Appendix B), the final
+artifact-type set, or the archive execution (its contract is a pending
+ruling). The three record-level authority calls below each carry a
+recommendation and a default; silence on a call is itself handled — the
+default carries it into the decision-chain run's review as an open
+item; nothing is retired or deleted by silence.
 
-**Ask 1 (block): approve the action table and run order.** Every row
-carries its lane's one-line evidence. **Ask 2 (three rulings): the
-authority calls below** — each has a recommendation and a default.
-Silence on a call is itself handled: the default carries it into the
-decision-chain run's review as an open item; nothing is retired or
-deleted by silence.
+The remaining structural rulings are listed under **Open rulings**
+below. They will be finalized in a separate decision-brief; this plan
+carries each only as a one-line question with a recommendation and a
+default.
+
+### Vocabulary for this document
+
+Terms marked (g) are defined in the approved glossary
+(`basis/glossary.md` — the basis merged to `main` at c5f1495 and is
+the operating tree; `experiment/new-basis` is history); the rest are
+defined here for this document.
+
+- **chain** (g: definition chain) — a type's full definition of good:
+  six linked definitions — typedef, guideline, fitness set, process,
+  roles, compiled skill. One `definition-chain-migration` run builds a
+  chain and rewrites that type's keepers through it.
+- **chain review** — the authority review of a run's chain and
+  exemplar inside that run (the `authority_review` / `route_review`
+  steps of the process); verdicts and round cap in "The authority's
+  review surface" below.
+- **keeper** (g) — a record whose action is keep-rewrite; rewritten
+  forward through its type's approved chain, never used as-is.
+- **Actions** — the enum covering every action cell: *keep-rewrite* —
+  content still binding, re-authored through the chain; *keep* — stays
+  as-is, no rewrite (scenarios and operational files); *retire* —
+  value passed, moves to the archive branch (never `main`); *terminal*
+  — junk or never-advanced, deleted or closed as never-accepted.
+  (Vocabulary note: the glossary's `action` enum is keep-rewrite /
+  retire / terminal; this plan extends it with *keep* for records
+  already in native format — flagged for glossary amendment.)
+- **authority-call** — a row MARKER, not an action: the row awaits an
+  authority ruling and neither rewrites nor retires until ruled.
+- **lane** — one of the four independent census passes (A decisions,
+  B PM records, C scenarios, D docs/findings/drafts/root/junk); each
+  lane read the tree independently and its evidence stands per row.
+- **census** — the four-lane read-only survey of the live tree whose
+  rows this action table carries; this plan's tables are the census.
+- **pin** — one anchored `@scenario_hash:` tag line in `features/`,
+  fixing one canonical scenario block. Pins are counted separately
+  from records and never enter a record total.
+- **F-codes / rewrite families** — clusters of decision records
+  NOMINATED to collapse into a small number of rewritten records.
+  Nominations only: final record granularity is decided at the run-2
+  chain review. The authoritative family map is Appendix B.
+- **RACI** — the standard responsibility matrix (Responsible /
+  Accountable / Consulted / Informed); here, the open question of
+  which role owns which record type, under investigation as
+  lead-jozud.2 (glossed below).
+- **trust break** — the 2026-08-03 quality failure that triggered the
+  re-founding (intent-013, the re-founding instrument: the authority's
+  recorded direction to re-found the typed-artifact system in four
+  phases after finding systemic quality failures).
+- **provenance spine** — the `derives-from`/`derived-by` edge graph
+  rooted at intent records, along which every PM record traces to a
+  recorded want.
+- **doctrine loop** — the Phase-0 iterative doctrine-capture loop
+  under intent-013 (opened sess-2026-08-04-a), which produced pdr-039
+  over review iterations instead of one-shot authoring.
+
+### External references glossed
+
+- **lead-jozud.2** — the merged artifact-type-set + RACI
+  investigation (see `sessions/sess-2026-08-05-a.md`): which record
+  types survive, the ADR/PDR boundary, and role ownership per type.
+- **sc06** — a deferred scenario body (hash 5174e405a19358fa, per
+  adr-024 D2); now carried verbatim by backlog item lead-df2pj.
+- **the 153-hash prior census (2026-08-04)** — the scenario-retirement
+  lane of the superseded rebaseline-bill, which proposed retiring 153
+  scenario hashes across 30 files; this plan dissolves most of it (see
+  Summary scenario notes).
+- **the 2026-07-04 "no current use" ruling** — the authority's ruling
+  recorded in `features-provisional/README.md`: devcontainer has no
+  current use and is parked out of the canonical features tree.
+- **Peters grant** — adr-066: Dean Peters, rights holder of
+  deanpeters/Product-Manager-Skills, granted MIT ingestion of the
+  derived PM skills conditioned on attribution.
+- **memory-archive pattern** — authority ruling R22 (2026-08-22,
+  `basis/records/review-new-basis.md`): retired memories moved to the
+  parentless branch
+  `archive/memory-2026-08`, verbatim, never on `main`. The archive
+  contract below follows this pattern.
+- **intent-013** — the re-founding instrument: the authority's
+  recorded direction, after the trust break, for the phased
+  freeze → shrink → enforce → standard arc this plan executes Phase 1
+  of.
+- **rebaseline-bill** — this plan's superseded predecessor
+  (2026-08-04). Its family map now lives in this plan's Appendix B;
+  the bill itself is a retire row in Appendix A.
+
+## Open rulings
+
+Finalized in a separate decision-brief; listed here so the plan is
+honest about what it does not settle. Each: question — recommendation
+— default if unruled.
+
+1. **Collapse timing (family granularity).** When is the final
+   record granularity of the F-families fixed? — *Recommend:* at the
+   run-2 chain review, after the decision-record typedef, guideline,
+   and fitness set exist; this plan's families are nominations only.
+   — *Default:* nominations stand as written until that review rules.
+2. **Provisional artifact-type set for runs 2–4.** Runs 2–4 must be
+   written as SOME type before lead-jozud.2 settles the final set. —
+   *Recommend:* run 2 builds one provisional decision-record chain and
+   treats the ADR/PDR boundary as a chain-review question; run 4
+   carries the current PM type names provisionally. — *Default:*
+   current type names carried provisionally; any type merge re-types
+   records mechanically at close-out.
+3. **Attention contract during mass rewrite.** How much authority
+   attention does the mass-rewrite step get? — *Recommend:* the
+   PROPOSED contract in "The authority's review surface" §4
+   (per-family sign-off + every-10th spot-check + pre-archive veto
+   window). — *Default:* every rewritten record awaits explicit
+   authority sign-off (the costlier, safer posture).
+4. **Archive contract.** — *Recommend:* ratify the pending contract:
+   one parentless branch `archive/migration-2026-08`, verbatim files,
+   never on `main`, plus snapshot tag `pre-migration` for terminal
+   recovery (the memory-archive R22 pattern). — *Default:* nothing
+   archives and nothing is deleted; the retire and terminal mass stays
+   frozen in place until ruled. (The formerly open branch question —
+   where chains and rewritten records land — is RULED: `main`; the
+   basis merged at c5f1495 and `basis/` is the operating tree.)
+5. **This plan's own type standing.** — *RULED (authority,
+   2026-08-22):* migrations happen periodically and should have a
+   definition — no bootstrap exception; the type gets a typedef. The
+   typedef is authored at `basis/artifacts/migration-plan.md` (status
+   draft; its approval rides ruling 6's re-approval set). This plan is
+   checked against it at this review. The plan remains excluded from
+   its own census (see lane D intro).
+6. **Amended-definitions re-approval.** The amended
+   `definition-chain-migration` process (flow fix + the new governed
+   `actions` input) and the new `corpus-close-out` process are on
+   `main` under `basis/processes/` with supporting types
+   `basis/types/action-table.md` and `basis/types/close-out-report.md`
+   — all status draft, pending re-approval before run 1 starts. The
+   new `basis/artifacts/migration-plan.md` typedef (ruling 5) joins
+   this set. — *Recommend:* approve all five at this plan's review. —
+   *Default:* no run starts.
+7. **Done-standard.** — *Recommend:* accept "What demonstrates done"
+   below as the standard. — *Default:* per-run done = chain approved +
+   fitness pass + lint clean (the minimum); the migration-level
+   standard is deferred to close-out review.
 
 ## Summary
 
-| lane | records | keep-rewrite | keep | retire | terminal | authority-call |
+Records (markdown files) by lane and action. Trees and scenario pins
+are counted on separate lines below the table — they are different
+units and never mix into the records total.
+
+| lane | records (md) | keep-rewrite | keep | retire | terminal | authority-call rows |
 |---|---|---|---|---|---|---|
-| decisions (adrs, pdrs) | 108 | 87 | — | 17 | 0 | 4 |
-| PM records (intents, candidates, briefs, sessions) | 67 | 28 | — | 31 | 7 | 1 |
-| docs, findings, drafts, root, junk | 143 | 16 | 5 | 115 | 7 | 0 |
-| scenarios (live pins) | 893 pins | — | 860 keep | 27 | — | 6 |
-| **records total (md)** | **318** | **131** | **5** | **163** | **14** | **5** |
+| A — decisions (adrs, pdrs) | 108 | 87 | — | 17 | 0 | 4 |
+| B — PM records (intents, candidates, briefs, sessions) | 67 | 28 | — | 31 | 7 | 1 |
+| D — docs, findings, drafts, root | 135 | 15 | 5 | 115 | 0 | 0 |
+| **records total (md)** | **310** | **130** | **5** | **163** | **7** | **5** |
+
+Separate units, not in the records total:
+
+- **Trees:** `structurizr/` — keep-rewrite as one tree (44 files, of
+  which 3 are source: README.md, workspace.dsl, workspace.json; the
+  rest is generated `.structurizr/` cache). Seven junk trees —
+  terminal, deleted whole (653 files total, 82 md files among them:
+  61 in `.fabro-e2e-scratch/`, 21 in `.specstory/`); they are counted
+  as trees, never as records.
+- **Scenarios (lane C):** 893 pins across 291 feature files in
+  `features/` — 860 keep, 27 retire, 6 authority-call.[^pins]
+  `features-provisional/` holds 23 further files (17 devcontainer +
+  5 docs + 1 README), all retire.
+
+[^pins]: The 6 authority-call pins (features/system-manifest/) are
+pins, not records; they ride the system-BOM record ruling (call 3) and
+appear in no record total.
 
 Scenario notes: scenarios are already the system's native format —
 keepers stay as-is; the prior census's 153-hash retirement never
 executed and mostly dissolves: of its old set, only the pdr-031 surface
 files and the three templates writing-skill files retire (the knowledge
 directory is live contract). `scenario-refs/origin-index.txt`
-is stale since 2026-07-04 and regenerates mechanically.
+is stale since 2026-07-04 and regenerates mechanically at close-out.
 `features-provisional/devcontainer` retires per the authority's
 2026-07-04 "no current use" ruling; `features-provisional/docs` retires
-with adr-008 (shopsystem-docs is a dead letter). The test-harness
-authority flag resolved during census: `shopsystem-test-harness` is now
-in `bc-manifest.yaml`, so its feature file keeps and adr-002
-keep-rewrites.
+with adr-008 (shopsystem-docs is a dead letter); the
+`features-provisional/README.md` parking note leaves with them. The
+test-harness authority flag resolved during census:
+`shopsystem-test-harness` is now in `bc-manifest.yaml`, so its feature
+file keeps and adr-002 keep-rewrites.
 
 ## Run order (one `definition-chain-migration` run per type)
 
 1. **principle-set (architecture scope)** — spec `01-principles.md`
-   rewrites into the architecture principle set; smallest run, chain
-   nearly complete, everything downstream cites it.
+   rewrites into the architecture principle set; smallest run,
+   everything downstream cites it. Chain state today: 1 of 6 links
+   (the typedef, in the seed layer) — the other five links are built
+   by the run itself, like every run below.
 2. **decision records (adr, pdr)** — the trust break lived here; 87
    keepers, the largest judgment mass. The chain review settles the
-   standing kind-set question (ADR vs PDR boundary, RACI) with the
-   lead-jozud.2 evidence — the old separate gate is absorbed into this
-   run's review.
+   standing artifact-type-set question (ADR vs PDR boundary, RACI)
+   with the lead-jozud.2 evidence — the old separate gate is absorbed
+   into this run's review — and fixes the final granularity of the
+   F-family nominations (Appendix B).
 3. **framework spec (02–06 + artifact-lifecycle, consumer-wiring,
    README, current-state, structurizr)** — the outward face, rewritten
    once decisions are stable.
-4. **PM records (intent, candidate, brief, session)** — 28 keepers; the
-   session-record chain partly exists (handoff process approved).
-5. **findings** — 4 ADR-cited keepers get the finding chain; the other
-   95 retire without one.
-6. **scenario sweep** — mechanical close-out: retire the listed files,
-   regenerate scenario-refs, no chain needed (native format).
+4. **PM records (intent, candidate, brief, session)** — 28 keepers
+   plus `drafts/artifact-system-restructuring.md`, which this plan
+   assigns to this run: it is the initiative record this plan
+   executes, direction-shaped and PM-lane; its rewritten type is
+   decided at this run's chain review.
+5. **findings** — the 4 ADR-cited keepers get the finding chain; the
+   other 95 retire without one (99 findings md files on disk − 4
+   keepers = 95).
+6. **corpus close-out (mechanical, not a chain run)** — the
+   `corpus-close-out` process handles the pre-decided retire/terminal
+   mass and the scenario sweep: pre-run stage tags `pre-migration` and
+   deletes the terminal trees; post-run stage moves the retire mass to
+   the archive branch, retires the listed scenario files, regenerates
+   `scenario-refs`, and emits the close-out report. No chain — the
+   scenario format is native.
 
-Junk trees (`terminal`) delete at execution start; retire mass moves to
-archive branches at each run's `archive-retired` step.
+## Execution readiness and entry conditions
 
-## Authority calls (Ask 2)
+**The chains do not pre-exist.** Rev 2 claimed run 1's chain was
+"nearly complete"; that was false. The definitions of good for the
+migrated types do not yet exist anywhere — each run BUILDS its
+type's chain first (build-chain → derive → exemplar → authority review
+rounds, cap 3 → authority approval) and only then mass-rewrites the
+keepers through it. What exists today is the seed layer plus two
+session-record links; everything else is the runs' own output.
+
+Per-run entry conditions:
+
+| run | artifact type(s) | chain links existing today (of 6) | keeper-list source | tools required | where outputs land |
+|---|---|---|---|---|---|
+| 1 | principle-set | 1/6 — typedef only (seed layer) | the action table (`actions` input) | none beyond git | chain: `basis/` on `main`; rewritten set: `main` |
+| 2 | decision-record (provisional; final set per ruling 2) | 0/6 | action table (87 keepers + directives) | `scenarios hash` (origin re-pointing checks); `archive-move` (archive stage) | same |
+| 3 | framework-spec | 0/6 | action table | `archive-move` | same |
+| 4 | PM types: session-record 2/6 (process + role exist); intent / candidate / brief 0/6 | see left | action table (28 keepers + artifact-system-restructuring) | `archive-move` | same |
+| 5 | finding | 0/6 | action table (4 keepers) | `archive-move` | same |
+| close-out | scenarios — no chain needed (native format) | n/a | action table (pre-decided mass) | `archive-move`, `bin/gen-scenario-refs`, `scenarios validate` | `main` (deletions, regenerated refs, report) |
+
+**Blocking preconditions — nothing starts until all four hold:**
+
+1. **Amended process re-approval** (ruling 6): the amended
+   `definition-chain-migration` process
+   (`basis/processes/definition-chain-migration.md`, status draft) —
+   flow fix plus a new governed input `actions` (type `action-table`,
+   `basis/types/action-table.md`: rows of id / path / action / family /
+   directives / evidence). That input is THE lawful channel for
+   per-keeper directives and family nominations; the amended process
+   must be re-approved.
+2. **The action table produced as the `actions` input**: this plan's
+   lane tables are its source; on approval they are transcribed into
+   the governed `action-table` instance the runs consume. No run reads
+   this markdown directly.
+3. **`archive-move` tool + archive contract** (ruling 4): the tool is
+   specced, not yet built — a blocking precondition surfaced as an
+   ask; the contract it implements is a pending authority ruling.
+4. **`corpus-close-out` process approval**: the new mechanical process
+   (`basis/processes/corpus-close-out.md`, status draft; report type
+   `basis/types/close-out-report.md`) — pre-run snapshot tag +
+   terminal deletions; post-run archive moves and scenario-refs
+   regeneration — must be approved before its pre-run stage fires.
+
+## The authority's review surface
+
+Every point where the authority sees, and can reject, migration work:
+
+1. **This plan.** Block-approves the action table as census, the
+   F-families as NOMINATIONS, and the run order. Rejectable here: any
+   row, any family nomination, the run sequence. Not decided here:
+   final record granularity, final artifact-type set, archive
+   execution.
+2. **Per run: chain + exemplar review.** The run's chain and one
+   exemplar keeper rewritten through it come to review together.
+   Verdicts: *clean*, *tradeoffs-accepted*, or *findings* (send back
+   with the findings attached). Round cap 3; a chain that cannot pass
+   within the cap PARKS with a filed finding — it never loops
+   unbounded. Rejectable: any chain link, the exemplar, or the
+   framing of the type itself.
+3. **Chain approval stamps.** After a clean or tradeoffs-accepted
+   verdict the authority stamps each chain document approved
+   (`approve-chain`). Withholding the stamp stops the run before any
+   mass rewrite; nothing is rewritten through an unapproved chain.
+4. **During mass rewrite — PROPOSED attention contract** (pending
+   ruling 3; presented as a recommendation): (a) per-family sign-off —
+   no family's collapsed record is finalized without the authority's
+   sign-off on that record; (b) a spot-check sample — e.g. every 10th
+   rewritten keeper is pulled for authority reading; a failed
+   spot-check pulls its whole family back to draft; (c) a veto window
+   before each run's archive stage — the authority can hold any
+   archive move before it executes. Rejectable: any family record,
+   any sampled keeper (and with it its family), any archive move.
+5. **Close-out.** Mechanical, no judgment inside it — but it emits a
+   post-check report (close-out-report): what was deleted, what moved
+   to the archive branch, refs regenerated, and an accounting of every
+   action-table row. Rejectable: the report itself — any unaccounted
+   row or unexplained residue reopens the close-out.
+
+## Authority calls (record-level)
 
 1. **adr-033 (BC-local architect role)** — never realized; the pinned
    loop is Implementer→Reviewer only. *Recommend retire*: the role
    system re-founds through chains; a needed seat gets decided fresh.
    Default: held to the decision-chain review.
-2. **adr-046 (shop-shell CA exemption)** — adr-046 decided to remove
-   shop-shell's certificate-authority exemption, but the code still
-   carries the exemption: the record says one thing, the running system
-   does another. *Recommend retire*: the as-built behavior gets its
+2. **adr-046 (shop-shell framework-image exemption)** — adr-046
+   (status proposed) decided the framework image in `bin/shop-shell`
+   becomes a parameterized, env-overridable variable sourced from the
+   ADR-043 ops-coordinates artifact, overriding ADR-028's
+   product-neutral-image exemption — but the live script still bakes
+   the literal (`bin/shop-shell:136`,
+   `--image ghcr.io/dstengle/shopsystem-bc-lead:latest`) and its
+   comments still describe the exemption as in force: the record says
+   one thing, the running system does another. (Rev 2 mislabeled this
+   a "certificate-authority exemption"; verified against the script
+   2026-08-22.) *Recommend retire*: the as-built behavior gets its
    decision fresh in the operations chain. Default: held to the
    decision-chain review.
 3. **The system-BOM bundle (adr-047 + pdr-030 + brief-015 +
    features/system-manifest, 6 pins)** — pinned yet unrealized for
    months; no `system-manifest.yaml`, no tool. *Recommend retire the
    records and file one backlog work item carrying the intent verbatim*
-   — the same pattern that preserved the sc06 scenario body in the
-   memory close-out. Default: held to the decision-chain review.
+   — the same pattern that preserved the sc06 scenario body (now
+   backlog item lead-df2pj) in the memory close-out. Default: held to
+   the decision-chain review.
 
 ## Action table — decisions (lane A, 108 rows)
+
+The census covers what exists on disk: 69 ADR files + 39 PDR files =
+108. Four ids in the numbering have no file and therefore no row:
+adr-003, adr-007, adr-044, and pdr-008 are absent from the working
+tree — never landed or already gone (adr-003 survives only as the
+unmerged draft branch `adr-003-ecommerce-draft`). They were not
+missed; there is nothing to disposition.
+
+Keep-rewrite rows carry an F-family nomination in the reason cell
+where one exists (map: Appendix B). Two keep-rewrite rows carry no
+family — adr-002 and pdr-039; they rewrite one-to-one through the
+decision chain unless the run-2 chain review folds them into a family.
 
 | id | status | action | reason |
 |---|---|---|---|
 | adr-001 | accepted | keep-rewrite | Genesis; folds into F2 fleet record (now five+ BCs) |
-| adr-002 | accepted | keep-rewrite | Contested fact resolved: harness BC now in manifest |
+| adr-002 | accepted | keep-rewrite | Contested fact resolved: harness BC now in manifest; no family — one-to-one |
 | adr-004 | accepted | keep-rewrite | F2 fleet identity; bc-launcher live |
 | adr-005 | accepted | keep-rewrite | F2; manifest mechanism live, header cites it |
 | adr-006 | accepted | keep-rewrite | F3 addressing/registry; shop-msg live |
@@ -129,7 +408,7 @@ archive branches at each run's `archive-retired` step.
 | adr-021 | accepted | keep-rewrite | F2 bc-base image ownership; images published |
 | adr-022 | accepted | keep-rewrite | F2 centralized rebuilds; live build path |
 | adr-023 | proposed | retire | Superseded-in-fact by adr-025 (journal re-homed) |
-| adr-024 | accepted | keep-rewrite | F4 journal rebuild; sc06-deferral clause scrubbed at rewrite |
+| adr-024 | accepted | keep-rewrite | F4 journal rebuild; sc06-deferral clause scrubbed at rewrite (body carried by lead-df2pj) |
 | adr-025 | accepted | keep-rewrite | F4 journal-as-file; live scenarios tooling |
 | adr-026 | accepted | keep-rewrite | F9 broker architecture; broker healthy |
 | adr-027 | accepted | keep-rewrite | F3 respond directionality; live |
@@ -150,7 +429,7 @@ archive branches at each run's `archive-retired` step.
 | adr-042 | proposed | retire | Status-correction non-decision; open leg stale |
 | adr-043 | accepted | keep-rewrite | F10 compute-once coordinates; 2nd-most origin-cited |
 | adr-045 | proposed | keep-rewrite | F9 CA transport realized at shop-shell; needs terminal state |
-| adr-046 | proposed | authority-call | Record contradicts as-built shop-shell exemption |
+| adr-046 | proposed | authority-call | Decided image parameterization never implemented; `bin/shop-shell:136` still bakes the literal |
 | adr-047 | proposed | authority-call | Scenarios pinned; system-manifest.yaml still nonexistent |
 | adr-048 | proposed | keep-rewrite | F12 fabro substrate realized; recover dates at rewrite |
 | adr-049 | proposed | keep-rewrite | F12 vault-sole-credential; may fold into F9 |
@@ -178,7 +457,7 @@ archive branches at each run's `archive-retired` step.
 | adr-071 | accepted | keep-rewrite | F14 writing-skill enforcement; check passes 8/8 |
 | adr-072 | rejected | retire | Rejected; archive as-is |
 | pdr-001 | proposed | keep-rewrite | F6 role system; router pattern live |
-| pdr-002 | proposed | keep-rewrite | F6 subagent topology; content awaits kind-set review |
+| pdr-002 | proposed | keep-rewrite | F6 subagent topology; content awaits artifact-type-set review |
 | pdr-003 | proposed | keep-rewrite | F8 CLAUDE.md propagation; pour live |
 | pdr-004 | proposed | keep-rewrite | F2 container command ownership; live |
 | pdr-005 | proposed | keep-rewrite | Folds into F6 roles record |
@@ -212,12 +491,15 @@ archive branches at each run's `archive-retired` step.
 | pdr-034 | proposed | retire | Superseded-in-fact by intent-013 rebaseline |
 | pdr-035 | accepted | keep-rewrite | F14 needs statement; grounds adr-067 line |
 | pdr-036 | accepted | keep-rewrite | F14 read-CLI needs; realized |
-| pdr-037 | accepted | keep-rewrite | F14 per-kind needs; rewrite writes missing sections |
+| pdr-037 | accepted | keep-rewrite | F14 per-type needs; rewrite writes missing sections |
 | pdr-038 | accepted | keep-rewrite | F14 writing-skill mandate; realized |
-| pdr-039 | proposed | keep-rewrite | Governing instrument; flips accepted at doctrine-loop exit |
+| pdr-039 | proposed | keep-rewrite | Governing instrument; flips accepted at doctrine-loop exit; no family — one-to-one |
 | pdr-900 | accepted | retire | Self-described legacy synthetic grounding |
 
 ## Action table — PM records (lane B, 67 rows)
+
+67 rows = 14 intents + 11 candidates + 25 briefs + 17 session records
+on disk.
 
 | id | status | action | reason |
 |---|---|---|---|
@@ -225,12 +507,12 @@ archive branches at each run's `archive-retired` step.
 | intent-002 | recorded | retire | Fulfilled via briefs 020/021 |
 | intent-003 | recorded | keep-rewrite | Spend observability unbuilt; live want |
 | intent-004 | recorded | retire | Superseded by intent-012 reframe |
-| intent-005 | recorded | keep-rewrite | Ordering need unmet; feeds kind-set review |
+| intent-005 | recorded | keep-rewrite | Ordering need unmet; feeds artifact-type-set review |
 | intent-006 | recorded | retire | Fulfilled 07-25; approach superseded by intent-013 |
 | intent-007 | recorded | keep-rewrite | Spine parent of committed cand-005 |
 | intent-008 | recorded | keep-rewrite | Foundational-statement need is the live arc |
 | intent-009 | recorded | retire | Fulfilled; CLI live, only bugfix beads remain |
-| intent-010 | recorded | keep-rewrite | Per-kind definitions is current direction |
+| intent-010 | recorded | keep-rewrite | Per-type definitions is current direction |
 | intent-011 | recorded | keep-rewrite | Authoring-guidance want re-founds |
 | intent-012 | recorded | keep-rewrite | Live epic; grounds cand-010/brief-025 |
 | intent-013 | recorded | keep-rewrite | Governing instrument of the rebaseline |
@@ -242,7 +524,7 @@ archive branches at each run's `archive-retired` step.
 | cand-005 | committed | keep-rewrite | Origin-cited x5; committed-arc exemplar |
 | cand-006 | committed | retire | Delivered as pdr-035 |
 | cand-007 | committed | retire | Delivered as pdr-036 |
-| cand-008 | committed | retire | Delivered as pdr-037; re-founds under kind-set review |
+| cand-008 | committed | retire | Delivered as pdr-037; re-founds under artifact-type-set review |
 | cand-009 | committed | retire | Delivered as pdr-038; skills shipped |
 | cand-010 | shaped | keep-rewrite | Live first bet under intent-012; frozen not dead |
 | cand-900 | committed | retire | Synthetic grounding; historical |
@@ -291,6 +573,9 @@ archive branches at each run's `archive-retired` step.
 
 ## Action table — scenarios (lane C, by directory; file rows only where different)
 
+Units here are files and pins (anchored `@scenario_hash:` tag lines),
+never records.
+
 | path | files | pins | action | reason |
 |---|---|---|---|---|
 | features/agent-vault-broker/ | 1 | 15 | keep | Live broker contract; service running |
@@ -304,61 +589,139 @@ archive branches at each run's `archive-retired` step.
 | features/shopsystem-messaging/ | 58 | 153 | keep | Strongest-grounded contract; watcher runs on it |
 | features/shopsystem-scenarios/ | 15 | 43 | keep | scenarios 0.3.1 live contract |
 | features/shopsystem-templates/ | 116 | 296 | keep | Live BC — except three writing-skill files below |
-| features/shopsystem-templates/writing_skill_template_structure.feature | 1 | 3 | retire | Writing-skill mechanism re-authors for smaller kind set |
+| features/shopsystem-templates/writing_skill_template_structure.feature | 1 | 3 | retire | Writing-skill mechanism re-authors for smaller artifact-type set |
 | features/shopsystem-templates/writing_skill_enforcement.feature | 1 | 5 | retire | Same |
 | features/shopsystem-templates/lead_skill_artifact_validation_gate.feature | 1 | 4 | retire | Same |
 | features/spike-lifecycle/ | 1 | 8 | keep | @origin:pdr-016; live |
-| features/system-manifest/ | 1 | 6 | authority-call | Rides the system-BOM ruling (Ask 2.3) |
+| features/system-manifest/ | 1 | 6 | authority-call | Rides the system-BOM ruling (call 3); 6 pins, not records |
 | features/test-harness/ | 1 | 5 | keep | Resolved: shopsystem-test-harness now in bc-manifest.yaml |
 | features-provisional/devcontainer/ | 17 | — | retire | Authority 2026-07-04: no current use |
 | features-provisional/docs/ | 5 | — | retire | Retires with adr-008 (shopsystem-docs dead letter) |
-| scenario-refs/origin-index.txt | 1 | — | keep (regenerate) | Stale since 2026-07-04; bin/gen-scenario-refs re-runs |
+| features-provisional/README.md | 1 | — | retire | Parking note for the two retiring subtrees; leaves with them |
+| scenario-refs/origin-index.txt | 1 | — | keep | Stale since 2026-07-04; bin/gen-scenario-refs regenerates it mechanically at close-out |
 
-## Action table — docs, findings, drafts, root, junk (lane D, 143 rows)
+Pin arithmetic: 893 total = 860 keep + 27 retire (15 pdr-031 + 12
+writing-skill) + 6 authority-call.
 
-Keep-rewrite (16): spec 01–06; README.md; current-state.md;
-artifact-lifecycle.md; consumer-wiring.md; structurizr/;
-drafts/artifact-system-restructuring.md (the initiative this plan
-executes); findings/adopter-journey-exploration-2026-06-18.md,
+## Action table — docs, findings, drafts, root (lane D, 135 md records + trees)
+
+This lane's record unit is the markdown file: 135 on disk = 6 spec
+files (01–06) + 8 root md files + 2 docs/runbooks + 99 findings + 20
+drafts. **Self-exclusion:** `drafts/migration-plan.md` — this document
+— is excluded from its own census (a register cannot disposition
+itself); its type standing is open ruling 5. Trees are counted
+separately below, never as records.
+
+Keep-rewrite (15 md): spec 01–06; README.md; current-state.md;
+artifact-lifecycle.md; consumer-wiring.md;
+drafts/artifact-system-restructuring.md (the initiative record this
+plan executes — assigned to run 4, see run order);
+findings/adopter-journey-exploration-2026-06-18.md,
 findings/external-content-license-compatibility.md,
 findings/iterative-experimentation-capability.md,
 findings/bc-workloop-single-source/02-oq1-generation-spike.md (the four
 ADR-cited findings).
 
-Keep as-is (5): CLAUDE.md, INSTALL.md, AGENTS.md, both docs/runbooks.
+Keep-rewrite (1 tree): structurizr/ (44 files; 3 source files —
+README.md, workspace.dsl, workspace.json — the rest generated cache);
+rewrites in run 3 with the framework spec.
 
-Terminal (7 trees, deleted): .fabro-e2e-scratch/, .specstory/, scratch/,
-scratch_bodies/, scratch_k6xq/, scratchpad/, scratchpad-bodies/.
+Keep as-is (5 md): CLAUDE.md, INSTALL.md, AGENTS.md, both
+docs/runbooks.
 
-Retire (115): all other findings, all other drafts, and
-work-summary.md — the full per-file list is Appendix A below; every
-row's reason is "value passed / consumed / superseded" with no ADR
-citing it as governing.
+Terminal (7 trees, deleted whole at the close-out pre-run stage, after
+the `pre-migration` snapshot tag): .fabro-e2e-scratch/, .specstory/,
+scratch/, scratch_bodies/, scratch_k6xq/, scratchpad/,
+scratchpad-bodies/ — 653 files, of which 82 are md (61 + 21 in the
+first two; the rest hold 4 or 0 files). Counted as trees; the md files
+inside them appear in no record total.
+
+Retire (115 md): all other findings (95 = 99 on disk − 4 keepers), all
+other drafts (19), and work-summary.md (1) — the full per-file list is
+Appendix A; every row's reason is "value passed / consumed /
+superseded" with no ADR citing it as governing.
+
+## Interim consistency between runs
+
+Between runs the un-rewritten mass stays exactly where it is — frozen,
+citable, unedited; nothing consumes it as if it met the new standard.
+Rewritten records live beside it on `main` (the ruled target tree).
+Consumers do not mix the two inconsistently because no consumer cuts
+over mid-flight: compiled skills, primers, and the principles
+rendering regenerate from the rewritten set only at migration-done
+(close-out), not per run. Until then the frozen tree remains the
+operative reference surface, and the rewritten records are outputs
+under review, not yet load-bearing.
+
+## What demonstrates done (PROPOSED standard — ruling 7)
+
+Per the delivery-verified principle, artifacts existing and reviews
+approving do not count as done on their own.
+
+**Per run, done means:** the chain is approved (stamps on all six
+links) AND the exemplar and every rewritten keeper pass the type's
+fitness set AND lint runs clean over the new tree.
+
+**For the migration as a whole, done means the running system
+demonstrates the rebaseline:** the compiled skills regenerate from the
+new definitions and load; the principles rendering regenerates from
+the approved set; gate and lint run green over the whole baseline;
+primers and records cite only rewritten records; and the close-out
+report accounts for every action-table row with zero unaccounted.
 
 ## Execution notes
 
-- Retire mass moves to archive branches (the memory-archive pattern:
-  parentless branch, never on `main`); terminal deletes outright.
-- The 153-hash retirement from the old census dissolves: hashes re-mint
-  mechanically wherever contracts are re-authored; only the listed
-  scenario files retire as files.
+- Retire mass moves to the archive branch per the pending archive
+  contract (ruling 4): one parentless branch
+  `archive/migration-2026-08`, verbatim files, never on `main` — the
+  memory-archive R22 pattern. Terminal trees delete at the close-out
+  pre-run stage, recoverable via the `pre-migration` snapshot tag.
+- The 153-hash retirement from the prior census dissolves: hashes
+  re-mint mechanically wherever contracts are re-authored; only the
+  listed scenario files retire as files.
 - Keeper counts by run: run 2 carries 87 decision records; run 4
-  carries 28 PM records; runs 1, 3, 5 are small.
+  carries 28 PM records plus artifact-system-restructuring; runs 1, 3,
+  5 are small (1 principle set; 15 md + 1 tree; 4 findings).
 - Edge closure verified: every keep-rewrite child has a keep-rewrite
   parent on the provenance spine.
 
-## Appendix A — lane D retire rows (115 files)
+## Sources
 
-drafts/ (18): artifact-definition-packet, definition-format-decision-brief,
-definition-format-research, grounding-record-demo-framework-spec,
-grounding-record-exp-iter1..5, grounding-researcher-prompt-hardened,
+Per the external-standards-first principle, the external forms
+considered for this plan:
+
+- **Records-management disposition schedule** (retention/disposition
+  register: record id / action / authority / evidence) — adopted: the
+  action-table shape follows it, one row per record with a bounded
+  action enum and per-row evidence.
+- **Data-migration runbook pattern** (snapshot, entry conditions,
+  staged execution, verification, rollback) — adopted: the snapshot
+  tag, the per-run entry-condition table, the done-standard, and the
+  mechanical close-out follow it.
+- **Nygard ADR form** — considered for the plan itself; rejected: this
+  is a register plus a runbook, not a single decision, and forcing it
+  into a decision record would bury the table.
+
+Recorded gap justifying the bespoke `migration-plan` form: no external
+form found combines a disposition register with per-type
+definition-chain builds whose output granularity is decided by a
+downstream review — the family-nomination column has no external
+analogue. The form's typedef is deferred per open ruling 5.
+
+## Appendix A — lane D retire rows (115 md files)
+
+drafts/ (19 = 17 md + 2 skill files): artifact-definition-packet,
+definition-format-decision-brief, definition-format-research,
+grounding-record-demo-framework-spec, grounding-record-exp-iter1..5
+(5 files), grounding-researcher-prompt-hardened,
 knowledge-tools-and-skills-analysis, memory-action-table (executed),
 probe-grounding-record-corpus-scope,
 probe-grounding-record-graceful-shutdown (+v2),
-process-definition-pilot, rebaseline-bill (superseded by this plan),
+process-definition-pilot, rebaseline-bill (superseded by this plan;
+its family map lives on as Appendix B),
 skills/test-driven-development/ (2 files).
 
-findings/ top level (16): architect-prestate-verification-discipline,
+findings/ top level (12): architect-prestate-verification-discipline,
 from-mechanism-observation-v1, from-prototype-1,
 independent-mvp-review-2026-06 (+WORKPLAN),
 install-walkthrough-2026-06-15,
@@ -367,12 +730,15 @@ scenario-retirement-rides-contract-vehicle-not-nudge,
 scenario-supersession-and-dispatch-discipline,
 templates-publishing-flow-2026-06-23,
 typedef-doctrine-carrier-feasibility-2026-08-03,
-venv-install-hygiene-and-fix-tooling-discipline,
-bc-lifecycle/01-graceful-shutdown-recommendation,
-bc-workloop-single-source/01-generation-mechanism-design,
-ddd/00-current-state-inventory, ddd/01-artifact-options-research.
+venv-install-hygiene-and-fix-tooling-discipline.
 
-findings/ddd/research/ (3): A-per-context-definition-artifacts,
+findings/bc-lifecycle/ (1): 01-graceful-shutdown-recommendation.
+
+findings/bc-workloop-single-source/ (1):
+01-generation-mechanism-design (02-oq1-generation-spike is a keeper).
+
+findings/ddd/ (5): 00-current-state-inventory,
+01-artifact-options-research; research/ A-per-context-definition-artifacts,
 B-strategic-map-artifacts, C-discovery-and-fit.
 
 findings/prioritization-2026-06-30/ (6): 00-decision-and-research,
@@ -385,9 +751,52 @@ findings/progressive-disclosure/ (10): 00-plan through
 findings/scenario-integrity/ (5): 00-design through
 04-mirror-and-cutover.
 
-findings/archive/ (56): agent-vault-credential-spike,
-dummyco-spike-iter-2..7, fabro-2pc-as-steps-spike,
-substrate-candidate-comparison-vs-fabro, dagger-spike/ (13 files),
-fabro-spike/ (19 files), fabro-spike/fabro-defs/ (14 files).
+findings/archive/ (55): top level (9) — agent-vault-credential-spike,
+dummyco-spike-iter-2..7 (6 files), fabro-2pc-as-steps-spike,
+substrate-candidate-comparison-vs-fabro; dagger-spike/ (13);
+fabro-spike/ (19 at top level); fabro-spike/fabro-defs/ (14).
 
 root (1): work-summary.md.
+
+Sum: 19 + 12 + 1 + 1 + 5 + 6 + 10 + 5 + 55 + 1 = 115.
+Findings check: 12 + 1 + 1 + 5 + 6 + 10 + 5 + 55 = 95 = 99 on disk −
+4 keepers.
+
+## Appendix B — Rewrite families (F-map)
+
+The authoritative family table, recovered from the superseded
+rebaseline-bill (2026-08-04, §1) and reconciled against this census's
+reason cells; where they differ, this census wins. **Families are
+NOMINATIONS** (open ruling 1): approving this plan approves the
+groupings as the starting hypothesis the run-2 chain review works
+from; the final record granularity — how many rewritten records each
+family actually becomes, and whether nominated folds hold — is decided
+at that review, after the decision-record typedef, guideline, and
+fitness set exist. Target counts below are therefore nominal.
+
+Rows with no family (adr-002, pdr-039 — see lane A intro) rewrite
+one-to-one unless the run-2 chain review folds them.
+
+| code | name | members (keep-rewrite ids) | n | nominated output records (target) | rationale |
+|---|---|---|---|---|---|
+| F1 | Genesis | — (dissolved) | 0 | 0 | Assigned by the 2026-08-04 census to adr-001 alone with target 0 — its own fold sent adr-001 into F2's fleet record; this census carries adr-001 directly in F2. Dissolved, not lost. |
+| F2 | BC fleet lifecycle | adr-001, adr-004, adr-005, adr-021, adr-022, adr-038, adr-039, adr-041, adr-063; pdr-004, pdr-006, pdr-028, pdr-026 | 13 | ~4: fleet registry + identity; image build/publish/provenance; launch diagnostics; model mapping | One live mechanism (bc-container fleet, five live BCs) currently described by thirteen records |
+| F3 | Messaging and dispatch | adr-006, adr-009, adr-010, adr-011, adr-012, adr-013, adr-014, adr-015, adr-016, adr-017, adr-020, adr-027; pdr-007, pdr-009, pdr-010, pdr-029 | 16 | ~5: addressing + registry; bd↔msg integration + atomicity; liveness; clarify resolution; vehicle catalog | Strongest-grounded contract (shop-msg); rider: brief-014 rides the catalog rewrite |
+| F4 | Scenario integrity | adr-019, adr-024, adr-025, adr-056, adr-060, adr-064; pdr-015 | 7 | ~4: canonicalization + hash; scenario schema + DONE gate; completion journal; retirement convention | The scenario contract mechanism; adr-056 alone bundles ~10 decision items |
+| F5 | Empirical verification | adr-018; pdr-011 | 2 | 1: the empirical-verification discipline record | One discipline, quoted verbatim in live primers |
+| F6 | Roles and PM | pdr-001, pdr-002, pdr-005, pdr-027, pdr-033 | 5 | ~2: role system; PM mode | Content gated on the lead-jozud.2 outcome; carry: the structurizr half of retiring pdr-012 |
+| F7 | Spike and experiment | adr-029, adr-030, adr-031, adr-032, adr-065; pdr-016 | 6 | ~2: spike lifecycle; findings-authority + archive rule | Doctrine-loop territory; adr-029 rewrite must not fork from the loop record |
+| F8 | Templates, pour, and skills | adr-036, adr-037; pdr-003, pdr-014, pdr-023 | 5 | ~3: pour/provenance/update; CLI-vs-prose enforcement; spec distribution | Largest pinned surface (shopsystem-templates) |
+| F9 | Credentials and agent-vault | adr-026, adr-028, adr-045; pdr-022 | 4 | ~2: broker architecture; CA/credential transport | Broker healthy; adr-049 (F12) may fold in here — a run-2 review question |
+| F10 | Bootstrap, Footing, and operations | adr-040, adr-043; pdr-020, pdr-021, pdr-024 | 5 | ~3: Footing/bootstrap; lead shell; doctor/ops | This lead session runs inside the pdr-020/021 shell |
+| F11 | System BOM | — (contingent, no keepers) | 0 | 0–1 | Reserved by the 2026-08-04 census for the system-BOM bundle, which holds zero keep-rewrite members — adr-047 and pdr-030 are authority-call rows. F11 is absent from the reason cells because no keeper carries it; it materializes (target 1) only if call 3 rules keep; the recommended retire leaves it at 0. |
+| F12 | Fabro substrate | adr-048, adr-049, adr-050, adr-051, adr-057, adr-058, adr-062 | 7 | ~3: substrate + parity boundary; loop graph + reactive watcher; pour projection + cross-runtime anchor | Realized substrate stuck `proposed`; rewrites recover true dates from git |
+| F13 | Dagger build | adr-052, adr-053, adr-054, adr-055 | 4 | ~2: build substrate + no-divergence; build-egress credentials + CA trust | Lead-side confirmation is the BC's work_done (dagger absent from lead host by design) |
+| F14 | Typed-artifact knowledge system | adr-067, adr-068, adr-069, adr-070, adr-071; pdr-035, pdr-036, pdr-037, pdr-038 | 9 | ≤5 | Phase 1's own subject records; adr-067 mandatory rewrite carrying only adopted fields; rider: brief-018 re-homes here |
+| F15 | Licensing and ingestion | adr-061, adr-066 | 2 | 1: licensing doctrine + grant register | The Peters grant and the doctrine it resolves within |
+
+Membership arithmetic: 13 + 16 + 7 + 2 + 5 + 6 + 5 + 4 + 5 + 7 + 4 +
+9 + 2 = 85 familied keepers + 2 unfamilied (adr-002, pdr-039) = 87 =
+lane A's keep-rewrite total. Nominal output: ~32–38 rewritten decision
+records including the two one-to-one rows and F11's contingent 0–1 —
+final counts at the run-2 chain review.
