@@ -57,10 +57,18 @@ the ledger's opening span. From R19 the ledger lives in this record.
   approved; every conversation in the lead shop has a defined type,
   anchor, and end.
 
+- **R22 (2026-08-22).** The memory action table is approved as amended
+  and executed: 55 retire, 11 route-to-chain, 1 to backlog. Amendments:
+  the archive lives on the branch `archive/memory-2026-08`, never on
+  `main` (context-poisoning risk); the sc06 scenario body rides in
+  backlog work item lead-df2pj, not the archive. Executed: archive
+  branch pushed (verbatim, all 67), six chain-input work items filed,
+  bulk forget completed — `bd memories` returns zero. The memory channel
+  is closed; conversation anchors own cross-session state.
+
 ## State
 
-Open. Next ready action: the authority rules on the memory action table
-(`drafts/memory-action-table.md` on `main`, rev 2, cold-read verified:
-14 rescue rows to approve individually, 53 retire rows as a block). The
-standing approval surface remains — the amended nine-principle set, the
-seed typedefs, the migration and handoff processes.
+Open. Next ready action: the standing approval surface — the amended
+nine-principle set, the seed typedefs, the migration and handoff
+processes. After that, the migration plan's regeneration against the
+current tree.
