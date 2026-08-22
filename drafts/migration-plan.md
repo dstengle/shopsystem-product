@@ -4,7 +4,7 @@ id: migration-plan
 revision: 5
 supersedes: rebaseline-bill (2026-08-04)
 owner: product-authority
-status: approved
+status: executing
 created: 2026-08-22
 updated: 2026-08-22
 ---

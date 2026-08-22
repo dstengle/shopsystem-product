@@ -201,15 +201,26 @@ the ledger's opening span. From R19 the ledger lives in this record.
 
 ## State
 
-Open — **migration executing: Seed in progress** (2026-08-22).
+Open — **migration executing: Seed complete, Phase 0 begun**
+(2026-08-22).
 
-Resume point: the Seed per the approved plan — branch `rebaseline`
-(orphan), seeded additively with `basis/` (including its tools) and a
-`.claude/` surface regenerated from the basis; exit: the branch holds
-exactly that and lint passes on it. Then Phase 0: the first
-`definition-chain-migration` run (`artifact_type: principle-set`,
-keepers `01-principles.md`), the authority at its chain-and-exemplar
-review. The shop is frozen (R27): no dispatches, mailboxes queue.
+Seed executed and verified: orphan branch `rebaseline` (pushed,
+commit `52b6e52`) holds exactly the basis corpus (minus `records/` —
+this record's single source stays on `main`), its tools, and a
+`.claude/` surface regenerated from the basis (CLAUDE.md, shop
+identity, principles rendering digest 1e00df3daee9, migration primer,
+the compiled stakeholder-presentation skill); whole-basis lint passes
+on the branch. The plan's status is executing. Seed notes: the
+principles compiler's hardcoded `@experiment/new-basis` source
+citation was corrected to the in-tree path (main and branch); the
+branch README's record links point at `main` as the record's home.
+
+Resume point: Phase 0 — the first `definition-chain-migration` run
+(`artifact_type: principle-set`, keepers `01-principles.md`, actions
+from the approved table), running on the `rebaseline` worktree at
+`/home/vscode/rebaseline`. The build-chain step drafts the six links;
+the authority reviews chain + exemplar (round cap 3, then park). The
+shop is frozen (R27): no dispatches, mailboxes queue.
 
 Rev 3 was delivered via `briefs/brief-026.md`; before ruling, the
 authority redirected the execution model (R27), and the plan was

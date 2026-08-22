@@ -5,7 +5,7 @@ status: approved
 generated: true
 generated-by: basis/tools/compile_principles.py
 derived-from: principles
-source: basis/principles.md@experiment/new-basis
+source: basis/principles.md
 source-digest: sha256:1e00df3daee9
 scope: working
 ---

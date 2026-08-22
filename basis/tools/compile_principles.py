@@ -40,7 +40,7 @@ def main() -> None:
         "generated": True,
         "generated-by": "basis/tools/compile_principles.py",
         "derived-from": front["id"],
-        "source": "basis/principles.md@experiment/new-basis",
+        "source": "basis/principles.md",
         "source-digest": f"sha256:{digest}",
         "scope": front.get("scope"),
     }
