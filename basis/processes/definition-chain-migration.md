@@ -37,8 +37,8 @@ spot-checks). lead-pm (author seat — drafts the chain, runs rewrites).
 The per-instance reviewer seats come from the chain itself once approved.
 
 **Scope note:** one run migrates one artifact type. The order of runs
-comes from the approved rebaseline bill at its review; keepers for the
-run are the bill's keep-rewrite records of that type.
+comes from the approved migration plan; keepers for the run are the
+records whose action is keep-rewrite for that type.
 
 ## Flow (compiled)
 
@@ -94,7 +94,7 @@ data:
 ## Steps
 
 The `archive-move` command in `archive-retired` is the archive contract
-tool the bill's mechanism review must approve (in-repo archive branch
+tool the migration plan's review must approve (in-repo archive branch
 plus snapshot tag). Until it exists the step blocks — which is correct:
 mass moves are mechanical or they do not happen.
 

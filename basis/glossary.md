@@ -52,7 +52,7 @@ terms uses one of these when one fits.
   every definition's frontmatter.
 - **definition chain** — the six linked definitions of good for one
   artifact type; required before instances are authored or rewritten.
-- **keeper** — a corpus record the rebaseline bill keeps; rewritten
+- **keeper** — a corpus record whose action is keep-rewrite; rewritten
   forward through its type's approved chain, never used as-is.
 - **rewrite-forward** — the default for keepers: re-author to the
   approved standard; repair-in-place only for records already at the bar.
@@ -81,7 +81,11 @@ terms uses one of these when one fits.
   round cap: set aside with a filed finding.
 - **round cap** — the declared maximum review rounds before a loop's
   failsafe exit fires.
-- **rebaseline bill** — the approved per-record table (keep-rewrite,
-  retire, or terminal for each corpus record) that drives the rebaseline.
+- **action** — the approved choice for one record: keep-rewrite, retire,
+  or terminal, with its target.
+- **action table** — the table of records and their actions; approved row
+  by row or in blocks at a review. Drives any bulk record change.
+- **migration plan** — the rebaseline's action table plus the order of
+  the per-type migration runs. Replaces "rebaseline bill".
 - **experiment index** — the new-basis experiment's README: the
   walkthrough, the numbered rulings, and the review state.

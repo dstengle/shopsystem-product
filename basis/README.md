@@ -320,14 +320,20 @@ any of them and you land where the tour just took you.
   which sources, unapproved sources never load. The handoff process is
   rebound to conversation close — a transcript ending mid-conversation is
   a checkpoint, not a close. The journal-as-branch mechanism lands with
-  the archive machinery at the bill review.
+  the archive machinery at the migration-plan review.
 - **R16 (2026-08-21): "approve" replaces "ratify"; "disposition" is
   banned as overly complicated.** Swept corpus-wide: prose, the
   front-matter field (`approved:` dates), the status value
   (`draft | approved | superseded`), the migration step (`approve-chain`),
   the chain status enum, and every rendering regenerated. The glossary
-  entries that used "disposition" were reworked to plain sentences; the
-  replacement noun for the per-record table awaits the authority's pick.
+  entries that used "disposition" were reworked to plain sentences.
+- **R17 (2026-08-22): action, action table, migration plan.** Each record
+  gets an **action** (keep-rewrite, retire, or terminal, with target);
+  the **action table** is the reusable artifact of those rows, approved
+  row by row or in blocks; the rebaseline's instance — the action table
+  plus the per-type run order — is the **migration plan**, replacing
+  "rebaseline bill". The stale 2026-08-04 draft is source material for
+  the plan's regeneration against the current tree, never used as-is.
 - **R13 (2026-08-20): the principles load into every prompt, not only
   into documents.** A working-scope principle set is compiled into the
   session prompt chain: `tools/compile_principles.py` renders the
