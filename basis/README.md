@@ -443,15 +443,14 @@ is a BC.
 - [`types/correction.md`](types/correction.md),
   [`types/validation-report.md`](types/validation-report.md) — the
   handoff process's structures.
-- [`processes/discovery-conversation.md`](processes/discovery-conversation.md)
-  — the interlocutor dialogue; closes onto a session record by invoking
-  session-handoff as a sub-process; nothing operationalized before the
-  authority converges.
-- [`processes/work-conversation.md`](processes/work-conversation.md) —
-  operational discussion scoped to one work item; every exchange lands
-  on the item.
 
-**Approved 2026-08-22 (the conversation model, R20):**
+**Approved 2026-08-22 (the conversation model, R20 + R21):** all three
+conversation types —
+[`processes/discovery-conversation.md`](processes/discovery-conversation.md)
+(interlocutor dialogue; closes onto a session record via the
+session-handoff sub-process),
+[`processes/work-conversation.md`](processes/work-conversation.md)
+(scoped to one work item; exchanges land on the item),
 [`artifacts/review-record.md`](artifacts/review-record.md) (anchor type:
 material, append-only ruling ledger, State for hold/resume),
 [`processes/review-conversation.md`](processes/review-conversation.md)

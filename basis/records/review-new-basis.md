@@ -49,10 +49,17 @@ the ledger's opening span. From R19 the ledger lives in this record.
   one work item; every exchange lands as a comment on it; closing the
   conversation does not close the item). Both draft, compiled, linted.
 
+- **R21 (2026-08-22).** The discovery and work conversation types are
+  approved:
+  [`discovery-conversation`](../processes/discovery-conversation.md) and
+  [`work-conversation`](../processes/work-conversation.md) carry
+  `approved: 2026-08-22`. All three conversation types now stand
+  approved; every conversation in the lead shop has a defined type,
+  anchor, and end.
+
 ## State
 
-Open. Next ready action: the authority reviews the two draft
-conversation types (discovery, work) alongside the standing approval
-surface — the amended nine-principle set, the seed typedefs, the
-migration and handoff processes — and the frozen-memories ruling remains
-outstanding.
+Open. Next ready action: the authority rules on the frozen memories
+(option C is on the table), and the standing approval surface remains —
+the amended nine-principle set, the seed typedefs, the migration and
+handoff processes.
