@@ -5,7 +5,7 @@ target-type: principle-set
 owner: product-authority
 status: approved
 approved: 2026-08-23
-version: 3
+version: 4
 created: 2026-08-22
 updated: 2026-08-23
 ---
@@ -56,14 +56,14 @@ statements appear only in the opening's keyword-definition sentence
 derived review checklist.
 
 **3. Ground the rationale in a generic failure, never product history.**
-Before: "Ad-hoc pre-state verification was named a growth-mode problem
-by ruling R27 (2026-08-22, the migration review record)."
+Before: "Decision 12 (2026-08-14, the incident review) named this
+exact failure."
 After: "A consumer that copies a schema instead of referencing it
 drifts from the real schema within days."
 *Test:* read each rationale. *Criterion:* it names the failure the rule
 prevents with a generic example any reader can recognize without knowing
 our history; it references no operational history of the product —
-artifacts, issues, incidents, rulings, counts; a well-known external
+artifacts, issues, incidents, decision records, counts; a well-known external
 reference (a published work, a standard, a named law) may support it.
 *Decision:* yes/no per rationale.
 *Derived check:* judged — fitness scenario 3.
@@ -132,6 +132,7 @@ as content.
 | Version | Date | Kind | Entry |
 |---|---|---|---|
 | 1 | 2026-08-22 | update | Authored as part of the principle-set chain. |
-| 1 | 2026-08-23 | state | draft → approved (R33). |
-| 2 | 2026-08-23 | update | Rule 3 rewritten: generic failure, never product history (R34). |
-| 3 | 2026-08-23 | update | Rule 7 added: one obligation or implication per bullet; highlights updated (R35). |
+| 1 | 2026-08-23 | state | draft → approved by the owner. |
+| 2 | 2026-08-23 | update | Rule 3 rewritten: generic failure, never product history. |
+| 3 | 2026-08-23 | update | Rule 7 added: one obligation or implication per bullet; highlights updated. |
+| 4 | 2026-08-23 | update | Owner direction: decision-ledger references removed — changes stand on their own; history entries and text no longer cite numbered decisions. |

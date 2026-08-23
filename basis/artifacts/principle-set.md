@@ -5,7 +5,7 @@ defines: principle-set
 owner: product-authority
 status: approved
 approved: 2026-08-22
-version: 4
+version: 5
 created: 2026-08-19
 updated: 2026-08-23
 ancestry: [definition, principle-set]
@@ -20,7 +20,7 @@ ancestry: [definition, principle-set]
   system traces to it.
 - **Produced by:** the principle-set authoring process
   ([`../processes/principle-set-authoring.md`](../processes/principle-set-authoring.md));
-  amended only by the owner's ruling.
+  amended only by the owner's decision.
   **Consumed by:** every definition author and reviewer; the fitness
   screen's judge.
 
@@ -40,7 +40,7 @@ design work happens), `owner`, `status`, `created`, `updated`.
   the rule as a second authority.
 - A rationale MUST use generic examples and MUST NOT reference the
   product's operational history — other artifacts, issues, incidents,
-  rulings, counts; it MAY cite well-known external references as
+  decision records, counts; it MAY cite well-known external references as
   support.
 
 ## Required sections
@@ -95,7 +95,8 @@ a screen row.
 | Version | Date | Kind | Entry |
 |---|---|---|---|
 | 1 | 2026-08-19 | update | Authored (seed layer). |
-| 1 | 2026-08-22 | state | draft → approved (R23). |
-| 2 | 2026-08-23 | update | Produced-by names the principle-set-authoring process (R33 ask 4). |
-| 3 | 2026-08-23 | update | Rationale rule added: generic examples, never the product's operational history (R34). |
-| 4 | 2026-08-23 | update | Form rules added: one obligation or implication per bullet; checklist row added (R35). |
+| 1 | 2026-08-22 | state | draft → approved by the owner. |
+| 2 | 2026-08-23 | update | Produced-by names the principle-set-authoring process by owner direction. |
+| 3 | 2026-08-23 | update | Rationale rule added: generic examples, never the product's operational history. |
+| 4 | 2026-08-23 | update | Form rules added: one obligation or implication per bullet; checklist row added. |
+| 5 | 2026-08-23 | update | Owner direction: decision-ledger references removed — changes stand on their own; history entries and text no longer cite numbered decisions. |

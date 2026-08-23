@@ -5,7 +5,7 @@ defines: definition
 owner: product-authority
 status: approved
 approved: 2026-08-22
-version: 2
+version: 3
 created: 2026-08-19
 updated: 2026-08-19
 ancestry: [definition]
@@ -74,5 +74,6 @@ test, criterion, decision); the `define-good-up-front` principle.
 | Version | Date | Kind | Entry |
 |---|---|---|---|
 | 1 | 2026-08-19 | update | Authored (seed layer). |
-| 1 | 2026-08-22 | state | draft → approved (R23). |
+| 1 | 2026-08-22 | state | draft → approved by the owner. |
 | 2 | 2026-08-23 | update | Version and Document History requirements added by authority direction; inline amendment notes and review-log frontmatter (verified-by) ruled out. |
+| 3 | 2026-08-23 | update | Owner direction: decision-ledger references removed — changes stand on their own; history entries and text no longer cite numbered decisions. |

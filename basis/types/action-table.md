@@ -5,7 +5,7 @@ defines: action-table
 owner: product-authority
 status: approved
 approved: 2026-08-22
-version: 1
+version: 2
 created: 2026-08-22
 updated: 2026-08-22
 ---
@@ -27,7 +27,7 @@ and by every step of
 [`../processes/corpus-close-out.md`](../processes/corpus-close-out.md).
 
 `family` values are nominations, not commitments: the chain review
-decides final record granularity. A row awaiting a ruling carries the
+decides final record granularity. A row awaiting a decision carries the
 row marker `authority-call` in the plan; such a row has no `action` yet
 and does not enter an instance of this type until ruled.
 
@@ -57,5 +57,6 @@ authority-approved per-keeper rewrite instructions applied at rewrite;
 
 | Version | Date | Kind | Entry |
 |---|---|---|---|
-| 1 | 2026-08-22 | update | Authored (seed layer); earlier history, if any, in the review record ledger on `main`. |
+| 1 | 2026-08-22 | update | Authored (seed layer); earlier history, if any, in the repository history. |
 | 1 | 2026-08-22 | state | draft → approved. |
+| 2 | 2026-08-23 | update | Owner direction: decision-ledger references removed — changes stand on their own; history entries and text no longer cite numbered decisions. |

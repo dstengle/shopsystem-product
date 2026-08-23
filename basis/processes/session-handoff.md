@@ -4,7 +4,7 @@ id: session-handoff-process
 owner: product-authority
 status: approved
 approved: 2026-08-22
-version: 1
+version: 2
 created: 2026-08-21
 updated: 2026-08-21
 produces: [session-record]
@@ -39,7 +39,7 @@ start drain reads the anchor before accepting it.
 
 **Scope note:** one run closes one discovery conversation, whose anchor
 is a session record. Review and work conversations close through their
-own anchors — rulings land in the review record, work discussion lands
+own anchors — decisions land as changes in the artifacts they affect, work discussion lands
 on the work item — under the same discipline: the anchor is the only
 carrier. A transcript that ends mid-conversation is not a close; the
 conversation stays open until its anchor says otherwise.
@@ -186,5 +186,6 @@ steps:
 
 | Version | Date | Kind | Entry |
 |---|---|---|---|
-| 1 | 2026-08-21 | update | Authored (seed layer); earlier history, if any, in the review record ledger on `main`. |
+| 1 | 2026-08-21 | update | Authored (seed layer); earlier history, if any, in the repository history. |
 | 1 | 2026-08-22 | state | draft → approved. |
+| 2 | 2026-08-23 | update | Owner direction: decision-ledger references removed — changes stand on their own; history entries and text no longer cite numbered decisions. |

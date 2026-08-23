@@ -4,7 +4,7 @@ id: corpus-close-out-process
 owner: product-authority
 status: approved
 approved: 2026-08-22
-version: 1
+version: 2
 created: 2026-08-22
 updated: 2026-08-22
 produces: []
@@ -14,10 +14,7 @@ external-refs: []
 
 # Process: Corpus close-out
 
-> Authored 2026-08-22 (R24 remediation: F3 — the pre-decided
-> retire/terminal mass had no process); amended 2026-08-22 (R27: all
-> stages re-homed to cut-over at the end of the migration plan's
-> Phase 3; branch-becomes-main promotion added as the final step);
+> Authored 2026-08-22; amended 2026-08-22;
 > pending authority approval.
 
 **Purpose:** Execute the migration plan's pre-decided retire and
@@ -26,7 +23,7 @@ the terminal trees, move each run's retired rows to the archive,
 regenerate the scenario refs, verify every actioned row landed where
 its action says, and finally promote the migration branch to `main`.
 
-**Guiding statement:** The rulings were made at the review; this process
+**Guiding statement:** The decisions were made at the review; this process
 only carries them out. Mass moves are mechanical or they do not happen —
 no judgment, no review loop, and no silent completion: a row not where
 it should be fails the run loudly, by id.
@@ -63,7 +60,7 @@ this definition and rules on the archive contract below; takes no step
 in a run).
 
 **Scope note:** one run executes one close-out stage of the approved
-migration plan. Under the ruled execution model (R27) ALL stages
+migration plan. Under the frozen-shop execution model ALL stages
 execute consecutively at cut-over — the end of the migration plan's
 Phase 3 — never at execution start or between migration runs: first
 the `pre-run` stage (the snapshot tag and the terminal deletions; the
@@ -79,12 +76,12 @@ branch's. Actions come from the approved action table; a row carrying
 the `authority-call` row marker has no action yet and is out of scope
 until ruled.
 
-## Archive contract (recommended — pending authority ruling)
+## Archive contract (recommended — pending the authority's decision)
 
 This is the single statement of the archive contract; every other
 document references it instead of restating it (see the Steps intro of
 [`definition-chain-migration.md`](definition-chain-migration.md)). The
-contract below is **recommended, pending the authority's ruling**:
+contract below is **recommended, pending the authority's decision**:
 
 - One parentless orphan branch **`archive/migration-2026-08`** — the
   same pattern as the memory archive `archive/memory-2026-08` — never
@@ -316,5 +313,6 @@ steps:
 
 | Version | Date | Kind | Entry |
 |---|---|---|---|
-| 1 | 2026-08-22 | update | Authored (seed layer); earlier history, if any, in the review record ledger on `main`. |
+| 1 | 2026-08-22 | update | Authored (seed layer); earlier history, if any, in the repository history. |
 | 1 | 2026-08-22 | state | draft → approved. |
+| 2 | 2026-08-23 | update | Owner direction: decision-ledger references removed — changes stand on their own; history entries and text no longer cite numbered decisions. |

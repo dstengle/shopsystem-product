@@ -4,7 +4,7 @@ id: definition-chain-migration-process
 owner: product-authority
 status: approved
 approved: 2026-08-22
-version: 1
+version: 2
 created: 2026-08-20
 updated: 2026-08-22
 produces: [definition]
@@ -14,9 +14,8 @@ external-refs: []
 
 # Process: Definition-chain migration
 
-> Amended 2026-08-22 (R24 remediation: flow fix F2, actions channel F4,
-> archive-contract reference F1/F16; R27: demotions queue to cut-over).
-> Re-approved by the authority 2026-08-22 (R30, brief-028 ask 2).
+> Amended 2026-08-22.
+> Re-approved by the authority 2026-08-22.
 
 **Purpose:** Convert one artifact type from the frozen corpus into the new
 baseline: build its definition chain, prove the chain on a real keeper,
@@ -113,8 +112,8 @@ data:
 
 The `archive-move` command in `queue-demoted` follows the archive
 contract stated once in [`corpus-close-out.md`](corpus-close-out.md)
-(§Archive contract — recommended, pending authority ruling); it is not
-restated here. Under the R27 cut-over model no archive move happens
+(§Archive contract — recommended, pending the authority's decision); it is not
+restated here. Under the cut-over execution model no archive move happens
 per run: a demoted keeper's file lives on frozen `main`, so the run
 only QUEUES the demotion (`--queue` flips the keeper's action-table
 row to retire, recording the failing check); the actual move runs once,
@@ -138,7 +137,7 @@ steps:
       Draft every link of the definition chain for this artifact type:
       typedef, quality guideline, fitness set, authoring process, roles,
       and the compiled skill. Source the content from the authority's
-      recorded rulings and verbatim anchors, an autopsy of the best and
+      recorded decisions and verbatim anchors, an autopsy of the best and
       worst existing instances among the keepers, and established
       external standards; name every adopted form in each document's
       Sources section. A document in an undefined format is source
@@ -188,7 +187,7 @@ steps:
     prompt: |
       One review, one type: the chain and the exemplar rewritten through
       it, side by side. Rule on both — the chain's definitions and what
-      they actually produced. Findings land as rulings; verdict "clean"
+      they actually produced. Findings land as decisions; verdict "clean"
       or "tradeoffs-accepted" approves, "findings" sends the chain back.
     next: route-review
 
@@ -262,7 +261,7 @@ steps:
       per the attention architecture. Each keeper's per-keeper
       directives and family nomination come only from its `actions` row
       — the governed channel — never from retired documents; family
-      codes are nominations, and the chain review's ruling on record
+      codes are nominations, and the chain review's decision on record
       granularity governs, not a pre-committed collapse. A keeper that
       cannot reach the bar
       after two attempts is demoted: file it for retirement with a note
@@ -301,5 +300,6 @@ steps:
 
 | Version | Date | Kind | Entry |
 |---|---|---|---|
-| 1 | 2026-08-20 | update | Authored (seed layer); earlier history, if any, in the review record ledger on `main`. |
+| 1 | 2026-08-20 | update | Authored (seed layer); earlier history, if any, in the repository history. |
 | 1 | 2026-08-22 | state | draft → approved. |
+| 2 | 2026-08-23 | update | Owner direction: decision-ledger references removed — changes stand on their own; history entries and text no longer cite numbered decisions. |

@@ -5,7 +5,7 @@ defines: glossary
 owner: product-authority
 status: approved
 approved: 2026-08-22
-version: 1
+version: 2
 created: 2026-08-19
 updated: 2026-08-19
 ancestry: [definition, glossary]
@@ -18,7 +18,7 @@ ancestry: [definition, glossary]
 - **Type:** `glossary` — the hand-curated half of the defined-term list;
   the other half is every schema element name. Together they are the
   restricted language the `use-defined-terms` principle mandates.
-- **Produced by:** seed drafting; grown one ruling or one definition at a
+- **Produced by:** seed drafting; grown one decision or one definition at a
   time. **Consumed by:** every writer before coining a term; reviewers
   and the undefined-term/near-synonym checks.
 
@@ -49,7 +49,7 @@ restricted language); the `use-defined-terms` principle.
 ## Derived review checklist
 
 - Combination rule stated. *(§Required sections 1)*
-- Definitions ≤2 lines; banned near-synonyms named where rulings created
+- Definitions ≤2 lines; banned near-synonyms named where decisions created
   them. *(§Required sections 2)*
 - Sampled terms from approved documents resolve — judged spot-check plus
   mechanical lint. *(Commitment)*
@@ -58,5 +58,6 @@ restricted language); the `use-defined-terms` principle.
 
 | Version | Date | Kind | Entry |
 |---|---|---|---|
-| 1 | 2026-08-19 | update | Authored (seed layer); earlier history, if any, in the review record ledger on `main`. |
+| 1 | 2026-08-19 | update | Authored (seed layer); earlier history, if any, in the repository history. |
 | 1 | 2026-08-22 | state | draft → approved. |
+| 2 | 2026-08-23 | update | Owner direction: decision-ledger references removed — changes stand on their own; history entries and text no longer cite numbered decisions. |

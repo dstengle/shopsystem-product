@@ -4,7 +4,7 @@ id: principle-set-fitness
 owner: product-authority
 status: approved
 approved: 2026-08-23
-version: 3
+version: 4
 created: 2026-08-22
 updated: 2026-08-23
 target-type: principle-set
@@ -51,7 +51,7 @@ Scenario 3: the rationale shows a generic failure
   When its evidence is checked
   Then it names the failure the rule prevents with a generic example,
   references no operational history of the product — artifacts, issues,
-  incidents, rulings, or counts — and cites, at most, well-known
+  incidents, decision records, or counts — and cites, at most, well-known
   external references as support
 
 Scenario 4: implications are a derivable price tag
@@ -81,7 +81,7 @@ Scenario 6: each principle rejects something
 | 1 (And) — four parts only | "For each principle, list any content outside name, statement, rationale, implications. Empty list = pass." |
 | 1 (And) — slug citations | "List every cross-reference to a principle made by number or position instead of slug. Empty list = pass." |
 | 2 — statement decides alone, clause by clause | "For each statement: could you accept or reject a concrete piece of work from the statement alone? Is each obligation its own bullet where more than one is carried? Name any term the decision turns on that is undefined in the statement, the opening, or the glossary. A fused multi-obligation sentence or an undefined decision term = fail, cite it." |
-| 3 — rationale shows a generic failure | "For each rationale, quote the generic failure example. Any reference to the product's operational history — an artifact, issue, incident, ruling, or count — = fail, cite it. Any external reference cited must be a well-known published source, standard, or named law." |
+| 3 — rationale shows a generic failure | "For each rationale, quote the generic failure example. Any reference to the product's operational history — an artifact, issue, incident, decision record, or count — = fail, cite it. Any external reference cited must be a well-known published source, standard, or named law." |
 | 4 — implications derivable, actor-named | "For each implication, name the actor and the statement clause it follows from. Any implication with no actor or no clause, or two implications fused in one bullet = fail, cite it." |
 | 5 — screen covers the set | "Is there a column per principle and a row per test? Is any claimed pass one you cannot reproduce? Cite mismatches; none = pass." |
 | 6 — rejects something | "For each principle, state the work it rejects and the opposite rule. If it rejects nothing we would otherwise do, or no honest shop could adopt the opposite, = fail." |
@@ -100,6 +100,7 @@ principle-set typedef.
 | Version | Date | Kind | Entry |
 |---|---|---|---|
 | 1 | 2026-08-22 | update | Authored as part of the principle-set chain. |
-| 1 | 2026-08-23 | state | draft → approved (R33). |
-| 2 | 2026-08-23 | update | Scenario 3 rewritten: generic failure, no product history (R34). |
-| 3 | 2026-08-23 | update | Scenarios 2 and 4 tightened: one obligation or implication per bullet; decision terms defined in statement, opening, or glossary (R35). |
+| 1 | 2026-08-23 | state | draft → approved by the owner. |
+| 2 | 2026-08-23 | update | Scenario 3 rewritten: generic failure, no product history. |
+| 3 | 2026-08-23 | update | Scenarios 2 and 4 tightened: one obligation or implication per bullet; decision terms defined in statement, opening, or glossary. |
+| 4 | 2026-08-23 | update | Owner direction: decision-ledger references removed — changes stand on their own; history entries and text no longer cite numbered decisions. |

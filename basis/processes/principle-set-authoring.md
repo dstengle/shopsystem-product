@@ -4,7 +4,7 @@ id: principle-set-authoring-process
 owner: product-authority
 status: approved
 approved: 2026-08-23
-version: 1
+version: 2
 created: 2026-08-22
 updated: 2026-08-22
 produces: [principle-set]
@@ -36,7 +36,7 @@ never on taste.
   scenarios 1 and 5.
 - O2. An independent fresh-context judge has scored every round against
   the fitness set — witnessed by `screen-read` and the `round_log`.
-- O3. The set enters force only by the owner's ruling — witnessed by
+- O3. The set enters force only by the owner's approval — witnessed by
   `authority-approve` and the `route-approval` branches, which reach
   `end` on no other path.
 - O4. A draft that cannot pass within the round cap parks with a filed
@@ -71,8 +71,8 @@ flowchart TD
   route_verdict{"Route on the verdict<br/>in — review: review, round: integer"}
   revise(["Revise — agent: lead-pm<br/>in — set: principle-set, review: review<br/>out — set: principle-set"])
   advance_round["Advance the round counter — runtime<br/>in — round: integer<br/>sets — round: integer"]
-  authority_approve[["Owner rules on the screened draft — human: product-authority<br/>in — set: principle-set, round_log: review[]<br/>out — set: principle-set, review: review"]]
-  route_approval{"Route on the owner's ruling<br/>in — review: review"}
+  authority_approve[["Owner decides on the screened draft — human: product-authority<br/>in — set: principle-set, round_log: review[]<br/>out — set: principle-set, review: review"]]
+  route_approval{"Route on the owner's decision<br/>in — review: review"}
   park["Park the draft with a finding — runtime<br/>in — scope: string, round: integer, review: review"]
   __end(("end<br/>result — set: principle-set"))
   __start(("start")) --> draft
@@ -99,7 +99,7 @@ an explicit source — `from:` links the defining file, or names the owning
 package as `pkg:<package>/<type>` (fetched through that package's
 contract tool). Conditions are CEL (Common Expression Language)
 expressions over these names. `sources` lists the paths of the run's
-source material — the authority's rulings, autopsies of prior instances,
+source material — the owner's stated directions, autopsies of prior instances,
 external standards; it is the step's declared context load list per
 `least-context`.
 
@@ -129,7 +129,7 @@ steps:
       - set.scope == scope
     prompt: |
       Author the set, or amend the existing one, from the listed sources
-      only — the owner's rulings, autopsies of prior instances, and named
+      only — the owner's stated directions, autopsies of prior instances, and named
       external standards. Content in an undefined format is source
       material for a rewrite, never pasted. Open by defining what a good
       principle looks like; then write each principle in the four parts —
@@ -200,17 +200,17 @@ steps:
     next: screen-read
 
   - id: authority-approve
-    name: Owner rules on the screened draft
+    name: Owner decides on the screened draft
     run-by: {role: product-authority, execution: human}
     inputs: [set, round_log]
     outputs: [set, review]
     prompt: |
       The screened draft and its round log are in front of you. Your
-      ruling is the review's verdict. "clean" or "tradeoffs-accepted"
+      decision is the review's verdict. "clean" or "tradeoffs-accepted"
       approves: the set is stamped — status approved, the approval date,
       your seat as owner — and from that point it is the standard
       activities are checked against, amendable only through this
-      process by your ruling. "findings" returns the draft to the author
+      process by your decision. "findings" returns the draft to the author
       with your findings; the round counter keeps running, so a draft
       that cannot satisfy you within the cap parks instead of looping.
       Silence holds the run after the declared window; the anchor
@@ -218,7 +218,7 @@ steps:
     next: route-approval
 
   - id: route-approval
-    name: Route on the owner's ruling
+    name: Route on the owner's decision
     run-by: {execution: runtime}
     inputs: [review]
     branches:
@@ -252,8 +252,8 @@ steps:
 
 The draft → fresh cold read → dual-exit route loop is the shop's
 stakeholder-presentation shape, reapplied; the owner's terminal gate
-composes the review-conversation model (the authority's ruling is the
-only close). Deming grounds the seat separation: the author and the
+composes the review-conversation model (the authority's close is the
+only end). Deming grounds the seat separation: the author and the
 judge read one definition, and the check sits with a different role.
 Format provenance (ISO 24774 header, GitHub-Actions-shaped steps, CEL,
 the dual-exit rule) lives in the process-definition typedef, not here.
@@ -263,4 +263,5 @@ the dual-exit rule) lives in the process-definition typedef, not here.
 | Version | Date | Kind | Entry |
 |---|---|---|---|
 | 1 | 2026-08-22 | update | Authored as part of the principle-set chain. |
-| 1 | 2026-08-23 | state | draft → approved (R33). |
+| 1 | 2026-08-23 | state | draft → approved by the owner. |
+| 2 | 2026-08-23 | update | Owner direction: decision-ledger references removed — changes stand on their own; history entries and text no longer cite numbered decisions. |

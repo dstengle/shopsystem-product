@@ -52,8 +52,11 @@ REQUIRED_HEADINGS = {
     # glossary typedef §Required sections 1-2
     "glossary": ["How the list combines", "Terms"],
     # review-record typedef §Required sections 1-3
-    "review-record": ["Material", "Rulings", "State"],
+    "review-record": ["Material", "Outcomes", "State"],
 }
+# review-record typedef §Commitment: no live document cites a numbered
+# decision (Rn) — decisions live as changes in the artifacts they affect.
+DECISION_REF = re.compile(r"\bR\d{1,3}\b")
 BANNED = ["ratif", "disposition", "rebaseline bill"]
 PKG_RE = re.compile(r"^pkg:[a-z0-9-]+/[a-z0-9_-]+$")
 
@@ -150,6 +153,11 @@ def lint():
         for req in REQUIRED_HEADINGS.get(fm.get("type"), []):
             if not any(h.strip().startswith(req) for h in headings):
                 errors.append(f"{rel}: missing required heading `{req}` ({fm.get('type')} typedef §Required sections)")
+
+        # 8. no numbered-decision references (review-record §Commitment)
+        for i, line in enumerate(text.splitlines(), 1):
+            if DECISION_REF.search(line):
+                errors.append(f"{rel}:{i}: numbered-decision reference (decisions live as changes in the artifacts they affect)")
 
         # 6. banned vocabulary
         if rel.name != "README.md":

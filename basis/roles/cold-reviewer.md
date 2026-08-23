@@ -8,7 +8,7 @@ id: cold-reviewer
 owner: product-authority
 status: approved
 approved: 2026-08-19
-version: 2
+version: 3
 created: 2026-08-10
 updated: 2026-08-11
 ---
@@ -43,4 +43,5 @@ fitness set of the artifact type under review (currently
 |---|---|---|---|
 | 1 | 2026-08-10 | update | Authored for stakeholder presentations. |
 | 1 | 2026-08-19 | state | draft → approved. |
-| 2 | 2026-08-23 | update | Competencies generalized to the fitness set of the artifact type under review (R33 ask 4). |
+| 2 | 2026-08-23 | update | Competencies generalized to the fitness set of the artifact type under review by owner direction. |
+| 3 | 2026-08-23 | update | Owner direction: decision-ledger references removed — changes stand on their own; history entries and text no longer cite numbered decisions. |

@@ -6,36 +6,39 @@ migration plan. Nothing exists here except through an explicit import
 step; nothing from the old corpus is read here except through the
 curated feed.
 
-## Governing instruments (all on frozen `main`, read via `git show`)
+## Governing instruments
 
-- The approved migration plan: `main:drafts/migration-plan.md`
-  (rev 5, status executing) — phases, entry conditions, action table.
-- The review record: `main:basis/records/review-new-basis.md` —
-  the authority's ruling ledger (R1–R30) and the migration's State.
-  Its single source is `main`; this branch carries no copy.
+- `basis/` on this branch — the definition corpus. Every activity here
+  operates through these definitions; the index is
+  [`basis/README.md`](../../basis/README.md).
+- The migration plan: `main:drafts/migration-plan.md` (read via
+  `git show`; reference only) — phases, entry conditions, action table.
 - The frozen corpus: `main` — the BC shops' contract of record until
-  cut-over. Never copy from it outside an import step or the curated
-  feed.
+  cut-over, and the pre-migration reference. Never copy from it outside
+  an import step or the curated feed. The branch pulls from `main`;
+  `main` never publishes to the branch.
 
-## What lives here
+## Current state
 
-- `basis/` — the approved definition corpus: principles, typedefs,
-  processes, glossary, fitness sets, guidelines, roles, compiled
-  skills, tools. Every activity on this branch operates through these
-  definitions.
-- `.claude/` — this context surface, regenerated from the basis.
+Seed and Phase 0 are complete: both principle sets stand approved.
+Phase 1 is open, meta-chains first — complete the role-definition and
+process-definition chains (a quality guideline and fitness set for
+each; only their typedefs exist) with the existing basis processes as
+exemplars, before authoring the PM/PO/Architect definitions.
 
 ## Operating rules
 
-- The shop is frozen (ruling R27): no dispatches, no mailbox work;
-  BC responses queue on `main`'s infrastructure until post-migration.
-- Work proceeds by phase per the plan: Phase 0 (principle-set chain,
-  a `definition-chain-migration` run) → Phase 1 (meta-chains first —
-  ruling R29 — then PM/PO/Architect definitions) → Phase 2
-  (progressive disclosure as first feature) → Phase 3 (corpus runs,
-  entered only after the authority's review).
-- The product authority reviews at every chain-and-exemplar step and
+- The shop is frozen: no dispatches, no mailbox work; BC responses
+  queue on `main`'s infrastructure until post-migration.
+- Work proceeds by phase: Phase 0 (architecture principles) → Phase 1
+  (meta-chains, then PM/PO/Architect definitions) → Phase 2
+  (progressive disclosure as the first feature) → Phase 3 (demand-pull
+  corpus migration, one discovery interview per feature).
+- The product authority decides at every chain-and-exemplar step and
   phase exit; deliveries to the authority longer than ~300 words go
   through the `stakeholder-presentation` process — no exceptions.
+- Decisions are applied as changes to the affected definitions and
+  recorded in their Document History; no decision ledger exists, and no
+  document cites one as authority.
 - Session close: work is not done until `git push` succeeds on this
-  branch, and any ruling is recorded in the review record on `main`.
+  branch.

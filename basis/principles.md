@@ -5,7 +5,7 @@ scope: working
 owner: product-authority
 status: approved
 approved: 2026-08-22
-version: 5
+version: 6
 created: 2026-08-10
 updated: 2026-08-23
 ---
@@ -287,13 +287,14 @@ associate with specific work. (Least privilege, applied to context.)
 | Version | Date | Kind | Entry |
 |---|---|---|---|
 | 1 | 2026-08-10 | update | Authored as the working-scope seed set; nine principles. |
-| 1 | 2026-08-22 | state | draft → approved (R23). |
-| 2 | 2026-08-23 | update | Rationale examples referencing the pre-migration corpus removed; two implication actors generalized; statements unchanged (R32). |
-| 2 | 2026-08-23 | review | Reference-resolvability cold read, two rounds; round 2 clean (R32). |
-| 3 | 2026-08-23 | update | Re-formed to bullet form — one obligation or implication per bullet; wording preserved modulo splits, plus three screen-forced repairs: feedback-loops measurement bullet split in two; governed-context maintainer implication split in three; least-context session-load implication gained its actor (R35; the three repairs await the owner's ruling). |
+| 1 | 2026-08-22 | state | draft → approved by the owner. |
+| 2 | 2026-08-23 | update | Rationale examples referencing the pre-migration corpus removed; two implication actors generalized; statements unchanged. |
+| 2 | 2026-08-23 | review | Reference-resolvability cold read, two rounds; round 2 clean. |
+| 3 | 2026-08-23 | update | Re-formed to bullet form — one obligation or implication per bullet; wording preserved modulo splits, plus three screen-forced repairs: feedback-loops measurement bullet split in two; governed-context maintainer implication split in three; least-context session-load implication gained its actor. |
 | 3 | 2026-08-23 | review | Verification cold reads: round 1 findings (three form fusions, repaired); round 2 findings — pre-existing defects surfaced by the tightened rubric (use-defined-terms criterion misfiled in an implication; article typo in governed-context; unintroduced cross-document references), repairs awaiting the owner's ruling. |
-| 4 | 2026-08-23 | update | Owner-ruled repairs (R37): the importance criterion moved from an implication into the use-defined-terms statement; the article typo in governed-context fixed; the opening gains the glossary and sibling-documents pointer. |
-| 4 | 2026-08-23 | state | The three v3 screen-forced repairs stand with this ruling (R37). |
+| 4 | 2026-08-23 | update | Owner-ruled repairs: the importance criterion moved from an implication into the use-defined-terms statement; the article typo in governed-context fixed; the opening gains the glossary and sibling-documents pointer. |
+| 4 | 2026-08-23 | state | The three v3 screen-forced repairs stand accepted by the owner. |
 | 4 | 2026-08-23 | review | Verification cold read round 3: findings — external-standards-first rationale lacked its generic failure example (scenario 3 fail); two self-containment stumbles. |
-| 5 | 2026-08-23 | update | Round-3 repairs under the standing R34 rule: external-standards-first rationale gains its generic failure example; the feedback-loops update bullet made self-contained; "already" dropped from the reconcile implication. |
+| 5 | 2026-08-23 | update | Round-3 repairs under the standing generic-rationale rule: external-standards-first rationale gains its generic failure example; the feedback-loops update bullet made self-contained; "already" dropped from the reconcile implication. |
 | 5 | 2026-08-23 | review | Verification cold read round 4: clean — all scenarios pass; 5 polish-level stumbles (bare surname citations, the "projects" verb, two implicit actors), none a fail. |
+| 6 | 2026-08-23 | update | Owner direction: decision-ledger references removed — changes stand on their own; history entries and text no longer cite numbered decisions. |

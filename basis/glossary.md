@@ -4,7 +4,7 @@ id: glossary
 owner: product-authority
 status: approved
 approved: 2026-08-19
-version: 3
+version: 4
 created: 2026-08-19
 updated: 2026-08-23
 ---
@@ -68,16 +68,15 @@ terms uses one of these when one fits.
 - **conversation** — a scoped, bounded discussion attached to exactly one
   anchor; every conversation belongs to a process.
 - **conversation type** — discovery (anchor: a session record), review
-  (anchor: a review record and its rulings), or work (anchor: a work
+  (anchor: a review record and its outcomes), or work (anchor: a work
   item).
 - **session record** — the anchor record of a discovery conversation:
   outcome, produced and revised lists, open threads, select quotes.
-- **review** — one bounded conversation in which the authority rules on
-  presented material. Replaces "sitting".
+- **review** — one bounded conversation in which the authority decides
+  on presented material. Replaces "sitting".
 - **review record** — the anchor record of a review: the material
-  presented and the rulings issued.
-- **ruling** — a decision the authority records during a review; numbered
-  (Rn) in the experiment index and binding on the corpus it governs.
+  presented and the outcomes applied; each decision traces in the
+  changed artifacts' Document History, never in a standing ledger.
 - **park** — the failsafe for work that cannot pass review within its
   round cap: set aside with a filed finding.
 - **round cap** — the declared maximum review rounds before a loop's
@@ -85,21 +84,19 @@ terms uses one of these when one fits.
 - **action** — the approved choice for one record: keep-rewrite, keep,
   retire, or terminal, with its target.
 - **authority-call** — a row marker on a migration-plan row awaiting a
-  ruling from the authority; not an action — the row has no effect and
+  decision from the authority; not an action — the row has no effect and
   is out of scope for any run until ruled.
 - **action table** — the table of records and their actions; approved row
   by row or in blocks at a review. Drives any bulk record change.
 - **close-out** — the mechanical execution of the migration plan's
   pre-decided retire and terminal actions: snapshot, delete, archive
   move, a loud post-check, and the branch promotion; no review loop.
-  All stages run consecutively at cut-over (R27).
+  All stages run consecutively at cut-over.
 - **snapshot tag** — the annotated git tag (`pre-migration`) on `main`'s
   pre-execution commit, preserving the full corpus for terminal-recovery;
   after close-out a terminal record exists only there.
 - **migration plan** — the rebaseline's action table plus the order of
   the per-type migration runs. Replaces "rebaseline bill".
-- **experiment index** — the new-basis experiment's README: the
-  walkthrough, the numbered rulings, and the review state.
 - **run** — one execution of a process, anchored to a work item; states:
   running, held, done, cancelled.
 - **hold** — a run state: paused with its step and data preserved in its
@@ -140,6 +137,7 @@ terms uses one of these when one fits.
 |---|---|---|---|
 | 1 | 2026-08-19 | update | Seed term list authored. |
 | 1 | 2026-08-19 | state | draft → approved. |
-| 2 | 2026-08-22 | update | Conversation-model terms added (R19); action extended to four values, authority-call and action-table amended, close-out and snapshot tag added (R30). |
+| 2 | 2026-08-22 | update | Conversation-model terms added; action extended to four values, authority-call and action-table amended, close-out and snapshot tag added. |
 | 3 | 2026-08-23 | update | Architecture terms added, riding the architecture-principle-set approval: Bounded Context, shop, activity, contract, relationship kind, intent. |
-| 3 | 2026-08-23 | state | The six architecture terms approved with the architecture principle set (R37); pending markers removed. |
+| 3 | 2026-08-23 | state | The six architecture terms approved with the architecture principle set; pending markers removed. |
+| 4 | 2026-08-23 | update | Owner direction: ruling and experiment-index entries removed with the ledger practice; review and review-record entries rewritten to the outcomes model. |

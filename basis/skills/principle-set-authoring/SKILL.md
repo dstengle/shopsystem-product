@@ -13,7 +13,7 @@ generated: true
 generated-by: basis/tools/compile_process.py
 derived-from: principle-set-authoring-process
 source: basis/processes/principle-set-authoring.md
-source-digest: sha256:a01632b37900
+source-digest: sha256:17392ff89404
 activation: model-judged
 promotion: experiment-local
 ---
@@ -34,8 +34,8 @@ flowchart TD
   route_verdict{"Route on the verdict<br/>in — review: review, round: integer"}
   revise(["Revise — agent: lead-pm<br/>in — set: principle-set, review: review<br/>out — set: principle-set"])
   advance_round["Advance the round counter — runtime<br/>in — round: integer<br/>sets — round: integer"]
-  authority_approve[["Owner rules on the screened draft — human: product-authority<br/>in — set: principle-set, round_log: review[]<br/>out — set: principle-set, review: review"]]
-  route_approval{"Route on the owner's ruling<br/>in — review: review"}
+  authority_approve[["Owner decides on the screened draft — human: product-authority<br/>in — set: principle-set, round_log: review[]<br/>out — set: principle-set, review: review"]]
+  route_approval{"Route on the owner's decision<br/>in — review: review"}
   park["Park the draft with a finding — runtime<br/>in — scope: string, round: integer, review: review"]
   __end(("end<br/>result — set: principle-set"))
   __start(("start")) --> draft
@@ -63,7 +63,7 @@ Prompt:
 
 ```text
 Author the set, or amend the existing one, from the listed sources
-only — the owner's rulings, autopsies of prior instances, and named
+only — the owner's stated directions, autopsies of prior instances, and named
 external standards. Content in an undefined format is source
 material for a rewrite, never pasted. Open by defining what a good
 principle looks like; then write each principle in the four parts —
@@ -143,7 +143,7 @@ set:
 next: screen-read
 ```
 
-## authority-approve — Owner rules on the screened draft
+## authority-approve — Owner decides on the screened draft
 
 Run by human seat in role `product-authority`. reads: set, round_log · writes: set, review.
 - then: `route-approval`
@@ -152,18 +152,18 @@ Prompt:
 
 ```text
 The screened draft and its round log are in front of you. Your
-ruling is the review's verdict. "clean" or "tradeoffs-accepted"
+decision is the review's verdict. "clean" or "tradeoffs-accepted"
 approves: the set is stamped — status approved, the approval date,
 your seat as owner — and from that point it is the standard
 activities are checked against, amendable only through this
-process by your ruling. "findings" returns the draft to the author
+process by your decision. "findings" returns the draft to the author
 with your findings; the round counter keeps running, so a draft
 that cannot satisfy you within the cap parks instead of looping.
 Silence holds the run after the declared window; the anchor
 carries the resume point.
 ```
 
-## route-approval — Route on the owner's ruling
+## route-approval — Route on the owner's decision
 
 Run by the runtime — no agent, no prose. reads: review · writes: —.
 

@@ -4,9 +4,9 @@ id: review-conversation-process
 owner: product-authority
 status: approved
 approved: 2026-08-22
-version: 1
+version: 2
 created: 2026-08-22
-updated: 2026-08-22
+updated: 2026-08-23
 produces: [review-record]
 condition-language: cel
 hold-after: P7D
@@ -15,16 +15,19 @@ hold-after: P7D
 # Process: Review conversation
 
 **Purpose:** Conduct a bounded review: the authority examines material
-and issues rulings; each ruling is applied and recorded before the next
-exchange; the conversation ends only when the authority closes or
-cancels it, and parks itself on inactivity.
+and issues decisions; each decision is applied as changes to the
+affected artifacts before the next exchange; the conversation ends only
+when the authority closes or cancels it, and parks itself on
+inactivity.
 
-**Guiding statement:** Everything binding lands in the record; nothing
-binding lives only in the transcript.
+**Guiding statement:** Everything binding lands in the governed
+artifacts it changes; nothing binding lives only in the transcript or
+the record.
 
 **Outcomes:**
-- O1. Every ruling is applied and recorded in the anchor before the next
-  observation is taken — witnessed by the check on `apply`.
+- O1. Every decision is applied to the affected artifacts, with their
+  Document History updated, before the next observation is taken —
+  witnessed by the check on `apply`.
 - O2. The record's State section always names the next ready action or
   the outcome — witnessed by the `apply` prompt and the close steps.
 - O3. Only the authority closes or cancels the conversation — witnessed
@@ -33,9 +36,9 @@ binding lives only in the transcript.
 - O4. An inactive conversation holds instead of dangling — witnessed by
   `hold-after` and the run lifecycle it invokes.
 
-**Roles:** product-authority (human seat — observes, rules, and owns the
-exclusive right to close or cancel). lead-pm (applies rulings and keeps
-the record current).
+**Roles:** product-authority (human seat — observes, decides, and owns
+the exclusive right to close or cancel). lead-pm (applies decisions and
+keeps the record current).
 
 **Scope note:** other processes invoke this one as a sub-process step
 (`execution: sub-process`) — e.g. the migration process's
@@ -51,7 +54,7 @@ edit by hand.
 ```mermaid
 flowchart TD
   open["Open the record and its work item — runtime<br/>in — material: string<br/>out — record: review-record"]
-  observe[["Authority observes and rules — human: product-authority<br/>in — record: review-record, material: string<br/>out — observation: string, classification: string"]]
+  observe[["Authority observes and decides — human: product-authority<br/>in — record: review-record, material: string<br/>out — observation: string, classification: string"]]
   route{"Route on the input<br/>in — classification: string"}
   apply(["Apply and record — agent: lead-pm<br/>in — observation: string, classification: string, record: review-record<br/>out — applied: string, record: review-record"])
   close_record["Close the record — runtime<br/>in — record: review-record"]
@@ -80,7 +83,7 @@ data:
   material: {type: string}
   record: {$ref: review-record, from: ../artifacts/review-record.md}
   observation: {type: string}
-  classification: {type: string, enum: [ruling, question, close, cancel]}
+  classification: {type: string, enum: [decision, question, close, cancel]}
   applied: {type: string}
 ```
 
@@ -101,14 +104,14 @@ steps:
     next: observe
 
   - id: observe
-    name: Authority observes and rules
+    name: Authority observes and decides
     run-by: {role: product-authority, execution: human}
     inputs: [record, material]
     outputs: [observation, classification]
     prompt: |
       The material and the record's current state are in front of you.
-      Your message is one of: a ruling to apply, a question to answer, a
-      close (the review is complete), or a cancel (the review is
+      Your message is one of: a decision to apply, a question to answer,
+      a close (the review is complete), or a cancel (the review is
       abandoned). Silence holds the conversation after the declared
       window — nothing is lost; the record carries the resume point.
     next: route
@@ -134,12 +137,13 @@ steps:
     checks:
       - applied != ""
     prompt: |
-      Apply the observation. A ruling lands as the change it demands plus
-      a numbered ledger entry — Rn, date, the ruling in one or two
-      sentences, a link to the application. A question gets an answer
-      grounded in the corpus; if answering produced a decision, it is a
-      ruling and enters the ledger. Update the record's State to name the
-      next ready action. Nothing binding stays only in the transcript.
+      Apply the observation. A decision lands as the changes it demands
+      in the affected artifacts — each with a Document History entry —
+      and the record's Outcomes section links where it landed. A
+      question gets an answer grounded in the corpus; if answering
+      produced a decision, apply it the same way. Update the record's
+      State to name the next ready action. Nothing binding stays only in
+      the transcript or the record.
     next: observe
 
   - id: close-record
@@ -177,5 +181,6 @@ per the run lifecycle.
 
 | Version | Date | Kind | Entry |
 |---|---|---|---|
-| 1 | 2026-08-22 | update | Authored (seed layer); earlier history, if any, in the review record ledger on `main`. |
+| 1 | 2026-08-22 | update | Authored (seed layer). |
 | 1 | 2026-08-22 | state | draft → approved. |
+| 2 | 2026-08-23 | update | Ledger practice removed by owner direction: decisions apply as Document History-recorded changes in the affected artifacts; classification value renamed decision. |

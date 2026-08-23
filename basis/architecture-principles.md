@@ -5,7 +5,7 @@ scope: architecture
 owner: product-authority
 status: approved
 approved: 2026-08-23
-version: 4
+version: 5
 created: 2026-08-23
 updated: 2026-08-23
 derives-from:
@@ -319,12 +319,13 @@ either matches what anyone asked for.
 
 | Version | Date | Kind | Entry |
 |---|---|---|---|
-| 1 | 2026-08-23 | update | Drafted through the approved chain, scope architecture, covering deltas D1–D7 and D9 (R33 charter). |
+| 1 | 2026-08-23 | update | Drafted through the approved chain, scope architecture, covering deltas D1–D7 and D9 chartered by the owner. |
 | 1 | 2026-08-23 | review | Cold-read round 1: clean — all scenarios and the mechanical check; 7 stumbles, none a fail. |
-| 2 | 2026-08-23 | update | Rationales scrubbed to generic examples per the operational-history rule (R34). |
+| 2 | 2026-08-23 | update | Rationales scrubbed to generic examples per the operational-history rule. |
 | 2 | 2026-08-23 | review | Cold-read round 2: clean under the amended fitness set; 6 stumbles, none a fail. |
 | 3 | 2026-08-23 | update | Statements de-fused per authority findings: local-comprehension level ladder enumerated; intent-provenance expanded with intent defined inline; conformance direction questions restored; opening introduces the shop and contract taxonomies. |
 | 3 | 2026-08-23 | review | Cold-read round 3: clean; 6 polish-level stumbles, none a fail. |
-| 4 | 2026-08-23 | update | Re-formed to bullet form — one obligation or implication per bullet (R35). |
+| 4 | 2026-08-23 | update | Re-formed to bullet form — one obligation or implication per bullet. |
 | 4 | 2026-08-23 | review | Cold-read round 4: clean under the tightened scenarios 2 and 4; 6 polish-level stumbles, none a fail. |
-| 4 | 2026-08-23 | state | draft → approved by the owner's ruling (R37); Phase 0 exit condition met. |
+| 4 | 2026-08-23 | state | draft → approved by the owner's ruling ; Phase 0 exit condition met. |
+| 5 | 2026-08-23 | update | Owner direction: decision-ledger references removed — changes stand on their own; history entries and text no longer cite numbered decisions. |

@@ -5,7 +5,7 @@ defines: decision-brief
 owner: product-authority
 status: approved
 approved: 2026-08-19
-version: 1
+version: 2
 created: 2026-08-10
 updated: 2026-08-19
 ancestry: [request, decision-brief]
@@ -71,5 +71,6 @@ from Minto/SCQA, BLUF, and government briefing-note practice.
 
 | Version | Date | Kind | Entry |
 |---|---|---|---|
-| 1 | 2026-08-10 | update | Authored (seed layer); earlier history, if any, in the review record ledger on `main`. |
+| 1 | 2026-08-10 | update | Authored (seed layer); earlier history, if any, in the repository history. |
 | 1 | 2026-08-19 | state | draft → approved. |
+| 2 | 2026-08-23 | update | Owner direction: decision-ledger references removed — changes stand on their own; history entries and text no longer cite numbered decisions. |
