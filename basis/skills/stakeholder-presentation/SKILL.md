@@ -13,7 +13,7 @@ generated: true
 generated-by: basis/tools/compile_process.py
 derived-from: stakeholder-presentation-process
 source: basis/processes/stakeholder-presentation.md
-source-digest: sha256:98d2d9005350
+source-digest: sha256:101a9756f128
 activation: model-judged
 promotion: experiment-local
 ---
@@ -168,9 +168,9 @@ Prompt:
 
 ```text
 Deliver the brief to the reader with the annex linked. Set the
-brief's status to "delivered" and attach the round log as its
-verified-by record: one line per round with the verdict and the
-judge's model and prompt version. If the final verdict is
+brief's status to "delivered" and record the round log in the
+brief's Document History: one review entry per round with the
+verdict and the judge's model. If the final verdict is
 "findings" (the failsafe exit fired), state the open findings at
 the top of the brief before anything else.
 ```

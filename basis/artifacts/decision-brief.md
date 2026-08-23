@@ -5,7 +5,7 @@ defines: decision-brief
 owner: product-authority
 status: approved
 approved: 2026-08-19
-version: 2
+version: 3
 created: 2026-08-10
 updated: 2026-08-23
 ancestry: [request, decision-brief]
@@ -27,10 +27,13 @@ ancestry: [request, decision-brief]
 
 ## Required frontmatter
 
-`type`, `status` (draft | delivered | decided), `date`, `reader`,
-`decisions-requested` (count), `annex` (link), `verified-by` (cold-read
-round record). Schema-validated; unknown keys rejected (closed field set,
-per the authority's strictness directive).
+`type`, `id`, `status` (draft | delivered | decided), `version`,
+`date`, `reader`, `decisions-requested` (count), `annex` (link).
+Schema-validated; unknown keys rejected (closed field set, per the
+authority's strictness directive). The cold-read round record lives as
+`review` entries in the Document History — one per round with the
+verdict and the judge's model — never in frontmatter, per the
+definition typedef's Document History rule.
 
 ## Required sections
 
@@ -63,7 +66,7 @@ from Minto/SCQA, BLUF, and government briefing-note practice.
 - Answer-first section states gate-vs-default. *(§Required sections 1)*
 - Every ask complete per the four-part form. *(§Required sections 2)*
 - Budgets measured. *(Commitment)*
-- Cold-read record present. *(Commitment)*
+- Cold-read rounds recorded as Document History review entries. *(Commitment; definition typedef §Required sections 3)*
 - Quality of prose: judged via
   [`../fitness/decision-brief.fitness.md`](../fitness/decision-brief.fitness.md).
 
@@ -74,3 +77,4 @@ from Minto/SCQA, BLUF, and government briefing-note practice.
 | 1 | 2026-08-10 | update | Authored (seed layer); earlier history, if any, in the repository history. |
 | 1 | 2026-08-19 | state | draft → approved. |
 | 2 | 2026-08-23 | update | Owner direction: decision-ledger references removed — changes stand on their own; history entries and text no longer cite numbered decisions. |
+| 3 | 2026-08-23 | update | Owner direction: verified-by removed from the frontmatter set — cold-read rounds are Document History review entries; id and version join the closed field set, reconciling the deferred versioning-standard conflict. |

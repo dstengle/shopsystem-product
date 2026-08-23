@@ -4,7 +4,7 @@ id: stakeholder-presentation-process
 owner: product-authority
 status: approved
 approved: 2026-08-19
-version: 2
+version: 3
 created: 2026-08-10
 updated: 2026-08-23
 produces: [decision-brief]
@@ -220,9 +220,9 @@ steps:
     outputs: [brief]
     prompt: |
       Deliver the brief to the reader with the annex linked. Set the
-      brief's status to "delivered" and attach the round log as its
-      verified-by record: one line per round with the verdict and the
-      judge's model and prompt version. If the final verdict is
+      brief's status to "delivered" and record the round log in the
+      brief's Document History: one review entry per round with the
+      verdict and the judge's model. If the final verdict is
       "findings" (the failsafe exit fired), state the open findings at
       the top of the brief before anything else.
     next: end
@@ -245,3 +245,4 @@ steps:
 | 1 | 2026-08-10 | update | Authored (seed layer); earlier history, if any, in the repository history. |
 | 1 | 2026-08-19 | state | draft → approved. |
 | 2 | 2026-08-23 | update | Owner direction: decision-ledger references removed — changes stand on their own; history entries and text no longer cite numbered decisions. |
+| 3 | 2026-08-23 | update | Owner direction: the deliver step records rounds as Document History review entries instead of a verified-by frontmatter block, matching the definition typedef's rule. |
