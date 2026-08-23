@@ -25,6 +25,16 @@ verified-by:
       examples only, no product operational history); all scenarios
       pass under the amended fitness set; 6 stumbles reported, none a
       scenario fail
+  - round: 3
+    role: cold-reviewer
+    model: claude-fable-5
+    date: 2026-08-23
+    verdict: clean
+    notes: re-screen after the authority's statement-clarity findings
+      (local-comprehension re-enumerated, intent-provenance expanded
+      with intent defined inline, conformance questions restored); all
+      scenarios pass; 6 polish-level stumbles reported, none a
+      scenario fail
 ---
 
 # Architecture principles
@@ -38,11 +48,19 @@ that build and evolve them. It is a peer of the working-scope set,
 performed; this set governs what the designed system must look like.
 Backticked slugs cite principles; a slug not defined in this document is
 defined in the working set. The terms Bounded Context, shop, activity,
-and contract are defined in the [glossary](glossary.md).
+contract, relationship kind, and intent are defined in the
+[glossary](glossary.md). Two distinctions those terms carry are used
+throughout: a shop is either the lead shop — the system-level
+coordinator, owning the product-level artifacts and no Bounded
+Context — or a BC-shop, owning exactly one; and a contract is offered
+either as a product contract, on a Bounded Context, or as an
+operational contract, on a shop.
 
 Where a principle here applies a working-scope principle at the
-architecture level, this document declares the lineage in its frontmatter
-(`derives-from`) instead of restating the rule as a second authority.
+architecture level, this document declares the lineage in its
+frontmatter — `derives-from` maps the principle in this set to the
+working-scope principle it applies — instead of restating the rule as a
+second authority.
 
 ## What a good principle looks like
 
@@ -162,13 +180,22 @@ whoever holds it.
 
 ## Comprehension is local at every level (`local-comprehension`)
 
-**Statement.** The design MUST designate, for every level of work —
-inside a shop, consuming a Bounded Context, working across contexts,
-coordinating the system — the description artifacts sufficient for that
-level's work, and work at a level MUST be performable from that level's
-designated artifacts alone. A task that can be done only by reading
-below its level MUST be treated as a design defect — a missing or
-incomplete description or contract — not as the reader's burden.
+**Statement.** A participant MUST NOT need to read beyond the level
+they are working at, and the design MUST designate, for each level, the
+description artifacts sufficient for that level's work. The levels, and
+their designated artifacts, are:
+
+- working inside a shop — that shop's own records and code;
+- consuming a Bounded Context — that context's contracts;
+- working across Bounded Contexts — the contracts and the system-level
+  map of the contexts and their relationships;
+- coordinating the system — the product-level descriptions the lead
+  shop owns.
+
+Work at a level MUST be performable from its designated artifacts
+alone. A task that can be done only by reading below its level MUST be
+treated as a design defect — a missing or incomplete description or
+contract — not as the reader's burden.
 
 **Rationale.** The cost of working on one part of the product has to
 stay proportional to that part, or growth taxes every participant; for
@@ -196,8 +223,10 @@ to the product's size.
 **Statement.** The design — descriptions, contracts, recorded
 decisions — MUST be the authoritative statement of what the product is
 and does, and code MUST conform to it. Conformance MUST be checked in
-both directions: every design element MUST have code implementing it,
-and every code element MUST be called for by the design. A design change
+both directions: forward — every design element MUST have code
+implementing it (did we build what we said?) — and reverse — every code
+element MUST be called for by the design (did we build only what we
+said?). A design change
 MUST itself be a recorded activity, and retirement and refactoring MUST
 be gated on both conformance checks.
 
@@ -226,11 +255,14 @@ Reviewers reject code no design element calls for, however good it is.
 
 ## Intent enters through contracts and keeps its provenance (`intent-provenance`)
 
-**Statement.** Intent MUST enter the product through a contract — a
+**Statement.** Intent — a desired outcome expressed by an originator at
+the product's edge — MUST enter the product through a contract: a
 product contract on a Bounded Context or an operational contract on a
-shop — and every translation or delegation of intent MUST be recorded,
-so that any activity can be traced to the originating expression
-without ambiguity.
+shop. The shop that receives intent MAY translate it, and MAY delegate
+it to other shops, only ever through those shops' contracts. Every
+receipt, translation, and delegation MUST be recorded, so that any
+activity can be traced back to the originating expression without
+ambiguity.
 
 **Rationale.** Intent that loses its origin cannot be re-decided: when
 priorities shift, no one can tell which work still serves a live desire

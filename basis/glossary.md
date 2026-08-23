@@ -135,3 +135,13 @@ terms uses one of these when one fits.
   product contract (on a Bounded Context) or an operational contract (on
   a shop); nothing outside a contract is promised. *(added 2026-08-23;
   rides the architecture-principle-set approval.)*
+- **relationship kind** — the named pattern a contract declares for how
+  two Bounded Contexts relate, drawn from the context-mapping catalogue
+  (Evans, *Domain-Driven Design*): customer–supplier, conformist,
+  anti-corruption layer, open host service, published language, shared
+  kernel, or separate ways. *(added 2026-08-23; rides the
+  architecture-principle-set approval.)*
+- **intent** — a desired outcome expressed by an originator at the
+  product's edge; enters the product through a contract and keeps its
+  provenance through every translation and delegation. *(added
+  2026-08-23; rides the architecture-principle-set approval.)*
