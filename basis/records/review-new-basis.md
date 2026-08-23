@@ -199,10 +199,36 @@ the ledger's opening span. From R19 the ledger lives in this record.
   pins 893: 860 keep / 33 retire). Brief-028 is decided — the first
   stakeholder-presentation run to complete through decision.
 
+- **R31 (2026-08-23).** The execution mechanism inverts to pull, and
+  the corpus migration becomes demand-pull with per-feature discovery
+  — authority direction over two exchanges:
+  (a) **Pull, never push.** `main` must not publish to `rebaseline`;
+  the branch pulls from `main` as a read-only reference. New-system
+  work happens in sessions resident in the `rebaseline` worktree,
+  running under the branch's own `.claude` surface — not dispatched
+  from the main session (this resolves finding F9 structurally).
+  Rulings still flow to this record on `main`, its single-source home.
+  (b) **Demand-pull replaces the Phase 3 conveyor.** The later planned
+  runs stood on progressively shakier ground without progressive
+  disclosure; instead, the new system is built up by cherry-picking.
+  The action table becomes the inventory/census: a keep-rewrite row is
+  ELIGIBLE for pull, not scheduled; anything never pulled retires by
+  default at cut-over, with retire-with-coverage as the safety net so
+  nothing binding is lost by omission. Feature-scenario contracts (the
+  860 keep pins) are maintained as much as possible — functionality
+  brought over preserves or consciously re-mints its pins.
+  (c) **An interview per feature, not one interview.** The PM role
+  (defined in Phase 1 through the meta-chains) interviews the
+  authority per feature: first for progressive disclosure — Phase 2
+  is the loop's first iteration — then further interviews as the
+  census surfaces candidates for pull. The PM uses `main`, including
+  the migration plan, as a reference point; the primary consideration
+  is building a new, coherent version of the system.
+
 ## State
 
-Open — **migration executing: Seed complete, Phase 0 begun**
-(2026-08-22).
+Open — **migration executing: Seed complete, Phase 0 begun; R31
+pull model recorded** (2026-08-23).
 
 Seed executed and verified: orphan branch `rebaseline` (pushed,
 commit `52b6e52`) holds exactly the basis corpus (minus `records/` —

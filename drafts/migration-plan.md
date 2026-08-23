@@ -1,7 +1,7 @@
 ---
 type: migration-plan
 id: migration-plan
-revision: 5
+revision: 6
 supersedes: rebaseline-bill (2026-08-04)
 owner: product-authority
 status: executing
@@ -10,6 +10,12 @@ updated: 2026-08-22
 ---
 
 # Migration plan: rebaseline against the approved basis
+
+Rev 6 (2026-08-23) applies ruling R31: the execution mechanism is
+pull-only (the branch pulls from read-only `main`; work runs in
+branch-resident sessions) and Phase 3 is a demand-pull loop with one
+discovery interview per feature — see "Phase 3 — the demand-pull
+loop". The census, counts, and routing reference carry over unchanged.
 
 Census run 2026-08-22 by four independent lanes over the live tree,
 verifying the 2026-08-04 census where it overlapped and judging
@@ -415,9 +421,12 @@ feature with Gherkin.
 
 ### Phase 2 — progressive disclosure, the FIRST FEATURE
 
-Progressive disclosure is built as the first feature THROUGH the new
-PM/PO/Architect flow — exercising and refining the Phase 1
-definitions with real work. Root cause on record (R27): resetting the
+Phase 2 opens with the first discovery-interview instance (R31): the
+PM interviews the authority about the progressive-disclosure feature
+before shaping it — the same per-feature interview that fronts every
+later pull. Progressive disclosure is then built as the first feature
+THROUGH the new PM/PO/Architect flow — exercising and refining the
+Phase 1 definitions with real work. Root cause on record (R27): resetting the
 corpus without repairing the growth-mode problems — ad-hoc pre-state
 verification, context bloat — would hit the same limit again;
 supporting mechanisms come first.
@@ -449,10 +458,41 @@ Consequence: the decision-record chain is built in Phase 2 (as the
 demonstration vehicle), so Phase 3's decisions run starts with its
 chain already proven.
 
-### Phase 3 — the corpus migration runs
+### Phase 3 — the demand-pull loop (R31; supersedes the rev 5 run
+conveyor)
 
 Subject to an explicit authority entry review before executing, after
-Phase 2. Order within Phase 3:
+Phase 2. Phase 3 is not a scheduled conveyor of runs: it is a LOOP,
+repeated per feature until cut-over —
+
+1. the PM consults the census (the action tables below — the
+   inventory of everything that exists, its action, and its
+   coverage);
+2. the PM interviews the authority about the feature (one interview
+   per feature, the Phase 2 interview being the first);
+3. the interview produces an intent record; the pull is shaped and
+   executed through the receiving type's chain (built by the pull
+   that first needs it), preserving or consciously re-minting the
+   feature-scenario contracts;
+4. coverage updates in the census.
+
+A keep-rewrite row is ELIGIBLE for pull, never scheduled. Anything
+never pulled retires by default at cut-over — retire-with-coverage is
+the safety net: a row with binding content cannot retire while any
+claim is unmapped, so nothing binding is lost by omission. Cut-over
+happens when the authority rules the new system covers the contracts.
+
+**Mechanism (R31): pull, never push.** `main` never publishes to the
+branch; the branch pulls from `main` as a read-only reference
+(`git show main:<path>`, always through an interview-backed intent or
+a curated feed). New-system work runs in sessions RESIDENT in the
+`rebaseline` worktree under the branch's own `.claude` surface — not
+dispatched from a main-side session. Rulings flow the other way, to
+the review record on `main`, its single-source home.
+
+The numbered items below are retained from rev 5 as the ROUTING
+REFERENCE for pulls — where each body of content goes when its pull
+happens — not as a schedule:
 
 1. **Features import** — precondition: progressive disclosure in
    place (met by the Phase 2 exit) plus hash verification tooling on
