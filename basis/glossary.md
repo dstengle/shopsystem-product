@@ -5,7 +5,7 @@ owner: product-authority
 status: approved
 approved: 2026-08-19
 created: 2026-08-19
-updated: 2026-08-22
+updated: 2026-08-23
 ---
 
 # Glossary
@@ -114,3 +114,24 @@ terms uses one of these when one fits.
   ends mid-conversation; a checkpoint is not a close.
 - **branched conversation** — a conversation run as a sub-process of
   another run; its anchor records the parent (`branched-from`).
+- **Bounded Context** — a deliberately drawn region of the product with
+  one internal language, one model, and one set of contracts to other
+  regions; drawn by design, never discovered after the fact (Evans,
+  *Domain-Driven Design*). *(added 2026-08-23; rides the
+  architecture-principle-set approval.)*
+- **shop** — the entity that builds, operates, and evolves part of the
+  product. Two types: the lead shop (the system-level coordinator; owns
+  product-level artifacts and no Bounded Context) and the BC-shop (owns
+  and produces exactly one Bounded Context). *(added 2026-08-23; rides
+  the architecture-principle-set approval.)*
+- **activity** — a discrete unit of work performed inside a shop,
+  following a contract or process, with inputs, outcomes, and provenance
+  recorded. What an actor is stays unconstrained; the activity has the
+  same shape whoever performs it. *(added 2026-08-23; rides the
+  architecture-principle-set approval.)*
+- **contract** — a named, versioned statement of what one entity
+  promises another: the schemas exchanged, the meaning of each
+  operation, the error behavior, and the relationship kind. Offered as a
+  product contract (on a Bounded Context) or an operational contract (on
+  a shop); nothing outside a contract is promised. *(added 2026-08-23;
+  rides the architecture-principle-set approval.)*
