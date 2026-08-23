@@ -2,7 +2,8 @@
 type: fitness-set
 id: process-definition-fitness
 owner: product-authority
-status: draft
+status: approved
+approved: 2026-08-23
 version: 1
 created: 2026-08-23
 updated: 2026-08-23
@@ -89,3 +90,4 @@ principle-set chain established.
 | Version | Date | Kind | Entry |
 |---|---|---|---|
 | 1 | 2026-08-23 | update | Authored as the process-definition meta-chain's fitness set. |
+| 1 | 2026-08-23 | state | draft → approved by the owner, with the exemplar screens' findings accepted as valid and their repairs directed. |

@@ -3,7 +3,8 @@ type: quality-guideline
 id: process-definition-guideline
 target-type: process-definition
 owner: product-authority
-status: draft
+status: approved
+approved: 2026-08-23
 version: 1
 created: 2026-08-23
 updated: 2026-08-23
@@ -109,3 +110,4 @@ history.
 | Version | Date | Kind | Entry |
 |---|---|---|---|
 | 1 | 2026-08-23 | update | Authored as the process-definition meta-chain's guideline, with the existing basis processes as exemplars. |
+| 1 | 2026-08-23 | state | draft → approved by the owner, with the exemplar screens' findings accepted as valid and their repairs directed. |

@@ -4,7 +4,7 @@ id: principle-set-authoring-process
 owner: product-authority
 status: approved
 approved: 2026-08-23
-version: 2
+version: 4
 created: 2026-08-22
 updated: 2026-08-23
 produces: [principle-set]
@@ -37,12 +37,13 @@ never on taste.
 - O2. An independent fresh-context judge has scored every round against
   the fitness set — witnessed by `screen-read` and the `round_log`.
 - O3. The set enters force only by the owner's approval — witnessed by
-  `authority-approve` and the `route-approval` branches, which reach
-  `end` on no other path.
-- O4. A draft that cannot pass within the round cap parks with a filed
-  finding instead of looping — witnessed by the failsafe branch of
-  `route-verdict` and the `park` step; an inactive authority exchange
-  holds per `hold-after` and the run lifecycle.
+  `authority-approve` and the `route-approval` branches: `end` is
+  reached only by the owner's approving verdict or the `park` failsafe,
+  and only the approving verdict puts the set in force.
+- O4. A draft that cannot pass within its round caps parks with a filed
+  finding instead of looping — witnessed by the failsafe branches of
+  `route-verdict` and `route-approval` and the `park` step; an inactive
+  authority exchange holds per `hold-after` and the run lifecycle.
 
 **Roles:** author — lead-pm (Accountable; drafts and revises; keeps new
 terms flowing to the glossary). screen judge —
@@ -65,14 +66,14 @@ edit by hand.
 
 ```mermaid
 flowchart TD
-  draft(["Draft the set — agent: lead-pm<br/>in — sources: string[], scope: string<br/>out — set: principle-set"])
-  screen_read(["Screen read — agent: cold-reviewer<br/>in — set: principle-set<br/>out — review: review"])
+  draft(["Draft the set — agent: lead-pm<br/>in — sources: string[], scope: string, guideline_paths: string[], glossary: glossary<br/>out — set: principle-set, glossary: glossary"])
+  screen_read(["Screen read — agent: cold-reviewer<br/>in — set: principle-set, fitness_path: string<br/>out — review: review"])
   log_round["Record the round — runtime<br/>in — review: review, round_log: review[]<br/>sets — round_log: review[]"]
   route_verdict{"Route on the verdict<br/>in — review: review, round: integer"}
-  revise(["Revise — agent: lead-pm<br/>in — set: principle-set, review: review<br/>out — set: principle-set"])
+  revise(["Revise — agent: lead-pm<br/>in — set: principle-set, review: review, guideline_paths: string[]<br/>out — set: principle-set"])
   advance_round["Advance the round counter — runtime<br/>in — round: integer<br/>sets — round: integer"]
   authority_approve[["Owner decides on the screened draft — human: product-authority<br/>in — set: principle-set, round_log: review[]<br/>out — set: principle-set, review: review"]]
-  route_approval{"Route on the owner's decision<br/>in — review: review"}
+  route_approval{"Route on the owner's decision<br/>in — review: review, round: integer"}
   park["Park the draft with a finding — runtime<br/>in — scope: string, round: integer, review: review"]
   __end(("end<br/>result — set: principle-set"))
   __start(("start")) --> draft
@@ -86,6 +87,7 @@ flowchart TD
   advance_round --> screen_read
   authority_approve --> route_approval
   route_approval -->|success exit: owner approves| __end
+  route_approval -->|failsafe exit: round >= 6| park
   route_approval -->|else| revise
   park --> __end
 ```
@@ -99,14 +101,18 @@ an explicit source — `from:` links the defining file, or names the owning
 package as `pkg:<package>/<type>` (fetched through that package's
 contract tool). Conditions are CEL (Common Expression Language)
 expressions over these names. `sources` lists the paths of the run's
-source material — the owner's stated directions, autopsies of prior instances,
-external standards; it is the step's declared context load list per
-`least-context`.
+source material — the owner's stated directions, autopsies of prior
+instances, external standards, and, for an amendment, the existing
+set; together with `guideline_paths` and `fitness_path` it is the
+declared context load list per `least-context`.
 
 ```yaml
 data:
   sources: {type: array, items: {type: string}}
   scope: {type: string, enum: [working, architecture]}
+  guideline_paths: {type: array, items: {type: string}, initial: [../guidelines/principle-set.md, ../guidelines/base-writing-style.md]}
+  fitness_path: {type: string, initial: ../fitness/principle-set.fitness.md}
+  glossary: {$ref: glossary, from: ../artifacts/glossary-typedef.md}
   set: {$ref: principle-set, from: ../artifacts/principle-set.md}
   review: {$ref: review, from: ../types/review.md}
   round: {type: integer, initial: 1}
@@ -123,33 +129,33 @@ steps:
   - id: draft
     name: Draft the set
     run-by: {role: lead-pm, execution: agent}
-    inputs: [sources, scope]
-    outputs: [set]
+    inputs: [sources, scope, guideline_paths, glossary]
+    outputs: [set, glossary]
     checks:
       - set.scope == scope
     prompt: |
       Author the set, or amend the existing one, from the listed sources
-      only — the owner's stated directions, autopsies of prior instances, and named
-      external standards. Content in an undefined format is source
-      material for a rewrite, never pasted. Open by defining what a good
-      principle looks like; then write each principle in the four parts —
-      slugged name, statement, rationale, implications — through
-      guidelines/principle-set.md layered on
-      guidelines/base-writing-style.md. Close with the fitness screen
-      applying the opening's tests to every principle. Every new or
-      changed term goes to the glossary before the draft leaves this
-      step.
+      only — the owner's stated directions, autopsies of prior
+      instances, named external standards, and, when amending, the
+      existing set listed among the sources. Content in an undefined
+      format is source material for a rewrite, never pasted. Open by
+      defining what a good principle looks like; then write each
+      principle in the four parts — slugged name, statement, rationale,
+      implications — through the guideline files listed in
+      guideline_paths. Close with the fitness screen applying the
+      opening's tests to every principle. Every new or changed term
+      goes to the glossary before the draft leaves this step.
     next: screen-read
 
   - id: screen-read
     name: Screen read
     run-by: {role: cold-reviewer, execution: agent, fresh-context: true}
-    inputs: [set]
+    inputs: [set, fitness_path]
     outputs: [review]
     prompt: |
       Read the set alone, fresh — you have seen no earlier round, and
-      that is the point. Score it against every scenario in
-      fitness/principle-set.fitness.md, in order; for each fail cite the
+      that is the point. Score it against every scenario in the fitness
+      set at fitness_path, in order; for each fail cite the
       principle and quote the failing text. Report stumbles in reading
       order and your top three changes. Verdict "clean" only if every
       scenario passes; "tradeoffs-accepted" only if every remaining
@@ -181,10 +187,11 @@ steps:
   - id: revise
     name: Revise
     run-by: {role: lead-pm, execution: agent}
-    inputs: [set, review]
+    inputs: [set, review, guideline_paths]
     outputs: [set]
     prompt: |
-      Repair every finding in the review, through the guideline. Re-check
+      Repair every finding in the review, through the guideline files
+      listed in guideline_paths. Re-check
       the screen table for every principle you changed — the screen is
       the author's self-check and must match the text it sits under.
       Mark any finding you will not repair as an accepted tradeoff, in
@@ -213,18 +220,22 @@ steps:
       process by your decision. "findings" returns the draft to the author
       with your findings; the round counter keeps running, so a draft
       that cannot satisfy you within the cap parks instead of looping.
-      Silence holds the run after the declared window; the anchor
-      carries the resume point.
+      Silence holds the run after the declared window — `hold-after` in
+      this definition's frontmatter — per the process-definition
+      typedef's run lifecycle; the held run keeps its resume point.
     next: route-approval
 
   - id: route-approval
     name: Route on the owner's decision
     run-by: {execution: runtime}
-    inputs: [review]
+    inputs: [review, round]
     branches:
       - label: "success exit: owner approves"
         when: review.verdict in ["clean", "tradeoffs-accepted"]
         next: end
+      - label: "failsafe exit: round >= 6"
+        when: round >= 6
+        next: park
       - else: revise
 
   - id: park
@@ -244,8 +255,8 @@ steps:
 | O1 | draft scope matches the requested scope | mechanical | `draft.checks` |
 | O1 | four-part form; screen present and covering | judged | fitness scenarios 1 and 5, scored in `screen-read` |
 | O2 | every round recorded; judge fresh per round | mechanical | `log-round` set; `screen-read` `fresh-context` |
-| O3 | no path reaches `end` except the owner's approving verdict or `park` | mechanical | `route-approval` branches |
-| O4 | parked drafts carry a filed finding | mechanical | `park.run` |
+| O3 | `end` reached only by the owner's approving verdict or `park`; only the verdict puts the set in force | mechanical | `route-approval` branches |
+| O4 | both loops capped; parked drafts carry a filed finding | mechanical | `route-verdict` and `route-approval` failsafe branches; `park.run` |
 | all | this definition compiles and screens against the principle set | mechanical + judged | the compiler; the principles screen |
 
 ## Sources
@@ -266,3 +277,8 @@ the dual-exit rule) lives in the process-definition typedef, not here.
 | 1 | 2026-08-23 | state | draft → approved by the owner. |
 | 2 | 2026-08-23 | update | Owner direction: decision-ledger references removed — changes stand on their own; history entries and text no longer cite numbered decisions. |
 | 2 | 2026-08-23 | review | Screened against the drafted process-definition fitness set: findings — agent prompts load undeclared context (guideline, fitness set, the existing set for amends; "the anchor" undefined); route-verdict's branch order lets the owner-rejection loop run unbounded, so the promised park cannot fire; O3's witness clause ignores the park path. Repairs await the owner's decision at the meta-chain review. |
+| 3 | 2026-08-23 | update | Owner-directed repairs through the approved process-definition guideline: context loads declared (guideline_paths and fitness_path as data; the existing set rides sources for amendments; prompts reference declared names only; "the anchor" replaced with the run lifecycle's held-run resume point); the owner-rejection loop gains a labeled failsafe (round >= 6 → park); O3/O4 witness clauses corrected for the park path. |
+| 3 | 2026-08-23 | state | Repairs approved by the owner with the meta-chain approval. |
+| 3 | 2026-08-23 | review | Re-screened after repairs: findings — one residual (the glossary duty in draft's prompt references undeclared context); two mechanical stumbles (round absent from route-approval inputs; the hold window unlinked). |
+| 4 | 2026-08-23 | update | Residual repairs: glossary declared as data and as draft's input/output; round added to route-approval's inputs; the hold window linked to `hold-after` and the typedef's run lifecycle. |
+| 4 | 2026-08-23 | review | Final re-screen against the process-definition fitness set: clean — all six scenarios pass; three stumbles (hold-window frontmatter reference, the compiled 'writes: —' summary on set-clause steps, O1's cross-file witness), none a fail. |

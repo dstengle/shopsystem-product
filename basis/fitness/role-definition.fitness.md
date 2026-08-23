@@ -2,7 +2,8 @@
 type: fitness-set
 id: role-definition-fitness
 owner: product-authority
-status: draft
+status: approved
+approved: 2026-08-23
 version: 1
 created: 2026-08-23
 updated: 2026-08-23
@@ -84,3 +85,4 @@ established.
 | Version | Date | Kind | Entry |
 |---|---|---|---|
 | 1 | 2026-08-23 | update | Authored as the role-definition meta-chain's fitness set. |
+| 1 | 2026-08-23 | state | draft → approved by the owner, with the exemplar screens' findings accepted as valid and their repairs directed. |

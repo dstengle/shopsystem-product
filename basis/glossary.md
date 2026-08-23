@@ -4,7 +4,7 @@ id: glossary
 owner: product-authority
 status: approved
 approved: 2026-08-19
-version: 4
+version: 5
 created: 2026-08-19
 updated: 2026-08-23
 ---
@@ -67,6 +67,9 @@ terms uses one of these when one fits.
   artifact, never loaded into context.
 - **conversation** — a scoped, bounded discussion attached to exactly one
   anchor; every conversation belongs to a process.
+- **anchor** — the governed record a conversation attaches to: a session
+  record, a review record, or a work item; carries the conversation's
+  state across transcript boundaries.
 - **conversation type** — discovery (anchor: a session record), review
   (anchor: a review record and its outcomes), or work (anchor: a work
   item).
@@ -141,3 +144,4 @@ terms uses one of these when one fits.
 | 3 | 2026-08-23 | update | Architecture terms added, riding the architecture-principle-set approval: Bounded Context, shop, activity, contract, relationship kind, intent. |
 | 3 | 2026-08-23 | state | The six architecture terms approved with the architecture principle set; pending markers removed. |
 | 4 | 2026-08-23 | update | Owner direction: ruling and experiment-index entries removed with the ledger practice; review and review-record entries rewritten to the outcomes model. |
+| 5 | 2026-08-23 | update | Anchor entry added — the term recurred as an unintroduced-term stumble across three screens. |

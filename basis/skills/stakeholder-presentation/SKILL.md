@@ -2,8 +2,8 @@
 name: stakeholder-presentation
 description: Turn source material into a presentation the product authority can decide
   from in one short reading, verified by an independent cold read before delivery.
-  Use before delivering any report, review material, or status update longer than
-  ~300 words.
+  Use when before delivering any report, review material, or status update longer
+  than ~300 words.
 type: skill
 id: stakeholder-presentation-skill
 status: approved
@@ -111,7 +111,7 @@ Otherwise verdict "findings".
 
 ## log-round — Record the round
 
-Run by the runtime — no agent, no prose. reads: review, round_log · writes: —.
+Run by the runtime — no agent, no prose. reads: review, round_log · writes: round_log.
 
 ```yaml
 set:
@@ -151,7 +151,7 @@ with one sentence saying why.
 
 ## advance-round — Advance the round counter
 
-Run by the runtime — no agent, no prose. reads: round · writes: —.
+Run by the runtime — no agent, no prose. reads: round · writes: round.
 
 ```yaml
 set:

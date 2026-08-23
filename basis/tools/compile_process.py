@@ -191,7 +191,8 @@ def write_flow(path: pathlib.Path, text: str, diagram: str) -> None:
 
 def fmt_io(step: dict) -> str:
     reads = ", ".join(step.get("inputs", [])) or "—"
-    writes = ", ".join(step.get("outputs", [])) or "—"
+    written = step.get("outputs", []) or list(step.get("set", {}).keys())
+    writes = ", ".join(written) or "—"
     return f"reads: {reads} · writes: {writes}"
 
 
@@ -223,7 +224,7 @@ def generate_skill(front: dict, spec: dict, purpose: str, guiding: str, diagram:
     cc = (front.get("annotations") or {}).get("claude-code", {})
     description = purpose
     if cc.get("use-when"):
-        description += f" Use {cc['use-when']}."
+        description += f" Use when {cc['use-when']}."
     fm = {
         "name": front["carried-by"].removesuffix("-skill"),
         "description": description,
