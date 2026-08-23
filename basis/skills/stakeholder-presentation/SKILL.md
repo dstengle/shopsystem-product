@@ -8,12 +8,12 @@ type: skill
 id: stakeholder-presentation-skill
 status: approved
 created: 2026-08-10
-updated: 2026-08-19
+updated: 2026-08-23
 generated: true
 generated-by: basis/tools/compile_process.py
 derived-from: stakeholder-presentation-process
 source: basis/processes/stakeholder-presentation.md
-source-digest: sha256:c41eb44d803f
+source-digest: sha256:98d2d9005350
 activation: model-judged
 promotion: experiment-local
 ---

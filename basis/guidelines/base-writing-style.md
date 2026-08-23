@@ -6,7 +6,7 @@ status: approved
 approved: 2026-08-19
 version: 2
 created: 2026-08-14
-updated: 2026-08-14
+updated: 2026-08-23
 ---
 
 # Base writing style

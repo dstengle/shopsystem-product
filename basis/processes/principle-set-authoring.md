@@ -6,7 +6,7 @@ status: approved
 approved: 2026-08-23
 version: 2
 created: 2026-08-22
-updated: 2026-08-22
+updated: 2026-08-23
 produces: [principle-set]
 carried-by: principle-set-authoring-skill
 condition-language: cel
@@ -265,3 +265,4 @@ the dual-exit rule) lives in the process-definition typedef, not here.
 | 1 | 2026-08-22 | update | Authored as part of the principle-set chain. |
 | 1 | 2026-08-23 | state | draft → approved by the owner. |
 | 2 | 2026-08-23 | update | Owner direction: decision-ledger references removed — changes stand on their own; history entries and text no longer cite numbered decisions. |
+| 2 | 2026-08-23 | review | Screened against the drafted process-definition fitness set: findings — agent prompts load undeclared context (guideline, fitness set, the existing set for amends; "the anchor" undefined); route-verdict's branch order lets the owner-rejection loop run unbounded, so the promised park cannot fire; O3's witness clause ignores the park path. Repairs await the owner's decision at the meta-chain review. |

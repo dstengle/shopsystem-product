@@ -6,7 +6,7 @@ generated: true
 generated-by: basis/tools/compile_principles.py
 derived-from: principles
 source: basis/principles.md
-source-digest: sha256:a6eb2b4a4f7c
+source-digest: sha256:a285eac81411
 scope: working
 ---
 

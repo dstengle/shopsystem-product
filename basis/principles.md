@@ -5,7 +5,7 @@ scope: working
 owner: product-authority
 status: approved
 approved: 2026-08-22
-version: 6
+version: 7
 created: 2026-08-10
 updated: 2026-08-23
 ---
@@ -33,10 +33,14 @@ are defined in this basis's sibling documents.
   add no obligations — every implication must be derivable from the
   statement, or it is a misfiled rule.
 
-A principle is good when its statement is testable, it rejects something
-we would otherwise do (Spool), it directs without prescribing method
-(Rumelt), it is not a claim every shop would make (Lencioni), and it implies at least one practice and one
-check. The fitness screen at the end of this document applies these tests
+A principle is good when its statement is testable (TOGAF, The Open
+Group Architecture Framework: understandable, complete, consistent), it
+rejects something we would otherwise do (Jared Spool, "Creating Great
+Design Principles"), it directs without prescribing method (Richard
+Rumelt, *Good Strategy Bad Strategy*), it is not a claim every shop
+would make (Patrick Lencioni, "Make Your Values Mean Something",
+Harvard Business Review, 2002), and it implies at least one practice
+and one check. The fitness screen at the end of this document applies these tests
 to the principles above it.
 
 ---
@@ -298,3 +302,4 @@ associate with specific work. (Least privilege, applied to context.)
 | 5 | 2026-08-23 | update | Round-3 repairs under the standing generic-rationale rule: external-standards-first rationale gains its generic failure example; the feedback-loops update bullet made self-contained; "already" dropped from the reconcile implication. |
 | 5 | 2026-08-23 | review | Verification cold read round 4: clean — all scenarios pass; 5 polish-level stumbles (bare surname citations, the "projects" verb, two implicit actors), none a fail. |
 | 6 | 2026-08-23 | update | Owner direction: decision-ledger references removed — changes stand on their own; history entries and text no longer cite numbered decisions. |
+| 7 | 2026-08-23 | update | Close-out polish: the opening's test sources named in full (Spool, Rumelt, Lencioni works cited; TOGAF expanded) — the standing cold-read stumble retired. |

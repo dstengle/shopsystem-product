@@ -10,7 +10,7 @@ status: approved
 approved: 2026-08-19
 version: 3
 created: 2026-08-10
-updated: 2026-08-11
+updated: 2026-08-23
 ---
 
 # Cold reviewer
@@ -45,3 +45,4 @@ fitness set of the artifact type under review (currently
 | 1 | 2026-08-19 | state | draft → approved. |
 | 2 | 2026-08-23 | update | Competencies generalized to the fitness set of the artifact type under review by owner direction. |
 | 3 | 2026-08-23 | update | Owner direction: decision-ledger references removed — changes stand on their own; history entries and text no longer cite numbered decisions. |
+| 3 | 2026-08-23 | review | Screened against the drafted role-definition fitness set: findings — invocation cadence is sequencing text; the competency list embeds mutable state ("currently ..."); the honesty bullet is a character trait; "annex" undefined. Repairs await the owner's decision at the meta-chain review. |

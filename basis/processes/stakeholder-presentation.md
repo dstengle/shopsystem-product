@@ -6,7 +6,7 @@ status: approved
 approved: 2026-08-19
 version: 2
 created: 2026-08-10
-updated: 2026-08-19
+updated: 2026-08-23
 produces: [decision-brief]
 carried-by: stakeholder-presentation-skill
 condition-language: cel

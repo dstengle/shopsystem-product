@@ -5,7 +5,7 @@ scope: architecture
 owner: product-authority
 status: approved
 approved: 2026-08-23
-version: 5
+version: 6
 created: 2026-08-23
 updated: 2026-08-23
 derives-from:
@@ -60,10 +60,13 @@ rationale, and implications.
   add no obligations — every implication must be derivable from the
   statement, or it is a misfiled rule.
 
-A principle is good when its statement is testable, it rejects work we
-would otherwise do (Spool), it directs without prescribing method
-(Rumelt), it is not a claim every shop would make (Lencioni), and it
-implies at least one practice and one check. The fitness screen at the
+A principle is good when its statement is testable (TOGAF, The Open
+Group Architecture Framework: understandable, complete, consistent), it
+rejects work we would otherwise do (Jared Spool, "Creating Great Design
+Principles"), it directs without prescribing method (Richard Rumelt,
+*Good Strategy Bad Strategy*), it is not a claim every shop would make
+(Patrick Lencioni, "Make Your Values Mean Something", Harvard Business
+Review, 2002), and it implies at least one practice and one check. The fitness screen at the
 end of this document applies these tests to the principles above it.
 
 ---
@@ -329,3 +332,4 @@ either matches what anyone asked for.
 | 4 | 2026-08-23 | review | Cold-read round 4: clean under the tightened scenarios 2 and 4; 6 polish-level stumbles, none a fail. |
 | 4 | 2026-08-23 | state | draft → approved by the owner's ruling ; Phase 0 exit condition met. |
 | 5 | 2026-08-23 | update | Owner direction: decision-ledger references removed — changes stand on their own; history entries and text no longer cite numbered decisions. |
+| 6 | 2026-08-23 | update | Close-out polish: the opening's test sources named in full (Spool, Rumelt, Lencioni works cited; TOGAF expanded) — the standing cold-read stumble retired. |

@@ -7,7 +7,7 @@ status: approved
 approved: 2026-08-22
 version: 2
 created: 2026-08-19
-updated: 2026-08-19
+updated: 2026-08-23
 ancestry: [definition, fitness-set]
 ---
 
