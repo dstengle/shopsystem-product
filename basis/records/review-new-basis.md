@@ -5,7 +5,7 @@ status: open
 conversation-type: review
 work-item: lead-kmrd4
 created: 2026-08-10
-updated: 2026-08-22
+updated: 2026-08-23
 ---
 
 # Review record: the new-basis experiment
@@ -292,14 +292,31 @@ is records-free per the Seed rule.
   Brief-029 is decided — the second stakeholder-presentation run to
   complete through decision.
 
+- **R34 (2026-08-23).** Principle rationales are re-ruled generic —
+  authority direction issued mid-run in the architecture-set authoring:
+  a principle's rationale MUST use generic examples, MUST NOT reference
+  the product's operational history (other artifacts, issues,
+  incidents, rulings, counts), and MAY cite well-known external
+  references as support. This generalizes R32's one-time scrub into a
+  standing authoring rule. Applied on `rebaseline` (commit `7c6aaf2`):
+  guideline rule 3 rewritten, fitness scenario 3 and its rubric row
+  rewritten, the principle-set typedef gains the rule; the in-flight
+  architecture draft's rationales scrubbed (R27 citation, census
+  counts, migration-plan locator removed) and re-screened — round 2
+  fresh cold read returned clean under the amended fitness set. The
+  screened draft awaits the authority's terminal ruling at
+  `authority-approve`.
+
 Resume point: the architecture principle set is authored through the
 approved chain — the first authoring conducted BRANCH-RESIDENT per
 R31: a session in the `rebaseline` worktree runs the
 `principle-set-authoring` process (author drafts through the
 guideline, pulling `main:01-principles.md` as keeper source;
 fresh-context screen-read; the authority's ruling is the terminal
-gate). Its approval exits Phase 0 and opens Phase 1 (meta-chains
-first, R29). The shop is frozen (R27).
+gate). The run has reached `authority-approve`: draft at
+`rebaseline:basis/architecture-principles.md`, two clean cold-read
+rounds logged in its `verified-by`. Its approval exits Phase 0 and
+opens Phase 1 (meta-chains first, R29). The shop is frozen (R27).
 
 Rev 3 was delivered via `briefs/brief-026.md`; before ruling, the
 authority redirected the execution model (R27), and the plan was
