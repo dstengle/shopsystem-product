@@ -5,7 +5,7 @@ owner: product-authority
 status: approved
 approved: 2026-08-23
 created: 2026-08-22
-updated: 2026-08-22
+updated: 2026-08-23
 target-type: principle-set
 judged: true
 executable: false
@@ -40,12 +40,13 @@ Scenario 2: the statement decides alone
   Then the reviewer can answer yes or no without reading the rationale
   or the implications
 
-Scenario 3: the rationale holds evidence
+Scenario 3: the rationale shows a generic failure
   Given any principle's rationale
   When its evidence is checked
-  Then it names the failure the rule prevents and cites held evidence —
-  an incident, a count, a dated observation — or a named external
-  source, never bare best practice
+  Then it names the failure the rule prevents with a generic example,
+  references no operational history of the product — artifacts, issues,
+  incidents, rulings, or counts — and cites, at most, well-known
+  external references as support
 
 Scenario 4: implications are a derivable price tag
   Given each implication
@@ -73,7 +74,7 @@ Scenario 6: each principle rejects something
 | 1 (And) — four parts only | "For each principle, list any content outside name, statement, rationale, implications. Empty list = pass." |
 | 1 (And) — slug citations | "List every cross-reference to a principle made by number or position instead of slug. Empty list = pass." |
 | 2 — statement decides alone | "For each statement: could you accept or reject a concrete piece of work from the statement alone? Cite any statement that needs its rationale to decide." |
-| 3 — rationale holds evidence | "For each rationale, quote the evidence: an incident, a count, a date, or a named source. Any rationale resting on unnamed best practice = fail, cite it." |
+| 3 — rationale shows a generic failure | "For each rationale, quote the generic failure example. Any reference to the product's operational history — an artifact, issue, incident, ruling, or count — = fail, cite it. Any external reference cited must be a well-known published source, standard, or named law." |
 | 4 — implications derivable, actor-named | "For each implication, name the actor and the statement clause it follows from. Any implication with no actor or no clause = fail, cite it." |
 | 5 — screen covers the set | "Is there a column per principle and a row per test? Is any claimed pass one you cannot reproduce? Cite mismatches; none = pass." |
 | 6 — rejects something | "For each principle, state the work it rejects and the opposite rule. If it rejects nothing we would otherwise do, or no honest shop could adopt the opposite, = fail." |

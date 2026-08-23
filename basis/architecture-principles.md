@@ -16,6 +16,15 @@ verified-by:
     verdict: clean
     notes: all 6 scenarios + mechanical check pass; 7 stumbles reported
       in the round log, none a scenario fail
+  - round: 2
+    role: cold-reviewer
+    model: claude-fable-5
+    date: 2026-08-23
+    verdict: clean
+    notes: re-screen after the authority's rationale re-rule (generic
+      examples only, no product operational history); all scenarios
+      pass under the amended fitness set; 6 stumbles reported, none a
+      scenario fail
 ---
 
 # Architecture principles
@@ -49,7 +58,8 @@ rationale, and implications.
   appear in capitals) and is testable: shown a piece of work, you can
   answer yes or no.
 - The **rationale** says why the rule earns its place: the failure it
-  prevents, with evidence where we hold it or a named external source.
+  prevents, shown as a generic example; well-known external references
+  may support it, the product's own history never appears.
 - The **implications** are the price tag: the concrete changes each named
   actor absorbs to honor the rule. Every implication must be derivable
   from the statement; none adds a new obligation.
@@ -75,14 +85,12 @@ configuration and without asking its maintainers.
 
 **Rationale.** When an entity's shape lives only in its internals, every
 consumer, coordinator, and reviewer pays to rediscover it, and each
-rediscovery reaches a different answer. This shop holds the failure:
-the restructuring ruling R27 (2026-08-22, the migration review record,
-`main:basis/records/review-new-basis.md`, read via `git show`) names
-ad-hoc pre-state verification — learning a shop's actual state by
-inspection because no description could be trusted — as a growth-mode
-problem that would sink a rebuild the same way it sank the old corpus.
-Parnas made the design case in 1972: a module is known by what its
-interface states, not by what its implementation happens to do. Without
+rediscovery reaches a different answer: nobody can say what a service
+guarantees without opening its source, the answer holds only until the
+next commit, and no description can be trusted without re-inspecting
+the thing it describes. Parnas made the design case in 1972: a module
+is known by what its interface states, not by what its implementation
+happens to do. Without
 `knowable-shape`, `contracts-between-contexts` is speculative — no one
 can write a contract for an entity whose shape no one can state.
 
@@ -164,11 +172,11 @@ incomplete description or contract — not as the reader's burden.
 
 **Rationale.** The cost of working on one part of the product has to
 stay proportional to that part, or growth taxes every participant; for
-agents the tax is literal — context loaded is context paid for. This
-shop holds the count: by the 2026-08-22 census the old corpus had
-reached 310 records and 893 scenario pins with no designated reading
-levels, and the authority chose freezing the shop and rebaselining over
-continuing to work in it (migration plan, rev 6). This rule applies the
+agents the tax is literal — context loaded is context paid for. The
+familiar endpoint of the failure: a corpus with no designated reading
+levels grows until a one-line change is one nobody dares make without
+reading the whole system first, and every newcomer must read far beyond
+the task at hand before starting it. This rule applies the
 working set's `least-context` to the designed system — the lineage is
 declared in this document's frontmatter: `least-context` caps what an
 activity loads, and a design obeying this rule is what makes that cap

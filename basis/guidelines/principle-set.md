@@ -6,7 +6,7 @@ owner: product-authority
 status: approved
 approved: 2026-08-23
 created: 2026-08-22
-updated: 2026-08-22
+updated: 2026-08-23
 ---
 
 # Guideline: principle set
@@ -17,7 +17,8 @@ or prices — nothing decorates.
 
 **Highlights (the layer compiled into generating context):** statement
 decidable yes/no on one piece of work · normative keywords in statements
-only · rationale cites a held failure, never bare best practice ·
+only · rationale shows a generic failure, never the product's operational
+history ·
 implications name the actor who absorbs the price · what the principle
 rejects lives inside the four parts · cite principles by slug, never by
 number.
@@ -52,14 +53,17 @@ statements appear only in the opening's keyword-definition sentence
 *Derived check:* mechanical — the grep row of the principle-set typedef's
 derived review checklist.
 
-**3. Ground the rationale in a held failure.**
-Before: "Industry best practice recommends a single source of truth."
-After: "Consuming repos copied schema files instead of referencing the
-registry and drifted from the real schemas within days."
+**3. Ground the rationale in a generic failure, never product history.**
+Before: "Ad-hoc pre-state verification was named a growth-mode problem
+by ruling R27 (2026-08-22, the migration review record)."
+After: "A consumer that copies a schema instead of referencing it
+drifts from the real schema within days."
 *Test:* read each rationale. *Criterion:* it names the failure the rule
-prevents and cites evidence we hold — an incident, a count, a dated
-observation — or a named external source. *Decision:* yes/no per
-rationale.
+prevents with a generic example any reader can recognize without knowing
+our history; it references no operational history of the product —
+artifacts, issues, incidents, rulings, counts; a well-known external
+reference (a published work, a standard, a named law) may support it.
+*Decision:* yes/no per rationale.
 *Derived check:* judged — fitness scenario 3.
 
 **4. Price implications on a named actor.**

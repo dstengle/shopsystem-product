@@ -6,7 +6,7 @@ owner: product-authority
 status: approved
 approved: 2026-08-22
 created: 2026-08-19
-updated: 2026-08-20
+updated: 2026-08-23
 ancestry: [definition, principle-set]
 ---
 
@@ -37,6 +37,10 @@ design work happens), `owner`, `status`, `created`, `updated`.
 - Where a principle in one set applies another set's principle to its own
   level, it declares the lineage (`derives-from`) rather than restating
   the rule as a second authority.
+- A rationale MUST use generic examples and MUST NOT reference the
+  product's operational history — other artifacts, issues, incidents,
+  rulings, counts; it MAY cite well-known external references as
+  support. *(amended 2026-08-23 by authority direction.)*
 
 ## Required sections
 
@@ -47,7 +51,8 @@ design work happens), `owner`, `status`, `created`, `updated`.
 2. **The principles** — each: a heading with name and kebab-case slug,
    then **Statement** (the rule; carries the only normative keywords —
    MUST/SHOULD/MAY per BCP 14 — and is yes/no testable), **Rationale**
-   (the failure prevented, with evidence where held), **Implications**
+   (the failure prevented, shown as a generic example; well-known
+   external sources may support it), **Implications**
    (the price tag: derivable from the statement, each naming the actor
    who absorbs the change; never a new obligation).
 3. **Fitness screen** — a table applying the opening's tests to every
