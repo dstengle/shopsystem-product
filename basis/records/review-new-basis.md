@@ -268,14 +268,24 @@ instances of one type; the run's material records deltas D1–D10 and
 friction findings F1–F7
 (`rebaseline:basis/records/principle-set-chain-review-material.md`).
 
-Resume point: the authority rules on brief-029 (delivered,
-stakeholder-presentation, 4 cold-read rounds) — ask 1 the
-chain-and-exemplar verdict (gates the stamps), ask 2 charter the
-architecture principle set (gates Phase 0 exit), asks 3–7 resolve on
-silence. On the rulings: stamp the chain links, apply the ask-4
-amendments, file the F-findings as beads, move the review material to
-`main` record-keeping, and start the architecture-set authoring
-through the approved chain. The shop is frozen (R27).
+Brief-029 asks 3–7 resolved by their silence defaults (2026-08-23,
+the authority having exchanged several rulings since delivery without
+objection): ask 3 rides ask 2's review; ask 4's amendments await the
+stamps (F4 filed); ask 5's provisional handling stands; ask 6's
+findings filed as beads lead-kmrd4.7–.12 and the F6 split (fitness
+screen = author's self-check, fitness set = judge's rubric) adopted
+as the standing resolution; ask 7's per-run done minimums stand. The
+chain-review material moved to `main` record-keeping
+(`basis/records/principle-set-chain-review-material.md`); the branch
+is records-free per the Seed rule.
+
+Resume point: the authority's TWO explicit rulings on brief-029 —
+ask 1, the chain-and-exemplar verdict (tradeoffs-accepted stamps the
+four links; findings returns the chain), and ask 2, charter the
+architecture principle set (gates Phase 0 exit). On approval: stamp
+the links, apply the ask-4 amendments, close F4, and Phase 1 begins —
+branch-resident per R31 (meta-chains first per R29). The shop is
+frozen (R27).
 
 Rev 3 was delivered via `briefs/brief-026.md`; before ruling, the
 authority redirected the execution model (R27), and the plan was
