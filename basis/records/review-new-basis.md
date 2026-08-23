@@ -329,6 +329,24 @@ is records-free per the Seed rule.
   the findings are logged in this entry as the verification's round
   log.
 
+- **R36 (2026-08-23).** Artifacts get versions and a Document History —
+  authority direction: every authored artifact carries an integer
+  `version` (bumped on each content update) in addition to its dates,
+  and closes with a **Document History** section — a table of
+  `update`, `review`, and `state` entries, each tied to the version it
+  applies to. All change-log forms consolidate there: inline amendment
+  notes, quoted change headers, and review-log frontmatter (the
+  `verified-by` structure) are ruled out; generated renderings are
+  exempt, their history being their source's. Applied on `rebaseline`
+  (commit `225da2b`): the rule homed in the `definition` typedef
+  (§Required frontmatter, §Required sections 3) with a mechanical lint
+  check behind it; all 40 authored basis artifacts stamped with
+  reconstructed histories (the ledger-known files in full; seed files
+  point at this ledger for pre-standard history); the architecture
+  set's four screen rounds moved from `verified-by` into its Document
+  History; renderings regenerated. Naming fixed as "Document History"
+  everywhere.
+
 Resume point: the architecture principle set is authored through the
 approved chain — the first authoring conducted BRANCH-RESIDENT per
 R31: a session in the `rebaseline` worktree runs the
