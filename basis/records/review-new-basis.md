@@ -279,13 +279,27 @@ chain-review material moved to `main` record-keeping
 (`basis/records/principle-set-chain-review-material.md`); the branch
 is records-free per the Seed rule.
 
-Resume point: the authority's TWO explicit rulings on brief-029 —
-ask 1, the chain-and-exemplar verdict (tradeoffs-accepted stamps the
-four links; findings returns the chain), and ask 2, charter the
-architecture principle set (gates Phase 0 exit). On approval: stamp
-the links, apply the ask-4 amendments, close F4, and Phase 1 begins —
-branch-resident per R31 (meta-chains first per R29). The shop is
-frozen (R27).
+- **R33 (2026-08-23).** Brief-029 is ruled: ask 1
+  **tradeoffs-accepted** — the principle-set chain's four new links
+  are stamped approved (guideline, fitness set, authoring process,
+  regenerated skill digest fc5a7a73accf; branch commit `cc5060e`),
+  the exemplar's one tradeoff standing as accepted; ask 2 **charter**
+  — the architecture principle set is chartered as its own instance,
+  covering deltas D1–D7 and D9, authored through the newly approved
+  chain; Phase 0 exits when the authority approves that set. The
+  ask-4 amendments are applied with the stamps (typedef Produced-by;
+  cold-reviewer competencies) and finding F4 (lead-kmrd4.10) closes.
+  Brief-029 is decided — the second stakeholder-presentation run to
+  complete through decision.
+
+Resume point: the architecture principle set is authored through the
+approved chain — the first authoring conducted BRANCH-RESIDENT per
+R31: a session in the `rebaseline` worktree runs the
+`principle-set-authoring` process (author drafts through the
+guideline, pulling `main:01-principles.md` as keeper source;
+fresh-context screen-read; the authority's ruling is the terminal
+gate). Its approval exits Phase 0 and opens Phase 1 (meta-chains
+first, R29). The shop is frozen (R27).
 
 Rev 3 was delivered via `briefs/brief-026.md`; before ruling, the
 authority redirected the execution model (R27), and the plan was
