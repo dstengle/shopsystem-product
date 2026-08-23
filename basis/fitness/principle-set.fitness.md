@@ -34,11 +34,16 @@ Scenario 1: good is defined before any instance, and only the four parts appear
   rationale, and implications — nothing else
   And every cross-reference to a principle uses its slug, never a number
 
-Scenario 2: the statement decides alone
+Scenario 2: the statement decides alone, clause by clause
   Given any principle's statement and one concrete piece of work
   When a reviewer holds the work against the statement alone
   Then the reviewer can answer yes or no without reading the rationale
   or the implications
+  And a statement carrying more than one obligation presents each
+  obligation as its own bullet, with conditional logic kept inside its
+  bullet
+  And every term the decision turns on is defined in the statement, the
+  set's opening, or the glossary
 
 Scenario 3: the rationale shows a generic failure
   Given any principle's rationale
@@ -53,6 +58,7 @@ Scenario 4: implications are a derivable price tag
   When it is traced back to its principle's statement
   Then it names the actor who absorbs the change, follows from a
   statement clause, and adds no obligation the statement does not carry
+  And each implication stands as its own bullet
 
 Scenario 5: the screen covers the set
   Given the set's fitness screen table
@@ -73,9 +79,9 @@ Scenario 6: each principle rejects something
 | 1 (Then) — good defined first | "Does a self-definition (the four parts and the tests) appear before the first principle? Yes/no; cite the heading." |
 | 1 (And) — four parts only | "For each principle, list any content outside name, statement, rationale, implications. Empty list = pass." |
 | 1 (And) — slug citations | "List every cross-reference to a principle made by number or position instead of slug. Empty list = pass." |
-| 2 — statement decides alone | "For each statement: could you accept or reject a concrete piece of work from the statement alone? Cite any statement that needs its rationale to decide." |
+| 2 — statement decides alone, clause by clause | "For each statement: could you accept or reject a concrete piece of work from the statement alone? Is each obligation its own bullet where more than one is carried? Name any term the decision turns on that is undefined in the statement, the opening, or the glossary. A fused multi-obligation sentence or an undefined decision term = fail, cite it." |
 | 3 — rationale shows a generic failure | "For each rationale, quote the generic failure example. Any reference to the product's operational history — an artifact, issue, incident, ruling, or count — = fail, cite it. Any external reference cited must be a well-known published source, standard, or named law." |
-| 4 — implications derivable, actor-named | "For each implication, name the actor and the statement clause it follows from. Any implication with no actor or no clause = fail, cite it." |
+| 4 — implications derivable, actor-named | "For each implication, name the actor and the statement clause it follows from. Any implication with no actor or no clause, or two implications fused in one bullet = fail, cite it." |
 | 5 — screen covers the set | "Is there a column per principle and a row per test? Is any claimed pass one you cannot reproduce? Cite mismatches; none = pass." |
 | 6 — rejects something | "For each principle, state the work it rejects and the opposite rule. If it rejects nothing we would otherwise do, or no honest shop could adopt the opposite, = fail." |
 

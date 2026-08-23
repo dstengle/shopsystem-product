@@ -19,7 +19,8 @@ or prices — nothing decorates.
 decidable yes/no on one piece of work · normative keywords in statements
 only · rationale shows a generic failure, never the product's operational
 history ·
-implications name the actor who absorbs the price · what the principle
+implications name the actor who absorbs the price · one obligation or
+implication per bullet; rationales stay prose · what the principle
 rejects lives inside the four parts · cite principles by slug, never by
 number.
 
@@ -96,6 +97,23 @@ slug, never a number or a position. *Decision:* yes/no per reference.
 *Derived check:* judged — fitness scenario 1's slug-citation assertion;
 a mechanical reference lint is possible later and is listed as a
 chain-review item, not assumed.
+
+**7. Give each obligation its own bullet.**
+Before: "Anything one context expects of another MUST pass through a
+named, versioned contract, and a context MUST NOT rely on anything the
+contract does not state, and contexts MUST NOT coordinate outside it."
+After: "- Anything one context expects of another MUST pass through a
+named, versioned contract. / - A context MUST NOT rely on anything the
+contract does not state." (as a real bulleted list)
+*Test:* list each statement's obligations and its bullets; parse each
+implications block. *Criterion:* a statement carrying more than one
+obligation presents one obligation per bullet, with conditional logic
+kept inside its bullet; a single-obligation statement stays one
+sentence; implications list one implication per bullet; rationales stay
+prose; enumerations state whether they are closed. *Decision:* yes/no
+per principle.
+*Derived check:* judged — fitness scenarios 2 (statements) and 4
+(implications).
 
 ## Sources
 

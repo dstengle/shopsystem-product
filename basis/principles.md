@@ -16,6 +16,16 @@ updated: 2026-08-23
 > are not necessary to rationalize the principles, and this branch
 > carries no referent for them. Statements unchanged.
 
+> Amended 2026-08-23 by authority direction (form only): statements and
+> implications re-formed as one obligation or implication per bullet;
+> wording preserved modulo the sentence splits. No obligation added,
+> removed, or reworded, with three disclosed exceptions the
+> verification screen forced: the feedback-loops measurement bullet
+> split into its two obligations; the governed-context maintainer
+> implication split into three, repeating the actor; the least-context
+> session-load implication gained its missing actor ("Whoever runs a
+> session").
+
 ## What a good principle looks like
 
 A principle is a standing rule about how we work, in four parts: a name, a
@@ -24,13 +34,15 @@ statement, a rationale, and implications.
 - The **statement** is the rule. It carries the only normative keywords
   (MUST, SHOULD, MAY — interpreted per BCP 14 when, and only when, they
   appear in capitals) and is testable: shown a piece of work, you can
-  answer yes or no.
+  answer yes or no. A statement carrying more than one obligation
+  presents one obligation per bullet.
 - The **rationale** says why the rule earns its place: the failure it
-  prevents, with evidence where we have it.
-- The **implications** are the price tag: the concrete changes each named
-  actor absorbs to honor the rule. They add no obligations — every
-  implication must be derivable from the statement, or it is a misfiled
-  rule.
+  prevents, shown as a generic example; well-known external references
+  may support it. Rationales stay prose.
+- The **implications** are the price tag: one implication per bullet,
+  the concrete change each named actor absorbs to honor the rule. They
+  add no obligations — every implication must be derivable from the
+  statement, or it is a misfiled rule.
 
 A principle is good when its statement is testable, it rejects something
 we would otherwise do (Spool), it directs without prescribing method
@@ -42,10 +54,14 @@ to the principles above it.
 
 ## Define what good looks like up front (`define-good-up-front`)
 
-**Statement.** Every activity MUST operate from a stated definition of
-what good looks like. That definition MUST drive both the performance of
-the activity and its check, and the check MUST sit with a different role
-holding a different accountability.
+**Statement.**
+
+- Every activity MUST operate from a stated definition of what good
+  looks like.
+- That definition MUST drive both the performance of the activity and
+  its check.
+- The check MUST sit with a different role holding a different
+  accountability.
 
 **Rationale.** A definition applied only at the check puts the full weight
 of quality after implementation, where rework is most frequent and most
@@ -54,42 +70,55 @@ off outside perspective. Two roles reading one definition give both
 prevention and challenge. (Deming: cease dependence on inspection; build
 quality in — and still inspect.)
 
-**Implications.** Authors of new activities ship the definition with the
-activity, or the activity does not enter the system. A check that cannot
-cite the definition clause it projects has no standing; anyone may remove
-it without a new decision. Reviewers compare work to the written
-definition; their own taste is not the standard. The same role never both
-performs and checks an activity — process definitions name both roles, so
-this is checkable mechanically. A failed spot check sends the maintainer
-to the definition or the check, not only to the artifact. Whoever
-proposes a new activity writes the proposal as a draft instance of the
-activity's type, so the type's derived checks run on the proposal before
-any reviewer reads it.
+**Implications.**
+
+- Authors of new activities ship the definition with the activity, or
+  the activity does not enter the system.
+- A check that cannot cite the definition clause it projects has no
+  standing; anyone may remove it without a new decision.
+- Reviewers compare work to the written definition; their own taste is
+  not the standard.
+- The same role never both performs and checks an activity — process
+  definitions name both roles, so this is checkable mechanically.
+- A failed spot check sends the maintainer to the definition or the
+  check, not only to the artifact.
+- Whoever proposes a new activity writes the proposal as a draft
+  instance of the activity's type, so the type's derived checks run on
+  the proposal before any reviewer reads it.
 
 ## Govern the generating context (`governed-context`)
 
-**Statement.** Everything loaded into an agent's generating context —
-prompts, skills, memories, primers — MUST trace to a approved definition or
-a governed record; an unsanctioned context channel MUST NOT
-be created or retained.
+**Statement.**
+
+- Everything loaded into an agent's generating context — prompts,
+  skills, memories, primers — MUST trace to a approved definition or a
+  governed record.
+- An unsanctioned context channel MUST NOT be created or retained.
 
 **Rationale.** What an agent reads determines what it produces, so an
 ungoverned context input is an ungoverned generator. The failure
 mode this prevents: notes accumulate in channels no process governs, and
 work comes to depend on content no one has ever reviewed.
 
-**Implications.** Maintainers version every context input, promote changes
-through a gated step, and can audit which definition version was in force
-when an artifact was produced. Whoever operates a context channel
-closes it when it lacks a defined process and a consumer. Tool owners ship each tool's skill
-with the tool, in lockstep.
+**Implications.**
+
+- Maintainers version every context input.
+- Maintainers promote changes through a gated step.
+- Maintainers can audit which definition version was in force when an
+  artifact was produced.
+- Whoever operates a context channel closes it when it lacks a defined
+  process and a consumer.
+- Tool owners ship each tool's skill with the tool, in lockstep.
 
 ## Every activity belongs to a process (`no-orphan-activities`)
 
-**Statement.** Every activity in the system MUST be part of a defined
-process with stated expected outcomes, expected outputs, and possible
-resulting actions; every long-running loop MUST declare its exit — a
-reached-state success exit, a round or budget cap, or both.
+**Statement.**
+
+- Every activity in the system MUST be part of a defined process with
+  stated expected outcomes, expected outputs, and possible resulting
+  actions.
+- Every long-running loop MUST declare its exit — a reached-state
+  success exit, a round or budget cap, or both.
 
 **Rationale.** An activity outside a process has no consumer for its
 output, so the output piles up unread or is thrown away. Both
@@ -97,16 +126,22 @@ failure modes follow: feedback stops flowing when nothing consumes it, and
 the signal migrates into ungoverned channels instead. Any runtime can follow a process defined at this
 level — the requirement is a definition, not a workflow engine.
 
-**Implications.** Reviewers treat an activity with no process as a defect,
-not a convenience. Authors have no cost excuse: a process definition is a
-header plus a data section and a steps section. Reviewers fail any loop
-without a declared exit.
+**Implications.**
+
+- Reviewers treat an activity with no process as a defect, not a
+  convenience.
+- Authors have no cost excuse: a process definition is a header plus a
+  data section and a steps section.
+- Reviewers fail any loop without a declared exit.
 
 ## Use defined terms (`use-defined-terms`)
 
-**Statement.** Important terms MUST be defined in the system, in the
-glossary or as a schema element. When more than one term could carry a
-statement, the writer MUST use a defined term if one is available.
+**Statement.**
+
+- Important terms MUST be defined in the system, in the glossary or as
+  a schema element.
+- When more than one term could carry a statement, the writer MUST use
+  a defined term if one is available.
 
 **Rationale.** The defined-term list — glossary entries plus schema
 element names — restricts the available language, and a restricted
@@ -115,20 +150,25 @@ two words for one thing appear within days of each other, and every
 reader of both must learn they are the same.
 (Controlled-vocabulary practice: ASD-STE100, ISO 704.)
 
-**Implications.** Writers check the glossary and the schemas before
-coining a term; an undefined important term is a defect the author
-repairs by defining it or replacing it with a defined one. Schema authors
-are vocabulary authors: naming a field adds a term to the restricted
-language. Reviewers flag near-synonym pairs as drift; the losing term is
-removed everywhere, not deprecated in place. A term is important when a
-reader must know it to perform or check the work; when in doubt, the
-writer defines it.
+**Implications.**
+
+- Writers check the glossary and the schemas before coining a term; an
+  undefined important term is a defect the author repairs by defining
+  it or replacing it with a defined one.
+- Schema authors are vocabulary authors: naming a field adds a term to
+  the restricted language.
+- Reviewers flag near-synonym pairs as drift; the losing term is
+  removed everywhere, not deprecated in place.
+- A term is important when a reader must know it to perform or check
+  the work; when in doubt, the writer defines it.
 
 ## Use external standards first (`external-standards-first`)
 
-**Statement.** A definition MUST adopt an established external form where
-one fits; bespoke structure MUST be justified by a recorded gap in the
-form it rejects.
+**Statement.**
+
+- A definition MUST adopt an established external form where one fits.
+- Bespoke structure MUST be justified by a recorded gap in the form it
+  rejects.
 
 **Rationale.** Established forms carry decades of failure-tested
 decisions no fresh invention can match, and readers arrive already
@@ -136,64 +176,87 @@ knowing them. In practice every element of a
 definition system has an established form, and the only bespokeness that
 survives review is the composition of adopted parts.
 
-**Implications.** Authors search prior art before drafting and name every
-adopted form in the definition's Sources section. Reviewers ask "what
-standard is this from" and treat unjustified invention as a defect.
+**Implications.**
+
+- Authors search prior art before drafting and name every adopted form
+  in the definition's Sources section.
+- Reviewers ask "what standard is this from" and treat unjustified
+  invention as a defect.
 
 ## Single source of truth (`single-source-of-truth`)
 
-**Statement.** Every fact, rule, or definition MUST have exactly one
-authoritative home; every other appearance MUST be a reference or a
-generated rendering.
+**Statement.**
+
+- Every fact, rule, or definition MUST have exactly one authoritative
+  home.
+- Every other appearance MUST be a reference or a generated rendering.
 
 **Rationale.** Copies drift and each drifting copy trains a different
 behavior. Copies of schemas drift from their source, and
 pinned example links stop conforming as the source moves on.
 
-**Implications.** Writers link or `$ref` instead of restating. Only the
-compiler touches renderings; a hand edit to a rendering is reverted, not
-merged. Reviewers treat a second authoritative statement of one rule as a
-defect and remove the losing copy everywhere.
+**Implications.**
+
+- Writers link or `$ref` instead of restating.
+- Only the compiler touches renderings; a hand edit to a rendering is
+  reverted, not merged.
+- Reviewers treat a second authoritative statement of one rule as a
+  defect and remove the losing copy everywhere.
 
 ## Feedback loops have consumers (`feedback-loops-with-consumers`)
 
-**Statement.** Every feedback channel MUST name its consumer and the
-resulting action; the effectiveness of processes, tools, and prompts MUST
-be measured, and their definitions MUST be updated from what is measured.
+**Statement.**
+
+- Every feedback channel MUST name its consumer and the resulting
+  action.
+- The effectiveness of processes, tools, and prompts MUST be measured.
+- Their definitions MUST be updated from what is measured.
 
 **Rationale.** A channel without a consumer dies silently and takes its
 signal with it: when nothing consumes a channel, senders stop sending
 and the signal moves into ungoverned channels. Judged checks decay the same way when no one
 grades the judge.
 
-**Implications.** Whoever opens a channel names its consumer and resulting
-action at creation, or the channel is closed. Owners of judged checks
-grade a sample of verdicts on a standing calibration schedule. Definition
-owners treat measured ineffectiveness as an obligation to update the
-definition, not as background noise.
+**Implications.**
+
+- Whoever opens a channel names its consumer and resulting action at
+  creation, or the channel is closed.
+- Owners of judged checks grade a sample of verdicts on a standing
+  calibration schedule.
+- Definition owners treat measured ineffectiveness as an obligation to
+  update the definition, not as background noise.
 
 ## Delivery is verified in the running system (`delivery-verified`)
 
-**Statement.** Work MUST be counted done only when its effect is
-demonstrated in the running system; artifacts existing, checks passing,
-or reviews approving MUST NOT count as done on their own.
+**Statement.**
+
+- Work MUST be counted done only when its effect is demonstrated in
+  the running system.
+- Artifacts existing, checks passing, or reviews approving MUST NOT
+  count as done on their own.
 
 **Rationale.** The gap between green artifacts and working systems is
 where the worst defects live: builds publish without the built thing
 ever running, and checks stay green while decided behavior goes
 unrealized.
 
-**Implications.** Definition authors name the runtime demonstration in
-every Definition of Done. Reviewers reject completion claims that cite
-only artifacts. Whoever closes work cites the demonstration evidence in
-the close reason — the reconcile process already enforces this shape.
+**Implications.**
+
+- Definition authors name the runtime demonstration in every
+  Definition of Done.
+- Reviewers reject completion claims that cite only artifacts.
+- Whoever closes work cites the demonstration evidence in the close
+  reason — the reconcile process already enforces this shape.
 
 ## Load the least context (`least-context`)
 
-**Statement.** An activity MUST load the minimum context necessary to
-accomplish its task. The activity's process MUST name what loads into
-context and the source each input comes from; context from an unapproved
-source MUST NOT be loaded.
+**Statement.**
+
+- An activity MUST load the minimum context necessary to accomplish
+  its task.
+- The activity's process MUST name what loads into context and the
+  source each input comes from.
+- Context from an unapproved source MUST NOT be loaded.
 
 **Rationale.** Extraneous context costs twice: tokens spent carrying it,
 and drift when the agent follows something it was never meant to read.
@@ -201,12 +264,15 @@ The failure mode this prevents: unreviewed notes loading into every
 session regardless of task, and unscoped conversations no one can
 associate with specific work. (Least privilege, applied to context.)
 
-**Implications.** Process authors declare a step's context inputs the way
-they declare data inputs — the declared list is the load list. A session
-loads a conversation's anchor and its definition chain, nothing ambient.
-Maintainers keep historical stores — archives, transcripts — out of
-ambient context; reading one is a deliberate, declared act. Reviewers treat an
-undeclared context load as a defect.
+**Implications.**
+
+- Process authors declare a step's context inputs the way they declare
+  data inputs — the declared list is the load list.
+- Whoever runs a session loads a conversation's anchor and its
+  definition chain, nothing ambient.
+- Maintainers keep historical stores — archives, transcripts — out of
+  ambient context; reading one is a deliberate, declared act.
+- Reviewers treat an undeclared context load as a defect.
 
 ---
 
@@ -220,4 +286,4 @@ undeclared context load as a defect.
 | Not permission-to-play (Lencioni) | pass — most systems do NOT work this way | pass | pass | pass | pass | pass | pass | pass | pass |
 | Implies ≥1 practice and ≥1 check (this document's intro) | shared-definition practice; role-separation check | promotion gate; provenance audit | process-membership lint; loop-exit review | term lookup before writing; undefined-term and near-synonym lint | prior-art search; Sources-section audit | link-or-ref practice; duplicate-statement review | consumer named at creation; calibration schedule | demonstration named in DoD; close-reason citation check | per-step context declaration; undeclared-load audit |
 | Normative keywords used in statements only; capitals elsewhere only as the opening's mentions (mechanical) | pass | pass | pass | pass | pass | pass | pass | pass | pass |
-| Implications derivable and actor-named (judged) | pass | pass | pass | pass | pass | pass | pass | pass | pass |
+| Implications derivable and actor-named, one per bullet (judged) | pass | pass | pass | pass | pass | pass | pass | pass | pass |

@@ -26,7 +26,7 @@ def main() -> None:
     digest = hashlib.sha256(text.encode()).hexdigest()[:12]
 
     principles = re.findall(
-        r"^## ([^\n]+?) \(`([^\n`]+)`\)\n\n\*\*Statement\.\*\* (.*?)(?=\n\n\*\*)",
+        r"^## ([^\n]+?) \(`([^\n`]+)`\)\n\n\*\*Statement\.\*\*\s*(.*?)(?=\n\n\*\*)",
         text,
         re.S | re.M,
     )
@@ -40,7 +40,7 @@ def main() -> None:
         "generated": True,
         "generated-by": "basis/tools/compile_principles.py",
         "derived-from": front["id"],
-        "source": "basis/principles.md",
+        "source": str(source),
         "source-digest": f"sha256:{digest}",
         "scope": front.get("scope"),
     }
@@ -55,8 +55,27 @@ def main() -> None:
         "",
     ]
     for name, slug, statement in principles:
-        stmt = " ".join(statement.split())
-        lines.append(f"- **{name}** (`{slug}`): {stmt}")
+        block = statement.strip()
+        if not re.search(r"^\s*- ", block, re.M):
+            # prose statement: collapse to one line, as before
+            lines.append(f"- **{name}** (`{slug}`): {' '.join(block.split())}")
+            continue
+        # bulleted statement: one obligation per bullet, nesting preserved
+        items, lead = [], []
+        for raw in block.splitlines():
+            m = re.match(r"^(\s*)- (.*)$", raw)
+            if m:
+                items.append([len(m.group(1)), m.group(2).strip()])
+            elif items:
+                items[-1][1] += " " + raw.strip()
+            else:
+                lead.append(raw.strip())
+        head = f"- **{name}** (`{slug}`):"
+        if lead:
+            head += " " + " ".join(lead)
+        lines.append(head)
+        for indent, item in items:
+            lines.append("  " * (1 + indent // 2) + "- " + item)
     out.write_text("\n".join(lines) + "\n")
     print(f"{out}: rendered {len(principles)} principles (digest {digest})")
 

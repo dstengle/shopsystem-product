@@ -50,11 +50,14 @@ design work happens), `owner`, `status`, `created`, `updated`.
    by defining good before presenting instances.
 2. **The principles** — each: a heading with name and kebab-case slug,
    then **Statement** (the rule; carries the only normative keywords —
-   MUST/SHOULD/MAY per BCP 14 — and is yes/no testable), **Rationale**
+   MUST/SHOULD/MAY per BCP 14 — and is yes/no testable; one or more
+   sentences, and a statement with more than one obligation presents
+   one obligation per bullet), **Rationale**
    (the failure prevented, shown as a generic example; well-known
    external sources may support it), **Implications**
-   (the price tag: derivable from the statement, each naming the actor
-   who absorbs the change; never a new obligation).
+   (the price tag: one implication per bullet, each derivable from the
+   statement and naming the actor who absorbs the change; never a new
+   obligation).
 3. **Fitness screen** — a table applying the opening's tests to every
    principle, including the two mechanical/judged rows: normative
    keywords in statements only; implications derivable and actor-named.
@@ -83,3 +86,6 @@ a screen row.
   judged. *(§Required sections 2)*
 - Screen table has a column per principle and rows for every test.
   *(§Required sections 3)*
+- Multi-obligation statements and implications carry one obligation or
+  implication per bullet — judged. *(§Required sections 2; amended
+  2026-08-23 by authority direction.)*
