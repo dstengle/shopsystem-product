@@ -14,7 +14,7 @@ updated: 2026-08-19
 ## Purpose
 
 The framing of a presentation: who reads it, what they must decide, which
-asks gate the next unit of work. Produced by the [[glossary#Terms]] `frame` step of
+asks gate the next unit of work. Produced by the `frame` step of
 [`../processes/stakeholder-presentation.md`](../processes/stakeholder-presentation.md);
 consumed by `compose`.
 
