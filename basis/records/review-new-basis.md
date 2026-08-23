@@ -225,10 +225,26 @@ the ledger's opening span. From R19 the ledger lives in this record.
   the migration plan, as a reference point; the primary consideration
   is building a new, coherent version of the system.
 
+- **R32 (2026-08-23).** The branch's `basis/principles.md` is amended
+  by authority direction: rationale examples referencing the
+  pre-migration corpus are removed — the branch carries no referent
+  for them, and the specific examples are not necessary to rationalize
+  the principles. Statements unchanged (verified mechanically: the
+  compiled rendering's statement lines are bit-identical; new source
+  digest 7f99b6697899). Two implication actors with no branch referent
+  ("the router", "the journal") were generalized in the same pass. An
+  isolated reference-resolvability cold read ran twice: round 1
+  found six residuals (including a wrong glossary pointer introduced
+  by the scrub itself); round 2 returned RESOLVABLE: clean. Branch
+  commit `9991f8f`, rebased onto the authority's own branch commit
+  `8ba040a` and pushed as `ea424c7`. Main's copy of the principle set
+  stays frozen as pre-migration reference — the trees now
+  intentionally diverge on rationale prose, not on statements.
+
 ## State
 
 Open — **migration executing: Seed complete, Phase 0 begun; R31
-pull model recorded** (2026-08-23).
+pull model recorded; R32 principles scrub landed** (2026-08-23).
 
 Seed executed and verified: orphan branch `rebaseline` (pushed,
 commit `52b6e52`) holds exactly the basis corpus (minus `records/` —
