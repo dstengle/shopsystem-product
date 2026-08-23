@@ -243,8 +243,8 @@ the ledger's opening span. From R19 the ledger lives in this record.
 
 ## State
 
-Open — **migration executing: Seed complete, Phase 0 begun; R31
-pull model recorded; R32 principles scrub landed** (2026-08-23).
+Open — **migration executing: Seed and Phase 0 complete (R37); Phase 1
+open, meta-chains first (R29); R31 pull model in force** (2026-08-23).
 
 Seed executed and verified: orphan branch `rebaseline` (pushed,
 commit `52b6e52`) holds exactly the basis corpus (minus `records/` —
@@ -347,16 +347,30 @@ is records-free per the Seed rule.
   History; renderings regenerated. Naming fixed as "Document History"
   everywhere.
 
-Resume point: the architecture principle set is authored through the
-approved chain — the first authoring conducted BRANCH-RESIDENT per
-R31: a session in the `rebaseline` worktree runs the
-`principle-set-authoring` process (author drafts through the
-guideline, pulling `main:01-principles.md` as keeper source;
-fresh-context screen-read; the authority's ruling is the terminal
-gate). The run has reached `authority-approve`: draft at
-`rebaseline:basis/architecture-principles.md`, two clean cold-read
-rounds logged in its `verified-by`. Its approval exits Phase 0 and
-opens Phase 1 (meta-chains first, R29). The shop is frozen (R27).
+- **R37 (2026-08-23).** The architecture principle set is APPROVED —
+  the owner's terminal ruling on the first branch-resident authoring
+  run: `rebaseline:basis/architecture-principles.md` v4 stamped
+  approved (four clean cold-read rounds in its Document History), its
+  six riding glossary terms (Bounded Context, shop, activity, contract,
+  relationship kind, intent) approved with it. **Phase 0 exits.** The
+  same ruling applied the working set's three findings repairs (the
+  importance criterion moved into the use-defined-terms statement; the
+  article typo fixed, in four files; the opening gains the
+  glossary/sibling-documents pointer) and ratified the three v3
+  screen-forced repairs. Verification round 3 surfaced one further
+  scenario fail — external-standards-first lacked its generic failure
+  example — repaired under standing R34 at v5; round 4 returned clean
+  (branch commit `10e7793`). Standing residual, noted not ruled: bare
+  surname citations (Spool, Rumelt, Lencioni, TOGAF) in both sets'
+  openings and screens.
+
+Resume point: **Phase 0 is complete** (R37) — the architecture
+principle set stands approved at
+`rebaseline:basis/architecture-principles.md`. Phase 1 opens with the
+meta-chains (R29): complete the role-definition and process-definition
+chains (a quality guideline and fitness set for each; only their
+typedefs exist) with the existing basis processes as exemplars, before
+authoring the PM/PO/Architect definitions. The shop is frozen (R27).
 
 Rev 3 was delivered via `briefs/brief-026.md`; before ruling, the
 authority redirected the execution model (R27), and the plan was
