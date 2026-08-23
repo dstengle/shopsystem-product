@@ -307,6 +307,28 @@ is records-free per the Seed rule.
   screened draft awaits the authority's terminal ruling at
   `authority-approve`.
 
+- **R35 (2026-08-23).** Principle sets adopt bullet form — authority
+  direction: a statement carrying more than one obligation presents
+  one obligation per bullet; implications list one implication per
+  bullet; rationales stay prose. Applied on `rebaseline` (commit
+  `85cb49e`): guideline rule 7 added; fitness scenarios 2 and 4
+  tightened (one obligation per bullet; every decision term defined in
+  the statement, the opening, or the glossary); typedef form rules;
+  both principle sets re-formed — the working set's wording preserved
+  modulo disclosed splits plus three screen-forced repairs, all noted
+  in its amendment header; the principles compiler amended to render
+  bulleted statements as nested checklists; the compiled rendering
+  regenerated (digest 51f87dcb6284). Screens: the architecture set's
+  round 4 returned clean under the tightened rubric. The working set's
+  verification screen returned findings — the new rubric exposed
+  pre-existing defects (the use-defined-terms importance criterion
+  lives in an implication rather than the statement; the "a approved"
+  typo in a normative bullet; unintroduced cross-document references —
+  the compiler, the reconcile process, a conversation's anchor).
+  Repairs to the approved working set await the authority's ruling;
+  the findings are logged in this entry as the verification's round
+  log.
+
 Resume point: the architecture principle set is authored through the
 approved chain — the first authoring conducted BRANCH-RESIDENT per
 R31: a session in the `rebaseline` worktree runs the
