@@ -4,6 +4,7 @@ id: principle-set-fitness
 owner: product-authority
 status: approved
 approved: 2026-08-23
+version: 3
 created: 2026-08-22
 updated: 2026-08-23
 target-type: principle-set
@@ -93,3 +94,12 @@ form for the mapping table; the tests themselves compose TOGAF
 (statement quality), Spool (helps you say no), Lencioni (not
 permission-to-play), and the shop's own screen rows, per the
 principle-set typedef.
+
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+| 1 | 2026-08-22 | update | Authored as part of the principle-set chain. |
+| 1 | 2026-08-23 | state | draft → approved (R33). |
+| 2 | 2026-08-23 | update | Scenario 3 rewritten: generic failure, no product history (R34). |
+| 3 | 2026-08-23 | update | Scenarios 2 and 4 tightened: one obligation or implication per bullet; decision terms defined in statement, opening, or glossary (R35). |

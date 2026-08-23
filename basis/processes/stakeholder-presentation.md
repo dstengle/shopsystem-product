@@ -4,6 +4,7 @@ id: stakeholder-presentation-process
 owner: product-authority
 status: approved
 approved: 2026-08-19
+version: 1
 created: 2026-08-10
 updated: 2026-08-19
 produces: [decision-brief]
@@ -236,3 +237,10 @@ steps:
 | O2 | ask structure and decidability | judged | [`../fitness/decision-brief.fitness.md`](../fitness/decision-brief.fitness.md), scored in `cold-read` |
 | O3 | every round recorded; final verdict is a success exit or marked failsafe | mechanical | `log-round` output, `route-verdict` branches |
 | O4 | annex present, labeled, linked | mechanical | `compose` output `annex` |
+
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+| 1 | 2026-08-10 | update | Authored (seed layer); earlier history, if any, in the review record ledger on `main`. |
+| 1 | 2026-08-19 | state | draft → approved. |

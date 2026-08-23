@@ -5,6 +5,7 @@ defines: principle-set
 owner: product-authority
 status: approved
 approved: 2026-08-22
+version: 4
 created: 2026-08-19
 updated: 2026-08-23
 ancestry: [definition, principle-set]
@@ -40,7 +41,7 @@ design work happens), `owner`, `status`, `created`, `updated`.
 - A rationale MUST use generic examples and MUST NOT reference the
   product's operational history — other artifacts, issues, incidents,
   rulings, counts; it MAY cite well-known external references as
-  support. *(amended 2026-08-23 by authority direction.)*
+  support.
 
 ## Required sections
 
@@ -87,5 +88,14 @@ a screen row.
 - Screen table has a column per principle and rows for every test.
   *(§Required sections 3)*
 - Multi-obligation statements and implications carry one obligation or
-  implication per bullet — judged. *(§Required sections 2; amended
-  2026-08-23 by authority direction.)*
+  implication per bullet — judged. *(§Required sections 2)*
+
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+| 1 | 2026-08-19 | update | Authored (seed layer). |
+| 1 | 2026-08-22 | state | draft → approved (R23). |
+| 2 | 2026-08-23 | update | Produced-by names the principle-set-authoring process (R33 ask 4). |
+| 3 | 2026-08-23 | update | Rationale rule added: generic examples, never the product's operational history (R34). |
+| 4 | 2026-08-23 | update | Form rules added: one obligation or implication per bullet; checklist row added (R35). |

@@ -4,6 +4,7 @@ id: session-handoff-process
 owner: product-authority
 status: approved
 approved: 2026-08-22
+version: 1
 created: 2026-08-21
 updated: 2026-08-21
 produces: [session-record]
@@ -180,3 +181,10 @@ steps:
 | O2 | commit, registry push, and git push are one atomic act | mechanical | `land.atomic` |
 | O3 | every correction row carries a target and a bead | mechanical | `collect.checks` |
 | O4 | failsafe lands with a filed defect, never a silent drop | mechanical | `file-defect.run` |
+
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+| 1 | 2026-08-21 | update | Authored (seed layer); earlier history, if any, in the review record ledger on `main`. |
+| 1 | 2026-08-22 | state | draft → approved. |

@@ -5,26 +5,12 @@ scope: working
 owner: product-authority
 status: approved
 approved: 2026-08-22
+version: 3
 created: 2026-08-10
 updated: 2026-08-23
 ---
 
 # Founding principles
-
-> Amended 2026-08-23 by authority direction: rationale examples
-> referencing the pre-migration corpus removed — the specific examples
-> are not necessary to rationalize the principles, and this branch
-> carries no referent for them. Statements unchanged.
-
-> Amended 2026-08-23 by authority direction (form only): statements and
-> implications re-formed as one obligation or implication per bullet;
-> wording preserved modulo the sentence splits. No obligation added,
-> removed, or reworded, with three disclosed exceptions the
-> verification screen forced: the feedback-loops measurement bullet
-> split into its two obligations; the governed-context maintainer
-> implication split into three, repeating the actor; the least-context
-> session-load implication gained its missing actor ("Whoever runs a
-> session").
 
 ## What a good principle looks like
 
@@ -287,3 +273,14 @@ associate with specific work. (Least privilege, applied to context.)
 | Implies ≥1 practice and ≥1 check (this document's intro) | shared-definition practice; role-separation check | promotion gate; provenance audit | process-membership lint; loop-exit review | term lookup before writing; undefined-term and near-synonym lint | prior-art search; Sources-section audit | link-or-ref practice; duplicate-statement review | consumer named at creation; calibration schedule | demonstration named in DoD; close-reason citation check | per-step context declaration; undeclared-load audit |
 | Normative keywords used in statements only; capitals elsewhere only as the opening's mentions (mechanical) | pass | pass | pass | pass | pass | pass | pass | pass | pass |
 | Implications derivable and actor-named, one per bullet (judged) | pass | pass | pass | pass | pass | pass | pass | pass | pass |
+
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+| 1 | 2026-08-10 | update | Authored as the working-scope seed set; nine principles. |
+| 1 | 2026-08-22 | state | draft → approved (R23). |
+| 2 | 2026-08-23 | update | Rationale examples referencing the pre-migration corpus removed; two implication actors generalized; statements unchanged (R32). |
+| 2 | 2026-08-23 | review | Reference-resolvability cold read, two rounds; round 2 clean (R32). |
+| 3 | 2026-08-23 | update | Re-formed to bullet form — one obligation or implication per bullet; wording preserved modulo splits, plus three screen-forced repairs: feedback-loops measurement bullet split in two; governed-context maintainer implication split in three; least-context session-load implication gained its actor (R35; the three repairs await the owner's ruling). |
+| 3 | 2026-08-23 | review | Verification cold reads: round 1 findings (three form fusions, repaired); round 2 findings — pre-existing defects surfaced by the tightened rubric (use-defined-terms criterion misfiled in an implication; article typo in governed-context; unintroduced cross-document references), repairs awaiting the owner's ruling. |

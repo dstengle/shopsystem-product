@@ -4,6 +4,7 @@ id: decision-brief-fitness
 owner: product-authority
 status: approved
 approved: 2026-08-19
+version: 1
 created: 2026-08-10
 updated: 2026-08-21
 target-type: decision-brief
@@ -52,3 +53,10 @@ Scenario 4: asks are complete and honest about gating
 | 3 — no unintroduced terms | "List every proper noun whose first mention lacks a gloss and is not recorded shop or product vocabulary. Empty list = pass." |
 | 4 (Then) — each ask complete | "For each ask: recommendation present? evidence present? default present? Any 'no' = fail, cite the ask." |
 | 4 (And) — gating stated for the set | "Does the ask set state which asks gate work and which resolve on silence? Yes/no; cite the sentence or its absence." |
+
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+| 1 | 2026-08-10 | update | Authored (seed layer); earlier history, if any, in the review record ledger on `main`. |
+| 1 | 2026-08-19 | state | draft → approved. |

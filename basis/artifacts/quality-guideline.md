@@ -5,6 +5,7 @@ defines: quality-guideline
 owner: product-authority
 status: approved
 approved: 2026-08-22
+version: 1
 created: 2026-08-19
 updated: 2026-08-19
 ancestry: [definition, quality-guideline]
@@ -67,3 +68,10 @@ Plain Language guidelines.
 - Precedence stated. *(§Required sections 3)*
 - Every rule: before/after + test + criterion + decision + derived check.
   *(§Required sections 4)*
+
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+| 1 | 2026-08-19 | update | Authored (seed layer); earlier history, if any, in the review record ledger on `main`. |
+| 1 | 2026-08-22 | state | draft → approved. |

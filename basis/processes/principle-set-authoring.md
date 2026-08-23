@@ -4,6 +4,7 @@ id: principle-set-authoring-process
 owner: product-authority
 status: approved
 approved: 2026-08-23
+version: 1
 created: 2026-08-22
 updated: 2026-08-22
 produces: [principle-set]
@@ -256,3 +257,10 @@ only close). Deming grounds the seat separation: the author and the
 judge read one definition, and the check sits with a different role.
 Format provenance (ISO 24774 header, GitHub-Actions-shaped steps, CEL,
 the dual-exit rule) lives in the process-definition typedef, not here.
+
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+| 1 | 2026-08-22 | update | Authored as part of the principle-set chain. |
+| 1 | 2026-08-23 | state | draft → approved (R33). |

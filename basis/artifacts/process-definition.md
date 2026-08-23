@@ -5,6 +5,7 @@ defines: process-definition
 owner: product-authority
 status: approved
 approved: 2026-08-22
+version: 1
 created: 2026-08-19
 updated: 2026-08-20
 ancestry: [definition, process-definition]
@@ -143,3 +144,10 @@ round cap (the dual-exit rule).
 - Outcomes each name a witness. *(§Required sections 3)*
 - `result`, if absent, is justified by outcomes that pin the run's value.
   *(§The steps section)*
+
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+| 1 | 2026-08-19 | update | Authored (seed layer); earlier history, if any, in the review record ledger on `main`. |
+| 1 | 2026-08-22 | state | draft → approved. |

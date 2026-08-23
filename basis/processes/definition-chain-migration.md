@@ -4,6 +4,7 @@ id: definition-chain-migration-process
 owner: product-authority
 status: approved
 approved: 2026-08-22
+version: 1
 created: 2026-08-20
 updated: 2026-08-22
 produces: [definition]
@@ -295,3 +296,10 @@ steps:
 | O3 | every demoted id is queued as a retire row; it leaves the active tree at cut-over | mechanical — `queue-demoted.run` now, close-out post-check at cut-over | `queue-demoted.run` |
 | O4 | parked types carry a filed finding | mechanical | `park.run` |
 | all | this definition compiles and screens against the principle set | mechanical + judged | the compiler; the principles screen |
+
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+| 1 | 2026-08-20 | update | Authored (seed layer); earlier history, if any, in the review record ledger on `main`. |
+| 1 | 2026-08-22 | state | draft → approved. |

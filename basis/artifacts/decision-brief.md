@@ -5,6 +5,7 @@ defines: decision-brief
 owner: product-authority
 status: approved
 approved: 2026-08-19
+version: 1
 created: 2026-08-10
 updated: 2026-08-19
 ancestry: [request, decision-brief]
@@ -65,3 +66,10 @@ from Minto/SCQA, BLUF, and government briefing-note practice.
 - Cold-read record present. *(Commitment)*
 - Quality of prose: judged via
   [`../fitness/decision-brief.fitness.md`](../fitness/decision-brief.fitness.md).
+
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+| 1 | 2026-08-10 | update | Authored (seed layer); earlier history, if any, in the review record ledger on `main`. |
+| 1 | 2026-08-19 | state | draft → approved. |

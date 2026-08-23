@@ -5,6 +5,7 @@ target-type: decision-brief
 owner: product-authority
 status: approved
 approved: 2026-08-19
+version: 1
 created: 2026-08-10
 updated: 2026-08-21
 ---
@@ -71,3 +72,10 @@ Before: "the report is long." After: "the report is 939 lines."
 a number exists where one could. *Decision:* yes/no per instance.
 *Derived check:* mechanical adjective-list lint (style-linter class;
 tool selection tracked in work item lead-gzlp2).
+
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+| 1 | 2026-08-10 | update | Authored (seed layer); earlier history, if any, in the review record ledger on `main`. |
+| 1 | 2026-08-19 | state | draft → approved. |

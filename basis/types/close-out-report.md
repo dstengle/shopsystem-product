@@ -5,6 +5,7 @@ defines: close-out-report
 owner: product-authority
 status: approved
 approved: 2026-08-22
+version: 1
 created: 2026-08-22
 updated: 2026-08-22
 ---
@@ -32,3 +33,10 @@ schema:
     deleted: {type: array, items: {type: string}}
     failed: {type: array, items: {type: string}}
 ```
+
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+| 1 | 2026-08-22 | update | Authored (seed layer); earlier history, if any, in the review record ledger on `main`. |
+| 1 | 2026-08-22 | state | draft → approved. |

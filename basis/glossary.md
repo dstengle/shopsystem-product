@@ -4,6 +4,7 @@ id: glossary
 owner: product-authority
 status: approved
 approved: 2026-08-19
+version: 3
 created: 2026-08-19
 updated: 2026-08-23
 ---
@@ -82,26 +83,19 @@ terms uses one of these when one fits.
 - **round cap** — the declared maximum review rounds before a loop's
   failsafe exit fires.
 - **action** — the approved choice for one record: keep-rewrite, keep,
-  retire, or terminal, with its target. *(amended 2026-08-22, approved R30: extended from the three-value set to match the
-  migration plan's use of keep; `authority-call` is not an action — see
-  its entry.)*
+  retire, or terminal, with its target.
 - **authority-call** — a row marker on a migration-plan row awaiting a
   ruling from the authority; not an action — the row has no effect and
-  is out of scope for any run until ruled. *(amended 2026-08-22, approved R30)*
+  is out of scope for any run until ruled.
 - **action table** — the table of records and their actions; approved row
   by row or in blocks at a review. Drives any bulk record change.
-  *(amended 2026-08-22, approved R30: schema-defined as the
-  `action-table` data type in `types/action-table.md` — the governed
-  channel for per-keeper directives and family nominations.)*
 - **close-out** — the mechanical execution of the migration plan's
   pre-decided retire and terminal actions: snapshot, delete, archive
   move, a loud post-check, and the branch promotion; no review loop.
-  All stages run consecutively at cut-over (R27). *(added 2026-08-22,
-  approved R30.)*
+  All stages run consecutively at cut-over (R27).
 - **snapshot tag** — the annotated git tag (`pre-migration`) on `main`'s
   pre-execution commit, preserving the full corpus for terminal-recovery;
-  after close-out a terminal record exists only there. *(added
-  2026-08-22, approved R30.)*
+  after close-out a terminal record exists only there.
 - **migration plan** — the rebaseline's action table plus the order of
   the per-type migration runs. Replaces "rebaseline bill".
 - **experiment index** — the new-basis experiment's README: the
@@ -117,31 +111,34 @@ terms uses one of these when one fits.
 - **Bounded Context** — a deliberately drawn region of the product with
   one internal language, one model, and one set of contracts to other
   regions; drawn by design, never discovered after the fact (Evans,
-  *Domain-Driven Design*). *(added 2026-08-23; rides the
-  architecture-principle-set approval.)*
+  *Domain-Driven Design*). *(pending: rides the architecture-principle-set approval)*
 - **shop** — the entity that builds, operates, and evolves part of the
   product. Two types: the lead shop (the system-level coordinator; owns
   product-level artifacts and no Bounded Context) and the BC-shop (owns
-  and produces exactly one Bounded Context). *(added 2026-08-23; rides
-  the architecture-principle-set approval.)*
+  and produces exactly one Bounded Context). *(pending: rides the architecture-principle-set approval)*
 - **activity** — a discrete unit of work performed inside a shop,
   following a contract or process, with inputs, outcomes, and provenance
   recorded. What an actor is stays unconstrained; the activity has the
-  same shape whoever performs it. *(added 2026-08-23; rides the
-  architecture-principle-set approval.)*
+  same shape whoever performs it. *(pending: rides the architecture-principle-set approval)*
 - **contract** — a named, versioned statement of what one entity
   promises another: the schemas exchanged, the meaning of each
   operation, the error behavior, and the relationship kind. Offered as a
   product contract (on a Bounded Context) or an operational contract (on
-  a shop); nothing outside a contract is promised. *(added 2026-08-23;
-  rides the architecture-principle-set approval.)*
+  a shop); nothing outside a contract is promised. *(pending: rides the architecture-principle-set approval)*
 - **relationship kind** — the named pattern a contract declares for how
   two Bounded Contexts relate, drawn from the context-mapping catalogue
   (Evans, *Domain-Driven Design*): customer–supplier, conformist,
   anti-corruption layer, open host service, published language, shared
-  kernel, or separate ways. *(added 2026-08-23; rides the
-  architecture-principle-set approval.)*
+  kernel, or separate ways. *(pending: rides the architecture-principle-set approval)*
 - **intent** — a desired outcome expressed by an originator at the
   product's edge; enters the product through a contract and keeps its
-  provenance through every translation and delegation. *(added
-  2026-08-23; rides the architecture-principle-set approval.)*
+  provenance through every translation and delegation. *(pending: rides the architecture-principle-set approval)*
+
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+| 1 | 2026-08-19 | update | Seed term list authored. |
+| 1 | 2026-08-19 | state | draft → approved. |
+| 2 | 2026-08-22 | update | Conversation-model terms added (R19); action extended to four values, authority-call and action-table amended, close-out and snapshot tag added (R30). |
+| 3 | 2026-08-23 | update | Architecture terms added, riding the architecture-principle-set approval: Bounded Context, shop, activity, contract, relationship kind, intent. |

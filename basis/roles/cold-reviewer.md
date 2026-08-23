@@ -8,6 +8,7 @@ id: cold-reviewer
 owner: product-authority
 status: approved
 approved: 2026-08-19
+version: 2
 created: 2026-08-10
 updated: 2026-08-11
 ---
@@ -35,3 +36,11 @@ reviewer alone decides what this round found.
 without glosses); stakeholder empathy (limited-attention reading); the
 fitness set of the artifact type under review (currently
 `decision-brief` and `principle-set`), which this role judges.
+
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+| 1 | 2026-08-10 | update | Authored for stakeholder presentations. |
+| 1 | 2026-08-19 | state | draft → approved. |
+| 2 | 2026-08-23 | update | Competencies generalized to the fitness set of the artifact type under review (R33 ask 4). |

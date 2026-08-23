@@ -4,46 +4,11 @@ id: architecture-principles
 scope: architecture
 owner: product-authority
 status: draft
+version: 4
 created: 2026-08-23
 updated: 2026-08-23
 derives-from:
   local-comprehension: least-context
-verified-by:
-  - round: 1
-    role: cold-reviewer
-    model: claude-fable-5
-    date: 2026-08-23
-    verdict: clean
-    notes: all 6 scenarios + mechanical check pass; 7 stumbles reported
-      in the round log, none a scenario fail
-  - round: 2
-    role: cold-reviewer
-    model: claude-fable-5
-    date: 2026-08-23
-    verdict: clean
-    notes: re-screen after the authority's rationale re-rule (generic
-      examples only, no product operational history); all scenarios
-      pass under the amended fitness set; 6 stumbles reported, none a
-      scenario fail
-  - round: 3
-    role: cold-reviewer
-    model: claude-fable-5
-    date: 2026-08-23
-    verdict: clean
-    notes: re-screen after the authority's statement-clarity findings
-      (local-comprehension re-enumerated, intent-provenance expanded
-      with intent defined inline, conformance questions restored); all
-      scenarios pass; 6 polish-level stumbles reported, none a
-      scenario fail
-  - round: 4
-    role: cold-reviewer
-    model: claude-fable-5
-    date: 2026-08-23
-    verdict: clean
-    notes: re-screen after the authority's bullet-form direction (one
-      obligation or implication per bullet); all scenarios pass under
-      the tightened scenario 2 and 4; 6 polish-level stumbles reported,
-      none a scenario fail
 ---
 
 # Architecture principles
@@ -348,3 +313,16 @@ either matches what anyone asked for.
 | Implies ≥1 practice and ≥1 check (this document's intro) | description-at-creation practice; description-completeness audit | contract-first integration; unstated-reliance review | same-records-per-step authoring; actor-kind rule-text review | designated artifacts per level; below-level-read defect filing | design-change-first practice; two-direction conformance check | record-at-entry practice; originator-chain audit |
 | Normative keywords used in statements only; capitals elsewhere only as the opening's mentions (mechanical) | pass | pass | pass | pass | pass | pass |
 | Implications derivable and actor-named, one per bullet (judged) | pass | pass | pass | pass | pass | pass |
+
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+| 1 | 2026-08-23 | update | Drafted through the approved chain, scope architecture, covering deltas D1–D7 and D9 (R33 charter). |
+| 1 | 2026-08-23 | review | Cold-read round 1: clean — all scenarios and the mechanical check; 7 stumbles, none a fail. |
+| 2 | 2026-08-23 | update | Rationales scrubbed to generic examples per the operational-history rule (R34). |
+| 2 | 2026-08-23 | review | Cold-read round 2: clean under the amended fitness set; 6 stumbles, none a fail. |
+| 3 | 2026-08-23 | update | Statements de-fused per authority findings: local-comprehension level ladder enumerated; intent-provenance expanded with intent defined inline; conformance direction questions restored; opening introduces the shop and contract taxonomies. |
+| 3 | 2026-08-23 | review | Cold-read round 3: clean; 6 polish-level stumbles, none a fail. |
+| 4 | 2026-08-23 | update | Re-formed to bullet form — one obligation or implication per bullet (R35). |
+| 4 | 2026-08-23 | review | Cold-read round 4: clean under the tightened scenarios 2 and 4; 6 polish-level stumbles, none a fail. |

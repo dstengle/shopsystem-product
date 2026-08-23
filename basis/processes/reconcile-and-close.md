@@ -5,6 +5,7 @@ produces: []
 owner: product-authority
 status: approved
 approved: 2026-08-19
+version: 1
 created: 2026-08-10
 updated: 2026-08-19
 condition-language: cel
@@ -158,3 +159,10 @@ cannot guarantee the pair rolls back the half it completed.
 | O2 | close reason cites demonstration evidence | mechanical presence + judged | `consume-close.run` |
 | O3 | every dispatched scenario has a recorded status | mechanical | `verify.checks` |
 | O4 | reported-vs-filed count match | mechanical | `file-tail.checks` |
+
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+| 1 | 2026-08-10 | update | Authored (seed layer); earlier history, if any, in the review record ledger on `main`. |
+| 1 | 2026-08-19 | state | draft → approved. |

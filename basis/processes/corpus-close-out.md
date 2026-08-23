@@ -4,6 +4,7 @@ id: corpus-close-out-process
 owner: product-authority
 status: approved
 approved: 2026-08-22
+version: 1
 created: 2026-08-22
 updated: 2026-08-22
 produces: []
@@ -310,3 +311,10 @@ steps:
 | O4 | a non-empty `failed` list halts the run naming every misplaced row | mechanical | `post-check.checks` |
 | O5 | promotion runs only at the final stage, only after `post-check` passes | mechanical | step order `post-check` → `route-promote` → `promote-branch`; the `route-promote` branch on `final` |
 | all | this definition compiles and screens against the principle set | mechanical + judged | the compiler; the principles screen |
+
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+| 1 | 2026-08-22 | update | Authored (seed layer); earlier history, if any, in the review record ledger on `main`. |
+| 1 | 2026-08-22 | state | draft → approved. |

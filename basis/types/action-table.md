@@ -5,6 +5,7 @@ defines: action-table
 owner: product-authority
 status: approved
 approved: 2026-08-22
+version: 1
 created: 2026-08-22
 updated: 2026-08-22
 ---
@@ -51,3 +52,10 @@ record's path in the active tree; `family` is an optional F-code
 nominating a family the record may fold into; `directives` are the
 authority-approved per-keeper rewrite instructions applied at rewrite;
 `evidence` is the one-line census evidence the action was ruled on.
+
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+| 1 | 2026-08-22 | update | Authored (seed layer); earlier history, if any, in the review record ledger on `main`. |
+| 1 | 2026-08-22 | state | draft → approved. |

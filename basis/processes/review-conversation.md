@@ -4,6 +4,7 @@ id: review-conversation-process
 owner: product-authority
 status: approved
 approved: 2026-08-22
+version: 1
 created: 2026-08-22
 updated: 2026-08-22
 produces: [review-record]
@@ -171,3 +172,10 @@ per the run lifecycle.
 | O2 | State section never empty (resume point or outcome) | mechanical presence + judged | review-record checklist |
 | O3 | close and cancel reachable only from the authority's classification | mechanical | `route.branches` |
 | O4 | inactivity holds the run | mechanical | `hold-after` + run lifecycle |
+
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+| 1 | 2026-08-22 | update | Authored (seed layer); earlier history, if any, in the review record ledger on `main`. |
+| 1 | 2026-08-22 | state | draft → approved. |

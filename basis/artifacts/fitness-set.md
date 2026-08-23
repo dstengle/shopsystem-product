@@ -5,6 +5,7 @@ defines: fitness-set
 owner: product-authority
 status: approved
 approved: 2026-08-22
+version: 1
 created: 2026-08-19
 updated: 2026-08-19
 ancestry: [definition, fitness-set]
@@ -62,3 +63,10 @@ llm-rubric assertions); EvalGen-style human calibration of judges.
   *(schema)*
 - Not under `features/` — mechanical path check. *(§Rules)*
 - Every `Then` appears in the compile-mapping table. *(§Required sections 2)*
+
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+| 1 | 2026-08-19 | update | Authored (seed layer); earlier history, if any, in the review record ledger on `main`. |
+| 1 | 2026-08-22 | state | draft → approved. |

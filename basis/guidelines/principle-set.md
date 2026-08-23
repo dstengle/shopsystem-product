@@ -5,6 +5,7 @@ target-type: principle-set
 owner: product-authority
 status: approved
 approved: 2026-08-23
+version: 3
 created: 2026-08-22
 updated: 2026-08-23
 ---
@@ -125,3 +126,12 @@ and 5 project into prose; the before examples are drawn from the autopsy
 of the retired spec chapter (numbered principles, free-standing
 anti-pattern blocks), rewritten here as counter-examples, never reused
 as content.
+
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+| 1 | 2026-08-22 | update | Authored as part of the principle-set chain. |
+| 1 | 2026-08-23 | state | draft → approved (R33). |
+| 2 | 2026-08-23 | update | Rule 3 rewritten: generic failure, never product history (R34). |
+| 3 | 2026-08-23 | update | Rule 7 added: one obligation or implication per bullet; highlights updated (R35). |

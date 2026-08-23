@@ -5,6 +5,7 @@ defines: request
 owner: product-authority
 status: approved
 approved: 2026-08-19
+version: 1
 created: 2026-08-19
 updated: 2026-08-19
 ancestry: [request]
@@ -46,3 +47,10 @@ returns to the author; no obligation attaches to the reader.
 - The opening names what is requested. *(§Required sections 1)*
 - The reader is named. *(§Required sections 2)*
 - Frontmatter carries `type`, `status`, `date`, `reader`. *(§Required frontmatter)*
+
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+| 1 | 2026-08-19 | update | Authored (seed layer); earlier history, if any, in the review record ledger on `main`. |
+| 1 | 2026-08-19 | state | draft → approved. |

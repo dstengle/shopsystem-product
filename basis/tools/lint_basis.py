@@ -121,6 +121,17 @@ def lint():
         if fm.get("type") not in OWNER_EXEMPT and "owner" not in fm:
             errors.append(f"{rel}: front-matter lacks `owner` (definition §Required frontmatter)")
 
+        # 7. version + Document History (definition §Required frontmatter,
+        #    §Required sections 3); generated renderings are exempt.
+        if not fm.get("generated"):
+            if "version" not in fm:
+                errors.append(f"{rel}: front-matter lacks `version` (definition §Required frontmatter)")
+            h2s = re.findall(r"^## (.+)$", text, re.M)
+            if not h2s or h2s[-1].strip() != "Document History":
+                errors.append(f"{rel}: `Document History` is not the last section (definition §Required sections 3)")
+            if "verified-by" in fm:
+                errors.append(f"{rel}: review-log frontmatter `verified-by` is ruled out (definition §Required sections 3)")
+
         # 2. defines uniqueness
         if fm.get("defines"):
             if fm["defines"] in seen_defines:

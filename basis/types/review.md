@@ -5,6 +5,7 @@ defines: review
 owner: product-authority
 status: approved
 approved: 2026-08-19
+version: 1
 created: 2026-08-19
 updated: 2026-08-19
 ---
@@ -35,3 +36,10 @@ schema:
       items: {type: string, enum: [confident, wobbly, cannot-decide]}
     top_changes: {type: array, items: {type: string}, maxItems: 3}
 ```
+
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+| 1 | 2026-08-19 | update | Authored (seed layer); earlier history, if any, in the review record ledger on `main`. |
+| 1 | 2026-08-19 | state | draft → approved. |

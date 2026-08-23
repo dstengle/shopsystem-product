@@ -2,6 +2,7 @@
 type: experiment-index
 id: basis
 status: experiment
+version: 1
 created: 2026-08-10
 updated: 2026-08-22
 ---
@@ -474,3 +475,9 @@ registry amendment (open, versioned type set), the ADR-059 wording
 alignment ("projection" → "rendering"), generated-file banners to
 front-matter (R2), and system-wide application of the base writing style
 (R5).
+
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+| 1 | 2026-08-10 | update | Authored (seed layer); earlier history, if any, in the review record ledger on `main`. |

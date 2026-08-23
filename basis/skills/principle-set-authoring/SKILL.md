@@ -13,7 +13,7 @@ generated: true
 generated-by: basis/tools/compile_process.py
 derived-from: principle-set-authoring-process
 source: basis/processes/principle-set-authoring.md
-source-digest: sha256:fc5a7a73accf
+source-digest: sha256:a01632b37900
 activation: model-judged
 promotion: experiment-local
 ---
