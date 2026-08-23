@@ -17,7 +17,9 @@ ancestry: [definition, principle-set]
 - **Type:** `principle-set` — the document holding the standing rules
   about how we work. Hand-approved by the owner; everything else in the
   system traces to it.
-- **Produced by:** seed drafting; amended only by the owner's ruling.
+- **Produced by:** the principle-set authoring process
+  ([`../processes/principle-set-authoring.md`](../processes/principle-set-authoring.md));
+  amended only by the owner's ruling.
   **Consumed by:** every definition author and reviewer; the fitness
   screen's judge.
 

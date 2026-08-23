@@ -33,5 +33,5 @@ reviewer alone decides what this round found.
 
 **Competencies:** software-architecture literacy (reads standards citations
 without glosses); stakeholder empathy (limited-attention reading); the
-fitness set at `../fitness/decision-brief.fitness.md`, which this role
-judges.
+fitness set of the artifact type under review (currently
+`decision-brief` and `principle-set`), which this role judges.

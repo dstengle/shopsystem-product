@@ -6,14 +6,14 @@ description: 'Author or amend a principle set: the author drafts through the gui
   principle set.'
 type: skill
 id: principle-set-authoring-skill
-status: draft
+status: approved
 created: 2026-08-22
 updated: 2026-08-22
 generated: true
 generated-by: basis/tools/compile_process.py
 derived-from: principle-set-authoring-process
 source: basis/processes/principle-set-authoring.md
-source-digest: sha256:fed20c3027db
+source-digest: sha256:fc5a7a73accf
 activation: model-judged
 promotion: experiment-local
 ---

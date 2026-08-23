@@ -2,7 +2,8 @@
 type: fitness-set
 id: principle-set-fitness
 owner: product-authority
-status: draft
+status: approved
+approved: 2026-08-23
 created: 2026-08-22
 updated: 2026-08-22
 target-type: principle-set
