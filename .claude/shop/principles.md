@@ -6,7 +6,7 @@ generated: true
 generated-by: basis/tools/compile_principles.py
 derived-from: principles
 source: basis/principles.md
-source-digest: sha256:bb54132922f4
+source-digest: sha256:49c767d0b169
 scope: working
 ---
 
@@ -21,13 +21,14 @@ named in the front-matter; on conflict the source wins.
   - That definition MUST drive both the performance of the activity and its check.
   - The check MUST sit with a different role holding a different accountability.
 - **Govern the generating context** (`governed-context`):
-  - Everything loaded into an agent's generating context — prompts, skills, memories, primers — MUST trace to a approved definition or a governed record.
+  - Everything loaded into an agent's generating context — prompts, skills, memories, primers — MUST trace to an approved definition or a governed record.
   - An unsanctioned context channel MUST NOT be created or retained.
 - **Every activity belongs to a process** (`no-orphan-activities`):
   - Every activity in the system MUST be part of a defined process with stated expected outcomes, expected outputs, and possible resulting actions.
   - Every long-running loop MUST declare its exit — a reached-state success exit, a round or budget cap, or both.
 - **Use defined terms** (`use-defined-terms`):
   - Important terms MUST be defined in the system, in the glossary or as a schema element.
+  - A term is important when a reader must know it to perform or check the work.
   - When more than one term could carry a statement, the writer MUST use a defined term if one is available.
 - **Use external standards first** (`external-standards-first`):
   - A definition MUST adopt an established external form where one fits.
@@ -38,7 +39,7 @@ named in the front-matter; on conflict the source wins.
 - **Feedback loops have consumers** (`feedback-loops-with-consumers`):
   - Every feedback channel MUST name its consumer and the resulting action.
   - The effectiveness of processes, tools, and prompts MUST be measured.
-  - Their definitions MUST be updated from what is measured.
+  - The definitions of processes, tools, and prompts MUST be updated from what is measured.
 - **Delivery is verified in the running system** (`delivery-verified`):
   - Work MUST be counted done only when its effect is demonstrated in the running system.
   - Artifacts existing, checks passing, or reviews approving MUST NOT count as done on their own.

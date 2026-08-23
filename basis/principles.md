@@ -5,7 +5,7 @@ scope: working
 owner: product-authority
 status: approved
 approved: 2026-08-22
-version: 3
+version: 5
 created: 2026-08-10
 updated: 2026-08-23
 ---
@@ -15,7 +15,10 @@ updated: 2026-08-23
 ## What a good principle looks like
 
 A principle is a standing rule about how we work, in four parts: a name, a
-statement, a rationale, and implications.
+statement, a rationale, and implications. Terms the principles use —
+rendering, anchor, definition chain, and the rest — are defined in the
+[glossary](glossary.md); the processes and tools the implications name
+are defined in this basis's sibling documents.
 
 - The **statement** is the rule. It carries the only normative keywords
   (MUST, SHOULD, MAY — interpreted per BCP 14 when, and only when, they
@@ -77,7 +80,7 @@ quality in — and still inspect.)
 **Statement.**
 
 - Everything loaded into an agent's generating context — prompts,
-  skills, memories, primers — MUST trace to a approved definition or a
+  skills, memories, primers — MUST trace to an approved definition or a
   governed record.
 - An unsanctioned context channel MUST NOT be created or retained.
 
@@ -126,6 +129,8 @@ level — the requirement is a definition, not a workflow engine.
 
 - Important terms MUST be defined in the system, in the glossary or as
   a schema element.
+- A term is important when a reader must know it to perform or check
+  the work.
 - When more than one term could carry a statement, the writer MUST use
   a defined term if one is available.
 
@@ -145,8 +150,7 @@ reader of both must learn they are the same.
   the restricted language.
 - Reviewers flag near-synonym pairs as drift; the losing term is
   removed everywhere, not deprecated in place.
-- A term is important when a reader must know it to perform or check
-  the work; when in doubt, the writer defines it.
+- When in doubt whether a term is important, the writer defines it.
 
 ## Use external standards first (`external-standards-first`)
 
@@ -158,7 +162,10 @@ reader of both must learn they are the same.
 
 **Rationale.** Established forms carry decades of failure-tested
 decisions no fresh invention can match, and readers arrive already
-knowing them. In practice every element of a
+knowing them. The failure a bespoke form invites: a home-grown format
+half-copies the standard it ignored, every reader must learn it from
+scratch, and it silently diverges from the tooling and expectations the
+standard would have supplied for free. In practice every element of a
 definition system has an established form, and the only bespokeness that
 survives review is the composition of adopted parts.
 
@@ -196,7 +203,8 @@ pinned example links stop conforming as the source moves on.
 - Every feedback channel MUST name its consumer and the resulting
   action.
 - The effectiveness of processes, tools, and prompts MUST be measured.
-- Their definitions MUST be updated from what is measured.
+- The definitions of processes, tools, and prompts MUST be updated from
+  what is measured.
 
 **Rationale.** A channel without a consumer dies silently and takes its
 signal with it: when nothing consumes a channel, senders stop sending
@@ -232,7 +240,7 @@ unrealized.
   Definition of Done.
 - Reviewers reject completion claims that cite only artifacts.
 - Whoever closes work cites the demonstration evidence in the close
-  reason — the reconcile process already enforces this shape.
+  reason — the reconcile process enforces this shape.
 
 ## Load the least context (`least-context`)
 
@@ -284,3 +292,8 @@ associate with specific work. (Least privilege, applied to context.)
 | 2 | 2026-08-23 | review | Reference-resolvability cold read, two rounds; round 2 clean (R32). |
 | 3 | 2026-08-23 | update | Re-formed to bullet form — one obligation or implication per bullet; wording preserved modulo splits, plus three screen-forced repairs: feedback-loops measurement bullet split in two; governed-context maintainer implication split in three; least-context session-load implication gained its actor (R35; the three repairs await the owner's ruling). |
 | 3 | 2026-08-23 | review | Verification cold reads: round 1 findings (three form fusions, repaired); round 2 findings — pre-existing defects surfaced by the tightened rubric (use-defined-terms criterion misfiled in an implication; article typo in governed-context; unintroduced cross-document references), repairs awaiting the owner's ruling. |
+| 4 | 2026-08-23 | update | Owner-ruled repairs (R37): the importance criterion moved from an implication into the use-defined-terms statement; the article typo in governed-context fixed; the opening gains the glossary and sibling-documents pointer. |
+| 4 | 2026-08-23 | state | The three v3 screen-forced repairs stand with this ruling (R37). |
+| 4 | 2026-08-23 | review | Verification cold read round 3: findings — external-standards-first rationale lacked its generic failure example (scenario 3 fail); two self-containment stumbles. |
+| 5 | 2026-08-23 | update | Round-3 repairs under the standing R34 rule: external-standards-first rationale gains its generic failure example; the feedback-loops update bullet made self-contained; "already" dropped from the reconcile implication. |
+| 5 | 2026-08-23 | review | Verification cold read round 4: clean — all scenarios pass; 5 polish-level stumbles (bare surname citations, the "projects" verb, two implicit actors), none a fail. |

@@ -22,7 +22,7 @@ nothing committed outside an ask.
 
 **Layers:** this guideline adds decision-document rules on top of the
 [base writing style](base-writing-style.md); the base always applies and is
-never overridden. When rules conflict, a approved principle beats the
+never overridden. When rules conflict, an approved principle beats the
 artifact type's typedef, which beats this guideline.
 
 ---

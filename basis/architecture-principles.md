@@ -3,7 +3,8 @@ type: principle-set
 id: architecture-principles
 scope: architecture
 owner: product-authority
-status: draft
+status: approved
+approved: 2026-08-23
 version: 4
 created: 2026-08-23
 updated: 2026-08-23
@@ -326,3 +327,4 @@ either matches what anyone asked for.
 | 3 | 2026-08-23 | review | Cold-read round 3: clean; 6 polish-level stumbles, none a fail. |
 | 4 | 2026-08-23 | update | Re-formed to bullet form — one obligation or implication per bullet (R35). |
 | 4 | 2026-08-23 | review | Cold-read round 4: clean under the tightened scenarios 2 and 4; 6 polish-level stumbles, none a fail. |
+| 4 | 2026-08-23 | state | draft → approved by the owner's ruling (R37); Phase 0 exit condition met. |

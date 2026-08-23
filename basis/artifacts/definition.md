@@ -21,7 +21,7 @@ ancestry: [definition]
   `artifact-typedef`) declare it in their ancestry, so a validator that
   knows only `definition` can check any definition document against the
   two requirements below.
-- **Produced by:** seed drafting, or governed evolution of a approved
+- **Produced by:** seed drafting, or governed evolution of an approved
   definition. **Consumed by:** every agent whose work the definition
   governs; compilers and validators that render or check against it.
 

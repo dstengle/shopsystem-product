@@ -111,28 +111,28 @@ terms uses one of these when one fits.
 - **Bounded Context** — a deliberately drawn region of the product with
   one internal language, one model, and one set of contracts to other
   regions; drawn by design, never discovered after the fact (Evans,
-  *Domain-Driven Design*). *(pending: rides the architecture-principle-set approval)*
+  *Domain-Driven Design*).
 - **shop** — the entity that builds, operates, and evolves part of the
   product. Two types: the lead shop (the system-level coordinator; owns
   product-level artifacts and no Bounded Context) and the BC-shop (owns
-  and produces exactly one Bounded Context). *(pending: rides the architecture-principle-set approval)*
+  and produces exactly one Bounded Context).
 - **activity** — a discrete unit of work performed inside a shop,
   following a contract or process, with inputs, outcomes, and provenance
   recorded. What an actor is stays unconstrained; the activity has the
-  same shape whoever performs it. *(pending: rides the architecture-principle-set approval)*
+  same shape whoever performs it.
 - **contract** — a named, versioned statement of what one entity
   promises another: the schemas exchanged, the meaning of each
   operation, the error behavior, and the relationship kind. Offered as a
   product contract (on a Bounded Context) or an operational contract (on
-  a shop); nothing outside a contract is promised. *(pending: rides the architecture-principle-set approval)*
+  a shop); nothing outside a contract is promised.
 - **relationship kind** — the named pattern a contract declares for how
   two Bounded Contexts relate, drawn from the context-mapping catalogue
   (Evans, *Domain-Driven Design*): customer–supplier, conformist,
   anti-corruption layer, open host service, published language, shared
-  kernel, or separate ways. *(pending: rides the architecture-principle-set approval)*
+  kernel, or separate ways.
 - **intent** — a desired outcome expressed by an originator at the
   product's edge; enters the product through a contract and keeps its
-  provenance through every translation and delegation. *(pending: rides the architecture-principle-set approval)*
+  provenance through every translation and delegation.
 
 ## Document History
 
@@ -142,3 +142,4 @@ terms uses one of these when one fits.
 | 1 | 2026-08-19 | state | draft → approved. |
 | 2 | 2026-08-22 | update | Conversation-model terms added (R19); action extended to four values, authority-call and action-table amended, close-out and snapshot tag added (R30). |
 | 3 | 2026-08-23 | update | Architecture terms added, riding the architecture-principle-set approval: Bounded Context, shop, activity, contract, relationship kind, intent. |
+| 3 | 2026-08-23 | state | The six architecture terms approved with the architecture principle set (R37); pending markers removed. |
