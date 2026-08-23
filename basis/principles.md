@@ -6,10 +6,15 @@ owner: product-authority
 status: approved
 approved: 2026-08-22
 created: 2026-08-10
-updated: 2026-08-21
+updated: 2026-08-23
 ---
 
 # Founding principles
+
+> Amended 2026-08-23 by authority direction: rationale examples
+> referencing the pre-migration corpus removed — the specific examples
+> are not necessary to rationalize the principles, and this branch
+> carries no referent for them. Statements unchanged.
 
 ## What a good principle looks like
 
@@ -69,15 +74,14 @@ a governed record; an unsanctioned context channel MUST NOT
 be created or retained.
 
 **Rationale.** What an agent reads determines what it produces, so an
-ungoverned context input is an ungoverned generator. This shop observed the
-failure directly: agents accumulated 67 notes in a memory tool no process
-governed, and session handoffs came to depend on those notes even though no
-one had ever reviewed them.
+ungoverned context input is an ungoverned generator. The failure
+mode this prevents: notes accumulate in channels no process governs, and
+work comes to depend on content no one has ever reviewed.
 
 **Implications.** Maintainers version every context input, promote changes
 through a gated step, and can audit which definition version was in force
-when an artifact was produced. The router closes any memory channel that
-lacks a defined process and a consumer. Tool owners ship each tool's skill
+when an artifact was produced. Whoever operates a context channel
+closes it when it lacks a defined process and a consumer. Tool owners ship each tool's skill
 with the tool, in lockstep.
 
 ## Every activity belongs to a process (`no-orphan-activities`)
@@ -88,10 +92,9 @@ resulting actions; every long-running loop MUST declare its exit — a
 reached-state success exit, a round or budget cap, or both.
 
 **Rationale.** An activity outside a process has no consumer for its
-output, so the output piles up unread or is thrown away. This shop saw
-both: agents stopped sending a feedback message type (mechanism_observation)
-because nothing consumed it, and instead accumulated unreviewed notes in an
-ungoverned memory tool. Any runtime can follow a process defined at this
+output, so the output piles up unread or is thrown away. Both
+failure modes follow: feedback stops flowing when nothing consumes it, and
+the signal migrates into ungoverned channels instead. Any runtime can follow a process defined at this
 level — the requirement is a definition, not a workflow engine.
 
 **Implications.** Reviewers treat an activity with no process as a defect,
@@ -107,10 +110,9 @@ statement, the writer MUST use a defined term if one is available.
 
 **Rationale.** The defined-term list — glossary entries plus schema
 element names — restricts the available language, and a restricted
-language aids clarity and reduces drift. The failure is cheap to reach
-and this review reached it: the process format introduced "kind" beside
-the already-defined "artifact type" — two words for one thing inside a
-week, and every reader of both had to learn they were the same.
+language aids clarity and reduces drift. The failure is cheap to reach:
+two words for one thing appear within days of each other, and every
+reader of both must learn they are the same.
 (Controlled-vocabulary practice: ASD-STE100, ISO 704.)
 
 **Implications.** Writers check the glossary and the schemas before
@@ -130,9 +132,9 @@ form it rejects.
 
 **Rationale.** Established forms carry decades of failure-tested
 decisions no fresh invention can match, and readers arrive already
-knowing them. The format research proved the point here: every element of
-the definition system had an established form, and the only bespokeness
-that survived review was the composition of adopted parts.
+knowing them. In practice every element of a
+definition system has an established form, and the only bespokeness that
+survives review is the composition of adopted parts.
 
 **Implications.** Authors search prior art before drafting and name every
 adopted form in the definition's Sources section. Reviewers ask "what
@@ -145,10 +147,8 @@ authoritative home; every other appearance MUST be a reference or a
 generated rendering.
 
 **Rationale.** Copies drift and each drifting copy trains a different
-behavior. This shop measured it: consuming repos copied schema files
-instead of referencing the registry and drifted from the real schemas,
-and a typedef's pinned example link stopped conforming within days of
-being written.
+behavior. Copies of schemas drift from their source, and
+pinned example links stop conforming as the source moves on.
 
 **Implications.** Writers link or `$ref` instead of restating. Only the
 compiler touches renderings; a hand edit to a rendering is reverted, not
@@ -162,13 +162,12 @@ resulting action; the effectiveness of processes, tools, and prompts MUST
 be measured, and their definitions MUST be updated from what is measured.
 
 **Rationale.** A channel without a consumer dies silently and takes its
-signal with it: this shop's agents stopped sending mechanism_observation
-because nothing consumed it, and the improvement signal moved into an
-ungoverned memory tool. Judged checks decay the same way when no one
+signal with it: when nothing consumes a channel, senders stop sending
+and the signal moves into ungoverned channels. Judged checks decay the same way when no one
 grades the judge.
 
 **Implications.** Whoever opens a channel names its consumer and resulting
-action at creation, or the router closes it. Owners of judged checks
+action at creation, or the channel is closed. Owners of judged checks
 grade a sample of verdicts on a standing calibration schedule. Definition
 owners treat measured ineffectiveness as an obligation to update the
 definition, not as background noise.
@@ -180,10 +179,9 @@ demonstrated in the running system; artifacts existing, checks passing,
 or reviews approving MUST NOT count as done on their own.
 
 **Rationale.** The gap between green artifacts and working systems is
-where this fleet's worst defects lived: six fabro-launcher defects
-surfaced only at live end-to-end because CI built and published without
-ever running the image, and the 2026-08-03 trust break traced to checks
-green while decisions were unrealized.
+where the worst defects live: builds publish without the built thing
+ever running, and checks stay green while decided behavior goes
+unrealized.
 
 **Implications.** Definition authors name the runtime demonstration in
 every Definition of Done. Reviewers reject completion claims that cite
@@ -199,15 +197,15 @@ source MUST NOT be loaded.
 
 **Rationale.** Extraneous context costs twice: tokens spent carrying it,
 and drift when the agent follows something it was never meant to read.
-This shop's evidence: 67 unreviewed memories loaded into every session
-regardless of task, and unscoped conversations no one could associate
-with specific work. (Least privilege, applied to context.)
+The failure mode this prevents: unreviewed notes loading into every
+session regardless of task, and unscoped conversations no one can
+associate with specific work. (Least privilege, applied to context.)
 
 **Implications.** Process authors declare a step's context inputs the way
-they declare data inputs — the declared list is the load list. The router
+they declare data inputs — the declared list is the load list. A session
 loads a conversation's anchor and its definition chain, nothing ambient.
-Maintainers keep the journal and the archive out of ambient context;
-reading either is a deliberate, declared act. Reviewers treat an
+Maintainers keep historical stores — archives, transcripts — out of
+ambient context; reading one is a deliberate, declared act. Reviewers treat an
 undeclared context load as a defect.
 
 ---
@@ -220,6 +218,6 @@ undeclared context load as a defect.
 | Helps you say no (Spool) | yes: rejects definition-less checks and self-checked work | yes: rejects unsanctioned channels | yes: rejects orphan activities | yes: rejects undefined coinages and synonym pairs | yes: rejects unjustified invention | yes: rejects duplicate authorities | yes: rejects consumer-less channels | yes: rejects artifact-only done claims | yes: rejects ambient loads and unapproved sources |
 | Not fluff, not a goal-in-disguise (Rumelt) | pass — directs without prescribing method | pass | pass | pass | pass | pass | pass | pass | pass |
 | Not permission-to-play (Lencioni) | pass — most systems do NOT work this way | pass | pass | pass | pass | pass | pass | pass | pass |
-| Implies ≥1 practice and ≥1 check (shop rule) | shared-definition practice; role-separation check | promotion gate; provenance audit | process-membership lint; loop-exit review | term lookup before writing; undefined-term and near-synonym lint | prior-art search; Sources-section audit | link-or-ref practice; duplicate-statement review | consumer named at creation; calibration schedule | demonstration named in DoD; close-reason citation check | per-step context declaration; undeclared-load audit |
+| Implies ≥1 practice and ≥1 check (this document's intro) | shared-definition practice; role-separation check | promotion gate; provenance audit | process-membership lint; loop-exit review | term lookup before writing; undefined-term and near-synonym lint | prior-art search; Sources-section audit | link-or-ref practice; duplicate-statement review | consumer named at creation; calibration schedule | demonstration named in DoD; close-reason citation check | per-step context declaration; undeclared-load audit |
 | Normative keywords used in statements only; capitals elsewhere only as the opening's mentions (mechanical) | pass | pass | pass | pass | pass | pass | pass | pass | pass |
 | Implications derivable and actor-named (judged) | pass | pass | pass | pass | pass | pass | pass | pass | pass |
