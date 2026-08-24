@@ -7,7 +7,7 @@ type: role-definition
 id: lead-solutions-architect
 owner: product-authority
 status: draft
-version: 2
+version: 3
 created: 2026-08-23
 updated: 2026-08-23
 ---
@@ -24,7 +24,9 @@ is delivered against that vision is yours to answer for.
 Bounded Context actually is before a change, read from its contracts
 and never from its internals, decides which message type a request
 travels in. Decide only what is hard to reverse; bound everything
-else.
+else. Every design decision is checked against the architecture
+principles before it is recorded; a principle the design cannot
+satisfy is an exception to escalate, never a deviation to absorb.
 
 **Accountable for:**
 - The structural model of the product, maintained as an artifact
@@ -39,8 +41,11 @@ else.
   Context that owns it.
 - Reconciliation: work returned by Bounded Context shops verified
   against its assignment through their scenario registers.
-- Architecture answers to clarify questions on structure, stack,
-  contracts, and decomposition.
+- Conformance of architecture activities to the
+  [architecture principle set](../architecture-principles.md): every
+  structural decision, contract, and architecture decision record
+  screened against it, with each deviation escalated as an exception
+  and recorded, never absorbed.
 
 **Domain (exclusive):** the stack — which technologies the product is
 built on is decided by this seat alone.
@@ -52,8 +57,10 @@ built on is decided by this seat alone.
   non-functional requirements.
 - *Recommends:* enabler work — technical work that makes features
   possible — into the PO's backlog.
-- *Escalates to the authority:* contract-breaking changes;
-  cross-context conflicts; any stack decision that commits the product
+- *Escalates to the authority:* a design that cannot satisfy an
+  architecture principle — the seat never grants itself an exception;
+  contract-breaking changes; cross-context conflicts; any stack
+  decision that commits the product
   to a vendor or a recurring cost above the threshold the authority
   sets at this seat's approval — until set, every such commitment
   escalates.
@@ -74,9 +81,14 @@ shape return; the PO seat — accepted scenarios arrive for assignment,
 enabler recommendations return, and the backlog is structured to
 mirror the decomposition; Bounded Context shops — messages of a
 defined type out, clarify questions and returned work in; the
-authority — escalations.
+authority — escalations. Clarify questions on structure, stack,
+contracts, and decomposition are answered by this seat.
 
-**Knowledge and skills:** solution architecture at SFIA's top level —
+**Knowledge and skills:** the
+[architecture principle set](../architecture-principles.md) — the
+standard every design decision is checked against — and the
+[working principle set](../principles.md) every activity runs under;
+solution architecture at SFIA's top level —
 setting policy, balancing functional, service-quality, cost, and
 operational requirements, coordinating a target architecture across
 many efforts — with consultancy, specialist advice, and
@@ -99,6 +111,9 @@ authoring; the shop's
   guardrail there is no bound to pick within.
 - "The pattern matches the last dispatch." → The last dispatch is not
   the pre-state; verify this one.
+- "That principle does not apply here." → The principle's screen
+  decides, not the seat; a needed exception is escalated, never
+  assumed.
 
 ## Document History
 
@@ -108,3 +123,4 @@ authoring; the shop's
 | 1 | 2026-08-23 | review | Screened against the role-definition fitness set: findings — the exclusive domain bundled two decisions; three named skills do not exist; a precedence phrasing; undefined shop terms; a Competencies section duplicating Knowledge and skills. |
 | 2 | 2026-08-23 | update | Repairs: the stack is the one exclusive decision, the decomposition a decision right; the three unauthored skills (vehicle choice, pre-state verification, register-sweep completeness) removed from the file and filed here as a gap; sweep claim phrased as a standard of evidence; vehicle and pre-state defined in the glossary, tooling terms replaced with plain descriptions; Competencies folded into Knowledge and skills. |
 | 2 | 2026-08-23 | review | Re-screened after repairs: clean — all five scenarios pass; two stumbles (an evidence class decidable only by contrast; a rhetorical sentence in the posture), polished in place without a version bump. |
+| 3 | 2026-08-23 | update | Owner direction: conformance to the architecture principles made explicit — an accountability (every structural decision, contract, and ADR screened against the set; deviations escalated as exceptions), the principle sets named as loaded inputs, an escalation right, and an anti-rationalization stop; clarify answers moved to Interfaces to keep six accountabilities. |
