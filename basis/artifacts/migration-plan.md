@@ -5,7 +5,7 @@ defines: migration-plan
 owner: product-authority
 status: approved
 approved: 2026-08-22
-version: 2
+version: 3
 created: 2026-08-22
 updated: 2026-08-23
 ancestry: [request, migration-plan]
@@ -62,7 +62,7 @@ per the authority's strictness directive).
 5. **Execution readiness and entry conditions** — per run: which chain
    links pre-exist (from the linter, not prose claims), keeper-list
    source, tools required, target tree; blocking preconditions named.
-6. **The authority's review surface** — every review touchpoint from
+6. **The authority's review touchpoints** — every review touchpoint from
    plan approval through mass rewrite to close-out, with the
    accept/reject options at each.
 7. **Action tables** — one row per record: id, action
@@ -87,7 +87,7 @@ carries evidence; every external reference is glossed in-document;
 per-run entry conditions are stated and their blocking preconditions
 named; the plan is delivered through a stakeholder-presentation run
 (decision-brief + independent cold read + round log) — never as the
-raw decision surface. **Consequence on failure:** the plan returns to
+raw decision material. **Consequence on failure:** the plan returns to
 its author; rulings made from a failed plan are not recorded as
 approvals.
 
@@ -119,3 +119,4 @@ follows this shop's stakeholder-presentation process.
 | 1 | 2026-08-22 | update | Authored (seed layer); earlier history, if any, in the repository history. |
 | 1 | 2026-08-22 | state | draft → approved. |
 | 2 | 2026-08-23 | update | Owner direction: decision-ledger references removed — changes stand on their own; history entries and text no longer cite numbered decisions. |
+| 3 | 2026-08-23 | update | Owner direction: a banned word removed — review touchpoints; decision material. |

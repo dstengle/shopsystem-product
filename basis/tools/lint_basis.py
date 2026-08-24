@@ -57,7 +57,7 @@ REQUIRED_HEADINGS = {
 # review-record typedef §Commitment: no live document cites a numbered
 # decision (Rn) — decisions live as changes in the artifacts they affect.
 DECISION_REF = re.compile(r"\bR\d{1,3}\b")
-BANNED = ["ratif", "disposition", "rebaseline bill"]
+BANNED = ["ratif", "disposition", "rebaseline bill", "surface"]
 PKG_RE = re.compile(r"^pkg:[a-z0-9-]+/[a-z0-9_-]+$")
 
 
@@ -160,7 +160,7 @@ def lint():
                 errors.append(f"{rel}:{i}: numbered-decision reference (decisions live as changes in the artifacts they affect)")
 
         # 6. banned vocabulary
-        if rel.name != "README.md":
+        if rel.name != "README.md" and rel.name != "base-writing-style.md":
             for i, line in enumerate(text.splitlines(), 1):
                 if "Replaces" in line or line.lstrip().startswith(("approved:", "ratified:")):
                     continue

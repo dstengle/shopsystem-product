@@ -4,7 +4,7 @@ id: glossary
 owner: product-authority
 status: approved
 approved: 2026-08-19
-version: 5
+version: 6
 created: 2026-08-19
 updated: 2026-08-23
 ---
@@ -130,6 +130,12 @@ terms uses one of these when one fits.
   (Evans, *Domain-Driven Design*): customer–supplier, conformist,
   anti-corruption layer, open host service, published language, shared
   kernel, or separate ways.
+- **vehicle** — the message type a request to a Bounded Context shop
+  travels in; chosen from the pre-state, never from the request's
+  wording.
+- **pre-state** — what a Bounded Context actually is before a change,
+  read from its contracts and its scenario register, never from its
+  internals.
 - **intent** — a desired outcome expressed by an originator at the
   product's edge; enters the product through a contract and keeps its
   provenance through every translation and delegation.
@@ -145,3 +151,4 @@ terms uses one of these when one fits.
 | 3 | 2026-08-23 | state | The six architecture terms approved with the architecture principle set; pending markers removed. |
 | 4 | 2026-08-23 | update | Owner direction: ruling and experiment-index entries removed with the ledger practice; review and review-record entries rewritten to the outcomes model. |
 | 5 | 2026-08-23 | update | Anchor entry added — the term recurred as an unintroduced-term stumble across three screens. |
+| 6 | 2026-08-23 | update | vehicle and pre-state added — terms the lead-solutions-architect role turns on. |
