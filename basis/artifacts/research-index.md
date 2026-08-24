@@ -4,7 +4,7 @@ id: research-index-typedef
 defines: research-index
 owner: product-authority
 status: draft
-version: 1
+version: 2
 created: 2026-08-23
 updated: 2026-08-23
 ancestry: [research-index]
@@ -38,6 +38,10 @@ ancestry: [research-index]
   never copied into the index.
 - A report without a row is undelivered; a row without a reachable
   body is a defect.
+- The index loads only inside a research activity — a step that
+  declares it as an input. It is never named in the primer or any
+  other ambient context: research is ephemeral and activity-scoped,
+  and loading its register into every session violates least-context.
 
 ## Required sections
 
@@ -69,3 +73,4 @@ principles (bodies stay off the live tree; the index is the load).
 | Version | Date | Kind | Entry |
 |---|---|---|---|
 | 1 | 2026-08-23 | update | Authored by owner direction: the research pointer moves out of README prose into a typed register. |
+| 2 | 2026-08-23 | update | Owner direction: the index is activity-scoped context only — never loaded by the primer or any ambient context. |
