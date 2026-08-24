@@ -7,7 +7,7 @@ type: role-definition
 id: researcher
 owner: product-authority
 status: draft
-version: 2
+version: 3
 created: 2026-08-23
 updated: 2026-08-23
 ---
@@ -41,9 +41,8 @@ between. Plausibility is not existence.
 - The limits of what was learned: unreadable sources, scope limits,
   and what evidence would change the judgment.
 - A report the consumer can act on from its executive summary alone,
-  stored on the `research` branch, with pointer rows in the basis
-  index on `rebaseline` (`basis/README.md`, Research section) and in
-  `research/README.md` on `main`.
+  stored on the `research` branch and registered as a row in the
+  research index (`main:research/index.md`).
 
 **Domain (exclusive):** the confidence assigned to each finding —
 what the evidence supports, and how strongly, is decided by this seat
@@ -88,3 +87,4 @@ before claims); calibrated confidence language.
 | 1 | 2026-08-23 | review | Screened against the role-definition fitness set: findings — confidence scheme not declared in the file; "frame" and "live system" undefined; three phrases committed to an AI actor kind. |
 | 2 | 2026-08-23 | update | Repairs: the scheme stated with its governed source; process vocabulary replaced; evidence and anti-rationalization text made actor-neutral. |
 | 2 | 2026-08-23 | review | Re-screened after repairs: clean — all five scenarios pass; one stumble (pointer locations ambiguous), disambiguated in place without a version bump. |
+| 3 | 2026-08-23 | update | Owner direction: the report is registered in the typed research index on `main`, not in README prose. |

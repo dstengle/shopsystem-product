@@ -13,6 +13,9 @@ curated feed.
   [`basis/README.md`](../../basis/README.md).
 - The migration plan: `main:drafts/migration-plan.md` (read via
   `git show`; reference only) — phases, entry conditions, action table.
+- The research index: `main:research/index.md` — the register of
+  research reports and their locations on the `research` branch; a
+  report informs definitions and is never authority.
 - The frozen corpus: `main` — the BC shops' contract of record until
   cut-over, and the pre-migration reference. Never copy from it outside
   an import step or the curated feed. The branch pulls from `main`;

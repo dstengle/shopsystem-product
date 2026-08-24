@@ -3,9 +3,9 @@ name: research-inquiry
 description: "Answer a question with a research report: the researcher frames and\
   \ plans, gathers in parallel, extracts grounded evidence, synthesizes findings with\
   \ confidence and alternatives, verifies the claims in a fresh context, and delivers\
-  \ a report the consumer can act on \u2014 stored on the `research` branch with a\
-  \ pointer in the live system. Use when a question needs an answer with sourced,\
-  \ confidence-labeled findings the asker can act on."
+  \ a report the consumer can act on \u2014 stored on the `research` branch and registered\
+  \ in the research index. Use when a question needs an answer with sourced, confidence-labeled\
+  \ findings the asker can act on."
 type: skill
 id: research-inquiry-skill
 status: draft
@@ -15,14 +15,14 @@ generated: true
 generated-by: basis/tools/compile_process.py
 derived-from: research-inquiry-process
 source: basis/processes/research-inquiry.md
-source-digest: sha256:d8da2fb85a33
+source-digest: sha256:2d5883616182
 activation: model-judged
 promotion: experiment-local
 ---
 
 # Research inquiry (compiled from `research-inquiry-process`)
 
-Answer a question with a research report: the researcher frames and plans, gathers in parallel, extracts grounded evidence, synthesizes findings with confidence and alternatives, verifies the claims in a fresh context, and delivers a report the consumer can act on — stored on the `research` branch with a pointer in the live system.
+Answer a question with a research report: the researcher frames and plans, gathers in parallel, extracts grounded evidence, synthesizes findings with confidence and alternatives, verifies the claims in a fresh context, and delivers a report the consumer can act on — stored on the `research` branch and registered in the research index.
 
 **Every claim is grounded or marked. A reference the run did not open is not a source; a number without a checkable quote is not a finding; a persona is not evidence.**
 
@@ -44,7 +44,7 @@ flowchart TD
   route_read{"Route on the cold read<br/>in — review: review, read_round: integer, round_cap: integer"}
   revise_report(["Revise the report for its reader — agent: researcher<br/>in — report: research-report, review: review, read_round: integer<br/>out — report: research-report"])
   advance_round_read["Advance the cold-read round — runtime<br/>in — read_round: integer<br/>sets — read_round: integer"]
-  deliver(["Deliver the report — agent: lead-pm<br/>in — report: research-report, report_path: string, consumer: string, verify_round: integer, read_round: integer, round_cap: integer, pointer_paths: string[]<br/>out — report: research-report"])
+  deliver(["Deliver the report — agent: lead-pm<br/>in — report: research-report, report_path: string, consumer: string, verify_round: integer, read_round: integer, round_cap: integer, index_path: string<br/>out — report: research-report"])
   __end(("end<br/>result — report: research-report"))
   __start(("start")) --> frame
   frame --> plan
@@ -290,15 +290,15 @@ next: cold-read
 
 ## deliver — Deliver the report
 
-Run by agent in role `lead-pm`. reads: report, report_path, consumer, verify_round, read_round, round_cap, pointer_paths · writes: report.
+Run by agent in role `lead-pm`. reads: report, report_path, consumer, verify_round, read_round, round_cap, index_path · writes: report.
 - then: `end`
 
 Prompt:
 
 ```text
 Set the report's status to delivered, push the research branch,
-and add or update the pointer row at each of pointer_paths
-(report title, date, branch path). Deliver the executive summary
+and add or update the report's row in the research index at
+index_path (id, question, date, status, location). Deliver the executive summary
 to the consumer with report_path; if verify_round or read_round
 reached round_cap, say so first and point at the Limitations
 section that discloses the residuals.

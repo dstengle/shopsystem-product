@@ -4,7 +4,7 @@ id: research-report-typedef
 defines: research-report
 owner: product-authority
 status: draft
-version: 1
+version: 2
 created: 2026-08-23
 updated: 2026-08-23
 ancestry: [research-report]
@@ -43,8 +43,9 @@ ancestry: [research-report]
 - A reference that could not be verified to exist is marked
   UNVERIFIED, never silently kept; the report never presents a
   reference it did not open.
-- A report lives on the `research` branch; the live system carries a
-  pointer, never the body.
+- A report lives on the `research` branch and is registered as a row
+  in the research index (`main:research/index.md`); no other tree
+  carries the body.
 
 ## Required sections
 
@@ -95,3 +96,4 @@ with retraction, permitted abstention); the research report on the
 | Version | Date | Kind | Entry |
 |---|---|---|---|
 | 1 | 2026-08-23 | update | Authored from the research report on research prompting; the type's guideline and fitness set are not yet authored — chain incomplete, a filed gap. |
+| 2 | 2026-08-23 | update | Owner direction: registration moves to the typed research index. |

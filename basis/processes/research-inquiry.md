@@ -3,7 +3,7 @@ type: process-definition
 id: research-inquiry-process
 owner: product-authority
 status: draft
-version: 3
+version: 4
 created: 2026-08-23
 updated: 2026-08-23
 produces: [research-report]
@@ -23,8 +23,8 @@ annotations:
 frames and plans, gathers in parallel, extracts grounded evidence,
 synthesizes findings with confidence and alternatives, verifies the
 claims in a fresh context, and delivers a report the consumer can act
-on — stored on the `research` branch with a pointer in the live
-system.
+on — stored on the `research` branch and registered in the research
+index.
 
 **Guiding statement:** Every claim is grounded or marked. A reference
 the run did not open is not a source; a number without a checkable
@@ -56,7 +56,7 @@ confidence). verifier — the researcher seat filled fresh
 reader — [`../roles/cold-reviewer.md`](../roles/cold-reviewer.md)
 (Verifier; judges decidability for the consumer). deliverer —
 [`../roles/lead-pm.md`](../roles/lead-pm.md) (delivers the report,
-sets its status, and maintains the pointer rows). consumer — the
+sets its status, and maintains the research index). consumer — the
 seat that asked (parameter `consumer`); receives the report.
 
 **Carried by:**
@@ -86,7 +86,7 @@ flowchart TD
   route_read{"Route on the cold read<br/>in — review: review, read_round: integer, round_cap: integer"}
   revise_report(["Revise the report for its reader — agent: researcher<br/>in — report: research-report, review: review, read_round: integer<br/>out — report: research-report"])
   advance_round_read["Advance the cold-read round — runtime<br/>in — read_round: integer<br/>sets — read_round: integer"]
-  deliver(["Deliver the report — agent: lead-pm<br/>in — report: research-report, report_path: string, consumer: string, verify_round: integer, read_round: integer, round_cap: integer, pointer_paths: string[]<br/>out — report: research-report"])
+  deliver(["Deliver the report — agent: lead-pm<br/>in — report: research-report, report_path: string, consumer: string, verify_round: integer, read_round: integer, round_cap: integer, index_path: string<br/>out — report: research-report"])
   __end(("end<br/>result — report: research-report"))
   __start(("start")) --> frame
   frame --> plan
@@ -138,7 +138,7 @@ data:
   report_id: {type: string}
   report_path: {type: string}
   report_typedef_path: {type: string, initial: ../artifacts/research-report.md}
-  pointer_paths: {type: array, items: {type: string}, initial: [basis/README.md, "main:research/README.md"]}
+  index_path: {type: string, initial: "main:research/index.md"}
   verify_round: {type: integer, initial: 1}
   read_round: {type: integer, initial: 1}
   round_cap: {type: integer, initial: 3}
@@ -347,12 +347,12 @@ steps:
   - id: deliver
     name: Deliver the report
     run-by: {role: lead-pm, execution: agent}
-    inputs: [report, report_path, consumer, verify_round, read_round, round_cap, pointer_paths]
+    inputs: [report, report_path, consumer, verify_round, read_round, round_cap, index_path]
     outputs: [report]
     prompt: |
       Set the report's status to delivered, push the research branch,
-      and add or update the pointer row at each of pointer_paths
-      (report title, date, branch path). Deliver the executive summary
+      and add or update the report's row in the research index at
+      index_path (id, question, date, status, location). Deliver the executive summary
       to the consumer with report_path; if verify_round or read_round
       reached round_cap, say so first and point at the Limitations
       section that discloses the residuals.
@@ -391,3 +391,4 @@ lives in the process-definition typedef.
 | 2 | 2026-08-23 | review | Re-screened: findings — the loop cap was a literal, undeclared where prompts referenced it; revise-report read an undeclared round. |
 | 3 | 2026-08-23 | update | round_cap declared as data and used by both failsafe branches, report, and deliver; read_round declared as revise-report's input. |
 | 3 | 2026-08-23 | review | Final screen: clean — all six scenarios pass; two stumbles (lead-pm not introduced in Roles; verify's reopened sources), polished in place without a version bump. |
+| 4 | 2026-08-23 | update | Owner direction: deliver registers the report in the typed research index (index_path) instead of README pointer rows. |
