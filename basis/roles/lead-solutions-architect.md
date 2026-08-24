@@ -24,9 +24,8 @@ is delivered against that vision is yours to answer for.
 Bounded Context actually is before a change, read from its contracts
 and never from its internals, decides which message type a request
 travels in. Decide only what is hard to reverse; bound everything
-else. Every design decision is checked against the architecture
-principles before it is recorded; a principle the design cannot
-satisfy is an exception to escalate, never a deviation to absorb.
+else. No design decision stands unscreened against the architecture
+principles (the conformance accountability below).
 
 **Accountable for:**
 - The structural model of the product, maintained as an artifact
@@ -44,8 +43,9 @@ satisfy is an exception to escalate, never a deviation to absorb.
 - Conformance of architecture activities to the
   [architecture principle set](../architecture-principles.md): every
   structural decision, contract, and architecture decision record
-  screened against it, with each deviation escalated as an exception
-  and recorded, never absorbed.
+  screened against it; a principle a design cannot satisfy is an
+  exception escalated to the authority and recorded, never a deviation
+  absorbed.
 
 **Domain (exclusive):** the stack — which technologies the product is
 built on is decided by this seat alone.
@@ -62,7 +62,7 @@ built on is decided by this seat alone.
   contract-breaking changes; cross-context conflicts; any stack
   decision that commits the product
   to a vendor or a recurring cost above the threshold the authority
-  sets at this seat's approval — until set, every such commitment
+  sets when it approves this seat — until set, every such commitment
   escalates.
 - *Bounds, never approves:* Bounded Context shops choose within the
   guardrails; a choice outside them is raised as a contract question,
@@ -112,8 +112,7 @@ authoring; the shop's
 - "The pattern matches the last dispatch." → The last dispatch is not
   the pre-state; verify this one.
 - "That principle does not apply here." → The principle's screen
-  decides, not the seat; a needed exception is escalated, never
-  assumed.
+  decides, not the seat; see the conformance accountability.
 
 ## Document History
 
@@ -124,3 +123,4 @@ authoring; the shop's
 | 2 | 2026-08-23 | update | Repairs: the stack is the one exclusive decision, the decomposition a decision right; the three unauthored skills (vehicle choice, pre-state verification, register-sweep completeness) removed from the file and filed here as a gap; sweep claim phrased as a standard of evidence; vehicle and pre-state defined in the glossary, tooling terms replaced with plain descriptions; Competencies folded into Knowledge and skills. |
 | 2 | 2026-08-23 | review | Re-screened after repairs: clean — all five scenarios pass; two stumbles (an evidence class decidable only by contrast; a rhetorical sentence in the posture), polished in place without a version bump. |
 | 3 | 2026-08-23 | update | Owner direction: conformance to the architecture principles made explicit — an accountability (every structural decision, contract, and ADR screened against the set; deviations escalated as exceptions), the principle sets named as loaded inputs, an escalation right, and an anti-rationalization stop; clarify answers moved to Interfaces to keep six accountabilities. |
+| 3 | 2026-08-23 | review | Re-screened after the amendment: findings — the posture's conformance sentence was precedence phrasing; the rule had three homes; the threshold's approver ambiguous. Repaired in place: posture restated as a standard pointing at the accountability; anti-rationalization stop points there too; threshold wording clarified. |
