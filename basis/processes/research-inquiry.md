@@ -3,7 +3,7 @@ type: process-definition
 id: research-inquiry-process
 owner: product-authority
 status: draft
-version: 4
+version: 5
 created: 2026-08-23
 updated: 2026-08-23
 produces: [research-report]
@@ -138,7 +138,7 @@ data:
   report_id: {type: string}
   report_path: {type: string}
   report_typedef_path: {type: string, initial: ../artifacts/research-report.md}
-  index_path: {type: string, initial: "main:research/index.md"}
+  index_path: {type: string, initial: research/index.md}
   verify_round: {type: integer, initial: 1}
   read_round: {type: integer, initial: 1}
   round_cap: {type: integer, initial: 3}
@@ -392,3 +392,4 @@ lives in the process-definition typedef.
 | 3 | 2026-08-23 | update | round_cap declared as data and used by both failsafe branches, report, and deliver; read_round declared as revise-report's input. |
 | 3 | 2026-08-23 | review | Final screen: clean — all six scenarios pass; two stumbles (lead-pm not introduced in Roles; verify's reopened sources), polished in place without a version bump. |
 | 4 | 2026-08-23 | update | Owner direction: deliver registers the report in the typed research index (index_path) instead of README pointer rows. |
+| 5 | 2026-08-23 | update | Owner direction: the research index instance lives on `rebaseline` at `research/index.md`, not on `main`. |

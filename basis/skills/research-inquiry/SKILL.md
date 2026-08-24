@@ -15,7 +15,7 @@ generated: true
 generated-by: basis/tools/compile_process.py
 derived-from: research-inquiry-process
 source: basis/processes/research-inquiry.md
-source-digest: sha256:2d5883616182
+source-digest: sha256:8abf7565cd96
 activation: model-judged
 promotion: experiment-local
 ---

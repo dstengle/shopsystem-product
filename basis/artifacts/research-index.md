@@ -4,7 +4,7 @@ id: research-index-typedef
 defines: research-index
 owner: product-authority
 status: draft
-version: 2
+version: 3
 created: 2026-08-23
 updated: 2026-08-23
 ancestry: [research-index]
@@ -16,8 +16,8 @@ ancestry: [research-index]
 
 - **Type:** `research-index` — the single register of research
   reports: for each, its question, date, status, and where its body
-  lives. The index is the stub the live system and the frozen
-  reference carry; report bodies never leave the `research` branch.
+  lives. The index is the one research record the live system
+  carries; report bodies never leave the `research` branch.
 - **Produced by:** the deliver step of the research-inquiry process
   ([`../processes/research-inquiry.md`](../processes/research-inquiry.md)),
   which adds or updates one row per delivered report. **Consumed by:**
@@ -31,8 +31,9 @@ ancestry: [research-index]
 
 ## Rules
 
-- Exactly one instance exists, on `main` at `research/index.md`; every
-  other appearance is a pointer to it (single source of truth).
+- Exactly one instance exists, on the `rebaseline` branch at
+  `research/index.md`; every other appearance is a pointer to it
+  (single source of truth). `main` carries nothing.
 - A row carries a report's id, question (verbatim), date, status
   (draft | delivered), and location as `<branch>:<path>`; the body is
   never copied into the index.
@@ -64,7 +65,7 @@ principles (bodies stay off the live tree; the index is the load).
 
 ## Derived review checklist
 
-- One instance, on `main`. *(§Rules)*
+- One instance, on `rebaseline`. *(§Rules)*
 - Every row's location resolves via `git show`. *(§Rules; Commitment)*
 - Every delivered research report has a row. *(Commitment)*
 
@@ -74,3 +75,4 @@ principles (bodies stay off the live tree; the index is the load).
 |---|---|---|---|
 | 1 | 2026-08-23 | update | Authored by owner direction: the research pointer moves out of README prose into a typed register. |
 | 2 | 2026-08-23 | update | Owner direction: the index is activity-scoped context only — never loaded by the primer or any ambient context. |
+| 3 | 2026-08-23 | update | Owner direction: the research index instance lives on `rebaseline` at `research/index.md`, not on `main`. |
