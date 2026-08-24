@@ -2,7 +2,8 @@
 type: process-definition
 id: research-inquiry-process
 owner: product-authority
-status: draft
+status: approved
+approved: 2026-08-23
 version: 5
 created: 2026-08-23
 updated: 2026-08-23
@@ -393,3 +394,4 @@ lives in the process-definition typedef.
 | 3 | 2026-08-23 | review | Final screen: clean — all six scenarios pass; two stumbles (lead-pm not introduced in Roles; verify's reopened sources), polished in place without a version bump. |
 | 4 | 2026-08-23 | update | Owner direction: deliver registers the report in the typed research index (index_path) instead of README pointer rows. |
 | 5 | 2026-08-23 | update | Owner direction: the research index instance lives on `rebaseline` at `research/index.md`, not on `main`. |
+| 5 | 2026-08-23 | state | draft → approved by the owner. The compiled skill is the shop's research skill. |

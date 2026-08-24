@@ -3,7 +3,8 @@ type: artifact-typedef
 id: research-report-typedef
 defines: research-report
 owner: product-authority
-status: draft
+status: approved
+approved: 2026-08-23
 version: 3
 created: 2026-08-23
 updated: 2026-08-23
@@ -98,3 +99,4 @@ with retraction, permitted abstention); the research report on the
 | 1 | 2026-08-23 | update | Authored from the research report on research prompting; the type's guideline and fitness set are not yet authored — chain incomplete, a filed gap. |
 | 2 | 2026-08-23 | update | Owner direction: registration moves to the typed research index. |
 | 3 | 2026-08-23 | update | Owner direction: the research index instance lives on `rebaseline` at `research/index.md`, not on `main`. |
+| 3 | 2026-08-23 | state | draft → approved by the owner. Guideline and fitness set for the type remain to be authored — a filed gap. |

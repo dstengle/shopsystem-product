@@ -8,14 +8,14 @@ description: "Answer a question with a research report: the researcher frames an
   \ findings the asker can act on."
 type: skill
 id: research-inquiry-skill
-status: draft
+status: approved
 created: 2026-08-23
 updated: 2026-08-23
 generated: true
 generated-by: basis/tools/compile_process.py
 derived-from: research-inquiry-process
 source: basis/processes/research-inquiry.md
-source-digest: sha256:8abf7565cd96
+source-digest: sha256:ca9b816461cb
 activation: model-judged
 promotion: experiment-local
 ---

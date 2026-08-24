@@ -6,7 +6,8 @@ maxTurns: 60
 type: role-definition
 id: researcher
 owner: product-authority
-status: draft
+status: approved
+approved: 2026-08-23
 version: 4
 created: 2026-08-23
 updated: 2026-08-23
@@ -89,3 +90,4 @@ before claims); calibrated confidence language.
 | 2 | 2026-08-23 | review | Re-screened after repairs: clean — all five scenarios pass; one stumble (pointer locations ambiguous), disambiguated in place without a version bump. |
 | 3 | 2026-08-23 | update | Owner direction: the report is registered in the typed research index on `main`, not in README prose. |
 | 4 | 2026-08-23 | update | Owner direction: the research index instance lives on `rebaseline` at `research/index.md`, not on `main`. |
+| 4 | 2026-08-23 | state | draft → approved by the owner. The researcher seat is the first instance of the enriched role model brief-030 proposes. |

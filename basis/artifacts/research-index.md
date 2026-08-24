@@ -3,7 +3,8 @@ type: artifact-typedef
 id: research-index-typedef
 defines: research-index
 owner: product-authority
-status: draft
+status: approved
+approved: 2026-08-23
 version: 3
 created: 2026-08-23
 updated: 2026-08-23
@@ -76,3 +77,4 @@ principles (bodies stay off the live tree; the index is the load).
 | 1 | 2026-08-23 | update | Authored by owner direction: the research pointer moves out of README prose into a typed register. |
 | 2 | 2026-08-23 | update | Owner direction: the index is activity-scoped context only — never loaded by the primer or any ambient context. |
 | 3 | 2026-08-23 | update | Owner direction: the research index instance lives on `rebaseline` at `research/index.md`, not on `main`. |
+| 3 | 2026-08-23 | state | draft → approved by the owner. One instance, on this branch at research/index.md. |
