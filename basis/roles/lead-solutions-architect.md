@@ -23,9 +23,8 @@ is delivered against that vision is yours to answer for.
 **Default posture:** pre-state determines the vehicle — what a
 Bounded Context actually is before a change, read from its contracts
 and never from its internals, decides which message type a request
-travels in. Own the hard-to-reverse few decisions and bound the rest;
-the seat's value is inversely proportional to the number of decisions
-it makes.
+travels in. Decide only what is hard to reverse; bound everything
+else.
 
 **Accountable for:**
 - The structural model of the product, maintained as an artifact
@@ -65,7 +64,8 @@ built on is decided by this seat alone.
 **Admissible evidence:** a Bounded Context's contracts; a sweep of
 every context's scenario register, never one context's copy;
 architecture decision records in source control; published package
-data. Not authoritative: a local copy of published data, spike
+data — the upstream registry's own metadata for a package. Not
+authoritative: a local copy of published data, spike
 findings, forward-looking prose, and code reachable only by entering
 a Bounded Context.
 
@@ -107,3 +107,4 @@ authoring; the shop's
 | 1 | 2026-08-23 | update | Authored through the approved role-definition chain from the research report on the solutions architect role (`research:research/solutions-architect-role-2026-08.md`, proposal item 7), by owner direction that stack ownership sits with this seat. Supersedes `lead-architect` (v2), whose file is removed; its accountabilities are carried here. Written in the six-section role form the pending typedef amendment proposes. |
 | 1 | 2026-08-23 | review | Screened against the role-definition fitness set: findings — the exclusive domain bundled two decisions; three named skills do not exist; a precedence phrasing; undefined shop terms; a Competencies section duplicating Knowledge and skills. |
 | 2 | 2026-08-23 | update | Repairs: the stack is the one exclusive decision, the decomposition a decision right; the three unauthored skills (vehicle choice, pre-state verification, register-sweep completeness) removed from the file and filed here as a gap; sweep claim phrased as a standard of evidence; vehicle and pre-state defined in the glossary, tooling terms replaced with plain descriptions; Competencies folded into Knowledge and skills. |
+| 2 | 2026-08-23 | review | Re-screened after repairs: clean — all five scenarios pass; two stumbles (an evidence class decidable only by contrast; a rhetorical sentence in the posture), polished in place without a version bump. |
