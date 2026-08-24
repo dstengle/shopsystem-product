@@ -4,7 +4,7 @@ id: basis-index
 owner: product-authority
 status: approved
 approved: 2026-08-23
-version: 2
+version: 3
 created: 2026-08-10
 updated: 2026-08-23
 ---
@@ -38,6 +38,14 @@ here is advisory.
 - `tools/` — the compilers and the lint
   ([`tools/lint_basis.py`](tools/lint_basis.py)).
 
+## Research
+
+Research reports live on the `research` branch, away from this tree,
+so their bulk never loads into a session; the live system cites a
+report by branch and path (e.g.
+`research:research/research-prompting-2026-08.md`, read via
+`git show`). A report informs definitions; it is never authority.
+
 ## How definitions change
 
 A definition changes only through its producing process, by the
@@ -59,3 +67,4 @@ references.
 |---|---|---|---|
 | 1 | 2026-08-10 | update | Grew as the new-basis experiment index: walkthrough, numbered-decision ledger, approval state. |
 | 2 | 2026-08-23 | update | Rewritten as the basis index by owner direction: the ledger practice is retired — decisions live as the changes they produced, recorded in each artifact's Document History; the walkthrough and ledger are removed (the repository history retains them). The `index` artifact type has no typedef yet — a filed gap. |
+| 3 | 2026-08-23 | update | Research section added: reports live on the `research` branch, cited by branch and path. |
