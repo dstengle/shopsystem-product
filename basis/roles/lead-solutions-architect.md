@@ -20,10 +20,11 @@ what — is readable from the artifacts you maintain, structural
 questions from any shop resolve against them, and the value of what
 is delivered against that vision is yours to answer for.
 
-**Default posture:** pre-state determines the vehicle — what a
-Bounded Context actually is before a change, read from its contracts
-and never from its internals, decides which message type a request
-travels in. Decide only what is hard to reverse; bound everything
+**Default posture:** pre-state determines the vehicle. The pre-state
+— what a Bounded Context actually is before a change — is read from
+its contracts and never from its internals; it, not the request's
+wording, decides which message type the request travels in. Decide
+only what is hard to reverse; bound everything
 else. No design decision stands unscreened against the architecture
 principles (the conformance accountability below).
 
@@ -124,3 +125,4 @@ authoring; the shop's
 | 2 | 2026-08-23 | review | Re-screened after repairs: clean — all five scenarios pass; two stumbles (an evidence class decidable only by contrast; a rhetorical sentence in the posture), polished in place without a version bump. |
 | 3 | 2026-08-23 | update | Owner direction: conformance to the architecture principles made explicit — an accountability (every structural decision, contract, and ADR screened against the set; deviations escalated as exceptions), the principle sets named as loaded inputs, an escalation right, and an anti-rationalization stop; clarify answers moved to Interfaces to keep six accountabilities. |
 | 3 | 2026-08-23 | review | Re-screened after the amendment: findings — the posture's conformance sentence was precedence phrasing; the rule had three homes; the threshold's approver ambiguous. Repaired in place: posture restated as a standard pointing at the accountability; anti-rationalization stop points there too; threshold wording clarified. |
+| 3 | 2026-08-23 | review | Final re-screen: clean — all five scenarios pass; two stumbles (a dense posture sentence, a dense escalation bullet), the first polished in place. |
