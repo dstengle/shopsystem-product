@@ -6,10 +6,11 @@ maxTurns: 60
 type: role-definition
 id: lead-solutions-architect
 owner: product-authority
-status: draft
+status: approved
+approved: 2026-08-25
 version: 3
 created: 2026-08-23
-updated: 2026-08-23
+updated: 2026-08-25
 ---
 
 # Lead Solutions Architect
@@ -126,3 +127,4 @@ authoring; the shop's
 | 3 | 2026-08-23 | update | Owner direction: conformance to the architecture principles made explicit — an accountability (every structural decision, contract, and ADR screened against the set; deviations escalated as exceptions), the principle sets named as loaded inputs, an escalation right, and an anti-rationalization stop; clarify answers moved to Interfaces to keep six accountabilities. |
 | 3 | 2026-08-23 | review | Re-screened after the amendment: findings — the posture's conformance sentence was precedence phrasing; the rule had three homes; the threshold's approver ambiguous. Repaired in place: posture restated as a standard pointing at the accountability; anti-rationalization stop points there too; threshold wording clarified. |
 | 3 | 2026-08-23 | review | Final re-screen: clean — all five scenarios pass; two stumbles (a dense posture sentence, a dense escalation bullet), the first polished in place. |
+| 3 | 2026-08-25 | state | draft → approved by the owner. The seat supersedes lead-architect; the stack is its exclusive domain. |
