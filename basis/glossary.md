@@ -4,7 +4,7 @@ id: glossary
 owner: product-authority
 status: approved
 approved: 2026-08-19
-version: 7
+version: 8
 created: 2026-08-19
 updated: 2026-08-25
 ---
@@ -137,6 +137,25 @@ terms uses one of these when one fits.
 - **pre-state** — what a Bounded Context actually is before a change,
   read from its contracts and its scenario register, never from its
   internals.
+- **framing** — the PM role's recorded statement of what a request is
+  about: the originator, the problem taken to be worth solving, and the
+  outcome it serves; the exclusive decision of `lead-pm`.
+- **acceptance scenario** — a Gherkin scenario that states, as a
+  requirement, what counts as done for one behavior; co-produced by the
+  PO role and the owning Bounded Context shop; held in that shop's
+  scenario register.
+- **scenario register** — a Bounded Context shop's own list of the
+  acceptance scenarios it holds, with their hashes and states; read in
+  full across every context when a claim spans contexts.
+- **clarify** — a shop's typed question back to the lead shop on scope,
+  vocabulary, structure, or contract; answered by the role whose domain
+  the question falls in.
+- **decomposition** — the solutions architect's record of which Bounded
+  Context owns which capability, and the relationship kind of each
+  contract between contexts.
+- **enabler work** — technical work that makes a feature possible;
+  recommended by the solutions architect, placed in the backlog by the
+  PO role.
 - **intent** — a desired outcome expressed by an originator at the
   product's edge; enters the product through a contract and keeps its
   provenance through every translation and delegation.
@@ -154,3 +173,4 @@ terms uses one of these when one fits.
 | 5 | 2026-08-23 | update | Anchor entry added — the term recurred as an unintroduced-term stumble across three screens. |
 | 6 | 2026-08-23 | update | vehicle and pre-state added — terms the lead-solutions-architect role turns on. |
 | 7 | 2026-08-25 | update | Owner direction: a near-synonym of "role" retired and banned. |
+| 8 | 2026-08-25 | update | framing, acceptance scenario, scenario register, clarify, decomposition, enabler work added — each arrived undefined in the PM and PO role screens. |
