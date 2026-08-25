@@ -51,4 +51,4 @@ the invoking process, which this role judges.
 | 4 | 2026-08-23 | update | Owner-directed repairs through the approved role-definition guideline: invocation cadence removed (the invoking processes own it via fresh-context steps); description restated actor-neutrally; the honesty bullet recast as a verifiable output (findings quote present text; clean sections reported clean); "annex"/"presentation" generalized to the material under review; the mutable competency list replaced with "named by the invoking process". |
 | 4 | 2026-08-23 | state | Repairs approved by the owner with the meta-chain approval. |
 | 4 | 2026-08-23 | review | Re-screened against the role-definition fitness set after repairs: clean — all five scenarios pass; one stumble (the term "round" inferred from the invoking process), not a fail. |
-| 5 | 2026-08-25 | update | Owner direction: "seat" retired as a near-synonym of "role"; the word is banned. |
+| 5 | 2026-08-25 | update | Owner direction: a near-synonym of "role" retired and banned. |

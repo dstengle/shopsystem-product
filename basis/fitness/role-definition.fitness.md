@@ -86,4 +86,4 @@ established.
 |---|---|---|---|
 | 1 | 2026-08-23 | update | Authored as the role-definition meta-chain's fitness set. |
 | 1 | 2026-08-23 | state | draft → approved by the owner, with the exemplar screens' findings accepted as valid and their repairs directed. |
-| 2 | 2026-08-25 | update | Owner direction: "seat" retired as a near-synonym of "role"; the word is banned. |
+| 2 | 2026-08-25 | update | Owner direction: a near-synonym of "role" retired and banned. |

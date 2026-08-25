@@ -41,4 +41,4 @@ language; the product's domain language.
 |---|---|---|---|
 | 1 | 2026-08-23 | update | Authored through the approved role-definition chain, with the frozen lead-shop chapter on `main` as keeper source — rewritten, never pasted. |
 | 1 | 2026-08-23 | review | Screened against the role-definition fitness set: clean — all five scenarios pass; three stumbles ("stably hashed" undefined, artifact locations unlinked, Bash/Grep/Glob breadth), none a fail. |
-| 2 | 2026-08-25 | update | Owner direction: "seat" retired as a near-synonym of "role"; the word is banned. |
+| 2 | 2026-08-25 | update | Owner direction: a near-synonym of "role" retired and banned. |

@@ -61,4 +61,4 @@ references.
 | 2 | 2026-08-23 | update | Rewritten as the basis index by owner direction: the ledger practice is retired — decisions live as the changes they produced, recorded in each artifact's Document History; the walkthrough and ledger are removed (the repository history retains them). The `index` artifact type has no typedef yet — a filed gap. |
 | 3 | 2026-08-23 | update | Research section added: reports live on the `research` branch, cited by branch and path. |
 | 4 | 2026-08-23 | update | Research section removed by owner direction: research is registered in the typed research index on `main`, not in this index's prose. |
-| 5 | 2026-08-25 | update | Owner direction: "seat" retired as a near-synonym of "role"; the word is banned. |
+| 5 | 2026-08-25 | update | Owner direction: a near-synonym of "role" retired and banned. |

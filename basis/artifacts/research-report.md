@@ -100,4 +100,4 @@ with retraction, permitted abstention); the research report on the
 | 2 | 2026-08-23 | update | Owner direction: registration moves to the typed research index. |
 | 3 | 2026-08-23 | update | Owner direction: the research index instance lives on `rebaseline` at `research/index.md`, not on `main`. |
 | 3 | 2026-08-23 | state | draft → approved by the owner. Guideline and fitness set for the type remain to be authored — a filed gap. |
-| 4 | 2026-08-25 | update | Owner direction: "seat" retired as a near-synonym of "role"; the word is banned. |
+| 4 | 2026-08-25 | update | Owner direction: a near-synonym of "role" retired and banned. |

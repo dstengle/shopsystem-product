@@ -152,4 +152,4 @@ round cap (the dual-exit rule).
 | 1 | 2026-08-19 | update | Authored (seed layer); earlier history, if any, in the repository history. |
 | 1 | 2026-08-22 | state | draft → approved. |
 | 2 | 2026-08-23 | update | Owner direction: decision-ledger references removed — changes stand on their own; history entries and text no longer cite numbered decisions. |
-| 3 | 2026-08-25 | update | Owner direction: "seat" retired as a near-synonym of "role"; the word is banned. |
+| 3 | 2026-08-25 | update | Owner direction: a near-synonym of "role" retired and banned. |

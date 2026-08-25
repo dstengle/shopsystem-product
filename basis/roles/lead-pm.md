@@ -48,4 +48,4 @@ presentation discipline that process names.
 | 1 | 2026-08-23 | update | Authored through the approved role-definition chain. The role is new to the system: it carries the discovery-interview and intent-provenance duties the migration's execution model assigns to product management. |
 | 1 | 2026-08-23 | review | Screened against the role-definition fitness set: clean — all five scenarios pass; three stumbles (unlinked process and glossary allusions; "anchor" undefined), none a fail. |
 | 2 | 2026-08-23 | update | Stumble polish: the presenting process named and linked; glossary linked; the anchor term pointed at its new glossary entry. |
-| 3 | 2026-08-25 | update | Owner direction: "seat" retired as a near-synonym of "role"; the word is banned. |
+| 3 | 2026-08-25 | update | Owner direction: a near-synonym of "role" retired and banned. |

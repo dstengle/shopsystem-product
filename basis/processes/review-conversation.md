@@ -184,4 +184,4 @@ per the run lifecycle.
 | 1 | 2026-08-22 | update | Authored (seed layer). |
 | 1 | 2026-08-22 | state | draft → approved. |
 | 2 | 2026-08-23 | update | Ledger practice removed by owner direction: decisions apply as Document History-recorded changes in the affected artifacts; classification value renamed decision. |
-| 3 | 2026-08-25 | update | Owner direction: "seat" retired as a near-synonym of "role"; the word is banned. |
+| 3 | 2026-08-25 | update | Owner direction: a near-synonym of "role" retired and banned. |

@@ -91,4 +91,4 @@ before claims); calibrated confidence language.
 | 3 | 2026-08-23 | update | Owner direction: the report is registered in the typed research index on `main`, not in README prose. |
 | 4 | 2026-08-23 | update | Owner direction: the research index instance lives on `rebaseline` at `research/index.md`, not on `main`. |
 | 4 | 2026-08-23 | state | draft → approved by the owner. The researcher role is the first instance of the enriched role model brief-030 proposes. |
-| 5 | 2026-08-25 | update | Owner direction: "seat" retired as a near-synonym of "role"; the word is banned. |
+| 5 | 2026-08-25 | update | Owner direction: a near-synonym of "role" retired and banned. |

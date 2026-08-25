@@ -153,4 +153,4 @@ terms uses one of these when one fits.
 | 4 | 2026-08-23 | update | Owner direction: ruling and experiment-index entries removed with the ledger practice; review and review-record entries rewritten to the outcomes model. |
 | 5 | 2026-08-23 | update | Anchor entry added — the term recurred as an unintroduced-term stumble across three screens. |
 | 6 | 2026-08-23 | update | vehicle and pre-state added — terms the lead-solutions-architect role turns on. |
-| 7 | 2026-08-25 | update | Owner direction: "seat" retired as a near-synonym of "role"; the word is banned. |
+| 7 | 2026-08-25 | update | Owner direction: a near-synonym of "role" retired and banned. |

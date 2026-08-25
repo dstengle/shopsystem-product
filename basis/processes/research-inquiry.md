@@ -395,4 +395,4 @@ lives in the process-definition typedef.
 | 4 | 2026-08-23 | update | Owner direction: deliver registers the report in the typed research index (index_path) instead of README pointer rows. |
 | 5 | 2026-08-23 | update | Owner direction: the research index instance lives on `rebaseline` at `research/index.md`, not on `main`. |
 | 5 | 2026-08-23 | state | draft → approved by the owner. The compiled skill is the shop's research skill. |
-| 6 | 2026-08-25 | update | Owner direction: "seat" retired as a near-synonym of "role"; the word is banned. |
+| 6 | 2026-08-25 | update | Owner direction: a near-synonym of "role" retired and banned. |

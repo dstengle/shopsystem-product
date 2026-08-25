@@ -282,4 +282,4 @@ the dual-exit rule) lives in the process-definition typedef, not here.
 | 3 | 2026-08-23 | review | Re-screened after repairs: findings — one residual (the glossary duty in draft's prompt references undeclared context); two mechanical stumbles (round absent from route-approval inputs; the hold window unlinked). |
 | 4 | 2026-08-23 | update | Residual repairs: glossary declared as data and as draft's input/output; round added to route-approval's inputs; the hold window linked to `hold-after` and the typedef's run lifecycle. |
 | 4 | 2026-08-23 | review | Final re-screen against the process-definition fitness set: clean — all six scenarios pass; three stumbles (hold-window frontmatter reference, the compiled 'writes: —' summary on set-clause steps, O1's cross-file witness), none a fail. |
-| 5 | 2026-08-25 | update | Owner direction: "seat" retired as a near-synonym of "role"; the word is banned. |
+| 5 | 2026-08-25 | update | Owner direction: a near-synonym of "role" retired and banned. |
