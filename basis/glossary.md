@@ -4,7 +4,7 @@ id: glossary
 owner: product-authority
 status: approved
 approved: 2026-08-19
-version: 9
+version: 10
 created: 2026-08-19
 updated: 2026-08-25
 ---
@@ -104,7 +104,8 @@ terms uses one of these when one fits.
 - **run** — one execution of a process, anchored to a work item; states:
   running, held, done, cancelled.
 - **hold** — a run state: paused with its step and data preserved in its
-  anchor; a held run is resumed or cancelled, never dropped.
+  anchor, by inactivity or by an ask; a held run is resumed or
+  cancelled, never dropped.
 - **checkpoint** — updating a conversation's anchor when a transcript
   ends mid-conversation; a checkpoint is not a close.
 - **branched conversation** — a conversation run as a sub-process of
@@ -147,9 +148,13 @@ terms uses one of these when one fits.
 - **scenario register** — a Bounded Context shop's own list of the
   acceptance scenarios it holds, with their hashes and states; read in
   full across every context when a claim spans contexts.
-- **clarify** — a shop's typed question back to the lead shop on scope,
-  vocabulary, structure, or contract; answered by the role whose domain
-  the question falls in.
+- **ask** — a question one activity puts to another role in place of
+  its output, carrying a default and a checkpoint; the run holds, the
+  role answers, the step resumes — never a wait in place (data type
+  `ask`; process-definition typedef §Run lifecycle).
+- **clarify** — an ask from a Bounded Context shop to the lead shop on
+  scope, vocabulary, structure, or contract; answered by the role whose
+  domain the question falls in.
 - **decomposition** — the solutions architect's record of which Bounded
   Context owns which capability, and the relationship kind of each
   contract between contexts.
@@ -166,6 +171,8 @@ terms uses one of these when one fits.
   vocabulary and voice, core-task parity across interaction types,
   interaction patterns per type, and the accessibility target; the
   role's exclusive domain.
+- **originator** — whoever expresses intent at the product's edge: a
+  person, a shop, or a system outside the product.
 - **intent** — a desired outcome expressed by an originator at the
   product's edge; enters the product through a contract and keeps its
   provenance through every translation and delegation.
@@ -185,3 +192,5 @@ terms uses one of these when one fits.
 | 7 | 2026-08-25 | update | Owner direction: a near-synonym of "role" retired and banned. |
 | 8 | 2026-08-25 | update | framing, acceptance scenario, scenario register, clarify, decomposition, enabler work added — each arrived undefined in the PM and PO role screens. |
 | 9 | 2026-08-25 | update | interaction type and experience guidance corpus added with the lead-product-designer role. |
+| 10 | 2026-08-25 | update | ask added; clarify re-based as an ask; hold now names the ask as a cause. |
+| 10 | 2026-08-25 | update | originator added — used by the PM role and the ask type without a definition. |

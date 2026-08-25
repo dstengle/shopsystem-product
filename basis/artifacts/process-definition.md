@@ -5,7 +5,7 @@ defines: process-definition
 owner: product-authority
 status: approved
 approved: 2026-08-22
-version: 3
+version: 4
 created: 2026-08-19
 updated: 2026-08-25
 ancestry: [definition, process-definition]
@@ -35,7 +35,9 @@ id), `condition-functions` (declared extensions, name and signature),
 `annotations` (process-level rendering metadata, keyed by rendering
 target); `hold-after` (ISO 8601 duration — the inactivity window after
 which the runtime holds a run; required for any process that carries a
-conversation).
+conversation); `ask-cap` (ISO 8601 duration — how long an ask may stand
+unanswered before its default applies; required for any process whose
+steps carry `asks`).
 
 ## Required sections
 
@@ -78,7 +80,7 @@ is the reserved terminator id for `next`. Each step:
 - `inputs` / `outputs` — lists of declared data names; the typed contract
   is the isolation mechanism (a step reads only what it lists).
 - Agent and human steps carry `prompt` — **the only prose allowed in a
-  step** (for a human step it is the review's ask).
+  step** (for a human step it is the question the review puts).
 - Runtime steps carry `set` (CEL assignments to data values or their
   fields), `run` (command templates
   with `${...}` interpolation from typed inputs; `atomic: true` binds the
@@ -87,6 +89,16 @@ is the reserved terminator id for `next`. Each step:
 - Routing: `next`, or `branches` of `{label, when (CEL), next}` rows plus
   one `else`. **Every loop declares its exits as labeled branch rows** —
   a reached-state success exit, a round or budget cap, or both.
+- `asks` — optional list of role ids the step may put an ask to (the
+  [`ask`](../types/ask.md) data type). An agent or human step listed
+  with `asks` may return an ask in place of its outputs; a step without
+  `asks` may not ask. A process with asking steps declares an `ask` data
+  value (`$ref: ask`) and lists it in each asking step's inputs. Every
+  ask names a `default` and a `checkpoint`; the step's prompt states
+  what kind of information it may ask for — never a judgment the step's
+  role owes. A step returns at most one ask per run — the loop's exit —
+  and a second resolves `defaulted` at once. Early steps ask cheaply;
+  an ask from a late step wastes the work not in its checkpoint.
 - `annotations` — per-step rendering metadata keyed by target (e.g.
   `fabro: {model, max_attempts}`); the definition itself ignores them.
 - `run-by: {execution: sub-process, process: <process-id>, from: <source>}`
@@ -107,6 +119,22 @@ registry. Run states: `running`, `held`, `done`, `cancelled`.
 - The `hold-after` window makes parking automatic: a run with no activity
   inside the window is held by the runtime. Unfinished work parks itself
   with a named resume point; nothing dangles in the lead repo.
+- **Ask** holds a run the same way, with the ask recorded on the anchor
+  and routed to whoever fills the role it names — a person or an agent;
+  the answer is written to the ask and the run resumes at the asking
+  step with the ask in its inputs, in a fresh context loaded from the
+  step's declared inputs and the checkpoint. There is no synchronous
+  form: no step waits in place for an answer. An unanswered ask resolves
+  to its `default` at the process's `ask-cap` (an ISO 8601 duration,
+  required for any process whose steps carry `asks`), and the run
+  resumes on the default with the ask marked `defaulted`; cancelling a
+  held run marks its ask `cancelled`. Answering is an activity of the
+  answering role: a human step for a human-held role, or a step the
+  answering role's process names — those steps are defined in the
+  processes that answer, not here. The registry that anchors runs
+  records every ask; asks per run, per role, and per kind are read from
+  it. An ask that recurs across runs is a gap in a definition; the
+  answering role files the definition change, and the ask stops.
 - **Cancel** closes the run's work item with a reason and files the
   resulting actions the outcomes demand.
 
@@ -141,6 +169,10 @@ round cap (the dual-exit rule).
 - No prose inside step records outside `prompt` fields; section
   introduction prose is body text, not step content. *(§The steps section)*
 - Every loop has labeled success and/or cap exits. *(§The steps section)*
+- Every step with `asks` belongs to a process with `ask-cap` and lists
+  the `ask` value in its inputs; every ask names a default and a
+  checkpoint, and its `to` is in the step's `asks`; one ask per step per
+  run. *(§The steps section, §Run lifecycle)*
 - Outcomes each name a witness. *(§Required sections 3)*
 - `result`, if absent, is justified by outcomes that pin the run's value.
   *(§The steps section)*
@@ -153,3 +185,5 @@ round cap (the dual-exit rule).
 | 1 | 2026-08-22 | state | draft → approved. |
 | 2 | 2026-08-23 | update | Owner direction: decision-ledger references removed — changes stand on their own; history entries and text no longer cite numbered decisions. |
 | 3 | 2026-08-25 | update | Owner direction: a near-synonym of "role" retired and banned. |
+| 4 | 2026-08-25 | update | Owner decision: the ask mechanism defined, held-and-resumed only — a step may carry `asks` (role ids) and return an `ask` data value in place of its outputs; the run holds, the role answers, the step resumes in a fresh context from its inputs and the ask's checkpoint; `ask-cap` bounds an unanswered ask with its default; a recurring ask is a definition gap. No synchronous form. |
+| 4 | 2026-08-25 | review | Screened with the ask data type: findings — the ask loop lacked an exit; the resumed ask had no data name; answering had no named activity; the recurrence measure had no channel; an old use of "ask" collided. Repaired in place: one ask per step per run, the `ask` value declared and listed, answering placed in the answering role's process, the registry named as the count's home, wording fixed. |
