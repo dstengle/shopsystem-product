@@ -6,7 +6,8 @@ maxTurns: 60
 type: role-definition
 id: lead-product-designer
 owner: product-authority
-status: draft
+status: approved
+approved: 2026-08-25
 version: 2
 created: 2026-08-25
 updated: 2026-08-25
@@ -132,3 +133,4 @@ every activity runs under.
 | 1 | 2026-08-25 | review | Screened against the role-definition fitness set: findings — three sequencing sentences (scenario 2 fail); candidate undefined; the exclusive domain phrased as two decisions. |
 | 2 | 2026-08-25 | update | Repairs: sequencing removed from an anti-rationalization stop, a decision right, and an escalation; candidate, core task, opportunity, and ask defined inline; the exclusive domain phrased as one decision with conformance as its application. |
 | 2 | 2026-08-25 | review | Re-screened: clean — all five scenarios pass, five rules hold; two stumbles (a dash-colon aside; a residual timing word) polished in place. |
+| 2 | 2026-08-25 | state | draft → approved by the owner. |

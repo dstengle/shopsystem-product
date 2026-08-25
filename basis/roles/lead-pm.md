@@ -8,7 +8,7 @@ id: lead-pm
 owner: product-authority
 status: approved
 approved: 2026-08-25
-version: 5
+version: 6
 created: 2026-08-23
 updated: 2026-08-25
 ---
@@ -67,7 +67,8 @@ expression to be asking for is decided by this role alone.
 - *Never decides:* feasibility and the stack (the
   [solutions architect](lead-solutions-architect.md)'s);
   authorship of acceptance scenarios and backlog order within the
-  framing (the PO's); usability — no lead-shop role holds it yet; how a
+  framing (the PO's); usability (the
+  [product designer](lead-product-designer.md)'s); how a
   Bounded Context builds a behavior (the BC-shop's).
 
 **Admissible evidence:** the originator's own words, recorded;
@@ -83,6 +84,8 @@ role's own reading of every artifact in place of a stated criterion.
   backlog order, and scope questions in for the check.
 - The solutions architect role: framed problem and outcome out;
   feasibility verdict, technical risks, and questions in.
+- The product designer role: framed problems and outcomes out;
+  usability evidence, prototypes, and observed user needs in.
 - Assisting agents: each assisted activity's process names what the
   agent prepares and what this role decides.
 - Asks from any role: answered here, and a recurring ask becomes a
@@ -91,7 +94,7 @@ role's own reading of every artifact in place of a stated criterion.
 **Knowledge and skills:** product discovery and interviewing; the
 four product risks — value, usability, feasibility, viability — and
 which role answers for each (value and viability here; feasibility
-with the solutions architect; usability unassigned); the shop's
+with the solutions architect; usability with the product designer); the shop's
 definition corpus (every activity run through the basis); the
 [stakeholder-presentation](../processes/stakeholder-presentation.md)
 and [discovery-conversation](../processes/discovery-conversation.md)
@@ -124,3 +127,4 @@ activity runs under.
 | 5 | 2026-08-25 | update | Repairs: sequencing removed; human requirement stated once as the role's authority; frontmatter said to contract the assisting agents; exclusive domain kept to the framing, other decisions marked accountable-not-exclusive, Escalates recast as Resolves; framing and screen defined inline, the four risks listed; interfaces one per line; usability marked unassigned rather than tied to an undefined role. |
 | 5 | 2026-08-25 | review | Re-screened: clean — all five scenarios pass, five rules hold; stumbles (originator, PO, ask introduced late; a spatial metaphor; research references) polished in place. |
 | 5 | 2026-08-25 | state | draft → approved by the owner. |
+| 6 | 2026-08-25 | update | Usability now assigned: the never-decides list and the four-risks note point at the approved lead-product-designer role; the designer added as an interface. |
