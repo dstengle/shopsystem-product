@@ -3,7 +3,7 @@ type: research-index
 id: research-index
 owner: product-authority
 status: approved
-version: 4
+version: 5
 created: 2026-08-23
 updated: 2026-08-25
 ---
@@ -18,6 +18,7 @@ system carries; it loads only inside a research activity.
 
 | Id | Question | Date | Status | Location |
 |---|---|---|---|---|
+| product-designer-role-2026-08 | What should a product designer role own in the lead shop, and how does one role keep the user experience consistent across every interaction type — CLI, TUI, GUI, API, conversational, voice? | 2026-08-25 | delivered | `research:research/product-designer-role-2026-08.md` |
 | pm-po-roles-2026-08 | How does industry define the product manager and product owner roles — accountabilities, decision rights, deliverables — and the interactions between them and with the solutions architect? | 2026-08-25 | delivered | `research:research/pm-po-roles-2026-08.md` |
 | solutions-architect-role-2026-08 | How does industry define the solutions architect role, and how would it replace lead-architect as lead-solutions-architect — owning product-wide technology stack decisions — complementing lead-po and lead-pm? | 2026-08-23 | delivered | `research:research/solutions-architect-role-2026-08.md` |
 | research-prompting-2026-08 | What should a prompt — and the role and process behind it — contain for an agent to do rigorous research? | 2026-08-23 | delivered | `research:research/research-prompting-2026-08.md` |
@@ -35,3 +36,4 @@ system carries; it loads only inside a research activity.
 | 2 | 2026-08-23 | update | Moved from `main` to the `rebaseline` branch by owner direction; `main` carries nothing. |
 | 3 | 2026-08-23 | update | Row added: the solutions-architect role report, delivered. |
 | 4 | 2026-08-25 | update | Row added: the PM/PO roles report, delivered. |
+| 5 | 2026-08-25 | update | Row added: the product designer role report, delivered at both round caps with residuals disclosed. |
