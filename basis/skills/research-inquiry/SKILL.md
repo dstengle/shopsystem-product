@@ -70,7 +70,7 @@ flowchart TD
 
 ## frame — Frame the inquiry
 
-Run by agent in role `researcher`. reads: question, consumer, scope, sources_policy, confidence_scheme · writes: frame, report_id.
+Run by an agent in role `researcher`. reads: question, consumer, scope, sources_policy, confidence_scheme · writes: frame, report_id.
 - then: `plan`
 
 Prompt:
@@ -88,7 +88,7 @@ returns to the consumer as a scoping question.
 
 ## plan — Plan the search
 
-Run by agent in role `researcher`. reads: frame · writes: plan.
+Run by an agent in role `researcher`. reads: frame · writes: plan.
 - check: `size(plan) > 0`
 - then: `gather`
 
@@ -104,7 +104,7 @@ search path cannot decide the answer alone.
 
 ## gather — Gather in parallel
 
-Run by agent in role `researcher`. reads: plan, frame · writes: notes.
+Run by an agent in role `researcher`. reads: plan, frame · writes: notes.
 - then: `extract`
 
 Prompt:
@@ -121,7 +121,7 @@ summarized from memory.
 
 ## extract — Extract grounded evidence
 
-Run by agent in role `researcher`. reads: notes, frame · writes: evidence.
+Run by an agent in role `researcher`. reads: notes, frame · writes: evidence.
 - then: `synthesize`
 
 Prompt:
@@ -137,7 +137,7 @@ conflict.
 
 ## synthesize — Synthesize the findings
 
-Run by agent in role `researcher`. reads: evidence, frame, confidence_scheme, report_typedef_path · writes: draft.
+Run by an agent in role `researcher`. reads: evidence, frame, confidence_scheme, report_typedef_path · writes: draft.
 - then: `verify`
 
 Prompt:
@@ -156,7 +156,7 @@ as knowledge-only with lowered confidence.
 
 ## verify — Verify independently
 
-Run by agent in role `researcher` (fresh context every run). reads: draft, evidence · writes: review.
+Run by an agent in role `researcher` (fresh context every run). reads: draft, evidence · writes: review.
 - then: `route-verify`
 
 Prompt:
@@ -191,7 +191,7 @@ branches:
 
 ## revise — Revise the draft
 
-Run by agent in role `researcher`. reads: draft, review, evidence · writes: draft.
+Run by an agent in role `researcher`. reads: draft, review, evidence · writes: draft.
 - then: `advance-round`
 
 Prompt:
@@ -216,7 +216,7 @@ next: verify
 
 ## report — Write the report
 
-Run by agent in role `researcher`. reads: draft, review, frame, report_id, report_typedef_path, verify_round, round_cap · writes: report, report_path.
+Run by an agent in role `researcher`. reads: draft, review, frame, report_id, report_typedef_path, verify_round, round_cap · writes: report, report_path.
 - then: `cold-read`
 
 Prompt:
@@ -232,7 +232,7 @@ and .md, and return that path.
 
 ## cold-read — Cold read for the consumer
 
-Run by agent in role `cold-reviewer` (fresh context every run). reads: report, frame · writes: review.
+Run by an agent in role `cold-reviewer` (fresh context every run). reads: report, frame · writes: review.
 - then: `route-read`
 
 Prompt:
@@ -264,7 +264,7 @@ branches:
 
 ## revise-report — Revise the report for its reader
 
-Run by agent in role `researcher`. reads: report, review, read_round · writes: report.
+Run by an agent in role `researcher`. reads: report, review, read_round · writes: report.
 - then: `advance-round-read`
 
 Prompt:
@@ -290,7 +290,7 @@ next: cold-read
 
 ## deliver — Deliver the report
 
-Run by agent in role `lead-pm`. reads: report, report_path, consumer, verify_round, read_round, round_cap, index_path · writes: report.
+Run by an agent in role `lead-pm`. reads: report, report_path, consumer, verify_round, read_round, round_cap, index_path · writes: report.
 - then: `end`
 
 Prompt:

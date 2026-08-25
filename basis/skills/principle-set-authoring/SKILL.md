@@ -56,7 +56,7 @@ flowchart TD
 
 ## draft — Draft the set
 
-Run by agent in role `lead-pm`. reads: sources, scope, guideline_paths, glossary · writes: set, glossary.
+Run by an agent in role `lead-pm`. reads: sources, scope, guideline_paths, glossary · writes: set, glossary.
 - check: `set.scope == scope`
 - then: `screen-read`
 
@@ -78,7 +78,7 @@ goes to the glossary before the draft leaves this step.
 
 ## screen-read — Screen read
 
-Run by agent in role `cold-reviewer` (fresh context every run). reads: set, fitness_path · writes: review.
+Run by an agent in role `cold-reviewer` (fresh context every run). reads: set, fitness_path · writes: review.
 - then: `log-round`
 
 Prompt:
@@ -121,7 +121,7 @@ branches:
 
 ## revise — Revise
 
-Run by agent in role `lead-pm`. reads: set, review, guideline_paths · writes: set.
+Run by an agent in role `lead-pm`. reads: set, review, guideline_paths · writes: set.
 - then: `advance-round`
 
 Prompt:
@@ -147,7 +147,7 @@ next: screen-read
 
 ## authority-approve — Owner decides on the screened draft
 
-Run by a human holding in role `product-authority`. reads: set, round_log · writes: set, review.
+Run by a human holding role `product-authority`. reads: set, round_log · writes: set, review.
 - then: `route-approval`
 
 Prompt:

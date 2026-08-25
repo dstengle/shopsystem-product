@@ -52,7 +52,7 @@ flowchart TD
 
 ## frame — Frame
 
-Run by agent in role `lead-pm`. reads: request · writes: frame.
+Run by an agent in role `lead-pm`. reads: request · writes: frame.
 - check: `size(frame.asks) <= 7`
 - then: `compose`
 
@@ -70,7 +70,7 @@ only the first split.
 
 ## compose — Compose
 
-Run by agent in role `lead-pm`. reads: request, frame · writes: brief, annex.
+Run by an agent in role `lead-pm`. reads: request, frame · writes: brief, annex.
 - check: `words(brief.decision_layer) <= 400`
 - check: `words(brief.decision_layer) + words(brief.support_layer) <= 1500`
 - then: `cold-read`
@@ -93,7 +93,7 @@ guidelines/base-writing-style.md.
 
 ## cold-read — Cold read
 
-Run by agent in role `cold-reviewer` (fresh context every run). reads: brief · writes: review.
+Run by an agent in role `cold-reviewer` (fresh context every run). reads: brief · writes: review.
 - then: `log-round`
 
 Prompt:
@@ -136,7 +136,7 @@ branches:
 
 ## revise — Revise
 
-Run by agent in role `lead-pm`. reads: brief, review · writes: brief.
+Run by an agent in role `lead-pm`. reads: brief, review · writes: brief.
 - then: `advance-round`
 
 Prompt:
@@ -161,7 +161,7 @@ next: cold-read
 
 ## deliver — Deliver
 
-Run by agent in role `lead-pm`. reads: brief, annex, review, round_log · writes: brief.
+Run by an agent in role `lead-pm`. reads: brief, annex, review, round_log · writes: brief.
 - then: `end`
 
 Prompt:

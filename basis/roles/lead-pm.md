@@ -8,7 +8,7 @@ id: lead-pm
 owner: product-authority
 status: approved
 approved: 2026-08-25
-version: 6
+version: 7
 created: 2026-08-23
 updated: 2026-08-25
 ---
@@ -73,8 +73,8 @@ expression to be asking for is decided by this role alone.
 
 **Admissible evidence:** the originator's own words, recorded;
 discovery-conversation anchors; measured outcomes of shipped work; a
-screen verdict — a cold reviewer's judgment against a named fitness
-set. Not authoritative: a stakeholder's feature list read as a
+screen verdict — a cold reviewer's judgment against a named criteria
+set (a fitness set, a guideline, or the framing itself). Not authoritative: a stakeholder's feature list read as a
 requirement; the PO's backlog read as the product's intent; the
 role's own reading of every artifact in place of a stated criterion.
 
@@ -128,3 +128,4 @@ activity runs under.
 | 5 | 2026-08-25 | review | Re-screened: clean — all five scenarios pass, five rules hold; stumbles (originator, PO, ask introduced late; a spatial metaphor; research references) polished in place. |
 | 5 | 2026-08-25 | state | draft → approved by the owner. |
 | 6 | 2026-08-25 | update | Usability now assigned: the never-decides list and the four-risks note point at the approved lead-product-designer role; the designer added as an interface. |
+| 7 | 2026-08-25 | update | Admissible evidence widened from "fitness set" to the criteria set the po-output-check process defines. |
