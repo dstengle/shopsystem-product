@@ -4,9 +4,9 @@ id: definition-chain-migration-process
 owner: product-authority
 status: approved
 approved: 2026-08-22
-version: 2
+version: 3
 created: 2026-08-20
-updated: 2026-08-23
+updated: 2026-08-25
 produces: [definition]
 condition-language: cel
 external-refs: []
@@ -37,9 +37,9 @@ for a rewrite, never a usable artifact.
   instead of looping — witnessed by the failsafe branch of
   `route-review` and the `park` step.
 
-**Roles:** product-authority (human seat — reviews, approves,
-spot-checks). lead-pm (author seat — drafts the chain, runs rewrites).
-The per-instance reviewer seats come from the chain itself once approved.
+**Roles:** product-authority (human-held role — reviews, approves,
+spot-checks). lead-pm (author role — drafts the chain, runs rewrites).
+The per-instance reviewer roles come from the chain itself once approved.
 
 **Scope note:** one run migrates one artifact type. The order of runs
 comes from the approved migration plan; keepers for the run are the
@@ -257,7 +257,7 @@ steps:
       - size(rewritten) + size(demoted) == size(keepers)
     prompt: |
       Run the type's approved authoring process once per keeper: author
-      seat and fresh reviewer seat per the chain, authority spot-checks
+      role and fresh reviewer role per the chain, authority spot-checks
       per the attention architecture. Each keeper's per-keeper
       directives and family nomination come only from its `actions` row
       — the governed channel — never from retired documents; family
@@ -303,3 +303,4 @@ steps:
 | 1 | 2026-08-20 | update | Authored (seed layer); earlier history, if any, in the repository history. |
 | 1 | 2026-08-22 | state | draft → approved. |
 | 2 | 2026-08-23 | update | Owner direction: decision-ledger references removed — changes stand on their own; history entries and text no longer cite numbered decisions. |
+| 3 | 2026-08-25 | update | Owner direction: "seat" retired as a near-synonym of "role"; the word is banned. |

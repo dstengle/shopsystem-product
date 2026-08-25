@@ -4,9 +4,9 @@ id: review-conversation-process
 owner: product-authority
 status: approved
 approved: 2026-08-22
-version: 2
+version: 3
 created: 2026-08-22
-updated: 2026-08-23
+updated: 2026-08-25
 produces: [review-record]
 condition-language: cel
 hold-after: P7D
@@ -36,7 +36,7 @@ the record.
 - O4. An inactive conversation holds instead of dangling — witnessed by
   `hold-after` and the run lifecycle it invokes.
 
-**Roles:** product-authority (human seat — observes, decides, and owns
+**Roles:** product-authority (human-held role — observes, decides, and owns
 the exclusive right to close or cancel). lead-pm (applies decisions and
 keeps the record current).
 
@@ -184,3 +184,4 @@ per the run lifecycle.
 | 1 | 2026-08-22 | update | Authored (seed layer). |
 | 1 | 2026-08-22 | state | draft → approved. |
 | 2 | 2026-08-23 | update | Ledger practice removed by owner direction: decisions apply as Document History-recorded changes in the affected artifacts; classification value renamed decision. |
+| 3 | 2026-08-25 | update | Owner direction: "seat" retired as a near-synonym of "role"; the word is banned. |

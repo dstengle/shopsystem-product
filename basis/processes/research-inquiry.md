@@ -4,9 +4,9 @@ id: research-inquiry-process
 owner: product-authority
 status: approved
 approved: 2026-08-23
-version: 5
+version: 6
 created: 2026-08-23
-updated: 2026-08-23
+updated: 2026-08-25
 produces: [research-report]
 carried-by: research-inquiry-skill
 condition-language: cel
@@ -52,13 +52,13 @@ quote is not a finding; a persona is not evidence.
 **Roles:** researcher —
 [`../roles/researcher.md`](../roles/researcher.md) (Accountable;
 frames, gathers, synthesizes, reports; decides each finding's
-confidence). verifier — the researcher seat filled fresh
+confidence). verifier — the researcher role filled fresh
 (`fresh-context: true`), reading claims and sources only. cold
 reader — [`../roles/cold-reviewer.md`](../roles/cold-reviewer.md)
 (Verifier; judges decidability for the consumer). deliverer —
 [`../roles/lead-pm.md`](../roles/lead-pm.md) (delivers the report,
 sets its status, and maintains the research index). consumer — the
-seat that asked (parameter `consumer`); receives the report.
+role that asked (parameter `consumer`); receives the report.
 
 **Carried by:**
 [`../skills/research-inquiry/SKILL.md`](../skills/research-inquiry/SKILL.md)
@@ -395,3 +395,4 @@ lives in the process-definition typedef.
 | 4 | 2026-08-23 | update | Owner direction: deliver registers the report in the typed research index (index_path) instead of README pointer rows. |
 | 5 | 2026-08-23 | update | Owner direction: the research index instance lives on `rebaseline` at `research/index.md`, not on `main`. |
 | 5 | 2026-08-23 | state | draft → approved by the owner. The compiled skill is the shop's research skill. |
+| 6 | 2026-08-25 | update | Owner direction: "seat" retired as a near-synonym of "role"; the word is banned. |

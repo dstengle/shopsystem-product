@@ -5,23 +5,23 @@ target-type: role-definition
 owner: product-authority
 status: approved
 approved: 2026-08-23
-version: 1
+version: 2
 created: 2026-08-23
-updated: 2026-08-23
+updated: 2026-08-25
 ---
 
 # Guideline: role definition
 
 **Voice principle.** Write for the runtime that must instantiate the
-seat tomorrow and the reviewer who must catch it acting outside its
+role tomorrow and the reviewer who must catch it acting outside its
 domain: every line either contracts a capability, names an
-accountability, or claims the seat's one decision — nothing narrates.
+accountability, or claims the role's one decision — nothing narrates.
 
 **Highlights (the layer compiled into generating context):** who and
 what for, never when · the capability contract enforces the stance
 mechanically · exactly one exclusive domain, phrased as a decision ·
 accountabilities are answerable after a run · no actor-kind commitments
-unless the seat is an owner's human seat.
+unless the role is an owner's human-held role.
 
 **Layers:** this guideline adds role-definition rules on top of the
 [base writing style](base-writing-style.md); the base always applies
@@ -51,8 +51,8 @@ Read, Edit, Write)
 After: "tools: Read" with "maxTurns: 8".
 *Test:* compare each stance claim in the prose to the frontmatter's
 functional keys. *Criterion:* every claim that can be enforced
-mechanically is — read-only seats get read-only tools, drift-prone
-seats get a turn cap; prose never promises what the contract permits
+mechanically is — read-only roles get read-only tools, drift-prone
+roles get a turn cap; prose never promises what the contract permits
 violating. *Decision:* yes/no per claim.
 *Derived check:* judged — fitness scenario 5.
 
@@ -62,8 +62,8 @@ ownership of the verdict."
 After: "**Domain (exclusive):** the round's verdict. The author
 revises; the reviewer alone decides what this round found."
 *Test:* count the exclusive-domain claims and parse each. *Criterion:*
-exactly one, and it names a decision only this seat may make — the
-one-responsible-seat rule made concrete. *Decision:* yes/no per role.
+exactly one, and it names a decision only this role may make — the
+one-responsible-role rule made concrete. *Decision:* yes/no per role.
 *Derived check:* judged — fitness scenario 3.
 
 **4. Make accountabilities answerable.**
@@ -71,18 +71,18 @@ Before: "Cares about quality and communicates proactively."
 After: "A per-ask decidability verdict: confident / wobbly / cannot
 decide, with what is missing."
 *Test:* read each accountability bullet after imagining a finished
-run. *Criterion:* a reviewer can say whether the seat delivered it —
+run. *Criterion:* a reviewer can say whether the role delivered it —
 each bullet names an output or a judgment, not a character trait; the
 section holds 4–6 bullets. *Decision:* yes/no per bullet.
 *Derived check:* judged — fitness scenario 4.
 
-**5. Write the seat for any capable actor.**
+**5. Write the role for any capable actor.**
 Before: "The human reviewer applies professional intuition."
 After: "You simulate the product authority reading cold: technically
 expert, ~5 minutes of attention."
 *Test:* scan for commitments to an actor kind. *Criterion:* none,
-unless the seat is an owner's seat a person must hold — then the human
-requirement is stated once, as the seat's authority, not as working
+unless the role is an owner's role a person must hold — then the human
+requirement is stated once, as the role's authority, not as working
 instructions. *Decision:* yes/no per role.
 *Derived check:* judged — fitness scenario 1's instantiability
 assertion.
@@ -102,3 +102,4 @@ this product's history.
 |---|---|---|---|
 | 1 | 2026-08-23 | update | Authored as the role-definition meta-chain's guideline, with the existing basis roles as exemplars. |
 | 1 | 2026-08-23 | state | draft → approved by the owner, with the exemplar screens' findings accepted as valid and their repairs directed. |
+| 2 | 2026-08-25 | update | Owner direction: "seat" retired as a near-synonym of "role"; the word is banned. |

@@ -4,9 +4,9 @@ id: glossary
 owner: product-authority
 status: approved
 approved: 2026-08-19
-version: 6
+version: 7
 created: 2026-08-19
-updated: 2026-08-23
+updated: 2026-08-25
 ---
 
 # Glossary
@@ -42,14 +42,15 @@ terms uses one of these when one fits.
   scoring an artifact type's quality.
 - **guideline** — prose quality rules for an artifact type, each with a
   test, a criterion, and a yes/no decision.
-- **role** — a named seat with a capability contract and
-  accountabilities; sequencing lives in process definitions, not roles.
+- **role** — a named capability contract and set of accountabilities,
+  assigned by process steps to whoever fills it; sequencing lives in
+  process definitions, not roles.
 - **principle** — a standing rule about how we work: name, statement,
   rationale, implications (see the principles document's opening
   definition).
 - **seed layer** — the hand-approved definitions the regress terminates
   at: the principle set plus one typedef per definition document type.
-- **owner** — the seat that approves changes to a definition; named in
+- **owner** — the role that approves changes to a definition; named in
   every definition's frontmatter.
 - **definition chain** — the six linked definitions of good for one
   artifact type; required before instances are authored or rewritten.
@@ -152,3 +153,4 @@ terms uses one of these when one fits.
 | 4 | 2026-08-23 | update | Owner direction: ruling and experiment-index entries removed with the ledger practice; review and review-record entries rewritten to the outcomes model. |
 | 5 | 2026-08-23 | update | Anchor entry added — the term recurred as an unintroduced-term stumble across three screens. |
 | 6 | 2026-08-23 | update | vehicle and pre-state added — terms the lead-solutions-architect role turns on. |
+| 7 | 2026-08-25 | update | Owner direction: "seat" retired as a near-synonym of "role"; the word is banned. |

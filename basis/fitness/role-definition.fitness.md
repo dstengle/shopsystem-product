@@ -4,9 +4,9 @@ id: role-definition-fitness
 owner: product-authority
 status: approved
 approved: 2026-08-23
-version: 1
+version: 2
 created: 2026-08-23
-updated: 2026-08-23
+updated: 2026-08-25
 target-type: role-definition
 judged: true
 executable: false
@@ -25,14 +25,14 @@ into a judge's rubric.
 
 ## Scenarios
 
-Scenario 1: the seat instantiates from the file alone
+Scenario 1: the role instantiates from the file alone
   Given the role file and a runtime that knows only the typedef
-  When the seat is instantiated
+  When the role is instantiated
   Then the functional contract keys — name, description, tools,
   maxTurns — are present and first in the frontmatter
-  And nothing needed to fill the seat lives outside the file
-  And no actor kind is committed to, unless the seat is an owner's
-  seat a person must hold, stated once as the seat's authority
+  And nothing needed to fill the role lives outside the file
+  And no actor kind is committed to, unless the role is an owner's
+  role a person must hold, stated once as the role's authority
 
 Scenario 2: the role says who and what for, never when
   Given every sentence of the role definition
@@ -43,21 +43,21 @@ Scenario 2: the role says who and what for, never when
 Scenario 3: exactly one exclusive domain, phrased as a decision
   Given the role's exclusive-domain claim
   When it is counted and parsed
-  Then exactly one exists and it names a decision only this seat may
+  Then exactly one exists and it names a decision only this role may
   make
 
 Scenario 4: accountabilities are answerable
   Given the accountabilities section after an imagined run
   When each bullet is checked
   Then the section holds 4–6 bullets and a reviewer can say of each
-  whether the seat delivered it — an output or a judgment, never a
+  whether the role delivered it — an output or a judgment, never a
   character trait
 
 Scenario 5: the capability contract enforces the stance
   Given each stance claim in the prose
   When it is compared to the frontmatter's tools and caps
   Then every mechanically enforceable claim is enforced — read-only
-  seats carry read-only tools, drift-prone seats carry a turn cap —
+  roles carry read-only tools, drift-prone roles carry a turn cap —
   and the prose promises nothing the contract permits violating
 
 ## Compile mapping (each Then/And → one judge-rubric assertion)
@@ -65,11 +65,11 @@ Scenario 5: the capability contract enforces the stance
 | Scenario Then | Judge-rubric assertion |
 |---|---|
 | 1 (Then) — functional keys first | "Are name, description, tools, maxTurns present and before the identity keys? Yes/no; cite the frontmatter." |
-| 1 (And) — self-contained | "Name anything required to fill the seat that the file does not carry. Empty list = pass." |
-| 1 (And) — actor-neutral | "Quote any actor-kind commitment. A single owner's-seat statement of authority = pass; working instructions tied to an actor kind = fail." |
+| 1 (And) — self-contained | "Name anything required to fill the role that the file does not carry. Empty list = pass." |
+| 1 (And) — actor-neutral | "Quote any actor-kind commitment. A single owner's-role statement of authority = pass; working instructions tied to an actor kind = fail." |
 | 2 — no sequencing | "Quote every sentence that says when the role acts. Empty list = pass." |
 | 3 — one exclusive domain | "Count the exclusive-domain claims and quote the decision each names. Exactly one, decision-phrased = pass." |
-| 4 — answerable accountabilities | "For each bullet: could you verify after a run that the seat delivered it? 4–6 bullets, all verifiable = pass; cite any character-trait bullet." |
+| 4 — answerable accountabilities | "For each bullet: could you verify after a run that the role delivered it? 4–6 bullets, all verifiable = pass; cite any character-trait bullet." |
 | 5 — contract enforces stance | "For each stance claim, name the frontmatter key that enforces it or state that no mechanical enforcement exists. Any enforceable-but-unenforced claim = fail, cite it." |
 
 ## Sources
@@ -86,3 +86,4 @@ established.
 |---|---|---|---|
 | 1 | 2026-08-23 | update | Authored as the role-definition meta-chain's fitness set. |
 | 1 | 2026-08-23 | state | draft → approved by the owner, with the exemplar screens' findings accepted as valid and their repairs directed. |
+| 2 | 2026-08-25 | update | Owner direction: "seat" retired as a near-synonym of "role"; the word is banned. |

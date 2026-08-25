@@ -4,9 +4,9 @@ id: discovery-conversation-process
 owner: product-authority
 status: approved
 approved: 2026-08-22
-version: 2
+version: 3
 created: 2026-08-22
-updated: 2026-08-23
+updated: 2026-08-25
 produces: [session-record]
 condition-language: cel
 hold-after: P7D
@@ -34,7 +34,7 @@ interlocutor; record and launch only after convergence.
 - O4. An inactive conversation holds instead of dangling — witnessed by
   `hold-after` and the run lifecycle.
 
-**Roles:** product-authority (human seat — explores, converges, and owns
+**Roles:** product-authority (human-held role — explores, converges, and owns
 the exclusive right to close or cancel). lead-pm (interlocutor; keeps
 the draft record's quotes and state current).
 
@@ -183,3 +183,4 @@ never released silently.
 | 1 | 2026-08-22 | update | Authored (seed layer); earlier history, if any, in the repository history. |
 | 1 | 2026-08-22 | state | draft → approved. |
 | 2 | 2026-08-23 | update | Owner direction: decision-ledger references removed — changes stand on their own; history entries and text no longer cite numbered decisions. |
+| 3 | 2026-08-25 | update | Owner direction: "seat" retired as a near-synonym of "role"; the word is banned. |

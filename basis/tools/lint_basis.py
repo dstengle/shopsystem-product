@@ -57,7 +57,7 @@ REQUIRED_HEADINGS = {
 # review-record typedef §Commitment: no live document cites a numbered
 # decision (Rn) — decisions live as changes in the artifacts they affect.
 DECISION_REF = re.compile(r"\bR\d{1,3}\b")
-BANNED = ["ratif", "disposition", "rebaseline bill", "surface"]
+BANNED = ["ratif", "disposition", "rebaseline bill", "surface", "seat"]
 PKG_RE = re.compile(r"^pkg:[a-z0-9-]+/[a-z0-9_-]+$")
 
 

@@ -5,9 +5,9 @@ defines: research-report
 owner: product-authority
 status: approved
 approved: 2026-08-23
-version: 3
+version: 4
 created: 2026-08-23
-updated: 2026-08-23
+updated: 2026-08-25
 ancestry: [research-report]
 ---
 
@@ -29,7 +29,7 @@ ancestry: [research-report]
 
 `type: research-report`, `id`, `status` (draft | delivered), `version`,
 `date`, `question` (the question answered, verbatim), `requested-by`
-(the consumer seat), `created`, `updated`.
+(the consumer role), `created`, `updated`.
 
 ## Rules
 
@@ -100,3 +100,4 @@ with retraction, permitted abstention); the research report on the
 | 2 | 2026-08-23 | update | Owner direction: registration moves to the typed research index. |
 | 3 | 2026-08-23 | update | Owner direction: the research index instance lives on `rebaseline` at `research/index.md`, not on `main`. |
 | 3 | 2026-08-23 | state | draft → approved by the owner. Guideline and fitness set for the type remain to be authored — a filed gap. |
+| 4 | 2026-08-25 | update | Owner direction: "seat" retired as a near-synonym of "role"; the word is banned. |

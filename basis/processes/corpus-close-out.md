@@ -4,9 +4,9 @@ id: corpus-close-out-process
 owner: product-authority
 status: approved
 approved: 2026-08-22
-version: 2
+version: 3
 created: 2026-08-22
-updated: 2026-08-23
+updated: 2026-08-25
 produces: []
 condition-language: cel
 external-refs: []
@@ -54,8 +54,8 @@ makes the migration branch `main`. The failure exit is `post-check`'s
 check failing, which halts the run with the `failed` list naming every
 misplaced row; a halted run never reaches promotion.
 
-**Roles:** runtime (every step is mechanical — no agent seat, no
-judgment in the run). product-authority (human seat — owns and approves
+**Roles:** runtime (every step is mechanical — no agent role, no
+judgment in the run). product-authority (human-held role — owns and approves
 this definition and rules on the archive contract below; takes no step
 in a run).
 
@@ -316,3 +316,4 @@ steps:
 | 1 | 2026-08-22 | update | Authored (seed layer); earlier history, if any, in the repository history. |
 | 1 | 2026-08-22 | state | draft → approved. |
 | 2 | 2026-08-23 | update | Owner direction: decision-ledger references removed — changes stand on their own; history entries and text no longer cite numbered decisions. |
+| 3 | 2026-08-25 | update | Owner direction: "seat" retired as a near-synonym of "role"; the word is banned. |

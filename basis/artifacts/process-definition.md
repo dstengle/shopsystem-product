@@ -5,9 +5,9 @@ defines: process-definition
 owner: product-authority
 status: approved
 approved: 2026-08-22
-version: 2
+version: 3
 created: 2026-08-19
-updated: 2026-08-23
+updated: 2026-08-25
 ancestry: [definition, process-definition]
 ---
 
@@ -43,7 +43,7 @@ conversation).
 2. **Guiding statement** (optional) — directs judgment across the whole
    process; the compiler copies it into every rendering.
 3. **Outcomes** — each names the step or check that witnesses it.
-4. **Roles** — seats and their accountability; role files carry identity,
+4. **Roles** — roles and their accountability; role files carry identity,
    never sequencing.
 5. **Flow (compiled)** — the diagram generated from the steps; never
    edited by hand.
@@ -73,7 +73,7 @@ status record; omit only when the outcomes pin the run's value). `end`
 is the reserved terminator id for `next`. Each step:
 
 - `id`, `name`; `run-by` — `{role, execution: agent}`,
-  `{role, execution: human}` (a seat a person holds, e.g. an authority review), or `{execution: runtime}`; `fresh-context: true` where a seat
+  `{role, execution: human}` (a role a person holds, e.g. an authority review), or `{execution: runtime}`; `fresh-context: true` where a role
   must not carry memory between runs.
 - `inputs` / `outputs` — lists of declared data names; the typed contract
   is the isolation mechanism (a step reads only what it lists).
@@ -152,3 +152,4 @@ round cap (the dual-exit rule).
 | 1 | 2026-08-19 | update | Authored (seed layer); earlier history, if any, in the repository history. |
 | 1 | 2026-08-22 | state | draft → approved. |
 | 2 | 2026-08-23 | update | Owner direction: decision-ledger references removed — changes stand on their own; history entries and text no longer cite numbered decisions. |
+| 3 | 2026-08-25 | update | Owner direction: "seat" retired as a near-synonym of "role"; the word is banned. |

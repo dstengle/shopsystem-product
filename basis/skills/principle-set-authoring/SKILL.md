@@ -8,12 +8,12 @@ type: skill
 id: principle-set-authoring-skill
 status: approved
 created: 2026-08-22
-updated: 2026-08-23
+updated: 2026-08-25
 generated: true
 generated-by: basis/tools/compile_process.py
 derived-from: principle-set-authoring-process
 source: basis/processes/principle-set-authoring.md
-source-digest: sha256:1eaeaf3a60cf
+source-digest: sha256:9f7738c1db09
 activation: model-judged
 promotion: experiment-local
 ---
@@ -156,7 +156,7 @@ Prompt:
 The screened draft and its round log are in front of you. Your
 decision is the review's verdict. "clean" or "tradeoffs-accepted"
 approves: the set is stamped — status approved, the approval date,
-your seat as owner — and from that point it is the standard
+your role as owner — and from that point it is the standard
 activities are checked against, amendable only through this
 process by your decision. "findings" returns the draft to the author
 with your findings; the round counter keeps running, so a draft

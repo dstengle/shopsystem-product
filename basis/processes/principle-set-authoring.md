@@ -4,9 +4,9 @@ id: principle-set-authoring-process
 owner: product-authority
 status: approved
 approved: 2026-08-23
-version: 4
+version: 5
 created: 2026-08-22
-updated: 2026-08-23
+updated: 2026-08-25
 produces: [principle-set]
 carried-by: principle-set-authoring-skill
 condition-language: cel
@@ -50,8 +50,8 @@ terms flowing to the glossary). screen judge —
 [`../roles/cold-reviewer.md`](../roles/cold-reviewer.md) (Verifier; a
 fresh instance per round, never the author; scores the
 [fitness set](../fitness/principle-set.fitness.md)). approver —
-product-authority (human seat; the owner named in the set's frontmatter —
-the only seat that moves the set to approved).
+product-authority (human-held role; the owner named in the set's frontmatter —
+the only role that moves the set to approved).
 
 **Carried by:**
 [`../skills/principle-set-authoring/SKILL.md`](../skills/principle-set-authoring/SKILL.md)
@@ -215,7 +215,7 @@ steps:
       The screened draft and its round log are in front of you. Your
       decision is the review's verdict. "clean" or "tradeoffs-accepted"
       approves: the set is stamped — status approved, the approval date,
-      your seat as owner — and from that point it is the standard
+      your role as owner — and from that point it is the standard
       activities are checked against, amendable only through this
       process by your decision. "findings" returns the draft to the author
       with your findings; the round counter keeps running, so a draft
@@ -264,7 +264,7 @@ steps:
 The draft → fresh cold read → dual-exit route loop is the shop's
 stakeholder-presentation shape, reapplied; the owner's terminal gate
 composes the review-conversation model (the authority's close is the
-only end). Deming grounds the seat separation: the author and the
+only end). Deming grounds the role separation: the author and the
 judge read one definition, and the check sits with a different role.
 Format provenance (ISO 24774 header, GitHub-Actions-shaped steps, CEL,
 the dual-exit rule) lives in the process-definition typedef, not here.
@@ -282,3 +282,4 @@ the dual-exit rule) lives in the process-definition typedef, not here.
 | 3 | 2026-08-23 | review | Re-screened after repairs: findings — one residual (the glossary duty in draft's prompt references undeclared context); two mechanical stumbles (round absent from route-approval inputs; the hold window unlinked). |
 | 4 | 2026-08-23 | update | Residual repairs: glossary declared as data and as draft's input/output; round added to route-approval's inputs; the hold window linked to `hold-after` and the typedef's run lifecycle. |
 | 4 | 2026-08-23 | review | Final re-screen against the process-definition fitness set: clean — all six scenarios pass; three stumbles (hold-window frontmatter reference, the compiled 'writes: —' summary on set-clause steps, O1's cross-file witness), none a fail. |
+| 5 | 2026-08-25 | update | Owner direction: "seat" retired as a near-synonym of "role"; the word is banned. |
