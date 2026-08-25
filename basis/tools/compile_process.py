@@ -201,7 +201,7 @@ def skill_step_section(step: dict) -> str:
     run_by = step.get("run-by", {})
     if run_by.get("execution") in ("agent", "human"):
         fresh = " (fresh context every run)" if run_by.get("fresh-context") else ""
-        seat = "agent" if run_by["execution"] == "agent" else "human seat"
+        seat = "agent" if run_by["execution"] == "agent" else "a human holding"
         lines.append(f"Run by {seat} in role `{run_by.get('role')}`{fresh}. {fmt_io(step)}.")
         for check in step.get("checks", []):
             lines.append(f"- check: `{check}`")

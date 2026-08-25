@@ -147,7 +147,7 @@ next: screen-read
 
 ## authority-approve — Owner decides on the screened draft
 
-Run by human seat in role `product-authority`. reads: set, round_log · writes: set, review.
+Run by a human holding in role `product-authority`. reads: set, round_log · writes: set, review.
 - then: `route-approval`
 
 Prompt:
