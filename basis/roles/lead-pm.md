@@ -6,7 +6,8 @@ maxTurns: 100
 type: role-definition
 id: lead-pm
 owner: product-authority
-status: draft
+status: approved
+approved: 2026-08-25
 version: 5
 created: 2026-08-23
 updated: 2026-08-25
@@ -122,3 +123,4 @@ activity runs under.
 | 4 | 2026-08-25 | review | Screened against the role-definition fitness set: findings — five sequencing sentences; the human requirement stated twice plus an actor-kind working instruction; a second sole-decision claim in Escalates; the frontmatter's relation to a human holder unstated; undefined terms (framing, originator, ask, screen, four-risks). |
 | 5 | 2026-08-25 | update | Repairs: sequencing removed; human requirement stated once as the role's authority; frontmatter said to contract the assisting agents; exclusive domain kept to the framing, other decisions marked accountable-not-exclusive, Escalates recast as Resolves; framing and screen defined inline, the four risks listed; interfaces one per line; usability marked unassigned rather than tied to an undefined role. |
 | 5 | 2026-08-25 | review | Re-screened: clean — all five scenarios pass, five rules hold; stumbles (originator, PO, ask introduced late; a spatial metaphor; research references) polished in place. |
+| 5 | 2026-08-25 | state | draft → approved by the owner. |

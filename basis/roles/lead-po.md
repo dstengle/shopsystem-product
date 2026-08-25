@@ -6,7 +6,8 @@ maxTurns: 60
 type: role-definition
 id: lead-po
 owner: product-authority
-status: draft
+status: approved
+approved: 2026-08-25
 version: 5
 created: 2026-08-23
 updated: 2026-08-25
@@ -124,3 +125,4 @@ language; the [working principle set](../principles.md).
 | 4 | 2026-08-25 | review | Re-screened: findings — scenario 1's self-contained assertion failed on brief and product decision record undefined and the PM and architect roles unlinked; all other scenarios and rules pass. |
 | 5 | 2026-08-25 | update | Repairs: brief and product decision record defined inline with their typedefs marked pending on this branch; PM and solutions architect roles linked; exclusive domain in active voice; the checker named in the architect interface. |
 | 5 | 2026-08-25 | review | Re-screened (round 3): clean — all five scenarios pass, five rules hold; stumbles (the check's process unnamed; the `main` reference unlocated) left for the process work that will name the check. |
+| 5 | 2026-08-25 | state | draft → approved by the owner. |
