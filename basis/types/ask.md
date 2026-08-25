@@ -3,7 +3,8 @@ type: data-type
 id: ask
 defines: ask
 owner: product-authority
-status: draft
+status: approved
+approved: 2026-08-25
 version: 2
 created: 2026-08-25
 updated: 2026-08-25
@@ -60,3 +61,4 @@ schema:
 | 1 | 2026-08-25 | review | Screened: findings — the ask-resume loop had no exit; the resumed ask had no declared data name; only the answered path was described; three fields had no writer; the kind enum did not cover clarify. |
 | 2 | 2026-08-25 | update | Repairs: one ask per step per run; the process declares an `ask` value listed in asking steps' inputs; both resume paths stated; a writer per field; kind enum aligned to clarify's four subjects plus pre-state, intent, and reserved-decision, each explained. |
 | 2 | 2026-08-25 | review | Re-screened with the typedef: clean — all eight repairs confirmed, no synchronous form survives; three wording stumbles polished in place. |
+| 2 | 2026-08-25 | state | draft → approved by the owner. |
