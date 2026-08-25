@@ -4,7 +4,7 @@ id: glossary
 owner: product-authority
 status: approved
 approved: 2026-08-19
-version: 8
+version: 9
 created: 2026-08-19
 updated: 2026-08-25
 ---
@@ -156,6 +156,16 @@ terms uses one of these when one fits.
 - **enabler work** — technical work that makes a feature possible;
   recommended by the solutions architect, placed in the backlog by the
   PO role.
+- **interaction type** — one way a person or an agent reaches the
+  product: command line (CLI), full-screen terminal (TUI), graphical or
+  web (GUI), API and SDK, conversational, voice, or a generated document
+  or notification; each honours its own conventions within one
+  experience.
+- **experience guidance corpus** — the product designer role's
+  principle set and guidelines for the experience: design principles,
+  vocabulary and voice, core-task parity across interaction types,
+  interaction patterns per type, and the accessibility target; the
+  role's exclusive domain.
 - **intent** — a desired outcome expressed by an originator at the
   product's edge; enters the product through a contract and keeps its
   provenance through every translation and delegation.
@@ -174,3 +184,4 @@ terms uses one of these when one fits.
 | 6 | 2026-08-23 | update | vehicle and pre-state added — terms the lead-solutions-architect role turns on. |
 | 7 | 2026-08-25 | update | Owner direction: a near-synonym of "role" retired and banned. |
 | 8 | 2026-08-25 | update | framing, acceptance scenario, scenario register, clarify, decomposition, enabler work added — each arrived undefined in the PM and PO role screens. |
+| 9 | 2026-08-25 | update | interaction type and experience guidance corpus added with the lead-product-designer role. |
