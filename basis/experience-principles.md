@@ -3,7 +3,8 @@ type: principle-set
 id: experience-principles
 scope: experience
 owner: product-authority
-status: draft
+status: approved
+approved: 2026-08-26
 version: 2
 created: 2026-08-26
 updated: 2026-08-26
@@ -313,3 +314,4 @@ the person stays in charge.
 | 1 | 2026-08-26 | review | Screen round 1: findings — bullets in conflict in consistent-not-uniform; fused obligations and an undefined "generated interface" in control-stays-with-the-person; "agent" in two senses; fused and passive implications; open enumerations; sources unnamed; BC-shop term. |
 | 2 | 2026-08-26 | update | Repairs: precedence between vocabulary and platform guidelines stated in the statement; obligations one per bullet; enumerations marked closed; assistant interaction and generated interface defined (glossary); every source named; lineage to actor-neutral-discipline stated in the rationale; implications split and actor-named, none adding an obligation; BC-shop used. |
 | 2 | 2026-08-26 | review | Screen round 2: clean — all six scenarios and seven rules pass per principle, the mechanical grep passes, every screen cell reproducible; seven stumbles polished in place (enumeration closed, error language, the assistant statement split, API/SDK placement stated). |
+| 2 | 2026-08-26 | state | draft → approved by the owner. |
