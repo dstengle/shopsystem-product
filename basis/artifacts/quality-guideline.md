@@ -5,9 +5,9 @@ defines: quality-guideline
 owner: product-authority
 status: approved
 approved: 2026-08-22
-version: 2
+version: 4
 created: 2026-08-19
-updated: 2026-08-23
+updated: 2026-08-26
 ancestry: [definition, quality-guideline]
 ---
 
@@ -17,7 +17,10 @@ ancestry: [definition, quality-guideline]
 
 - **Type:** `quality-guideline` — the definition of well-made prose for
   an artifact type or for all prose (the base writing style is a
-  quality-guideline every other one layers on and never overrides).
+  quality-guideline every other one layers on and never overrides), or
+  of a well-made interaction for one interaction type or for all of
+  them (the common experience guideline is the one the per-type
+  experience guidelines layer on).
 - **Produced by:** the owner (authority-authored styles are stored verbatim as guideline documents) or
   a definition author deriving type-specific rules. **Consumed by:**
   authors at write time (the Highlights block is the layer compiled into
@@ -27,8 +30,15 @@ ancestry: [definition, quality-guideline]
 ## Required frontmatter
 
 `type: quality-guideline`, `id`, `owner`, `status`, `created`,
-`updated`; `target-type` (the artifact type governed; absent for the
-base style, which governs all prose).
+`updated`; `target-type` (the artifact type governed; `interaction`
+for an experience guideline; absent for the base style, which governs
+all prose); `interaction-type` (experience guidelines only: one or more of
+`cli`, `tui`, `gui`, `api`, `assistant`, `document` — a closed set
+matching the glossary's interaction types, `cli` and `tui` split — or
+`all` for the common experience guideline). For an experience
+guideline the "artifact type's typedef" in the precedence order is
+this typedef, and the common experience guideline ranks above the
+per-type ones.
 
 ## Required sections
 
@@ -51,7 +61,10 @@ own and is exempt from the section requirements.
 ## Commitment (Definition of Done)
 
 A quality guideline is done when every rule
-is decidable yes/no on real text and feeds a named check — a check that
+is decidable yes/no on real text — or, for an experience guideline, on
+a delivered interaction — and feeds a named check (an experience
+guideline's judged checks name scenarios of the `interaction` fitness
+set) — a check that
 exists, or a filed work item for the tool that will run it; "tool chosen
 later" with no work item fails. **Consequence on failure:** the rule is
 advice, not a definition, and is removed.
@@ -76,3 +89,6 @@ Plain Language guidelines.
 | 1 | 2026-08-19 | update | Authored (seed layer); earlier history, if any, in the repository history. |
 | 1 | 2026-08-22 | state | draft → approved. |
 | 2 | 2026-08-23 | update | Owner direction: decision-ledger references removed — changes stand on their own; history entries and text no longer cite numbered decisions. |
+| 3 | 2026-08-26 | update | Owner direction: the type admits experience guidelines — target `interaction`, an `interaction-type` key with a closed set, decidability on a delivered interaction, judged checks naming the `interaction` fitness set — for the experience guidance corpus's second layer. |
+| 3 | 2026-08-26 | review | Screened with the experience guidelines: the closed set admitted one value where the cli guideline covers two; the precedence order's second rank had no referent for an interaction target. |
+| 4 | 2026-08-26 | update | interaction-type admits one or more values; the precedence referent for experience guidelines stated. |
