@@ -3,7 +3,8 @@ type: data-type
 id: screen-review
 defines: screen-review
 owner: product-authority
-status: draft
+status: approved
+approved: 2026-08-26
 version: 2
 created: 2026-08-25
 updated: 2026-08-25
@@ -50,3 +51,4 @@ schema:
 |---|---|---|---|
 | 1 | 2026-08-25 | update | Authored with the po-output-check process: the `review` type carries no per-finding criterion, quote, or decidability, which the check's routing and decision read. |
 | 2 | 2026-08-25 | update | Screen repairs: the artifact is not opened by the decider; change and top_changes explained; writer stated. |
+| 2 | 2026-08-26 | state | draft → approved by the owner. |

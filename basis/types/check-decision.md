@@ -3,7 +3,8 @@ type: data-type
 id: check-decision
 defines: check-decision
 owner: product-authority
-status: draft
+status: approved
+approved: 2026-08-26
 version: 3
 created: 2026-08-25
 updated: 2026-08-25
@@ -45,3 +46,4 @@ schema:
 | 1 | 2026-08-25 | review | Screened with the process: the conditional fields are judged, not mechanical; a line-broken token. |
 | 2 | 2026-08-25 | update | Writer and the judged nature of the conditional fields stated; token repaired. |
 | 3 | 2026-08-25 | update | Consumer corrected: the record step only. |
+| 3 | 2026-08-26 | state | draft → approved by the owner. |

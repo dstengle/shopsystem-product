@@ -2,7 +2,8 @@
 type: process-definition
 id: po-output-check-process
 owner: product-authority
-status: draft
+status: approved
+approved: 2026-08-26
 version: 3
 created: 2026-08-25
 updated: 2026-08-25
@@ -257,3 +258,4 @@ steps:
 | 2 | 2026-08-25 | review | Re-screened: findings — decide's prompt opened an undeclared artifact; a framing-trace failure had no criterion name and so was never repaired; record wrote a file outside its outputs; a vacuous all-uncovered branch on an empty list; ask without an initial. |
 | 3 | 2026-08-25 | update | Repairs: the PM role decides from the review alone, wobbly findings quote the whole passage; `framing` is a named criterion the maker repairs; record returns the written definition's path; the definition exit guarded on a non-empty list; `ask` initial null; status vocabulary moved to Data prose. The v1 entry's "nearest approved fitness set or the framing alone" is superseded by Data's rule. |
 | 3 | 2026-08-25 | review | Re-screened (round 3): clean — all six scenarios pass, six rules hold; both paths traced; stumbles polished in place (verdict precedence at the cap; the framing criterion named in the type). |
+| 3 | 2026-08-26 | state | draft → approved by the owner. |

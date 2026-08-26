@@ -8,14 +8,14 @@ description: "Check a piece of the PO role's output against the PM role's framin
   \ against the framing."
 type: skill
 id: po-output-check-skill
-status: draft
+status: approved
 created: 2026-08-25
 updated: 2026-08-25
 generated: true
 generated-by: basis/tools/compile_process.py
 derived-from: po-output-check-process
 source: basis/processes/po-output-check.md
-source-digest: sha256:c787e0a4e47c
+source-digest: sha256:59c61073dd05
 activation: model-judged
 promotion: experiment-local
 ---
