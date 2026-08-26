@@ -5,21 +5,24 @@ defines: check-decision
 owner: product-authority
 status: approved
 approved: 2026-08-26
-version: 3
+version: 4
 created: 2026-08-25
-updated: 2026-08-25
+updated: 2026-08-26
 ---
 
 # Data type: check-decision
 
 ## Purpose
 
-The PM role's decision on a piece of the PO role's output, taken from
-a screen verdict. Produced by the `decide` step of
-[`../processes/po-output-check.md`](../processes/po-output-check.md);
-consumed by its `record` step and written into the
-checked artifact's Document History. `pass` accepts the output against
-the framing; `fail` names the criterion the output missed;
+A checking role's decision on a checked thing, taken from a screen
+verdict: the PM role's on the PO role's output, or the product designer
+role's on a delivered interaction. Produced by the `decide` step of
+[`../processes/po-output-check.md`](../processes/po-output-check.md)
+and of
+[`../processes/interaction-conformance-check.md`](../processes/interaction-conformance-check.md);
+consumed by their `record` steps and written into the checked
+artifact's Document History. `pass` accepts the checked thing against
+its criteria; `fail` names the criterion the output missed;
 `definition-change` says the criteria themselves were insufficient and
 names the gap to file. The `decide` step writes every field; that
 `criterion` accompanies `fail` and `gap` accompanies
@@ -47,3 +50,4 @@ schema:
 | 2 | 2026-08-25 | update | Writer and the judged nature of the conditional fields stated; token repaired. |
 | 3 | 2026-08-25 | update | Consumer corrected: the record step only. |
 | 3 | 2026-08-26 | state | draft → approved by the owner. |
+| 4 | 2026-08-26 | update | Generalized to both checking processes. |

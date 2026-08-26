@@ -5,7 +5,7 @@ produces: []
 owner: product-authority
 status: approved
 approved: 2026-08-19
-version: 2
+version: 3
 created: 2026-08-10
 updated: 2026-08-23
 condition-language: cel
@@ -28,7 +28,7 @@ scenario contract confirmed, and follow-ups filed.
 - O4. Every defect or follow-up the response reports exists as a filed
   work item — witnessed by the check on `file-tail`.
 
-**Roles:** router (Accountable — executes); lead-architect (Consulted —
+**Roles:** router (Accountable — executes); lead-solutions-architect (Consulted —
 receives escalated register discrepancies).
 
 **Carried by:** the existing `reconcile-and-close` skill + executable
@@ -127,7 +127,7 @@ steps:
     inputs: [work_item, verification]
     outputs: [discrepancy_item]
     run: |
-      bd create --type task --assign lead-architect \
+      bd create --type task --assign lead-solutions-architect \
         --title "Register discrepancy on ${work_item.id}" \
         --body "${verification.evidence}" --link ${work_item.id}
     next: end
@@ -167,3 +167,4 @@ cannot guarantee the pair rolls back the half it completed.
 | 1 | 2026-08-10 | update | Authored (seed layer); earlier history, if any, in the repository history. |
 | 1 | 2026-08-19 | state | draft → approved. |
 | 2 | 2026-08-23 | update | Owner direction: decision-ledger references removed — changes stand on their own; history entries and text no longer cite numbered decisions. |
+| 3 | 2026-08-26 | update | The superseded role id lead-architect replaced by lead-solutions-architect (2 occurrences), found by the interaction-conformance-check screen. |

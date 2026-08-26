@@ -4,7 +4,7 @@ id: glossary
 owner: product-authority
 status: approved
 approved: 2026-08-19
-version: 11
+version: 12
 created: 2026-08-19
 updated: 2026-08-26
 ---
@@ -165,7 +165,8 @@ terms uses one of these when one fits.
   product: command line (CLI), full-screen terminal (TUI), graphical or
   web (GUI), API and SDK, conversational, voice, or a generated document
   or notification; each honours its own conventions within one
-  experience.
+  experience. The experience guidelines cover conversational and voice
+  together as the `assistant` guideline.
 - **experience guidance corpus** — the product designer role's
   principle set and guidelines for the experience: design principles,
   vocabulary and voice, core-task parity across interaction types,
@@ -203,3 +204,4 @@ terms uses one of these when one fits.
 | 10 | 2026-08-25 | update | originator added — used by the PM role and the ask type without a definition. |
 | 11 | 2026-08-26 | update | scope gains the experience level with the experience principle set. |
 | 11 | 2026-08-26 | update | generated interface and assistant interaction added with the experience principle set. |
+| 12 | 2026-08-26 | update | interaction type: the guidelines' `assistant` coverage of conversational and voice noted. |
