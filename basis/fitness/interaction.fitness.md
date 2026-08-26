@@ -4,7 +4,7 @@ id: interaction-fitness
 owner: product-authority
 status: approved
 approved: 2026-08-26
-version: 2
+version: 5
 created: 2026-08-26
 updated: 2026-08-26
 target-type: interaction
@@ -22,14 +22,14 @@ the [common experience guideline](../guidelines/experience-common.md),
 and the per-type guideline for the interaction's type. They are judged
 by the `lead-product-designer` role, never executed. The judge's model
 and prompt version (or the person's name) are recorded with each
-verdict. The process that runs this screen at delivery is not yet
-defined; until it is, the product designer role runs it on request from
-the [PO output check](../processes/po-output-check.md) or a Bounded
-Context shop; the process is not yet filed as a work item. Where a
-scenario judges against a corpus record that does not yet exist — the
-vocabulary, the variations record, the core-task list, the interaction
-patterns — the verdict is "undecidable: record absent", recorded as a
-finding against the corpus, never a pass.
+verdict. The
+[interaction conformance check](../processes/interaction-conformance-check.md)
+runs this screen at delivery. Where a
+scenario judges against a corpus record (under `basis/experience/`)
+that is absent, lacks the entry, or whose entry is marked
+`hypothesis`, the verdict is "undecidable" with that reason — record
+absent, record empty, or entry is a hypothesis — recorded as a finding
+against the corpus, never a pass.
 
 ## Scenarios
 
@@ -72,6 +72,10 @@ Scenario 6: the per-type rules hold
 
 ## Compile mapping (each Then → one judge-rubric assertion)
 
+An assertion whose corpus record is absent, empty, or whose entry is
+marked `hypothesis` returns "undecidable" with that reason, per the
+intro, in place of pass or fail.
+
 | Scenario Then | Judge-rubric assertion |
 |---|---|
 | 1 — vocabulary | "List every term that is neither the vocabulary's nor a recorded platform mapping. Empty list = pass." |
@@ -79,7 +83,7 @@ Scenario 6: the per-type rules hold
 | 3 — errors | "For each error: what happened, in the vocabulary? what next? identifier alongside only? Cite any error failing one." |
 | 4 — core tasks and options | "For each core task: does it complete? For each option offered elsewhere: present? Cite any missing." |
 | 5 — accessibility | "Is the accessibility result attached, at target, with the WCAG2ICT record for a non-web type? Cite the result or its absence." |
-| 6 — per-type rules | "For each rule of the type's guideline: run its test; cite each criterion not met, or the record it needs that is absent." |
+| 6 — per-type rules | "For each rule of the type's guideline: run its test; cite each criterion not met, or the record it needs that is absent, empty, or a hypothesis." |
 
 ## Document History
 
@@ -90,3 +94,7 @@ Scenario 6: the per-type rules hold
 | 2 | 2026-08-26 | update | process linked and marked not yet filed; escape removed from scenario 6; the absent-record verdict defined. |
 | 2 | 2026-08-26 | review | Final screen (round 3): clean — every rule decidable with a named scenario and derivation; two line edits and three optional stumbles polished in place. |
 | 2 | 2026-08-26 | state | draft → approved by the owner. |
+| 3 | 2026-08-26 | update | The corpus records now exist; the intro's absent-record verdict is joined by the experience-record typedef's "record empty" and "entry is a hypothesis" verdicts, each a finding against the corpus. |
+| 3 | 2026-08-26 | review | Re-screened: findings — the compile mapping carried only the absent verdict. |
+| 4 | 2026-08-26 | update | the undecidable branch stated over the table and in row 6. |
+| 5 | 2026-08-26 | update | The process that runs the screen now exists and is linked. |

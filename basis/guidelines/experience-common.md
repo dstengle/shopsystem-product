@@ -6,7 +6,7 @@ interaction-type: all
 owner: product-authority
 status: approved
 approved: 2026-08-26
-version: 2
+version: 3
 created: 2026-08-26
 updated: 2026-08-26
 ---
@@ -40,13 +40,16 @@ the platform's word governs a name where `consistent-not-uniform`
 bullet 3 says so. Every rule feeds the
 [interaction fitness set](../fitness/interaction.fitness.md), judged by
 the product designer role. The rules here and in the per-type
-guidelines judge against corpus records the product designer role has
-not yet authored — the vocabulary and its platform mappings, the
+guidelines judge against corpus records the product designer role
+maintains — the vocabulary and its platform mappings, the
 variations record, the core-task list, the interaction patterns, the
 design tokens, the hard-to-reverse classification, the persona and
-voice; none is yet filed as a work item. Until a record exists, a
-rule that needs it returns "undecidable: record absent" — a finding
-against the corpus, never a pass — as the fitness set states.
+voice. The records exist under
+`basis/experience/`, seeded as hypotheses; a rule whose record is
+absent, whose record lacks the entry, or whose entry is a hypothesis
+returns "undecidable" with that reason — a finding against the corpus,
+never a pass — as the experience-record typedef and the fitness set
+state.
 
 ---
 
@@ -61,7 +64,7 @@ another, and the mapping is recorded in the vocabulary.
 *Test:* list every noun and verb the interaction shows or accepts
 against the vocabulary and its recorded mappings. *Criterion:* every
 term is the vocabulary's or a recorded mapping. *Decision:* yes/no per
-interaction.
+interaction, or undecidable per Layers.
 *Derived check:* judged — interaction fitness scenario 1;
 `consistent-not-uniform` bullets 1 and 3.
 
@@ -129,3 +132,5 @@ a non-web type; the BC-shop that delivered the interaction attached it.
 | 2 | 2026-08-26 | update | rule 4 defers to the principle's implication (the role edits the list); the dependent corpus records listed once with the absent-record verdict; actor named. |
 | 2 | 2026-08-26 | review | Final screen (round 3): clean — every rule decidable with a named scenario and derivation; two line edits and three optional stumbles polished in place. |
 | 2 | 2026-08-26 | state | draft → approved by the owner. |
+| 3 | 2026-08-26 | update | The corpus records now exist as seeded hypotheses (basis/experience/); the dependency sentence in Layers stands for the entries, and the fitness set's verdicts now distinguish absent, empty, and hypothesis. |
+| 3 | 2026-08-26 | review | Re-screened: clean; the optional undecidable clause added to rule 1 as the pattern for the rest. |
