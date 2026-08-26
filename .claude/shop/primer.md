@@ -21,10 +21,15 @@ curated feed.
 ## Current state
 
 Seed and Phase 0 are complete: both principle sets stand approved.
-Phase 1 is open, meta-chains first — complete the role-definition and
-process-definition chains (a quality guideline and fitness set for
-each; only their typedefs exist) with the existing basis processes as
-exemplars, before authoring the PM/PO/Architect definitions.
+Phase 1: the meta-chains and the four lead-shop roles are approved —
+`lead-pm` (held by the product authority in person, agent-assisted;
+frames intent and checks the maker's output), `lead-po` (the maker;
+backlog order), `lead-solutions-architect` (the stack, decomposition,
+contracts), `lead-product-designer` (the experience corpus, usability).
+The ask mechanism (held-and-resumed only) and the `po-output-check`
+process are approved. Open in Phase 1: re-basing the agent-run
+`lead-pm` steps as assist activities; the experience corpus; the
+role-definition typedef's six-section form; the skills import plan.
 
 ## Operating rules
 
