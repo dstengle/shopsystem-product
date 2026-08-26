@@ -4,9 +4,9 @@ id: definition-chain-migration-process
 owner: product-authority
 status: approved
 approved: 2026-08-22
-version: 3
+version: 4
 created: 2026-08-20
-updated: 2026-08-25
+updated: 2026-08-26
 produces: [definition]
 condition-language: cel
 external-refs: []
@@ -38,7 +38,13 @@ for a rewrite, never a usable artifact.
   `route-review` and the `park` step.
 
 **Roles:** product-authority (human-held role — reviews, approves,
-spot-checks). lead-pm (author role — drafts the chain, runs rewrites).
+spot-checks). lead-pm — held by the
+authority; its agent steps assist: `build-chain`, `exemplar-rewrite`,
+`revise-chain`, and `rewrite-keepers` prepare the drafts and rewrites
+— a keeper that cannot reach the bar is filed as a demotion nomination,
+never demoted by the agent — and the authority decides at the review
+steps whether each stands and at the close-out whether a nomination
+holds.
 The per-instance reviewer roles come from the chain itself once approved.
 
 **Scope note:** one run migrates one artifact type. The order of runs
@@ -258,14 +264,15 @@ steps:
     prompt: |
       Run the type's approved authoring process once per keeper: author
       role and fresh reviewer role per the chain, authority spot-checks
-      per the attention architecture. Each keeper's per-keeper
+      at the rate the authority sets. Each keeper's per-keeper
       directives and family nomination come only from its `actions` row
       — the governed channel — never from retired documents; family
       codes are nominations, and the chain review's decision on record
       granularity governs, not a pre-committed collapse. A keeper that
       cannot reach the bar
-      after two attempts is demoted: file it for retirement with a note
-      naming the failing check. Never lower a check to pass a keeper.
+      after two attempts is nominated for demotion: file the nomination
+      with a note naming the failing check; the authority decides it at
+      the close-out. Never lower a check to pass a keeper.
     next: queue-demoted
 
   - id: queue-demoted
@@ -304,3 +311,5 @@ steps:
 | 1 | 2026-08-22 | state | draft → approved. |
 | 2 | 2026-08-23 | update | Owner direction: decision-ledger references removed — changes stand on their own; history entries and text no longer cite numbered decisions. |
 | 3 | 2026-08-25 | update | Owner direction: a near-synonym of "role" retired and banned. |
+| 4 | 2026-08-26 | update | Owner decision: lead-pm is held by the authority in person; the Roles header now names what the role's agent steps prepare and what the authority decides, per the lead-pm role's Interfaces. |
+| 4 | 2026-08-26 | review | Assist re-basing screened: the rewrite-keepers prompt had the agent demote a keeper with no review step behind it, and named an undefined "attention architecture" — repaired in place: the agent nominates, the authority decides at the close-out; spot-check rate set by the authority. |

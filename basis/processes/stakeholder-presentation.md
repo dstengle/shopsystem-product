@@ -4,9 +4,9 @@ id: stakeholder-presentation-process
 owner: product-authority
 status: approved
 approved: 2026-08-19
-version: 3
+version: 4
 created: 2026-08-10
-updated: 2026-08-23
+updated: 2026-08-26
 produces: [decision-brief]
 carried-by: stakeholder-presentation-skill
 condition-language: cel
@@ -43,7 +43,10 @@ author's head.
 - O4. The original material survives intact as a labeled, linked annex —
   witnessed by the `annex` output of `compose`.
 
-**Roles:** author — lead-pm (Accountable). cold reviewer —
+**Roles:** author — lead-pm, held by the authority; its agent steps
+assist: `frame`, `compose`, `revise`, and `deliver` prepare the brief
+and the authority decides on the delivered brief — the brief exists to
+make that decision possible in one reading. cold reviewer —
 [`../roles/cold-reviewer.md`](../roles/cold-reviewer.md) (Verifier; never
 the author).
 
@@ -246,3 +249,5 @@ steps:
 | 1 | 2026-08-19 | state | draft → approved. |
 | 2 | 2026-08-23 | update | Owner direction: decision-ledger references removed — changes stand on their own; history entries and text no longer cite numbered decisions. |
 | 3 | 2026-08-23 | update | Owner direction: the deliver step records rounds as Document History review entries instead of a verified-by frontmatter block, matching the definition typedef's rule. |
+| 4 | 2026-08-26 | update | Owner decision: lead-pm is held by the authority in person; the Roles header now names what the role's agent steps prepare and what the authority decides, per the lead-pm role's Interfaces. |
+| 4 | 2026-08-26 | review | Assist re-basing screened: clean; one timing phrase polished in place. |

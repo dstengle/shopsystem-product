@@ -10,12 +10,12 @@ type: skill
 id: research-inquiry-skill
 status: approved
 created: 2026-08-23
-updated: 2026-08-25
+updated: 2026-08-26
 generated: true
 generated-by: basis/tools/compile_process.py
 derived-from: research-inquiry-process
 source: basis/processes/research-inquiry.md
-source-digest: sha256:7a5465434896
+source-digest: sha256:9239a87fc88b
 activation: model-judged
 promotion: experiment-local
 ---

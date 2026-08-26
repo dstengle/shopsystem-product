@@ -4,9 +4,9 @@ id: principle-set-authoring-process
 owner: product-authority
 status: approved
 approved: 2026-08-23
-version: 5
+version: 6
 created: 2026-08-22
-updated: 2026-08-25
+updated: 2026-08-26
 produces: [principle-set]
 carried-by: principle-set-authoring-skill
 condition-language: cel
@@ -45,8 +45,10 @@ never on taste.
   `route-verdict` and `route-approval` and the `park` step; an inactive
   authority exchange holds per `hold-after` and the run lifecycle.
 
-**Roles:** author — lead-pm (Accountable; drafts and revises; keeps new
-terms flowing to the glossary). screen judge —
+**Roles:** author — lead-pm, held by the authority; its agent steps
+assist: `draft` and `revise` prepare the set and keep new terms flowing
+to the glossary, and the authority decides at `authority-approve` whether
+the set stands. screen judge —
 [`../roles/cold-reviewer.md`](../roles/cold-reviewer.md) (Verifier; a
 fresh instance per round, never the author; scores the
 [fitness set](../fitness/principle-set.fitness.md)). approver —
@@ -283,3 +285,5 @@ the dual-exit rule) lives in the process-definition typedef, not here.
 | 4 | 2026-08-23 | update | Residual repairs: glossary declared as data and as draft's input/output; round added to route-approval's inputs; the hold window linked to `hold-after` and the typedef's run lifecycle. |
 | 4 | 2026-08-23 | review | Final re-screen against the process-definition fitness set: clean — all six scenarios pass; three stumbles (hold-window frontmatter reference, the compiled 'writes: —' summary on set-clause steps, O1's cross-file witness), none a fail. |
 | 5 | 2026-08-25 | update | Owner direction: a near-synonym of "role" retired and banned. |
+| 6 | 2026-08-26 | update | Owner decision: lead-pm is held by the authority in person; the Roles header now names what the role's agent steps prepare and what the authority decides, per the lead-pm role's Interfaces. |
+| 6 | 2026-08-26 | review | Assist re-basing screened: the header named a step that does not exist — repaired in place. |

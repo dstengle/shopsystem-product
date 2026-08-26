@@ -4,9 +4,9 @@ id: work-conversation-process
 owner: product-authority
 status: approved
 approved: 2026-08-22
-version: 3
+version: 4
 created: 2026-08-22
-updated: 2026-08-25
+updated: 2026-08-26
 produces: []
 condition-language: cel
 hold-after: P7D
@@ -32,8 +32,11 @@ conversation that cannot name its work item does not start.
   `hold-after` and the run lifecycle.
 
 **Roles:** product-authority (human-held role — directs, asks, and owns the
-exclusive right to close or cancel). lead-pm (acts within the work
-item's scope and lands the exchanges on it).
+exclusive right to close or cancel). lead-pm — held by the
+authority; its agent step assists: `act` performs the action inside the scope
+the authority set, lands the exchange on the item, and files
+out-of-scope work as its own item for the authority; the authority
+directs and decides the item's scope.
 
 **Scope note:** closing the conversation does not close the work item —
 work may continue outside conversation. The close lands a summary
@@ -171,3 +174,5 @@ steps:
 | 1 | 2026-08-22 | state | draft → approved. |
 | 2 | 2026-08-23 | update | Owner direction: decision-ledger references removed — changes stand on their own; history entries and text no longer cite numbered decisions. |
 | 3 | 2026-08-25 | update | Owner direction: a near-synonym of "role" retired and banned. |
+| 4 | 2026-08-26 | update | Owner decision: lead-pm is held by the authority in person; the Roles header now names what the role's agent steps prepare and what the authority decides, per the lead-pm role's Interfaces. |
+| 4 | 2026-08-26 | review | Assist re-basing screened: the header said the agent prepares an action the prompt has it perform — repaired in place to match the prompt. |

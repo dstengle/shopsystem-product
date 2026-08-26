@@ -4,9 +4,9 @@ id: review-conversation-process
 owner: product-authority
 status: approved
 approved: 2026-08-22
-version: 3
+version: 4
 created: 2026-08-22
-updated: 2026-08-25
+updated: 2026-08-26
 produces: [review-record]
 condition-language: cel
 hold-after: P7D
@@ -37,8 +37,10 @@ the record.
   `hold-after` and the run lifecycle it invokes.
 
 **Roles:** product-authority (human-held role — observes, decides, and owns
-the exclusive right to close or cancel). lead-pm (applies decisions and
-keeps the record current).
+the exclusive right to close or cancel). lead-pm — held by the
+authority; its agent step assists: `apply` lands the decisions the
+authority has taken as changes to the affected artifacts and keeps the
+record current; it takes no decision of its own.
 
 **Scope note:** other processes invoke this one as a sub-process step
 (`execution: sub-process`) — e.g. the migration process's
@@ -140,8 +142,9 @@ steps:
       Apply the observation. A decision lands as the changes it demands
       in the affected artifacts — each with a Document History entry —
       and the record's Outcomes section links where it landed. A
-      question gets an answer grounded in the corpus; if answering
-      produced a decision, apply it the same way. Update the record's
+      question gets an answer grounded in the corpus; a decision the
+      answer would imply is offered to the authority as the next
+      observation, never applied here. Update the record's
       State to name the next ready action. Nothing binding stays only in
       the transcript or the record.
     next: observe
@@ -185,3 +188,5 @@ per the run lifecycle.
 | 1 | 2026-08-22 | state | draft → approved. |
 | 2 | 2026-08-23 | update | Ledger practice removed by owner direction: decisions apply as Document History-recorded changes in the affected artifacts; classification value renamed decision. |
 | 3 | 2026-08-25 | update | Owner direction: a near-synonym of "role" retired and banned. |
+| 4 | 2026-08-26 | update | Owner decision: lead-pm is held by the authority in person; the Roles header now names what the role's agent steps prepare and what the authority decides, per the lead-pm role's Interfaces. |
+| 4 | 2026-08-26 | review | Assist re-basing screened: the apply prompt let the agent apply a decision its own answer produced — repaired in place: such a decision is offered to the authority, never applied. |

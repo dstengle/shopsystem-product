@@ -4,9 +4,9 @@ id: discovery-conversation-process
 owner: product-authority
 status: approved
 approved: 2026-08-22
-version: 3
+version: 4
 created: 2026-08-22
-updated: 2026-08-25
+updated: 2026-08-26
 produces: [session-record]
 condition-language: cel
 hold-after: P7D
@@ -35,8 +35,11 @@ interlocutor; record and launch only after convergence.
   `hold-after` and the run lifecycle.
 
 **Roles:** product-authority (human-held role — explores, converges, and owns
-the exclusive right to close or cancel). lead-pm (interlocutor; keeps
-the draft record's quotes and state current).
+the exclusive right to close or cancel). lead-pm — held by the same
+person; its agent steps assist: `engage` prepares the reflection —
+probes, names tensions, offers options with a recommendation, keeps the
+draft record's quotes and state current — and the authority decides
+what converges. The agent operationalizes nothing.
 
 ## Flow (compiled)
 
@@ -184,3 +187,5 @@ never released silently.
 | 1 | 2026-08-22 | state | draft → approved. |
 | 2 | 2026-08-23 | update | Owner direction: decision-ledger references removed — changes stand on their own; history entries and text no longer cite numbered decisions. |
 | 3 | 2026-08-25 | update | Owner direction: a near-synonym of "role" retired and banned. |
+| 4 | 2026-08-26 | update | Owner decision: lead-pm is held by the authority in person; the Roles header now names what the role's agent steps prepare and what the authority decides, per the lead-pm role's Interfaces. |
+| 4 | 2026-08-26 | review | Assist re-basing screened: clean; a timing phrase polished in place. |
