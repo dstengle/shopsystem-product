@@ -3,9 +3,9 @@ type: research-index
 id: research-index
 owner: product-authority
 status: approved
-version: 6
+version: 7
 created: 2026-08-23
-updated: 2026-08-25
+updated: 2026-08-26
 ---
 
 # Research index
@@ -18,6 +18,7 @@ system carries; it loads only inside a research activity.
 
 | Id | Question | Date | Status | Location |
 |---|---|---|---|---|
+| product-process-2026-08 | How does our product process compare with modern practice at startups and tech companies — where does a product-level problem live, how are cross-context features decomposed, and how does the record answer how the product changed, where it is, and where it is going? | 2026-08-26 | delivered | `research:research/product-process-2026-08.md` |
 | pm-po-one-role-2026-08 | Are the product manager and product owner the same role with different activities, and what is served by having two roles in this system? | 2026-08-25 | delivered | `research:research/pm-po-one-role-2026-08.md` |
 | product-designer-role-2026-08 | What should a product designer role own in the lead shop, and how does one role keep the user experience consistent across every interaction type — CLI, TUI, GUI, API, conversational, voice? | 2026-08-25 | delivered | `research:research/product-designer-role-2026-08.md` |
 | pm-po-roles-2026-08 | How does industry define the product manager and product owner roles — accountabilities, decision rights, deliverables — and the interactions between them and with the solutions architect? | 2026-08-25 | delivered | `research:research/pm-po-roles-2026-08.md` |
@@ -39,3 +40,4 @@ system carries; it loads only inside a research activity.
 | 4 | 2026-08-25 | update | Row added: the PM/PO roles report, delivered. |
 | 5 | 2026-08-25 | update | Row added: the product designer role report, delivered at both round caps with residuals disclosed. |
 | 6 | 2026-08-25 | update | Row added: the PM/PO one-role report, delivered (verification at cap with one label residual; cold read clean). |
+| 7 | 2026-08-26 | update | Row added: the product-process report, delivered at both round caps with residuals disclosed. |
