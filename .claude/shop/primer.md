@@ -27,8 +27,12 @@ frames intent and checks the maker's output), `lead-po` (the maker;
 backlog order), `lead-solutions-architect` (the stack, decomposition,
 contracts), `lead-product-designer` (the experience corpus, usability).
 The ask mechanism (held-and-resumed only) and the `po-output-check`
-process are approved. Open in Phase 1: re-basing the agent-run
-`lead-pm` steps as assist activities; the experience corpus; the
+process are approved. The experience guidance corpus has its principle set,
+common and per-type guidelines, and interaction fitness set approved;
+the PO artifact types have approved criteria sets pending their
+typedefs. Open in Phase 1: the corpus records the designer role
+judges against (vocabulary, core-task list, patterns, tokens); the
+process that runs the interaction screen at delivery; the
 role-definition typedef's six-section form; the skills import plan.
 
 ## Operating rules
