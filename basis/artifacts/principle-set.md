@@ -5,9 +5,9 @@ defines: principle-set
 owner: product-authority
 status: approved
 approved: 2026-08-22
-version: 5
+version: 6
 created: 2026-08-19
-updated: 2026-08-23
+updated: 2026-08-26
 ancestry: [definition, principle-set]
 ---
 
@@ -28,8 +28,9 @@ ancestry: [definition, principle-set]
 
 `type: principle-set`, `id`, `scope` (the level the set governs and whose
 context it loads into: `working` — how every activity is performed, loads
-everywhere — or `architecture` — how the system is designed, loads where
-design work happens), `owner`, `status`, `created`, `updated`.
+everywhere; `architecture` — how the system is designed, loads where
+design work happens; or `experience` — how the product's interactions
+are designed, loads where interface work happens), `owner`, `status`, `created`, `updated`.
 
 ## Rules
 
@@ -100,3 +101,4 @@ a screen row.
 | 3 | 2026-08-23 | update | Rationale rule added: generic examples, never the product's operational history. |
 | 4 | 2026-08-23 | update | Form rules added: one obligation or implication per bullet; checklist row added. |
 | 5 | 2026-08-23 | update | Owner direction: decision-ledger references removed — changes stand on their own; history entries and text no longer cite numbered decisions. |
+| 6 | 2026-08-26 | update | Owner direction: a third scope, `experience`, for the product designer role's principle set. |

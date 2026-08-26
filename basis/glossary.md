@@ -4,9 +4,9 @@ id: glossary
 owner: product-authority
 status: approved
 approved: 2026-08-19
-version: 10
+version: 11
 created: 2026-08-19
-updated: 2026-08-25
+updated: 2026-08-26
 ---
 
 # Glossary
@@ -62,8 +62,8 @@ terms uses one of these when one fits.
   to hold only chain-conforming records; retired mass moves to the
   archive.
 - **scope** (of a principle set) — the level the set governs and whose
-  context it loads into: working (every activity) or architecture (the
-  designed system).
+  context it loads into: working (every activity), architecture (the
+  designed system), or experience (the product's interactions).
 - **transcript** — the runtime log of turns; unscoped, not a governed
   artifact, never loaded into context.
 - **conversation** — a scoped, bounded discussion attached to exactly one
@@ -173,6 +173,13 @@ terms uses one of these when one fits.
   role's exclusive domain.
 - **originator** — whoever expresses intent at the product's edge: a
   person, a shop, or a system outside the product.
+- **generated interface** — an interface whose form the product composes
+  at run time from the person's context, within constraints the
+  experience guidance corpus states; a form, not an interaction type.
+- **assistant interaction** — an interaction in which the product acts on
+  an intent the person stated rather than on a command — conversational,
+  voice, or an assistant acting for the person (a closed set); the locus
+  of control is the product's, so the experience principles bound it.
 - **intent** — a desired outcome expressed by an originator at the
   product's edge; enters the product through a contract and keeps its
   provenance through every translation and delegation.
@@ -194,3 +201,5 @@ terms uses one of these when one fits.
 | 9 | 2026-08-25 | update | interaction type and experience guidance corpus added with the lead-product-designer role. |
 | 10 | 2026-08-25 | update | ask added; clarify re-based as an ask; hold now names the ask as a cause. |
 | 10 | 2026-08-25 | update | originator added — used by the PM role and the ask type without a definition. |
+| 11 | 2026-08-26 | update | scope gains the experience level with the experience principle set. |
+| 11 | 2026-08-26 | update | generated interface and assistant interaction added with the experience principle set. |
