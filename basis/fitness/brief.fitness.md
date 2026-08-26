@@ -2,7 +2,8 @@
 type: fitness-set
 id: brief-fitness
 owner: product-authority
-status: draft
+status: approved
+approved: 2026-08-26
 version: 3
 created: 2026-08-26
 updated: 2026-08-26
@@ -84,3 +85,4 @@ Scenario 5: the first paragraph states the problem and the outcome
 | 2 | 2026-08-26 | review | Re-screened: findings — scenario 5 cited lead-po for a rule it does not carry; scenario 4 let the judge pick the questions. |
 | 3 | 2026-08-26 | update | Repairs: scenario 5 attributed to this set's proposal after the decision-brief form; questions bound to those the framing or brief raises; scenario 1's Then widened to any out-of-scope reason. |
 | 3 | 2026-08-26 | review | Re-screened (round 3): clean — every Then decidable from the criteria set, the framing, and the artifact; attributions accurate. |
+| 3 | 2026-08-26 | state | draft → approved by the owner. |

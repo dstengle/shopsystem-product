@@ -2,7 +2,8 @@
 type: fitness-set
 id: product-decision-record-fitness
 owner: product-authority
-status: draft
+status: approved
+approved: 2026-08-26
 version: 3
 created: 2026-08-26
 updated: 2026-08-26
@@ -86,3 +87,4 @@ Scenario 5: reversibility is stated
 | 2 | 2026-08-26 | review | Re-screened: findings — the ADR form was credited with parts it does not carry. |
 | 3 | 2026-08-26 | update | Repairs: decision and consequences credited to Nygard, alternatives to MADR, decider and reversibility marked as this set's proposal. |
 | 3 | 2026-08-26 | review | Re-screened (round 3): clean — every Then decidable from the criteria set, the framing, and the artifact; attributions accurate. |
+| 3 | 2026-08-26 | state | draft → approved by the owner. |

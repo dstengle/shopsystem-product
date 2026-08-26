@@ -2,7 +2,8 @@
 type: fitness-set
 id: acceptance-scenarios-fitness
 owner: product-authority
-status: draft
+status: approved
+approved: 2026-08-26
 version: 3
 created: 2026-08-26
 updated: 2026-08-26
@@ -88,3 +89,4 @@ Scenario 5: interaction types are named
 | 2 | 2026-08-26 | review | Re-screened: findings — scenario 4 read the brief, which the screen does not load; scenario 2's sources lived only in the history. |
 | 3 | 2026-08-26 | update | Repairs: edges bound to the framing and the set's own shop contribution; usability and accessibility criteria sourced in the Then; the hash lint marked to-be-filed. |
 | 3 | 2026-08-26 | review | Re-screened (round 3): clean — every Then decidable from the criteria set, the framing, and the artifact; attributions accurate. |
+| 3 | 2026-08-26 | state | draft → approved by the owner. |

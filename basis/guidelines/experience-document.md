@@ -4,7 +4,8 @@ id: experience-document-guideline
 target-type: interaction
 interaction-type: document
 owner: product-authority
-status: draft
+status: approved
+approved: 2026-08-26
 version: 3
 created: 2026-08-26
 updated: 2026-08-26
@@ -108,3 +109,4 @@ bullet 2. A document accessibility check tool is not yet filed as a work item.
 | 2 | 2026-08-26 | review | Re-screened: Layers overstated the derivation rule for rule 1; email had no named guideline for rule 2; the type's core-task position unstated. |
 | 3 | 2026-08-26 | update | Layers amended for all three. |
 | 3 | 2026-08-26 | review | Final screen (round 3): clean — every rule decidable with a named scenario and derivation; two line edits and three optional stumbles polished in place. |
+| 3 | 2026-08-26 | state | draft → approved by the owner. |

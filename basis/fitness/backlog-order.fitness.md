@@ -2,7 +2,8 @@
 type: fitness-set
 id: backlog-order-fitness
 owner: product-authority
-status: draft
+status: approved
+approved: 2026-08-26
 version: 3
 created: 2026-08-26
 updated: 2026-08-26
@@ -88,3 +89,4 @@ Scenario 5: the next item says whether it is ready
 | 2 | 2026-08-26 | review | Re-screened: findings — scenario 5 read another artifact's status; the framing-overlap note sat inside a Then; "checked" unglossed; the intro misassigned the exclusive decision. |
 | 3 | 2026-08-26 | update | Repairs: scenario 5 judges what the order states; the overlap justification moved to the intro; checked glossed; the PO role named as the exclusive decider. |
 | 3 | 2026-08-26 | review | Re-screened (round 3): clean — every Then decidable from the criteria set, the framing, and the artifact; attributions accurate. |
+| 3 | 2026-08-26 | state | draft → approved by the owner. |

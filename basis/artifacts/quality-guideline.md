@@ -4,7 +4,7 @@ id: quality-guideline-typedef
 defines: quality-guideline
 owner: product-authority
 status: approved
-approved: 2026-08-22
+approved: 2026-08-26
 version: 4
 created: 2026-08-19
 updated: 2026-08-26
@@ -92,3 +92,4 @@ Plain Language guidelines.
 | 3 | 2026-08-26 | update | Owner direction: the type admits experience guidelines — target `interaction`, an `interaction-type` key with a closed set, decidability on a delivered interaction, judged checks naming the `interaction` fitness set — for the experience guidance corpus's second layer. |
 | 3 | 2026-08-26 | review | Screened with the experience guidelines: the closed set admitted one value where the cli guideline covers two; the precedence order's second rank had no referent for an interaction target. |
 | 4 | 2026-08-26 | update | interaction-type admits one or more values; the precedence referent for experience guidelines stated. |
+| 4 | 2026-08-26 | state | The experience-guideline amendment (v3–v4) approved by the owner. |

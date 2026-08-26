@@ -4,7 +4,8 @@ id: experience-gui-guideline
 target-type: interaction
 interaction-type: gui
 owner: product-authority
-status: draft
+status: approved
+approved: 2026-08-26
 version: 3
 created: 2026-08-26
 updated: 2026-08-26
@@ -107,3 +108,4 @@ yet filed as a work item.
 | 2 | 2026-08-26 | review | Re-screened: 'inactive until' wrote a third state into a yes/no rule while other record-dependent rules were unmarked; work items unlocated. |
 | 3 | 2026-08-26 | update | the state removed — absent records return the fitness set's undecidable verdict, stated once in the common guideline; work items marked not yet filed. |
 | 3 | 2026-08-26 | review | Final screen (round 3): clean — every rule decidable with a named scenario and derivation; two line edits and three optional stumbles polished in place. |
+| 3 | 2026-08-26 | state | draft → approved by the owner. |

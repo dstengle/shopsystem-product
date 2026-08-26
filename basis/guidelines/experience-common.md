@@ -4,7 +4,8 @@ id: experience-common-guideline
 target-type: interaction
 interaction-type: all
 owner: product-authority
-status: draft
+status: approved
+approved: 2026-08-26
 version: 2
 created: 2026-08-26
 updated: 2026-08-26
@@ -127,3 +128,4 @@ a non-web type; the BC-shop that delivered the interaction attached it.
 | 1 | 2026-08-26 | review | Screened: rule 4's escape let a guideline waive a principle's MUST; the corpus records the rules depend on were unstated; a passive without actor. |
 | 2 | 2026-08-26 | update | rule 4 defers to the principle's implication (the role edits the list); the dependent corpus records listed once with the absent-record verdict; actor named. |
 | 2 | 2026-08-26 | review | Final screen (round 3): clean — every rule decidable with a named scenario and derivation; two line edits and three optional stumbles polished in place. |
+| 2 | 2026-08-26 | state | draft → approved by the owner. |

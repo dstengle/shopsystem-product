@@ -2,7 +2,8 @@
 type: fitness-set
 id: interaction-fitness
 owner: product-authority
-status: draft
+status: approved
+approved: 2026-08-26
 version: 2
 created: 2026-08-26
 updated: 2026-08-26
@@ -88,3 +89,4 @@ Scenario 6: the per-type rules hold
 | 1 | 2026-08-26 | review | Screened: the PO output check unlinked; the process gap 'filed' nowhere; scenario 6 carried a variation escape with no meaning for a per-type rule; no verdict for an absent corpus record. |
 | 2 | 2026-08-26 | update | process linked and marked not yet filed; escape removed from scenario 6; the absent-record verdict defined. |
 | 2 | 2026-08-26 | review | Final screen (round 3): clean — every rule decidable with a named scenario and derivation; two line edits and three optional stumbles polished in place. |
+| 2 | 2026-08-26 | state | draft → approved by the owner. |

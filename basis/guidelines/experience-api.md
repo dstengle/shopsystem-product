@@ -4,7 +4,8 @@ id: experience-api-guideline
 target-type: interaction
 interaction-type: api
 owner: product-authority
-status: draft
+status: approved
+approved: 2026-08-26
 version: 3
 created: 2026-08-26
 updated: 2026-08-26
@@ -109,3 +110,4 @@ operation.
 | 2 | 2026-08-26 | review | Re-screened: rule 2's After failed its own criterion; a capitalised keyword in a quotation; rule 3 called a permitted tightening a variation. |
 | 3 | 2026-08-26 | update | replay result stated; keyword paraphrased; rule 3 named a tightening the principle allows. |
 | 3 | 2026-08-26 | review | Final screen (round 3): clean — every rule decidable with a named scenario and derivation; two line edits and three optional stumbles polished in place. |
+| 3 | 2026-08-26 | state | draft → approved by the owner. |

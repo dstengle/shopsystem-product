@@ -4,7 +4,8 @@ id: experience-cli-guideline
 target-type: interaction
 interaction-type: [cli, tui]
 owner: product-authority
-status: draft
+status: approved
+approved: 2026-08-26
 version: 3
 created: 2026-08-26
 updated: 2026-08-26
@@ -127,3 +128,4 @@ common guideline's rule 5).
 | 2 | 2026-08-26 | review | Re-screened: interaction-type named one value for two types; plain-CLI colour-not-alone absent; rule 5 restated the common core-task rule; an unsourced 'keyboard-first patterns'. |
 | 3 | 2026-08-26 | update | frontmatter lists cli and tui; colour clause added to rule 1; rule 5 reduced to the TUI's reachability; the unsourced phrase cut. |
 | 3 | 2026-08-26 | review | Final screen (round 3): clean — every rule decidable with a named scenario and derivation; two line edits and three optional stumbles polished in place. |
+| 3 | 2026-08-26 | state | draft → approved by the owner. |

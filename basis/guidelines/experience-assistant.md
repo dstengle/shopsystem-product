@@ -4,7 +4,8 @@ id: experience-assistant-guideline
 target-type: interaction
 interaction-type: assistant
 owner: product-authority
-status: draft
+status: approved
+approved: 2026-08-26
 version: 3
 created: 2026-08-26
 updated: 2026-08-26
@@ -135,3 +136,4 @@ guideline's rule 1).
 | 2 | 2026-08-26 | review | Re-screened: rule 6 marked inactive while rule 2 depended on an equally absent record unmarked. |
 | 3 | 2026-08-26 | update | the state removed; both depend on records the common guideline lists with the absent-record verdict. |
 | 3 | 2026-08-26 | review | Final screen (round 3): clean — every rule decidable with a named scenario and derivation; two line edits and three optional stumbles polished in place. |
+| 3 | 2026-08-26 | state | draft → approved by the owner. |
