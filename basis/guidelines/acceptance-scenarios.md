@@ -99,3 +99,4 @@ set.
 | 1 | 2026-08-27 | update | Authored by owner direction to complete the type's definition chain; each rule maps to one fitness scenario; Gherkin governs the form, this guideline the content. |
 | 1 | 2026-08-27 | review | Screened: findings — rule 5's criterion carried a clause no check decides; rule 1 narrower than the typedef's "implementation detail"; a section reference by number. |
 | 2 | 2026-08-27 | update | criterion limited to what the judge decides; algorithm added; the section named. |
+| 2 | 2026-08-27 | review | Re-screened: clean. |

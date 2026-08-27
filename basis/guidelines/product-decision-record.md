@@ -95,3 +95,4 @@ reopens it. *Decision:* yes/no per record.
 | 1 | 2026-08-27 | update | Authored by owner direction to complete the type's definition chain; each rule maps to one fitness scenario; the form follows Nygard's ADR (decision, consequences) and MADR (alternatives) as the typedef's Sources state. |
 | 1 | 2026-08-27 | review | Screened: findings — rule 2 required a reason on every alternative where the fitness set asks for one; an idiom; an unintroduced right's name. |
 | 2 | 2026-08-27 | update | criterion aligned to the fitness set; idiom replaced; the right named as the role defines it. |
+| 2 | 2026-08-27 | review | Re-screened: clean. |

@@ -40,8 +40,9 @@ grown over the last year…" (the problem in paragraph four).
 After: "Operators cannot tell which of last night's runs failed without
 opening each one. Outcome: a failed run is visible from the run list
 within one glance."
-*Test:* read only the first paragraph. *Criterion:* it states the
-problem and the outcome the framing names. *Decision:* yes/no per
+*Test:* read only the first paragraph. *Criterion:* it states a
+problem and an outcome (whether they are the framing's is the
+process's `framing` criterion). *Decision:* yes/no per
 brief.
 *Derived check:* judged — brief fitness scenario 5.
 
@@ -92,3 +93,4 @@ the brief raises that is neither answered nor listed as open.
 | 1 | 2026-08-27 | update | Authored by owner direction so the brief's definition chain is complete — typedef, guideline, fitness set — before the first instance; each rule maps to one fitness scenario. |
 | 1 | 2026-08-27 | review | Screened: findings — rule 3's criterion closed the set of admissible reasons the fitness set leaves open; "initiative" undefined. |
 | 2 | 2026-08-27 | update | the reason list made illustrative; the undefined term removed. |
+| 2 | 2026-08-27 | review | Re-screened: one finding — rule 1's criterion compared against the framing, which fitness 5 does not; repaired in place to presence only. |

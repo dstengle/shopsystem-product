@@ -40,7 +40,8 @@ After: "Priority followed: the PM's roadmap priority of 2026-08-20
 (linked): failure visibility, then alerting, then archive. Exception:
 item 3 (archive retention) precedes alerting because the archive
 brief blocks the retention bug the shop reported."
-*Test:* read §1 and compare the order against the priority it states.
+*Test:* read the priority-followed section (§1) and compare the order
+against the priority it states.
 *Criterion:* the priority is stated; every inversion carries a reason.
 *Decision:* yes/no per order.
 *Derived check:* judged — backlog-order fitness scenario 2.
@@ -61,8 +62,8 @@ Before: an architect's recommendation absent from the order.
 After: "Enabler recommendations received: (a) list contract version 2
 — placed at item 2, since item 3 depends on it; (b) status
 consolidation — declined this order, no framing served yet."
-*Test:* read §2 against the recommendations the order lists as
-received. *Criterion:* each is placed with a reasoned position or
+*Test:* read the enabler-recommendations section (§2) against the
+recommendations the order lists as received. *Criterion:* each is placed with a reasoned position or
 declined with a reason. *Decision:* yes/no per recommendation.
 *Derived check:* judged — backlog-order fitness scenario 3.
 
@@ -92,3 +93,4 @@ it waits on. *Decision:* yes/no per order.
 | 1 | 2026-08-27 | update | Authored by owner direction to complete the type's definition chain; each rule maps to one fitness scenario. |
 | 1 | 2026-08-27 | review | Screened: clean; "initiative" removed from an example as undefined. |
 | 2 | 2026-08-27 | update | polish only. |
+| 2 | 2026-08-27 | review | Re-screened: clean; two section references named in place. |
