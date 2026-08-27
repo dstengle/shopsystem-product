@@ -4,9 +4,9 @@ id: glossary
 owner: product-authority
 status: approved
 approved: 2026-08-19
-version: 12
+version: 13
 created: 2026-08-19
-updated: 2026-08-26
+updated: 2026-08-27
 ---
 
 # Glossary
@@ -117,7 +117,11 @@ terms uses one of these when one fits.
 - **shop** — the entity that builds, operates, and evolves part of the
   product. Two types: the lead shop (the system-level coordinator; owns
   product-level artifacts and no Bounded Context) and the BC-shop (owns
-  and produces exactly one Bounded Context).
+  and produces exactly one Bounded Context). By the owner's decision a
+  BC-shop is a component team in the product literature's sense: it
+  receives bounded work for its context and does not own a feature end
+  to end; a request that crosses contexts is decomposed above it, in
+  the initiative, never by the shops between themselves.
 - **activity** — a discrete unit of work performed inside a shop,
   following a contract or process, with inputs, outcomes, and provenance
   recorded. What an actor is stays unconstrained; the activity has the
@@ -181,6 +185,10 @@ terms uses one of these when one fits.
   an intent the person stated rather than on a command — conversational,
   voice, or an assistant acting for the person (a closed set); the locus
   of control is the product's, so the experience principles bound it.
+- **brief** — the PO role's bounded statement of a problem and its
+  scope for one Bounded Context shop: what is asked, the edge of scope,
+  what the shop needs to start; never the how. Distinct from the
+  `decision-brief` the lead shop delivers to the authority.
 - **intent** — a desired outcome expressed by an originator at the
   product's edge; enters the product through a contract and keeps its
   provenance through every translation and delegation.
@@ -205,3 +213,4 @@ terms uses one of these when one fits.
 | 11 | 2026-08-26 | update | scope gains the experience level with the experience principle set. |
 | 11 | 2026-08-26 | update | generated interface and assistant interaction added with the experience principle set. |
 | 12 | 2026-08-26 | update | interaction type: the guidelines' `assistant` coverage of conversational and voice noted. |
+| 13 | 2026-08-27 | update | Owner decision, from the system-read report: BC-shops are component teams by design; stated in the shop entry. |
