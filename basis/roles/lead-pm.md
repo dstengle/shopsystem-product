@@ -8,9 +8,9 @@ id: lead-pm
 owner: product-authority
 status: approved
 approved: 2026-08-25
-version: 7
+version: 8
 created: 2026-08-23
-updated: 2026-08-25
+updated: 2026-08-28
 ---
 
 # Lead PM
@@ -39,8 +39,8 @@ missing criterion named.
   contract — product or operational — it entered through.
 - The value and viability judgment on every candidate problem: whether
   it is worth solving and whether the product can sustain the solution.
-- The check on the product-owner (PO) role's output — acceptance scenarios, briefs, backlog
-  order — against the framing, under criteria the definitions state: a
+- The check on the product-owner (PO) role's output — features,
+  decision records, backlog order — against the framing, under criteria the definitions state: a
   pass, a fail with the criterion named, or a definition change where
   the criteria proved insufficient.
 - Roadmap priority: which framed problems come first, recorded with
@@ -80,8 +80,8 @@ role's own reading of every artifact in place of a stated criterion.
 
 **Interfaces:**
 - Originators: intent in; the recorded framing back.
-- The PO role: framed intent and its outcome out; scenarios, briefs,
-  backlog order, and scope questions in for the check.
+- The PO role: framed intent and its outcome out; features, decision
+  records, backlog order, and scope questions in for the check.
 - The solutions architect role: framed problem and outcome out;
   feasibility verdict, technical risks, and questions in.
 - The product designer role: framed problems and outcomes out;
@@ -129,3 +129,4 @@ activity runs under.
 | 5 | 2026-08-25 | state | draft → approved by the owner. |
 | 6 | 2026-08-25 | update | Usability now assigned: the never-decides list and the four-risks note point at the approved lead-product-designer role; the designer added as an interface. |
 | 7 | 2026-08-25 | update | Admissible evidence widened from "fitness set" to the criteria set the po-output-check process defines. |
+| 8 | 2026-08-28 | update | Owner decision: acceptance-scenarios re-formed as feature (product-level, scenarios assigned per Bounded Context by tag); the brief retired — shops receive their assigned scenarios. |

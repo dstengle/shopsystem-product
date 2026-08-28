@@ -3,10 +3,10 @@ type: artifact-typedef
 id: brief-typedef
 defines: brief
 owner: product-authority
-status: draft
+status: superseded
 version: 3
 created: 2026-08-26
-updated: 2026-08-26
+updated: 2026-08-28
 ancestry: [request, brief]
 ---
 
@@ -86,3 +86,4 @@ opening.
 | 2 | 2026-08-26 | review | Re-screened: findings — the request ancestor's "From whom" carried by equivalence, not as a heading; an interaction-types section no criterion grounds. |
 | 3 | 2026-08-26 | update | "From whom" is a heading; interaction types moved to Rules as permitted, linked to the core-task list; the request typedef linked. |
 | 3 | 2026-08-26 | review | Re-screened (round 3): clean — every round-2 change and stumble addressed; checklist citations resolve after renumbering. |
+| 3 | 2026-08-28 | state | superseded — owner decision: shops receive their assigned scenarios, not briefs; the brief's content lives in the feature's narrative and the initiative. Kept as a record; not to be instantiated. |

@@ -3,10 +3,10 @@ type: quality-guideline
 id: brief-guideline
 target-type: brief
 owner: product-authority
-status: draft
+status: superseded
 version: 2
 created: 2026-08-27
-updated: 2026-08-27
+updated: 2026-08-28
 ---
 
 # Guideline: brief
@@ -94,3 +94,4 @@ the brief raises that is neither answered nor listed as open.
 | 1 | 2026-08-27 | review | Screened: findings — rule 3's criterion closed the set of admissible reasons the fitness set leaves open; "initiative" undefined. |
 | 2 | 2026-08-27 | update | the reason list made illustrative; the undefined term removed. |
 | 2 | 2026-08-27 | review | Re-screened: one finding — rule 1's criterion compared against the framing, which fitness 5 does not; repaired in place to presence only. |
+| 2 | 2026-08-28 | state | superseded — owner decision: shops receive their assigned scenarios, not briefs; the brief's content lives in the feature's narrative and the initiative. Kept as a record; not to be instantiated. |

@@ -4,9 +4,9 @@ id: backlog-order-guideline
 target-type: backlog-order
 owner: product-authority
 status: draft
-version: 2
+version: 3
 created: 2026-08-27
-updated: 2026-08-27
+updated: 2026-08-28
 ---
 
 # Guideline: backlog order
@@ -39,7 +39,7 @@ Before: an ordered list with no reference to any priority.
 After: "Priority followed: the PM's roadmap priority of 2026-08-20
 (linked): failure visibility, then alerting, then archive. Exception:
 item 3 (archive retention) precedes alerting because the archive
-brief blocks the retention bug the shop reported."
+feature blocks the retention bug the shop reported."
 *Test:* read the priority-followed section (§1) and compare the order
 against the priority it states.
 *Criterion:* the priority is stated; every inversion carries a reason.
@@ -78,7 +78,7 @@ escalation named. *Decision:* yes/no per item.
 
 **5. Say whether the next item is ready.**
 Before: the first untaken item with no readiness statement.
-After: "Next: item 1 — ready; its brief (linked) states it is checked."
+After: "Next: item 1 — ready; its feature (linked) states it is checked."
 or "Next: item 1 — not ready; waits on the designer's usability
 criteria."
 *Test:* read the first untaken item. *Criterion:* it is marked ready
@@ -94,3 +94,4 @@ it waits on. *Decision:* yes/no per order.
 | 1 | 2026-08-27 | review | Screened: clean; "initiative" removed from an example as undefined. |
 | 2 | 2026-08-27 | update | polish only. |
 | 2 | 2026-08-27 | review | Re-screened: clean; two section references named in place. |
+| 3 | 2026-08-28 | update | Owner decision: acceptance-scenarios re-formed as feature (product-level, scenarios assigned per Bounded Context by tag); the brief retired — shops receive their assigned scenarios. |

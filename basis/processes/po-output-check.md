@@ -4,9 +4,9 @@ id: po-output-check-process
 owner: product-authority
 status: approved
 approved: 2026-08-26
-version: 3
+version: 4
 created: 2026-08-25
-updated: 2026-08-25
+updated: 2026-08-28
 produces: []
 carried-by: po-output-check-skill
 condition-language: cel
@@ -16,7 +16,7 @@ annotations:
   claude-code:
     activation: model-judged
     promotion: experiment-local
-    use-when: "the PO role submits a brief, product decision record, acceptance scenarios, or a backlog order for the PM role's check against the framing"
+    use-when: "the PO role submits a feature, product decision record, or backlog order for the PM role's check against the framing"
 ---
 
 # Process: PO output check
@@ -32,8 +32,9 @@ criterion, and the decision that follows is a definition change, not a
 verdict on the maker.
 
 **Outcomes:**
-- O1. The output is screened against a named criteria set and the
-  framing it claims to serve — witnessed by `screen`'s inputs and the
+- O1. The output — a feature, a product decision record, or a backlog
+  order — is screened against a named criteria set and the framing it
+  claims to serve — witnessed by `screen`'s inputs and the
   `screen-review` it returns.
 - O2. The PM role decides from the review and round log; the artifact
   reaches the PM role only through the findings' quotes — witnessed by
@@ -259,3 +260,4 @@ steps:
 | 3 | 2026-08-25 | update | Repairs: the PM role decides from the review alone, wobbly findings quote the whole passage; `framing` is a named criterion the maker repairs; record returns the written definition's path; the definition exit guarded on a non-empty list; `ask` initial null; status vocabulary moved to Data prose. The v1 entry's "nearest approved fitness set or the framing alone" is superseded by Data's rule. |
 | 3 | 2026-08-25 | review | Re-screened (round 3): clean — all six scenarios pass, six rules hold; both paths traced; stumbles polished in place (verdict precedence at the cap; the framing criterion named in the type). |
 | 3 | 2026-08-26 | state | draft → approved by the owner. |
+| 4 | 2026-08-28 | update | Owner decision: acceptance-scenarios re-formed as feature (product-level, scenarios assigned per Bounded Context by tag); the brief retired — shops receive their assigned scenarios. |

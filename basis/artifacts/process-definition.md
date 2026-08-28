@@ -5,9 +5,9 @@ defines: process-definition
 owner: product-authority
 status: approved
 approved: 2026-08-22
-version: 4
+version: 6
 created: 2026-08-19
-updated: 2026-08-25
+updated: 2026-08-28
 ancestry: [definition, process-definition]
 ---
 
@@ -83,8 +83,14 @@ is the reserved terminator id for `next`. Each step:
   step** (for a human step it is the question the review puts).
 - Runtime steps carry `set` (CEL assignments to data values or their
   fields), `run` (command templates
-  with `${...}` interpolation from typed inputs; `atomic: true` binds the
-  lines into one all-or-nothing act), or `branches`.
+  with `${...}` interpolation from typed inputs — a scalar interpolates
+  as its value, an array as one shell word per element, a field of an
+  array's items as `${name[].field}` yielding one word per item in
+  item order, so a template may run a shell `for` over it or pair two
+  such fields positionally; `name` may be a data name or a field path
+  into one. A `run` step yields at most one output: the template's
+  standard output — split by line for an array value; `atomic: true`
+  binds the lines into one all-or-nothing act), or `branches`.
 - `checks` — CEL expressions over declared data.
 - Routing: `next`, or `branches` of `{label, when (CEL), next}` rows plus
   one `else`. **Every loop declares its exits as labeled branch rows** —
@@ -187,3 +193,5 @@ round cap (the dual-exit rule).
 | 3 | 2026-08-25 | update | Owner direction: a near-synonym of "role" retired and banned. |
 | 4 | 2026-08-25 | update | Owner decision: the ask mechanism defined, held-and-resumed only — a step may carry `asks` (role ids) and return an `ask` data value in place of its outputs; the run holds, the role answers, the step resumes in a fresh context from its inputs and the ask's checkpoint; `ask-cap` bounds an unanswered ask with its default; a recurring ask is a definition gap. No synchronous form. |
 | 4 | 2026-08-25 | review | Screened with the ask data type: findings — the ask loop lacked an exit; the resumed ask had no data name; answering had no named activity; the recurrence measure had no channel; an old use of "ask" collided. Repaired in place: one ask per step per run, the `ask` value declared and listed, answering placed in the answering role's process, the registry named as the count's home, wording fixed. |
+| 5 | 2026-08-28 | update | Owner direction, from the scenario-assignment screen: how arrays and item fields interpolate into a `run` template defined, so a fan-out over contexts is a defined form. |
+| 6 | 2026-08-28 | update | From the scenario-assignment screen: how a `run` step yields its output (standard output, line-split for arrays) and that interpolation names may be field paths — both were silent conventions. |

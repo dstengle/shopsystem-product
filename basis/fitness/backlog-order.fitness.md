@@ -4,9 +4,9 @@ id: backlog-order-fitness
 owner: product-authority
 status: approved
 approved: 2026-08-26
-version: 3
+version: 4
 created: 2026-08-26
-updated: 2026-08-26
+updated: 2026-08-28
 target-type: backlog-order
 judged: true
 executable: false
@@ -65,9 +65,9 @@ Scenario 4: the order names each item's context
 Scenario 5: the next item says whether it is ready
   Given the first item not yet taken up
   When it is read
-  Then the order marks it ready and links the brief or scenario set it
-  states is checked (passed the PO output check), or marks it not ready
-  and names what it waits on
+  Then the order marks it ready and links the feature it states is
+  checked (passed the PO output check), or marks it not ready and names
+  what it waits on
 
 ## Compile mapping (each Then → one judge-rubric assertion)
 
@@ -90,3 +90,4 @@ Scenario 5: the next item says whether it is ready
 | 3 | 2026-08-26 | update | Repairs: scenario 5 judges what the order states; the overlap justification moved to the intro; checked glossed; the PO role named as the exclusive decider. |
 | 3 | 2026-08-26 | review | Re-screened (round 3): clean — every Then decidable from the criteria set, the framing, and the artifact; attributions accurate. |
 | 3 | 2026-08-26 | state | draft → approved by the owner. |
+| 4 | 2026-08-28 | update | Owner decision: acceptance-scenarios re-formed as feature (product-level, scenarios assigned per Bounded Context by tag); the brief retired — shops receive their assigned scenarios. |

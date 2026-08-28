@@ -2,11 +2,11 @@
 type: fitness-set
 id: brief-fitness
 owner: product-authority
-status: approved
+status: superseded
 approved: 2026-08-26
 version: 3
 created: 2026-08-26
-updated: 2026-08-26
+updated: 2026-08-28
 target-type: brief
 judged: true
 executable: false
@@ -86,3 +86,4 @@ Scenario 5: the first paragraph states the problem and the outcome
 | 3 | 2026-08-26 | update | Repairs: scenario 5 attributed to this set's proposal after the decision-brief form; questions bound to those the framing or brief raises; scenario 1's Then widened to any out-of-scope reason. |
 | 3 | 2026-08-26 | review | Re-screened (round 3): clean — every Then decidable from the criteria set, the framing, and the artifact; attributions accurate. |
 | 3 | 2026-08-26 | state | draft → approved by the owner. |
+| 3 | 2026-08-28 | state | superseded — owner decision: shops receive their assigned scenarios, not briefs; the brief's content lives in the feature's narrative and the initiative. Kept as a record; not to be instantiated. |

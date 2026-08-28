@@ -8,9 +8,9 @@ id: lead-solutions-architect
 owner: product-authority
 status: approved
 approved: 2026-08-25
-version: 5
+version: 6
 created: 2026-08-23
-updated: 2026-08-27
+updated: 2026-08-28
 ---
 
 # Lead Solutions Architect
@@ -30,7 +30,7 @@ else. No design decision stands unscreened against the architecture
 principles (the conformance accountability below).
 
 **Accountable for:**
-- The feasibility verdict for every framed problem and every brief —
+- The feasibility verdict for every framed problem and every feature —
   whether the product can be built as framed with the stack, capacity,
   and time it has — with its reasons recorded.
 - The structural model of the product, maintained as an artifact
@@ -41,10 +41,10 @@ principles (the conformance accountability below).
 - The decomposition: subdomain-to-Bounded-Context assignments and the
   relationship kind of each contract between contexts, recorded with
   reasons.
-- The scenario-register loop: every checked acceptance scenario mapped
-  to the Bounded Context that owns it, and work returned by Bounded
-  Context shops verified against that assignment through their
-  scenario registers.
+- The scenario-register loop: every checked feature's scenarios each
+  tagged `@bounded-context:` with the context that owns it, dispatched
+  to that shop, and work returned verified against that assignment
+  through the shops' scenario registers.
 - Conformance of architecture activities to the
   [architecture principle set](../architecture-principles.md): every
   structural decision, contract, and architecture decision record
@@ -135,3 +135,4 @@ authoring; the shop's
 | 5 | 2026-08-27 | update | Owner direction, from the system-read report: feasibility named as an accountability — it was assigned to this role only by the PM and designer roles' text. Seven accountabilities now; the typedef's 4–6 is exceeded by one, filed for the typedef's six-section amendment. |
 | 5 | 2026-08-27 | review | Screened: findings — the feasibility bullet carried sequencing ("before the PM role bets"); seven accountabilities against the typedef's 4–6; the description omitted feasibility; initiative, brief, dispatch undefined. Repaired in place: sequencing removed (the consuming process orders it); scenario assignment and reconciliation merged as the one register loop, six bullets; description aligned; terms replaced with defined ones. |
 | 5 | 2026-08-27 | state | The feasibility amendment approved by the owner's direction. |
+| 6 | 2026-08-28 | update | Owner decision: acceptance-scenarios re-formed as feature (product-level, scenarios assigned per Bounded Context by tag); the brief retired — shops receive their assigned scenarios. |

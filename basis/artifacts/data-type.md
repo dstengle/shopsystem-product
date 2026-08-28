@@ -5,9 +5,9 @@ defines: data-type
 owner: product-authority
 status: approved
 approved: 2026-08-22
-version: 2
+version: 3
 created: 2026-08-19
-updated: 2026-08-23
+updated: 2026-08-28
 ancestry: [definition, data-type]
 ---
 
@@ -35,8 +35,8 @@ ancestry: [definition, data-type]
 2. **Schema** — one `yaml` block in the registry's compact dialect:
    JSON Schema type names; `fields` maps field names to types (the
    `properties` equivalent); every field is required unless it carries
-   `optional: true`; enum value lists are closed (exhaustive); `$ref`
-   allowed for nesting.
+   `optional: true`; enum value lists are closed (exhaustive); nesting by
+   `$ref` or by an inline `items`/`fields` object.
 
 ## Commitment (Definition of Done)
 
@@ -62,3 +62,4 @@ principle (field names are defined terms).
 | 1 | 2026-08-19 | update | Authored (seed layer); earlier history, if any, in the repository history. |
 | 1 | 2026-08-22 | state | draft → approved. |
 | 2 | 2026-08-23 | update | Owner direction: decision-ledger references removed — changes stand on their own; history entries and text no longer cite numbered decisions. |
+| 3 | 2026-08-28 | update | Inline nesting stated as admissible — the `verification` and `assignment` types already use it. |

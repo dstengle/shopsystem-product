@@ -4,9 +4,9 @@ id: experience-core-tasks
 record: core-tasks
 owner: product-authority
 status: draft
-version: 3
+version: 4
 created: 2026-08-26
-updated: 2026-08-26
+updated: 2026-08-28
 maintained-by: lead-product-designer
 ---
 
@@ -18,7 +18,7 @@ task must present. Read by the
 [common experience guideline](../guidelines/experience-common.md)
 rule 4, the [interaction fitness set](../fitness/interaction.fitness.md)
 scenario 4, and the
-[acceptance-scenarios fitness set](../fitness/acceptance-scenarios.fitness.md)
+[feature fitness set](../fitness/feature.fitness.md)
 scenario 5. An entry means: every interaction type must complete the
 task with every option named, except a type the removal column names
 with its reason. Every entry is a hypothesis seeded from what the basis
@@ -42,7 +42,7 @@ tasks, and the product designer role settles the removals.
 [Common experience guideline](../guidelines/experience-common.md)
 rule 4; [interaction fitness set](../fitness/interaction.fitness.md)
 scenario 4;
-[acceptance-scenarios fitness set](../fitness/acceptance-scenarios.fitness.md)
+[feature fitness set](../fitness/feature.fitness.md)
 scenario 5.
 
 ## Document History
@@ -55,3 +55,4 @@ scenario 5.
 | 2 | 2026-08-26 | review | Re-screened: findings — the document row for answering an ask contradicted the removal reasoning. |
 | 3 | 2026-08-26 | update | document removed from that task with the notification's role stated. |
 | 3 | 2026-08-26 | review | Re-screened (round 3): clean. |
+| 4 | 2026-08-28 | update | Owner decision: acceptance-scenarios re-formed as feature (product-level, scenarios assigned per Bounded Context by tag); the brief retired — shops receive their assigned scenarios. |

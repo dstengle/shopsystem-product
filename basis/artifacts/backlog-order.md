@@ -4,9 +4,9 @@ id: backlog-order-typedef
 defines: backlog-order
 owner: product-authority
 status: draft
-version: 3
+version: 4
 created: 2026-08-26
-updated: 2026-08-26
+updated: 2026-08-28
 ancestry: [backlog-order]
 ---
 
@@ -45,7 +45,7 @@ stated in §1), `owner`, `created`, `updated`.
 3. **The order** — each item: the framing it serves or a declined mark
    with reason; the owning Bounded Context, with a cross-context item
    marked and its escalation to the PM role named; and for the first
-   untaken item, ready (with its checked brief or scenario set linked)
+   untaken item, ready (with its checked feature linked)
    or not ready with what it waits on.
 
 ## Rules
@@ -87,3 +87,4 @@ decomposition); the
 | 2 | 2026-08-26 | review | Re-screened: clean; two stumbles. |
 | 3 | 2026-08-26 | update | current's transition stated; the architect's raising rule kept in one home. |
 | 3 | 2026-08-26 | review | Re-screened (round 3): clean — every round-2 change and stumble addressed; checklist citations resolve after renumbering. |
+| 4 | 2026-08-28 | update | Owner decision: acceptance-scenarios re-formed as feature (product-level, scenarios assigned per Bounded Context by tag); the brief retired — shops receive their assigned scenarios. |

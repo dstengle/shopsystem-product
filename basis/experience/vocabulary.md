@@ -4,9 +4,9 @@ id: experience-vocabulary
 record: vocabulary
 owner: product-authority
 status: draft
-version: 2
+version: 3
 created: 2026-08-26
-updated: 2026-08-26
+updated: 2026-08-28
 maintained-by: lead-product-designer
 ---
 
@@ -35,7 +35,7 @@ screen returns "undecidable: entry is a hypothesis" for it until then.
 | ask | see glossary | none recorded | glossary | hypothesis |
 | clarify | see glossary | none recorded | glossary | hypothesis |
 | acceptance scenario | see glossary | none recorded | glossary | hypothesis |
-| brief | a bounded statement of a problem and its scope for a shop | none recorded | brief typedef | hypothesis |
+| feature | a Gherkin Feature: one capability from the user's or agent's view, with its acceptance scenarios | none recorded | feature typedef | hypothesis |
 | decision record | the record of one product-level decision | none recorded | product-decision-record typedef | hypothesis |
 | backlog | the ordered list of requirements within the framing | none recorded | backlog-order typedef | hypothesis |
 | framing | see glossary | none recorded | glossary | hypothesis |
@@ -57,3 +57,4 @@ scenario 1.
 | 2 | 2026-08-26 | update | Repairs: mappings removed; glossary terms say "see glossary"; acceptance scenario used; every entry marked hypothesis pending user research. |
 | 2 | 2026-08-26 | review | Re-screened: clean. |
 | 2 | 2026-08-26 | review | Re-screened (round 3): clean. |
+| 3 | 2026-08-28 | update | Owner decision: acceptance-scenarios re-formed as feature (product-level, scenarios assigned per Bounded Context by tag); the brief retired — shops receive their assigned scenarios. |

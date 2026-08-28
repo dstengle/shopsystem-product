@@ -3,19 +3,18 @@ name: po-output-check
 description: "Check a piece of the PO role's output against the PM role's framing\
   \ under criteria the definitions state, so that the PM role decides from a screen\
   \ verdict \u2014 pass, fail with the criterion named, or a definition change \u2014\
-  \ and never by reading every artifact. Use when the PO role submits a brief, product\
-  \ decision record, acceptance scenarios, or a backlog order for the PM role's check\
-  \ against the framing."
+  \ and never by reading every artifact. Use when the PO role submits a feature, product\
+  \ decision record, or backlog order for the PM role's check against the framing."
 type: skill
 id: po-output-check-skill
 status: approved
 created: 2026-08-25
-updated: 2026-08-25
+updated: 2026-08-28
 generated: true
 generated-by: basis/tools/compile_process.py
 derived-from: po-output-check-process
 source: basis/processes/po-output-check.md
-source-digest: sha256:59c61073dd05
+source-digest: sha256:839f763de518
 activation: model-judged
 promotion: experiment-local
 ---

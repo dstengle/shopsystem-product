@@ -4,9 +4,9 @@ id: glossary
 owner: product-authority
 status: approved
 approved: 2026-08-19
-version: 13
+version: 14
 created: 2026-08-19
-updated: 2026-08-27
+updated: 2026-08-28
 ---
 
 # Glossary
@@ -145,13 +145,15 @@ terms uses one of these when one fits.
 - **framing** — the PM role's recorded statement of what a request is
   about: the originator, the problem taken to be worth solving, and the
   outcome it serves; the exclusive decision of `lead-pm`.
-- **acceptance scenario** — a Gherkin scenario that states, as a
-  requirement, what counts as done for one behavior; co-produced by the
-  PO role and the owning Bounded Context shop; held in that shop's
-  scenario register.
+- **acceptance scenario** — a Gherkin scenario in a feature that
+  states, as a requirement, what counts as done for one behavior;
+  co-produced by the PO role and the owning Bounded Context shop;
+  assigned to that context by a `@bounded-context:<name>` tag the
+  solutions architect writes; held in that shop's scenario register.
 - **scenario register** — a Bounded Context shop's own list of the
-  acceptance scenarios it holds, with their hashes and states; read in
-  full across every context when a claim spans contexts.
+  acceptance scenarios tagged to it across all features, with their
+  hashes and states; read in full across every context when a claim
+  spans contexts.
 - **ask** — a question one activity puts to another role in place of
   its output, carrying a default and a checkpoint; the run holds, the
   role answers, the step resumes — never a wait in place (data type
@@ -185,10 +187,13 @@ terms uses one of these when one fits.
   an intent the person stated rather than on a command — conversational,
   voice, or an assistant acting for the person (a closed set); the locus
   of control is the product's, so the experience principles bound it.
-- **brief** — the PO role's bounded statement of a problem and its
-  scope for one Bounded Context shop: what is asked, the edge of scope,
-  what the shop needs to start; never the how. Distinct from the
-  `decision-brief` the lead shop delivers to the authority.
+- **feature** — a Gherkin Feature: one capability from the user's or
+  agent's point of view — a narrative saying who, what, and the outcome
+  — with the acceptance scenarios that state what counts as done for
+  it; product-level, belonging to its framing or initiative; its
+  scenarios may be owned by several Bounded Contexts. The PO role's
+  artifact. (The per-shop *brief* was retired 2026-08-28; the
+  `decision-brief` to the authority is unrelated.)
 - **intent** — a desired outcome expressed by an originator at the
   product's edge; enters the product through a contract and keeps its
   provenance through every translation and delegation.
@@ -214,3 +219,4 @@ terms uses one of these when one fits.
 | 11 | 2026-08-26 | update | generated interface and assistant interaction added with the experience principle set. |
 | 12 | 2026-08-26 | update | interaction type: the guidelines' `assistant` coverage of conversational and voice noted. |
 | 13 | 2026-08-27 | update | Owner decision, from the system-read report: BC-shops are component teams by design; stated in the shop entry. |
+| 14 | 2026-08-28 | update | Owner decision: feature added; acceptance scenario and scenario register carry the `@bounded-context:` assignment; the per-shop brief retired. |
