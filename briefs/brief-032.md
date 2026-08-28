@@ -6,7 +6,7 @@ date: 2026-08-28
 reader: product-authority
 decisions-requested: 3
 annex: annex-032.md
-version: 5
+version: 6
 ---
 
 # Brief 032: the product flow from discovery to assigned scenarios
@@ -58,8 +58,8 @@ through six sub-processes, in order —
 *Binds:* the six and their hand-offs. *Drafting default:* prompts,
 caps, wording, outcome states. *Evidence:* the 2026-08-27 system-read
 report — a whole-corpus review by three fresh readers — found the
-making, carrying, and measuring steps between the checks undefined;
-each is now one of the six. *Default:* none — silence does not
+making and carrying steps between the checks undefined; each is now
+one of the six (measuring stays on the reconcile side, ask 3). *Default:* none — silence does not
 approve.
 
 **2. Approve the build order and block approval.** *What you
@@ -117,3 +117,4 @@ with steps and roles, the batch table, the exclusions (optional).
 | 4 | 2026-08-28 | review | Cold read round 4 (cap): findings — "fourteen" against the page's count; four exclusions listed as five; "each screened once" against four screens; five terms unglossed; the evidence's "measuring" step unmapped. |
 | 5 | 2026-08-28 | update | Counts repaired; the bet's transition stated; measuring routed to ask 3; delivered at the cap with the open findings stated first. |
 | 5 | 2026-08-28 | state | draft → delivered at the round cap. |
+| 6 | 2026-08-28 | update | The evidence sentence's "measuring" step, unmapped in round 4, routed to ask 3 — one line the cap-round repair missed. |
