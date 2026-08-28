@@ -8,7 +8,7 @@ id: lead-pm
 owner: product-authority
 status: approved
 approved: 2026-08-25
-version: 8
+version: 9
 created: 2026-08-23
 updated: 2026-08-28
 ---
@@ -34,9 +34,13 @@ proposed default) — or it goes back to the role that sent it with the
 missing criterion named.
 
 **Accountable for:**
-- The recorded framing of each piece of intent: the originator, the
-  expressed outcome, the problem taken to be worth solving, and the
-  contract — product or operational — it entered through.
+- The initiative for each problem worth solving, opening with the
+  framing of its intent: the originator, the expressed outcome, the
+  problem taken to be worth solving, and the contract — product or
+  operational — it entered through; the rest of the initiative — one
+  measured outcome, appetite and no-gos — drafted by the assisting
+  agent and decided here; screened by the cold reviewer as the check
+  of record.
 - The value and viability judgment on every candidate problem: whether
   it is worth solving and whether the product can sustain the solution.
 - The check on the product-owner (PO) role's output — features,
@@ -130,3 +134,4 @@ activity runs under.
 | 6 | 2026-08-25 | update | Usability now assigned: the never-decides list and the four-risks note point at the approved lead-product-designer role; the designer added as an interface. |
 | 7 | 2026-08-25 | update | Admissible evidence widened from "fitness set" to the criteria set the po-output-check process defines. |
 | 8 | 2026-08-28 | update | Owner decision: acceptance-scenarios re-formed as feature (product-level, scenarios assigned per Bounded Context by tag); the brief retired — shops receive their assigned scenarios. |
+| 9 | 2026-08-28 | update | The initiative typedef exists: the framing accountability becomes the initiative, with the cold reviewer's screen named as its check of record. |

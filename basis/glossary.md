@@ -4,7 +4,7 @@ id: glossary
 owner: product-authority
 status: approved
 approved: 2026-08-19
-version: 14
+version: 16
 created: 2026-08-19
 updated: 2026-08-28
 ---
@@ -143,8 +143,16 @@ terms uses one of these when one fits.
   read from its contracts and its scenario register, never from its
   internals.
 - **framing** — the PM role's recorded statement of what a request is
-  about: the originator, the problem taken to be worth solving, and the
-  outcome it serves; the exclusive decision of `lead-pm`.
+  about: the originator, the problem taken to be worth solving, the
+  outcome it serves, and the contract it entered through; the
+  exclusive decision of `lead-pm`; written as the first section of an
+  initiative and nowhere else.
+- **initiative** — the product-level problem artifact: one problem
+  worth solving, stated for the product, with its framing, one
+  measured outcome, an appetite and no-gos, the feasibility and
+  usability attachments, and the solutions architect's decomposition;
+  made by the PM role, screened by the cold reviewer, bet on by the
+  authority; features are made from it.
 - **acceptance scenario** — a Gherkin scenario in a feature that
   states, as a requirement, what counts as done for one behavior;
   co-produced by the PO role and the owning Bounded Context shop;
@@ -194,6 +202,17 @@ terms uses one of these when one fits.
   scenarios may be owned by several Bounded Contexts. The PO role's
   artifact. (The per-shop *brief* was retired 2026-08-28; the
   `decision-brief` to the authority is unrelated.)
+- **check of record** — the check whose verdict the definitions rely
+  on for an artifact when the role that makes it also holds the
+  authority that approves it; for the initiative, the cold reviewer's
+  screen.
+- **bet** — the authority's decision to spend an initiative's appetite:
+  the go/no-go, taken in a review, moving it from `proposed` to
+  `planned`.
+- **product decision record** — the PO role's record of one
+  product-level decision — decision, alternatives, consequences,
+  decider and right, reversibility; ADR and MADR forms; checked as PO
+  output.
 - **intent** — a desired outcome expressed by an originator at the
   product's edge; enters the product through a contract and keeps its
   provenance through every translation and delegation.
@@ -220,3 +239,5 @@ terms uses one of these when one fits.
 | 12 | 2026-08-26 | update | interaction type: the guidelines' `assistant` coverage of conversational and voice noted. |
 | 13 | 2026-08-27 | update | Owner decision, from the system-read report: BC-shops are component teams by design; stated in the shop entry. |
 | 14 | 2026-08-28 | update | Owner decision: feature added; acceptance scenario and scenario register carry the `@bounded-context:` assignment; the per-shop brief retired. |
+| 15 | 2026-08-28 | update | initiative added; framing stated to live in the initiative's first section. |
+| 16 | 2026-08-28 | update | framing carries the contract; check of record, bet, and product decision record added — each arrived undefined in the initiative chain's screen. |

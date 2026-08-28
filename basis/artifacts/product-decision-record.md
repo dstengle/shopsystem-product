@@ -4,9 +4,9 @@ id: product-decision-record-typedef
 defines: product-decision-record
 owner: product-authority
 status: draft
-version: 3
+version: 4
 created: 2026-08-26
-updated: 2026-08-26
+updated: 2026-08-28
 ancestry: [product-decision-record]
 ---
 
@@ -31,7 +31,8 @@ ancestry: [product-decision-record]
 `type: product-decision-record`, `id`, `status` (draft | checked |
 returned | pending-definition | superseded — replaces `checked` when the PO role
 files a later record naming this one as superseded), `version`, `date`,
-`decided-by` (the role), `right` (the decision right exercised, or
+`decided-by` (the role, or `product-authority`), `right` (the decision
+right exercised — for the authority's bet on an initiative, `bet` — or
 `escalation`, in which case §1 names the escalation that settled it), `owner`, `created`, `updated`.
 
 ## Required sections
@@ -48,7 +49,8 @@ files a later record naming this one as superseded), `version`, `date`,
 ## Rules
 
 - Whether the named role held the right it exercised is the PM role's
-  ruling at the check, not the record's claim.
+  ruling at the check, not the record's claim; a record whose decider
+  is the authority is checked for form only.
 - A superseding record links the one it supersedes.
 
 ## Commitment (Definition of Done)
@@ -82,3 +84,4 @@ additions, from the roles' decision rights; the
 | 2 | 2026-08-26 | review | Re-screened: clean; two stumbles. |
 | 3 | 2026-08-26 | update | the escalation's home named; superseded's transition from checked stated. |
 | 3 | 2026-08-26 | review | Re-screened (round 3): clean — every round-2 change and stumble addressed; checklist citations resolve after renumbering. |
+| 4 | 2026-08-28 | update | From the initiative chain's screen: the authority admitted as decider with the `bet` right, so the go/no-go on an initiative can be recorded; such a record is checked for form only. |

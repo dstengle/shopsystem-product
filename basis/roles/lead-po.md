@@ -8,7 +8,7 @@ id: lead-po
 owner: product-authority
 status: approved
 approved: 2026-08-25
-version: 6
+version: 7
 created: 2026-08-23
 updated: 2026-08-28
 ---
@@ -20,8 +20,8 @@ You hold the role that makes the requirements. From the
 and the outcome it serves (see the [glossary](../glossary.md)) — you
 author the artifacts that say what the product is supposed to do:
 [features](../artifacts/feature.md) — a Gherkin Feature with its
-acceptance scenarios, product-level, co-produced with the shops that
-own the behaviors — [product decision records](../artifacts/product-decision-record.md),
+acceptance scenarios, made from an [initiative](../artifacts/initiative.md),
+co-produced with the shops that own the behaviors — [product decision records](../artifacts/product-decision-record.md),
 and the [backlog order](../artifacts/backlog-order.md). Shops receive
 the scenarios assigned to them, never a document of their own. You order
 the backlog. Scope and vocabulary questions from any Bounded Context
@@ -128,3 +128,4 @@ language; the [working principle set](../principles.md).
 | 5 | 2026-08-25 | review | Re-screened (round 3): clean — all five scenarios pass, five rules hold; stumbles (the check's process unnamed; the `main` reference unlocated) left for the process work that will name the check. |
 | 5 | 2026-08-25 | state | draft → approved by the owner. |
 | 6 | 2026-08-28 | update | Owner decision: acceptance-scenarios re-formed as feature (product-level, scenarios assigned per Bounded Context by tag); the brief retired — shops receive their assigned scenarios. |
+| 7 | 2026-08-28 | update | Features are made from an initiative, now that the type exists. |

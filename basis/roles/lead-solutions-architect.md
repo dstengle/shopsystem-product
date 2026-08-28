@@ -8,7 +8,7 @@ id: lead-solutions-architect
 owner: product-authority
 status: approved
 approved: 2026-08-25
-version: 6
+version: 7
 created: 2026-08-23
 updated: 2026-08-28
 ---
@@ -82,9 +82,11 @@ findings, forward-looking prose, and code reachable only by entering
 a Bounded Context.
 
 **Interfaces:** the PM role — framed intent arrives, feasibility and
-shape return; the PO role — accepted scenarios arrive for assignment,
-enabler recommendations return, and the backlog is structured to
-mirror the decomposition; Bounded Context shops — messages of a
+shape return; the PO role — checked features arrive for assignment,
+enabler recommendations return, the backlog is structured to mirror
+the decomposition, and the count of initiatives touching more than one
+context, per quarter, arrives as the signal to review the
+decomposition; Bounded Context shops — messages of a
 defined type out, clarify questions and returned work in; the
 authority — escalations. Clarify questions on structure, stack,
 contracts, and decomposition are answered by this role.
@@ -136,3 +138,4 @@ authoring; the shop's
 | 5 | 2026-08-27 | review | Screened: findings — the feasibility bullet carried sequencing ("before the PM role bets"); seven accountabilities against the typedef's 4–6; the description omitted feasibility; initiative, brief, dispatch undefined. Repaired in place: sequencing removed (the consuming process orders it); scenario assignment and reconciliation merged as the one register loop, six bullets; description aligned; terms replaced with defined ones. |
 | 5 | 2026-08-27 | state | The feasibility amendment approved by the owner's direction. |
 | 6 | 2026-08-28 | update | Owner decision: acceptance-scenarios re-formed as feature (product-level, scenarios assigned per Bounded Context by tag); the brief retired — shops receive their assigned scenarios. |
+| 7 | 2026-08-28 | update | The PO interface carries the cross-context count the initiative typedef defines as the decomposition-review signal; features, not scenarios, arrive for assignment. |

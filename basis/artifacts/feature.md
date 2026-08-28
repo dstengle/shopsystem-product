@@ -4,7 +4,7 @@ id: feature-typedef
 defines: feature
 owner: product-authority
 status: draft
-version: 6
+version: 7
 created: 2026-08-26
 updated: 2026-08-28
 ancestry: [feature]
@@ -17,9 +17,8 @@ ancestry: [feature]
 - **Type:** `feature` — a Gherkin Feature: one capability described
   from the user's or agent's point of view, with the scenarios that
   state, as requirements, what counts as done for it. A product-level
-  artifact: it belongs to the framing it serves (the initiative, once
-  that type exists — the product-level problem artifact the research
-  report `product-process-2026-08` on the `research` branch proposes) and may hold scenarios owned by
+  artifact: it belongs to the [initiative](initiative.md) it is made
+  from and may hold scenarios owned by
   several Bounded Contexts. The scenario is the atom; the feature is
   its grouping; a Bounded Context's scenario register is the subset of
   scenarios, across all features, tagged to it. The instance is a
@@ -46,7 +45,8 @@ ancestry: [feature]
 ## Required frontmatter
 
 `type: feature`, `id`, `status`, `version`, `name` (the Feature's
-name), `framing` (link to the framing it serves), `owner`, `created`,
+name), `initiative` (link to the initiative it is made from; its
+framing is that document's first section), `owner`, `created`,
 `updated`. `approved` does not apply: a feature's terminal state is
 `assigned`. Status values and their writers: `draft` (the PO role);
 `checked`, `returned`, `pending-definition` (the PO output check's
@@ -139,3 +139,4 @@ experience principles `core-task-parity` and `accessible-by-standard`.
 | 5 | 2026-08-28 | review | Re-screened: findings — the "no bounded-context tag at the check" clause failed re-verified and resubmitted features; the correction path had no deciding step or status; the Edges reference form unstated; two insider references. |
 | 6 | 2026-08-28 | update | Repairs: the clause removed, the writer rule kept and enforced by the assignment process, which returns a feature whose tag differs from its Contributors' shop; Edges rows reference the Scenario name; the block's head stated as the source; references located. |
 | 6 | 2026-08-28 | review | Final screen (round 3): clean — no absence clause survives in any check; the correction path carried by the assignment process; two stumbles polished in place. |
+| 7 | 2026-08-28 | update | The initiative typedef now exists: the feature links its initiative, whose first section is the framing. |
