@@ -5,9 +5,9 @@ defines: screen-review
 owner: product-authority
 status: approved
 approved: 2026-08-26
-version: 3
+version: 5
 created: 2026-08-25
-updated: 2026-08-26
+updated: 2026-08-31
 ---
 
 # Data type: screen-review
@@ -16,11 +16,13 @@ updated: 2026-08-26
 
 One screen round's verdict and findings against a named criteria set.
 Produced by the `screen` step of
-[`../processes/po-output-check.md`](../processes/po-output-check.md)
+[`../processes/po-output-check.md`](../processes/po-output-check.md),
+of
+[`../processes/interaction-conformance-check.md`](../processes/interaction-conformance-check.md),
 and of
-[`../processes/interaction-conformance-check.md`](../processes/interaction-conformance-check.md);
-consumed by their decision steps and, in the first, by its routing
-and revision steps and the round log. Each finding names the criterion it fails — or
+[`../processes/initiative-check.md`](../processes/initiative-check.md);
+consumed by their decision steps and, in the PO output check and the
+initiative check, by routing and revision steps and the round log. Each finding names the criterion it fails — or
 `uncovered`, for a defect no criterion names — carries the quoted text,
 and states whether the screener could decide it (`confident`) or not
 (`wobbly`) — a wobbly finding quotes the whole passage, since the deciding
@@ -55,3 +57,5 @@ schema:
 | 2 | 2026-08-25 | update | Screen repairs: the artifact is not opened by the decider; change and top_changes explained; writer stated. |
 | 2 | 2026-08-26 | state | draft → approved by the owner. |
 | 3 | 2026-08-26 | update | Second producer named (interaction-conformance-check); the record-absent form defined in the criterion comment. |
+| 4 | 2026-08-31 | update | Third producer named (initiative-check), with batch A+B; the producer list stays exhaustive. |
+| 5 | 2026-08-31 | update | Round-3 screen: the consumption clause extended to the initiative check's routing, revision, and round log. |

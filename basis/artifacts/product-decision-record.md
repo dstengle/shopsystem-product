@@ -3,10 +3,11 @@ type: artifact-typedef
 id: product-decision-record-typedef
 defines: product-decision-record
 owner: product-authority
-status: draft
-version: 4
+status: approved
+approved: 2026-08-31
+version: 5
 created: 2026-08-26
-updated: 2026-08-28
+updated: 2026-08-31
 ancestry: [product-decision-record]
 ---
 
@@ -32,7 +33,8 @@ ancestry: [product-decision-record]
 returned | pending-definition | superseded — replaces `checked` when the PO role
 files a later record naming this one as superseded), `version`, `date`,
 `decided-by` (the role, or `product-authority`), `right` (the decision
-right exercised — for the authority's bet on an initiative, `bet` — or
+right exercised — for the authority's go, hold, or no-go on an
+initiative, `bet` — or
 `escalation`, in which case §1 names the escalation that settled it), `owner`, `created`, `updated`.
 
 ## Required sections
@@ -85,3 +87,5 @@ additions, from the roles' decision rights; the
 | 3 | 2026-08-26 | update | the escalation's home named; superseded's transition from checked stated. |
 | 3 | 2026-08-26 | review | Re-screened (round 3): clean — every round-2 change and stumble addressed; checklist citations resolve after renumbering. |
 | 4 | 2026-08-28 | update | From the initiative chain's screen: the authority admitted as decider with the `bet` right, so the go/no-go on an initiative can be recorded; such a record is checked for form only. |
+| 5 | 2026-08-31 | review | Batch A+B screen round 1: the bet right covers the go, the hold, and the no-go, so a cancellation at the bet or a discovery decline records under it. |
+| 5 | 2026-08-31 | state | draft → approved with batch A+B as one block (brief-032 ask 2, default accepted). |

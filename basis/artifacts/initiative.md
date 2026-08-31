@@ -3,10 +3,11 @@ type: artifact-typedef
 id: initiative-typedef
 defines: initiative
 owner: product-authority
-status: draft
-version: 3
+status: approved
+approved: 2026-08-31
+version: 6
 created: 2026-08-28
-updated: 2026-08-28
+updated: 2026-08-31
 ancestry: [initiative]
 ---
 
@@ -29,11 +30,12 @@ ancestry: [initiative]
 - **Produced by:** the [PM role](../roles/lead-pm.md), in the
   [discovery conversation](../processes/discovery-conversation.md) —
   the role's assisting agent drafts, the PM decides its content.
-- **Attached and screened in** the `initiative-check` process (pending
-  — not yet authored): it mirrors the PO output check with maker
-  `lead-pm`; before the screen, a step in which the solutions
-  architect role attaches the decomposition and its feasibility verdict
-  and the product designer role attaches its usability evidence or
+- **Attached and screened in** the
+  [initiative-check](../processes/initiative-check.md) process: it
+  mirrors the PO output check with maker
+  `lead-pm`; before the screen, two attach steps: the solutions
+  architect role attaches the decomposition and its feasibility verdict,
+  then the product designer role attaches its usability evidence or
   hypothesis; then the cold reviewer's screen against the
   [initiative fitness set](../fitness/initiative.fitness.md); then the
   authority's decision. That screen is the *check of record*:
@@ -44,7 +46,8 @@ ancestry: [initiative]
   does not check whether the problem is worth solving; that value
   judgment stands unchecked by design and rests on the recorded
   originator's words and the measure. The authority *bets* on a
-  screened initiative — decides to spend the appetite — in a review.
+  screened initiative — decides to spend the appetite — in that
+  process's own decide step, a human step.
 - **Consumed by:** the PO role, which makes features from it; the
   solutions architect role; the PO output check, where a feature's
   `framing` input names this document's first section.
@@ -54,11 +57,11 @@ ancestry: [initiative]
 `type: initiative`, `id`, `status`, `version`, `name`, `owner`
 (`lead-pm`), `created`, `updated`. `approved` does not apply; the
 lifecycle stands in. Status values and their writers:
-- `proposed` — the PM role, when the discovery conversation records it
-  (an amendment to that process, pending): the framed-but-unbet state.
-- `planned` — the authority's go/no-go, recorded as an outcome of the
-  [review conversation](../processes/review-conversation.md) (amendment
-  pending), replacing `proposed`.
+- `proposed` — the PM role, when the discovery conversation's `frame`
+  step records it: the framed-but-unbet state.
+- `planned` — the authority's bet, taken and recorded in the
+  [initiative-check](../processes/initiative-check.md) process's
+  decide and record steps, replacing `proposed`.
 - `active` — the PO output check's record step, when the first feature
   made from it passes (amendment pending: the step reads the feature's
   `initiative` link).
@@ -68,10 +71,13 @@ lifecycle stands in. Status values and their writers:
   its target (amendment pending).
 - `cancelled` — with the reason recorded, from `proposed`, `planned`,
   or `active`: a request declined at discovery is recorded `proposed`
-  and cancelled in the same discovery conversation (the same pending
-  amendment), so the record of what was declined survives; a later
-  cancellation is the PM role's decision recorded as an outcome of the
-  review conversation (amendment pending).
+  and cancelled in the same discovery conversation (its `frame` step),
+  so the record of what was declined survives; a cancellation at the
+  bet is taken in the initiative-check decide step and written by its
+  record step; a later cancellation is
+  the PM role's decision recorded as an outcome of the
+  [review conversation](../processes/review-conversation.md)
+  (amendment pending).
 
 ## Required sections
 
@@ -160,3 +166,7 @@ of record.
 | 2 | 2026-08-28 | review | Re-screened: findings — the bet not statable from §1–2 when it spends §3; the decision record could not carry the authority as decider; `cancelled` with two writers and no process; the attachments in no process. |
 | 3 | 2026-08-28 | update | Repairs: statable from §1–3; `decided-by: product-authority`, `right: bet` admitted by the decision-record typedef; both cancellation paths named with their pending amendments; the attachment step placed in `initiative-check`; Produced-by split; a count is a report, not a rendering. |
 | 3 | 2026-08-28 | review | Final screen (round 3): clean — the bet statable from §1–3; the decision record carries the authority's bet; both cancellation paths and the attachment step named; consistent with lead-pm, feature, and the decision-record typedef. |
+| 4 | 2026-08-31 | update | Batch A of brief-032's plan: the pending process names resolved — initiative-check authored (the bet taken inside its decide step, removing the review-conversation amendment for the bet), the discovery frame step recording proposed and the decline path; active and completed writers stay pending on batches D and the reconcile side. |
+| 5 | 2026-08-31 | review | Batch screen round 2: the check's two attach steps described as two. |
+| 6 | 2026-08-31 | review | Round-3 screen (final): the at-bet cancellation's writer named (the record step writes what decide takes). |
+| 6 | 2026-08-31 | state | draft → approved with batch A+B as one block (brief-032 ask 2, default accepted). |

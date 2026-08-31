@@ -6,7 +6,7 @@ date: 2026-08-28
 reader: product-authority
 decisions-requested: 3
 annex: annex-032.md
-version: 9
+version: 10
 ---
 
 # Brief 032: the product flow from discovery to assigned scenarios
@@ -127,3 +127,4 @@ with steps and roles, the batch table, the exclusions (optional).
 | 7 | 2026-08-31 | update | Owner decision, after delivery: co-production dropped from feature-authoring (the register sweep and post-dispatch clarifies are the shop's voice; the lead-shop-held register makes the sweep free); the architect's non-functional constraints added beside the designer's criteria. The model and the feature chain updated together. |
 | 8 | 2026-08-31 | update | Owner direction, after delivery: the repository/register split — the sweep at assignment reads the feature repository (the artifacts as specified); the scenario register is the tracker of implemented scenarios pulled from the shops, itself a feature to be built by integrating work on main; assignment dispatches assign_scenarios only, bugfix and maintenance requests being the result of operational activities. |
 | 9 | 2026-08-31 | review | Round-1 screen of the repository/register split: the model passage still had assignment choosing the message type (now: sweeps the repository, dispatches assign_scenarios); ask 3's count raised to seven, naming the two exclusions the annex already recorded. |
+| 10 | 2026-08-31 | state | Ask 1 answered: the model approved by the authority. Asks 2 and 3 stand on their defaults — the build order, block approval, and the seven exclusions; batches A and B begin under one screen. |

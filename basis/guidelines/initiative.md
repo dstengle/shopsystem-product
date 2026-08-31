@@ -3,10 +3,11 @@ type: quality-guideline
 id: initiative-guideline
 target-type: initiative
 owner: product-authority
-status: draft
-version: 3
+status: approved
+approved: 2026-08-31
+version: 4
 created: 2026-08-28
-updated: 2026-08-28
+updated: 2026-08-31
 ---
 
 # Guideline: initiative
@@ -30,7 +31,8 @@ and is never overridden. When rules conflict, an approved principle
 beats the [initiative typedef](../artifacts/initiative.md), which beats
 this guideline. Every rule feeds the
 [initiative fitness set](../fitness/initiative.fitness.md), scored by
-the cold reviewer in the `initiative-check` process (pending).
+the cold reviewer in the
+[initiative-check](../processes/initiative-check.md) process.
 
 ---
 
@@ -126,3 +128,5 @@ yes/no per initiative.
 | 2 | 2026-08-28 | review | Re-screened: one finding — rule 7's bound; a description in place of a before/after. |
 | 3 | 2026-08-28 | update | Rule 7 reads §1–3 with a prose before/after. |
 | 3 | 2026-08-28 | review | Final screen (round 3): clean. |
+| 4 | 2026-08-31 | update | Batch A: the carrying process authored and linked. |
+| 4 | 2026-08-31 | state | draft → approved with batch A+B as one block (brief-032 ask 2, default accepted). |

@@ -2,10 +2,11 @@
 type: fitness-set
 id: initiative-fitness
 owner: product-authority
-status: draft
-version: 3
+status: approved
+approved: 2026-08-31
+version: 4
 created: 2026-08-28
-updated: 2026-08-28
+updated: 2026-08-31
 target-type: initiative
 judged: true
 executable: false
@@ -17,8 +18,9 @@ judged-by: cold-reviewer
 An initiative is the product-level problem artifact the PM role makes:
 the framing, the measure, the appetite and no-gos, the feasibility and
 usability attachments, and the decomposition. These scenarios are the
-criteria set the `initiative-check` process (pending — not yet
-authored) screens an initiative against; the typedef says why that
+criteria set the
+[initiative-check](../processes/initiative-check.md) process screens
+an initiative against; the typedef says why that
 screen is the check of record. Evaluated by the `cold-reviewer` role,
 never executed.
 The judge reads only the criteria set and the initiative; every fact a
@@ -98,3 +100,5 @@ Scenario 7: one page
 | 2 | 2026-08-28 | review | Re-screened: one finding — scenario 7's bound excluded the appetite the bet spends. |
 | 3 | 2026-08-28 | update | Scenario 7 reads §1–3. |
 | 3 | 2026-08-28 | review | Final screen (round 3): clean. |
+| 4 | 2026-08-31 | update | Batch A: the carrying process authored and linked. |
+| 4 | 2026-08-31 | state | draft → approved with batch A+B as one block (brief-032 ask 2, default accepted). |
