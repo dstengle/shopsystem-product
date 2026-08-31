@@ -4,7 +4,7 @@ id: feature-typedef
 defines: feature
 owner: product-authority
 status: draft
-version: 8
+version: 10
 created: 2026-08-26
 updated: 2026-08-28
 ancestry: [feature]
@@ -30,10 +30,14 @@ ancestry: [feature]
   the [feature fitness set](../fitness/feature.fitness.md), never
   executed there. `ancestry` names no generic root: a feature is
   neither a request nor a definition.
-- **Produced by:** the [PO role](../roles/lead-po.md), with the shops
-  that own the behaviors (scope and wording from the PO; steps and edge
-  cases from each owning shop; usability and accessibility criteria
-  from the product designer role); checked by the
+- **Produced by:** the [PO role](../roles/lead-po.md), as sole author —
+  the scenarios' steps included; the product designer role contributes
+  usability and accessibility criteria, the solutions architect role
+  its non-functional constraints where the decomposition names them.
+  The owning shops do not co-author: conflicts with behavior they
+  already hold are caught by the register sweep at assignment, and a
+  shop's objection travels as a clarify or a returned dispatch after
+  it receives its scenarios. Checked by the
   [PO output check](../processes/po-output-check.md); its scenarios
   assigned to Bounded Contexts by the solutions architect role in the
   [scenario assignment](../processes/scenario-assignment.md) process.
@@ -62,11 +66,13 @@ goes to `returned`.
 1. **Feature** — the Gherkin `Feature:` line with its name, and the
    narrative beneath it: who the capability is for, what they can do,
    and the outcome it serves, in the framing's words.
-2. **Contributors** — for every scenario, the shop named as the source
-   of its steps and edge cases — the shop the solutions architect's
-   decomposition places the behavior in; where the capability has an
-   interaction, the product designer role's usability acceptance
-   criteria and the accessibility criteria.
+2. **Contributors** — for every scenario, the owning shop named — the
+   shop the solutions architect's decomposition places the behavior in
+   (ownership for assignment, not authorship); where the capability has
+   an interaction, the product designer role's usability acceptance
+   criteria and the accessibility criteria; where the decomposition
+   names them, the solutions architect role's non-functional
+   constraints, riding as criteria on the scenarios they bound.
 3. **Interaction types** — always present: the interaction types the
    capability must be available on, from the
    [core-task list](../experience/core-tasks.md), or "none" with the
@@ -84,8 +90,8 @@ goes to `returned`.
    in the When and an outcome observable in the running system in the
    Then; no step names an implementation detail.
 5. **Edges** — a table of every failure and boundary case the framing
-   or a contributing shop named: case · who named it · the `Scenario:`
-   name that covers it, or "out of scope" with the reason.
+   or a contributor's criteria name: case · who named it · the
+   `Scenario:` name that covers it, or "out of scope" with the reason.
 
 ## Rules
 
@@ -95,13 +101,15 @@ goes to `returned`.
   presence, since a re-verified or resubmitted feature may carry it. In
   the assignment process, a scenario whose owning context differs from
   its Contributors' shop is treated as unowned with that reason, so the
-  feature returns (`returned`) for co-production with the newly named
-  shop.
+  feature returns (`returned`) for the PO role to correct the owning
+  shop it names.
 - A changed scenario text is a new scenario with a new `@hash:`.
   Whether the hash matches the text is a mechanical check, to be filed
   as a lint.
-- A scenario written without the shop named as its source is not
-  co-produced and fails the check.
+- A scenario's conflicts with behavior a shop already holds are caught
+  by the register sweep at assignment, never by asking the shop during
+  authoring; the shop's voice after dispatch is the clarify and the
+  return.
 
 ## Commitment (Definition of Done)
 
@@ -113,14 +121,14 @@ with the criterion named and no scenario enters a register.
 ## Sources
 
 Gherkin (Feature, narrative, Background, Scenario, tags — the block's
-form); Cucumber's guidance on the three amigos (co-production); the
+form); the
 experience principles `core-task-parity` and `accessible-by-standard`.
 
 ## Derived review checklist
 
 - Feature line and narrative present, tied to the framing. *(§Required sections 1; fitness 6)*
 - Each scenario one observable behavior, no how. *(§Required sections 4; fitness 1)*
-- Every scenario has a named source shop; designer criteria where there is an interaction. *(§Required sections 2; fitness 2)*
+- Every scenario has a named owning shop; designer criteria where there is an interaction; architect constraints where named. *(§Required sections 2; fitness 2)*
 - `@feature:` and `@hash:` on every scenario. *(§Required sections 4; fitness 3)*
 - Every listed edge covered or excluded with reason. *(§Required sections 5; fitness 4)*
 - Interaction types section present, named or "none" with reason. *(§Required sections 3; fitness 5)*
@@ -142,3 +150,5 @@ experience principles `core-task-parity` and `accessible-by-standard`.
 | 6 | 2026-08-28 | review | Final screen (round 3): clean — no absence clause survives in any check; the correction path carried by the assignment process; two stumbles polished in place. |
 | 7 | 2026-08-28 | update | The initiative typedef now exists: the feature links its initiative, whose first section is the framing. |
 | 8 | 2026-08-31 | update | Owner direction: the register is the lead shop's, viewed per context. |
+| 9 | 2026-08-31 | update | Owner decision: co-production dropped — the PO authors alone (the register sweep and the post-dispatch clarify are the shop's voice); the architect's non-functional constraints added beside the designer's criteria; Contributors names ownership, not authorship. |
+| 10 | 2026-08-31 | review | Round-1 screen of the co-production removal: the Edges table's sources are the framing and the contributors' criteria, not a shop. |

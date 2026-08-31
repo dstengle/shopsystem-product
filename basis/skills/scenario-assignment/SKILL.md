@@ -10,12 +10,12 @@ type: skill
 id: scenario-assignment-skill
 status: draft
 created: 2026-08-28
-updated: 2026-08-28
+updated: 2026-08-31
 generated: true
 generated-by: basis/tools/compile_process.py
 derived-from: scenario-assignment-process
 source: basis/processes/scenario-assignment.md
-source-digest: sha256:2b78afc36725
+source-digest: sha256:34e3f410c300
 activation: model-judged
 promotion: experiment-local
 ---
@@ -60,14 +60,18 @@ decomposition and that context's contract at contracts, never
 from the scenario's wording alone — and write a single
 @bounded-context:<name> tag on it. A scenario whose behavior no
 context owns, that two contexts would each have to own, or whose
-owning context differs from the shop named as its source in
-Contributors, goes to unowned with the reason; do not guess. Then, for each context
+owning context differs from the shop Contributors names as its
+owner, goes to unowned with the reason; do not guess. Then, for each context
 tagged, read its pre-state — its contract at contracts and its view of
 the register at registers, the full register where a scenario
 could conflict — and choose the vehicle: assign_scenarios for net-new
 behavior, request_bugfix for a scenario the register already
 holds and the system fails, request_maintenance for a tightening
-of held behavior. Write one assignment entry per context with
+of held behavior. A scenario that contradicts behavior the
+register holds and is neither a held scenario the system fails nor
+a tightening of held behavior — the register sweep's
+catch — goes to unowned with the conflict as its reason. Write
+one assignment entry per context with
 its vehicle, the @hash: values of its scenarios, and the
 pre-state read. If deciding needs what the decomposition
 cannot say — whether a behavior is meant to be in the product at
@@ -104,8 +108,11 @@ status to "returned" — the returned feature is the handoff to
 the PO role, which reads its status. The decomposition may need
 a change, which this role raises as an architecture decision
 record; the scenario may need a split, which is the PO role's;
-or the scenario needs co-production with the newly named shop,
-which the reason in unowned names.
+or the feature's Contributors must be corrected to name the
+owning shop the decomposition places the behavior in, which is
+the PO role's; or the scenario contradicts behavior the register
+holds, which the PO role resolves against the framing — the
+reason in unowned names which case.
 ```
 
 ## dispatch — Send each shop its scenarios

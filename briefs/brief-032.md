@@ -6,7 +6,7 @@ date: 2026-08-28
 reader: product-authority
 decisions-requested: 3
 annex: annex-032.md
-version: 6
+version: 7
 ---
 
 # Brief 032: the product flow from discovery to assigned scenarios
@@ -45,10 +45,12 @@ through six sub-processes, in order —
   check; a bet moves it from `proposed` to `planned`.
 - `backlog-ordering` (new, one step): the PO places the planned
   initiative in the backlog order; the PO output check screens it.
-- `feature-authoring` (new): the PO drafts one feature from the
-  initiative, co-produces its scenarios with the owning shops (the run
-  waits for their answers; while shops are frozen, the PO writes their
-  part as a marked hypothesis), and the designer adds criteria.
+- `feature-authoring` (new): the PO authors one feature from the
+  initiative alone; the designer adds usability and accessibility
+  criteria, the architect its non-functional constraints; conflicts
+  with behavior a shop already holds are caught by the register sweep
+  at assignment, and the shop's voice after dispatch is the clarify
+  and the return.
 - `po-output-check` (exists; amended): screens the feature; the
   initiative becomes `active` when its first feature passes.
 - `scenario-assignment` (exists as a draft): the architect tags each
@@ -118,3 +120,4 @@ with steps and roles, the batch table, the exclusions (optional).
 | 5 | 2026-08-28 | update | Counts repaired; the bet's transition stated; measuring routed to ask 3; delivered at the cap with the open findings stated first. |
 | 5 | 2026-08-28 | state | draft → delivered at the round cap. |
 | 6 | 2026-08-28 | update | The evidence sentence's "measuring" step, unmapped in round 4, routed to ask 3 — one line the cap-round repair missed. |
+| 7 | 2026-08-31 | update | Owner decision, after delivery: co-production dropped from feature-authoring (the register sweep and post-dispatch clarifies are the shop's voice; the lead-shop-held register makes the sweep free); the architect's non-functional constraints added beside the designer's criteria. The model and the feature chain updated together. |

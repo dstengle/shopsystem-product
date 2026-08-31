@@ -3,9 +3,9 @@ type: process-definition
 id: scenario-assignment-process
 owner: product-authority
 status: draft
-version: 5
+version: 8
 created: 2026-08-28
-updated: 2026-08-28
+updated: 2026-08-31
 produces: []
 carried-by: scenario-assignment-skill
 condition-language: cel
@@ -131,14 +131,18 @@ steps:
       from the scenario's wording alone — and write a single
       @bounded-context:<name> tag on it. A scenario whose behavior no
       context owns, that two contexts would each have to own, or whose
-      owning context differs from the shop named as its source in
-      Contributors, goes to unowned with the reason; do not guess. Then, for each context
+      owning context differs from the shop Contributors names as its
+      owner, goes to unowned with the reason; do not guess. Then, for each context
       tagged, read its pre-state — its contract at contracts and its view of
       the register at registers, the full register where a scenario
       could conflict — and choose the vehicle: assign_scenarios for net-new
       behavior, request_bugfix for a scenario the register already
       holds and the system fails, request_maintenance for a tightening
-      of held behavior. Write one assignment entry per context with
+      of held behavior. A scenario that contradicts behavior the
+      register holds and is neither a held scenario the system fails nor
+      a tightening of held behavior — the register sweep's
+      catch — goes to unowned with the conflict as its reason. Write
+      one assignment entry per context with
       its vehicle, the @hash: values of its scenarios, and the
       pre-state read. If deciding needs what the decomposition
       cannot say — whether a behavior is meant to be in the product at
@@ -171,8 +175,11 @@ steps:
       the PO role, which reads its status. The decomposition may need
       a change, which this role raises as an architecture decision
       record; the scenario may need a split, which is the PO role's;
-      or the scenario needs co-production with the newly named shop,
-      which the reason in unowned names.
+      or the feature's Contributors must be corrected to name the
+      owning shop the decomposition places the behavior in, which is
+      the PO role's; or the scenario contradicts behavior the register
+      holds, which the PO role resolves against the framing — the
+      reason in unowned names which case.
     next: end
 
   - id: dispatch
@@ -225,3 +232,6 @@ steps:
 | 4 | 2026-08-28 | update | From the feature chain's screen: a scenario whose owning context differs from its Contributors' shop is treated as unowned, so the correction path the feature typedef states is carried by this process's return. |
 | 4 | 2026-08-28 | review | Final screen (round 3): clean — O2's witness true under the typedef's paired iteration and run-output rules; the Contributors clause consistent with the feature typedef; two prose stumbles polished in place. |
 | 5 | 2026-08-31 | update | Owner direction: `registers` is the lead shop's one register with per-context views; the dispatch step is where assignment writes to it (a line for batch D's amendment); no on-demand shop queries. |
+| 6 | 2026-08-31 | update | Owner decision: co-production dropped — a Contributors mismatch returns for the PO role's ownership correction, not for co-authoring. |
+| 7 | 2026-08-31 | review | Round-1 screen of the co-production removal: the register sweep's catch had no resulting action — a scenario contradicting held behavior now goes to unowned with the conflict as its reason and returns to the PO role; Contributors wording aligned to ownership. |
+| 8 | 2026-08-31 | review | Round-2 screen: the conflict clause names the two vehicles it excludes instead of pointing at the list. |

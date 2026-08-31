@@ -4,7 +4,7 @@ id: feature-guideline
 target-type: feature
 owner: product-authority
 status: draft
-version: 5
+version: 8
 created: 2026-08-27
 updated: 2026-08-28
 ---
@@ -18,8 +18,9 @@ state one action and one observable outcome, with nothing about how.
 
 **Highlights (the layer compiled into generating context):** a Feature
 line and a narrative — who, what, the outcome, in the framing's words ·
-one When, one observable Then, no how · each owning shop named as the
-source of its scenarios' steps and edges · usability and accessibility
+one When, one observable Then, no how · each owning shop named per
+scenario · the architect's constraints where the decomposition names
+them · usability and accessibility
 criteria where there is an interaction · `@feature:` and `@hash:` on every
 scenario · every named edge
 covered or excluded with a reason · the interaction types stated, or "none" with a reason.
@@ -62,17 +63,19 @@ detail, such as a component, call, storage, algorithm, format, or
 vendor. *Decision:* yes/no per scenario.
 *Derived check:* judged — feature fitness scenario 1.
 
-**3. Name a source shop for every scenario.**
+**3. Name the owning shop and the criteria for every scenario.**
 Before: a feature with no contributors section.
-After: "Contributors: the reporting shop supplied the steps and edge
-cases for the list scenarios; the export shop for the CSV scenarios;
-the product designer role supplied the usability criterion (marked
-within one glance) and the accessibility criterion (failure not by
-color alone)."
+After: "Contributors: the list scenarios are the reporting context's,
+the CSV scenarios the export context's (per the decomposition); the
+product designer role's criteria: marked within one glance; failure
+not by color alone; the solutions architect role's constraint: the
+list renders within one second at ten thousand runs."
 *Test:* read each scenario against the Contributors section.
-*Criterion:* every scenario has a named source shop; where the
+*Criterion:* every scenario has a named owning shop; where the
 Interaction types section names a type, both designer criteria are
-present. *Decision:* yes/no per scenario.
+present; where the Contributors section says the decomposition names
+constraints,
+they are present. *Decision:* yes/no per scenario.
 *Derived check:* judged — feature fitness scenario 2.
 
 **4. Tag every scenario with its feature and hash.**
@@ -85,15 +88,17 @@ assignment; its presence is not this rule's).
 *Derived check:* judged — feature fitness scenario 3.
 
 **5. List every edge and cover or exclude it.**
-Before: a happy path only, with the cancelled-run case the shop named
-absent from the Edges table.
-After: an Edges row "cancelled run · reporting shop · Scenario: a
+Before: a happy path only, with the cancelled-run case the designer's
+criterion named absent from the Edges table.
+After: an Edges row "cancelled run · designer criterion · Scenario: a
 cancelled run is not marked failed" and a row "runs older than
 the retention window · framing · out of scope: the archive feature
 owns them".
-*Test:* read the Edges table and the cases the framing names.
+*Test:* read the Edges table and the cases the framing or a
+contributor's criteria name.
 *Criterion:* every row names a covering scenario or a reasoned
-exclusion, and every case the framing names has a row. *Decision:*
+exclusion, and every case the framing or a contributor's criteria name has
+a row. *Decision:*
 yes/no per case.
 *Derived check:* judged — feature fitness scenario 4.
 
@@ -124,3 +129,6 @@ or "none" with a reason the framing bears out. *Decision:* yes/no per feature.
 | 4 | 2026-08-28 | review | Re-screened: findings — rule 4's absence clause; rule 2's test without Background and a closed detail list; an invented reference form; the core-task source unchecked anywhere. |
 | 5 | 2026-08-28 | update | Repairs applied; the core-task source named as a filed gap. |
 | 5 | 2026-08-28 | review | Final screen (round 3): clean; "to be filed" aligned with the typedef. |
+| 6 | 2026-08-31 | update | Owner decision: rule 3 checks ownership and the two roles' criteria; the co-authorship example replaced. |
+| 7 | 2026-08-31 | review | Round-1 screen of the co-production removal: rule 5's example attributed an edge to a shop at authoring time; re-attributed to the designer's criterion. |
+| 8 | 2026-08-31 | review | Round-2 screen: rule 5's test and criterion extended to cases a contributor's criteria name; rule 3's constraints clause names its antecedent (Contributors section). |

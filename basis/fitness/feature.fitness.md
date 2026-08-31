@@ -3,7 +3,7 @@ type: fitness-set
 id: feature-fitness
 owner: product-authority
 status: draft
-version: 6
+version: 8
 created: 2026-08-26
 updated: 2026-08-28
 target-type: feature
@@ -16,15 +16,16 @@ judged-by: cold-reviewer
 
 A feature is a Gherkin Feature — one capability from the user's or
 agent's point of view with the scenarios that state what counts as
-done for it — submitted by the PO role, product-level, its scenarios
-later assigned to Bounded Contexts by the solutions architect role.
+done for it — authored by the PO role alone, product-level, its
+scenarios later assigned to Bounded Contexts by the solutions
+architect role.
 The scenarios are executable by the owning shops; this set judges the
 feature as a document and is never executed. These scenarios are the
 criteria set the [PO output check](../processes/po-output-check.md)
 screens a feature against, alongside the framing (criterion
 `framing`). Evaluated by the `cold-reviewer` role. The judge reads only
 the criteria set, the framing, and the feature; a fact the feature must
-carry — a source shop, a tag, an edge — is what these scenarios make it
+carry — an owning shop, a tag, an edge — is what these scenarios make it
 carry. Assignment is not judged here: the `@bounded-context:` tag is
 set after the check.
 
@@ -37,15 +38,15 @@ Scenario 1: each scenario is one observable behavior
   Then the When is one action or event, the Then an outcome observable
   in the running system, and no step names an implementation detail
 
-Scenario 2: every scenario has a named source
+Scenario 2: ownership and criteria are present
   Given the Contributors section
   When each scenario is read against it
-  Then a shop is named as the source of that scenario's steps and edge
-  cases, and, where the Interaction types section names a type, the
-  product designer role's usability acceptance criteria and the
-  accessibility criteria are present (their sources: the
-  lead-product-designer role and the experience principle
-  `accessible-by-standard` — provenance, not a document to open)
+  Then an owning shop is named for that scenario, and, where the
+  Interaction types section names a type, the product designer role's
+  usability acceptance criteria and the accessibility criteria are
+  present, and, where the Contributors section says the decomposition names them,
+  the solutions architect role's non-functional constraints are
+  present (sources are provenance, not documents to open)
 
 Scenario 3: identity tags are present
   Given each scenario's tags
@@ -55,10 +56,12 @@ Scenario 3: identity tags are present
   tag is assignment's and is not judged here, present or absent)
 
 Scenario 4: every listed edge is covered
-  Given the Edges table and the cases the framing names
+  Given the Edges table and the cases the framing or a contributor's
+  criteria name
   When each case is read
   Then it names the covering scenario by its Scenario name or is marked
-  out of scope with a reason, and every case the framing names appears in the table
+  out of scope with a reason, and every case the framing or a contributor's criteria name appears
+  in the table
 
 Scenario 5: interaction types are stated
   Given the Interaction types section
@@ -78,9 +81,9 @@ Scenario 6: the feature says who it is for and why
 | Scenario Then | Judge-rubric assertion |
 |---|---|
 | 1 — one observable behavior | "For each scenario and the Background: is the When one action, the Then observable in the running system, and no step implementation-specific? Cite any failing step." |
-| 2 — named source | "For each scenario: is a source shop named in Contributors? Where a type is named, are usability and accessibility criteria present? Cite or name the absence." |
+| 2 — ownership and criteria | "For each scenario: is an owning shop named? Where a type is named, are both designer criteria present? Where constraints are said to be named, are they present? Cite or name the absence." |
 | 3 — identity tags | "For each scenario: `@feature:` present? `@hash:` present? Cite any scenario without both." |
-| 4 — edges covered | "For each row of the Edges table and each case the framing names: a covering scenario or a reasoned exclusion? Any uncovered or missing case = fail." |
+| 4 — edges covered | "For each row of the Edges table and each case the framing or a contributor's criteria name: a covering scenario or a reasoned exclusion? Any uncovered or missing case = fail." |
 | 5 — interaction types stated | "Does the Interaction types section name types, or 'none' with a reason the framing bears out? Cite the sentence or its absence." |
 | 6 — narrative | "Does the Feature narrative name who, what, and the outcome, and is the outcome the framing's? Cite the lines or their absence." |
 
@@ -100,3 +103,5 @@ Scenario 6: the feature says who it is for and why
 | 5 | 2026-08-28 | review | Re-screened: findings — scenario 3's absence clause failed correct features. |
 | 6 | 2026-08-28 | update | Repairs: scenario 3 judges presence only; Edges rows by Scenario name; scenario 2's sources marked as provenance. |
 | 6 | 2026-08-28 | review | Final screen (round 3): clean — every Then falsifiable from the three inputs. |
+| 7 | 2026-08-31 | update | Owner decision: scenario 2 checks ownership and the two roles' criteria, not shop authorship. |
+| 8 | 2026-08-31 | review | Round-2 screen: scenario 4 and its judge framing extended to cases a contributor's criteria name (matching the typedef's Edges sources); the constraints clause's antecedent named (Contributors section); the intro's source shop is an owning shop. |

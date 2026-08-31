@@ -4,7 +4,7 @@ id: glossary
 owner: product-authority
 status: approved
 approved: 2026-08-19
-version: 17
+version: 18
 created: 2026-08-19
 updated: 2026-08-31
 ---
@@ -156,9 +156,9 @@ terms uses one of these when one fits.
   authority; features are made from it.
 - **acceptance scenario** — a Gherkin scenario in a feature that
   states, as a requirement, what counts as done for one behavior;
-  co-produced by the PO role and the owning Bounded Context shop;
-  assigned to that context by a `@bounded-context:<name>` tag the
-  solutions architect writes; held in that shop's scenario register.
+  authored by the PO role; assigned to its owning context by a
+  `@bounded-context:<name>` tag the solutions architect writes;
+  recorded in the scenario register.
 - **scenario register** — the lead shop's one register of every
   acceptance scenario in the system, with each scenario's hash, state,
   and `@bounded-context:` assignment; read as per-context views.
@@ -246,3 +246,4 @@ terms uses one of these when one fits.
 | 15 | 2026-08-28 | update | initiative added; framing stated to live in the initiative's first section. |
 | 16 | 2026-08-28 | update | framing carries the contract; check of record, bet, and product decision record added — each arrived undefined in the initiative chain's screen. |
 | 17 | 2026-08-31 | update | Owner direction: the scenario register is the lead shop's one register with per-context views, maintained asynchronously from dispatch and reconciliation — not each shop's own list queried on demand; pre-state reads lead-shop-held records. |
+| 18 | 2026-08-31 | update | Owner decision: acceptance scenarios are authored by the PO role; co-production removed. |
