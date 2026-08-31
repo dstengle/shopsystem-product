@@ -3,7 +3,8 @@ type: data-type
 id: assignment
 defines: assignment
 owner: product-authority
-status: draft
+status: approved
+approved: 2026-08-31
 version: 2
 created: 2026-08-28
 updated: 2026-08-31
@@ -46,3 +47,4 @@ schema:
 |---|---|---|---|
 | 1 | 2026-08-28 | update | Authored with the scenario-assignment process so the vehicle is chosen per context from the pre-state and carried as data, not fixed in a command. The three vehicles are the frozen corpus's message types, imported by name. |
 | 2 | 2026-08-31 | update | Owner direction: the vehicle field removed — assignment dispatches assign_scenarios only; bugfix and maintenance requests are the result of operational activities, not of assignment; pre-state is the contracts and the feature repository. |
+| 2 | 2026-08-31 | state | draft → approved with batch D as one block (brief-032 ask 2, default accepted). |

@@ -9,12 +9,12 @@ type: skill
 id: po-output-check-skill
 status: approved
 created: 2026-08-25
-updated: 2026-08-28
+updated: 2026-08-31
 generated: true
 generated-by: basis/tools/compile_process.py
 derived-from: po-output-check-process
 source: basis/processes/po-output-check.md
-source-digest: sha256:839f763de518
+source-digest: sha256:0be9b5f93b1c
 activation: model-judged
 promotion: experiment-local
 ---
@@ -29,13 +29,13 @@ Result of a run: `decision` (check-decision).
 
 ```mermaid
 flowchart TD
-  screen(["Screen against the criteria — agent: cold-reviewer<br/>in — artifact: string, framing: string, criteria_path: string<br/>out — review: screen-review"])
-  log_round["Record the round — runtime<br/>in — review: screen-review, round_log: screen-review[]<br/>sets — round_log: screen-review[]"]
+  screen(["Screen against the criteria — agent: cold-reviewer<br/>in — artifact: string, framing: string, criteria_path: string<br/>out — review: screen-review, judge_stamp: string"])
+  log_round["Record the round — runtime<br/>in — review: screen-review, round_log: screen-review[], judge_stamp: string, judge_log: string[]<br/>sets — round_log: screen-review[], judge_log: string[]"]
   route_screen{"Route on the screen<br/>in — review: screen-review, round: integer, round_cap: integer"}
   revise(["Revise the output — agent: lead-po<br/>in — artifact: string, review: screen-review, framing: string, ask: ask<br/>out — artifact: string"])
   advance_round["Advance the round — runtime<br/>in — round: integer<br/>sets — round: integer"]
   decide[["Decide on the verdict — human: lead-pm<br/>in — review: screen-review, round_log: screen-review[], framing: string<br/>out — decision: check-decision"]]
-  record(["Record the decision — agent: lead-pm<br/>in — decision: check-decision, artifact: string, round_log: screen-review[]<br/>out — artifact: string, gap_entry: string, definition: string"])
+  record(["Record the decision — agent: lead-pm<br/>in — decision: check-decision, artifact: string, round_log: screen-review[], judge_log: string[], framing: string<br/>out — artifact: string, gap_entry: string, definition: string, initiative: string"])
   __end(("end<br/>result — decision: check-decision"))
   __start(("start")) --> screen
   screen --> log_round
@@ -52,13 +52,14 @@ flowchart TD
 
 ## screen — Screen against the criteria
 
-Run by an agent in role `cold-reviewer` (fresh context every run). reads: artifact, framing, criteria_path · writes: review.
+Run by an agent in role `cold-reviewer` (fresh context every run). reads: artifact, framing, criteria_path · writes: review, judge_stamp.
 - then: `log-round`
 
 Prompt:
 
 ```text
-Read the criteria set at criteria_path, the framing at framing,
+State, as judge_stamp, the model and prompt version you judge
+as. Read the criteria set at criteria_path, the framing at framing,
 and the artifact at artifact — nothing else. Judge the artifact
 against every criterion and against the framing: does each part
 of it trace to the framing, and does anything in it serve no
@@ -75,11 +76,12 @@ three changes.
 
 ## log-round — Record the round
 
-Run by the runtime — no agent, no prose. reads: review, round_log · writes: round_log.
+Run by the runtime — no agent, no prose. reads: review, round_log, judge_stamp, judge_log · writes: round_log, judge_log.
 
 ```yaml
 set:
   round_log: round_log + [review]
+  judge_log: judge_log + [judge_stamp]
 next: route-screen
 ```
 
@@ -156,19 +158,27 @@ Record your reasons.
 
 ## record — Record the decision
 
-Run by an agent in role `lead-pm`. reads: decision, artifact, round_log · writes: artifact, gap_entry, definition.
+Run by an agent in role `lead-pm`. reads: decision, artifact, round_log, judge_log, framing · writes: artifact, gap_entry, definition, initiative.
 - then: `end`
 
 Prompt:
 
 ```text
 Write into the artifact's Document History one review entry per
-round with its verdict, then a state entry carrying the decision
+round with its verdict and, from judge_log, the screening
+judge's model and prompt version, then a state entry carrying the decision
 and its reasons. Set the artifact's status: "checked" on pass,
 "returned" on fail with the criterion named, "pending-definition"
 on definition-change. On "definition-change", write a review
 entry stating the gap into the Document History of the definition
 the decision names; return that file's path as definition and the
-entry's text as gap_entry. Otherwise return both empty. Return
-the artifact.
+entry's text as gap_entry. Otherwise return both empty.
+Where the artifact is a feature, framing names a section of the
+initiative it was made from — the document at framing is the
+one declared input that carries it. If the decision is pass and
+that initiative's status is planned, set it to active with a
+state entry naming this feature's pass — the initiative
+typedef's writer, and planned is the only status it writes
+over — and return its path as initiative; otherwise return
+initiative empty. Return the artifact.
 ```

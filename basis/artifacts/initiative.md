@@ -5,7 +5,7 @@ defines: initiative
 owner: product-authority
 status: approved
 approved: 2026-08-31
-version: 6
+version: 8
 created: 2026-08-28
 updated: 2026-08-31
 ancestry: [initiative]
@@ -63,8 +63,10 @@ lifecycle stands in. Status values and their writers:
   [initiative-check](../processes/initiative-check.md) process's
   decide and record steps, replacing `proposed`.
 - `active` — the PO output check's record step, when the first feature
-  made from it passes (amendment pending: the step reads the feature's
-  `initiative` link).
+  made from it passes, replacing `planned` — the only status it writes
+  over; the step reaches this document through its declared framing
+  input, since a feature's framing names this document's first
+  section.
 - `completed` — the [reconcile-and-close](../processes/reconcile-and-close.md)
   process, when the last delivery under it is reconciled — read from
   §6 and each feature's state — and the measure is recorded against
@@ -170,3 +172,5 @@ of record.
 | 5 | 2026-08-31 | review | Batch screen round 2: the check's two attach steps described as two. |
 | 6 | 2026-08-31 | review | Round-3 screen (final): the at-bet cancellation's writer named (the record step writes what decide takes). |
 | 6 | 2026-08-31 | state | draft → approved with batch A+B as one block (brief-032 ask 2, default accepted). |
+| 7 | 2026-08-31 | update | Batch D: the active writer's pending amendment resolved — the PO output check's record step activates the initiative on a feature's first pass. |
+| 8 | 2026-08-31 | review | Batch D screen round 2: the active entry names the status it replaces (planned, the only one written over) and the declared route the writer takes (the framing input), matching po-output-check v6. Repair after round 2; the end-to-end screen (batch E) covers it. |

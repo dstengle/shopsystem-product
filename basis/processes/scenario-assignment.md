@@ -2,8 +2,9 @@
 type: process-definition
 id: scenario-assignment-process
 owner: product-authority
-status: draft
-version: 9
+status: approved
+approved: 2026-08-31
+version: 10
 created: 2026-08-28
 updated: 2026-08-31
 produces: []
@@ -42,8 +43,9 @@ finding, not a guess.
   `assignment`; `dispatch` sends one `assign_scenarios` message per
   entry — witnessed by `dispatch`'s `run`, which iterates
   `entries[].context`.
-- O3. The feature's status becomes `assigned` and the assignment,
-  with the messages sent, is recorded in its Document History —
+- O3. The feature's status becomes `assigned` and the assignment —
+  the pre-states read and the messages sent — is recorded in its
+  Document History —
   judged in `record` from `assignment` and `sent`.
 - O4. A question the decomposition cannot answer — whether a behavior
   is in scope at all — leaves the run as an ask to the PM role with a
@@ -198,7 +200,8 @@ steps:
     prompt: |
       Set the feature's status to "assigned" and write a state entry
       into its Document History listing, from assignment, each
-      context's scenario hashes, and, from sent (the tool's
+      context's scenario hashes and the pre-state read, and, from
+      sent (the tool's
       standard output, one line per message — its output contract is
       pinned when the messaging package is imported), the message sent to each. Return
       the feature.
@@ -211,7 +214,7 @@ steps:
 |---|---|---|---|
 | O1 | every scenario carries one `@bounded-context:` tag (judged), or `unowned` is non-empty and the run returns (mechanical) | judged, mechanical | `assign` outputs, `route` |
 | O2 | every `assignment` entry records the pre-state read; one `assign_scenarios` message per entry | judged (`assign`), mechanical (`dispatch`) | `assignment`, `dispatch.run`, `sent` |
-| O3 | status `assigned` and a state entry listing contexts and messages | judged | `record` |
+| O3 | status `assigned` and a state entry listing contexts, pre-states, and messages | judged | `record` |
 | O4 | `assign` carries `asks`; process carries `ask-cap`; `ask` listed in inputs | mechanical | `assign`, frontmatter |
 
 ## Document History
@@ -230,3 +233,5 @@ steps:
 | 7 | 2026-08-31 | review | Round-1 screen of the co-production removal: the register sweep's catch had no resulting action — a scenario contradicting held behavior now goes to unowned with the conflict as its reason and returns to the PO role; Contributors wording aligned to ownership. |
 | 8 | 2026-08-31 | review | Round-2 screen: the conflict clause names the two vehicles it excludes instead of pointing at the list. |
 | 9 | 2026-08-31 | update | Owner direction: the vehicle choice removed — assignment only assigns (bugfix and maintenance requests come from operational activities); the sweep reads the feature repository (the artifacts as specified), pre-state is the state of the design (contracts + repository), and the scenario register — the tracker of implemented scenarios, a feature to be built — leaves this process. |
+| 10 | 2026-08-31 | review | Batch D screen round 1: the pre-state read gains its consumer — the record step writes it into the state entry, so the evidence O2 carries survives the run. |
+| 10 | 2026-08-31 | state | draft → approved with batch D as one block (brief-032 ask 2, default accepted). |

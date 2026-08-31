@@ -4,9 +4,9 @@ id: po-output-check-process
 owner: product-authority
 status: approved
 approved: 2026-08-26
-version: 4
+version: 6
 created: 2026-08-25
-updated: 2026-08-28
+updated: 2026-08-31
 produces: []
 carried-by: po-output-check-skill
 condition-language: cel
@@ -49,6 +49,10 @@ verdict on the maker.
 - O5. A question the framing cannot answer leaves the run as an ask to
   the PM role, with a default, and the run resumes — witnessed by
   `revise`'s `asks` and the `ask` value.
+- O6. A feature's first pass activates its planned initiative — the
+  `active` status the initiative typedef assigns this process, written
+  only over `planned` — witnessed by `record`'s `initiative` output
+  and its prompt.
 
 **Roles:** maker — [`../roles/lead-po.md`](../roles/lead-po.md)
 (submits and revises; never decides its own pass). screener —
@@ -71,13 +75,13 @@ edit by hand.
 
 ```mermaid
 flowchart TD
-  screen(["Screen against the criteria — agent: cold-reviewer<br/>in — artifact: string, framing: string, criteria_path: string<br/>out — review: screen-review"])
-  log_round["Record the round — runtime<br/>in — review: screen-review, round_log: screen-review[]<br/>sets — round_log: screen-review[]"]
+  screen(["Screen against the criteria — agent: cold-reviewer<br/>in — artifact: string, framing: string, criteria_path: string<br/>out — review: screen-review, judge_stamp: string"])
+  log_round["Record the round — runtime<br/>in — review: screen-review, round_log: screen-review[], judge_stamp: string, judge_log: string[]<br/>sets — round_log: screen-review[], judge_log: string[]"]
   route_screen{"Route on the screen<br/>in — review: screen-review, round: integer, round_cap: integer"}
   revise(["Revise the output — agent: lead-po<br/>in — artifact: string, review: screen-review, framing: string, ask: ask<br/>out — artifact: string"])
   advance_round["Advance the round — runtime<br/>in — round: integer<br/>sets — round: integer"]
   decide[["Decide on the verdict — human: lead-pm<br/>in — review: screen-review, round_log: screen-review[], framing: string<br/>out — decision: check-decision"]]
-  record(["Record the decision — agent: lead-pm<br/>in — decision: check-decision, artifact: string, round_log: screen-review[]<br/>out — artifact: string, gap_entry: string, definition: string"])
+  record(["Record the decision — agent: lead-pm<br/>in — decision: check-decision, artifact: string, round_log: screen-review[], judge_log: string[], framing: string<br/>out — artifact: string, gap_entry: string, definition: string, initiative: string"])
   __end(("end<br/>result — decision: check-decision"))
   __start(("start")) --> screen
   screen --> log_round
@@ -103,8 +107,13 @@ artifact's type. The framing is always a criterion, named `framing`;
 until a criteria set exists for a type, `criteria_path` names the
 framing itself and `framing` is the only named criterion. The artifact
 status values this process sets — `checked` on pass, `returned` on
-fail, `pending-definition` on definition change — are this process's
-until the artifact typedefs define their own.
+fail, `pending-definition` on definition change — were this process's
+until the artifact typedefs defined their own; the feature,
+product-decision-record, and backlog-order typedefs now carry them,
+and this process follows those definitions. The `active` status it
+writes on a feature's first pass is the
+[initiative typedef](../artifacts/initiative.md)'s, written by
+`record` as that typedef names.
 
 ```yaml
 data:
@@ -115,10 +124,13 @@ data:
   round: {type: integer, initial: 1}
   round_cap: {type: integer, initial: 3}
   round_log: {type: array, items: {$ref: screen-review}, initial: []}
+  judge_stamp: {type: string}
+  judge_log: {type: array, items: {type: string}, initial: []}
   ask: {$ref: ask, from: ../types/ask.md, initial: null}
   decision: {$ref: check-decision, from: ../types/check-decision.md}
   gap_entry: {type: string}
   definition: {type: string, format: uri-reference}
+  initiative: {type: string, format: uri-reference}
 ```
 
 ## Steps
@@ -132,9 +144,10 @@ steps:
     name: Screen against the criteria
     run-by: {role: cold-reviewer, execution: agent, fresh-context: true}
     inputs: [artifact, framing, criteria_path]
-    outputs: [review]
+    outputs: [review, judge_stamp]
     prompt: |
-      Read the criteria set at criteria_path, the framing at framing,
+      State, as judge_stamp, the model and prompt version you judge
+      as. Read the criteria set at criteria_path, the framing at framing,
       and the artifact at artifact — nothing else. Judge the artifact
       against every criterion and against the framing: does each part
       of it trace to the framing, and does anything in it serve no
@@ -154,9 +167,10 @@ steps:
   - id: log-round
     name: Record the round
     run-by: {execution: runtime}
-    inputs: [review, round_log]
+    inputs: [review, round_log, judge_stamp, judge_log]
     set:
       round_log: round_log + [review]
+      judge_log: judge_log + [judge_stamp]
     next: route-screen
 
   - id: route-screen
@@ -224,18 +238,26 @@ steps:
   - id: record
     name: Record the decision
     run-by: {role: lead-pm, execution: agent}
-    inputs: [decision, artifact, round_log]
-    outputs: [artifact, gap_entry, definition]
+    inputs: [decision, artifact, round_log, judge_log, framing]
+    outputs: [artifact, gap_entry, definition, initiative]
     prompt: |
       Write into the artifact's Document History one review entry per
-      round with its verdict, then a state entry carrying the decision
+      round with its verdict and, from judge_log, the screening
+      judge's model and prompt version, then a state entry carrying the decision
       and its reasons. Set the artifact's status: "checked" on pass,
       "returned" on fail with the criterion named, "pending-definition"
       on definition-change. On "definition-change", write a review
       entry stating the gap into the Document History of the definition
       the decision names; return that file's path as definition and the
-      entry's text as gap_entry. Otherwise return both empty. Return
-      the artifact.
+      entry's text as gap_entry. Otherwise return both empty.
+      Where the artifact is a feature, framing names a section of the
+      initiative it was made from — the document at framing is the
+      one declared input that carries it. If the decision is pass and
+      that initiative's status is planned, set it to active with a
+      state entry naming this feature's pass — the initiative
+      typedef's writer, and planned is the only status it writes
+      over — and return its path as initiative; otherwise return
+      initiative empty. Return the artifact.
     next: end
 ```
 
@@ -248,6 +270,7 @@ steps:
 | O3 | every round logged; three labeled exits | mechanical | `log-round`, `route-screen` |
 | O4 | `criterion` present on fail, `gap` on definition-change; `definition` and `gap_entry` non-empty on definition-change | judged | `check-decision`, `record` outputs |
 | O5 | `revise` carries `asks`; process carries `ask-cap`; `ask` listed in inputs | mechanical | `revise`, frontmatter |
+| O6 | `initiative` non-empty exactly on a feature's pass with a planned linked initiative | judged | `record` outputs and prompt |
 
 ## Document History
 
@@ -261,3 +284,5 @@ steps:
 | 3 | 2026-08-25 | review | Re-screened (round 3): clean — all six scenarios pass, six rules hold; both paths traced; stumbles polished in place (verdict precedence at the cap; the framing criterion named in the type). |
 | 3 | 2026-08-26 | state | draft → approved by the owner. |
 | 4 | 2026-08-28 | update | Owner decision: acceptance-scenarios re-formed as feature (product-level, scenarios assigned per Bounded Context by tag); the brief retired — shops receive their assigned scenarios. |
+| 5 | 2026-08-31 | update | Batch D of brief-032's plan: the record step activates a feature's initiative on its first pass (the initiative typedef's active writer resolved); the screening judge's model and prompt version travel as declared data — judge_stamp from screen, accumulated in judge_log, recorded with each round — keeping the fitness sets' promise; the status vocabulary notes the typedefs now define their own. |
+| 6 | 2026-08-31 | review | Batch D screen round 1: the initiative reached through the declared framing input, not an undeclared link-follow; active written only over planned, so a cancelled or unbet initiative is never activated. |

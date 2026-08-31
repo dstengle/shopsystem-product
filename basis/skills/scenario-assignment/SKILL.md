@@ -16,7 +16,7 @@ generated: true
 generated-by: basis/tools/compile_process.py
 derived-from: scenario-assignment-process
 source: basis/processes/scenario-assignment.md
-source-digest: sha256:e5cc7441808e
+source-digest: sha256:ec209c3ebc10
 activation: model-judged
 promotion: experiment-local
 ---
@@ -131,7 +131,8 @@ Prompt:
 ```text
 Set the feature's status to "assigned" and write a state entry
 into its Document History listing, from assignment, each
-context's scenario hashes, and, from sent (the tool's
+context's scenario hashes and the pre-state read, and, from
+sent (the tool's
 standard output, one line per message — its output contract is
 pinned when the messaging package is imported), the message sent to each. Return
 the feature.
