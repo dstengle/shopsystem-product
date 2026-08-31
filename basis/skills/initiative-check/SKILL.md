@@ -15,7 +15,7 @@ generated: true
 generated-by: basis/tools/compile_process.py
 derived-from: initiative-check-process
 source: basis/processes/initiative-check.md
-source-digest: sha256:c1d761250ea5
+source-digest: sha256:abb5ad7c2d8e
 activation: model-judged
 promotion: experiment-local
 ---
@@ -213,8 +213,8 @@ review entry per round with its verdict and, from judge_log,
 the screening judge's model and prompt version — the record the
 fitness set promises — then a state entry
 carrying the decision and its reasons. Set the status: "planned"
-on bet; leave "proposed" on hold; "cancelled" on cancel with the
-reason. On bet or cancel, the typedef requires a product
+on bet, written only over "proposed"; leave "proposed" on hold;
+"cancelled" on cancel with the reason. On bet or cancel, the typedef requires a product
 decision record: state in the entry that the record is the PO
 role's to make and the PO output check screens it, and that the
 entry links it once made. Return the initiative.

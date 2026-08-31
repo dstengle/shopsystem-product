@@ -14,7 +14,7 @@ generated: true
 generated-by: basis/tools/compile_process.py
 derived-from: feature-authoring-process
 source: basis/processes/feature-authoring.md
-source-digest: sha256:97578fc8bd13
+source-digest: sha256:c56bba204015
 activation: model-judged
 promotion: experiment-local
 ---
@@ -29,7 +29,7 @@ Result of a run: `artifact` (string).
 
 ```mermaid
 flowchart TD
-  draft(["Draft the feature — agent: lead-po<br/>in — initiative: string, repository: string<br/>out — artifact: string"])
+  draft(["Draft the feature — agent: lead-po<br/>in — initiative: string, repository: string<br/>out — artifact: string, initiative: string"])
   add_usability(["Add the designer's criteria — agent: lead-product-designer<br/>in — artifact: string, initiative: string, experience_principles: string, core_tasks: string<br/>out — artifact: string"])
   add_constraints(["Add the architect's constraints — agent: lead-solutions-architect<br/>in — artifact: string, decomposition: string<br/>out — artifact: string"])
   prepare["Name the framing for the check — runtime<br/>in — initiative: string<br/>sets — framing: string"]
@@ -45,7 +45,7 @@ flowchart TD
 
 ## draft — Draft the feature
 
-Run by an agent in role `lead-po`. reads: initiative, repository · writes: artifact.
+Run by an agent in role `lead-po`. reads: initiative, repository · writes: artifact, initiative.
 - then: `add-usability`
 
 Prompt:
@@ -62,7 +62,13 @@ For whom section names, or "none" with the reason; the Edges
 table from the cases the framing names, covered or excluded
 with a reason. You author alone — no shop is asked. Set the
 feature's status to draft and link the initiative in its
-frontmatter. Return the feature's path.
+frontmatter; add the feature's id to the initiative's Features
+section — the typedef's list of features as they are made.
+Where the Features section already lists a feature standing
+returned in the repository, author that feature again instead:
+revise its own document — the id stays, and a changed scenario
+text is a new scenario by hash — and add no duplicate id.
+Return the feature's path.
 ```
 
 ## add-usability — Add the designer's criteria

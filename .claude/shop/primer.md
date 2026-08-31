@@ -1,5 +1,18 @@
 # Rebaseline migration branch — session primer
 
+The product is the **shopsystem**: the system by which a lead shop
+and its Bounded Context shops — agent-run execution units — take a
+problem from discovery to verified, running software; it is built by
+the same kind of shops it defines, and this repository is its lead
+shop. For whom: the people who stand up and run products on it — a
+product authority who frames and bets, and the builders and operators
+who meet the work through its interaction types. The shop's operating
+process is
+[product-flow](../../basis/processes/product-flow.md): discovery →
+initiative check and bet → backlog ordering → feature authoring →
+scenario assignment, each stage a defined sub-process with its own
+check.
+
 This is the `rebaseline` branch: the greenfield tree of the
 shopsystem-product migration, seeded 2026-08-22 under the approved
 migration plan. Nothing exists here except through an explicit import
@@ -21,19 +34,24 @@ curated feed.
 ## Current state
 
 Seed and Phase 0 are complete: both principle sets stand approved.
-Phase 1: the meta-chains and the four lead-shop roles are approved —
-`lead-pm` (held by the product authority in person, agent-assisted;
-frames intent and checks the maker's output), `lead-po` (the maker;
-backlog order), `lead-solutions-architect` (the stack, decomposition,
-contracts), `lead-product-designer` (the experience corpus, usability).
-The ask mechanism (held-and-resumed only) and the `po-output-check`
-process are approved. The experience guidance corpus has its principle set,
-common and per-type guidelines, and interaction fitness set approved;
-the PO artifact types have approved criteria sets pending their
-typedefs. Open in Phase 1: the corpus records the designer role
-judges against (vocabulary, core-task list, patterns, tokens); the
-process that runs the interaction screen at delivery; the
-role-definition typedef's six-section form; the skills import plan.
+Phase 1: the meta-chains, the four lead-shop roles, the ask mechanism
+(held-and-resumed only), and the experience guidance corpus stand
+approved. The product flow is defined end to end and approved by
+batch under brief-032: `discovery-conversation` (brainstorm,
+interview, or review of evidence; frames the initiative) →
+`initiative-check` (attach, screen as check of record, the
+authority's bet) → `backlog-ordering` → `feature-authoring` (the PO
+authors alone; designer criteria and architect constraints ride the
+scenarios) → `po-output-check` (activates the initiative on the first
+pass) → `scenario-assignment` (repository sweep, `assign_scenarios`
+only), with `product-flow` as the top level. The initiative, feature,
+backlog-order, and product-decision-record chains are approved. Open:
+the reconcile-side amendments (the initiative's `completed` state,
+the product changelog, the roadmap, the `router` role); the scenario
+register — a feature to be built by integrating the work on `main`;
+the designer role's corpus records (vocabulary, patterns, tokens;
+core tasks stand as hypotheses); brief-030's role-definition typedef
+amendment and the 38-skill import plan.
 
 ## Operating rules
 

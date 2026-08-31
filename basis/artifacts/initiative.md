@@ -5,7 +5,7 @@ defines: initiative
 owner: product-authority
 status: approved
 approved: 2026-08-31
-version: 8
+version: 9
 created: 2026-08-28
 updated: 2026-08-31
 ancestry: [initiative]
@@ -106,8 +106,9 @@ lifecycle stands in. Status values and their writers:
    in one place — the saga or process manager (the one component that
    routes the flow between contexts) that will carry it, or "none" when
    the contexts need no flow between them. "Not yet" until attached.
-6. **Features** — the features made from it, by id, as they are made;
-   empty until the first.
+6. **Features** — the features made from it, by id, as they are made
+   — the feature-authoring draft step adds each; empty until the
+   first.
 
 ## Rules
 
@@ -174,3 +175,4 @@ of record.
 | 6 | 2026-08-31 | state | draft → approved with batch A+B as one block (brief-032 ask 2, default accepted). |
 | 7 | 2026-08-31 | update | Batch D: the active writer's pending amendment resolved — the PO output check's record step activates the initiative on a feature's first pass. |
 | 8 | 2026-08-31 | review | Batch D screen round 2: the active entry names the status it replaces (planned, the only one written over) and the declared route the writer takes (the framing input), matching po-output-check v6. Repair after round 2; the end-to-end screen (batch E) covers it. |
+| 9 | 2026-08-31 | review | Batch E end-to-end screen round 1: the Features section's writer named (the feature-authoring draft step). |

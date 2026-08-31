@@ -4,7 +4,7 @@ id: discovery-conversation-process
 owner: product-authority
 status: approved
 approved: 2026-08-22
-version: 8
+version: 9
 created: 2026-08-22
 updated: 2026-08-31
 produces: [session-record, initiative]
@@ -92,7 +92,7 @@ an explicit source.
 data:
   topic: {type: string}
   form: {type: string, enum: [brainstorm, interview, review-of-evidence]}
-  initiative: {type: string, format: uri-reference}
+  initiative: {type: string, format: uri-reference, initial: ""}
   initiative_draft: {type: string, initial: ""}
   session_record: {$ref: session-record, from: pkg:shopsystem-knowledge/session-record}
   statement: {type: string}
@@ -246,3 +246,4 @@ never released silently.
 | 6 | 2026-08-31 | review | Batch screen round 1: the drafted sections travel as initiative_draft, a declared value engage maintains and frame reads; the decline path states the product decision record obligation the initiative typedef's rule requires. |
 | 7 | 2026-08-31 | review | Batch screen round 2: a close without convergence no longer reaches frame — route-frame sends only the converge classification there, so the run lands the session record and frames nothing, matching the close-without-convergence paragraph. |
 | 8 | 2026-08-31 | review | Round-3 screen (final): frame's unread topic input dropped — the declared list is the context load list. Repair after the last screening round; the next screen covers it. |
+| 9 | 2026-08-31 | review | Batch E screen round 2: initiative given initial empty, so a run ending on the cancel or close-without-convergence path returns a defined empty result the parent can route on. Post-approval repair from the end-to-end screen. |

@@ -4,7 +4,7 @@ id: initiative-check-process
 owner: product-authority
 status: approved
 approved: 2026-08-31
-version: 4
+version: 5
 created: 2026-08-31
 updated: 2026-08-31
 produces: []
@@ -293,8 +293,8 @@ steps:
       the screening judge's model and prompt version — the record the
       fitness set promises — then a state entry
       carrying the decision and its reasons. Set the status: "planned"
-      on bet; leave "proposed" on hold; "cancelled" on cancel with the
-      reason. On bet or cancel, the typedef requires a product
+      on bet, written only over "proposed"; leave "proposed" on hold;
+      "cancelled" on cancel with the reason. On bet or cancel, the typedef requires a product
       decision record: state in the entry that the record is the PO
       role's to make and the PO output check screens it, and that the
       entry links it once made. Return the initiative.
@@ -320,3 +320,4 @@ steps:
 | 3 | 2026-08-31 | review | Batch screen round 2: the bet bounded by the initiative typedef's commitment — no bet over a named-criterion failure at the cap (it stays proposed with the criterion named); O4's vocabulary aligned to the declared enum. |
 | 4 | 2026-08-31 | review | Round-3 screen (final): the judge's model and prompt version travel as declared data — judge_stamp from the screen step, accumulated in judge_log, read by record — replacing the undeclared anchor read. Repair after the last screening round; the next screen of this file covers it. |
 | 4 | 2026-08-31 | state | draft → approved with batch A+B as one block (brief-032 ask 2, default accepted). |
+| 5 | 2026-08-31 | review | Batch E screen round 2: planned written only over proposed, matching the typedef's lifecycle. Post-approval repair from the end-to-end screen. |

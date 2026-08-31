@@ -4,7 +4,7 @@ id: feature-authoring-process
 owner: product-authority
 status: approved
 approved: 2026-08-31
-version: 3
+version: 5
 created: 2026-08-31
 updated: 2026-08-31
 produces: [feature]
@@ -75,7 +75,7 @@ edit by hand.
 
 ```mermaid
 flowchart TD
-  draft(["Draft the feature — agent: lead-po<br/>in — initiative: string, repository: string<br/>out — artifact: string"])
+  draft(["Draft the feature — agent: lead-po<br/>in — initiative: string, repository: string<br/>out — artifact: string, initiative: string"])
   add_usability(["Add the designer's criteria — agent: lead-product-designer<br/>in — artifact: string, initiative: string, experience_principles: string, core_tasks: string<br/>out — artifact: string"])
   add_constraints(["Add the architect's constraints — agent: lead-solutions-architect<br/>in — artifact: string, decomposition: string<br/>out — artifact: string"])
   prepare["Name the framing for the check — runtime<br/>in — initiative: string<br/>sets — framing: string"]
@@ -130,7 +130,7 @@ steps:
     name: Draft the feature
     run-by: {role: lead-po, execution: agent}
     inputs: [initiative, repository]
-    outputs: [artifact]
+    outputs: [artifact, initiative]
     prompt: |
       From the initiative's Framing and For whom sections, write one
       feature per its typedef into the feature repository at
@@ -143,7 +143,13 @@ steps:
       table from the cases the framing names, covered or excluded
       with a reason. You author alone — no shop is asked. Set the
       feature's status to draft and link the initiative in its
-      frontmatter. Return the feature's path.
+      frontmatter; add the feature's id to the initiative's Features
+      section — the typedef's list of features as they are made.
+      Where the Features section already lists a feature standing
+      returned in the repository, author that feature again instead:
+      revise its own document — the id stays, and a changed scenario
+      text is a new scenario by hash — and add no duplicate id.
+      Return the feature's path.
     next: add-usability
 
   - id: add-usability
@@ -197,7 +203,7 @@ steps:
 
 | Outcome | Check | Kind | Where |
 |---|---|---|---|
-| O1 | `draft` run by `lead-po`, reading only `initiative` and `repository`; no shop in any step | mechanical | `draft`, step list |
+| O1 | `draft` run by `lead-po`, reading only `initiative` and `repository` (writing the feature and §6); no shop in any step | mechanical | `draft`, step list |
 | O2 | both criteria steps precede `check` and output `artifact` | mechanical | step order, outputs |
 | O3 | `draft` writes only the initial draft status; the check statuses come from the child | mechanical | `draft.prompt`, `check` |
 | O4 | `check` outputs `decision`; the child's record step writes the rounds and decision into the artifact's Document History | mechanical | `check`, po-output-check `record.prompt` |
@@ -210,3 +216,5 @@ steps:
 | 2 | 2026-08-31 | review | Batch C screen round 1: O3 no longer denies the maker's own draft status (the typedef's writer list followed); the framing named by fragment as §1; the Interaction types section enumerated in the draft prompt; the use-when's criteria named. |
 | 3 | 2026-08-31 | review | Batch C screen round 2: O4's witness cites the child's record step prompt, which writes the artifact's Document History — po-output-check O4 covers the definition-change gap, not this. Round 2's other finding — the feature fitness set standing draft against the check's approved-criteria rule — is resolved by this batch's block approval. Repair after round 2; the end-to-end screen (batch E) covers it. |
 | 3 | 2026-08-31 | state | draft → approved with batch C as one block (brief-032 ask 2, default accepted). |
+| 4 | 2026-08-31 | review | Batch E end-to-end screen round 1: the draft step writes the feature's id into the initiative's Features section — the §6 writer the product-flow loop's judgment reads. Post-approval repair from the end-to-end screen. |
+| 5 | 2026-08-31 | review | Batch E screen round 2: the re-author pass defined — a returned feature listed in the Features section is revised in place, its id kept, no duplicate id added. Post-approval repair from the end-to-end screen. |
