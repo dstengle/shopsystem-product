@@ -3,7 +3,8 @@ type: artifact-typedef
 id: backlog-order-typedef
 defines: backlog-order
 owner: product-authority
-status: draft
+status: approved
+approved: 2026-08-31
 version: 4
 created: 2026-08-26
 updated: 2026-08-28
@@ -88,3 +89,4 @@ decomposition); the
 | 3 | 2026-08-26 | update | current's transition stated; the architect's raising rule kept in one home. |
 | 3 | 2026-08-26 | review | Re-screened (round 3): clean — every round-2 change and stumble addressed; checklist citations resolve after renumbering. |
 | 4 | 2026-08-28 | update | Owner decision: acceptance-scenarios re-formed as feature (product-level, scenarios assigned per Bounded Context by tag); the brief retired — shops receive their assigned scenarios. |
+| 4 | 2026-08-31 | state | draft → approved with batch C as one block (brief-032 ask 2, default accepted). |

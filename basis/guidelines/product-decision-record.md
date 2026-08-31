@@ -3,7 +3,8 @@ type: quality-guideline
 id: product-decision-record-guideline
 target-type: product-decision-record
 owner: product-authority
-status: draft
+status: approved
+approved: 2026-08-31
 version: 2
 created: 2026-08-27
 updated: 2026-08-27
@@ -96,3 +97,4 @@ reopens it. *Decision:* yes/no per record.
 | 1 | 2026-08-27 | review | Screened: findings — rule 2 required a reason on every alternative where the fitness set asks for one; an idiom; an unintroduced right's name. |
 | 2 | 2026-08-27 | update | criterion aligned to the fitness set; idiom replaced; the right named as the role defines it. |
 | 2 | 2026-08-27 | review | Re-screened: clean. |
+| 2 | 2026-08-31 | state | draft → approved with batch C as one block (brief-032 ask 2, default accepted). |

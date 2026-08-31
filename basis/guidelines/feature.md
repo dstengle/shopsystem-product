@@ -3,7 +3,8 @@ type: quality-guideline
 id: feature-guideline
 target-type: feature
 owner: product-authority
-status: draft
+status: approved
+approved: 2026-08-31
 version: 8
 created: 2026-08-27
 updated: 2026-08-28
@@ -132,3 +133,4 @@ or "none" with a reason the framing bears out. *Decision:* yes/no per feature.
 | 6 | 2026-08-31 | update | Owner decision: rule 3 checks ownership and the two roles' criteria; the co-authorship example replaced. |
 | 7 | 2026-08-31 | review | Round-1 screen of the co-production removal: rule 5's example attributed an edge to a shop at authoring time; re-attributed to the designer's criterion. |
 | 8 | 2026-08-31 | review | Round-2 screen: rule 5's test and criterion extended to cases a contributor's criteria name; rule 3's constraints clause names its antecedent (Contributors section). |
+| 8 | 2026-08-31 | state | draft → approved with batch C as one block (brief-032 ask 2, default accepted). |

@@ -2,7 +2,8 @@
 type: fitness-set
 id: feature-fitness
 owner: product-authority
-status: draft
+status: approved
+approved: 2026-08-31
 version: 8
 created: 2026-08-26
 updated: 2026-08-28
@@ -105,3 +106,4 @@ Scenario 6: the feature says who it is for and why
 | 6 | 2026-08-28 | review | Final screen (round 3): clean — every Then falsifiable from the three inputs. |
 | 7 | 2026-08-31 | update | Owner decision: scenario 2 checks ownership and the two roles' criteria, not shop authorship. |
 | 8 | 2026-08-31 | review | Round-2 screen: scenario 4 and its judge framing extended to cases a contributor's criteria name (matching the typedef's Edges sources); the constraints clause's antecedent named (Contributors section); the intro's source shop is an owning shop. |
+| 8 | 2026-08-31 | state | draft → approved with batch C as one block (brief-032 ask 2, default accepted). |

@@ -3,7 +3,8 @@ type: artifact-typedef
 id: feature-typedef
 defines: feature
 owner: product-authority
-status: draft
+status: approved
+approved: 2026-08-31
 version: 11
 created: 2026-08-26
 updated: 2026-08-31
@@ -154,3 +155,4 @@ experience principles `core-task-parity` and `accessible-by-standard`.
 | 9 | 2026-08-31 | update | Owner decision: co-production dropped — the PO authors alone (the register sweep and the post-dispatch clarify are the shop's voice); the architect's non-functional constraints added beside the designer's criteria; Contributors names ownership, not authorship. |
 | 10 | 2026-08-31 | review | Round-1 screen of the co-production removal: the Edges table's sources are the framing and the contributors' criteria, not a shop. |
 | 11 | 2026-08-31 | update | Owner direction: the repository/register split — the feature repository (the artifacts as specified) is what the conflict sweep at assignment reads; the scenario register is the tracker of implemented scenarios, a feature to be built. |
+| 11 | 2026-08-31 | state | draft → approved with batch C as one block (brief-032 ask 2, default accepted). |

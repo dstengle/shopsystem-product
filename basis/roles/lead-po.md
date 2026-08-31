@@ -8,7 +8,7 @@ id: lead-po
 owner: product-authority
 status: approved
 approved: 2026-08-25
-version: 12
+version: 13
 created: 2026-08-23
 updated: 2026-08-31
 ---
@@ -24,7 +24,8 @@ acceptance scenarios, made from an [initiative](../artifacts/initiative.md),
 authored by this role alone — [product decision records](../artifacts/product-decision-record.md),
 and the [backlog order](../artifacts/backlog-order.md). Shops receive
 the scenarios assigned to them, never a document of their own. You order
-the backlog. Scope and vocabulary questions from any Bounded Context
+the backlog, in the
+[backlog-ordering](../processes/backlog-ordering.md) process. Scope and vocabulary questions from any Bounded Context
 shop resolve against your artifacts. The PM role checks what you make
 against the framing; you make, you do not check your own work.
 
@@ -43,7 +44,8 @@ the designer's and architect's criteria ride on your scenarios.
   scenarios each tagged, identified by a hash of its text so that a
   changed scenario is a new scenario, and testable against the running
   system — a feature's scenarios may be owned by several shops, each
-  named for assignment.
+  named for assignment. Authored in the
+  [feature-authoring](../processes/feature-authoring.md) process.
 - The backlog: its content and order within the framing, structured
   to mirror the [solutions architect](lead-solutions-architect.md)'s
   decomposition.
@@ -137,3 +139,4 @@ language; the [working principle set](../principles.md).
 | 10 | 2026-08-31 | review | Round-2 screen: the sweep and clarifies were stated as the checks the text meets (the PO output check is); the split recommendation to the shop removed — a split is this role's own act on a return. |
 | 11 | 2026-08-31 | review | Round-3 screen (final): the crossing-contexts escalation reconciled with the return path — the split is this role's act first, and only a scenario no split within the framing can resolve escalates to the PM role. This repair is after the last screening round; the next screen of this file covers it. |
 | 12 | 2026-08-31 | update | Owner direction: the sweep at assignment reads the feature repository (the artifacts as specified), not the scenario register (implemented scenarios, a feature to be built); evidence names the repository. |
+| 13 | 2026-08-31 | update | Batch C of brief-032's plan: the carrying processes named — features authored in feature-authoring, the order placed in backlog-ordering, each checked by the PO output check as sub-process. |

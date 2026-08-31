@@ -3,7 +3,8 @@ type: quality-guideline
 id: backlog-order-guideline
 target-type: backlog-order
 owner: product-authority
-status: draft
+status: approved
+approved: 2026-08-31
 version: 3
 created: 2026-08-27
 updated: 2026-08-28
@@ -95,3 +96,4 @@ it waits on. *Decision:* yes/no per order.
 | 2 | 2026-08-27 | update | polish only. |
 | 2 | 2026-08-27 | review | Re-screened: clean; two section references named in place. |
 | 3 | 2026-08-28 | update | Owner decision: acceptance-scenarios re-formed as feature (product-level, scenarios assigned per Bounded Context by tag); the brief retired — shops receive their assigned scenarios. |
+| 3 | 2026-08-31 | state | draft → approved with batch C as one block (brief-032 ask 2, default accepted). |

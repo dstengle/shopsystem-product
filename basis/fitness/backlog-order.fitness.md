@@ -4,9 +4,9 @@ id: backlog-order-fitness
 owner: product-authority
 status: approved
 approved: 2026-08-26
-version: 4
+version: 5
 created: 2026-08-26
-updated: 2026-08-28
+updated: 2026-08-31
 target-type: backlog-order
 judged: true
 executable: false
@@ -25,9 +25,11 @@ version are recorded with each round verdict.
 The judge reads only the criteria set, the framing, and the artifact;
 every scenario therefore asks for what the artifact itself carries, and
 a fact it must carry — a term's definition, a reference, a reason — is
-what these scenarios make it carry. These scenarios stand in for the
-pending backlog-order typedef — no definition yet treats the order as an
-artifact — and are its first draft; the typedef inherits them. Scenario 1 overlaps the
+what these scenarios make it carry. The check runs
+within the [backlog-ordering](../processes/backlog-ordering.md)
+process; the
+[backlog-order typedef](../artifacts/backlog-order.md) carries the
+form these scenarios judge. Scenario 1 overlaps the
 process's `framing` criterion by design: the process passes one
 framing and an order spans many. What the
 judge cannot catch from the order alone — a recommendation omitted, a
@@ -91,3 +93,4 @@ Scenario 5: the next item says whether it is ready
 | 3 | 2026-08-26 | review | Re-screened (round 3): clean — every Then decidable from the criteria set, the framing, and the artifact; attributions accurate. |
 | 3 | 2026-08-26 | state | draft → approved by the owner. |
 | 4 | 2026-08-28 | update | Owner decision: acceptance-scenarios re-formed as feature (product-level, scenarios assigned per Bounded Context by tag); the brief retired — shops receive their assigned scenarios. |
+| 5 | 2026-08-31 | update | Batch C screen round 1: the stand-in intro retired — the typedef exists and the carrying process is named. |
