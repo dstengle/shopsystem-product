@@ -4,9 +4,9 @@ id: feature-typedef
 defines: feature
 owner: product-authority
 status: draft
-version: 10
+version: 11
 created: 2026-08-26
-updated: 2026-08-28
+updated: 2026-08-31
 ancestry: [feature]
 ---
 
@@ -20,9 +20,10 @@ ancestry: [feature]
   artifact: it belongs to the [initiative](initiative.md) it is made
   from and may hold scenarios owned by
   several Bounded Contexts. The scenario is the atom; the feature is
-  its grouping; a Bounded Context's view of the scenario register — the lead
-  shop's one record — is the subset of scenarios, across all features,
-  tagged to it. The instance is a
+  its grouping; the feature repository — the lead shop's directory of
+  feature artifacts — is the record of what is specified, and a
+  context's assigned set is the subset of scenarios, across all
+  features, tagged to it. The instance is a
   markdown document with frontmatter whose Scenarios section holds one
   fenced Gherkin block — the executable unit the shops receive; the
   other sections are the document's, not Gherkin's. Scenarios are
@@ -34,8 +35,8 @@ ancestry: [feature]
   the scenarios' steps included; the product designer role contributes
   usability and accessibility criteria, the solutions architect role
   its non-functional constraints where the decomposition names them.
-  The owning shops do not co-author: conflicts with behavior they
-  already hold are caught by the register sweep at assignment, and a
+  The owning shops do not co-author: conflicts with behavior already
+  specified are caught by the repository sweep at assignment, and a
   shop's objection travels as a clarify or a returned dispatch after
   it receives its scenarios. Checked by the
   [PO output check](../processes/po-output-check.md); its scenarios
@@ -83,7 +84,7 @@ goes to `returned`.
    source, and the repeat is accepted so the document reads without
    the block), then an optional `Background:` (its Given steps judged as any
    step), then each `Scenario:` carrying the tags `@feature:<id>` (so a
-   scenario travels alone to a register and still names its feature —
+   scenario travels alone to a shop and still names its feature —
    the reason the Feature line's tag inheritance is not relied on),
    `@hash:<sha>` (a hash of the scenario's text), and, once assigned,
    `@bounded-context:<name>`; Given/When/Then with one action or event
@@ -106,17 +107,17 @@ goes to `returned`.
 - A changed scenario text is a new scenario with a new `@hash:`.
   Whether the hash matches the text is a mechanical check, to be filed
   as a lint.
-- A scenario's conflicts with behavior a shop already holds are caught
-  by the register sweep at assignment, never by asking the shop during
-  authoring; the shop's voice after dispatch is the clarify and the
-  return.
+- A scenario's conflicts with behavior already specified are caught
+  by the sweep of the feature repository at assignment, never by
+  asking the shop during authoring; the shop's voice after dispatch
+  is the clarify and the return.
 
 ## Commitment (Definition of Done)
 
 A feature is done when it has passed the PO output check against its
 fitness set and the framing, and every scenario carries a
 `@bounded-context:` tag. **Consequence on failure:** it is returned
-with the criterion named and no scenario enters a register.
+with the criterion named and no scenario is dispatched.
 
 ## Sources
 
@@ -152,3 +153,4 @@ experience principles `core-task-parity` and `accessible-by-standard`.
 | 8 | 2026-08-31 | update | Owner direction: the register is the lead shop's, viewed per context. |
 | 9 | 2026-08-31 | update | Owner decision: co-production dropped — the PO authors alone (the register sweep and the post-dispatch clarify are the shop's voice); the architect's non-functional constraints added beside the designer's criteria; Contributors names ownership, not authorship. |
 | 10 | 2026-08-31 | review | Round-1 screen of the co-production removal: the Edges table's sources are the framing and the contributors' criteria, not a shop. |
+| 11 | 2026-08-31 | update | Owner direction: the repository/register split — the feature repository (the artifacts as specified) is what the conflict sweep at assignment reads; the scenario register is the tracker of implemented scenarios, a feature to be built. |

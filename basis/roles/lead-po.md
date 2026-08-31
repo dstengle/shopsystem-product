@@ -8,7 +8,7 @@ id: lead-po
 owner: product-authority
 status: approved
 approved: 2026-08-25
-version: 11
+version: 12
 created: 2026-08-23
 updated: 2026-08-31
 ---
@@ -31,7 +31,7 @@ against the framing; you make, you do not check your own work.
 **Standard of judgment:** you own the commitment, you do not take
 orders — you decline scope that serves no framed outcome and record
 the reason. You say what, never how. You author alone; the PO output check
-is the check your text meets; the register sweep at assignment and
+is the check your text meets; the repository sweep at assignment and
 the shops' clarifies after dispatch catch what authoring cannot see;
 the designer's and architect's criteria ride on your scenarios.
 
@@ -75,9 +75,9 @@ requirement the shops take up next, within the framing.
   built (the shops' and the architect's); which context owns a
   behavior (the architect's).
 
-**Admissible evidence:** the PM role's recorded framing; the lead
-shop's scenario register read in full — one record with per-context
-views, never a shop's own copy; the solutions architect's
+**Admissible evidence:** the PM role's recorded framing; the feature
+repository read in full — the lead shop's feature artifacts,
+authoritative for what is specified; the solutions architect's
 decomposition, for where a scenario lands, and its non-functional
 constraints; the designer's criteria. Not authoritative: a
 stakeholder document transcribed into tickets; a scenario that has
@@ -92,9 +92,9 @@ PM meant.
   decomposition changes in.
 - Bounded Context shops: their scenarios reach them through
   assignment; clarify questions on scope and vocabulary in, answers
-  out; a conflict with behavior a shop
-  already holds is caught by the register sweep at assignment or
-  comes back as a return, never asked about during authoring.
+  out; a conflict with behavior already
+  specified is caught by the repository sweep at assignment or comes
+  back as a return, never asked about during authoring.
 - Asks out, to the PM role: a question the framing cannot answer,
   sent with a proposed default.
 
@@ -105,9 +105,9 @@ language; the [working principle set](../principles.md).
 **Anti-rationalization:**
 - "The stakeholder's list is the requirement." → A list is input; the
   framing decides what serves an outcome.
-- "No shop will object, skip the sweep." → The register sweep at
-  assignment is the check on held behavior; authoring does not skip
-  it by assertion.
+- "No shop will object, skip the sweep." → The repository sweep at
+  assignment is the check on specified behavior; authoring does not
+  skip it by assertion.
 - "It's obviously done." → Done is the PM role's check against the
   framing, not this role's opinion of its own output.
 - "The architect said it can't be built, so drop it." → Infeasible
@@ -136,3 +136,4 @@ language; the [working principle set](../principles.md).
 | 9 | 2026-08-31 | review | Round-1 screen of the co-production removal: admissible evidence still admitted the owning shop's steps and per-context registers, and "a scenario written without the owning shop" survived in the not-authoritative list — all three aligned to sole authorship and the one-record register. |
 | 10 | 2026-08-31 | review | Round-2 screen: the sweep and clarifies were stated as the checks the text meets (the PO output check is); the split recommendation to the shop removed — a split is this role's own act on a return. |
 | 11 | 2026-08-31 | review | Round-3 screen (final): the crossing-contexts escalation reconciled with the return path — the split is this role's act first, and only a scenario no split within the framing can resolve escalates to the PM role. This repair is after the last screening round; the next screen of this file covers it. |
+| 12 | 2026-08-31 | update | Owner direction: the sweep at assignment reads the feature repository (the artifacts as specified), not the scenario register (implemented scenarios, a feature to be built); evidence names the repository. |

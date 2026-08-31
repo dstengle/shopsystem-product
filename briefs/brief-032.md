@@ -6,7 +6,7 @@ date: 2026-08-28
 reader: product-authority
 decisions-requested: 3
 annex: annex-032.md
-version: 7
+version: 9
 ---
 
 # Brief 032: the product flow from discovery to assigned scenarios
@@ -48,13 +48,14 @@ through six sub-processes, in order —
 - `feature-authoring` (new): the PO authors one feature from the
   initiative alone; the designer adds usability and accessibility
   criteria, the architect its non-functional constraints; conflicts
-  with behavior a shop already holds are caught by the register sweep
+  with behavior already specified are caught by the repository sweep
   at assignment, and the shop's voice after dispatch is the clarify
   and the return.
 - `po-output-check` (exists; amended): screens the feature; the
   initiative becomes `active` when its first feature passes.
 - `scenario-assignment` (exists as a draft): the architect tags each
-  scenario's Bounded Context, chooses the message type, dispatches;
+  scenario's Bounded Context, sweeps the feature repository for
+  conflicts, dispatches `assign_scenarios`;
   the loop returns to `feature-authoring` until every feature is
   assigned.
 *Binds:* the six and their hand-offs. *Drafting default:* prompts,
@@ -87,11 +88,14 @@ forty screen rounds; this plan runs four for the same definitions.
 *Default:* proceed in this order.
 
 **3. Accept what is left out of the five batches.** *What you
-approve:* five exclusions — the initiative's `completed` state and the
-product changelog (the record of shipped change), both set when a
+approve:* seven exclusions — the initiative's `completed` state and
+the product changelog (the record of shipped change), both set when a
 shop's work returns through reconcile-and-close; the roadmap (a view
 of initiatives by state); the `router` role reconcile-and-close names
-and no definition holds; discovery forms beyond the three. *Binds:*
+and no definition holds; discovery forms beyond the three; the
+request_bugfix and request_maintenance flows (the result of
+operational activities, not of assignment); the scenario register
+itself (a feature to be built by integrating the work on main). *Binds:*
 none is built in A–E. *Drafting default:* each is noted in the
 definition that needs it. *Evidence:* none is on the path from
 discovery to assignment. *Default:* accepted.
@@ -121,3 +125,5 @@ with steps and roles, the batch table, the exclusions (optional).
 | 5 | 2026-08-28 | state | draft → delivered at the round cap. |
 | 6 | 2026-08-28 | update | The evidence sentence's "measuring" step, unmapped in round 4, routed to ask 3 — one line the cap-round repair missed. |
 | 7 | 2026-08-31 | update | Owner decision, after delivery: co-production dropped from feature-authoring (the register sweep and post-dispatch clarifies are the shop's voice; the lead-shop-held register makes the sweep free); the architect's non-functional constraints added beside the designer's criteria. The model and the feature chain updated together. |
+| 8 | 2026-08-31 | update | Owner direction, after delivery: the repository/register split — the sweep at assignment reads the feature repository (the artifacts as specified); the scenario register is the tracker of implemented scenarios pulled from the shops, itself a feature to be built by integrating work on main; assignment dispatches assign_scenarios only, bugfix and maintenance requests being the result of operational activities. |
+| 9 | 2026-08-31 | review | Round-1 screen of the repository/register split: the model passage still had assignment choosing the message type (now: sweeps the repository, dispatches assign_scenarios); ask 3's count raised to seven, naming the two exclusions the annex already recorded. |

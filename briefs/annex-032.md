@@ -20,7 +20,7 @@ flowchart TD
   author(["feature-authoring (sub-process)<br/>PO authors one feature; designer and architect add criteria<br/>out — feature: draft"])
   pocheck(["po-output-check (existing; amended)<br/>screen → revise ↺ → PM decides<br/>out — feature: checked | returned; initiative: active on first pass"])
   route2{"checked?"}
-  assign(["scenario-assignment (existing; draft)<br/>architect tags @bounded-context, chooses vehicle, dispatches<br/>out — feature: assigned"])
+  assign(["scenario-assignment (existing; draft)<br/>architect tags @bounded-context, reads pre-state, dispatches assign_scenarios<br/>out — feature: assigned"])
   more{"more features in the initiative?"}
   __start(("start")) --> discover
   discover --> check
@@ -50,7 +50,7 @@ later, by `reconcile-and-close`, outside this flow.
 | 1 | `discovery-conversation` | exists, approved | gains a `form` parameter (brainstorm first; interview; review of evidence), an `engage` step that also drafts the initiative's §1–3 from the conversation, and a `frame` step where the PM records the initiative as `proposed` (or `proposed` → `cancelled` when declined); output `initiative` instead of only the session record | authority (human), lead-pm's assisting agent |
 | 2 | `initiative-check` | new | `attach` (architect: §4 feasibility, §5 decomposition; designer: §4 usability or "not yet" with an ask) → `screen` (cold-reviewer, fresh, against the initiative fitness set) → `route` → `revise` (lead-pm assist; asks to architect/designer) ↺ cap 3 → `decide` (human, authority: bet → `planned`; hold → stays `proposed`; cancel → `cancelled`, reason) → `record` (assist: status, the product decision record for the bet, Document History) | architect, designer, cold-reviewer, authority |
 | 3 | `backlog-ordering` | new, small | `place` (lead-po: the planned initiative's features-to-be into the backlog order against the PM's priority; enablers placed or declined) → `po-output-check` on the order (sub-process) | lead-po, then the check |
-| 4 | `feature-authoring` | new | `draft` (lead-po, sole author: Feature narrative from the initiative's §1–2; scenarios with `@feature:`/`@hash:`; owning shops named from the decomposition) → `criteria` (designer: usability and accessibility where §2 names a type; architect: non-functional constraints where the decomposition names them) → `po-output-check` (sub-process). No co-produce step: conflicts with held behavior are caught by the register sweep at assignment; the shop's voice after dispatch is the clarify and the return. | lead-po, designer, architect |
+| 4 | `feature-authoring` | new | `draft` (lead-po, sole author: Feature narrative from the initiative's §1–2; scenarios with `@feature:`/`@hash:`; owning shops named from the decomposition) → `criteria` (designer: usability and accessibility where §2 names a type; architect: non-functional constraints where the decomposition names them) → `po-output-check` (sub-process). No co-produce step: conflicts with specified behavior are caught by the repository sweep at assignment; the shop's voice after dispatch is the clarify and the return. | lead-po, designer, architect |
 | 5 | `po-output-check` | exists, approved | amended: reads the initiative (the framing is its §1); on the first feature's pass, sets the initiative `active`; criteria sets now exist for feature, decision record, order | as today |
 | 6 | `scenario-assignment` | exists, draft | as defined; approve | architect |
 
@@ -87,4 +87,10 @@ rounds); five sessions, then Phase 2's first feature runs through it.
 - The `router` role and the reconcile side generally.
 - User research as a discovery form beyond the three named.
 - Shop co-authorship of scenarios: dropped by owner decision — the
-  register sweep and post-dispatch clarifies replace it.
+  repository sweep and post-dispatch clarifies replace it.
+- request_bugfix and request_maintenance: the result of operational
+  activities, not of assignment — their processes are excluded with
+  the reconcile side.
+- The scenario register: the tracker of implemented scenarios, itself
+  a feature to be built by integrating the work on `main`; not basis
+  infrastructure this plan defines.

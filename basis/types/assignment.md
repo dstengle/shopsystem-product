@@ -4,9 +4,9 @@ id: assignment
 defines: assignment
 owner: product-authority
 status: draft
-version: 1
+version: 2
 created: 2026-08-28
-updated: 2026-08-28
+updated: 2026-08-31
 ---
 
 # Data type: assignment
@@ -14,8 +14,11 @@ updated: 2026-08-28
 ## Purpose
 
 The solutions architect role's assignment of a checked feature's
-scenarios: for each Bounded Context tagged, the vehicle chosen from
-that context's pre-state and the scenario tags it receives. Produced by
+scenarios: for each Bounded Context tagged, the scenario tags it
+receives and the pre-state read — the context's contracts and the
+feature repository. Every entry dispatches as `assign_scenarios`;
+bugfix and maintenance requests are the result of operational
+activities, not of assignment. Produced by
 the `assign` step of
 [`../processes/scenario-assignment.md`](../processes/scenario-assignment.md);
 consumed by its `dispatch` and `record` steps. The `assign` step writes
@@ -33,9 +36,8 @@ schema:
         type: object
         fields:
           context: {type: string}                 # the Bounded Context's name, as tagged
-          vehicle: {type: string, enum: [assign_scenarios, request_bugfix, request_maintenance]}   # the message type the pre-state selects (the frozen corpus's three)
-          scenario_hashes: {type: array, items: {type: string}}   # the @hash: values of the scenarios this context receives — a scenario's identity, as the registers hold it
-          pre_state: {type: string}               # what was read: the contracts and register consulted
+          scenario_hashes: {type: array, items: {type: string}}   # the @hash: values of the scenarios this context receives — a scenario's identity, as the feature repository holds it
+          pre_state: {type: string}               # what was read: the contracts and feature repository consulted
 ```
 
 ## Document History
@@ -43,3 +45,4 @@ schema:
 | Version | Date | Kind | Entry |
 |---|---|---|---|
 | 1 | 2026-08-28 | update | Authored with the scenario-assignment process so the vehicle is chosen per context from the pre-state and carried as data, not fixed in a command. The three vehicles are the frozen corpus's message types, imported by name. |
+| 2 | 2026-08-31 | update | Owner direction: the vehicle field removed — assignment dispatches assign_scenarios only; bugfix and maintenance requests are the result of operational activities, not of assignment; pre-state is the contracts and the feature repository. |

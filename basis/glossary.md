@@ -4,7 +4,7 @@ id: glossary
 owner: product-authority
 status: approved
 approved: 2026-08-19
-version: 18
+version: 19
 created: 2026-08-19
 updated: 2026-08-31
 ---
@@ -137,12 +137,13 @@ terms uses one of these when one fits.
   anti-corruption layer, open host service, published language, shared
   kernel, or separate ways.
 - **vehicle** — the message type a request to a Bounded Context shop
-  travels in; chosen from the pre-state, never from the request's
-  wording.
-- **pre-state** — what a Bounded Context actually is before a change,
-  read from its contracts and its view of the scenario register — both
-  lead-shop-held records — never from its internals and never by
-  querying the shop.
+  travels in. Scenario assignment sends `assign_scenarios`;
+  `request_bugfix` and `request_maintenance` are the result of
+  operational activities, not of assignment.
+- **pre-state** — the state of the system's design at the moment of a
+  change: the context's contracts and the feature repository — both
+  lead-shop-held records — never the shop's internals and never a
+  query of the shop.
 - **framing** — the PM role's recorded statement of what a request is
   about: the originator, the problem taken to be worth solving, the
   outcome it serves, and the contract it entered through; the
@@ -158,14 +159,20 @@ terms uses one of these when one fits.
   states, as a requirement, what counts as done for one behavior;
   authored by the PO role; assigned to its owning context by a
   `@bounded-context:<name>` tag the solutions architect writes;
-  recorded in the scenario register.
-- **scenario register** — the lead shop's one register of every
-  acceptance scenario in the system, with each scenario's hash, state,
-  and `@bounded-context:` assignment; read as per-context views.
-  Maintained asynchronously — assignment writes to it when scenarios
-  are dispatched, and reconcile-and-close confirms and updates it when
-  a shop's work returns — never by querying shops on demand. The
-  authoritative record for assignment and for pre-state verification.
+  held in the feature repository.
+- **feature repository** — the lead shop's directory of feature
+  artifacts: every scenario as specified, with its tags — the
+  artifacts themselves, not a derived record. The authoritative record
+  of what is specified and which context owns each scenario, and what
+  the conflict sweep at assignment reads.
+- **scenario register** — the tracker of *implemented* scenarios:
+  their hashes and implementation status, pulled from the Bounded
+  Context shops through asynchronous processes — never by querying
+  shops on demand — and cross-referenced where a conflict is found,
+  for implementation status. Not the record of what is specified —
+  that is the feature repository. Itself a feature to be built,
+  partially implemented on `main`, to arrive by integrating that
+  work.
 - **ask** — a question one activity puts to another role in place of
   its output, carrying a default and a checkpoint; the run holds, the
   role answers, the step resumes — never a wait in place (data type
@@ -247,3 +254,4 @@ terms uses one of these when one fits.
 | 16 | 2026-08-28 | update | framing carries the contract; check of record, bet, and product decision record added — each arrived undefined in the initiative chain's screen. |
 | 17 | 2026-08-31 | update | Owner direction: the scenario register is the lead shop's one register with per-context views, maintained asynchronously from dispatch and reconciliation — not each shop's own list queried on demand; pre-state reads lead-shop-held records. |
 | 18 | 2026-08-31 | update | Owner decision: acceptance scenarios are authored by the PO role; co-production removed. |
+| 19 | 2026-08-31 | update | Owner direction: the scenario register split from the record of specified scenarios — the feature repository (new term) is the artifacts themselves, authoritative for specification and assignment; the register is the tracker of implemented scenarios pulled from the shops, itself a feature to be built; pre-state is the state of the design (contracts + repository); vehicles other than assign_scenarios come from operational activities, not assignment. |

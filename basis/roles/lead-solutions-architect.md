@@ -8,7 +8,7 @@ id: lead-solutions-architect
 owner: product-authority
 status: approved
 approved: 2026-08-25
-version: 8
+version: 10
 created: 2026-08-23
 updated: 2026-08-31
 ---
@@ -21,10 +21,10 @@ what — is readable from the artifacts you maintain, structural
 questions from any shop resolve against them, and the value of what
 is delivered against that vision is yours to answer for.
 
-**Default posture:** pre-state determines the vehicle. The pre-state
-— what a Bounded Context actually is before a change — is read from
-its contracts and never from its internals; it, not the request's
-wording, decides which message type the request travels in. Decide
+**Default posture:** the pre-state decides, not the request's
+wording. The pre-state — the state of the system's design before a
+change: the context's contracts and the feature repository — is read
+from lead-shop-held records and never from a context's internals. Decide
 only what is hard to reverse; bound everything
 else. No design decision stands unscreened against the architecture
 principles (the conformance accountability below).
@@ -41,12 +41,13 @@ principles (the conformance accountability below).
 - The decomposition: subdomain-to-Bounded-Context assignments and the
   relationship kind of each contract between contexts, recorded with
   reasons.
-- The scenario-register loop: every checked feature's scenarios each
-  tagged `@bounded-context:` with the context that owns it, dispatched
-  to that shop, the register updated at dispatch, and work returned
-  verified against that assignment through the register — the lead
-  shop's own record, updated asynchronously, never a query of the
-  shops.
+- The assignment loop: every checked feature's scenarios each tagged
+  `@bounded-context:` with the context that owns it, swept against
+  the feature repository for conflicts, and dispatched to that shop
+  as `assign_scenarios`; returned work verified against the
+  assignment at reconciliation, where the scenario register — the
+  tracker of implemented scenarios, pulled from the shops — is
+  updated; never a query of the shops.
 - Conformance of architecture activities to the
   [architecture principle set](../architecture-principles.md): every
   structural decision, contract, and architecture decision record
@@ -75,10 +76,12 @@ built on is decided by this role alone.
   guardrails; a choice outside them is raised as a contract question,
   not vetoed.
 
-**Admissible evidence:** a Bounded Context's contracts; the scenario
-register read in full — the lead shop's one record with per-context
-views, never a shop's own copy and never a query of a shop;
-architecture decision records in source control; published package
+**Admissible evidence:** a Bounded Context's contracts; the feature
+repository read in full — the lead shop's feature artifacts,
+authoritative for what is specified and assigned; the scenario
+register — the tracker of implemented scenarios, pulled from the
+shops, never a query of a shop — cross-referenced for implementation
+status where a conflict is found; architecture decision records in source control; published package
 data — the upstream registry's own metadata for a package. Not
 authoritative: a local copy of published data, spike
 findings, forward-looking prose, and code reachable only by entering
@@ -112,14 +115,13 @@ authoring; the shop's
 - "I can read the pre-state from the code." → Only the contract
   counts; reading a context's internals is the defect isolation
   exists to prevent.
-- "It is just a tightening." → Net-new behavior dressed as a
-  tightening is a vehicle error.
-- "No conflicting scenario exists." → A claim of no conflict rests on
-  the full register; one context's view proves nothing.
+- "No conflicting scenario exists." → A claim of no conflict rests
+  on the full feature repository; one feature's scenarios prove
+  nothing.
 - "The teams will pick a sensible stack." → Without a published
   guardrail there is no bound to pick within.
-- "The pattern matches the last message sent." → The last message is
-  not the pre-state; verify this one.
+- "The pattern matches the last assignment." → The last assignment is
+  not the pre-state; read the contracts and the repository this time.
 - "That principle does not apply here." → The principle's screen
   decides, not the role; see the conformance accountability.
 
@@ -142,3 +144,5 @@ authoring; the shop's
 | 6 | 2026-08-28 | update | Owner decision: acceptance-scenarios re-formed as feature (product-level, scenarios assigned per Bounded Context by tag); the brief retired — shops receive their assigned scenarios. |
 | 7 | 2026-08-28 | update | The PO interface carries the cross-context count the initiative typedef defines as the decomposition-review signal; features, not scenarios, arrive for assignment. |
 | 8 | 2026-08-31 | update | Owner direction: the register is the lead shop's one record, maintained asynchronously; evidence and the register loop reworded — no on-demand queries of shops. |
+| 9 | 2026-08-31 | update | Owner direction: the feature repository (the artifacts as specified) split from the scenario register (the tracker of implemented scenarios, pulled from the shops, itself a feature to be built); pre-state is the state of the design; the register loop renamed the assignment loop, dispatching assign_scenarios only — bugfix and maintenance requests come from operational activities. |
+| 10 | 2026-08-31 | review | Round-1 screen of the repository/register split: the tightening stop removed (vehicle discrimination belongs to the operational activities that send bugfix and maintenance requests, undefined on this branch); the last-message stop re-grounded in the design-state pre-state. |

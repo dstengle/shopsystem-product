@@ -2,10 +2,11 @@
 name: scenario-assignment
 description: 'Turn a checked feature into work the Bounded Context shops can take
   up: the solutions architect role tags each scenario with the context that owns its
-  behavior, reads each tagged context''s pre-state to choose the message type its
-  scenarios travel in, records the feature as assigned, and sends each shop its scenarios.
-  Use when a feature has passed the PO output check and its scenarios must each be
-  assigned to the Bounded Context that owns the behavior and sent to that shop.'
+  behavior, reads each tagged context''s pre-state, sweeps the feature repository
+  for conflicts, records the feature as assigned, and sends each shop its scenarios
+  as an `assign_scenarios` message. Use when a feature has passed the PO output check
+  and its scenarios must each be assigned to the Bounded Context that owns the behavior
+  and sent to that shop.'
 type: skill
 id: scenario-assignment-skill
 status: draft
@@ -15,14 +16,14 @@ generated: true
 generated-by: basis/tools/compile_process.py
 derived-from: scenario-assignment-process
 source: basis/processes/scenario-assignment.md
-source-digest: sha256:34e3f410c300
+source-digest: sha256:e5cc7441808e
 activation: model-judged
 promotion: experiment-local
 ---
 
 # Scenario assignment (compiled from `scenario-assignment-process`)
 
-Turn a checked feature into work the Bounded Context shops can take up: the solutions architect role tags each scenario with the context that owns its behavior, reads each tagged context's pre-state to choose the message type its scenarios travel in, records the feature as assigned, and sends each shop its scenarios.
+Turn a checked feature into work the Bounded Context shops can take up: the solutions architect role tags each scenario with the context that owns its behavior, reads each tagged context's pre-state, sweeps the feature repository for conflicts, records the feature as assigned, and sends each shop its scenarios as an `assign_scenarios` message.
 
 **The decomposition decides, not the wording. Which context owns a behavior is read from the decomposition and the contexts' contracts; a scenario no context can own is the architect's finding, not a guess.**
 
@@ -30,7 +31,7 @@ Result of a run: `feature` (string).
 
 ```mermaid
 flowchart TD
-  assign(["Tag each scenario with its owning context — agent: lead-solutions-architect<br/>in — feature: string, decomposition: string, contracts: string, registers: string, ask: ask<br/>out — feature: string, unowned: string[], assignment: assignment"])
+  assign(["Tag each scenario with its owning context — agent: lead-solutions-architect<br/>in — feature: string, decomposition: string, contracts: string, repository: string, ask: ask<br/>out — feature: string, unowned: string[], assignment: assignment"])
   route{"Route on ownership<br/>in — unowned: string[]"}
   return(["Return the feature with the unowned scenarios named — agent: lead-solutions-architect<br/>in — feature: string, unowned: string[]<br/>out — feature: string"])
   dispatch["Send each shop its scenarios — runtime<br/>in — feature: string, assignment: assignment<br/>out — sent: string[]"]
@@ -47,7 +48,7 @@ flowchart TD
 
 ## assign — Tag each scenario with its owning context
 
-Run by an agent in role `lead-solutions-architect`. reads: feature, decomposition, contracts, registers, ask · writes: feature, unowned, assignment.
+Run by an agent in role `lead-solutions-architect`. reads: feature, decomposition, contracts, repository, ask · writes: feature, unowned, assignment.
 - may ask: `lead-pm` — return an `ask` (with default and checkpoint) in place of outputs; at most one per run.
 - then: `route`
 
@@ -62,18 +63,12 @@ from the scenario's wording alone — and write a single
 context owns, that two contexts would each have to own, or whose
 owning context differs from the shop Contributors names as its
 owner, goes to unowned with the reason; do not guess. Then, for each context
-tagged, read its pre-state — its contract at contracts and its view of
-the register at registers, the full register where a scenario
-could conflict — and choose the vehicle: assign_scenarios for net-new
-behavior, request_bugfix for a scenario the register already
-holds and the system fails, request_maintenance for a tightening
-of held behavior. A scenario that contradicts behavior the
-register holds and is neither a held scenario the system fails nor
-a tightening of held behavior — the register sweep's
-catch — goes to unowned with the conflict as its reason. Write
-one assignment entry per context with
-its vehicle, the @hash: values of its scenarios, and the
-pre-state read. If deciding needs what the decomposition
+tagged, read its pre-state — the state of the design: its contract
+at contracts and the feature repository at repository — and
+sweep the repository for conflicts: a scenario that contradicts
+one already specified there goes to unowned with the conflict
+as its reason. Write one assignment entry per context with
+the @hash: values of its scenarios and the pre-state read. If deciding needs what the decomposition
 cannot say — whether a behavior is meant to be in the product at
 all — return an ask to lead-pm (kind: scope) with the question,
 the default you will apply, and a checkpoint of the tags written
@@ -110,9 +105,9 @@ a change, which this role raises as an architecture decision
 record; the scenario may need a split, which is the PO role's;
 or the feature's Contributors must be corrected to name the
 owning shop the decomposition places the behavior in, which is
-the PO role's; or the scenario contradicts behavior the register
-holds, which the PO role resolves against the framing — the
-reason in unowned names which case.
+the PO role's; or the scenario contradicts one already specified
+in the feature repository, which the PO role resolves against
+the framing — the reason in unowned names which case.
 ```
 
 ## dispatch — Send each shop its scenarios
@@ -120,9 +115,9 @@ reason in unowned names which case.
 Run by the runtime — no agent, no prose. reads: feature, assignment · writes: sent.
 
 ```yaml
-run: "set -- ${assignment.entries[].vehicle}\nfor ctx in ${assignment.entries[].context};\
-  \ do\n  vehicle=$1; shift\n  shop-msg send --bc \"$ctx\" --type \"$vehicle\" \\\n\
-  \    --feature \"${feature}\" --tag \"@bounded-context:$ctx\"\ndone\n"
+run: "for ctx in ${assignment.entries[].context}; do\n  shop-msg send --bc \"$ctx\"\
+  \ --type assign_scenarios \\\n    --feature \"${feature}\" --tag \"@bounded-context:$ctx\"\
+  \ndone\n"
 next: record
 ```
 
@@ -136,7 +131,7 @@ Prompt:
 ```text
 Set the feature's status to "assigned" and write a state entry
 into its Document History listing, from assignment, each
-context's scenario hashes and vehicle, and, from sent (the tool's
+context's scenario hashes, and, from sent (the tool's
 standard output, one line per message — its output contract is
 pinned when the messaging package is imported), the message sent to each. Return
 the feature.
