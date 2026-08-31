@@ -3,7 +3,7 @@ type: process-definition
 id: scenario-assignment-process
 owner: product-authority
 status: draft
-version: 4
+version: 5
 created: 2026-08-28
 updated: 2026-08-28
 produces: []
@@ -92,8 +92,9 @@ Each entry names a process-local value. Simple types use JSON Schema
 names inline; every structured shape is a `$ref` to a defined type with
 an explicit source. Conditions are CEL expressions over these names.
 `decomposition` is the path of the solutions architect's structural
-model, and `contracts` and `registers` the paths under which each
-Bounded Context's contracts and scenario register are read; none of
+model, and `contracts` the path under which each Bounded Context's contracts
+are read, and `registers` the path of the lead shop's scenario
+register (per-context views); none of
 the three has a typedef on this branch — an unfiled gap, named here —
 so each names the record the architect maintains, an approved source
 by the role's own admissible evidence.
@@ -132,9 +133,9 @@ steps:
       context owns, that two contexts would each have to own, or whose
       owning context differs from the shop named as its source in
       Contributors, goes to unowned with the reason; do not guess. Then, for each context
-      tagged, read its pre-state — its contract and its scenario
-      register at registers, every register where a scenario could
-      conflict — and choose the vehicle: assign_scenarios for net-new
+      tagged, read its pre-state — its contract at contracts and its view of
+      the register at registers, the full register where a scenario
+      could conflict — and choose the vehicle: assign_scenarios for net-new
       behavior, request_bugfix for a scenario the register already
       holds and the system fails, request_maintenance for a tightening
       of held behavior. Write one assignment entry per context with
@@ -223,3 +224,4 @@ steps:
 | 3 | 2026-08-28 | update | Repairs: paired positional iteration over `entries[].vehicle` and `entries[].context`; the output is the tool's standard output under the typedef's new run-output rule; the Roles line names the right and the accountability the role has; scenarios identified by `@hash:`. |
 | 4 | 2026-08-28 | update | From the feature chain's screen: a scenario whose owning context differs from its Contributors' shop is treated as unowned, so the correction path the feature typedef states is carried by this process's return. |
 | 4 | 2026-08-28 | review | Final screen (round 3): clean — O2's witness true under the typedef's paired iteration and run-output rules; the Contributors clause consistent with the feature typedef; two prose stumbles polished in place. |
+| 5 | 2026-08-31 | update | Owner direction: `registers` is the lead shop's one register with per-context views; the dispatch step is where assignment writes to it (a line for batch D's amendment); no on-demand shop queries. |

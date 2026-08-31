@@ -4,7 +4,7 @@ id: feature-typedef
 defines: feature
 owner: product-authority
 status: draft
-version: 7
+version: 8
 created: 2026-08-26
 updated: 2026-08-28
 ancestry: [feature]
@@ -20,8 +20,9 @@ ancestry: [feature]
   artifact: it belongs to the [initiative](initiative.md) it is made
   from and may hold scenarios owned by
   several Bounded Contexts. The scenario is the atom; the feature is
-  its grouping; a Bounded Context's scenario register is the subset of
-  scenarios, across all features, tagged to it. The instance is a
+  its grouping; a Bounded Context's view of the scenario register — the lead
+  shop's one record — is the subset of scenarios, across all features,
+  tagged to it. The instance is a
   markdown document with frontmatter whose Scenarios section holds one
   fenced Gherkin block — the executable unit the shops receive; the
   other sections are the document's, not Gherkin's. Scenarios are
@@ -140,3 +141,4 @@ experience principles `core-task-parity` and `accessible-by-standard`.
 | 6 | 2026-08-28 | update | Repairs: the clause removed, the writer rule kept and enforced by the assignment process, which returns a feature whose tag differs from its Contributors' shop; Edges rows reference the Scenario name; the block's head stated as the source; references located. |
 | 6 | 2026-08-28 | review | Final screen (round 3): clean — no absence clause survives in any check; the correction path carried by the assignment process; two stumbles polished in place. |
 | 7 | 2026-08-28 | update | The initiative typedef now exists: the feature links its initiative, whose first section is the framing. |
+| 8 | 2026-08-31 | update | Owner direction: the register is the lead shop's, viewed per context. |

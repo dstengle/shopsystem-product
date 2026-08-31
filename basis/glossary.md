@@ -4,9 +4,9 @@ id: glossary
 owner: product-authority
 status: approved
 approved: 2026-08-19
-version: 16
+version: 17
 created: 2026-08-19
-updated: 2026-08-28
+updated: 2026-08-31
 ---
 
 # Glossary
@@ -140,8 +140,9 @@ terms uses one of these when one fits.
   travels in; chosen from the pre-state, never from the request's
   wording.
 - **pre-state** — what a Bounded Context actually is before a change,
-  read from its contracts and its scenario register, never from its
-  internals.
+  read from its contracts and its view of the scenario register — both
+  lead-shop-held records — never from its internals and never by
+  querying the shop.
 - **framing** — the PM role's recorded statement of what a request is
   about: the originator, the problem taken to be worth solving, the
   outcome it serves, and the contract it entered through; the
@@ -158,10 +159,13 @@ terms uses one of these when one fits.
   co-produced by the PO role and the owning Bounded Context shop;
   assigned to that context by a `@bounded-context:<name>` tag the
   solutions architect writes; held in that shop's scenario register.
-- **scenario register** — a Bounded Context shop's own list of the
-  acceptance scenarios tagged to it across all features, with their
-  hashes and states; read in full across every context when a claim
-  spans contexts.
+- **scenario register** — the lead shop's one register of every
+  acceptance scenario in the system, with each scenario's hash, state,
+  and `@bounded-context:` assignment; read as per-context views.
+  Maintained asynchronously — assignment writes to it when scenarios
+  are dispatched, and reconcile-and-close confirms and updates it when
+  a shop's work returns — never by querying shops on demand. The
+  authoritative record for assignment and for pre-state verification.
 - **ask** — a question one activity puts to another role in place of
   its output, carrying a default and a checkpoint; the run holds, the
   role answers, the step resumes — never a wait in place (data type
@@ -241,3 +245,4 @@ terms uses one of these when one fits.
 | 14 | 2026-08-28 | update | Owner decision: feature added; acceptance scenario and scenario register carry the `@bounded-context:` assignment; the per-shop brief retired. |
 | 15 | 2026-08-28 | update | initiative added; framing stated to live in the initiative's first section. |
 | 16 | 2026-08-28 | update | framing carries the contract; check of record, bet, and product decision record added — each arrived undefined in the initiative chain's screen. |
+| 17 | 2026-08-31 | update | Owner direction: the scenario register is the lead shop's one register with per-context views, maintained asynchronously from dispatch and reconciliation — not each shop's own list queried on demand; pre-state reads lead-shop-held records. |

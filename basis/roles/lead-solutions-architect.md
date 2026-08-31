@@ -8,9 +8,9 @@ id: lead-solutions-architect
 owner: product-authority
 status: approved
 approved: 2026-08-25
-version: 7
+version: 8
 created: 2026-08-23
-updated: 2026-08-28
+updated: 2026-08-31
 ---
 
 # Lead Solutions Architect
@@ -43,8 +43,10 @@ principles (the conformance accountability below).
   reasons.
 - The scenario-register loop: every checked feature's scenarios each
   tagged `@bounded-context:` with the context that owns it, dispatched
-  to that shop, and work returned verified against that assignment
-  through the shops' scenario registers.
+  to that shop, the register updated at dispatch, and work returned
+  verified against that assignment through the register — the lead
+  shop's own record, updated asynchronously, never a query of the
+  shops.
 - Conformance of architecture activities to the
   [architecture principle set](../architecture-principles.md): every
   structural decision, contract, and architecture decision record
@@ -73,8 +75,9 @@ built on is decided by this role alone.
   guardrails; a choice outside them is raised as a contract question,
   not vetoed.
 
-**Admissible evidence:** a Bounded Context's contracts; a sweep of
-every context's scenario register, never one context's copy;
+**Admissible evidence:** a Bounded Context's contracts; the scenario
+register read in full — the lead shop's one record with per-context
+views, never a shop's own copy and never a query of a shop;
 architecture decision records in source control; published package
 data — the upstream registry's own metadata for a package. Not
 authoritative: a local copy of published data, spike
@@ -112,8 +115,7 @@ authoring; the shop's
 - "It is just a tightening." → Net-new behavior dressed as a
   tightening is a vehicle error.
 - "No conflicting scenario exists." → A claim of no conflict rests on
-  a sweep of every context's register; one context's copy proves
-  nothing.
+  the full register; one context's view proves nothing.
 - "The teams will pick a sensible stack." → Without a published
   guardrail there is no bound to pick within.
 - "The pattern matches the last message sent." → The last message is
@@ -139,3 +141,4 @@ authoring; the shop's
 | 5 | 2026-08-27 | state | The feasibility amendment approved by the owner's direction. |
 | 6 | 2026-08-28 | update | Owner decision: acceptance-scenarios re-formed as feature (product-level, scenarios assigned per Bounded Context by tag); the brief retired — shops receive their assigned scenarios. |
 | 7 | 2026-08-28 | update | The PO interface carries the cross-context count the initiative typedef defines as the decomposition-review signal; features, not scenarios, arrive for assignment. |
+| 8 | 2026-08-31 | update | Owner direction: the register is the lead shop's one record, maintained asynchronously; evidence and the register loop reworded — no on-demand queries of shops. |

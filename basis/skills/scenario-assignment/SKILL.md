@@ -15,7 +15,7 @@ generated: true
 generated-by: basis/tools/compile_process.py
 derived-from: scenario-assignment-process
 source: basis/processes/scenario-assignment.md
-source-digest: sha256:198b24a914ea
+source-digest: sha256:2b78afc36725
 activation: model-judged
 promotion: experiment-local
 ---
@@ -62,9 +62,9 @@ from the scenario's wording alone — and write a single
 context owns, that two contexts would each have to own, or whose
 owning context differs from the shop named as its source in
 Contributors, goes to unowned with the reason; do not guess. Then, for each context
-tagged, read its pre-state — its contract and its scenario
-register at registers, every register where a scenario could
-conflict — and choose the vehicle: assign_scenarios for net-new
+tagged, read its pre-state — its contract at contracts and its view of
+the register at registers, the full register where a scenario
+could conflict — and choose the vehicle: assign_scenarios for net-new
 behavior, request_bugfix for a scenario the register already
 holds and the system fails, request_maintenance for a tightening
 of held behavior. Write one assignment entry per context with
