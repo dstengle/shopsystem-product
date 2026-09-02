@@ -10,12 +10,12 @@ type: skill
 id: initiative-check-skill
 status: approved
 created: 2026-08-31
-updated: 2026-08-31
+updated: 2026-09-02
 generated: true
 generated-by: basis/tools/compile_process.py
 derived-from: initiative-check-process
 source: basis/processes/initiative-check.md
-source-digest: sha256:abb5ad7c2d8e
+source-digest: sha256:48e0471c65eb
 activation: model-judged
 promotion: experiment-local
 ---

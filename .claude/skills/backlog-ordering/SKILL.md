@@ -9,12 +9,12 @@ type: skill
 id: backlog-ordering-skill
 status: approved
 created: 2026-08-31
-updated: 2026-08-31
+updated: 2026-09-02
 generated: true
 generated-by: basis/tools/compile_process.py
 derived-from: backlog-ordering-process
 source: basis/processes/backlog-ordering.md
-source-digest: sha256:d55c85122d78
+source-digest: sha256:f05550e0c689
 activation: model-judged
 promotion: experiment-local
 ---

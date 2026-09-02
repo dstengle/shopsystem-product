@@ -4,10 +4,11 @@ id: definition-chain-migration-process
 owner: product-authority
 status: approved
 approved: 2026-08-22
-version: 4
+version: 5
 created: 2026-08-20
-updated: 2026-08-26
+updated: 2026-09-02
 produces: [definition]
+carried-by: definition-chain-migration-skill
 condition-language: cel
 external-refs: []
 ---
@@ -314,3 +315,4 @@ steps:
 | 4 | 2026-08-26 | update | Owner decision: lead-pm is held by the authority in person; the Roles header now names what the role's agent steps prepare and what the authority decides, per the lead-pm role's Interfaces. |
 | 4 | 2026-08-26 | review | Assist re-basing screened: the rewrite-keepers prompt had the agent demote a keeper with no review step behind it, and named an undefined "attention architecture" — repaired in place: the agent nominates, the authority decides at the close-out; spot-check rate set by the authority. |
 | 4 | 2026-09-02 | review | Skill rendering run (skill-rendering-process): the definition stands approved with no carried-by skill id, so no loadable skill renders at the agent’s load point — finding "missing definition-chain-migration-process no-skill-id" escalated; the owner decides the amendment. |
+| 5 | 2026-09-02 | update | Owner decision, resolving the skill-rendering first run's no-skill-id escalation: carried-by definition-chain-migration-skill added, so the process renders to the agent's load point like every approved definition; the prose Carried-by paragraph left to the consistency pass (lead-dyz0o). |

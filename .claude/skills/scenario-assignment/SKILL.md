@@ -11,12 +11,12 @@ type: skill
 id: scenario-assignment-skill
 status: approved
 created: 2026-08-28
-updated: 2026-08-31
+updated: 2026-09-02
 generated: true
 generated-by: basis/tools/compile_process.py
 derived-from: scenario-assignment-process
 source: basis/processes/scenario-assignment.md
-source-digest: sha256:6e41a82826be
+source-digest: sha256:ecd9f2c7b899
 activation: model-judged
 promotion: experiment-local
 ---

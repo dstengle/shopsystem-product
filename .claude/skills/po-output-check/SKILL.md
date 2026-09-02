@@ -9,12 +9,12 @@ type: skill
 id: po-output-check-skill
 status: approved
 created: 2026-08-25
-updated: 2026-08-31
+updated: 2026-09-02
 generated: true
 generated-by: basis/tools/compile_process.py
 derived-from: po-output-check-process
 source: basis/processes/po-output-check.md
-source-digest: sha256:0be9b5f93b1c
+source-digest: sha256:6fcebaa99ea4
 activation: model-judged
 promotion: experiment-local
 ---

@@ -4,10 +4,11 @@ id: corpus-close-out-process
 owner: product-authority
 status: approved
 approved: 2026-08-22
-version: 3
+version: 4
 created: 2026-08-22
-updated: 2026-08-25
+updated: 2026-09-02
 produces: []
+carried-by: corpus-close-out-skill
 condition-language: cel
 external-refs: []
 ---
@@ -318,3 +319,4 @@ steps:
 | 2 | 2026-08-23 | update | Owner direction: decision-ledger references removed — changes stand on their own; history entries and text no longer cite numbered decisions. |
 | 3 | 2026-08-25 | update | Owner direction: a near-synonym of "role" retired and banned. |
 | 3 | 2026-09-02 | review | Skill rendering run (skill-rendering-process): the definition stands approved with no carried-by skill id, so no loadable skill renders at the agent’s load point — finding "missing corpus-close-out-process no-skill-id" escalated; the owner decides the amendment. |
+| 4 | 2026-09-02 | update | Owner decision, resolving the skill-rendering first run's no-skill-id escalation: carried-by corpus-close-out-skill added, so the process renders to the agent's load point like every approved definition; the prose Carried-by paragraph left to the consistency pass (lead-dyz0o). |

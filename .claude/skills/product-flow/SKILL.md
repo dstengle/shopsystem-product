@@ -10,12 +10,12 @@ type: skill
 id: product-flow-skill
 status: approved
 created: 2026-08-31
-updated: 2026-08-31
+updated: 2026-09-02
 generated: true
 generated-by: basis/tools/compile_process.py
 derived-from: product-flow-process
 source: basis/processes/product-flow.md
-source-digest: sha256:54a835c09f0e
+source-digest: sha256:20330e9224ee
 ---
 
 # Product flow (compiled from `product-flow-process`)

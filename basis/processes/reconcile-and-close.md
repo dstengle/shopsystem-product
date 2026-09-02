@@ -5,9 +5,10 @@ produces: []
 owner: product-authority
 status: approved
 approved: 2026-08-19
-version: 3
+version: 4
 created: 2026-08-10
-updated: 2026-08-23
+updated: 2026-09-02
+carried-by: reconcile-and-close-skill
 condition-language: cel
 ---
 
@@ -169,3 +170,4 @@ cannot guarantee the pair rolls back the half it completed.
 | 2 | 2026-08-23 | update | Owner direction: decision-ledger references removed — changes stand on their own; history entries and text no longer cite numbered decisions. |
 | 3 | 2026-08-26 | update | The superseded role id lead-architect replaced by lead-solutions-architect (2 occurrences), found by the interaction-conformance-check screen. |
 | 3 | 2026-09-02 | review | Skill rendering run (skill-rendering-process): the definition stands approved with no carried-by skill id, so no loadable skill renders at the agent’s load point — finding "missing reconcile-and-close-process no-skill-id" escalated; the owner decides the amendment. |
+| 4 | 2026-09-02 | update | Owner decision, resolving the skill-rendering first run's no-skill-id escalation: carried-by reconcile-and-close-skill added, so the process renders to the agent's load point like every approved definition; the prose Carried-by paragraph left to the consistency pass (lead-dyz0o). |

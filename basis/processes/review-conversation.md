@@ -4,10 +4,11 @@ id: review-conversation-process
 owner: product-authority
 status: approved
 approved: 2026-08-22
-version: 4
+version: 5
 created: 2026-08-22
-updated: 2026-08-26
+updated: 2026-09-02
 produces: [review-record]
+carried-by: review-conversation-skill
 condition-language: cel
 hold-after: P7D
 ---
@@ -191,3 +192,4 @@ per the run lifecycle.
 | 4 | 2026-08-26 | update | Owner decision: lead-pm is held by the authority in person; the Roles header now names what the role's agent steps prepare and what the authority decides, per the lead-pm role's Interfaces. |
 | 4 | 2026-08-26 | review | Assist re-basing screened: the apply prompt let the agent apply a decision its own answer produced — repaired in place: such a decision is offered to the authority, never applied. |
 | 4 | 2026-09-02 | review | Skill rendering run (skill-rendering-process): the definition stands approved with no carried-by skill id, so no loadable skill renders at the agent’s load point — finding "missing review-conversation-process no-skill-id" escalated; the owner decides the amendment. |
+| 5 | 2026-09-02 | update | Owner decision, resolving the skill-rendering first run's no-skill-id escalation: carried-by review-conversation-skill added, so the process renders to the agent's load point like every approved definition; the prose Carried-by paragraph left to the consistency pass (lead-dyz0o). |

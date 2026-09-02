@@ -4,10 +4,11 @@ id: discovery-conversation-process
 owner: product-authority
 status: approved
 approved: 2026-08-22
-version: 9
+version: 10
 created: 2026-08-22
-updated: 2026-08-31
+updated: 2026-09-02
 produces: [session-record, initiative]
+carried-by: discovery-conversation-skill
 condition-language: cel
 hold-after: P7D
 ---
@@ -248,3 +249,4 @@ never released silently.
 | 8 | 2026-08-31 | review | Round-3 screen (final): frame's unread topic input dropped — the declared list is the context load list. Repair after the last screening round; the next screen covers it. |
 | 9 | 2026-08-31 | review | Batch E screen round 2: initiative given initial empty, so a run ending on the cancel or close-without-convergence path returns a defined empty result the parent can route on. Post-approval repair from the end-to-end screen. |
 | 9 | 2026-09-02 | review | Skill rendering run (skill-rendering-process): the definition stands approved with no carried-by skill id, so no loadable skill renders at the agent’s load point — finding "missing discovery-conversation-process no-skill-id" escalated; the owner decides the amendment. |
+| 10 | 2026-09-02 | update | Owner decision, resolving the skill-rendering first run's no-skill-id escalation: carried-by discovery-conversation-skill added, so the process renders to the agent's load point like every approved definition; the prose Carried-by paragraph left to the consistency pass (lead-dyz0o). |

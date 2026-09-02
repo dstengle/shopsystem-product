@@ -4,10 +4,11 @@ id: session-handoff-process
 owner: product-authority
 status: approved
 approved: 2026-08-22
-version: 2
+version: 3
 created: 2026-08-21
-updated: 2026-08-23
+updated: 2026-09-02
 produces: [session-record]
+carried-by: session-handoff-skill
 condition-language: cel
 ---
 
@@ -190,3 +191,4 @@ steps:
 | 1 | 2026-08-22 | state | draft → approved. |
 | 2 | 2026-08-23 | update | Owner direction: decision-ledger references removed — changes stand on their own; history entries and text no longer cite numbered decisions. |
 | 2 | 2026-09-02 | review | Skill rendering run (skill-rendering-process): the definition stands approved with no carried-by skill id, so no loadable skill renders at the agent’s load point — finding "missing session-handoff-process no-skill-id" escalated; the owner decides the amendment. |
+| 3 | 2026-09-02 | update | Owner decision, resolving the skill-rendering first run's no-skill-id escalation: carried-by session-handoff-skill added, so the process renders to the agent's load point like every approved definition; the prose Carried-by paragraph left to the consistency pass (lead-dyz0o). |

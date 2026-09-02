@@ -9,12 +9,12 @@ type: skill
 id: feature-authoring-skill
 status: approved
 created: 2026-08-31
-updated: 2026-08-31
+updated: 2026-09-02
 generated: true
 generated-by: basis/tools/compile_process.py
 derived-from: feature-authoring-process
 source: basis/processes/feature-authoring.md
-source-digest: sha256:c56bba204015
+source-digest: sha256:36b8aaabc8c6
 activation: model-judged
 promotion: experiment-local
 ---
