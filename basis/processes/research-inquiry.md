@@ -4,9 +4,9 @@ id: research-inquiry-process
 owner: product-authority
 status: approved
 approved: 2026-08-23
-version: 7
+version: 8
 created: 2026-08-23
-updated: 2026-08-26
+updated: 2026-09-02
 produces: [research-report]
 carried-by: research-inquiry-skill
 condition-language: cel
@@ -62,7 +62,7 @@ decides what to do with it). consumer — the
 role that asked (parameter `consumer`); receives the report.
 
 **Carried by:**
-[`../skills/research-inquiry/SKILL.md`](../skills/research-inquiry/SKILL.md)
+[`../../.claude/skills/research-inquiry/SKILL.md`](../../.claude/skills/research-inquiry/SKILL.md)
 — generated from this definition by
 [`../tools/compile_process.py`](../tools/compile_process.py), never
 edited by hand.
@@ -399,3 +399,4 @@ lives in the process-definition typedef.
 | 6 | 2026-08-25 | update | Owner direction: a near-synonym of "role" retired and banned. |
 | 7 | 2026-08-26 | update | Owner decision: lead-pm is held by the authority in person; the Roles header now names what the role's agent steps prepare and what the authority decides, per the lead-pm role's Interfaces. |
 | 7 | 2026-08-26 | review | Assist re-basing screened: clean; the authority named at first use. |
+| 8 | 2026-09-02 | update | Carried-by reference repointed to the load point (.claude/skills/) — the skill-rendering process's first run removed the retired home basis/skills/; the owner's sweep per its second-home escalation. |

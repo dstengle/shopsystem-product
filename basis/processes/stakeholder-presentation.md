@@ -4,9 +4,9 @@ id: stakeholder-presentation-process
 owner: product-authority
 status: approved
 approved: 2026-08-19
-version: 4
+version: 5
 created: 2026-08-10
-updated: 2026-08-26
+updated: 2026-09-02
 produces: [decision-brief]
 carried-by: stakeholder-presentation-skill
 condition-language: cel
@@ -51,7 +51,7 @@ make that decision possible in one reading. cold reviewer —
 the author).
 
 **Carried by:**
-[`../skills/stakeholder-presentation/SKILL.md`](../skills/stakeholder-presentation/SKILL.md)
+[`../../.claude/skills/stakeholder-presentation/SKILL.md`](../../.claude/skills/stakeholder-presentation/SKILL.md)
 — generated from this definition by
 [`../tools/compile_process.py`](../tools/compile_process.py), never edited
 by hand.
@@ -251,3 +251,4 @@ steps:
 | 3 | 2026-08-23 | update | Owner direction: the deliver step records rounds as Document History review entries instead of a verified-by frontmatter block, matching the definition typedef's rule. |
 | 4 | 2026-08-26 | update | Owner decision: lead-pm is held by the authority in person; the Roles header now names what the role's agent steps prepare and what the authority decides, per the lead-pm role's Interfaces. |
 | 4 | 2026-08-26 | review | Assist re-basing screened: clean; one timing phrase polished in place. |
+| 5 | 2026-09-02 | update | Carried-by reference repointed to the load point (.claude/skills/) — the skill-rendering process's first run removed the retired home basis/skills/; the owner's sweep per its second-home escalation. |

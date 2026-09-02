@@ -4,9 +4,9 @@ id: backlog-ordering-process
 owner: product-authority
 status: approved
 approved: 2026-08-31
-version: 2
+version: 3
 created: 2026-08-31
-updated: 2026-08-31
+updated: 2026-09-02
 produces: [backlog-order]
 carried-by: backlog-ordering-skill
 condition-language: cel
@@ -48,7 +48,7 @@ check judges only what the order states.
 roles.
 
 **Carried by:**
-[`../skills/backlog-ordering/SKILL.md`](../skills/backlog-ordering/SKILL.md)
+[`../../.claude/skills/backlog-ordering/SKILL.md`](../../.claude/skills/backlog-ordering/SKILL.md)
 — generated from this definition by
 [`../tools/compile_process.py`](../tools/compile_process.py), never
 edited by hand.
@@ -156,3 +156,4 @@ steps:
 | 1 | 2026-08-31 | update | Authored as batch C of brief-032's plan: the one-step placing process the model names — the PO role supersedes the order against the PM role's recorded priority and the PO output check screens it as sub-process. |
 | 2 | 2026-08-31 | review | Batch C screen round 1: O3 no longer denies the maker's own draft status; the enabler recommendations declared as a parameter and input, so place acts on no undeclared context. |
 | 2 | 2026-08-31 | state | draft → approved with batch C as one block (brief-032 ask 2, default accepted). |
+| 3 | 2026-09-02 | update | Carried-by reference repointed to the load point (.claude/skills/) — the skill-rendering process's first run removed the retired home basis/skills/; the owner's sweep per its second-home escalation. |

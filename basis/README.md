@@ -4,9 +4,9 @@ id: basis-index
 owner: product-authority
 status: approved
 approved: 2026-08-23
-version: 5
+version: 6
 created: 2026-08-10
-updated: 2026-08-25
+updated: 2026-09-02
 ---
 
 # Basis index
@@ -33,7 +33,9 @@ here is advisory.
   [`guidelines/base-writing-style.md`](guidelines/base-writing-style.md).
 - `fitness/` — judged Given/When/Then scenario sets per artifact type.
 - `roles/` — role definitions (roles, accountabilities, competencies).
-- `skills/` — generated renderings of process definitions; never edited
+- generated skill renderings live at the agent's load point —
+  `.claude/skills/` at the repository root — maintained by the
+  [skill-rendering process](processes/skill-rendering.md); never edited
   by hand.
 - `tools/` — the compilers and the lint
   ([`tools/lint_basis.py`](tools/lint_basis.py)).
@@ -62,3 +64,4 @@ references.
 | 3 | 2026-08-23 | update | Research section added: reports live on the `research` branch, cited by branch and path. |
 | 4 | 2026-08-23 | update | Research section removed by owner direction: research is registered in the typed research index on `main`, not in this index's prose. |
 | 5 | 2026-08-25 | update | Owner direction: a near-synonym of "role" retired and banned. |
+| 6 | 2026-09-02 | update | Owner's sweep per skill-rendering's second-home escalation: the skills/ entry re-formed — renderings live at the agent's load point (.claude/skills/), maintained by the skill-rendering process; basis/skills/ removed by its first run. |

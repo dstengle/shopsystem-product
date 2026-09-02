@@ -313,3 +313,4 @@ steps:
 | 3 | 2026-08-25 | update | Owner direction: a near-synonym of "role" retired and banned. |
 | 4 | 2026-08-26 | update | Owner decision: lead-pm is held by the authority in person; the Roles header now names what the role's agent steps prepare and what the authority decides, per the lead-pm role's Interfaces. |
 | 4 | 2026-08-26 | review | Assist re-basing screened: the rewrite-keepers prompt had the agent demote a keeper with no review step behind it, and named an undefined "attention architecture" — repaired in place: the agent nominates, the authority decides at the close-out; spot-check rate set by the authority. |
+| 4 | 2026-09-02 | review | Skill rendering run (skill-rendering-process): the definition stands approved with no carried-by skill id, so no loadable skill renders at the agent’s load point — finding "missing definition-chain-migration-process no-skill-id" escalated; the owner decides the amendment. |

@@ -4,9 +4,9 @@ id: initiative-check-process
 owner: product-authority
 status: approved
 approved: 2026-08-31
-version: 5
+version: 6
 created: 2026-08-31
-updated: 2026-08-31
+updated: 2026-09-02
 produces: []
 carried-by: initiative-check-skill
 condition-language: cel
@@ -69,7 +69,7 @@ person; its agent steps assist — `revise` repairs and asks, `record`
 writes the outcome).
 
 **Carried by:**
-[`../skills/initiative-check/SKILL.md`](../skills/initiative-check/SKILL.md)
+[`../../.claude/skills/initiative-check/SKILL.md`](../../.claude/skills/initiative-check/SKILL.md)
 — generated from this definition by
 [`../tools/compile_process.py`](../tools/compile_process.py), never
 edited by hand.
@@ -321,3 +321,4 @@ steps:
 | 4 | 2026-08-31 | review | Round-3 screen (final): the judge's model and prompt version travel as declared data — judge_stamp from the screen step, accumulated in judge_log, read by record — replacing the undeclared anchor read. Repair after the last screening round; the next screen of this file covers it. |
 | 4 | 2026-08-31 | state | draft → approved with batch A+B as one block (brief-032 ask 2, default accepted). |
 | 5 | 2026-08-31 | review | Batch E screen round 2: planned written only over proposed, matching the typedef's lifecycle. Post-approval repair from the end-to-end screen. |
+| 6 | 2026-09-02 | update | Carried-by reference repointed to the load point (.claude/skills/) — the skill-rendering process's first run removed the retired home basis/skills/; the owner's sweep per its second-home escalation. |

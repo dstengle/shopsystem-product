@@ -4,9 +4,9 @@ id: scenario-assignment-process
 owner: product-authority
 status: approved
 approved: 2026-08-31
-version: 10
+version: 11
 created: 2026-08-28
-updated: 2026-08-31
+updated: 2026-09-02
 produces: []
 carried-by: scenario-assignment-skill
 condition-language: cel
@@ -61,7 +61,7 @@ Bounded Context shops — receive their scenarios; not a role of this
 process.
 
 **Carried by:**
-[`../skills/scenario-assignment/SKILL.md`](../skills/scenario-assignment/SKILL.md)
+[`../../.claude/skills/scenario-assignment/SKILL.md`](../../.claude/skills/scenario-assignment/SKILL.md)
 — generated from this definition by
 [`../tools/compile_process.py`](../tools/compile_process.py), never
 edited by hand.
@@ -235,3 +235,4 @@ steps:
 | 9 | 2026-08-31 | update | Owner direction: the vehicle choice removed — assignment only assigns (bugfix and maintenance requests come from operational activities); the sweep reads the feature repository (the artifacts as specified), pre-state is the state of the design (contracts + repository), and the scenario register — the tracker of implemented scenarios, a feature to be built — leaves this process. |
 | 10 | 2026-08-31 | review | Batch D screen round 1: the pre-state read gains its consumer — the record step writes it into the state entry, so the evidence O2 carries survives the run. |
 | 10 | 2026-08-31 | state | draft → approved with batch D as one block (brief-032 ask 2, default accepted). |
+| 11 | 2026-09-02 | update | Carried-by reference repointed to the load point (.claude/skills/) — the skill-rendering process's first run removed the retired home basis/skills/; the owner's sweep per its second-home escalation. |

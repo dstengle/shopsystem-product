@@ -9,14 +9,14 @@ description: 'Turn a checked feature into work the Bounded Context shops can tak
   and sent to that shop.'
 type: skill
 id: scenario-assignment-skill
-status: draft
+status: approved
 created: 2026-08-28
 updated: 2026-08-31
 generated: true
 generated-by: basis/tools/compile_process.py
 derived-from: scenario-assignment-process
 source: basis/processes/scenario-assignment.md
-source-digest: sha256:ec209c3ebc10
+source-digest: sha256:6e41a82826be
 activation: model-judged
 promotion: experiment-local
 ---

@@ -4,9 +4,9 @@ id: product-flow-process
 owner: product-authority
 status: approved
 approved: 2026-08-31
-version: 5
+version: 6
 created: 2026-08-31
-updated: 2026-08-31
+updated: 2026-09-02
 produces: [session-record, initiative, feature, backlog-order]
 carried-by: product-flow-skill
 condition-language: cel
@@ -53,7 +53,7 @@ the initiative needs another feature — an exercise of its backlog
 accountability, not a check).
 
 **Carried by:**
-[`../skills/product-flow/SKILL.md`](../skills/product-flow/SKILL.md)
+[`../../.claude/skills/product-flow/SKILL.md`](../../.claude/skills/product-flow/SKILL.md)
 — generated from this definition by
 [`../tools/compile_process.py`](../tools/compile_process.py), never
 edited by hand.
@@ -368,3 +368,4 @@ checked feature on; this flow does not resume a bet initiative.
 | 4 | 2026-08-31 | review | Batch E screen round 2: a declined-and-cancelled initiative no longer enters the check — route-framed admits only proposed; the feature's status re-read after assignment, so the judgment sees the true value; session-record added to produces. |
 | 5 | 2026-08-31 | review | Batch E screen round 3 (final): the recovery path named — a fresh run of the stopped sub-process, never a resumed flow; the feature counter starts at zero so the cap admits the number it names. Repairs after the last screening round, disclosed here. |
 | 5 | 2026-08-31 | state | draft → approved with batch E as one block (brief-032 ask 2, default accepted); the primer's product statement confirmed by the owner. |
+| 6 | 2026-09-02 | update | Carried-by reference repointed to the load point (.claude/skills/) — the skill-rendering process's first run removed the retired home basis/skills/; the owner's sweep per its second-home escalation. |

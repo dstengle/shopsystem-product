@@ -4,9 +4,9 @@ id: principle-set-authoring-process
 owner: product-authority
 status: approved
 approved: 2026-08-23
-version: 6
+version: 7
 created: 2026-08-22
-updated: 2026-08-26
+updated: 2026-09-02
 produces: [principle-set]
 carried-by: principle-set-authoring-skill
 condition-language: cel
@@ -56,7 +56,7 @@ product-authority (human-held role; the owner named in the set's frontmatter —
 the only role that moves the set to approved).
 
 **Carried by:**
-[`../skills/principle-set-authoring/SKILL.md`](../skills/principle-set-authoring/SKILL.md)
+[`../../.claude/skills/principle-set-authoring/SKILL.md`](../../.claude/skills/principle-set-authoring/SKILL.md)
 — generated from this definition by
 [`../tools/compile_process.py`](../tools/compile_process.py), never
 edited by hand.
@@ -287,3 +287,4 @@ the dual-exit rule) lives in the process-definition typedef, not here.
 | 5 | 2026-08-25 | update | Owner direction: a near-synonym of "role" retired and banned. |
 | 6 | 2026-08-26 | update | Owner decision: lead-pm is held by the authority in person; the Roles header now names what the role's agent steps prepare and what the authority decides, per the lead-pm role's Interfaces. |
 | 6 | 2026-08-26 | review | Assist re-basing screened: the header named a step that does not exist — repaired in place. |
+| 7 | 2026-09-02 | update | Carried-by reference repointed to the load point (.claude/skills/) — the skill-rendering process's first run removed the retired home basis/skills/; the owner's sweep per its second-home escalation. |

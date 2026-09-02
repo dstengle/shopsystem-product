@@ -4,9 +4,9 @@ id: po-output-check-process
 owner: product-authority
 status: approved
 approved: 2026-08-26
-version: 6
+version: 7
 created: 2026-08-25
-updated: 2026-08-31
+updated: 2026-09-02
 produces: []
 carried-by: po-output-check-skill
 condition-language: cel
@@ -63,7 +63,7 @@ decision; a human-held role that decides from the verdict; its
 assisting agent prepares the record and the gap entry).
 
 **Carried by:**
-[`../skills/po-output-check/SKILL.md`](../skills/po-output-check/SKILL.md)
+[`../../.claude/skills/po-output-check/SKILL.md`](../../.claude/skills/po-output-check/SKILL.md)
 — generated from this definition by
 [`../tools/compile_process.py`](../tools/compile_process.py), never
 edited by hand.
@@ -286,3 +286,4 @@ steps:
 | 4 | 2026-08-28 | update | Owner decision: acceptance-scenarios re-formed as feature (product-level, scenarios assigned per Bounded Context by tag); the brief retired — shops receive their assigned scenarios. |
 | 5 | 2026-08-31 | update | Batch D of brief-032's plan: the record step activates a feature's initiative on its first pass (the initiative typedef's active writer resolved); the screening judge's model and prompt version travel as declared data — judge_stamp from screen, accumulated in judge_log, recorded with each round — keeping the fitness sets' promise; the status vocabulary notes the typedefs now define their own. |
 | 6 | 2026-08-31 | review | Batch D screen round 1: the initiative reached through the declared framing input, not an undeclared link-follow; active written only over planned, so a cancelled or unbet initiative is never activated. |
+| 7 | 2026-09-02 | update | Carried-by reference repointed to the load point (.claude/skills/) — the skill-rendering process's first run removed the retired home basis/skills/; the owner's sweep per its second-home escalation. |

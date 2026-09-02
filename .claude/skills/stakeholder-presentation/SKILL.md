@@ -2,18 +2,18 @@
 name: stakeholder-presentation
 description: Turn source material into a presentation the product authority can decide
   from in one short reading, verified by an independent cold read before delivery.
-  Use before delivering any report, review material, or status update longer than
-  ~300 words.
+  Use when before delivering any report, review material, or status update longer
+  than ~300 words.
 type: skill
 id: stakeholder-presentation-skill
 status: approved
 created: 2026-08-10
-updated: 2026-08-19
+updated: 2026-08-26
 generated: true
 generated-by: basis/tools/compile_process.py
 derived-from: stakeholder-presentation-process
 source: basis/processes/stakeholder-presentation.md
-source-digest: sha256:137c0125b9db
+source-digest: sha256:41abf9715f94
 activation: model-judged
 promotion: experiment-local
 ---
@@ -52,7 +52,7 @@ flowchart TD
 
 ## frame — Frame
 
-Run by agent in role `lead-pm`. reads: request · writes: frame.
+Run by an agent in role `lead-pm`. reads: request · writes: frame.
 - check: `size(frame.asks) <= 7`
 - then: `compose`
 
@@ -70,7 +70,7 @@ only the first split.
 
 ## compose — Compose
 
-Run by agent in role `lead-pm`. reads: request, frame · writes: brief, annex.
+Run by an agent in role `lead-pm`. reads: request, frame · writes: brief, annex.
 - check: `words(brief.decision_layer) <= 400`
 - check: `words(brief.decision_layer) + words(brief.support_layer) <= 1500`
 - then: `cold-read`
@@ -93,7 +93,7 @@ guidelines/base-writing-style.md.
 
 ## cold-read — Cold read
 
-Run by agent in role `cold-reviewer` (fresh context every run). reads: brief · writes: review.
+Run by an agent in role `cold-reviewer` (fresh context every run). reads: brief · writes: review.
 - then: `log-round`
 
 Prompt:
@@ -111,7 +111,7 @@ Otherwise verdict "findings".
 
 ## log-round — Record the round
 
-Run by the runtime — no agent, no prose. reads: review, round_log · writes: —.
+Run by the runtime — no agent, no prose. reads: review, round_log · writes: round_log.
 
 ```yaml
 set:
@@ -136,7 +136,7 @@ branches:
 
 ## revise — Revise
 
-Run by agent in role `lead-pm`. reads: brief, review · writes: brief.
+Run by an agent in role `lead-pm`. reads: brief, review · writes: brief.
 - then: `advance-round`
 
 Prompt:
@@ -151,7 +151,7 @@ with one sentence saying why.
 
 ## advance-round — Advance the round counter
 
-Run by the runtime — no agent, no prose. reads: round · writes: —.
+Run by the runtime — no agent, no prose. reads: round · writes: round.
 
 ```yaml
 set:
@@ -161,16 +161,16 @@ next: cold-read
 
 ## deliver — Deliver
 
-Run by agent in role `lead-pm`. reads: brief, annex, review, round_log · writes: brief.
+Run by an agent in role `lead-pm`. reads: brief, annex, review, round_log · writes: brief.
 - then: `end`
 
 Prompt:
 
 ```text
 Deliver the brief to the reader with the annex linked. Set the
-brief's status to "delivered" and attach the round log as its
-verified-by record: one line per round with the verdict and the
-judge's model and prompt version. If the final verdict is
+brief's status to "delivered" and record the round log in the
+brief's Document History: one review entry per round with the
+verdict and the judge's model. If the final verdict is
 "findings" (the failsafe exit fired), state the open findings at
 the top of the brief before anything else.
 ```

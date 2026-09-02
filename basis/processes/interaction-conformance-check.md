@@ -3,9 +3,9 @@ type: process-definition
 id: interaction-conformance-check-process
 owner: product-authority
 status: draft
-version: 3
+version: 4
 created: 2026-08-26
-updated: 2026-08-26
+updated: 2026-09-02
 produces: []
 carried-by: interaction-conformance-check-skill
 condition-language: cel
@@ -61,7 +61,7 @@ answer asks; the architect receives the findings work item and
 carries it to the shop.
 
 **Carried by:**
-[`../skills/interaction-conformance-check/SKILL.md`](../skills/interaction-conformance-check/SKILL.md)
+`.claude/skills/interaction-conformance-check/SKILL.md` — not yet rendered: this definition stands draft, and the skill-rendering process renders only approved definitions; the carrier appears at the load point on approval
 — generated from this definition by
 [`../tools/compile_process.py`](../tools/compile_process.py), never
 edited by hand.
@@ -245,3 +245,4 @@ steps:
 | 2 | 2026-08-26 | review | Re-screened: findings — the record step filed a work item with tools the role lacks; one of three undecidable verdicts handled; an absent record has no history for its gap; the ask examples were corpus matters with a misnamed kind. |
 | 3 | 2026-08-26 | update | Repairs: a runtime file-findings step with `run`, branched on fail; all three corpus verdicts named in screen and decide; an absent record's gap filed on the guideline that needs it; the ask/gap rule stated with examples outside the corpus; interaction_type dropped from decide's inputs. |
 | 3 | 2026-08-26 | review | Final screen (round 3): one reference to a dropped input in decide's ask example; runtime steps conform; skill byte-derived. Repaired in place: example reworded; an unread input dropped from file-findings; interaction_type's use stated in screen; role sentences capitalized. |
+| 4 | 2026-09-02 | update | Carried-by reference repointed to the load point (.claude/skills/) — the skill-rendering process's first run removed the retired home basis/skills/; the owner's sweep per its second-home escalation. |

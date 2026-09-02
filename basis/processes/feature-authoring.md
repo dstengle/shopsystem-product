@@ -4,9 +4,9 @@ id: feature-authoring-process
 owner: product-authority
 status: approved
 approved: 2026-08-31
-version: 5
+version: 6
 created: 2026-08-31
-updated: 2026-08-31
+updated: 2026-09-02
 produces: [feature]
 carried-by: feature-authoring-skill
 condition-language: cel
@@ -63,7 +63,7 @@ check — the [PO output check](po-output-check.md) as a sub-process,
 with its own roles.
 
 **Carried by:**
-[`../skills/feature-authoring/SKILL.md`](../skills/feature-authoring/SKILL.md)
+[`../../.claude/skills/feature-authoring/SKILL.md`](../../.claude/skills/feature-authoring/SKILL.md)
 — generated from this definition by
 [`../tools/compile_process.py`](../tools/compile_process.py), never
 edited by hand.
@@ -218,3 +218,4 @@ steps:
 | 3 | 2026-08-31 | state | draft → approved with batch C as one block (brief-032 ask 2, default accepted). |
 | 4 | 2026-08-31 | review | Batch E end-to-end screen round 1: the draft step writes the feature's id into the initiative's Features section — the §6 writer the product-flow loop's judgment reads. Post-approval repair from the end-to-end screen. |
 | 5 | 2026-08-31 | review | Batch E screen round 2: the re-author pass defined — a returned feature listed in the Features section is revised in place, its id kept, no duplicate id added. Post-approval repair from the end-to-end screen. |
+| 6 | 2026-09-02 | update | Carried-by reference repointed to the load point (.claude/skills/) — the skill-rendering process's first run removed the retired home basis/skills/; the owner's sweep per its second-home escalation. |
