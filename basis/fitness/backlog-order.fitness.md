@@ -4,9 +4,9 @@ id: backlog-order-fitness
 owner: product-authority
 status: approved
 approved: 2026-08-26
-version: 5
+version: 7
 created: 2026-08-26
-updated: 2026-08-31
+updated: 2026-09-02
 target-type: backlog-order
 judged: true
 executable: false
@@ -61,8 +61,10 @@ Scenario 3: enabler work is placed or declined with reasons
 Scenario 4: the order names each item's context
   Given each item
   When it is read
-  Then it names the Bounded Context that owns it, and an item crossing
-  contexts is marked as such with the escalation to the PM role named
+  Then it names the Bounded Context that owns it — or states that no
+  Bounded Context owns it, with the decomposition ruling it follows —
+  and an item crossing contexts is marked as such with the escalation
+  to the PM role named
 
 Scenario 5: the next item says whether it is ready
   Given the first item not yet taken up
@@ -78,7 +80,7 @@ Scenario 5: the next item says whether it is ready
 | 1 — serves a framing | "For each item: framing named, or declined with a reason? Cite any item with neither." |
 | 2 — follows stated priority | "Compare the order with the priority it states; cite each inversion and whether a reason is stated. Any unreasoned inversion = fail." |
 | 3 — enablers placed or declined | "For each recommendation the order lists: placed with a reasoned position, or declined with a reason? Cite any that is neither." |
-| 4 — context named | "Does each item name its owning Bounded Context, with cross-context items marked and their escalation named? Cite any that does not." |
+| 4 — context named | "Does each item name its owning Bounded Context — or state, with the decomposition ruling it follows, that none owns it — with cross-context items marked and their escalation named? Cite any that does not." |
 | 5 — next item ready | "Is the first untaken item marked ready with the artifact it states is checked linked, or not ready with what it waits on? Cite." |
 
 ## Document History
@@ -94,3 +96,5 @@ Scenario 5: the next item says whether it is ready
 | 3 | 2026-08-26 | state | draft → approved by the owner. |
 | 4 | 2026-08-28 | update | Owner decision: acceptance-scenarios re-formed as feature (product-level, scenarios assigned per Bounded Context by tag); the brief retired — shops receive their assigned scenarios. |
 | 5 | 2026-08-31 | update | Batch C screen round 1: the stand-in intro retired — the typedef exists and the carrying process is named. |
+| 6 | 2026-09-02 | review | Gap filed from the PO output check of order-2026-09-02 (the PM role's definition-change at the round cap): scenario 4 admitted only a named owning Bounded Context or a cross-context marking; the shop's first lead-shop-internal item — a decomposition ruling that no Bounded Context is touched — had no admissible value, and three screen rounds wobbled on it. |
+| 7 | 2026-09-02 | update | Owner decision (the authority, accepting the recommended path): scenario 4's Then and its rubric assertion amended to admit an item that states no Bounded Context owns it, with the decomposition ruling it follows. |

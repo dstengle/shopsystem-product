@@ -2,8 +2,8 @@
 type: initiative
 id: init-skills-availability
 name: Skills availability
-status: planned
-version: 4
+status: active
+version: 6
 owner: lead-pm
 created: 2026-09-02
 updated: 2026-09-02
@@ -27,14 +27,14 @@ Problem: the shop's approved process definitions cannot be loaded by
 the agent performing the activity, and making them loadable belongs to
 no process. Outcome: an agent performing an
 activity operates from the approved definition of that activity,
-loaded at its point of work through a governed channel that is itself
-a defined process with its own check.
+loaded at its point of work from an approved source that is itself
+maintained by a defined process with its own check.
 
 ## For whom
 
 The lead shop: every agent activity that operates through a process
 definition. Measure: approved processes whose definition the executing
-agent can load through a governed channel. Now: 1 of 16, and that one
+agent can load from an approved source. Now: 1 of 16, and that one
 hand-diverged from its source. Target: every approved process, zero
 divergence, the gap held closed by a repeatable check. Interaction
 types: none — the outcome is consumed inside the executing agent's
@@ -79,7 +79,7 @@ flow: none.
 
 ## Features
 
-None yet.
+[feat-skills-availability](../features/feat-skills-availability.md) — checked.
 
 ## Document History
 
@@ -89,4 +89,6 @@ None yet.
 | 2 | 2026-09-02 | review | Initiative-check screen round 1 (judge: claude-fable-5 / screen prompt v5): findings — the measure counted 17 against 16 approved processes; "generated" named the production mechanism in the measure; "delivered as a skill" in the outcome. Repaired. |
 | 3 | 2026-09-02 | review | Screen round 2 (judge: claude-fable-5 / screen prompt v5): one wobbly finding — whether "skill" in §1–2 is the what or a named form. Repaired solution-free; "skills" confined to the originator's quoted words. |
 | 4 | 2026-09-02 | review | Screen round 3, the cap (judge: claude-fable-5 / screen prompt v5): one wobbly finding — scenario 4's scope over the broken-state description in the problem sentence. The authority directed the capability-terms repair; applied post-cap, the structural evidence standing in §4. |
-| 4 | 2026-09-02 | state | `proposed` → `planned`: the authority's bet, taken in the initiative-check decide step on the repaired text — the appetite is spent. The product decision record for the go is the PO role's to make and the PO output check screens it; linked here once made. |
+| 4 | 2026-09-02 | state | `proposed` → `planned`: the authority's bet, taken in the initiative-check decide step on the repaired text — the appetite is spent. The product decision record for the go is the PO role's to make and the PO output check screens it; linked here once made. Made: [pdr-2026-09-02-bet-skills-availability](../decisions/pdr-2026-09-02-bet-skills-availability.md). |
+| 5 | 2026-09-02 | update | Owner direction, from the feature check's open finding: "through a governed channel" could imply a synchronous or real-time delivery, not the intent — replaced in the §1 outcome with "from an approved source that is itself maintained by a defined process with its own check" and in the §2 measure with "from an approved source". |
+| 6 | 2026-09-02 | state | `planned` → `active`: feat-skills-availability's first pass through the PO output check (clean round-2 screen; the PM role's pass) — written by that check's record step through its declared framing input, planned the only status written over. |
