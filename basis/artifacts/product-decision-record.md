@@ -5,9 +5,9 @@ defines: product-decision-record
 owner: product-authority
 status: approved
 approved: 2026-08-31
-version: 5
+version: 6
 created: 2026-08-26
-updated: 2026-08-31
+updated: 2026-09-02
 ancestry: [product-decision-record]
 ---
 
@@ -50,6 +50,11 @@ initiative, `bet` — or
 
 ## Rules
 
+- Instances live in `decisions/` at the repository root — one shared
+  home with the adr type, the filename prefix and the frontmatter
+  `type` discriminating; which type records a decision is decided by
+  the right exercised, per the rule the
+  [adr typedef](adr.md) states.
 - Whether the named role held the right it exercised is the PM role's
   ruling at the check, not the record's claim; a record whose decider
   is the authority is checked for form only.
@@ -89,3 +94,4 @@ additions, from the roles' decision rights; the
 | 4 | 2026-08-28 | update | From the initiative chain's screen: the authority admitted as decider with the `bet` right, so the go/no-go on an initiative can be recorded; such a record is checked for form only. |
 | 5 | 2026-08-31 | review | Batch A+B screen round 1: the bet right covers the go, the hold, and the no-go, so a cancellation at the bet or a discovery decline records under it. |
 | 5 | 2026-08-31 | state | draft → approved with batch A+B as one block (brief-032 ask 2, default accepted). |
+| 6 | 2026-09-02 | update | Owner rulings at the adr chain's review (brief-033 asks 3 and 4): instances live in the shared `decisions/` home, and the exercised right decides which decision-record type records a decision — the rule's one home is the adr typedef, referenced here. |

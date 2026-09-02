@@ -228,7 +228,7 @@ def derive_chain(artifact_type):
                      if s.get("run-by", {}).get("role")}
             chain["roles"] = sorted(roles)
     if process_id:
-        for path in (BASIS / "skills").rglob("SKILL.md"):
+        for path in (BASIS.parent / ".claude" / "skills").rglob("SKILL.md"):
             fm, _ = front_matter(path)
             if fm and fm.get("derived-from") == process_id:
                 chain["skill"] = fm["id"]; docs.append(fm)

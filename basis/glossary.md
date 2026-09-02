@@ -4,9 +4,9 @@ id: glossary
 owner: product-authority
 status: approved
 approved: 2026-08-19
-version: 19
+version: 20
 created: 2026-08-19
-updated: 2026-08-31
+updated: 2026-09-02
 ---
 
 # Glossary
@@ -224,6 +224,11 @@ terms uses one of these when one fits.
   product-level decision — decision, alternatives, consequences,
   decider and right, reversibility; ADR and MADR forms; checked as PO
   output.
+- **architecture decision record (adr)** — the solutions architect
+  role's record of one architecture decision — context with the
+  considered options, decision, consequences, reversibility, decider
+  and right, the architecture-principles screen's result; Nygard
+  form; checked in the adr-authoring process.
 - **intent** — a desired outcome expressed by an originator at the
   product's edge; enters the product through a contract and keeps its
   provenance through every translation and delegation.
@@ -255,3 +260,4 @@ terms uses one of these when one fits.
 | 17 | 2026-08-31 | update | Owner direction: the scenario register is the lead shop's one register with per-context views, maintained asynchronously from dispatch and reconciliation — not each shop's own list queried on demand; pre-state reads lead-shop-held records. |
 | 18 | 2026-08-31 | update | Owner decision: acceptance scenarios are authored by the PO role; co-production removed. |
 | 19 | 2026-08-31 | update | Owner direction: the scenario register split from the record of specified scenarios — the feature repository (new term) is the artifacts themselves, authoritative for specification and assignment; the register is the tracker of implemented scenarios pulled from the shops, itself a feature to be built; pre-state is the state of the design (contracts + repository); vehicles other than assign_scenarios come from operational activities, not assignment. |
+| 20 | 2026-09-02 | update | architecture decision record added with the adr chain — the term the architect role and the product-decision-record entry used without a definition. |
