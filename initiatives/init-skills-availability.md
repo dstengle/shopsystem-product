@@ -2,8 +2,8 @@
 type: initiative
 id: init-skills-availability
 name: Skills availability
-status: proposed
-version: 1
+status: planned
+version: 4
 owner: lead-pm
 created: 2026-09-02
 updated: 2026-09-02
@@ -23,24 +23,22 @@ process." And the stakes: "This session is showing that we are already
 drifting away from the principles and need to start implementing
 consistency in the process and tools."
 
-Problem: the shop's approved process definitions are not available to
-the executing agent at its point of work — most renderings are
-unreachable there, several processes have none, the one reachable
-skill has diverged by hand from its source — and making a skill
-available belongs to no process. Outcome: an agent performing an
+Problem: the shop's approved process definitions cannot be loaded by
+the agent performing the activity, and making them loadable belongs to
+no process. Outcome: an agent performing an
 activity operates from the approved definition of that activity,
-delivered as a skill through a governed channel that is itself a
-defined process with its own check.
+loaded at its point of work through a governed channel that is itself
+a defined process with its own check.
 
 ## For whom
 
 The lead shop: every agent activity that operates through a process
-definition. Measure: approved processes available to the executing
-agent as governed, generated skills. Now: 1 of 17, and that one
+definition. Measure: approved processes whose definition the executing
+agent can load through a governed channel. Now: 1 of 16, and that one
 hand-diverged from its source. Target: every approved process, zero
 divergence, the gap held closed by a repeatable check. Interaction
 types: none — the outcome is consumed inside the executing agent's
-context load; no core task on the list carries it.
+context load; no core task carries it.
 
 ## Appetite
 
@@ -59,11 +57,25 @@ One working session of the lead shop. No-gos, each with its reason:
 
 ## Feasibility and usability
 
-Not yet.
+Feasible. The generating channel exists and runs:
+`basis/tools/compile_process.py` regenerated the
+`stakeholder-presentation` skill cleanly, and its `source-digest` makes
+divergence mechanically checkable — the reachable copy's stale digest
+confirms the hand-drift. Ten of sixteen approved processes already have
+generated renderings in `basis/skills/`; the rest compile from the same
+format. What remains is placement and a defined process with its check —
+within the appetite. (architect, 2026-09-02)
+
+No usability attachment due: no interaction type named — the outcome
+loads inside the executing agent's context; no core task carries it.
+(designer, 2026-09-02)
 
 ## Decomposition
 
-Not yet.
+None — no Bounded Context is touched. Source definitions, the
+generator, and the delivery point (`.claude/skills/`) all sit in the
+lead shop's tree; no contract on `main` is relied on. Cross-context
+flow: none.
 
 ## Features
 
@@ -74,3 +86,7 @@ None yet.
 | Version | Date | Kind | Entry |
 |---|---|---|---|
 | 1 | 2026-09-02 | update | Recorded `proposed` by the discovery conversation's frame step, on the authority's convergence (work item lead-jacwu; session sess-2026-09-02-b). |
+| 2 | 2026-09-02 | review | Initiative-check screen round 1 (judge: claude-fable-5 / screen prompt v5): findings — the measure counted 17 against 16 approved processes; "generated" named the production mechanism in the measure; "delivered as a skill" in the outcome. Repaired. |
+| 3 | 2026-09-02 | review | Screen round 2 (judge: claude-fable-5 / screen prompt v5): one wobbly finding — whether "skill" in §1–2 is the what or a named form. Repaired solution-free; "skills" confined to the originator's quoted words. |
+| 4 | 2026-09-02 | review | Screen round 3, the cap (judge: claude-fable-5 / screen prompt v5): one wobbly finding — scenario 4's scope over the broken-state description in the problem sentence. The authority directed the capability-terms repair; applied post-cap, the structural evidence standing in §4. |
+| 4 | 2026-09-02 | state | `proposed` → `planned`: the authority's bet, taken in the initiative-check decide step on the repaired text — the appetite is spent. The product decision record for the go is the PO role's to make and the PO output check screens it; linked here once made. |
