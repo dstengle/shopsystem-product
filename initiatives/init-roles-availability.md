@@ -3,7 +3,7 @@ type: initiative
 id: init-roles-availability
 name: Roles availability
 status: active
-version: 5
+version: 6
 owner: lead-pm
 created: 2026-09-03
 updated: 2026-09-03
@@ -85,3 +85,4 @@ exists on this branch to rely on. Cross-context flow: none.
 | 4 | 2026-09-03 | review | Screen round 3, the cap (judge: claude-fable-5-1 / screen prompt v5): two wobbly findings, none confident, no uncovered defect — the originator's quoted "claude" and "skills" against scenario 4, and the §1 outcome's maintenance clause. Both passages stand on the authority's prior rulings (skills-availability rounds 3 and v5); no repair. The judge's proposal that scenario 4 exempt the originator's quoted words, recurring on both initiatives, is filed as a review entry in the initiative fitness set's Document History for the owner. |
 | 4 | 2026-09-03 | state | `proposed` → `planned`: the authority's bet, taken in the initiative-check decide step on its standing direction of this session — "run this through to the end since it is low-risk" — the lead-pm recording it; the two open findings are each settled by the authority's own earlier ruling, so no new decision is taken here. The product decision record for the go is the PO role's to make and the PO output check screens it; linked here once made. Made: [pdr-2026-09-03-bet-roles-availability](../decisions/pdr-2026-09-03-bet-roles-availability.md). |
 | 5 | 2026-09-03 | state | `planned` → `active`: feat-roles-availability's first pass through the PO output check (round 3, the cap; the PM role's pass) — written by that check's record step through its declared framing input, planned the only status written over. |
+| 6 | 2026-09-03 | update | Measure met in the running system: 6 of 6 approved roles instantiated by the agent runtime from the load point, current with their definitions (role-rendering first run, check clean round 2; the instantiation recorded in feat-roles-availability v6). The `completed` state is a pending reconcile-side amendment; the PO role judges the features done. |

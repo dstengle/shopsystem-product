@@ -20,7 +20,7 @@ generated: true
 generated-by: basis/tools/compile_process.py
 derived-from: skill-rendering-process
 source: basis/processes/skill-rendering.md
-source-digest: sha256:07cfdc12330b
+source-digest: sha256:6fda2eb96494
 activation: model-judged
 promotion: experiment-local
 ---
