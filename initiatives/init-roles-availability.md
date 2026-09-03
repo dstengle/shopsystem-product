@@ -2,8 +2,8 @@
 type: initiative
 id: init-roles-availability
 name: Roles availability
-status: planned
-version: 4
+status: active
+version: 5
 owner: lead-pm
 created: 2026-09-03
 updated: 2026-09-03
@@ -73,7 +73,7 @@ exists on this branch to rely on. Cross-context flow: none.
 
 ## Features
 
-[feat-roles-availability](../features/feat-roles-availability.md) — draft.
+[feat-roles-availability](../features/feat-roles-availability.md) — checked.
 
 ## Document History
 
@@ -84,3 +84,4 @@ exists on this branch to rely on. Cross-context flow: none.
 | 3 | 2026-09-03 | review | Screen round 2 (judge: claude-fable-5-1 / screen prompt v5): five wobbly findings, none confident. Repaired: "checkout" in §2 (the corpus named plainly); no-gos 1 and 2 reworded to what they exclude without naming forms. Held for the authority, on the skills-availability precedent: the originator's quoted "claude" and "skills" (round 3 of that screen confined solution words to the originator's quote); the §1 outcome clause "maintained by a defined process with its own check" (the owner's own wording of 2026-09-02); the history's form (repairs recorded in the review row, as every initiative on this branch does). |
 | 4 | 2026-09-03 | review | Screen round 3, the cap (judge: claude-fable-5-1 / screen prompt v5): two wobbly findings, none confident, no uncovered defect — the originator's quoted "claude" and "skills" against scenario 4, and the §1 outcome's maintenance clause. Both passages stand on the authority's prior rulings (skills-availability rounds 3 and v5); no repair. The judge's proposal that scenario 4 exempt the originator's quoted words, recurring on both initiatives, is filed as a review entry in the initiative fitness set's Document History for the owner. |
 | 4 | 2026-09-03 | state | `proposed` → `planned`: the authority's bet, taken in the initiative-check decide step on its standing direction of this session — "run this through to the end since it is low-risk" — the lead-pm recording it; the two open findings are each settled by the authority's own earlier ruling, so no new decision is taken here. The product decision record for the go is the PO role's to make and the PO output check screens it; linked here once made. Made: [pdr-2026-09-03-bet-roles-availability](../decisions/pdr-2026-09-03-bet-roles-availability.md). |
+| 5 | 2026-09-03 | state | `planned` → `active`: feat-roles-availability's first pass through the PO output check (round 3, the cap; the PM role's pass) — written by that check's record step through its declared framing input, planned the only status written over. |
