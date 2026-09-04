@@ -2,8 +2,9 @@
 type: process-definition
 id: request-intake-process
 owner: product-authority
-status: draft
-version: 3
+status: approved
+approved: 2026-09-04
+version: 4
 created: 2026-09-04
 updated: 2026-09-04
 produces: [request]
@@ -59,9 +60,12 @@ Contributors section.
   role, written on the request with its reason as said, and no route
   is acted on before the originator has heard it and answered:
   `dispatch` is reachable only through `land`, from the originator's
-  `accept` at `observe` or from the objection cap — witnessed by
-  `decide-route`'s check and prompt and by `route-answer`'s branches
-  (scenarios 6 and 7; U4, U6, C5).
+  `accept` at `observe` or from the objection cap. One exception to
+  who decides: at the lane's cap the route is the lane's — written on
+  the request by its reroute step and read back by `read-route` — and
+  `observe` puts it before the originator the same way — witnessed by
+  `decide-route`'s check and prompt, `route-answer`'s branches, and
+  `land.next` (scenarios 6 and 7; U4, U6, C5).
 - O4. An objection is answered before action: the objection returns
   to `decide-route` as its input, the route standing after it is the
   one recorded with a reason that answers it, and the loop closes at
@@ -73,8 +77,8 @@ Contributors section.
   on: `decide-route` writes the route with "not yet answered" as the
   originator's answer, and the run waits at `observe` with nothing
   dispatched, `hold-after` the cap of that wait — witnessed by
-  `route-answer`'s held row, which returns to `observe`, and by
-  `hold-after` (scenario 8; U4, A2).
+  `route-answer`'s held row, which returns to `observe`,
+  `decide-route`'s prompt, and `hold-after` (scenario 8; U4, A2).
 - O6. A route is acted on only as its destination: the discovery
   conversation opens on the request as its input; the small-change
   lane takes the request, anchored to the work item `land` opens for
@@ -101,8 +105,10 @@ Contributors section.
   route changed to discovery — is routed from the record alone: the
   run enters at `decide-route` with the request, and loads nothing of
   the conversation or run that produced it — witnessed by `enter`'s
-  branch, `route-after-lane`'s not-simple and cap rows, and
-  `decide-route`'s inputs (scenarios 4, 5, and 14; C5, C9).
+  branch, `route-after-lane`'s not-simple row, `clear-objection`'s
+  and `advance-round`'s `set`, and `decide-route`'s inputs; at the
+  cap the lane's route stands and goes to `observe`, witnessed by
+  `route-after-lane`'s cap row (scenarios 4, 5, and 14; C5, C9).
 
 **Roles:**
 - lead-pm — [`../roles/lead-pm.md`](../roles/lead-pm.md): records and
@@ -205,7 +211,7 @@ flowchart TD
   read_route --> read_reason
   read_reason --> route_after_lane
   route_after_lane -->|success exit: done — record where the route led| land_result
-  route_after_lane -->|failsafe exit: round >= round_cap — the lane's route stands| land
+  route_after_lane -->|at the cap — the lane's route stands; the originator answers it| observe
   route_after_lane -->|not simple — decide again from the request| clear_objection
   route_after_lane -->|failed exit — returned to awaiting| __end
   route_after_lane -->|else| __end
@@ -225,12 +231,15 @@ each step is its context load list (least-context): `statement`,
 `originator`, and `arose_in` come from the conversation or the process
 run in which the words arose, supplied at instantiation — the words
 alone, never the transcript; `request` is the path of an instance of
-the [request typedef](../artifacts/request.md)'s received-ask path,
+the [request typedef](../artifacts/request.md)'s received-ask path —
+the typedef's second producing path, for an ask the shop receives —
 standing in `requests/` from the moment `record` writes it, and is the
 only thing `decide-route` reads of what was asked; a run that leaves
 the no-request exit returns `request` empty. `ask` is the
 [ask type](../types/ask.md): `decide-route` returns one to
-product-authority to decline, with a default and a checkpoint — the
+product-authority to decline, of kind `reserved-decision` — the
+[ask type](../types/ask.md)'s kind for a decision another role
+reserves, here the authority — with a default and a checkpoint — the
 ask type's word for the partial output sufficient to resume from —
 and resumes, in a fresh context, with the ask in its inputs; the
 resumed step writes the ask's `answer` — the authority's ruling — to
@@ -263,11 +272,20 @@ request's sections 3 and 4 alone: `round` counts every re-decision —
 an objection's or the lane's not-simple return — and `round_cap`
 bounds both together, so a request cannot cycle between routing and
 the lane unbounded; at the cap the lane's route, discovery with the
-lane's reason, stands and `land` acts on it. The wait at `observe` for an originator who has not answered
-is a cycle whose cap is `hold-after`: the runtime holds the run after
-the window, and a held run is resumed at `observe` or cancelled with a
-reason. `form` and `topic` are the discovery conversation's
-parameters, named by `decide-route` on the discovery route;
+lane's reason, stands and goes to `observe` — said before it is acted
+on (U4): accept lands it, and an objection there, `round` already at
+the cap, reaches `route-answer`'s failsafe row and `land` directly —
+never `advance-round` or `decide-route`. The wait at `observe` for an
+originator who has not answered is a cycle whose cap is `hold-after`:
+an explicit "not answered" restarts the wait, as often as the person
+chooses while the route stands unacted — intended — and the cycle is
+bounded by inactivity: the runtime holds the run after the window,
+and a held run is resumed at `observe` or cancelled with a reason. `form` and `topic` are the discovery conversation's
+parameters: `decide-route` names `topic` — a one-line topic for the
+request — on every decision whatever the route, so a discovery
+opened at the lane's cap, where the route was not this run's
+decision, opens on a named topic, and names `form` on the discovery
+route;
 `open-discovery` maps `request`, `form`, and `topic` to that
 process's parameters of the same names and receives its result as
 `initiative` — empty when the conversation closed without convergence
@@ -423,7 +441,7 @@ steps:
     asks: [product-authority]
     checks:
       - reason != ""
-      - route != "discovery" || topic != ""
+      - topic != ""
     prompt: |
       Read the request only — what was asked is its section 1, never
       restated to the originator and never read from a transcript;
@@ -438,8 +456,9 @@ steps:
       system in one session, and it spends no appetite worth a bet.
       discovery: the ask is larger than that, or its shape needs the
       authority's exploration; name in form the form the conversation
-      takes and in topic its one-line topic, from the request's words,
-      with the request's id — afresh on every decision. declined: only
+      takes. On every decision, whatever the route, name in topic a
+      one-line topic for the request, from its words, with its id —
+      afresh each time. declined: only
       with the product authority's ruling. On a run entered with the
       request, the ruling is read from the request's section 3, where
       the resumed ask wrote it; when none stands there, and on the
@@ -486,7 +505,8 @@ steps:
     outputs: [answer, objection]
     prompt: |
       The request is in front of you with its route and the reason, as
-      the lead-pm said them. Accept: the route is acted on. Object: say
+      the lead-pm said them or, at the lane's cap, as the lane wrote
+      them. Accept: the route is acted on. Object: say
       why in objection; the lead-pm decides again and answers you
       before anything is acted on, and the route standing after that
       is the one recorded. Not answered: the route stands as said and
@@ -616,9 +636,9 @@ steps:
       - label: "success exit: done — record where the route led"
         when: route == "small-change"
         next: land-result
-      - label: "failsafe exit: round >= round_cap — the lane's route stands"
+      - label: "at the cap — the lane's route stands; the originator answers it"
         when: route == "discovery" && round >= round_cap
-        next: land
+        next: observe
       - label: "not simple — decide again from the request"
         when: route == "discovery"
         next: clear-objection
@@ -678,7 +698,7 @@ steps:
 | O5 | `answer == "not-answered"` returns to `observe`, never to `land`; `decide-route` writes "not yet answered" as the answer; inactivity holds the run | mechanical + judged | `route-answer.branches`, `decide-route.prompt`, `hold-after` |
 | O6 | `open-discovery` and `open-lane` list `request` as input; `work_item != ""` on the small-change route; `decide-route` carries `asks: [product-authority]`, the process `ask-cap`, `ask` in its inputs; `decline` removes nothing | mechanical + judged | `open-discovery`, `open-lane`, `land.checks`, `decide-route`, frontmatter, `decline.prompt` |
 | O7 | `land-result` reachable only from `route == "small-change"` after the lane and requires `change != ""` before writing `routed-to`; `land-outcome` writes nothing `frame` wrote | mechanical + judged | `route-after-lane.branches`, `land-result.checks`, `land-outcome.prompt` |
-| O8 | `request != ""` enters at `decide-route`; the not-simple row reaches `decide-route` through `clear-objection` and `advance-round`, and `round >= round_cap` routes to `land` instead; `decide-route` lists the request and nothing of the originating conversation | mechanical | `enter.branches`, `route-after-lane.branches`, `clear-objection.set`, `advance-round.set`, `decide-route.inputs` |
+| O8 | `request != ""` enters at `decide-route`; the not-simple row reaches `decide-route` through `clear-objection` and `advance-round`, and `round >= round_cap` routes to `observe` instead, where only `route-answer`'s rows lead on; `decide-route` lists the request and nothing of the originating conversation | mechanical | `enter.branches`, `route-after-lane.branches`, `clear-objection.set`, `advance-round.set`, `decide-route.inputs` |
 
 ## Document History
 
@@ -686,4 +706,6 @@ steps:
 |---|---|---|---|
 | 1 | 2026-09-04 | update | Authored under init-request-routing / feat-request-routing (assigned, v7) per adr-2026-09-04-request-front-end, on the authority's standing direction of 2026-09-04, as a sibling of the conversation processes: human steps with a classification, runtime routes with labeled exits, the decline as a held-and-resumed ask to product-authority, `bd` opened for the work in motion. Adaptations of the sibling form, disclosed: the originator's confirmation of the reading is a human step (`confirm`), so the record is reachable only from the originator's own yes (U3); the process admits a `request` parameter and enters at `decide-route` for a request already recorded — by a role that met the ask during another run, left awaiting when the decline ask defaulted, or returned to awaiting by the lane or a discovery that framed nothing — so every recorded request has a run that routes it (scenarios 4, 5); "not answered" holds the run at `observe` rather than ending it, so the originator's later answer has a step to reach; the objection loop caps at three rounds with the route standing and the objection recorded (`land`); the register item is opened by `land` only on the small-change route — the item the small-change process anchors to and closes — since the discovery conversation opens its own and a decline needs none (C4), and this process closes no item. Fitted to the definitions that landed alongside: the request typedef v3 (the received-ask path; `routed-to` and `done` written by the destination's step, so `land-outcome` writes nothing twice), discovery-conversation v11 (`request` parameter, `frame` writes where the route led), and small-change v1 (parameter `request`, result `request`; its three exits read back by `read-route`, a not-simple reroute put before the originator at `observe`). Draft, not screened: the lead-pm orchestrates the cold reviewer. |
 | 2 | 2026-09-04 | review | Round 1 (judge: claude-fable-5-1 / screen prompt v6; criteria process-definition.fitness.md): three confident — `decline`'s routed-to pointed at a decision record that need not exist (now the request's own section 4); `recognize` named the three routes without their meaning and said "the door" (each route's one-line meaning inlined; "this process"); the U/A/C codes in Outcomes indexed nothing stated (the Outcomes head now says what they index, with the feature linked) — and eight wobbly, ruled by the lead-pm: the lane's not-simple return re-enters at `decide-route`, not `observe` (`read-reason` reads the lane's reason, `clear-objection` empties the objection, `decide-route` re-decides from the request's sections 3–4 and derives topic and form afresh); `record` and `land-outcome` no longer point at the typedef (the received-ask field set and the status and route values inlined); the not-answered row relabeled "held — the run waits at observe; hold-after is this cycle's cap", stated in Data; the decline ask on re-entry (the ruling read from section 3 where the resumed ask wrote it, the ask returned again when none stands — intended; Data states how the resumed ask's answer reaches the request, citing the ask type); O7 narrowed — against small-change v2's contract, "`routed-to` is intake's to write, on the lane's return", the lane's result `change` (`<request>#result`) is written into `routed-to` by a new `land-result` step reachable only from the success row, its check `change != ""` the witness, in place of reading `routed-to` back; the register and `bd` introduced once in Data with the ADR linked, "checkpoint" glossed with the ask type's word; the prose paragraph after the steps block deleted; Data states that a no-request run returns an empty `request`; Roles split one line per role. Aligned with small-change v2 (17 steps): the lane closes its item at `close-done`, `close-not-simple`, and `close-failed`; `open-lane` receives `change`. Repaired. |
-| 3 | 2026-09-04 | review | Round 2 (judge: claude-fable-5-1 / screen prompt v6): one confident — `decide-route`'s reason sentence did not say which reason it named (qualified: with objection empty, the lane's; with objection non-empty, the role's own last reason, which the objection answers) — and seven wobbly, ruled by the lead-pm: the routing↔lane cycle had no cap (the mechanical option taken: `clear-objection` now advances `round` through `advance-round`, and `route-after-lane` routes `discovery && round >= round_cap` to `land`, so the lane's route stands at the cap; stated in Data and O8); O6 and O7 witness lists matched to the Derived checks table (`land`'s check; `land-outcome`'s prompt); the absent carrier deferred as ruled for the sibling; `round` and `round_cap` dropped from `decide-route`'s inputs; lead-4kymc introduced in Data as the register item tracking the operational contract, the note on each request temporary until it closes; `decide-route` gains the check `route != "discovery" \|\| topic != ""`; the two explanatory branch labels shortened to exit name and condition. Repaired. |
+| 3 | 2026-09-04 | review | Round 2 (judge: claude-fable-5-1 / screen prompt v6): one confident — `decide-route`'s reason sentence did not say which reason it named (qualified: with objection empty, the lane's; with objection non-empty, the role's own last reason, which the objection answers) — and seven wobbly, ruled by the lead-pm: the routing↔lane cycle had no cap (the mechanical option taken: `clear-objection` now advances `round` through `advance-round`, and `route-after-lane` routes `discovery && round >= round_cap` to `observe` — the lead-pm's ruling on the flag that the route must be said before it is acted on (U4): from there accept lands it and an objection reaches `route-answer`'s failsafe row, which lands the standing route; stated in Data and O8); O6 and O7 witness lists matched to the Derived checks table (`land`'s check; `land-outcome`'s prompt); the absent carrier deferred as ruled for the sibling; `round` and `round_cap` dropped from `decide-route`'s inputs; lead-4kymc introduced in Data as the register item tracking the operational contract, the note on each request temporary until it closes; `decide-route` gains the check `route != "discovery" \|\| topic != ""`; the two explanatory branch labels shortened to exit name and condition. Repaired. |
+| 4 | 2026-09-04 | review | Screen round 3, the cap (judge: claude-fable-5-1 / screen prompt v6): three confident — O3/O5/O8 witness lists short of the table; the Data sentence on the objection at the cap; the cap path opening discovery on an undecided topic — and four wobbly (the absent carrier, deferred; O3 at the cap; the explicit not-answered cycle; two unglossed terms). Post-cap repairs, disclosed and not re-screened: O3, O5, and O8 witness lists matched to the Derived checks table (`land.next`; `decide-route.prompt`; `clear-objection.set`, `advance-round.set`); the Data sentence corrected — an objection at the cap reaches `route-answer`'s failsafe row and `land` directly, never `advance-round` or `decide-route`; `decide-route` names `topic` on every decision and its check is the unconditional `topic != ""`, Data amended, so the cap path opens discovery on a named topic; O3 states the cap exception — at the lane's cap the route is the lane's, written on the request and read back, and `observe` puts it before the originator, its prompt reading "as the lead-pm said them or, at the lane's cap, as the lane wrote them"; Data states that an explicit "not answered" restarts the wait and the cycle is bounded by inactivity (`hold-after`), intended; "received-ask path" and "reserved-decision" glossed at first use, the ask type cited. The absent carrier stands deferred, as ruled. |
+| 4 | 2026-09-04 | state | draft → approved by the owner, on the authority's standing direction for this session ("continue all the way through implementation … you have my permission to continue through"), recorded by the lead-pm: three screen rounds against the process-definition fitness set; round 1's three confident findings and round 2's one repaired, the cap's three repaired past it and disclosed; the carrier to be rendered by the skill-rendering process's next run. |
