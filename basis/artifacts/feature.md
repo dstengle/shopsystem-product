@@ -5,9 +5,9 @@ defines: feature
 owner: product-authority
 status: approved
 approved: 2026-08-31
-version: 11
+version: 12
 created: 2026-08-26
-updated: 2026-08-31
+updated: 2026-09-04
 ancestry: [feature]
 ---
 
@@ -19,7 +19,8 @@ ancestry: [feature]
   from the user's or agent's point of view, with the scenarios that
   state, as requirements, what counts as done for it. A product-level
   artifact: it belongs to the [initiative](initiative.md) it is made
-  from and may hold scenarios owned by
+  from — or, when small, to the [request](request.md) routed to the
+  small-change lane it is made from — and may hold scenarios owned by
   several Bounded Contexts. The scenario is the atom; the feature is
   its grouping; the feature repository — the lead shop's directory of
   feature artifacts — is the record of what is specified, and a
@@ -54,7 +55,13 @@ ancestry: [feature]
 `type: feature`, `id`, `status`, `version`, `name` (the Feature's
 name), `initiative` (link to the initiative it is made from; its
 framing is that document's first section), `owner`, `created`,
-`updated`. `approved` does not apply: a feature's terminal state is
+`updated`; `size` — `standard` | `small`, `standard` when absent.
+When `size: small`, `request` (link to the request routed to the
+small-change lane the feature is made from) stands in place of
+`initiative`, and the framing is that request's section 1 (What is
+requested): the PO output check's `framing` input names that section
+for a small feature, and its record step has no initiative to activate.
+`approved` does not apply: a feature's terminal state is
 `assigned`. Status values and their writers: `draft` (the PO role);
 `checked`, `returned`, `pending-definition` (the PO output check's
 record step, replacing `draft`); a returned or pending feature the PO
@@ -112,6 +119,14 @@ goes to `returned`.
   by the sweep of the feature repository at assignment, never by
   asking the shop during authoring; the shop's voice after dispatch
   is the clarify and the return.
+- A small feature (`size: small`) is made from a request routed to the
+  small-change lane when the change is best expressed as scenarios;
+  the lane's definition step may produce one, the PO role its author
+  as for any feature. It links its `request` in place of an
+  initiative, is framed by the request's section 1, and is otherwise
+  a feature: the same sections, scenario and hash rules, check, and
+  assignment; no bet and no check of record stand between the request
+  and it.
 
 ## Commitment (Definition of Done)
 
@@ -134,6 +149,7 @@ experience principles `core-task-parity` and `accessible-by-standard`.
 - `@feature:` and `@hash:` on every scenario. *(§Required sections 4; fitness 3)*
 - Every listed edge covered or excluded with reason. *(§Required sections 5; fitness 4)*
 - Interaction types section present, named or "none" with reason. *(§Required sections 3; fitness 5)*
+- `size` absent or `standard` with `initiative` linked; or `small` with `request` linked in its place, the framing the request's section 1. *(§Required frontmatter; §Rules)*
 
 ## Document History
 
@@ -156,3 +172,4 @@ experience principles `core-task-parity` and `accessible-by-standard`.
 | 10 | 2026-08-31 | review | Round-1 screen of the co-production removal: the Edges table's sources are the framing and the contributors' criteria, not a shop. |
 | 11 | 2026-08-31 | update | Owner direction: the repository/register split — the feature repository (the artifacts as specified) is what the conflict sweep at assignment reads; the scenario register is the tracker of implemented scenarios, a feature to be built. |
 | 11 | 2026-08-31 | state | draft → approved with batch C as one block (brief-032 ask 2, default accepted). |
+| 12 | 2026-09-04 | update | Under init-request-routing / feat-request-routing on the authority's standing direction of 2026-09-04, per adr-2026-09-04-request-front-end: frontmatter `size` (`standard` | `small`, `standard` by default); when `small`, a `request` link stands in place of `initiative` and the framing is the request's section 1 (What is requested), which the PO output check's `framing` input names for a small feature; rule added — a small feature is made from a request routed to the small-change lane when the change is best expressed as scenarios, the lane's definition step may produce one; Type bullet and checklist updated. Scenario and hash rules unchanged. Made by the architect role; the owner's approval of the amendment is pending. |

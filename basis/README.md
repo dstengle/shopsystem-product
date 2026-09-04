@@ -4,9 +4,9 @@ id: basis-index
 owner: product-authority
 status: approved
 approved: 2026-08-23
-version: 6
+version: 7
 created: 2026-08-10
-updated: 2026-09-02
+updated: 2026-09-04
 ---
 
 # Basis index
@@ -53,7 +53,12 @@ decision ledger exists, and no live document cites one.
 The whole tree lints with `tools/lint_basis.py`: frontmatter identity,
 version and Document History presence, resolvable links, required
 headings per type, banned vocabulary, and no numbered-decision
-references.
+references. The same lint walks `requests/` at the repository root —
+where a received ask's [request](artifacts/request.md) lives; the
+directory may not exist yet — and checks each request's frontmatter
+for what a received ask carries (`type: request`, identity, the
+status and route vocabularies, the route's reason) and that its
+`routed-to` link, when present, resolves.
 
 ## Document History
 
@@ -65,3 +70,4 @@ references.
 | 4 | 2026-08-23 | update | Research section removed by owner direction: research is registered in the typed research index on `main`, not in this index's prose. |
 | 5 | 2026-08-25 | update | Owner direction: a near-synonym of "role" retired and banned. |
 | 6 | 2026-09-02 | update | Owner's sweep per skill-rendering's second-home escalation: the skills/ entry re-formed — renderings live at the agent's load point (.claude/skills/), maintained by the skill-rendering process; basis/skills/ removed by its first run. |
+| 7 | 2026-09-04 | update | Under init-request-routing / feat-request-routing on the authority's standing direction of 2026-09-04, per adr-2026-09-04-request-front-end: tools/lint_basis.py extended (its check 9) to walk requests/ at the repository root — absent until the first ask is recorded — and check each received request's frontmatter for the keys, status and route vocabularies the request typedef requires, and that routed-to resolves; §Checks names it. Checks 1–8 walk basis/ as before and the --derive-chain mode reads .claude/skills/ as before; no brief check added — the decision-brief change is the small-change lane's own example run. Made by the architect role. |

@@ -5,9 +5,9 @@ defines: initiative
 owner: product-authority
 status: approved
 approved: 2026-08-31
-version: 9
+version: 10
 created: 2026-08-28
-updated: 2026-08-31
+updated: 2026-09-04
 ancestry: [initiative]
 ---
 
@@ -55,8 +55,11 @@ ancestry: [initiative]
 ## Required frontmatter
 
 `type: initiative`, `id`, `status`, `version`, `name`, `owner`
-(`lead-pm`), `created`, `updated`. `approved` does not apply; the
-lifecycle stands in. Status values and their writers:
+(`lead-pm`), `created`, `updated`; optional `request` — a link to the
+[request](request.md) the initiative was made from, required when the
+discovery conversation was opened on one (its `request` parameter
+set), written by that conversation's `frame` step. `approved` does not
+apply; the lifecycle stands in. Status values and their writers:
 - `proposed` — the PM role, when the discovery conversation's `frame`
   step records it: the framed-but-unbet state.
 - `planned` — the authority's bet, taken and recorded in the
@@ -86,7 +89,11 @@ lifecycle stands in. Status values and their writers:
 1. **Framing** — the originator (who expressed the intent, quoted in
    their own words), the problem taken to be worth solving, the outcome
    it serves, and the contract — product or operational — it entered
-   through. The PM role's exclusive decision.
+   through. When `request` is present, the originator chain begins at
+   that request: the words quoted here are the request's section 1,
+   each quotation carrying the request's id as its reference, and the
+   contract is the one the request records. The PM role's exclusive
+   decision.
 2. **For whom** — who has the problem; one measure with its current
    condition, quantified, and its target; and the interaction types the
    outcome must hold on, from the
@@ -152,6 +159,7 @@ of record.
 ## Derived review checklist
 
 - Framing carries originator quoted, problem, outcome, contract. *(§Required sections 1; fitness 1)*
+- `request` linked when the discovery conversation was opened on one; the Framing's quotations then reference it. *(§Required frontmatter; §Required sections 1)*
 - Who; one measure with current condition and target; interaction types or "none". *(§Required sections 2; fitness 2)*
 - Appetite bounded; every no-go reasoned. *(§Required sections 3; fitness 3)*
 - Sections 1–3 name no solution or interface form. *(§Rules; fitness 4)*
@@ -176,3 +184,4 @@ of record.
 | 7 | 2026-08-31 | update | Batch D: the active writer's pending amendment resolved — the PO output check's record step activates the initiative on a feature's first pass. |
 | 8 | 2026-08-31 | review | Batch D screen round 2: the active entry names the status it replaces (planned, the only one written over) and the declared route the writer takes (the framing input), matching po-output-check v6. Repair after round 2; the end-to-end screen (batch E) covers it. |
 | 9 | 2026-08-31 | review | Batch E end-to-end screen round 1: the Features section's writer named (the feature-authoring draft step). |
+| 10 | 2026-09-04 | update | Under init-request-routing / feat-request-routing on the authority's standing direction of 2026-09-04, per adr-2026-09-04-request-front-end: optional frontmatter `request` — the request the initiative was made from, required when the discovery conversation was opened on one, written by its frame step; §1 Framing's rule states that the originator chain then begins at that request (its section 1 quoted, each quotation carrying the request's id); checklist row added. Nothing else changes; the Framing-refinement rule is lead-ghulb. Made by the architect role; the owner's approval of the amendment is pending. |

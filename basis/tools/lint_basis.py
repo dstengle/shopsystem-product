@@ -20,6 +20,19 @@ Checks:
      (each type's typedef §Required sections).
   6. Banned vocabulary does not reappear
      (use-defined-terms: the losing term is removed everywhere).
+  7. `version` present and `Document History` is the last section
+     (definition typedef §Required frontmatter, §Required sections 3);
+     generated renderings are exempt.
+  8. No numbered-decision reference (review-record typedef §Commitment:
+     decisions live as changes in the artifacts they affect).
+  9. Each received request in `requests/` at the repository root — the
+     directory may not exist yet — carries the frontmatter of a received
+     ask: `type: request`, `id`, `status` in {recorded, routed, declined,
+     done}, `version`, `date`, `reader`, `owner`, `originator`,
+     `received-through`, `route` in {awaiting, discovery, small-change,
+     declined}, `route-reason`; a `routed-to` link, when present,
+     resolves (request typedef §Required frontmatter). Checks 1-8 walk
+     basis/ as before; --derive-chain reads .claude/skills/ as before.
 
 Modes:
   lint_basis.py                     # lint the whole basis tree
@@ -59,6 +72,13 @@ REQUIRED_HEADINGS = {
 DECISION_REF = re.compile(r"\bR\d{1,3}\b")
 BANNED = ["ratif", "disposition", "rebaseline bill", "surface", "seat"]
 PKG_RE = re.compile(r"^pkg:[a-z0-9-]+/[a-z0-9_-]+$")
+
+# 9. received requests (request typedef §Required frontmatter)
+REQUESTS = BASIS.parent / "requests"
+REQUEST_KEYS = ["type", "id", "status", "version", "date", "reader", "owner",
+                "originator", "received-through", "route", "route-reason"]
+REQUEST_STATUS = {"recorded", "routed", "declined", "done"}
+REQUEST_ROUTE = {"awaiting", "discovery", "small-change", "declined"}
 
 
 def front_matter(path):
@@ -199,6 +219,40 @@ def lint():
                         tfm, _ = front_matter(target)
                         if not tfm or tfm.get("defines") != ref:
                             errors.append(f"{rel}: from `{src}` does not define `{ref}`")
+    errors += lint_requests()
+    return errors
+
+
+def lint_requests():
+    """9. Each received request in requests/ carries the frontmatter of a
+    received ask (request typedef §Required frontmatter). The directory
+    may not exist yet: no requests, no violations."""
+    errors = []
+    if not REQUESTS.is_dir():
+        return errors
+    clause = "(request typedef §Required frontmatter)"
+    for path in sorted(REQUESTS.glob("*.md")):
+        rel = path.relative_to(BASIS.parent)
+        fm, _ = front_matter(path)
+        if fm is None:
+            errors.append(f"{rel}: front-matter missing or unparseable {clause}")
+            continue
+        for key in REQUEST_KEYS:
+            if key not in fm:
+                errors.append(f"{rel}: front-matter lacks `{key}` {clause}")
+        if "type" in fm and fm["type"] != "request":
+            errors.append(f"{rel}: `type` is `{fm['type']}`, not `request` {clause}")
+        if "status" in fm and fm["status"] not in REQUEST_STATUS:
+            errors.append(f"{rel}: `status` `{fm['status']}` not in {sorted(REQUEST_STATUS)} {clause}")
+        if "route" in fm and fm["route"] not in REQUEST_ROUTE:
+            errors.append(f"{rel}: `route` `{fm['route']}` not in {sorted(REQUEST_ROUTE)} {clause}")
+        target = fm.get("routed-to")
+        if target:
+            if not isinstance(target, str):
+                errors.append(f"{rel}: `routed-to` is not a link {clause}")
+            elif not target.startswith(("http://", "https://", "pkg:")) \
+                    and not (path.parent / target).exists():
+                errors.append(f"{rel}: broken link `{target}` in `routed-to` {clause}")
     return errors
 
 

@@ -4,9 +4,9 @@ id: glossary
 owner: product-authority
 status: approved
 approved: 2026-08-19
-version: 20
+version: 21
 created: 2026-08-19
-updated: 2026-09-02
+updated: 2026-09-04
 ---
 
 # Glossary
@@ -173,10 +173,12 @@ terms uses one of these when one fits.
   that is the feature repository. Itself a feature to be built,
   partially implemented on `main`, to arrive by integrating that
   work.
-- **ask** — a question one activity puts to another role in place of
-  its output, carrying a default and a checkpoint; the run holds, the
-  role answers, the step resumes — never a wait in place (data type
-  `ask`; process-definition typedef §Run lifecycle).
+- **ask** — two senses. In a process: a question one activity puts to
+  another role in place of its output, carrying a default and a
+  checkpoint; the run holds, the role answers, the step resumes — never
+  a wait in place (data type `ask`; process-definition typedef §Run
+  lifecycle). Received: one expression of intent by an originator,
+  brought to the lead shop and recorded as a request on arrival.
 - **clarify** — an ask from a Bounded Context shop to the lead shop on
   scope, vocabulary, structure, or contract; answered by the role whose
   domain the question falls in.
@@ -232,6 +234,28 @@ terms uses one of these when one fits.
 - **intent** — a desired outcome expressed by an originator at the
   product's edge; enters the product through a contract and keeps its
   provenance through every translation and delegation.
+- **request** — in the received-ask sense: the durable record of an
+  ask, an instance of the `request` artifact type made on arrival and
+  routed by the lead-pm role — into a discovery conversation, to the
+  small-change lane, or declined with the authority; the ask's words
+  have one home there, every other appearance a reference. The type's
+  root sense — a document asking its reader to act or decide, as a
+  `decision-brief` does — stands beside it.
+- **simple change** — a change that spends no appetite worth a bet: it
+  stays within the lead shop's own definitions or one instance of
+  them, touches no Bounded Context, and its effect is demonstrable in
+  the running system in one session; judged by the lead-pm role at
+  routing, and the lead-po role, once it defines the change, may find
+  otherwise.
+- **small-change lane** — the route that takes a simple change to a
+  verified result without a bet or a check of record: the small-change
+  process — the change defined up front, made, checked by a role other
+  than its maker, its effect demonstrated; a change found not simple
+  leaves the lane for a discovery conversation.
+- **intake** — the process in which an ask is recorded as a request and
+  routed by the lead-pm role: the request-intake process; distinct
+  from the small-change lane and from the discovery conversation, both
+  of which a route may lead to.
 
 ## Document History
 
@@ -261,3 +285,4 @@ terms uses one of these when one fits.
 | 18 | 2026-08-31 | update | Owner decision: acceptance scenarios are authored by the PO role; co-production removed. |
 | 19 | 2026-08-31 | update | Owner direction: the scenario register split from the record of specified scenarios — the feature repository (new term) is the artifacts themselves, authoritative for specification and assignment; the register is the tracker of implemented scenarios pulled from the shops, itself a feature to be built; pre-state is the state of the design (contracts + repository); vehicles other than assign_scenarios come from operational activities, not assignment. |
 | 20 | 2026-09-02 | update | architecture decision record added with the adr chain — the term the architect role and the product-decision-record entry used without a definition. |
+| 21 | 2026-09-04 | update | The terms feat-request-routing's Vocabulary introduced, under init-request-routing on the authority's standing direction of 2026-09-04: ask gains its received sense beside the process sense; request (received-ask sense), simple change, small-change lane, and intake added — each used by the feature, the request typedef v3, and adr-2026-09-04-request-front-end. |
