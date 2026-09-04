@@ -3,7 +3,7 @@ type: initiative
 id: init-roles-availability
 name: Roles availability
 status: active
-version: 7
+version: 8
 owner: lead-pm
 created: 2026-09-03
 updated: 2026-09-04
@@ -13,10 +13,12 @@ updated: 2026-09-04
 
 ## Framing
 
-Originator (product authority, 2026-09-03, through the operational
-contract): "Next initiative: make roles available to agents. We've
-made skills available to claude and need to do similar with roles."
-And on the risk: "run this through to the end since it is low-risk."
+Originator (product authority, 2026-09-04, through the operational
+contract, restating the problem behind the 2026-09-03 request): "The
+agent is not populated with the approved role definitions, just as it
+was not populated with the approved process definitions before." And
+on the risk (2026-09-03): "run this through to the end since it is
+low-risk."
 
 Problem: the shop's approved role definitions cannot be instantiated
 by the agent runtime; what it instantiates instead comes from the
@@ -87,3 +89,4 @@ exists on this branch to rely on. Cross-context flow: none.
 | 5 | 2026-09-03 | state | `planned` → `active`: feat-roles-availability's first pass through the PO output check (round 3, the cap; the PM role's pass) — written by that check's record step through its declared framing input, planned the only status written over. |
 | 6 | 2026-09-03 | update | Measure met in the running system: 6 of 6 approved roles instantiated by the agent runtime from the load point, current with their definitions (role-rendering first run, check clean round 2; the instantiation recorded in feat-roles-availability v6). The `completed` state is a pending reconcile-side amendment; the PO role judges the features done. |
 | 7 | 2026-09-04 | update | Authority's ruling on brief-034 ask 4: the false-clean gap (lead-xmuft) is a direct risk to this initiative and "should be handled within the same run" — applied as a decision to the affected definitions (skill-rendering v6, role-rendering v6, both compilers) past the spent appetite, the overrun recorded here as the authority's; the mechanism for such extensions is filed as lead-m6m2b. Ask 3 ruled: the criterion stands, the framer's wording changes — the authority's restatement of the Framing quote is pending (lead-4bm7q carries the discovery-side reinforcement). |
+| 8 | 2026-09-04 | update | Framing quote restated on the authority's ruling (brief-034 ask 3: the wording changes, not the criterion). Original words of 2026-09-03, moved here from §Framing: "Next initiative: make roles available to agents. We've made skills available to claude and need to do similar with roles." The authority's first restatement carried "compiled" and "just as the skills"; the lead-pm proposed the recorded form and the authority accepted it: "go with your version." |
