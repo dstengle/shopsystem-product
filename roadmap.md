@@ -2,7 +2,7 @@
 type: roadmap-priority
 id: roadmap-priority
 status: draft
-version: 3
+version: 4
 owner: lead-pm
 created: 2026-09-02
 updated: 2026-09-04
@@ -19,11 +19,12 @@ amendment lands.
 
 ## Priority
 
-1. **init-request-routing** — the planned initiative
+1. **init-request-routing** — active
    ([initiatives/init-request-routing.md](initiatives/init-request-routing.md)):
-   the authority's bet of 2026-09-04; the door for every ask and the
-   lane for a simple change, on the authority's direction "this is
-   about getting simple things done".
+   the authority's bet of 2026-09-04; its measure met the same day
+   (the example change through the lane, 0 → 1); it stays in the
+   priority until the PO role judges its feature done and the
+   `completed` state lands.
 2. **init-roles-availability** — active
    ([initiatives/init-roles-availability.md](initiatives/init-roles-availability.md)):
    its measure met 2026-09-03 (6 of 6); it stays in the priority until
@@ -49,3 +50,4 @@ the initiative path.
 | 1 | 2026-09-02 | update | Recorded by the PM role's assisting agent from the authority's stated direction, as the priority the first backlog order requires; pre-typedef, flagged for re-forming when the roadmap amendment lands. |
 | 2 | 2026-09-03 | update | Re-recorded by the PM role's assisting agent on the authority's bet of 2026-09-03: init-roles-availability placed first; init-skills-availability kept as active; the later rendering work added from the authority's words (lead-sx9xj); the ADR item removed as delivered. Still pre-typedef. |
 | 3 | 2026-09-04 | update | Re-recorded by the PM role's assisting agent on the authority's bet of 2026-09-04: init-request-routing placed first; init-roles-availability kept as active with its measure met; the rest unchanged. Still pre-typedef. |
+| 4 | 2026-09-04 | update | init-request-routing's measure met the same day; kept as active pending the `completed` state. Still pre-typedef. |

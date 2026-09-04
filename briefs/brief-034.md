@@ -6,7 +6,12 @@ date: 2026-09-03
 reader: product-authority
 decisions-requested: 4
 annex: annex-034.md
-version: 5
+relates-to:
+  - initiatives/init-roles-availability.md
+  - features/feat-roles-availability.md
+  - decisions/adr-2026-09-03-role-rendering.md
+  - decisions/pdr-2026-09-03-bet-roles-availability.md
+version: 6
 ---
 
 # Brief 034: roles availability delivered, for your ratification
@@ -148,3 +153,4 @@ made in your absence.
 | 5 | 2026-09-03 | review | Cold read round 3 (judge: claude-fable-5-1, cold-reviewer): findings — the baseline sentence, Ask 1's disposition by authorship, Ask 3's originator scope, Ask 4's cause. |
 | 5 | 2026-09-03 | review | Cold read round 4 (judge: claude-fable-5-1, cold-reviewer): findings — Ask 1's hidden precedent, Ask 2 not decidable from the repair inventory, defaults on silence unmarked, five load-bearing terms unglossed. Failsafe exit. |
 | 5 | 2026-09-03 | state | draft → delivered at the round cap; the open findings stated and answered at the top of the brief. |
+| 6 | 2026-09-04 | update | `relates-to` added under req-2026-09-04-brief-relates-to at the small-change process's make step, naming the initiative, feature, and two decision records the brief is about; the brief is delivered and its content is unchanged. Made by the lead-solutions-architect role. |

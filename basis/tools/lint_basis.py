@@ -31,11 +31,27 @@ Checks:
      done}, `version`, `date`, `reader`, `owner`, `originator`,
      `received-through`, `route` in {awaiting, discovery, small-change,
      declined}, `route-reason`; a `routed-to` link, when present,
-     resolves (request typedef §Required frontmatter). Checks 1-8 walk
+     resolves before any `#` fragment — the request's own path is
+     accepted, the small-change lane's result being the request's
+     Result section by fragment (request typedef §Required
+     frontmatter). Checks 1-8 walk
      basis/ as before; --derive-chain reads .claude/skills/ as before.
+ 10. Each decision brief in `briefs/` at the repository root — the
+     directory may not exist yet; a brief is a file whose `type` is
+     `decision-brief`, and the annexes beside it (a brief's linked full
+     material, of no fixed frontmatter) are not briefs and are not
+     walked — carries the decision-brief typedef's closed field set and
+     nothing outside it: `type: decision-brief`, `id`, `status` in {draft, delivered,
+     decided}, `version`, `date`, `reader`, `decisions-requested`,
+     `annex`, and the optional `relates-to` — a list of one or more
+     paths, each resolving from the repository root (decision-brief
+     typedef §Required frontmatter). `--brief <path>` runs the same
+     rules on that one file alone. Checks 1-9 as before.
 
 Modes:
   lint_basis.py                     # lint the whole basis tree
+  lint_basis.py --brief PATH        # check one decision brief alone by
+                                    # check 10's rules (exit 0 on pass)
   lint_basis.py --derive-chain X    # print the derived definition chain
                                     # for artifact type X (definition-chain
                                     # is assembled from references, never
@@ -79,6 +95,13 @@ REQUEST_KEYS = ["type", "id", "status", "version", "date", "reader", "owner",
                 "originator", "received-through", "route", "route-reason"]
 REQUEST_STATUS = {"recorded", "routed", "declined", "done"}
 REQUEST_ROUTE = {"awaiting", "discovery", "small-change", "declined"}
+
+# 10. decision briefs (decision-brief typedef §Required frontmatter)
+BRIEFS = BASIS.parent / "briefs"
+BRIEF_KEYS = ["type", "id", "status", "version", "date", "reader",
+              "decisions-requested", "annex"]
+BRIEF_OPTIONAL = {"relates-to"}
+BRIEF_STATUS = {"draft", "delivered", "decided"}
 
 
 def front_matter(path):
@@ -220,6 +243,7 @@ def lint():
                         if not tfm or tfm.get("defines") != ref:
                             errors.append(f"{rel}: from `{src}` does not define `{ref}`")
     errors += lint_requests()
+    errors += lint_briefs()
     return errors
 
 
@@ -250,9 +274,71 @@ def lint_requests():
         if target:
             if not isinstance(target, str):
                 errors.append(f"{rel}: `routed-to` is not a link {clause}")
-            elif not target.startswith(("http://", "https://", "pkg:")) \
-                    and not (path.parent / target).exists():
-                errors.append(f"{rel}: broken link `{target}` in `routed-to` {clause}")
+            else:
+                # Resolve the part before any `#` fragment, as check 4 does
+                # for markdown links; the small-change lane's result is the
+                # request's own Result section by fragment, so the request's
+                # own repository-root path is accepted.
+                link = target.split("#", 1)[0]
+                if not link.startswith(("http://", "https://", "pkg:")) \
+                        and link != rel.as_posix() \
+                        and not (path.parent / link).exists():
+                    errors.append(f"{rel}: broken link `{target}` in `routed-to` {clause}")
+    return errors
+
+
+def lint_briefs():
+    """10. Each decision brief in briefs/ carries the decision-brief
+    typedef's closed field set and nothing outside it, and every
+    relates-to path resolves from the repository root. The directory may
+    not exist yet: no briefs, no violations. A brief is a file whose type
+    is decision-brief; the annexes beside it — a brief's linked full
+    material, of no fixed frontmatter — are not briefs and are not
+    walked."""
+    errors = []
+    if not BRIEFS.is_dir():
+        return errors
+    for path in sorted(BRIEFS.glob("*.md")):
+        fm, _ = front_matter(path)
+        if fm is not None and fm.get("type") == "decision-brief":
+            errors += lint_brief(path)
+    return errors
+
+
+def lint_brief(path):
+    """Check one decision brief by check 10's rules (decision-brief
+    typedef §Required frontmatter); the same rules for the tree walk
+    and for --brief. Paths under relates-to resolve from the repository
+    root, wherever the brief file lives."""
+    errors = []
+    clause = "(decision-brief typedef §Required frontmatter)"
+    root = BASIS.parent
+    full = path.resolve()
+    rel = full.relative_to(root) if full.is_relative_to(root) else path
+    fm, _ = front_matter(path)
+    if fm is None:
+        errors.append(f"{rel}: front-matter missing or unparseable {clause}")
+        return errors
+    for key in BRIEF_KEYS:
+        if key not in fm:
+            errors.append(f"{rel}: front-matter lacks `{key}` {clause}")
+    for key in fm:
+        if key not in BRIEF_KEYS and key not in BRIEF_OPTIONAL:
+            errors.append(f"{rel}: unknown front-matter key `{key}` — the field set is closed {clause}")
+    if "type" in fm and fm["type"] != "decision-brief":
+        errors.append(f"{rel}: `type` is `{fm['type']}`, not `decision-brief` {clause}")
+    if "status" in fm and fm["status"] not in BRIEF_STATUS:
+        errors.append(f"{rel}: `status` `{fm['status']}` not in {sorted(BRIEF_STATUS)} {clause}")
+    if "relates-to" in fm:
+        targets = fm["relates-to"]
+        if not isinstance(targets, list) or not targets:
+            errors.append(f"{rel}: `relates-to` is not a list of one or more paths {clause}")
+        else:
+            for target in targets:
+                if not isinstance(target, str) or not target:
+                    errors.append(f"{rel}: `relates-to` entry `{target}` is not a path {clause}")
+                elif not (root / target).is_file():
+                    errors.append(f"{rel}: `relates-to` path `{target}` does not resolve from the repository root {clause}")
     return errors
 
 
@@ -296,7 +382,10 @@ def main():
     if len(sys.argv) > 2 and sys.argv[1] == "--derive-chain":
         print(yaml.safe_dump(derive_chain(sys.argv[2]), sort_keys=False).rstrip())
         return
-    errors = lint()
+    if len(sys.argv) > 2 and sys.argv[1] == "--brief":
+        errors = lint_brief(pathlib.Path(sys.argv[2]))
+    else:
+        errors = lint()
     for e in errors:
         print(e)
     print(f"{'FAIL' if errors else 'PASS'}: {len(errors)} violation(s)")
