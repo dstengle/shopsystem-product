@@ -45,6 +45,17 @@ date: 2026-09-04
 | request-intake | process-definition fitness (v6) | 3 | round 1 three confident repaired; round 2 one confident repaired; cap: three confident repaired past it and disclosed (witness lists; the objection-at-cap sentence; discovery on a named topic); approved |
 | small-change | process-definition fitness (v6) | 3 | round 1 two confident repaired; round 2 one confident repaired; cap: six wobbly, none confident; five post-cap repairs disclosed; approved |
 
+## The brief's cold reads (judge claude-fable-5-1, the rendered cold-reviewer role, fresh context each round)
+
+| Round | Verdict | Asks decidable | Findings in short |
+|---|---|---|---|
+| 1 | findings | Ask 3 confident; Asks 1, 4 wobbly; Ask 2 cannot-decide | overload in Asks 1–2; the three routes never named; originator, cancellation, work item, the lane's definer unintroduced; wobbly gloss wrong; the no-go question twice; Ask 2's round counts and rendering-gate sentence; Ask 4's ruling not stated as objectable |
+| 2 | findings | Asks 1, 3 confident; Asks 2, 4 wobbly | Ask 2 slightly over; the objection cap without reason or cost; Ask 4 bundling a ruling and an authorization; numbers and referents unreconciled |
+| 3 | findings | Asks 1, 3, 4, 5 confident; Ask 2 wobbly | Ask 2 slightly over; the objection loop unintroduced; check-9 mechanics in the ask; eight terms at first use; the contract finding's link to Asks 4–5; push state; defaults not in one form |
+| 4 | findings (failsafe exit) | Asks 1, 3, 4 confident; Ask 5 confident with one ambiguity; Ask 2 wobbly | who routes and whether the authority's answer is a ruling; the two caps' severity; "the bet" and "the same right"; the lint parenthetical; the cap read as new; Ask 1's held reason; lead-ghulb's referent — answered at the top of the brief |
+
+Ask 2's cap severity, in full: `request-intake` round 3 stood three confident findings — O3/O5/O8 witness lists short of the Derived checks table; the Data sentence on an objection at the cap misdescribing the branch it reaches; the cap path opening discovery on an undecided topic — and four wobbly; all three confident repaired past the cap and disclosed. `small-change` round 3 stood no confident finding and six wobbly; five repaired past the cap and disclosed. The lint amendment Ask 2 names: check 9 walks `requests/` (frontmatter keys, status and route vocabularies, `routed-to` resolving); check 10 walks `briefs/` with the `--brief <path>` mode; the check-9 fragment repair is under "The runs" below.
+
 ## The runs
 
 Skill-rendering check, round 1: `diverged discovery-conversation-process` (v11, the hinge), `missing request-intake-process`, `missing small-change-process`. Reconciled by re-render; round 2: `approved-count 21` only. The compilers word-split under the session's shell; the check was re-run under bash.
