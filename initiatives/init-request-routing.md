@@ -3,7 +3,7 @@ type: initiative
 id: init-request-routing
 name: Request routing and the small-change lane
 status: proposed
-version: 1
+version: 2
 owner: lead-pm
 created: 2026-09-04
 updated: 2026-09-04
@@ -13,67 +13,72 @@ updated: 2026-09-04
 
 ## Framing
 
-Originator (product authority, 2026-09-04, through the operational
-contract, in a brainstorm discovery on lead-1kp6m): "this is about
-getting simple things done, which now requires being able to route
-requests." On the door: "we don't have a good entry-point to go from
-open-ended human input to something an agent can work with." On the
-lane: "There needs to be a small-change lane that even includes
-features, however minor. … This is a trivial, but functional change
-that shouldn't require a lot of process."
+Originator (product authority, 2026-09-04, through the lead shop's
+operational contract, which has no artifact yet (lead-4kymc), in
+discovery lead-1kp6m):
+"this is about getting simple things done, which now requires being
+able to route requests."
 
-Problem: a simple, functional change cannot get done except through
-the full product flow, whose stages exist to protect a bet the change
-does not spend; and an ask that arises in open-ended conversation has
-no record until a discovery conversation is opened for it, so it is
-either lost or over-processed. Outcome: every ask is recorded at the
-door and routed by the lead-pm — to discovery, to the small lane, or
-declined, with a decline handled with the authority — and a simple
-change reaches a verified result through that record without the
-stages that protect a bet.
+Problem: a simple, functional change can only get done through the
+full product flow, whose stages protect a bet the change does not
+spend; and an ask arising in conversation has no record until a
+discovery conversation opens for it. Outcome: every ask is recorded on
+arrival and has a decided route — into discovery, to a simple change,
+or declined with the authority — and a simple change reaches a
+verified result without the stages that protect a bet.
 
 ## For whom
 
-The product authority, and anyone who brings the lead shop an ask.
-Measure: a simple functional change — the decision brief's related-to
-metadata, the originator's own example — gets from open-ended input
-to a verified change through a recorded, routed request, with the full
-flow untouched. Now: 0; the only door is a discovery conversation and
-the only lane is the full flow. Target: 1.
-Interaction type: conversational — the ask arrives in open discussion,
-where the router recognizes it; no core task in the list yet carries
-"make a request", which is the designer's question to answer.
+The product authority and anyone bringing the lead shop an ask.
+Measure: a simple functional change — the originator's example, a
+decision brief that says what it relates to — reaches a verified
+result through a recorded, routed ask, the full flow untouched. Now 0:
+the only door is discovery, the only path the full flow. Target 1.
+Interaction type: conversational.
 
 ## Appetite
 
-One working session of the lead shop. No-gos, each with its reason:
+One working session of the lead shop, covering every ask recorded
+and routed on arrival, the route into discovery kept open, and the
+example change verified: definitions alone do not meet the measure.
+No-gos, reasoned:
 
-- The configuration lane — instance-local role and process overlays,
-  operational settings — is backlogged as lead-1d0eo: no new types in
-  this session.
-- Grooming of all open work, not only planned initiatives — backlogged
-  as lead-izfpk: a change to ordering, not to getting a simple thing
-  done.
-- Draining the work-register pileup into durable records — backlogged
-  as lead-vx02q: real work of its own, outside one session.
-- The Framing-refinement rule for the full lane — the originator's raw
-  words held on the request, the Framing refined with the authority
-  and referencing it — backlogged beside lead-4bm7q; only the hinge
-  stays in: discovery accepts a request as its input and the
-  initiative can reference it, so the router has somewhere to send a
-  large ask.
-- Any new artifact type beyond the request's own amendment — the
-  authority's direction: "we are not working through any new types".
-- Any change to what the full flow protects — the bet and the screen
-  of record stay as they are.
+- Instance-local configuration of this shop (lead-1d0eo): no new types this session.
+- Grooming every open work item, not only planned initiatives
+  (lead-izfpk): ordering, not doing.
+- Converting the work register's open items into durable records
+  (lead-vx02q): work of its own.
+- Refining the Framing with the authority (lead-ghulb): not needed to route.
+- New artifact types — the authority's direction: "we are not working
+  through any new types".
+- The bet and the screen of record: they protect an appetite a simple
+  change does not spend.
 
 ## Feasibility and usability
 
-Not yet.
+Feasible within one session, the verified example included, on the
+roles-availability precedent: a new process, its tool, and a
+demonstrated run delivered in one session. Evidence: no contract exists
+on this branch; the repository's two features touch neither requests
+nor routing: no conflict. Five lead-shop definitions amend (`request`,
+feature, initiative, discovery's `topic` input, the decision brief's
+closed field set) plus one intake process; that process's screen rounds
+are the overrun risk, and a cap-round pass suffices to run the example.
+(architect, 2026-09-04)
+
+Hypothesis, no observed use: "make a request" becomes a core-task entry
+holding on every type — options: state the ask in the originator's
+words; see the request's id; see its route (discovery, small lane,
+declined) and reason. The conversational door is an assistant
+interaction: the router says the route before acting, and the person
+can correct it (`control-stays-with-the-person`). (designer,
+2026-09-04)
 
 ## Decomposition
 
-Not yet.
+None: no Bounded Context is touched. Every amended definition and the
+example change sit in the lead shop's tree; no contract exists on this
+branch to rely on. Cross-context flow: none.
 
 ## Features
 
@@ -84,3 +89,6 @@ None yet.
 | Version | Date | Kind | Entry |
 |---|---|---|---|
 | 1 | 2026-09-04 | update | Recorded `proposed` by the discovery conversation's frame step, on the authority's convergence — "Keep the hinge, one session, converge" (work item lead-1kp6m; session sess-2026-09-04-b). Positions reached in the conversation and recorded for the check: the request is the front-end record for every ask and the durable one, the work register holding work in motion only and pointing at it; the small lane is a feature with a size, framed by its request, not a new type; the lead-pm routes and records, rejection handled with the authority. |
+| 2 | 2026-09-04 | review | Initiative-check screen round 1 (judge: claude-fable-5-1 / screen prompt v5): two confident findings, both in Appetite — a no-go without its reason; the scope sentence naming the request-and-reference mechanism — repaired; five wobbly in the lead-pm's sections repaired the same round: the contract named, the outcome restated without a role or path, the example named plainly, the appetite made explicit that the verified change is in it, the third originator quote (carrying "lane") moved here: "There needs to be a small-change lane that even includes features, however minor. … This is a trivial, but functional change that shouldn't require a lot of process." Before the round, sections 1–3 were cut from 490 to fit the 500-word bound once the two attachments landed (598 after the architect's). |
+| 2 | 2026-09-04 | review | Screen round 2 (judge: claude-fable-5-1 / screen prompt v5): five wobbly, none confident. Repaired: the second originator quote (carrying "entry-point") moved here: "we don't have a good entry-point to go from open-ended human input to something an agent can work with."; the example restated as "a decision brief that says what it relates to"; each no-go given a half-line saying what it is; the contract restated. The uncovered finding — the architect's verdict silent on feasibility within the appetite as written — returned as an ask to the architect, answered: feasible within one session, the verified example included, on the roles-availability precedent, the intake process's screen rounds the overrun risk. |
+| 2 | 2026-09-04 | review | Screen round 3, the cap (judge: claude-fable-5-1 / screen prompt v5): three wobbly, none confident, no uncovered — scenario 1: whether an unartifacted operational contract counts as the contract named; scenario 4: whether no-gos naming a structure to exclude it name a structure; scenario 4: whether the three route destinations in the outcome are outcome or mechanism. Post-cap repair, disclosed and not re-screened: the contract clause reworded to the judge's own proposal ("through the lead shop's operational contract, which has no artifact yet"). The other two are held for the authority at the bet. |
