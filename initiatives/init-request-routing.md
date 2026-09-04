@@ -2,8 +2,8 @@
 type: initiative
 id: init-request-routing
 name: Request routing and the small-change lane
-status: proposed
-version: 2
+status: planned
+version: 3
 owner: lead-pm
 created: 2026-09-04
 updated: 2026-09-04
@@ -82,7 +82,7 @@ branch to rely on. Cross-context flow: none.
 
 ## Features
 
-None yet.
+[feat-request-routing](../features/feat-request-routing.md) — draft.
 
 ## Document History
 
@@ -92,3 +92,4 @@ None yet.
 | 2 | 2026-09-04 | review | Initiative-check screen round 1 (judge: claude-fable-5-1 / screen prompt v5): two confident findings, both in Appetite — a no-go without its reason; the scope sentence naming the request-and-reference mechanism — repaired; five wobbly in the lead-pm's sections repaired the same round: the contract named, the outcome restated without a role or path, the example named plainly, the appetite made explicit that the verified change is in it, the third originator quote (carrying "lane") moved here: "There needs to be a small-change lane that even includes features, however minor. … This is a trivial, but functional change that shouldn't require a lot of process." Before the round, sections 1–3 were cut from 490 to fit the 500-word bound once the two attachments landed (598 after the architect's). |
 | 2 | 2026-09-04 | review | Screen round 2 (judge: claude-fable-5-1 / screen prompt v5): five wobbly, none confident. Repaired: the second originator quote (carrying "entry-point") moved here: "we don't have a good entry-point to go from open-ended human input to something an agent can work with."; the example restated as "a decision brief that says what it relates to"; each no-go given a half-line saying what it is; the contract restated. The uncovered finding — the architect's verdict silent on feasibility within the appetite as written — returned as an ask to the architect, answered: feasible within one session, the verified example included, on the roles-availability precedent, the intake process's screen rounds the overrun risk. |
 | 2 | 2026-09-04 | review | Screen round 3, the cap (judge: claude-fable-5-1 / screen prompt v5): three wobbly, none confident, no uncovered — scenario 1: whether an unartifacted operational contract counts as the contract named; scenario 4: whether no-gos naming a structure to exclude it name a structure; scenario 4: whether the three route destinations in the outcome are outcome or mechanism. Post-cap repair, disclosed and not re-screened: the contract clause reworded to the judge's own proposal ("through the lead shop's operational contract, which has no artifact yet"). The other two are held for the authority at the bet. |
+| 3 | 2026-09-04 | state | `proposed` → `planned`: the authority's bet, taken in the initiative-check decide step on its standing direction of this session — "continue all the way through implementation unless there is anything absolutely requiring clarification from me. … you have my permission to continue through." — the lead-pm recording it, for the authority's ratification at delivery. The bet was presented with the three cap findings and the lead-pm's reading of each; the direction followed. Reasons: no finding was confident in any round; the two held scenario-4 findings turn on readings the criteria do not settle — a no-go must name what it excludes, and the three route destinations are the authority's own decision from the discovery, an outcome — and the no-go question is filed for the owner in the initiative fitness set's Document History. The product decision record for the go is the PO role's to make and the PO output check screens it; made: [pdr-2026-09-04-bet-request-routing](../decisions/pdr-2026-09-04-bet-request-routing.md). The authority also directed that the architect produce the architecture decision record this initiative rests on; made and checked: [adr-2026-09-04-request-front-end](../decisions/adr-2026-09-04-request-front-end.md) (three candidates split out for their own runs: the register's role, the lane's form, the hinge). |
