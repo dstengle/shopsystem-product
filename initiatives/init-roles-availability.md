@@ -3,10 +3,10 @@ type: initiative
 id: init-roles-availability
 name: Roles availability
 status: active
-version: 6
+version: 7
 owner: lead-pm
 created: 2026-09-03
-updated: 2026-09-03
+updated: 2026-09-04
 ---
 
 # Initiative: Roles availability
@@ -86,3 +86,4 @@ exists on this branch to rely on. Cross-context flow: none.
 | 4 | 2026-09-03 | state | `proposed` → `planned`: the authority's bet, taken in the initiative-check decide step on its standing direction of this session — "run this through to the end since it is low-risk" — the lead-pm recording it; the two open findings are each settled by the authority's own earlier ruling, so no new decision is taken here. The product decision record for the go is the PO role's to make and the PO output check screens it; linked here once made. Made: [pdr-2026-09-03-bet-roles-availability](../decisions/pdr-2026-09-03-bet-roles-availability.md). |
 | 5 | 2026-09-03 | state | `planned` → `active`: feat-roles-availability's first pass through the PO output check (round 3, the cap; the PM role's pass) — written by that check's record step through its declared framing input, planned the only status written over. |
 | 6 | 2026-09-03 | update | Measure met in the running system: 6 of 6 approved roles instantiated by the agent runtime from the load point, current with their definitions (role-rendering first run, check clean round 2; the instantiation recorded in feat-roles-availability v6). The `completed` state is a pending reconcile-side amendment; the PO role judges the features done. |
+| 7 | 2026-09-04 | update | Authority's ruling on brief-034 ask 4: the false-clean gap (lead-xmuft) is a direct risk to this initiative and "should be handled within the same run" — applied as a decision to the affected definitions (skill-rendering v6, role-rendering v6, both compilers) past the spent appetite, the overrun recorded here as the authority's; the mechanism for such extensions is filed as lead-m6m2b. Ask 3 ruled: the criterion stands, the framer's wording changes — the authority's restatement of the Framing quote is pending (lead-4bm7q carries the discovery-side reinforcement). |

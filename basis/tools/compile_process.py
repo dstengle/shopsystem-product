@@ -24,15 +24,33 @@ import sys
 import yaml
 
 
+def one_line(exc: BaseException) -> str:
+    """An exception's message on one line, for a one-line exit reason."""
+    return " ".join(str(exc).split()) or type(exc).__name__
+
+
 def parse(path: pathlib.Path):
-    text = path.read_text()
+    """Read and parse a definition. A definition that cannot be read or
+    parsed exits nonzero with a one-line reason on stderr, never a traceback."""
+    try:
+        text = path.read_text()
+    except (OSError, UnicodeDecodeError) as exc:
+        sys.exit(f"{path}: cannot be read: {exc}")
     fm_match = re.match(r"---\n(.*?)\n---\n", text, re.S)
     if not fm_match:
         sys.exit(f"{path}: no front-matter")
-    front = yaml.safe_load(fm_match.group(1))
+    try:
+        front = yaml.safe_load(fm_match.group(1))
+    except yaml.YAMLError as exc:
+        sys.exit(f"{path}: front-matter does not parse: {one_line(exc)}")
+    if not isinstance(front, dict):
+        sys.exit(f"{path}: front-matter is not a mapping")
     spec = {}
     for fence in re.findall(r"```yaml\n(.*?)```", text, re.S):
-        block = yaml.safe_load(fence)
+        try:
+            block = yaml.safe_load(fence)
+        except yaml.YAMLError as exc:
+            sys.exit(f"{path}: a yaml block does not parse: {one_line(exc)}")
         if isinstance(block, dict):
             spec.update(block)
     if "steps" not in spec or "start" not in spec:
@@ -262,14 +280,7 @@ def generate_skill(front: dict, spec: dict, purpose: str, guiding: str, diagram:
     return "\n\n".join(parts) + "\n"
 
 
-def main() -> None:
-    args = sys.argv[1:]
-    skill_out = None
-    if "--skill" in args:
-        i = args.index("--skill")
-        skill_out = pathlib.Path(args[i + 1])
-        args = args[:i] + args[i + 2:]
-    source = pathlib.Path(args[0])
+def compile_definition(source: pathlib.Path, skill_out) -> None:
     text, front, spec, purpose, guiding = parse(source)
     check_refs(source, front, spec)
     diagram = mermaid(spec)
@@ -283,6 +294,27 @@ def main() -> None:
             generate_skill(front, spec, purpose, guiding, diagram, digest, source_rel)
         )
         print(f"{skill_out}: generated from {front['id']} (digest {digest})")
+
+
+def main() -> None:
+    args = sys.argv[1:]
+    skill_out = None
+    if "--skill" in args:
+        i = args.index("--skill")
+        if i + 1 >= len(args):
+            sys.exit(__doc__.split("Usage:", 1)[1].rstrip())
+        skill_out = pathlib.Path(args[i + 1])
+        args = args[:i] + args[i + 2:]
+    if len(args) != 1:
+        sys.exit(__doc__.split("Usage:", 1)[1].rstrip())
+    source = pathlib.Path(args[0])
+    try:
+        compile_definition(source, skill_out)
+    except SystemExit:
+        raise
+    except Exception as exc:  # noqa: BLE001 — a definition that does not
+        # compile is a one-line reason on stderr, never a traceback
+        sys.exit(f"{source}: does not compile: {type(exc).__name__}: {one_line(exc)}")
 
 
 if __name__ == "__main__":

@@ -103,3 +103,4 @@ Scenario 7: one page
 | 4 | 2026-08-31 | update | Batch A: the carrying process authored and linked. |
 | 4 | 2026-08-31 | state | draft → approved with batch A+B as one block (brief-032 ask 2, default accepted). |
 | 4 | 2026-09-03 | review | Gap filed for the owner by the PM role, from the init-roles-availability screen (round 3, judge claude-fable-5-1): scenario 4 states no exemption for the originator's quoted words, so a quote naming a technology or form draws a wobbly finding on every initiative — init-skills-availability drew it too. The judge proposes exempting the originator's quoted words in scenario 4's Then. The owner decides; the set is unchanged until then. |
+| 4 | 2026-09-04 | review | Owner's ruling on the gap filed 2026-09-03: no exemption — scenario 4 stands as written; the framer's wording changes instead, and the discovery conversation is to catch solution words before the frame step (bead filed). Gap closed. |

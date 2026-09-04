@@ -15,12 +15,12 @@ type: skill
 id: skill-rendering-skill
 status: approved
 created: 2026-09-02
-updated: 2026-09-02
+updated: 2026-09-04
 generated: true
 generated-by: basis/tools/compile_process.py
 derived-from: skill-rendering-process
 source: basis/processes/skill-rendering.md
-source-digest: sha256:6fda2eb96494
+source-digest: sha256:914d68931adb
 activation: model-judged
 promotion: experiment-local
 ---

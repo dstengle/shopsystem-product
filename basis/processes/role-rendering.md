@@ -4,9 +4,9 @@ id: role-rendering-process
 owner: product-authority
 status: approved
 approved: 2026-09-03
-version: 5
+version: 6
 created: 2026-09-03
-updated: 2026-09-03
+updated: 2026-09-04
 produces: []
 carried-by: role-rendering-skill
 condition-language: cel
@@ -191,7 +191,10 @@ point — followed by what was filed. The compiler
 renders in memory for its check and writes only where `--agent`
 names, so `check` never mutates its subjects or the load point; the
 load point is written only at reconciliation's re-render, where that
-write is the point. The check sweeps this tree's load point: a role
+write is the point. A `run` step that exits nonzero is a failed step,
+not an empty result: the run halts at that step and the failure is
+reported to the reconciler role — it is never read as empty
+`findings` and never routed as a clean check. The check sweeps this tree's load point: a role
 copied there from the frozen corpus is `unrecognized`; the corpus's
 own load, in its own checkout, is outside this tree and outside the
 sweep — the initiative's no-go. The run declares no `result`:
@@ -235,6 +238,8 @@ steps:
     inputs: [approved, load_point, compiler, definitions]
     outputs: [findings]
     run: |
+      # the compiler is the last command, so its exit is this step's exit:
+      # nonzero is a failed step (see Data), never empty findings
       python3 ${compiler} --check ${load_point} --roles ${definitions} --findings ${approved}
     next: filter
 
@@ -346,3 +351,4 @@ steps:
 | 4 | 2026-09-03 | review | Round 3, the cap (judge: claude-fable-5-1 / screen prompt v6): one confident and three wobbly findings — F1 `filter.run` interpolated `${findings}` and `${escalations}` unquoted, word-splitting rows that carry spaces (both quoted; Data states that a `string[]` interpolates newline-joined into a `run` script, so word-splitting is never the contract for a row list, while `check.run`'s `${approved}` stays unquoted because the split into arguments is the intent there); F2 a definition that will not compile could also yield a `missing` row and burn the run to the cap (the compiler writes no `missing` or `diverged` row for a `will-not-compile` definition — stated in O4 and Data, added to O5's derived check, tested); F3 O4's third-word sentence did not match its own row shapes (aligned: the third word is the path for `diverged`, `missing`, and `stale`; `will-not-compile` carries the reason as the remainder; `unrecognized` has none); F4 `reconcile`'s unrecognized clause read as writing the path twice (reworded: the subject (the file's path), then "for the owner to decide"). Repaired post-cap by the PM role's direction, disclosed. |
 | 5 | 2026-09-03 | state | draft → approved by the owner, on the authority's standing direction for this session ("run this through to the end since it is low-risk"), recorded by the lead-pm: three screen rounds against the process-definition fitness set (judge claude-fable-5-1 / v6), the confident findings of each round repaired, the post-cap repairs disclosed in the round-3 row; the definition of good the feature feat-roles-availability. Bootstrap disclosed: the carrier is rendered by skill-rendering after this approval; the check that follows is the correspondence check. |
 | 5 | 2026-09-03 | update | First run over the corpus, invoked through its own carrier at the load point: round 1 — enumerate admitted 6 definitions, check found 6 `missing` (the load point `.claude/agents/` did not exist), filter left all 6 open, reconcile rendered each with `compile_role.py --agent` (the render created the load point); round 2 — check clean, no row open, nothing escalated: the first success exit. Every approved role is available: 6 of 6, zero divergence. No stale, unrecognized, or will-not-compile row. Observed in the run's harness, filed for the owner: a check whose compiler exits without rows — a crash, not a clean result — reads as empty `findings` and routes to the clean exit; the definition (skill-rendering's check has the same shape) does not distinguish an empty result from a failed step. |
+| 6 | 2026-09-04 | update | Owner's ruling of 2026-09-04 on brief-034 ask 4 (lead-xmuft), applied: a nonzero step exit is a failed step, not an empty result; compilers emit a will-not-compile row for a path they cannot read instead of crashing. |

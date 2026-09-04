@@ -15,12 +15,12 @@ type: skill
 id: role-rendering-skill
 status: approved
 created: 2026-09-03
-updated: 2026-09-03
+updated: 2026-09-04
 generated: true
 generated-by: basis/tools/compile_process.py
 derived-from: role-rendering-process
 source: basis/processes/role-rendering.md
-source-digest: sha256:54f11cc7fb19
+source-digest: sha256:2a00fb45d64d
 activation: model-judged
 promotion: experiment-local
 ---
@@ -70,8 +70,11 @@ next: check
 Run by the runtime — no agent, no prose. reads: approved, load_point, compiler, definitions · writes: findings.
 
 ```yaml
-run: 'python3 ${compiler} --check ${load_point} --roles ${definitions} --findings
-  ${approved}
+run: '# the compiler is the last command, so its exit is this step''s exit:
+
+  # nonzero is a failed step (see Data), never empty findings
+
+  python3 ${compiler} --check ${load_point} --roles ${definitions} --findings ${approved}
 
   '
 next: filter

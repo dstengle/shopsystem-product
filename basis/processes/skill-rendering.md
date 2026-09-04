@@ -4,9 +4,9 @@ id: skill-rendering-process
 owner: product-authority
 status: approved
 approved: 2026-09-02
-version: 5
+version: 6
 created: 2026-09-02
-updated: 2026-09-02
+updated: 2026-09-04
 produces: []
 carried-by: skill-rendering-skill
 condition-language: cel
@@ -141,7 +141,10 @@ scratch directory links the sibling type and artifact directories so
 the copy's data references resolve as its subject's would — and
 the write lands on the copy: the check never mutates its subject, and
 the definition itself is written only at reconciliation's re-render,
-where that write is the point. An
+where that write is the point. A `run` step that exits nonzero is a
+failed step, not an empty result: the run halts at that step and the
+failure is reported to the reconciler role — it is never read as empty
+`findings` and never routed as a clean check. An
 approved definition that names no `carried-by` skill id cannot render
 — at authoring time seven approved definitions stand so — and each is
 a first-run finding escalated to the owner. The run declares no
@@ -310,3 +313,4 @@ steps:
 | 4 | 2026-09-02 | state | draft → approved: the owner's decision of 2026-09-02, on the recommended path. Bootstrap exemption recorded: the self-referential carrier does not exist before the first run; its correspondence check is that run's own check against a fresh render — accepted as this screening's exemption. |
 | 4 | 2026-09-02 | update | First run over the corpus (the report step at the round cap): 10 skills rendered at the load point — 9 missing created, the hand-diverged stakeholder-presentation re-rendered over its edit, the carrier skill-rendering created (the bootstrap exemption's deferred check passed: the round-2 check diffed the carrier clean against a fresh render) — and the retired home basis/skills/ removed. Escalations: the fixed second-home notice — the retired home is removed; the owner is to amend the basis index's skills/ entry and sweep for any Carried by reference still naming the retired home (ten definitions' Carried by links read as broken by the lint until that sweep) — and seven approved definitions naming no carried-by skill id (corpus-close-out, definition-chain-migration, discovery-conversation, reconcile-and-close, review-conversation, session-handoff, work-conversation), each with the review entry written into its Document History. No unrecognized path, no will-not-compile. Check clean: no — the seven no-skill-id findings stood at the cap. |
 | 5 | 2026-09-02 | update | Second run, invoked through its own carrier at the load point: the owner amended the seven no-skill-id definitions (carried-by added, each with its history row), round 1 found 7 missing and 10 diverged (every definition had changed after its render — the Carried-by sweep and the amendments), reconcile re-rendered all 17, round 2 clean with nothing escalated — the first success exit. Every approved process is available: 17 of 17, zero divergence. Consistency-maintenance process filed as backlog bead lead-dyz0o. |
+| 6 | 2026-09-04 | update | Owner's ruling of 2026-09-04 on brief-034 ask 4 (lead-xmuft), applied: a nonzero step exit is a failed step, not an empty result; compilers emit a will-not-compile row for a path they cannot read instead of crashing. |

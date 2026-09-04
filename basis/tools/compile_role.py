@@ -45,10 +45,14 @@ Check rows, one per line, kind first (the finding kinds of skill-rendering):
   will-not-compile <definition> <reason>
                                   a given or approved definition that does
                                   not render (a given one that does not stand
-                                  approved is refused here)
-  stale <source> <path>           its source names a role definition that
-                                  does not stand approved (is not in the set)
-  unrecognized <path>             no rendering of any role definition
+                                  approved is refused here); also a listed
+                                  path that cannot be read or parsed —
+                                  missing, no front-matter, malformed — and
+                                  any unexpected failure while checking a
+                                  path, reported with that path as subject
+A row is one line: a newline in a path or reason is written as `\\n`.
+In check mode no failure escapes as a traceback: whatever cannot be
+checked is a row, and the exit is nonzero whenever any finding row exists.
 Exit 0 when every row is ok; 1 on any finding, refusal, or compile error;
 2 on a usage error.
 """
@@ -89,7 +93,10 @@ class Refused(Exception):
 
 
 def split(path: pathlib.Path):
-    text = path.read_text()
+    try:
+        text = path.read_text()
+    except (OSError, UnicodeDecodeError) as exc:
+        raise CompileError(f"{path}: cannot be read: {exc}")
     m = FM_RE.match(text)
     if not m:
         raise CompileError(f"{path}: no front-matter")
@@ -167,12 +174,63 @@ def render(source: pathlib.Path, roles_dir: str, load_point: str):
     return name, f"---\n{front_text}\n---\n\n{notice}\n\n{body}\n"
 
 
+def row(text: str) -> str:
+    """One finding row is one line: a newline in a path or reason is written
+    as the two characters `\\n`, so a row list stays one row per line."""
+    return text.replace("\r", "\\r").replace("\n", "\\n")
+
+
+def failure(subject: str, exc: BaseException) -> str:
+    """The will-not-compile row for a path that could not be checked."""
+    reason = str(exc) if isinstance(exc, (CompileError, Refused)) \
+        else f"{type(exc).__name__}: {exc}"
+    return row(f"will-not-compile {subject} {reason}")
+
+
+def check_definition(definition: pathlib.Path, shown_def: str, given: bool,
+                     load_dir: pathlib.Path, roles_dir: str, load_point: str,
+                     fresh: dict):
+    """The row for one listed definition, or None for one an unlisted sweep
+    skips (not a role definition, or not approved)."""
+    _, front, _ = split(definition)
+    if not given and (front.get("type") != "role-definition"
+                      or front.get("status") != "approved"):
+        return None
+    name, text = render(definition, roles_dir, load_point)
+    fresh[posixpath.join(repo_relative(roles_dir), definition.name)] = name
+    target = load_dir / f"{name}.md"
+    if not target.is_file():
+        return f"missing {name} {shown_def}"
+    if target.read_text() != text:
+        return f"diverged {name} {shown_def}"
+    return f"ok {name} {shown_def}"
+
+
+def check_rendering(path: pathlib.Path, shown: str, roles_prefix: str, fresh: dict):
+    """The row for one file at the load point, or None when it is current."""
+    try:
+        _, front, _ = split(path)
+        source = front.get("source")
+    except CompileError:
+        source = None
+    if not isinstance(source, str) or not source.startswith(roles_prefix):
+        return f"unrecognized {shown}"
+    if source not in fresh:
+        return f"stale {source} {shown}"
+    if path.name != f"{fresh[source]}.md":
+        return f"unrecognized {shown}"
+    return None
+
+
 def check(load_dir: pathlib.Path, roles_dir: str, load_point: str,
           definitions: list = None) -> list:
     """Rows for a load point. `definitions` is the set to check against — the
     process's enumerated approved list; when None, every approved definition
     under roles_dir. A given definition that does not stand approved is a
-    will-not-compile row (the compiler refuses it), never silently admitted."""
+    will-not-compile row (the compiler refuses it), never silently admitted.
+    A listed path that cannot be read or parsed, and any other failure while
+    checking a path, is a will-not-compile row with that path as subject —
+    the check continues; nothing escapes it as a traceback."""
     rows, fresh = [], {}
     given = definitions is not None
     if not given:
@@ -180,40 +238,23 @@ def check(load_dir: pathlib.Path, roles_dir: str, load_point: str,
     for definition in (pathlib.Path(d) for d in definitions):
         shown_def = shown_path(definition)
         try:
-            _, front, _ = split(definition)
-        except CompileError as exc:
-            rows.append(f"will-not-compile {shown_def} {exc}")
+            found = check_definition(definition, shown_def, given,
+                                     load_dir, roles_dir, load_point, fresh)
+        except Exception as exc:  # noqa: BLE001 — every failure is a row
+            rows.append(failure(shown_def, exc))
             continue
-        if not given and (front.get("type") != "role-definition"
-                          or front.get("status") != "approved"):
-            continue
-        try:
-            name, text = render(definition, roles_dir, load_point)
-        except (CompileError, Refused) as exc:
-            rows.append(f"will-not-compile {shown_def} {exc}")
-            continue
-        fresh[posixpath.join(repo_relative(roles_dir), definition.name)] = name
-        target = load_dir / f"{name}.md"
-        if not target.is_file():
-            rows.append(f"missing {name} {shown_def}")
-        elif target.read_text() != text:
-            rows.append(f"diverged {name} {shown_def}")
-        else:
-            rows.append(f"ok {name} {shown_def}")
+        if found is not None:
+            rows.append(row(found))
     roles_prefix = repo_relative(roles_dir) + "/"
     for path in sorted(load_dir.glob("*.md")) if load_dir.is_dir() else []:
-        try:
-            _, front, _ = split(path)
-            source = front.get("source")
-        except CompileError:
-            source = None
         shown = shown_path(path)
-        if not isinstance(source, str) or not source.startswith(roles_prefix):
-            rows.append(f"unrecognized {shown}")
-        elif source not in fresh:
-            rows.append(f"stale {source} {shown}")
-        elif path.name != f"{fresh[source]}.md":
-            rows.append(f"unrecognized {shown}")
+        try:
+            found = check_rendering(path, shown, roles_prefix, fresh)
+        except Exception as exc:  # noqa: BLE001
+            rows.append(failure(shown, exc))
+            continue
+        if found is not None:
+            rows.append(row(found))
     return rows
 
 
@@ -249,8 +290,11 @@ def main() -> None:
     if check_dir is not None:
         if agent_out:
             usage()
-        rows = check(pathlib.Path(check_dir), roles_dir, load_point,
-                     positional or None)
+        try:
+            rows = check(pathlib.Path(check_dir), roles_dir, load_point,
+                         positional or None)
+        except Exception as exc:  # noqa: BLE001 — the path in hand is the load point
+            rows = [failure(check_dir, exc)]
         clean = bool(rows) and all(r.startswith("ok ") for r in rows)
         if findings_only:
             rows = [r for r in rows if not r.startswith("ok ")]
