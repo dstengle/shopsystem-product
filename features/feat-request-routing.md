@@ -2,8 +2,8 @@
 type: feature
 id: feat-request-routing
 name: Request routing and the small-change lane
-status: draft
-version: 5
+status: checked
+version: 6
 initiative: ../initiatives/init-request-routing.md
 owner: lead-po
 created: 2026-09-04
@@ -17,8 +17,9 @@ updated: 2026-09-04
 Feature: Request routing and the small-change lane
   The product authority, and anyone bringing the lead shop an ask,
   can bring an ask and see it recorded on arrival with a decided
-  route — into a discovery conversation, to a simple change, or
-  declined with the authority — and can take a simple change to a
+  route — into a discovery conversation, to a simple change (the
+  small-change lane), or declined with the authority — and can take a
+  simple change to a
   verified result without the stages that protect a bet,
   so that getting simple things done no longer requires the full
   product flow.
@@ -37,7 +38,7 @@ on this branch to rely on.
 - *a request not yet routed is visible as awaiting its route* — shopsystem-product (the lead shop)
 - *a recorded request has a decided route* — shopsystem-product (the lead shop)
 - *an objection to the route is answered before the route is acted on* — shopsystem-product (the lead shop)
-- *no route is recorded while the originator has not answered* — shopsystem-product (the lead shop)
+- *a route said but not answered is recorded as said and not acted on* — shopsystem-product (the lead shop)
 - *a request routed into discovery is the discovery conversation's input* — shopsystem-product (the lead shop)
 - *the initiative made from a request references the request* — shopsystem-product (the lead shop)
 - *a simple change is defined up front before it is made* — shopsystem-product (the lead shop)
@@ -58,9 +59,12 @@ Appetite calls the screen of record. A change is *simple* when it
 spends no appetite worth a bet: it stays within the lead shop's own
 definitions or one instance of them, touches no Bounded Context, and
 its effect is demonstrable in the running system in one session; the
-lead-pm role judges this at routing, and the lane's definer may find
-otherwise once the change is defined, which sends the request back to
-routing. *The intake process* is the process in which an ask is
+lead-pm role judges this at routing, and the lead-po role may find
+otherwise once the change is defined, which changes the request's
+route to a discovery conversation with the reason. In the lane, the
+lead-po role defines a simple change — its definition is a
+requirement; the role that makes the change is its *maker*; the check
+sits with a role other than the maker. *The intake process* is the process in which an ask is
 recorded as a request and routed — the router's process, distinct
 from the lane and from the discovery conversation.
 
@@ -357,8 +361,9 @@ confirms or removes it.
 Feature: Request routing and the small-change lane
   The product authority, and anyone bringing the lead shop an ask,
   can bring an ask and see it recorded on arrival with a decided
-  route — into a discovery conversation, to a simple change, or
-  declined with the authority — and can take a simple change to a
+  route — into a discovery conversation, to a simple change (the
+  small-change lane), or declined with the authority — and can take a
+  simple change to a
   verified result without the stages that protect a bet,
   so that getting simple things done no longer requires the full
   product flow.
@@ -405,11 +410,11 @@ Feature: Request routing and the small-change lane
     When the originator objects to the route
     Then the route recorded is the one standing after the objection, with a reason that answers it, and no action on the earlier route was taken
 
-  @feature:feat-request-routing @hash:eb0291d05100
-  Scenario: no route is recorded while the originator has not answered
+  @feature:feat-request-routing @hash:f09ad469b17e
+  Scenario: a route said but not answered is recorded as said and not acted on
     Given a request recorded from an ask and its route said to the originator
-    When the originator has not answered
-    Then the request still shows as awaiting its route and no route is recorded
+    When the request is read before the originator answers
+    Then the request records the route as said, with its reason, and no action on it has been taken
 
   @feature:feat-request-routing @hash:f529feca1e32
   Scenario: a request routed into discovery is the discovery conversation's input
@@ -423,11 +428,11 @@ Feature: Request routing and the small-change lane
     When the conversation frames an initiative
     Then the initiative references the request it was made from, and the request records that initiative as where its route led
 
-  @feature:feat-request-routing @hash:b0b3207a6f3f
+  @feature:feat-request-routing @hash:ca14b5a4169a
   Scenario: a simple change is defined up front before it is made
     Given a request routed to the small-change lane
     When the lane takes up the request
-    Then a definition of the change — what will be different when it is done — is recorded, references the request, and stands before any change is made
+    Then a definition of the change, written by the lead-po role — what will be different when it is done — is recorded, references the request, and stands before any change is made
 
   @feature:feat-request-routing @hash:c04c2a23411c
   Scenario: a simple change is checked by a role other than its maker
@@ -477,12 +482,13 @@ Feature: Request routing and the small-change lane
 | An ask pointed at the configuration of the shopsystem itself | the framing's outcome ("every ask is recorded on arrival and has a decided route" — every ask, this kind included); the initiative's Appetite (no-go lead-1d0eo); the session record sess-2026-09-04-b as source of the authority's words, "All requests are for the product unless they are pointed at the configuration of the shopsystem itself" | Recorded and routed like any ask — Scenario: an ask brought to the lead shop is recorded as a request on arrival; Scenario: a recorded request has a decided route. A configuration lane as a fourth route is out of scope: lead-1d0eo, "no new types this session" |
 | Grooming every open work item | the initiative's Appetite (no-go lead-izfpk) | Out of scope: ordering, not doing — the backlog-ordering process's, not this feature's |
 | Converting the work register's open items into durable records | the initiative's Appetite (no-go lead-vx02q) | Out of scope: work of its own; this feature records asks from their arrival onward, not the pileup before it |
-| Refining the Framing with the authority | the initiative's Appetite (no-go lead-ghulb) | Out of scope: not needed to route; the initiative typedef's Framing rule is that bead's |
+| Refining the Framing with the authority | the initiative's Appetite (no-go lead-ghulb) | Out of scope: not needed to route; the initiative typedef's Framing rule is that work item's (lead-ghulb) |
 | A new artifact type for the received ask or the small change | the initiative's Appetite (no-go: "we are not working through any new types") | Out of scope: the request is the existing type; the lane's change is defined and verified without a type of its own |
 | Intent received by a Bounded Context shop | the initiative's Decomposition ("no Bounded Context is touched") | Out of scope: this feature covers the lead shop's own front end; no Bounded Context exists on this branch |
 | The router reads open conversation's words as an ask the originator did not make | the designer's criteria (U3, A4) | Scenario: open conversation that makes no ask leaves no request — the router says its reading before recording, and the originator's "no" leaves no request |
-| The originator objects to the route the router says | the designer's criteria (U4) | Scenario: an objection to the route is answered before the route is acted on — the designer's contribution (U3, U4, A2), serving the framing's "decided route" outcome: the route recorded is the one standing after the objection, with a reason that answers it; U4 binds the form: the decision stays the lead-pm role's; Scenario: a recorded request has a decided route — the route and its reason then read from the request |
-| The originator does not answer the router — whether the words are an ask, whether the route stands | the designer's criteria (U3, U4, A2) | Scenario: no route is recorded while the originator has not answered — the designer's contribution (U3, U4, A2), serving the framing's "decided route" outcome: a route is decided, never defaulted; A2 and U4 bind the form: no route taken because a time ran out; Scenario: open conversation that makes no ask leaves no request — no request from silence (U3); Scenario: a request not yet routed is visible as awaiting its route — the request stays in the list of requests awaiting a route |
+| The originator objects to the route the router says | the designer's criteria (U4) | Scenario: an objection to the route is answered before the route is acted on (U3, U4, A2); Scenario: a recorded request has a decided route |
+| The originator does not answer the router — whether the words are an ask, whether the route stands | the designer's criteria (U3, U4, A2) | Scenario: a route said but not answered is recorded as said and not acted on (U4, A2); Scenario: open conversation that makes no ask leaves no request (U3); Scenario: a request not yet routed is visible as awaiting its route |
+| A route acted on before the originator hears it | the designer's criteria (U4) | Scenario: an objection to the route is answered before the route is acted on; Scenario: a route said but not answered is recorded as said and not acted on — both Givens hold the route as said to the originator before any action, so each Then is reachable only after the route was said; U4 binds the form |
 | A paraphrase recorded instead of the originator's words | the designer's criteria (U1) | Scenario: an ask brought to the lead shop is recorded as a request on arrival; Scenario: an ask arising in open conversation is recorded as a request — the Then's "in the originator's words"; U1 binds the form: those words, not a paraphrase |
 | The request's id given in place of the originator's words | the designer's criteria (U1) | Scenario: an ask brought to the lead shop is recorded as a request on arrival — the criterion binds the form of the Then: the id alongside the words, never in place of them |
 | The routes unexplained at the door — what each of the three means | the designer's criteria (U2) | Scenario: an objection to the route is answered before the route is acted on; Scenario: a recorded request has a decided route — the criterion binds the form: the three routes and what each means, learnable at the door without leaving it |
@@ -492,6 +498,7 @@ Feature: Request routing and the small-change lane
 | A decline said as a code, a work-item id, or a route name with no reason or next step | the designer's criteria (U6, A4) | Scenario: a declined ask is settled with the authority and its record survives — the criterion binds the form of the Then's "ruling and the reason" |
 | The originator asked to restate an ask the request already holds | the designer's criteria (U7, A5) | Scenario: a request routed into discovery is the discovery conversation's input; Scenario: a recorded request has a decided route |
 | The door delivered without its WCAG2ICT applicability record or an accessibility result at target | the designer's criteria (A6) | Out of scope of the scenarios: a delivery gate, not a behavior — the check the experience guidance corpus defines for an interaction judges it under `accessible-by-standard`'s third bullet |
+| A request instance recorded ahead of its typedef's amendment | the architect's constraints (C1) | Scenario: an ask brought to the lead shop is recorded as a request on arrival — C1 binds the form: the record is an instance of the `request` type as amended to admit a received ask, the amendment made before any instance relies on it |
 | An ask that exists only in a work-register item, a session record, or a transcript | the architect's constraints (C2) | Scenario: an ask brought to the lead shop is recorded as a request on arrival; Scenario: an ask arising inside another process is recorded as a request — "recorded" means a request standing in the repository; an ask held only in one of these is unrecorded |
 | The ask's words appearing somewhere — a Framing, a change's definition, a work item — with no reference to the request | the architect's constraints (C3, C4) | Scenario: the initiative made from a request references the request; Scenario: a simple change is defined up front before it is made — the definition references the request; the item opened for it points at it |
 | A request recorded differently by which role met the ask, or held for the lead-pm to record | the architect's constraints (C5) | Scenario: an ask brought to the lead shop is recorded as a request on arrival; Scenario: an ask arising inside another process is recorded as a request — the same record whichever role meets the ask |
@@ -512,3 +519,5 @@ Feature: Request routing and the small-change lane
 | 3 | 2026-09-04 | update | Architect's constraints added in the feature-authoring add-constraints step: ten non-functional constraints (C1–C10) in Contributors, riding on the scenarios they bound — the decomposition names no Bounded Context, so no cross-context constraint; its ruling (every amended definition and the example change in the lead shop's tree, no contract to rely on) and the checked adr-2026-09-04-request-front-end (v4) the initiative rests on set the guardrails, under the working principle set: the request as the existing root type amended, not a new type; the request as the durable record in the repository; the ask's words in one home, referenced elsewhere; a register item pointing at the request; recording any lead-shop role's act and routing the lead-pm's; the lane's define-check-verify discipline; no Bounded Context contract touched; the example change through the decision-brief typedef; nothing loaded into an agent's context untraced; the originator chain starting at the request with `intent-provenance`'s exception carried, not absorbed. Ten Edges rows added for the cases the constraints name — eight covered by scenario name, two out of scope with reasons (a route reaching a Bounded Context; a rendering gate the skill-rendering check judges). Scenario text, hashes, the designer's criteria, owning shops, and the initiative unchanged. |
 | 4 | 2026-09-04 | review | PO output check round 1 (judge: claude-fable-5-1 / screen prompt v6): one confident, seven wobbly. Confident — Edges row on the hinge cited the initiative's history v1 for words the row did not carry (re-sourced to the Appetite's "the route into discovery kept open" alone, the hinge glossed at that first use, the back-reference stated as tracing through the Appetite and the originator chain); the decline row's originator quotation carried "product" the history does not (dropped). Wobbly — the objection and no-answer cases were covered by criteria alone (new scenario *the route is said to the originator before it is acted on*, `@hash:pending` until filled, named in both rows; A2, U3, U4 kept as the criteria binding the form); cases U1, U2, A1, A3 name had no rows (five rows added, each covered by scenario name with the criterion binding the Then's form); the hinge row's back-reference (stated, no scenario text change); Interaction types duplicated the `ask` disambiguation the Vocabulary paragraph carries and closed on other types (both cut, the hypothesis kept); the two verification scenarios' When clauses (held — the judge read the criterion as satisfiable; text and hashes stand); uncovered terms ("the awaiting list" → "the list of requests awaiting a route" throughout, "bead id" → "work-item id", "the hinge" glossed) and the narrative's repeated capability clause inside the "so that" (cut, in the section and the block head; hashes unaffected). Other roles' passages edited on the PM role's ruling, substance unchanged: C3's Framing-candidate sentence and C4's register-candidate sentence cut to the scope clause; A6 and its Edges row gloss "the interaction conformance check" as "the check the experience guidance corpus defines for an interaction"; C10's "not absorbed" → "not treated as satisfied". Repaired. |
 | 5 | 2026-09-04 | review | PO output check round 2 (judge: claude-fable-5-1 / screen prompt v6): one confident, five wobbly. Confident — *the route is said to the originator before it is acted on* carried two branches and "is heard" in one Then; split into *an objection to the route is answered before the route is acted on* and *no route is recorded while the originator has not answered*, each with the branch as its When and one observable Then (both `@hash:pending` until filled); the ownership list and the three Edges rows that named the old scenario updated. Wobbly, ruled by the PM role — the two verification scenarios' When restated so the demonstration is the outcome ("the lane records the change's result for the request"; "the lane records its result for the request"; new hashes); "simple change" defined in Vocabulary (spends no appetite worth a bet: within the lead shop's definitions or one instance, no Bounded Context, demonstrable in one session; judged by the lead-pm at routing, revisable by the lane's definer); "the intake process" defined in Vocabulary (where an ask is recorded and routed; the router's process, distinct from the lane and discovery); the three Edges rows sourced to "the framing's originator" via the discovery record re-sourced to the Framing's outcome sentence, the authority's words kept and labelled as the session record's, and the decline row sourced to the outcome sentence alone; the two split scenarios' rows state they are the designer's contribution (U3, U4, A2) serving the framed "decided route" outcome. Repaired. |
+| 6 | 2026-09-04 | review | Round 3, the cap (judge: claude-fable-5-1 / screen prompt v6): two confident findings, both uncovered wording — "bead" surviving; "the lane's definer" unnamed — and eight wobbly: the no-answer scenario's When a state and its Then withholding the lead-pm's record; Vocabulary's "back to routing" against the not-simple scenario; the verification Whens (held); C1's case without an Edges row; the plain said-before-acted case without a row; the second route named two ways; the Covered-by cells overloaded. Post-cap repairs, disclosed and not re-screened: "that bead's" → "that work item's (lead-ghulb)"; Vocabulary names the lane's definer — the lead-po role defines a simple change (its definition is a requirement), the role that makes it is its maker, the check sits with a role other than the maker — and the Then of *a simple change is defined up front before it is made* now reads "a definition of the change, written by the lead-po role, …" (hash recomputed); Vocabulary's "sends the request back to routing" → "changes the request's route to a discovery conversation with the reason", the not-simple scenario standing; *no route is recorded while the originator has not answered* renamed *a route said but not answered is recorded as said and not acted on*, When "the request is read before the originator answers", Then "the request records the route as said, with its reason, and no action on it has been taken" (hash recomputed) — reconciled with *a recorded request has a decided route*: the lead-pm's decision is recorded, action waits on the originator per U4; the ownership list and the rows naming it updated; the verification scenarios' When clauses held as ruled in round 2, a fresh reader's stumble recorded; an Edges row added for a request instance recorded ahead of its typedef's amendment (C1 binding the form of scenario 1); an Edges row added for a route acted on before the originator hears it, covered by the objection and said-not-answered scenarios' Givens, U4 binding the form; the narrative names the second route "to a simple change (the small-change lane)" in the section and the block head (not hashed); the Covered-by cells for the objection and no-answer rows cut to scenario names and criterion ids. The two split scenarios are the designer's contribution (U3, U4, A2) serving the framing's decided-route outcome. |
+| 6 | 2026-09-04 | state | `draft` → `checked`: the PM role's pass. Reasons: no finding in any round named a criterion the feature still fails; the cap's confident findings were wording no criterion names, repaired past the cap and disclosed; the one substantive question — whether the lead-pm's route is recorded before the originator answers — ruled: recorded as said, not acted on. The initiative moves to active on this pass, written by the check's record step. |
