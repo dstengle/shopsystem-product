@@ -2,7 +2,7 @@
 type: request
 id: req-2026-09-04-operational-contract
 status: routed
-version: 1
+version: 2
 date: 2026-09-04
 reader: lead-pm
 owner: lead-pm
@@ -50,8 +50,13 @@ contract as an artifact naming the request as its entry record
 (req-2026-09-04-operational-contract)". Form: interview.
 
 Originator's answer: the originator is a role of the lead shop; the
-route is put to the product authority in brief-035 (ask 5), since the
-discovery it opens is the authority's. **Not yet answered.**
+route was put to the product authority in brief-035 (ask 5), since the
+discovery it opens is the authority's. **Accepted** — the authority's
+ruling of 2026-09-04: "For 5. take discovery". Landed by the lead-pm;
+no work item for the lane. Dispatched: the discovery conversation
+opened on this request, in interview form, its work item lead-bmmzh.
+The conversation's resume point is the session record
+sess-2026-09-04-d.
 
 ## 4. Result
 
@@ -60,3 +65,4 @@ discovery it opens is the authority's. **Not yet answered.**
 | Version | Date | Kind | Entry |
 |---|---|---|---|
 | 1 | 2026-09-04 | update | Recorded by the lead-pm at the request-intake process's record step (the process's second run): the ask arose inside the adr-authoring run, the originator the architect role, whose confirmation is the record's own closing note; routed to discovery at decide-route, the route said here and put to the product authority in brief-035 ask 5; not acted on until answered. |
+| 2 | 2026-09-04 | update | The route accepted by the authority's ruling on brief-035 ask 5 ("For 5. take discovery"); landed at the intake's land step; dispatched to the discovery conversation, opened on this request (interview; work item lead-bmmzh). Where the route led is written by the conversation's frame step once it converges. |

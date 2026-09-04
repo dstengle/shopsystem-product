@@ -1,7 +1,7 @@
 ---
 type: decision-brief
 id: brief-035
-status: delivered
+status: decided
 date: 2026-09-04
 reader: product-authority
 decisions-requested: 5
@@ -13,7 +13,7 @@ relates-to:
   - decisions/pdr-2026-09-04-bet-request-routing.md
   - requests/req-2026-09-04-brief-relates-to.md
   - requests/req-2026-09-04-operational-contract.md
-version: 5
+version: 6
 ---
 
 # Brief 035: request routing and the small-change lane delivered, for your ratification
@@ -191,3 +191,4 @@ your absence.
 | 4 | 2026-09-04 | update | Revised on cold read round 3: the objection loop introduced in one sentence, the repairs ordered cap then not-simple, check 9's mechanics reduced to one clause (details in the annex); terms glossed or replaced at first use and Ask 4 retitled "where the exception is recorded"; Ask 1 links the contract finding to Asks 4 and 5; the answer states the work is committed and pushed, lead-g5tu9 scoped in Deferred; the rendering sentence restated as rendered to the load point and confirmed current; defaults normalized; req-2026-09-04-operational-contract added to relates-to now that it is recorded (originator the lead-solutions-architect role, arisen inside the ADR's authoring run; route discovery, said, answer awaited) and Ask 5 restated accordingly. |
 | 5 | 2026-09-04 | review | Cold read round 4 (judge: claude-fable-5-1, cold-reviewer): findings — Asks 1, 3, 4 confident; Ask 5 confident on substance with one ambiguity (who routes, and whether the authority's answer is an answer or a ruling); Ask 2 wobbly (the two caps' severity unstated); "the bet" and "under the same right" unglossed; the lint parenthetical; the objection cap read as introduced by the repair; Ask 1's "held" reason; lead-ghulb's referent. Failsafe exit. |
 | 5 | 2026-09-04 | state | draft → delivered at the round cap; the open findings stated and answered at the top of the brief. The cap's cost: the top block sits in the decision layer, which the deliver step allows to exceed 400 words by up to 60 for it — measured 460 (title through the gate statement); decision plus support 1,498, under 1,500. |
+| 6 | 2026-09-04 | state | delivered → decided: the authority's ruling of 2026-09-04 on brief-035 — "Take defaults. For 5. take discovery". Asks 1–4 stand on their defaults; ask 5 ruled discovery. Applied to the affected records: init-request-routing (bet ratified), pdr-2026-09-04-bet-request-routing, adr-2026-09-04-request-front-end, request-intake and small-change (approvals ratified), req-2026-09-04-brief-relates-to (the first run's reading ratified for that run only), req-2026-09-04-operational-contract (route accepted; discovery opened). |

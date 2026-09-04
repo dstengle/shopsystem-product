@@ -3,7 +3,7 @@ type: adr
 id: adr-2026-09-04-request-front-end
 title: Intent reaching the lead shop is recorded as a request on arrival and routed from that record
 status: checked
-version: 4
+version: 5
 date: 2026-09-04
 decided-by: product-authority
 right: escalation
@@ -249,3 +249,4 @@ shop's front end is no longer the only one.
 | 3 | 2026-09-04 | review | Screen round 2 (judge: claude-fable-5-1 / screen prompt v6): six confident findings — recording allocated to the lead-pm in two places and to every role in a third; "the initiative" and "the work item" used before introduction; "the branch primer" unintroduced; the small-change lane and "the hinge" unintroduced in the candidates list; the screen's result stated twice — and four wobbly, ruled by the lead-pm — the lane gloss in §2 stands as the route, candidate 2 restated as its form only, "screen of record" introduced; the `intent-provenance` exception's home is this record and the contract artifact, lead-4kymc a pointer; "the PM role" replaced by "the lead-pm"; the v2 row's "drain" spelled out. Repaired. |
 | 4 | 2026-09-04 | review | Screen round 3, the cap (judge: claude-fable-5-1 / screen prompt v6): one confident finding (lead-4kymc bare at first use) and three wobbly — whether the decision decides that the lane exists; option 2's decline sentence overloaded; 'the one-decision rule' undefined. Post-cap repairs, disclosed and not re-screened: the identifier introduced; the decision sentence made to say the lane is a destination this decision establishes, its form a candidate (the PM role's ruling); the decline split; the rule glossed. |
 | 4 | 2026-09-04 | state | `draft` → `checked`: the PM role's pass. Reasons: no round's confident findings survived repair; the cap's open findings are wording the criteria do not settle, repaired past the cap and disclosed. The decider is the authority; the record is checked for form. `right: escalation` accepted as the typedef admits for a decision no architect right covers. |
+| 5 | 2026-09-04 | update | Where the intent-provenance exception is recorded — in this record, lead-4kymc the pointer — ratified by the authority's ruling of 2026-09-04 on brief-035 — "Take defaults. For 5. take discovery" (brief-035 ask 4, default taken); the operational-contract artifact routed to discovery (ask 5; req-2026-09-04-operational-contract). |

@@ -2,7 +2,7 @@
 type: product-decision-record
 id: pdr-2026-09-04-bet-request-routing
 status: checked
-version: 4
+version: 5
 date: 2026-09-04
 decided-by: product-authority
 right: bet
@@ -109,3 +109,4 @@ bet.
 | 3 | 2026-09-04 | review | PO output check round 2 (judge: claude-fable-5-1 / screen prompt v6): four wobbly findings, none confident — "takes the go" against "for ratification at delivery" read as two statuses (scenario 1; one stated: the go is taken now on the standing direction and stands unless the authority reverses it at delivery by a cancellation under the same right; Consequence 4 aligned to "stands unless reversed"); "those two passages" in Consequence 2 not decidable from the body (scenario 4; the two held passages named there — the Appetite's no-gos naming what they exclude, the Framing's three route destinations); the Hold alternative filed a question for "the owner" without reconciling that the owner is the authority, and stated the choice as the lead-pm's (scenario 2; restated as the authority's own hold, declined because the bet did not need the authority, the open question being a change to the fitness set the authority rules on its own later, not a condition of the bet); Consequence 3 listed the four work-item no-gos as if from the Framing (framing; replaced with a reference to the Appetite's six, only the Framing-traced no-go named). Repaired. |
 | 4 | 2026-09-04 | review | Round 3, the cap (judge: claude-fable-5-1 / screen prompt v6): four wobbly findings, none confident, no uncovered defect the criteria could not reach — the bet's text named as "at the round cap" while the disclosed post-cap repair is in the text of record; the account of the three cap findings sitting inside §1; the reversal window stated at delivery in §1 and priced before the session in §4; "round cap" and "decide step" unintroduced. Not repaired at the cap. |
 | 4 | 2026-09-04 | state | `draft` → `checked`: the PM role's pass. Reasons: no finding was confident in any of three rounds and each round's wobbly set was different — churn on wording the criteria do not settle, not a defect the criteria name. For the reader: the text of record is the initiative at version 2 after its disclosed post-cap repair; reversal is a cancellation at any point, priced by §4. |
+| 5 | 2026-09-04 | update | The go ratified by the authority's ruling of 2026-09-04 on brief-035 — "Take defaults. For 5. take discovery" (brief-035 ask 1, default taken): the standing direction covered the bet; the reversal clause stands. |

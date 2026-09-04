@@ -2,7 +2,7 @@
 type: request
 id: req-2026-09-04-brief-relates-to
 status: done
-version: 6
+version: 7
 date: 2026-09-04
 reader: lead-pm
 owner: lead-pm
@@ -205,3 +205,4 @@ unknown key or a path that does not resolve.
 | 4 | 2026-09-04 | update | Change made, round 1, by the lead-solutions-architect at the small-change process's make step: the four artifacts the Definition names changed under their own producing rules (typedef v4, README v8, brief-034 v6, the lint's check 10 and --brief mode); the observation run by the maker exited 0. |
 | 5 | 2026-09-04 | update | Check passed (round 1) by the lead-pm role; the verifying observation run by the runtime, exit 0; the verified result recorded and status set to done at the small-change process's record step. |
 | 6 | 2026-09-04 | update | Where the route led written into routed-to — this request's own Result section — by the lead-pm at the request-intake process's land-result step; the lane's work item lead-16rrj closed as done. |
+| 7 | 2026-09-04 | update | The first intake run's reading of the standing direction as the originator's answers at the confirm and observe steps ratified for this run only, no precedent, by the authority's ruling of 2026-09-04 on brief-035 — "Take defaults. For 5. take discovery" (brief-035 ask 3, default taken). |
