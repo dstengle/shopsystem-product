@@ -3,7 +3,7 @@ type: initiative
 id: init-typedef-rendering
 name: Typedef rendering
 status: proposed
-version: 7
+version: 8
 owner: lead-pm
 created: 2026-09-05
 updated: 2026-09-05
@@ -16,8 +16,8 @@ request: ../requests/req-2026-09-05-typedef-rendering.md
 
 Originator (product authority, 2026-09-05, through the lead shop's
 operational contract, which has no artifact yet (lead-4kymc); the
-request req-2026-09-05-typedef-rendering, restating its section 1 on
-the framer's-wording ruling of 2026-09-04): "Whoever makes an artifact
+request req-2026-09-05-typedef-rendering; the authority's accepted
+restatement of its section 1, on the framer's-wording ruling): "Whoever makes an artifact
 and whoever checks it should work from the same standard, and when the
 standard changes it should reach both."
 
@@ -42,9 +42,10 @@ read inside process steps; no core task carries it.
 
 One working session of the lead shop for the proof on the product
 decision record: the PO role makes this initiative's own bet record
-— the product decision record its bet requires — from the one
-standard, and that record's own check, the PO output check, screens it
-from the same standard.
+— the product decision record its bet requires — from the same
+standard, and the check that screens that record screens it from the
+same standard; a form-only screen, the decider being the authority,
+counts as the check's use.
 The other 21 types follow as one batch, a second bet sized after the
 proof. No-gos, each with its reason:
 
@@ -55,7 +56,8 @@ proof. No-gos, each with its reason:
 
 ## Feasibility and usability
 
-Feasible in one session. The three documents already match rule for
+Feasible in one session. The three documents — the guideline, the
+fitness set, and the typedef's checklist — already match rule for
 rule (guideline rule N, fitness scenario N, checklist item N), so
 folding them into the typedef is mechanical. The compiler follows
 `basis/tools/compile_process.py`: parse the typedef, write two texts,
@@ -90,3 +92,4 @@ None yet.
 | 5 | 2026-09-05 | review | Screen round 2 (judge: claude-fable-5-1 / screen prompt v5): three confident — the originator's quote (pending the restatement), the measure naming no run while the Appetite counted one, "the check" and "form only" unintroduced — and three wobbly ("derive from" as structure, the first no-go's reason naming the mechanism, the word bound). Repaired by the lead-pm: the measure now counts a type whose maker and checker work from one standard and have each used it once; the Appetite names the product decision record's own check, the PO output check, and drops "form only"; "work from" for "derive from"; the no-go's reason reworded. |
 | 6 | 2026-09-05 | update | The design decision this initiative rests on, named by the architect at the attach step, recorded before the bet: [adr-2026-09-05-typedef-rendering](../decisions/adr-2026-09-05-typedef-rendering.md) (checked, v4; three screen rounds; the maker's own check against the fitness set run before round 1; the cap with six wording findings repaired past it and disclosed). |
 | 7 | 2026-09-05 | update | Framing quote restated on the framer's-wording ruling: the lead-pm proposed the restatement and the authority accepted it — "Go with your version". The original words of 2026-09-05, moved here from §Framing and standing verbatim on the request's section 1: "My impression was that the typdef included everything including guidelines and fitness checks and those were just renderings. We need to get that in place (if not already) since it will be easier to evaluate everything for consistency for an artifact." |
+| 8 | 2026-09-05 | review | Screen round 3, the cap (judge: claude-fable-5-1 / screen prompt v5): one confident — "the three documents" unglossed in the architect's paragraph — and five wobbly: form-only against the measure; whose words the restatement is; "the one standard" and the named check; the no-go naming the checking processes (the owner's open gap); "the fitness set's scenarios" as a structure word. Post-cap repairs, disclosed and not re-screened: the three documents named; the Framing attributes the restatement; "the same standard"; the named check replaced by "the check that screens that record" and the form-only run stated to count. Held for the authority at the bet: the no-go naming what it excludes (the fitness-set gap filed 2026-09-04) and "the fitness set's scenarios" as the gloss a prior round asked for. |
