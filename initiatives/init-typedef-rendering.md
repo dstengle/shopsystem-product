@@ -44,8 +44,7 @@ One working session of the lead shop for the proof on the product
 decision record: the PO role makes this initiative's own bet record
 — the product decision record its bet requires — from the same
 standard, and the check that screens that record screens it from the
-same standard; a form-only screen, the decider being the authority,
-counts as the check's use.
+same standard; a form-only screen counts as the check's use.
 The other 21 types follow as one batch, a second bet sized after the
 proof. No-gos, each with its reason:
 
