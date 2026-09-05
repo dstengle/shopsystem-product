@@ -78,7 +78,7 @@ branch to rely on. Cross-context flow: none.
 
 ## Features
 
-None yet.
+[feat-typedef-rendering](../features/feat-typedef-rendering.md) — draft.
 
 ## Document History
 
