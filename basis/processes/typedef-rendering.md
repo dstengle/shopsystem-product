@@ -2,8 +2,9 @@
 type: process-definition
 id: typedef-rendering-process
 owner: product-authority
-status: draft
-version: 3
+status: approved
+approved: 2026-09-05
+version: 4
 created: 2026-09-05
 updated: 2026-09-05
 produces: []
@@ -19,25 +20,14 @@ annotations:
 # Process: Typedef rendering
 
 **Purpose:** Keep the two texts of every artifact type current with
-the type's one standard. An *artifact type* is a kind of document the
-shop produces; its *typedef* is the single source the type is
-generated from, a definition under `basis/artifacts/`. A typedef that
-stands approved and carries a "Writing rules" section and a "Fitness
-scenarios" section is the type's standard, and this process calls such
-a typedef *qualifying*. Its two texts are *renderings* — generated
-outputs, never edited by hand, never the source: the *guideline*, the
-maker's text, the type's writing rules read by whoever makes an
-artifact of the type; and the *fitness set*, the checker's text, the
-judged Given/When/Then scenarios a check screens an artifact against.
-Each stands at a *load point*, the directory its readers read it from:
-`basis/guidelines/` for guidelines and `basis/fitness/` for fitness
-sets. The process checks what stands at the two load points against a
-fresh render of each qualifying typedef by the *compiler* — the tool
-of the *lead shop*, this repository, the shop that owns the product's
-definitions — that produces both texts from a typedef, and reconciles
-every difference through the compiler — so that a maker and a checker
-of the type work from the same words, a change to the typedef reaches
-both texts, and a clean check is the shop's evidence that they do.
+the type's one standard. The process checks what stands at the two
+load points against a fresh render of each qualifying typedef by the
+*compiler* — the tool of the *lead shop*, this repository, the shop
+that owns the product's definitions — that produces both texts from a
+typedef, and reconciles every difference through the compiler — so
+that a maker and a checker of the type work from the same words, a
+change to the typedef reaches both texts, and a clean check is the
+shop's evidence that they do.
 
 **Guiding statement:** A rendering is never the source of truth.
 Whatever stands at a qualifying typedef's output path, or names a
@@ -89,9 +79,10 @@ each outcome names the scenarios of that feature it witnesses.
   the typedef's path, added by `check` as the third word, so the row
   names the type; `will-not-compile <typedef> <reason>` — a typedef in
   `approved` the compiler does not render, its subject the typedef's
-  path as the compiler prints it, and for which the compiler writes
-  no `missing` or `diverged` row, so an unrenderable typedef never
-  also burns the run toward the cap — one `will-not-compile` row is
+  path as the compiler prints it, for which the compiler writes no
+  `missing` or `diverged` row and `check` runs no `hand-written`
+  sweep, so an unrenderable typedef never also burns the run toward
+  the cap — one `will-not-compile` row is
   `check`'s own, not the compiler's: a typedef in `approved` with no
   `defines` key, reason "no defines key", written before the compiler
   is called. Two kinds are `check`'s own
@@ -174,6 +165,20 @@ are relative to the lead shop's repository root, the run's working
 directory. The design decision the process rests on is
 [adr-2026-09-05-typedef-rendering](../../decisions/adr-2026-09-05-typedef-rendering.md).
 
+**Terms.** An *artifact type* is a kind of document the shop
+produces; its *typedef* is the single source the type is generated
+from, a definition under `basis/artifacts/`. A typedef that stands
+approved and carries a "Writing rules" section and a "Fitness
+scenarios" section is the type's standard, and this process calls
+such a typedef *qualifying*. Its two texts are *renderings* —
+generated outputs, never edited by hand, never the source: the
+*guideline*, the maker's text, the type's writing rules read by
+whoever makes an artifact of the type; and the *fitness set*, the
+checker's text, the judged Given/When/Then scenarios a check screens
+an artifact against. Each stands at a *load point*, the directory its
+readers read it from: `basis/guidelines/` for guidelines and
+`basis/fitness/` for fitness sets.
+
 **Qualification.** `definitions` names the directory of the lead
 shop's typedefs and nothing else. A typedef *qualifies* when its
 front-matter carries `status: approved` and its body carries the
@@ -206,11 +211,14 @@ and `source-digest`. Run with `--check` and the same two path options
 it renders to scratch and diffs against what stands at those paths,
 printing its rows or nothing, and never writes a load point — the load
 points are written only at reconciliation's re-render, where that
-write is the point. In every row it prints the typedef's path as given
-on its command line, which is the path `approved` lists. Its check
-exits zero with its `missing` and `diverged` rows or with none, exits
-one with a `will-not-compile` row, and exits two with no row on a
-usage error. The one `will-not-compile` row the compiler does not
+write is the point. Its rows, one shape per kind: `missing <id>`,
+`diverged <id>`, `will-not-compile <typedef-path> <reason>` — the
+typedef's path appears in the compiler's own rows only for
+`will-not-compile`, as given on its command line, which is the path
+`approved` lists; `check` adds the typedef's path as the third word
+of `missing` and `diverged` rows. Its check exits zero with its
+`missing` and `diverged` rows or with none, exits one with a
+`will-not-compile` row, and exits two with no row on a usage error. The one `will-not-compile` row the compiler does not
 write is `check`'s own row for a typedef with no `defines` key, in
 the compiler's row shape.
 
@@ -230,7 +238,8 @@ it settles — a produced text's id, a typedef's path, or a path at a
 load point — followed by what was filed. The run entry `report`
 writes into `self` changes the source of this process's carrier, so
 skill-rendering's next check reports the carrier `diverged` and
-re-renders it — the dynamic the shop records as lead-ghaiq; the run
+re-renders it — the dynamic the shop records as the open backlog
+item lead-ghaiq; the run
 entry stays in `self`, as the sibling processes make it. A write to a typedef whose
 path is listed in `approved` — the review entry `reconcile` or
 `report` puts in its Document History — is a write to a declared
@@ -313,6 +322,7 @@ steps:
         rows=$(python3 ${compiler} "$def" --check --guideline ${guidelines}/$type.md --fitness ${fitness}/$type.fitness.md) \
           || { rc=$?; [ -n "$rows" ] || exit $rc; }
         [ -z "$rows" ] || printf '%s\n' "$rows" | awk -v def="$def" '$1 == "missing" || $1 == "diverged" { $2 = $2 " " def } { print }'
+        printf '%s\n' "$rows" | grep -q '^will-not-compile ' && continue
         for file in ${guidelines}/$type.md ${fitness}/$type.fitness.md; do
           [ -f "$file" ] || continue
           awk 'NR == 1 && !/^---$/ {exit} NR > 1 && /^---$/ {exit} NR > 1 && /^generated:/ {g = 1; exit} END {exit !g}' "$file" \
@@ -425,7 +435,7 @@ steps:
 | O2 | renders land only at `<guidelines>/<type>.md` and `<fitness>/<type>.fitness.md`; the sweep reads those two directories and no other; no step writes to or edits a check's definition — every write of the run is a render into those paths, a removal there, or a Document History entry in a typedef or in `self` | mechanical | `check.run`, `reconcile.prompt`, `report.prompt` |
 | O3 | `enumerate` admits only a typedef with `status: approved` inside its front-matter block and both second-level headings in its body; `check` runs the compiler over `approved` alone and marks `stale` a `source` outside the list; `reconcile` removes each `stale` row's file | mechanical | `enumerate.run`, `check.run`, `reconcile.prompt` |
 | O4 | every row's first word is one of the five kinds O4 names and its second word its subject; the third word is the path acted on — the typedef for `missing`, `diverged`, and `hand-written`, the rendering for `stale` — while `will-not-compile` acts on its subject, the typedef's path, and carries the reason as the remainder; a `missing` or `diverged` row names the text by its id and the type by the typedef's path; `check` writes the no-`defines` row itself before calling the compiler; the kinds are defined in O4 alone and referenced by name everywhere else | mechanical | `check.run` |
-| O5 | `filter` drops each row whose subject equals the first word of a row of `escalations`, whole-word, and `reconcile` and `report` write that word first; a `will-not-compile` typedef yields no `missing` or `diverged` row, so once escalated it leaves nothing open; `missing`, `diverged`, and `hand-written` re-rendered by one compiler run that writes both texts, `stale` removed, `will-not-compile` filed as a review entry; every escalation row lands in a governed record — the named typedef's Document History, or the run entry in `self` | judged | `filter.run`, `reconcile` and `report` prompts, `route` branches |
+| O5 | `filter` drops each row whose subject equals the first word of a row of `escalations`, whole-word, and `reconcile` and `report` write that word first; a `will-not-compile` typedef yields no `missing`, `diverged`, or `hand-written` row — `check` skips the sweep for it — so once escalated it leaves nothing open; `missing`, `diverged`, and `hand-written` re-rendered by one compiler run that writes both texts, `stale` removed, `will-not-compile` filed as a review entry; every escalation row lands in a governed record — the named typedef's Document History, or the run entry in `self` | judged | `filter.run`, `reconcile` and `report` prompts, `route` branches |
 
 ## Document History
 
@@ -434,3 +444,5 @@ steps:
 | 1 | 2026-09-05 | update | Authored under init-typedef-rendering's feature feat-typedef-rendering per adr-2026-09-05-typedef-rendering, a sibling of role-rendering for typedefs: the sources `basis/artifacts/`, the two load points `basis/guidelines/` and `basis/fitness/`, the compiler `basis/tools/compile_typedef.py` (authored beside this definition; one run produces a type's guideline and fitness set together, each stamped `generated`, `source`, and `source-digest`; `--check` renders to scratch and diffs). A typedef qualifies by `status: approved` plus its "Writing rules" and "Fitness scenarios" sections. Finding kinds taken from role-rendering so the rendering processes share one vocabulary — `missing`, `diverged`, `will-not-compile`, `stale` — plus `hand-written` for a text at a qualifying typedef's output path with no `generated` key, reconciled by re-render; the compiler's `missing` and `diverged` rows name the produced text by its id and `check` adds the typedef's path as the third word, so a row names the type and the text; `unrecognized` and `second-home` do not apply, as Data says. Each outcome names the feature scenarios it witnesses (3, 4, 5, 6). Draft, not yet run as a process: one typedef qualifies at authoring, product-decision-record, its two texts produced by the compiler; the enumerate and check scripts, tried by hand against the tree, admitted that one typedef and reported nothing. |
 | 2 | 2026-09-05 | review | Round 1 (judge: claude-fable-5-1 / screen prompt v6; criteria process-definition.fitness.md, framing the feature): one confident — the guiding statement claimed every file at a load point while the check reports only a qualifying typedef's output paths and files naming a typedef as source (narrowed to what the check reports) — and seven wobbly: O2 carried a delivery-witnessed half (dropped; O2 witnesses only what this process carries, its derived-check row named as witness); the carrier absent at screening (deferred, as ruled for the siblings — no change); `check.run` diffed at the compiler's default paths while the sweep read the declared ones (`--guideline`/`--fitness` now passed to `--check`, `<type>` from `defines` as elsewhere); the awk keyed on path equality to spare `will-not-compile` rows (keyed on the row's kind; Data states the compiler prints the path as given on its command line); `report.prompt` restated when it runs (cut; the branch labels say it); terms used before introduction — artifact checks, the linter, constraint C6, role-rendering's steps, the artifact-typedef typedef's sections 6 and 7, governed evolution (each introduced with a link or a clause, or cut); Data one long paragraph (broken into Qualification, Paths, Compiler contract, Rows and escalations, Failure semantics, What is not a finding). Repaired. |
 | 3 | 2026-09-05 | review | Round 2 (judge: claude-fable-5-1 / screen prompt v6): no confident finding; five wobbly, ruled by the PM role: the guiding statement's second clause wider than the check (narrowed to a file naming a typedef not in `approved` as its source; a file sourced from an approved typedef but standing at the wrong path added to What is not a finding as a stated exclusion — the compiler reports `missing` at the right path); an empty `defines` reaching the compiler with a malformed path (`check.run` now writes the `will-not-compile` row itself and skips the call; O4 and Compiler contract say the row is `check`'s own); `report`'s run entry into `self` diverging the carrier (stated in Data; the entry stays in `self` as the siblings make it — lead-ghaiq); the definition-of-good sentence buried in Data (moved to the head of Outcomes; O1 the first to link the feature; O2 points forward to the Derived checks table); the carrier absent (deferred, as ruled). Repaired. Follow-on question for the owner: a file at a load point whose `source` names an approved typedef but which stands at a path other than that typedef's output path is swept by no step here. |
+| 4 | 2026-09-05 | review | Screen round 3, the cap (judge: claude-fable-5-1 / screen prompt v6): one confident — the hand-written sweep running for a typedef the compiler refused, leaving a row that recurs to the cap — and four wobbly (the compiler's row shape stated two ways; the absent carrier, deferred; lead-ghaiq unglossed; the Purpose overloaded). Repaired in the one revise the authority's ruling of 2026-09-05 allows (req-2026-09-05-single-review-cycle). |
+| 4 | 2026-09-05 | state | draft → approved by the owner, on the authority's bet of 2026-09-05 on init-typedef-rendering and its standing direction, recorded by the lead-pm: three screen rounds against the process-definition fitness set — the maker's own check before round 1, round 1's one confident and round 2's none, the cap's one repaired in the final revise; the carrier to be rendered by the skill-rendering process's next run. |
