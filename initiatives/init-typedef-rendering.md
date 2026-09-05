@@ -2,8 +2,8 @@
 type: initiative
 id: init-typedef-rendering
 name: Typedef rendering
-status: planned
-version: 9
+status: active
+version: 10
 owner: lead-pm
 created: 2026-09-05
 updated: 2026-09-05
@@ -78,7 +78,7 @@ branch to rely on. Cross-context flow: none.
 
 ## Features
 
-[feat-typedef-rendering](../features/feat-typedef-rendering.md) — draft.
+[feat-typedef-rendering](../features/feat-typedef-rendering.md) — checked.
 
 ## Document History
 
@@ -93,3 +93,4 @@ branch to rely on. Cross-context flow: none.
 | 7 | 2026-09-05 | update | Framing quote restated on the framer's-wording ruling: the lead-pm proposed the restatement and the authority accepted it — "Go with your version". The original words of 2026-09-05, moved here from §Framing and standing verbatim on the request's section 1: "My impression was that the typdef included everything including guidelines and fitness checks and those were just renderings. We need to get that in place (if not already) since it will be easier to evaluate everything for consistency for an artifact." |
 | 8 | 2026-09-05 | review | Screen round 3, the cap (judge: claude-fable-5-1 / screen prompt v5): one confident — "the three documents" unglossed in the architect's paragraph — and five wobbly: form-only against the measure; whose words the restatement is; "the one standard" and the named check; the no-go naming the checking processes (the owner's open gap); "the fitness set's scenarios" as a structure word. Post-cap repairs, disclosed and not re-screened: the three documents named; the Framing attributes the restatement; "the same standard"; the named check replaced by "the check that screens that record" and the form-only run stated to count. Held for the authority at the bet: the no-go naming what it excludes (the fitness-set gap filed 2026-09-04) and "the fitness set's scenarios" as the gloss a prior round asked for. |
 | 9 | 2026-09-05 | state | `proposed` → `planned`: the authority's bet — "Bet" — taken in the initiative-check decide step with the two held findings before it; the lead-pm recording it. The product decision record for the go is the PO role's to make and the PO output check screens it; by the Appetite, that record is the proof itself — made and screened from the one standard once the typedef rendering exists — so it is made after the build and linked here then. |
+| 10 | 2026-09-05 | state | `planned` → `active`: feat-typedef-rendering's pass through the PO output check (round 3, the cap; the PM role's pass with post-cap repairs disclosed; seven scenarios, the two batch cases moved to the second bet's feature) — written by that check's record step through its declared framing input. |
