@@ -3,7 +3,7 @@ type: adr
 id: adr-2026-09-05-typedef-rendering
 title: An artifact type's typedef is its one hand-edited standard; its guideline and fitness set are renderings of it
 status: draft
-version: 1
+version: 3
 date: 2026-09-05
 decided-by: product-authority
 right: escalation
@@ -16,250 +16,107 @@ updated: 2026-09-05
 
 ## 1. Context
 
-This repository is the lead shop: the coordinating shop of the
-product, owning the product-level definitions and no Bounded Context
-(a region of the product with its own model, built by a shop of its
-own — a BC shop). The lead shop's definitions live under `basis/`, the
-definition corpus. An artifact type is a kind of document the shop
-produces — an initiative, a feature, a decision record. Each type's
-standard of good is a definition chain: six linked definitions. Three
-of them carry the standard a maker writes to and a checker judges by.
-The *typedef* defines the type: its identity, required frontmatter,
-required sections, commitment, sources, and a derived review
-checklist. The *guideline* holds the type's writing rules as prose,
-each rule with a test, a criterion, a yes/no decision, and the fitness
-scenario it feeds; its Highlights block is the layer loaded into an
-author's working context. The *fitness set* holds Given/When/Then
-scenarios that a judge scores an instance against — the cold-reviewer
-role, a reader with a fresh context each round; the scenarios are
-judged by that reader, never run by a test runner.
+This repository is the lead shop: the coordinating shop of the product,
+owning the product-level definitions under `basis/` (the definition
+corpus) and no Bounded Context — a region of the product with its own
+model, built by a shop of its own, a BC shop. An artifact type is a kind
+of document the shop produces. Three definitions carry a type's standard
+of good. The *typedef* (type key `artifact-typedef`) defines the type:
+identity, required frontmatter, required sections, commitment, sources,
+a derived review checklist. The *guideline* (type key
+`quality-guideline`) holds the writing rules as prose, each with a test,
+a criterion, a yes/no decision, and the fitness scenario it feeds; its
+Highlights block is the layer loaded into an author's context. The
+*fitness set* (type key `fitness-set`) holds Given/When/Then scenarios a
+judge — the cold-reviewer role — scores an instance against; judged,
+never run by a test runner.
 
-The pre-state on 2026-09-05, as the request records it — a request
-is the record the lead shop writes for an ask on arrival, before any
-work on it: 22 typedefs, 17 guidelines, and 11 fitness sets, every one
-hand-written, none generated, and no compiler for any of them
-([req-2026-09-05-typedef-rendering](../requests/req-2026-09-05-typedef-rendering.md),
-its Document History v1). Take the product decision record — the
-record of one product-level decision, written by the PO role, the
-lead shop's product owner, who authors its features and its product
-decisions. It is the slice the authority chose for the proof — the
-first feature of the work, one type converted end to end and used by a
-whole process run ("Okay, use the pdr"). Its
-[typedef](../basis/artifacts/product-decision-record.md) (v6, 97
-lines), its [guideline](../basis/guidelines/product-decision-record.md)
-(v2, 100 lines), and its
-[fitness set](../basis/fitness/product-decision-record.fitness.md) (v3,
-90 lines) each carry the same five rules: one decision, a real
-alternative, decider and right, priced consequences, reversibility.
-The guideline's rule N names fitness scenario N as its derived check;
-the typedef's checklist item N cites fitness N. Each of the three has
-its own frontmatter, version, and Document History, and their
-versions have moved at different paces — v6, v2, v3 — each change to
-one recorded in that one's history alone. The
-[artifact-typedef typedef](../basis/artifacts/artifact-typedef.md) —
-the typedef that defines typedefs, v2 — already rules: "Templates,
-schema fragments, and validators are its renderings; the typedef is
-the only hand-edited form." The guideline and the fitness set are not
-on that list, and each has a typedef of its own naming a human
-producer. The rule says one hand-edited form; the practice keeps
-three.
+Pre-state, 2026-09-05, as the request — the record of an ask on arrival
+— states it
+([req-2026-09-05-typedef-rendering](../requests/req-2026-09-05-typedef-rendering.md)):
+22 typedefs, 17 guidelines, 11 fitness sets, all hand-written, none
+generated, no compiler. Of those, 10 guidelines and 10 fitness sets have
+an artifact type with a typedef behind them, and they belong to the same
+ten types, so 12 of the 22 typedefs have neither; the other 7 guidelines
+(the base writing style and the six experience guidelines) and 1
+fitness set (interaction) have no artifact type behind them. The proof
+slice — the first feature, one type converted and used by a whole
+process run — is the product decision record, written by the PO role,
+the lead shop's product owner ("Okay, use the pdr"). Its typedef (v6),
+[guideline](../basis/guidelines/product-decision-record.md) (v2), and
+[fitness set](../basis/fitness/product-decision-record.fitness.md) (v3)
+carry the same five rules, each with its own history. The
+[artifact-typedef typedef](../basis/artifacts/artifact-typedef.md) (v2)
+already rules: "Templates, schema fragments, and validators are its
+renderings; the typedef is the only hand-edited form." The rule says one
+hand-edited form; the practice keeps three.
 
-Forces bearing. The authority's words, in the request and in the
-discovery conversation — the process that explores an ask with the
-authority and frames an initiative, the unit of work the authority
-bets on — recorded in the session record
-[sess-2026-09-05-a](../sessions/sess-2026-09-05-a.md): "My
-impression was that the typdef included everything including
-guidelines and fitness checks and those were just renderings. We need
-to get that in place (if not already) since it will be easier to
-evaluate everything for consistency for an artifact." "It should be
-possible to evaluate the fitness of artifact definitions in one place.
-For instance, the definition of good may change over time and
-re-evaluating artifacts will be easier if everything is in one place."
-"The tests should stay as is, executable by the author and a check if
-necessary. These should be rendered out to whatever format works well
-for inclusion in prompts." (The tests are the fitness scenarios;
-"executable" here means applied by a reader — the author to their own
-draft, the judge at the check — not run by a tool: the fitness-set
-typedef keeps them judged, never executed.) Working principles
-bearing, from the [working principle set](../basis/principles.md):
-`single-source-of-truth` — every fact has one authoritative home and
-every other appearance is a reference or a generated rendering; today
-the standard has three homes. `define-good-up-front` — one stated
-definition of good drives the work and its check; today the maker and
-the checker read different words for the same standard.
-`governed-context` — everything loaded into an agent's context traces
-to an approved definition; a rendering stamped with its source's
-digest traces by construction.
+Forces. The authority, in the request and in the discovery conversation
+that framed the initiative
+([sess-2026-09-05-a](../sessions/sess-2026-09-05-a.md)): "the typdef
+included everything including guidelines and fitness checks and those
+were just renderings"; "The tests should stay as is, executable by the
+author and a check if necessary … rendered out to whatever format works
+well for inclusion in prompts" — "executable" meaning applied by a
+reader, the scenarios staying judged. `single-source-of-truth`, from the
+[working principle set](../basis/principles.md): one home per fact,
+every other appearance a reference or a generated rendering; today the
+standard has three homes.
 
-What the checks read, as evidence for the clause "the paths the checks
-already read". The checks name their criteria by path. The
-[PO output check](../basis/processes/po-output-check.md) — the check
-the lead-pm role, the lead shop's product manager and the decider of
-every check's verdict, runs on the PO role's output — takes a
-parameter `criteria_path`, "the approved fitness set or guideline for
-the artifact's type", and its judge reads "the criteria set at
-criteria_path, the framing at framing, and the artifact — nothing
-else" (the framing: the initiative's statement of the problem and
-the outcome). The [adr-authoring](../basis/processes/adr-authoring.md)
-process's `criteria_path` names the adr fitness set; the
-[feature-authoring](../basis/processes/feature-authoring.md) process's
-names `basis/fitness/feature.fitness.md`. The linter —
-[`basis/tools/lint_basis.py`](../basis/tools/lint_basis.py), the
-mechanical check of the corpus — finds a type's guideline and fitness
-set by their frontmatter `type` and `target-type`, requires a fitness
-set to carry the headings Scenarios and Compile mapping, and already
-exempts a document marked `generated: true` from carrying a version
-and a Document History (its check 7). A rendering written at the same
-path with the same type keys and headings is therefore read by every
-check as it stands.
-
-The pattern, as evidence that it exists.
-[`basis/tools/compile_process.py`](../basis/tools/compile_process.py)
-renders an approved process definition into its skill — the file an
-agent loads to run the process — at `.claude/skills/<name>/SKILL.md`.
-The rendering's frontmatter carries `generated: true`, `generated-by`,
-`derived-from`, `source`, and `source-digest: sha256:` followed by
-twelve hex digits of the source text's hash — the stamp that ties a
-rendering to the exact source it was produced from.
-[`basis/tools/compile_role.py`](../basis/tools/compile_role.py) does
-the same for role definitions and adds `--check`: a fresh render
-compared byte for byte with the file at the load point — the path the
-agent runtime reads the rendering from — a difference reported as
-drift. Each compiler is run by a rendering process with a
-check step — [skill-rendering](../basis/processes/skill-rendering.md)
-and [role-rendering](../basis/processes/role-rendering.md). Both
-scripts call themselves experiment apparatus: "the production compiler
-is a BC deliverable and does not live in the lead repo." The compiler
-this decision adds is apparatus of the same standing.
+Evidence that the checks read by path: the PO output check — run by the
+lead-pm role, the lead shop's product manager — takes `criteria_path`,
+"the approved fitness set or guideline for the artifact's type"
+([po-output-check](../basis/processes/po-output-check.md), Data).
+Evidence for the pattern:
+[`compile_process.py`](../basis/tools/compile_process.py) renders a
+process definition into its skill (the file an agent loads to run it)
+stamped `source-digest: sha256:` plus twelve hex digits of the source
+text's hash — the stamp tying a rendering to its exact source — and
+`compile_role.py` adds `--check`, a fresh render compared with the
+committed file, a difference being drift.
 
 **The escalation that settled it.** The decision is the authority's,
-so it records under `right: escalation`. None of the five rights the
-solutions architect role holds — stack (which technologies the product
-is built on), guardrail (a bound on Bounded Context shops),
-decomposition, contract between Bounded Contexts, non-functional
-requirement — covers which document of the lead shop's own definition
-corpus is hand-edited and which are produced from it. The question
-reached the authority twice on 2026-09-05: in the authority's review
-of how an earlier initiative's run had gone (init-request-routing),
-where the authority stated the position quoted above and directed "The typedef rendering should go first. It
-should be made into a request and follow that process"; and in the
-discovery conversation opened on that request — interview form, work
-item lead-kda8l in the work register (`bd`, the tracker of work in
-motion) — where the authority chose the slice, kept the tests as they
-are, struck a consistency check of typedefs against each other, and
-said "Converged". The initiative
+so it records under `right: escalation`: none of the five rights the
+solutions architect role holds — stack, guardrail (a bound on BC
+shops), decomposition, contract between Bounded Contexts,
+non-functional requirement — covers which document of the shop's own
+corpus is hand-edited and which are produced from it. The
+authority ruled on 2026-09-05 — "The typedef rendering should go
+first. It should be made into a request and follow that process" —
+and in the discovery conversation on that request said "Converged".
+The initiative
 [init-typedef-rendering](../initiatives/init-typedef-rendering.md)
-(v3) carries the framing; its feasibility attachment, the architect's,
-named this decision as the one the bet rests on. This record is
-authored before the bet — the authority's go, hold, or no-go on the
-initiative — on the lead-pm's routing, so the bet is taken on a
-recorded decision.
+carries the framing; its feasibility attachment, the architect's,
+named this decision as the one the bet — the authority's go or no-go
+on it — rests on.
 
 Options that were real:
 
-- **Keep the three hand-written documents and add a consistency check
-  across them** — a linter check that guideline rule N, fitness
-  scenario N, and checklist item N agree. Declined: three homes
-  remain, so `single-source-of-truth` stays unmet; the check finds
-  drift after it has happened instead of making it impossible; and
-  the check itself must be rewritten each time either form changes.
-  The authority's ask was one place, not three places kept in step.
-- **Make the typedef the source and point the checks at it directly**
-  — no renderings; the guideline and fitness set retired; each
-  process's `criteria_path` names the typedef. Declined: the judge is
-  bound to read the criteria set and nothing else, and the typedef
-  carries identity, sources, rules, and history the judge does not
-  need — `least-context`, the working principle that an activity
-  loads the minimum it needs; the guideline's Highlights block exists
-  because a prompt wants a compressed layer, and the authority asked
-  for the tests "rendered out to whatever format works well for
-  inclusion in prompts"; and retiring the two documents changes every
-  check's parameter and the linter's chain derivation — the
-  initiative's first no-go is "any change to the checking processes
-  themselves".
-- **Make the fitness set the source and generate the typedef's
-  checklist and the guideline from it.** Declined: the fitness set
-  carries only the scenarios; the typedef carries identity,
-  frontmatter, sections, commitment, and sources — the larger part of
-  the standard, which no scenario yields. And the direction is already
-  set by an approved definition: the artifact-typedef typedef names the
-  typedef the only hand-edited form; reversing it would amend the root
-  typedef against its own reasons.
-- **Render at check time instead of committing renderings** — the
-  check step runs the compiler and reads its output, nothing written
-  at the guideline and fitness paths. Declined: a text produced inside
-  the step is context from a source the process definition does not
-  name, which `least-context` rules out; the linter's chain derivation
-  reads files on disk; and it changes the checking processes, the
-  first no-go again. A committed rendering is reviewable in source
-  control with its digest, and its drift is checkable by the
-  `--check` pattern already in use.
+- **Keep three hand-written documents; add a consistency check.**
+  Declined: three homes remain, and drift is found after the fact.
+- **Point the checks at the typedef; retire the two documents.**
+  Declined: the judge reads the criteria set and nothing else, and the
+  typedef carries identity, sources, and history it does not need
+  (`least-context`, the working principle of loading the minimum); and
+  every check's parameter changes — the initiative's first no-go
+  condition, what it will not do: "any change to the checking
+  processes themselves".
+- **Make the fitness set the source.** Declined: scenarios do not yield
+  identity, sections, commitment, or sources, and the artifact-typedef
+  typedef already names the typedef the only hand-edited form.
+- **Render at check time, commit nothing.** Declined: text made inside a
+  step is context from a source the process does not name
+  (`least-context`); the linter reads files on disk; the first no-go
+  condition again.
 
-Not decided here, each a candidate for the feature or for a record of
-its own:
-
-- *The form of the two sections inside the typedef* — headings,
-  whether a rule keeps its before/after pair, and how a rule and a
-  scenario that say the same thing are folded ("In the case of
-  guidelines, there may be overlap"), and what a typedef renders when
-  its type has no guideline or fitness set today — twelve of the 22.
-  This record fixes only that they are sections a compiler can parse.
-- *The typedef's derived review checklist* — its required section 6,
-  after this decision a third statement of the same rules inside the
-  one source. Whether it becomes a compiled section written back into
-  the typedef, the way compile_process.py writes "Flow (compiled)"
-  into a process definition, is not decided here.
-- *The rendering process and its check* — the third sibling of
-  skill-rendering and role-rendering. Whether the three generalize into
-  one is the open question the role-rendering record left with work
-  item lead-sx9xj as its trigger; this record adds a sibling, not a
-  generalization.
-- *The guidelines and the fitness set with no artifact type behind
-  them* — the base writing style (no target type; the authority's own
-  text, stored verbatim), the six experience guidelines and the
-  interaction fitness set (target `interaction`, an interaction type,
-  not an artifact type). They stay hand-written under their own
-  typedefs; a source for them is a decision of its own.
-
-Screened against the
-[architecture principle set](../basis/architecture-principles.md):
-conforms on all six.
-
-- `knowable-shape` — the lead shop's description of what it is for and
-  produces is unchanged; the corpus gains a stated rule of which
-  document is authored and which are produced, readable from the
-  typedefs and the renderings' frontmatter, not from the compiler's
-  code.
-- `contracts-between-contexts` — no Bounded Context is touched (the
-  initiative's Decomposition: none); no contract exists on this
-  branch to rely on, and none is created.
-- `actor-neutral-discipline` — the compiler produces the same text
-  whoever runs it; the rendering process, when authored, attaches its
-  records and its check to the activity; a hand edit of a rendering is
-  drift whoever made it.
-- `local-comprehension` — a maker or a judge at the coordinating level
-  reads the rendering designated for its step and never the typedef;
-  the definition author reads the typedef and never the renderings.
-  One place carries the whole standard, which is the authority's
-  "in one place".
-- `bidirectional-conformance` — this record is the design change,
-  recorded before the compiler is written. Forward, the initiative's
-  measure demonstrates it: types whose standard has one home with
-  current renderings, 1 of 22 at the proof, then 22 of 22. Reverse, a
-  rendering whose digest does not match its source is called for by
-  nothing and is regenerated or removed; the `--check` pattern is the
-  reverse check.
-- `intent-provenance` — the intent was recorded as a request on
-  arrival, routed to discovery, framed an initiative, and reaches this
-  record; each step is recorded and the chain back to the authority's
-  words has no gap. The contract the request names as its entry
-  (`received-through: operational-contract`) has no artifact yet. That
-  is the exception
-  [adr-2026-09-04-request-front-end](adr-2026-09-04-request-front-end.md)
-  carries, escalated to the authority and held there and in work item
-  lead-4kymc; this record cites it and does not carry it a second
-  time. Nothing this decision adds enters or delegates intent.
+Not decided here — candidates for later records: the form of the two
+sections, how an overlapping rule and scenario fold, and what a typedef
+with no guideline or fitness set today (12 of 22) renders; whether the
+typedef's derived review checklist, now a third statement of the rules
+inside the one source, becomes a compiled section written back into the
+typedef; whether the rendering processes generalize into one (open
+since role-rendering, trigger work item lead-sx9xj); a source for the 7
+guidelines and 1 fitness set with no artifact type behind them.
 
 ## 2. Decision
 
@@ -269,6 +126,27 @@ scenarios as sections, and the type's guideline and fitness set are
 produced from it by a compiler on the compile_process.py pattern,
 written at the paths the checks already read, each stamped with the
 source-digest of the typedef it was produced from.
+
+## Principles screen
+
+Screened against the
+[architecture principle set](../basis/architecture-principles.md):
+conforms on five; `intent-provenance` rests on the exception
+[adr-2026-09-04-request-front-end](adr-2026-09-04-request-front-end.md)
+carries, escalated to the authority (work item lead-4kymc).
+`knowable-shape` — which document is authored and which produced is
+readable from the typedefs and the renderings' frontmatter.
+`contracts-between-contexts` — no Bounded Context is touched.
+`actor-neutral-discipline` — the compiler yields the same text whoever
+runs it; a hand edit of a rendering is drift whoever made it.
+`local-comprehension` — maker and judge read the rendering for their
+step, the definition author the typedef. `bidirectional-conformance` —
+this record precedes the compiler; forward, the initiative's measure
+(1 of 22, then 22 of 22); reverse, a rendering whose digest does not
+match its source is regenerated or removed. `intent-provenance` — the
+request, its route, the initiative, and this record are each recorded;
+the entry contract the request names has no artifact yet — the cited
+exception.
 
 ## 3. Consequences
 
@@ -290,8 +168,8 @@ source-digest of the typedef it was produced from.
   mapping. For whom: the cold-reviewer role, which reads the fitness
   set at `criteria_path`; makers, who read the guideline's Highlights;
   the linter, which derives the chain from the frontmatter. Cost: two
-  typedef amendments; the past history of ten guidelines and ten
-  fitness sets stops at the conversion and stays readable only in
+  typedef amendments; the past history of the 10 guidelines and 10
+  fitness sets converted stops at the conversion and stays readable only in
   source control, the typedef's Document History carrying the
   standard's changes from then on. Forecloses: a guideline or fitness
   set that says something its typedef does not.
@@ -349,3 +227,7 @@ burden.
 | Version | Date | Kind | Entry |
 |---|---|---|---|
 | 1 | 2026-09-05 | update | Authored through the adr-authoring process at its author step, on the lead-pm's routing before the bet on init-typedef-rendering, for the authority's direction of 2026-09-05 in req-2026-09-05-typedef-rendering and the discovery conversation that framed the initiative (lead-kda8l; sess-2026-09-05-a). Right: `escalation` — the decider is the authority, and none of the five rights the solutions architect role holds covers which document of the lead shop's own definition corpus is hand-edited and which are produced from it; the adr typedef sends a decision no listed right covers to `right: escalation` in the type whose deciding side raised it, and the architect side raised this one in the initiative's feasibility attachment. The precedent records of an authority decision (adr-2026-09-03-role-rendering, adr-2026-09-04-request-front-end) took the same value for the same reason. Recorded as an adr rather than a product decision record because the decision is about the shape of the definition corpus and its tooling, not about product value or order. Four candidates named in §1 as not decided here. Status draft pending the screen. |
+| 1 | 2026-09-05 | review | Screen round 1 (judge: claude-fable-5-1 / screen prompt v6): three confident — the guideline and fitness-set counts unsplit against the pre-state's 17 and 11; the type key `quality-guideline` not introduced where the guideline is defined; "six linked definitions" with three unnamed — and two wobbly, ruled by the lead-pm — the `intent-provenance` result to be one rest-on-exception sentence; Context over half the record. |
+| 2 | 2026-09-05 | update | Round 1 repairs: the counts split once at the pre-state (10 and 10 typedef-backed; 7 and 1 not) and the consequence aligned; the three type keys introduced; the six-definition count dropped; `intent-provenance` stated as one result, "has no gap" removed; Context compressed to under half — the evidence paragraphs to one cited sentence each, glosses kept only for terms the Decision and Consequences use. |
+| 2 | 2026-09-05 | review | Screen round 2 (judge: claude-fable-5-1 / screen prompt v6): one confident — the history convention (review at the version reviewed, update at the next; `version` matches the last row) — and five wobbly, ruled by the lead-pm — the principles screen to follow §2 as its own part; the 10-and-10 to be said as the same ten types so "12 of 22" derives; "no-go" and "candidates" glossed; "experiment apparatus" dropped from Context; Context still over half. |
+| 3 | 2026-09-05 | update | Round 2 repairs: history re-formed to the convention, version 3; the screen moved to a "Principles screen" part after §2; the same-ten-types statement added; "no-go condition" and "candidates for later records" glossed; the apparatus clause dropped from Context, §3 carrying it; the evidence paragraphs cut to one cited sentence each, Context under half without moving the options. |
