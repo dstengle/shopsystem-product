@@ -2,8 +2,8 @@
 type: adr
 id: adr-2026-09-05-typedef-rendering
 title: An artifact type's typedef is its one hand-edited standard; its guideline and fitness set are renderings of it
-status: draft
-version: 3
+status: checked
+version: 4
 date: 2026-09-05
 decided-by: product-authority
 right: escalation
@@ -28,8 +28,9 @@ a derived review checklist. The *guideline* (type key
 a criterion, a yes/no decision, and the fitness scenario it feeds; its
 Highlights block is the layer loaded into an author's context. The
 *fitness set* (type key `fitness-set`) holds Given/When/Then scenarios a
-judge — the cold-reviewer role — scores an instance against; judged,
-never run by a test runner.
+judge — the cold-reviewer role — scores an instance against, with a
+Compile mapping table taking each scenario into one judge assertion;
+judged, never run by a test runner.
 
 Pre-state, 2026-09-05, as the request — the record of an ask on arrival
 — states it
@@ -54,7 +55,7 @@ hand-edited form; the practice keeps three.
 Forces. The authority, in the request and in the discovery conversation
 that framed the initiative
 ([sess-2026-09-05-a](../sessions/sess-2026-09-05-a.md)): "the typdef
-included everything including guidelines and fitness checks and those
+[sic] included everything including guidelines and fitness checks and those
 were just renderings"; "The tests should stay as is, executable by the
 author and a check if necessary … rendered out to whatever format works
 well for inclusion in prompts" — "executable" meaning applied by a
@@ -73,7 +74,11 @@ process definition into its skill (the file an agent loads to run it)
 stamped `source-digest: sha256:` plus twelve hex digits of the source
 text's hash — the stamp tying a rendering to its exact source — and
 `compile_role.py` adds `--check`, a fresh render compared with the
-committed file, a difference being drift.
+committed file, a difference being drift. Each compiler runs under a
+rendering process: skill-rendering runs compile_process.py,
+role-rendering runs compile_role.py, and this decision adds a third
+process for its compiler. The lead shop's compilers are interim
+tooling, kept only while the shop renders its own definitions.
 
 **The escalation that settled it.** The decision is the authority's,
 so it records under `right: escalation`: none of the five rights the
@@ -106,17 +111,12 @@ Options that were real:
   typedef already names the typedef the only hand-edited form.
 - **Render at check time, commit nothing.** Declined: text made inside a
   step is context from a source the process does not name
-  (`least-context`); the linter reads files on disk; the first no-go
-  condition again.
+  (`least-context`); the linter — `basis/tools/lint_basis.py`, the
+  check the tree runs on every definition — reads files on disk; the
+  first no-go condition again.
 
-Not decided here — candidates for later records: the form of the two
-sections, how an overlapping rule and scenario fold, and what a typedef
-with no guideline or fitness set today (12 of 22) renders; whether the
-typedef's derived review checklist, now a third statement of the rules
-inside the one source, becomes a compiled section written back into the
-typedef; whether the rendering processes generalize into one (open
-since role-rendering, trigger work item lead-sx9xj); a source for the 7
-guidelines and 1 fitness set with no artifact type behind them.
+Not decided here: four follow-on questions are listed in this record's
+Document History (v4).
 
 ## 2. Decision
 
@@ -180,8 +180,8 @@ exception.
   whoever runs the rendering process; the architect role, which
   maintains the shop's tools. Cost: one script; one rendering process
   definition with its check step and its own skill; a render after
-  every typedef change. Forecloses: nothing — the script is apparatus,
-  retired when a Bounded Context delivers the production compiler.
+  every typedef change. Forecloses: nothing — the script is interim
+  tooling, retired when the shop stops rendering its own definitions.
 - The checks stay as they are. What changes: nothing in the PO output
   check, adr-authoring, feature-authoring, or the linter — each reads
   the path it reads today and finds a rendering there. For whom: the
@@ -210,11 +210,9 @@ frontmatter and history from source control, and deleting the
 compiler. Hard after the batch: twenty-two typedefs carry the rules
 and scenarios, the renderings — two per converted type — carry no
 history of their own, and each reversal is a per-document
-reconstruction from source control,
-with any process or role that has come to cite a typedef's rules
-section by number to re-point. Review triggers: a Bounded Context
-delivers the production compiler, so the apparatus in the lead shop
-is redundant; a check needs a criteria set the typedef cannot carry as
+reconstruction from source control, and any process or role that has
+come to cite a typedef's rules section by number must re-point. Review triggers: the shop stops rendering
+its own definitions, so the compiler has no source to read; a check needs a criteria set the typedef cannot carry as
 a section; the three rendering processes' shared shape makes a
 generalization cheaper than a third sibling (lead-sx9xj); the base
 writing style or the experience guidelines need a source of their own;
@@ -231,3 +229,6 @@ burden.
 | 2 | 2026-09-05 | update | Round 1 repairs: the counts split once at the pre-state (10 and 10 typedef-backed; 7 and 1 not) and the consequence aligned; the three type keys introduced; the six-definition count dropped; `intent-provenance` stated as one result, "has no gap" removed; Context compressed to under half — the evidence paragraphs to one cited sentence each, glosses kept only for terms the Decision and Consequences use. |
 | 2 | 2026-09-05 | review | Screen round 2 (judge: claude-fable-5-1 / screen prompt v6): one confident — the history convention (review at the version reviewed, update at the next; `version` matches the last row) — and five wobbly, ruled by the lead-pm — the principles screen to follow §2 as its own part; the 10-and-10 to be said as the same ten types so "12 of 22" derives; "no-go" and "candidates" glossed; "experiment apparatus" dropped from Context; Context still over half. |
 | 3 | 2026-09-05 | update | Round 2 repairs: history re-formed to the convention, version 3; the screen moved to a "Principles screen" part after §2; the same-ten-types statement added; "no-go condition" and "candidates for later records" glossed; the apparatus clause dropped from Context, §3 carrying it; the evidence paragraphs cut to one cited sentence each, Context under half without moving the options. |
+| 3 | 2026-09-05 | review | Screen round 3, the cap (judge: claude-fable-5-1 / screen prompt v6): six confident, all wording and unintroduced terms — "the production compiler" unintroduced; the rendering processes unnamed where compile_process.py is cited; "the linter" unintroduced; "Compile mapping" used in §3 without its gloss; "typdef" unmarked in the quotation; a fragment in §4 — and two wobbly, ruled by the lead-pm: the three method commitments in §2 stay as part of the one decision; the candidates paragraph becomes a pointer with the list moved to history. |
+| 4 | 2026-09-05 | update | Post-cap repairs, disclosed and not re-screened: the production-compiler premise dropped (no record of it exists to cite) — the compilers are interim tooling, retired when the shop stops rendering its own definitions, in Context, §3, and §4's trigger; the three rendering processes named (skill-rendering, role-rendering, and the one this decision adds); the linter introduced; Compile mapping added to the fitness-set gloss; [sic] on "typdef"; the §4 fragment made a sentence; the candidates moved here. The four follow-on questions not decided by this record: (1) the form of the two sections, how an overlapping rule and scenario fold, and what a typedef with no guideline or fitness set today (12 of 22) renders; (2) whether the typedef's derived review checklist, a third statement of the rules inside the one source, becomes a compiled section written back into the typedef; (3) whether the rendering processes generalize into one (open since role-rendering, trigger work item lead-sx9xj); (4) a source for the 7 guidelines and 1 fitness set with no artifact type behind them. |
+| 4 | 2026-09-05 | state | `draft` → `checked`: the PM role's pass at the cap. The decider is the authority; the record is checked for form; `right: escalation` accepted as the typedef admits for a decision no architect right covers. Round 3's findings repaired past the cap and disclosed in the v4 update row, not re-screened. |

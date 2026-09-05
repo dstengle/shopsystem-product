@@ -3,7 +3,7 @@ type: initiative
 id: init-typedef-rendering
 name: Typedef rendering
 status: proposed
-version: 5
+version: 6
 owner: lead-pm
 created: 2026-09-05
 updated: 2026-09-05
@@ -89,3 +89,4 @@ None yet.
 | 3 | 2026-09-05 | update | Usability attachment: none due, by the designer at the attach step. |
 | 4 | 2026-09-05 | review | Initiative-check screen round 1 (judge: claude-fable-5-1 / screen prompt v5): five confident findings, all scenario 4 — mechanism and structure words ("renderings", "render from it", "one document per artifact type", the originator's "typdef") in Framing, For whom, and Appetite — plus "the tests" unintroduced; wobbly: the batch unbounded, the compound measure, the form-only check, the artifact-less contract, the word bound. Repaired by the lead-pm in its own sections: the outcome stated as its effect; the measure one per-type property with one target; the batch made a second bet; the form-only run counted in the measure; the tests introduced as the fitness set's scenarios. The originator's quote stands pending the authority's restatement (the framer's wording changes — the 2026-09-04 ruling). |
 | 5 | 2026-09-05 | review | Screen round 2 (judge: claude-fable-5-1 / screen prompt v5): three confident — the originator's quote (pending the restatement), the measure naming no run while the Appetite counted one, "the check" and "form only" unintroduced — and three wobbly ("derive from" as structure, the first no-go's reason naming the mechanism, the word bound). Repaired by the lead-pm: the measure now counts a type whose maker and checker work from one standard and have each used it once; the Appetite names the product decision record's own check, the PO output check, and drops "form only"; "work from" for "derive from"; the no-go's reason reworded. |
+| 6 | 2026-09-05 | update | The design decision this initiative rests on, named by the architect at the attach step, recorded before the bet: [adr-2026-09-05-typedef-rendering](../decisions/adr-2026-09-05-typedef-rendering.md) (checked, v4; three screen rounds; the maker's own check against the fitness set run before round 1; the cap with six wording findings repaired past it and disclosed). |
