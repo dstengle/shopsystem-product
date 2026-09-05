@@ -3,7 +3,7 @@ type: initiative
 id: init-typedef-rendering
 name: Typedef rendering
 status: active
-version: 12
+version: 13
 owner: lead-pm
 created: 2026-09-05
 updated: 2026-09-05
@@ -96,3 +96,4 @@ branch to rely on. Cross-context flow: none.
 | 10 | 2026-09-05 | state | `planned` → `active`: feat-typedef-rendering's pass through the PO output check (round 3, the cap; the PM role's pass with post-cap repairs disclosed; seven scenarios, the two batch cases moved to the second bet's feature) — written by that check's record step through its declared framing input. |
 | 11 | 2026-09-05 | update | The product decision record for the bet made and checked from the one standard: [pdr-2026-09-05-bet-typedef-rendering](../decisions/pdr-2026-09-05-bet-typedef-rendering.md) (checked, v4) — the PO role made it from the guideline produced from the product-decision-record typedef (source-digest d2e74320dabb), ran the produced fitness set's scenarios on the draft first (five of five), and the check screened it from the same produced fitness set; three rounds, no confident finding. The measure's first type has its maker and checker working from one standard, each having used it once. |
 | 12 | 2026-09-05 | update | Measure met in the running system: 1 of 22 — the product decision record's maker and checker work from one standard (its typedef, v7, carrying its writing rules and fitness scenarios), its guideline and fitness set produced from it by the compiler (source-digest d2e74320dabb), each used once (pdr-2026-09-05-bet-typedef-rendering made from the one and screened from the other); the typedef-rendering process (v4, approved, rendered; the harness lists its skill) ran once: one qualifying typedef, check clean. The batch of the other 21 is the second bet. The `completed` state is a pending amendment. |
+| 13 | 2026-09-05 | update | The approvals delivered under this bet confirmed by the authority's ruling of 2026-09-05 on brief-036 — "Defaults for 1. and 2. For 3. start the simple tasks" (brief-036 ask 1, default). The batch of the other 21 types — the second bet — noted here and not started (ask 2, default): to be drafted as this initiative's second feature when the authority authorizes it. |

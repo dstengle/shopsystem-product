@@ -1,7 +1,7 @@
 ---
 type: decision-brief
 id: brief-036
-status: delivered
+status: decided
 date: 2026-09-05
 reader: product-authority
 decisions-requested: 3
@@ -12,7 +12,7 @@ relates-to:
   - decisions/adr-2026-09-05-typedef-rendering.md
   - decisions/pdr-2026-09-05-bet-typedef-rendering.md
   - requests/req-2026-09-05-typedef-rendering.md
-version: 2
+version: 3
 ---
 
 # Brief 036: typedef rendering delivered — the proof stands; three decisions
@@ -163,3 +163,4 @@ the ADR's four questions, and this brief's cold read.
 | 1 | 2026-09-05 | review | Cold read, the one round the definition allows (judge: claude-fable-5-1, cold-reviewer): findings — Asks 1 and 2 wobbly; overload in Ask 1 and the informational paragraph; Ask 1 without the proof record's outcome, the two undemonstrated scenarios unpriced, no statement of what a no does, a five-document version list, "Get this started" cited as the authority; Ask 2 without "stop here" as an option or the drafting's size; the six requests as information the reader could not act on; the cost paragraph not like for like; stumbles — a dangling "Bet", "one standard" before its introduction, "each reads the path it always read", the two 22s, and screen, cap, run, order, work item, frontmatter, operational contract, the artifact-typedef typedef unglossed. |
 | 2 | 2026-09-05 | update | Revised once on the cold read: Ask 1 states the proof record's outcome, marks the two undemonstrated scenarios an accepted tradeoff with its reason, says what a no does, names the standing direction (2026-09-04, renewed by "Get this started"), and sends versions to the annex; the informational paragraph became Ask 3 (the five routes, one line each, default recorded and not acted on), decisions-requested 3, the single-review-cycle change stated done in the answer; Ask 2 presents "stop here" with its case and sizes the drafting; the cost paragraph restated like for like (agent time 105 against 136; 16 rounds on 6 against 20 on 8); every listed term glossed or replaced, the slugs dropped. |
 | 2 | 2026-09-05 | state | draft → delivered after the one revise the definition allows; no finding left open. |
+| 3 | 2026-09-05 | state | delivered → decided: the authority's ruling of 2026-09-05 on brief-036 — "Defaults for 1. and 2. For 3. start the simple tasks". Ask 1 stands (the approvals confirmed); ask 2 on its default (the batch noted in the initiative, no work); ask 3: the three lane routes accepted and started — no-tools-mid-process, banned-words-inlined, maker-self-check; the two discovery routes stay recorded, said, not acted on. |
