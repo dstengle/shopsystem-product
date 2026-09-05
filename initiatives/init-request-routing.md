@@ -82,7 +82,7 @@ branch to rely on. Cross-context flow: none.
 
 ## Features
 
-[feat-request-routing](../features/feat-request-routing.md) — checked.
+[feat-request-routing](../features/feat-request-routing.md) — assigned.
 
 ## Document History
 
