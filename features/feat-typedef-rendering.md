@@ -2,8 +2,8 @@
 type: feature
 id: feat-typedef-rendering
 name: Typedef rendering
-status: checked
-version: 6
+status: assigned
+version: 7
 initiative: ../initiatives/init-typedef-rendering.md
 owner: lead-po
 created: 2026-09-05
@@ -201,43 +201,43 @@ Feature: Typedef rendering
   the same standard, when the standard changes it reaches both, and
   the checker's tests can be run by the author first.
 
-  @feature:feat-typedef-rendering @hash:c343799a9f3f
+  @bounded-context:shopsystem-product @feature:feat-typedef-rendering @hash:c343799a9f3f
   Scenario: the maker's text and the checker's text for a type come from its one standard
     Given an artifact type whose standard stands approved and states its writing rules and its tests
     When the maker's text and the checker's text for that type are read
     Then each names the one standard it is produced from and is current with it, and no rule in the maker's text and no test in the checker's text is absent from that standard
 
-  @feature:feat-typedef-rendering @hash:a1764d43919d
+  @bounded-context:shopsystem-product @feature:feat-typedef-rendering @hash:a1764d43919d
   Scenario: an author runs the checker's tests on their own draft before the check
     Given an author holding a draft of an artifact of a type whose checker's text is produced from its standard
     When the author applies the checker's text to the draft
     Then the author has, recorded on the draft, a pass or a fail for each test, each test read as Given/When/Then, before any check runs
 
-  @feature:feat-typedef-rendering @hash:78ebb1454bb7
+  @bounded-context:shopsystem-product @feature:feat-typedef-rendering @hash:78ebb1454bb7
   Scenario: a change to the standard reaches the maker's text and the checker's text
     Given an artifact type whose standard has changed since its maker's text and checker's text were produced
     When the process that keeps the texts current with the standard runs
     Then the maker's text and the checker's text each carry the change, re-produced together, and are current with the changed standard
 
-  @feature:feat-typedef-rendering @hash:b45c64bb564a
+  @bounded-context:shopsystem-product @feature:feat-typedef-rendering @hash:b45c64bb564a
   Scenario: a text not current with its standard is reported
     Given a maker's text or a checker's text that is not current with its standard, whatever the cause
     When the check over the texts runs
     Then the check reports that text as not current with its standard, naming the type and the text
 
-  @feature:feat-typedef-rendering @hash:5a5094ad9e2c
+  @bounded-context:shopsystem-product @feature:feat-typedef-rendering @hash:5a5094ad9e2c
   Scenario: a text not current with its standard is made current, whatever the cause
     Given a maker's text or a checker's text that is not current with its standard, whatever the cause
     When the process that keeps the texts current with the standard runs
     Then that text is produced from the standard as it now stands and is current with it
 
-  @feature:feat-typedef-rendering @hash:5101a990271c
+  @bounded-context:shopsystem-product @feature:feat-typedef-rendering @hash:5101a990271c
   Scenario: a check screens against the produced text as it did before
     Given a check that screens an artifact of a type against that type's checker's text
     When the checker's text it reads becomes one produced from the type's standard
     Then the check runs from its definition as it stood before, finds the checker's text where it read it before, and its definition's history records no change for this
 
-  @feature:feat-typedef-rendering @hash:0569fe126e77
+  @bounded-context:shopsystem-product @feature:feat-typedef-rendering @hash:0569fe126e77
   Scenario: the product decision record of this initiative's bet is made and checked from one standard
     Given the product decision record type's maker's text and checker's text, each produced from that type's one standard and current with it
     And the product decision record of this initiative's bet, made by the PO role from that maker's text
@@ -284,3 +284,4 @@ Feature: Typedef rendering
 | 6 | 2026-09-05 | review | PO output check round 3, the cap (judge: claude-fable-5-1 / screen prompt v6): two confident — the not-committed / not-approved Edges row covered by scenarios whose Then does not reach it; "the compiler" used in the constraints and unglossed — and five wobbly, ruled by the PM role: the proof scenario's Given not holding the record it screens; scenarios 3 and 5 overlapping (held: both stand, 3 to carry what 5 does not); the narrative's so-that missing the framing's third clause; the version-or-history row covered by scenario 1's Then alone; the hand-edit row silent on reconciling by editing the typedef. |
 | 6 | 2026-09-05 | update | Post-cap repairs, disclosed and not re-screened: the not-committed / not-approved row made out of scope — the process that keeps the texts current names its inputs and outputs in its definition and its own screen judges that; Vocabulary entry for *the compiler*; the proof scenario gains a Given ("And the product decision record of this initiative's bet, made by the PO role from that maker's text"; new hash); scenario 3's Then reads "each carry the change, re-produced together, and are current with the changed standard" (new hash) — what scenario 5, one text whatever the cause, does not say; the narrative's so-that carries the framing's third clause ("and the checker's tests can be run by the author first") in the section and the block head, not hashed; the version-or-history row names *a text not current with its standard is reported* as cover; the hand-edit row adds the case of reconciling by editing the typedef — never, the text is re-produced — with C1 binding it. |
 | 6 | 2026-09-05 | state | `draft` → `checked`: the PM role's pass; no finding in any round named a criterion the feature still fails; the cap's two confident findings were an Edges row's coverage and a gloss, repaired past the cap and disclosed. |
+| 7 | 2026-09-05 | state | `checked` → `assigned`: the scenario-assignment record step. One assignment entry — context shopsystem-product (the lead shop), scenarios @hash:c343799a9f3f, @hash:a1764d43919d, @hash:78ebb1454bb7, @hash:b45c64bb564a, @hash:5a5094ad9e2c, @hash:5101a990271c, @hash:0569fe126e77. Pre-state read: the initiative's Decomposition ruling — no Bounded Context touched; the typedef, the compiler, and the renderings in the lead shop's tree, read from its records: the product decision record's standard stands as three hand-written documents, each with its own frontmatter, version, and Document History and none marked produced or naming a source — the product-decision-record typedef at v6 (approved 2026-08-31; owner rulings of 2026-09-02), the product-decision-record guideline at v2 (approved 2026-08-31; Rules as its one section), and the product-decision-record fitness set at v3 (approved 2026-08-26; judged, not executable; Scenarios and Compile mapping); no compiler produces either text from the typedef — `basis/tools/` holds compile_principles.py, compile_process.py, compile_role.py, and lint_basis.py, none naming the type — so no maker's text or checker's text is current with a standard in this feature's sense today, which is the 0 of 1 the initiative measures from; the owning shop matches the Contributors section for every scenario; the feature repository swept in full — four artifacts, this feature, feat-request-routing, feat-roles-availability, and feat-skills-availability, no conflict: the three assigned features specify the recording and routing of asks and the small-change lane, and checks over rendered definitions (process definitions to `.claude/skills/`, role definitions to `.claude/agents/`), and no scenario of any names a typedef, a guideline, a fitness set, a maker's or checker's text, or the product decision record; the two touch-points run the same way as these scenarios — feat-request-routing's C8 changes the decision-brief typedef through the typedef with its history row, as C5 here requires of a standard, and the two availability features' current-with checks over renderings are the pattern this feature applies to a type's texts, contradicting none; no BC contract in the pre-state — the decomposition names no context whose contract bears on these behaviors, and none exists on this branch. Sent: none — the owning shop is the lead shop itself; the freeze bars dispatch and no Bounded Context exists to receive; the gap stands as lead-ki66p. |
