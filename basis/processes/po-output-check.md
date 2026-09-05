@@ -4,9 +4,9 @@ id: po-output-check-process
 owner: product-authority
 status: approved
 approved: 2026-08-26
-version: 7
+version: 8
 created: 2026-08-25
-updated: 2026-09-02
+updated: 2026-09-05
 produces: []
 carried-by: po-output-check-skill
 condition-language: cel
@@ -36,12 +36,13 @@ verdict on the maker.
   order — is screened against a named criteria set and the framing it
   claims to serve — witnessed by `screen`'s inputs and the
   `screen-review` it returns.
-- O2. The PM role decides from the review and round log; the artifact
-  reaches the PM role only through the findings' quotes — witnessed by
-  `decide`'s inputs, which exclude the artifact.
-- O3. Every screen round is recorded and the loop exits on a clean
-  verdict, on findings no criterion names, or at the round cap —
-  witnessed by `log-round` and `route-screen`.
+- O2. The PM role decides from the one review and the revised
+  artifact, reading the artifact where the findings' quotes point —
+  witnessed by `decide`'s inputs.
+- O3. The one screen is recorded; a clean verdict, or findings no
+  criterion names, goes straight to the decision, and any other
+  finding is revised once before the decision follows — witnessed by
+  `log-round`, `route-screen`, and `revise`'s `next`.
 - O4. A fail names the criterion missed; a definition change names the
   gap, and the gap is filed in the named definition's Document History
   — witnessed by the `check-decision` fields and `record`'s
@@ -57,7 +58,7 @@ verdict on the maker.
 **Roles:** maker — [`../roles/lead-po.md`](../roles/lead-po.md)
 (submits and revises; never decides its own pass). screener —
 [`../roles/cold-reviewer.md`](../roles/cold-reviewer.md) (fresh
-context every round; judges against the criteria). the PM role —
+context for the one screen; judges against the criteria). the PM role —
 [`../roles/lead-pm.md`](../roles/lead-pm.md) (accountable for the
 decision; a human-held role that decides from the verdict; its
 assisting agent prepares the record and the gap entry).
@@ -77,10 +78,9 @@ edit by hand.
 flowchart TD
   screen(["Screen against the criteria — agent: cold-reviewer<br/>in — artifact: string, framing: string, criteria_path: string<br/>out — review: screen-review, judge_stamp: string"])
   log_round["Record the round — runtime<br/>in — review: screen-review, round_log: screen-review[], judge_stamp: string, judge_log: string[]<br/>sets — round_log: screen-review[], judge_log: string[]"]
-  route_screen{"Route on the screen<br/>in — review: screen-review, round: integer, round_cap: integer"}
+  route_screen{"Route on the screen<br/>in — review: screen-review"}
   revise(["Revise the output — agent: lead-po<br/>in — artifact: string, review: screen-review, framing: string, ask: ask<br/>out — artifact: string"])
-  advance_round["Advance the round — runtime<br/>in — round: integer<br/>sets — round: integer"]
-  decide[["Decide on the verdict — human: lead-pm<br/>in — review: screen-review, round_log: screen-review[], framing: string<br/>out — decision: check-decision"]]
+  decide[["Decide on the verdict — human: lead-pm<br/>in — review: screen-review, round_log: screen-review[], artifact: string, framing: string<br/>out — decision: check-decision"]]
   record(["Record the decision — agent: lead-pm<br/>in — decision: check-decision, artifact: string, round_log: screen-review[], judge_log: string[], framing: string<br/>out — artifact: string, gap_entry: string, definition: string, initiative: string"])
   __end(("end<br/>result — decision: check-decision"))
   __start(("start")) --> screen
@@ -88,10 +88,8 @@ flowchart TD
   log_round --> route_screen
   route_screen -->|success exit: clean| decide
   route_screen -->|definition exit: every finding is uncovered — nothing the maker can repair| decide
-  route_screen -->|failsafe exit: round >= round_cap — decide with findings open| decide
   route_screen -->|else| revise
-  revise --> advance_round
-  advance_round --> screen
+  revise --> decide
   decide --> record
   record --> __end
 ```
@@ -121,8 +119,6 @@ data:
   framing: {type: string, format: uri-reference}
   criteria_path: {type: string, format: uri-reference}
   review: {$ref: screen-review, from: ../types/screen-review.md}
-  round: {type: integer, initial: 1}
-  round_cap: {type: integer, initial: 3}
   round_log: {type: array, items: {$ref: screen-review}, initial: []}
   judge_stamp: {type: string}
   judge_log: {type: array, items: {type: string}, initial: []}
@@ -176,16 +172,13 @@ steps:
   - id: route-screen
     name: Route on the screen
     run-by: {execution: runtime}
-    inputs: [review, round, round_cap]
+    inputs: [review]
     branches:
       - label: "success exit: clean"
         when: review.verdict == "clean"
         next: decide
       - label: "definition exit: every finding is uncovered — nothing the maker can repair"
         when: size(review.findings) > 0 && review.findings.all(f, f.criterion == "uncovered")
-        next: decide
-      - label: "failsafe exit: round >= round_cap — decide with findings open"
-        when: round >= round_cap
         next: decide
       - else: revise
 
@@ -205,33 +198,27 @@ steps:
       if unanswered, and a checkpoint holding the repairs made so far.
       On the first pass ask is absent; if it carries an answer or
       resolved defaulted, act on it and finish the repairs.
-    next: advance-round
-
-  - id: advance-round
-    name: Advance the round
-    run-by: {execution: runtime}
-    inputs: [round]
-    set:
-      round: round + 1
-    next: screen
+    next: decide
 
   - id: decide
     name: Decide on the verdict
     run-by: {role: lead-pm, execution: human}
-    inputs: [review, round_log, framing]
+    inputs: [review, round_log, artifact, framing]
     outputs: [decision]
     prompt: |
-      From the final review and the round log, decide. "pass": the
-      screen is clean, or its only findings are uncovered and you judge
-      none of them needs a criterion — say so in the reasons. "fail": a
-      named criterion, "framing" included, is still missed at the round
-      cap — name it.
+      From the one review and the artifact as revised, decide. "pass":
+      the screen is clean, or every named finding is repaired in the
+      revision and the only findings still open are uncovered and you
+      judge none of them needs a criterion — say so in the reasons.
+      "fail": a named criterion, "framing" included, is still missed
+      after the one revision — name it.
       "definition-change": an uncovered finding should have been a
       criterion, or a criterion the output met produced something that
       does not serve the framing — name the definition and what it
       lacks. Where both a missed named criterion and an open uncovered finding
-      stand at the cap, "fail" takes precedence and the reasons carry
-      the uncovered finding. Decide from the quotes in the review.
+      stand after the revision, "fail" takes precedence and the reasons
+      carry the uncovered finding. Decide from the quotes in the review,
+      read against the revised artifact at the places they point to.
       Record your reasons.
     next: record
 
@@ -266,8 +253,8 @@ steps:
 | Outcome | Check | Kind | Where |
 |---|---|---|---|
 | O1 | screen reads only criteria, framing, artifact | judged | `screen.prompt` and inputs |
-| O2 | `artifact` absent from `decide.inputs` | mechanical | `decide.inputs` |
-| O3 | every round logged; three labeled exits | mechanical | `log-round`, `route-screen` |
+| O2 | `review` and `artifact` present in `decide.inputs` | mechanical | `decide.inputs` |
+| O3 | the one review logged; two labeled exits to `decide` and an else to `revise`; `revise.next` is `decide` | mechanical | `log-round`, `route-screen`, `revise.next` |
 | O4 | `criterion` present on fail, `gap` on definition-change; `definition` and `gap_entry` non-empty on definition-change | judged | `check-decision`, `record` outputs |
 | O5 | `revise` carries `asks`; process carries `ask-cap`; `ask` listed in inputs | mechanical | `revise`, frontmatter |
 | O6 | `initiative` non-empty exactly on a feature's pass with a planned linked initiative | judged | `record` outputs and prompt |
@@ -287,3 +274,4 @@ steps:
 | 5 | 2026-08-31 | update | Batch D of brief-032's plan: the record step activates a feature's initiative on its first pass (the initiative typedef's active writer resolved); the screening judge's model and prompt version travel as declared data — judge_stamp from screen, accumulated in judge_log, recorded with each round — keeping the fitness sets' promise; the status vocabulary notes the typedefs now define their own. |
 | 6 | 2026-08-31 | review | Batch D screen round 1: the initiative reached through the declared framing input, not an undeclared link-follow; active written only over planned, so a cancelled or unbet initiative is never activated. |
 | 7 | 2026-09-02 | update | Carried-by reference repointed to the load point (.claude/skills/) — the skill-rendering process's first run removed the retired home basis/skills/; the owner's sweep per its second-home escalation. |
+| 8 | 2026-09-05 | update | Single review cycle, per req-2026-09-05-single-review-cycle on the authority's words of 2026-09-05 — "I want all of the processes limited to a single review cycle, so author -> review -> revise -> continue to next step": the screen runs once; revise runs once and continues to decide; the advance-round step, the round and round_cap data, and route-screen's failsafe branch removed; decide reads the one review and the revised artifact, so the PM role can see whether the one revision repaired what the findings quote. |

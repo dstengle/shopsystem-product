@@ -4,9 +4,9 @@ id: stakeholder-presentation-process
 owner: product-authority
 status: approved
 approved: 2026-08-19
-version: 5
+version: 6
 created: 2026-08-10
-updated: 2026-09-02
+updated: 2026-09-05
 produces: [decision-brief]
 carried-by: stakeholder-presentation-skill
 condition-language: cel
@@ -37,9 +37,10 @@ author's head.
   and states whether it gates work or resolves on silence — witnessed by
   the check on `frame` and the
   [fitness set](../fitness/decision-brief.fitness.md).
-- O3. An independent cold read has returned clean, or flags only
-  author-accepted tradeoffs — witnessed by `route-verdict` and the
-  `round_log`.
+- O3. An independent cold read has run once: clean, or only
+  author-accepted tradeoffs, delivers directly; findings are revised
+  once and delivered with the review — witnessed by `route-verdict`,
+  `revise`'s `next`, and the `round_log`.
 - O4. The original material survives intact as a labeled, linked annex —
   witnessed by the `annex` output of `compose`.
 
@@ -67,9 +68,8 @@ flowchart TD
   compose(["Compose — agent: lead-pm<br/>in — request: request, frame: frame<br/>out — brief: decision-brief, annex: string"])
   cold_read(["Cold read — agent: cold-reviewer<br/>in — brief: decision-brief<br/>out — review: review"])
   log_round["Record the round — runtime<br/>in — review: review, round_log: review[]<br/>sets — round_log: review[]"]
-  route_verdict{"Route on the verdict<br/>in — review: review, round: integer"}
+  route_verdict{"Route on the verdict<br/>in — review: review"}
   revise(["Revise — agent: lead-pm<br/>in — brief: decision-brief, review: review<br/>out — brief: decision-brief"])
-  advance_round["Advance the round counter — runtime<br/>in — round: integer<br/>sets — round: integer"]
   deliver(["Deliver — agent: lead-pm<br/>in — brief: decision-brief, annex: string, review: review, round_log: review[]<br/>out — brief: decision-brief"])
   __end(("end<br/>result — brief: decision-brief"))
   __start(("start")) --> frame
@@ -78,10 +78,8 @@ flowchart TD
   cold_read --> log_round
   log_round --> route_verdict
   route_verdict -->|success exit: clean or tradeoffs accepted| deliver
-  route_verdict -->|failsafe exit: round >= 4| deliver
   route_verdict -->|else| revise
-  revise --> advance_round
-  advance_round --> cold_read
+  revise --> deliver
   deliver --> __end
 ```
 
@@ -103,7 +101,6 @@ data:
   brief: {$ref: decision-brief, from: ../artifacts/decision-brief.md}
   annex: {type: string, format: uri-reference}
   review: {$ref: review, from: ../types/review.md}
-  round: {type: integer, initial: 1}
   round_log: {type: array, items: {$ref: review}, initial: []}
 ```
 
@@ -185,13 +182,10 @@ steps:
   - id: route-verdict
     name: Route on the verdict
     run-by: {execution: runtime}
-    inputs: [review, round]
+    inputs: [review]
     branches:
       - label: "success exit: clean or tradeoffs accepted"
         when: review.verdict in ["clean", "tradeoffs-accepted"]
-        next: deliver
-      - label: "failsafe exit: round >= 4"
-        when: round >= 4
         next: deliver
       - else: revise
 
@@ -206,15 +200,7 @@ steps:
       text makes holds against every line that follows it. Mark any
       finding you will not repair as an accepted tradeoff, in the text,
       with one sentence saying why.
-    next: advance-round
-
-  - id: advance-round
-    name: Advance the round counter
-    run-by: {execution: runtime}
-    inputs: [round]
-    set:
-      round: round + 1
-    next: cold-read
+    next: deliver
 
   - id: deliver
     name: Deliver
@@ -223,11 +209,11 @@ steps:
     outputs: [brief]
     prompt: |
       Deliver the brief to the reader with the annex linked. Set the
-      brief's status to "delivered" and record the round log in the
+      brief's status to "delivered" and record the one review in the
       brief's Document History: one review entry per round with the
-      verdict and the judge's model. If the final verdict is
-      "findings" (the failsafe exit fired), state the open findings at
-      the top of the brief before anything else.
+      verdict and the judge's model. If the verdict is "findings",
+      state at the top of the brief, before anything else, the
+      findings the one revision left open.
     next: end
 ```
 
@@ -238,7 +224,7 @@ steps:
 | O1 | word counts vs budgets | mechanical | `compose.checks` |
 | O2 | ask cap after grouping | mechanical | `frame.checks` |
 | O2 | ask structure and decidability | judged | [`../fitness/decision-brief.fitness.md`](../fitness/decision-brief.fitness.md), scored in `cold-read` |
-| O3 | every round recorded; final verdict is a success exit or marked failsafe | mechanical | `log-round` output, `route-verdict` branches |
+| O3 | the one review recorded; a "findings" verdict is revised once and delivered with its open findings stated | mechanical | `log-round` output, `route-verdict` branches, `revise.next`, `deliver.prompt` |
 | O4 | annex present, labeled, linked | mechanical | `compose` output `annex` |
 
 ## Document History
@@ -252,3 +238,4 @@ steps:
 | 4 | 2026-08-26 | update | Owner decision: lead-pm is held by the authority in person; the Roles header now names what the role's agent steps prepare and what the authority decides, per the lead-pm role's Interfaces. |
 | 4 | 2026-08-26 | review | Assist re-basing screened: clean; one timing phrase polished in place. |
 | 5 | 2026-09-02 | update | Carried-by reference repointed to the load point (.claude/skills/) — the skill-rendering process's first run removed the retired home basis/skills/; the owner's sweep per its second-home escalation. |
+| 6 | 2026-09-05 | update | Single review cycle, per req-2026-09-05-single-review-cycle on the authority's words of 2026-09-05 — "I want all of the processes limited to a single review cycle, so author -> review -> revise -> continue to next step": the cold read runs once; revise runs once and continues to deliver; the advance-round step, the round data, and route-verdict's failsafe branch removed; deliver reads the one review and the revised brief and states the findings the one revision left open. |

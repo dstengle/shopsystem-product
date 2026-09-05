@@ -4,9 +4,9 @@ id: principle-set-authoring-process
 owner: product-authority
 status: approved
 approved: 2026-08-23
-version: 7
+version: 8
 created: 2026-08-22
-updated: 2026-09-02
+updated: 2026-09-05
 produces: [principle-set]
 carried-by: principle-set-authoring-skill
 condition-language: cel
@@ -34,23 +34,25 @@ never on taste.
 - O1. A draft in the four-part form with its screen exists, at the
   requested scope — witnessed by the check on `draft` and fitness
   scenarios 1 and 5.
-- O2. An independent fresh-context judge has scored every round against
-  the fitness set — witnessed by `screen-read` and the `round_log`.
+- O2. An independent fresh-context judge has scored the draft once
+  against the fitness set — witnessed by `screen-read` and the
+  `round_log`.
 - O3. The set enters force only by the owner's approval — witnessed by
   `authority-approve` and the `route-approval` branches: `end` is
-  reached only by the owner's approving verdict or the `park` failsafe,
+  reached only by the owner's approving verdict or the `park` step,
   and only the approving verdict puts the set in force.
-- O4. A draft that cannot pass within its round caps parks with a filed
-  finding instead of looping — witnessed by the failsafe branches of
-  `route-verdict` and `route-approval` and the `park` step; an inactive
-  authority exchange holds per `hold-after` and the run lifecycle.
+- O4. A draft the owner does not approve after its one review and one
+  revision parks with a filed finding instead of looping — witnessed
+  by `revise`'s `next`, `route-approval`'s park branch, and the `park`
+  step; an inactive authority exchange holds per `hold-after` and the
+  run lifecycle.
 
 **Roles:** author — lead-pm, held by the authority; its agent steps
 assist: `draft` and `revise` prepare the set and keep new terms flowing
 to the glossary, and the authority decides at `authority-approve` whether
 the set stands. screen judge —
 [`../roles/cold-reviewer.md`](../roles/cold-reviewer.md) (Verifier; a
-fresh instance per round, never the author; scores the
+fresh instance for the one screen, never the author; scores the
 [fitness set](../fitness/principle-set.fitness.md)). approver —
 product-authority (human-held role; the owner named in the set's frontmatter —
 the only role that moves the set to approved).
@@ -71,26 +73,22 @@ flowchart TD
   draft(["Draft the set — agent: lead-pm<br/>in — sources: string[], scope: string, guideline_paths: string[], glossary: glossary<br/>out — set: principle-set, glossary: glossary"])
   screen_read(["Screen read — agent: cold-reviewer<br/>in — set: principle-set, fitness_path: string<br/>out — review: review"])
   log_round["Record the round — runtime<br/>in — review: review, round_log: review[]<br/>sets — round_log: review[]"]
-  route_verdict{"Route on the verdict<br/>in — review: review, round: integer"}
+  route_verdict{"Route on the verdict<br/>in — review: review"}
   revise(["Revise — agent: lead-pm<br/>in — set: principle-set, review: review, guideline_paths: string[]<br/>out — set: principle-set"])
-  advance_round["Advance the round counter — runtime<br/>in — round: integer<br/>sets — round: integer"]
   authority_approve[["Owner decides on the screened draft — human: product-authority<br/>in — set: principle-set, round_log: review[]<br/>out — set: principle-set, review: review"]]
-  route_approval{"Route on the owner's decision<br/>in — review: review, round: integer"}
-  park["Park the draft with a finding — runtime<br/>in — scope: string, round: integer, review: review"]
+  route_approval{"Route on the owner's decision<br/>in — review: review"}
+  park["Park the draft with a finding — runtime<br/>in — scope: string, review: review"]
   __end(("end<br/>result — set: principle-set"))
   __start(("start")) --> draft
   draft --> screen_read
   screen_read --> log_round
   log_round --> route_verdict
   route_verdict -->|success exit: clean or tradeoffs accepted| authority_approve
-  route_verdict -->|failsafe exit: round >= 3| park
   route_verdict -->|else| revise
-  revise --> advance_round
-  advance_round --> screen_read
+  revise --> authority_approve
   authority_approve --> route_approval
   route_approval -->|success exit: owner approves| __end
-  route_approval -->|failsafe exit: round >= 6| park
-  route_approval -->|else| revise
+  route_approval -->|else| park
   park --> __end
 ```
 
@@ -117,7 +115,6 @@ data:
   glossary: {$ref: glossary, from: ../artifacts/glossary-typedef.md}
   set: {$ref: principle-set, from: ../artifacts/principle-set.md}
   review: {$ref: review, from: ../types/review.md}
-  round: {type: integer, initial: 1}
   round_log: {type: array, items: {$ref: review}, initial: []}
 ```
 
@@ -176,14 +173,11 @@ steps:
   - id: route-verdict
     name: Route on the verdict
     run-by: {execution: runtime}
-    inputs: [review, round]
+    inputs: [review]
     branches:
       - label: "success exit: clean or tradeoffs accepted"
         when: review.verdict in ["clean", "tradeoffs-accepted"]
         next: authority-approve
-      - label: "failsafe exit: round >= 3"
-        when: round >= 3
-        next: park
       - else: revise
 
   - id: revise
@@ -198,15 +192,7 @@ steps:
       the author's self-check and must match the text it sits under.
       Mark any finding you will not repair as an accepted tradeoff, in
       the text, with one sentence saying why.
-    next: advance-round
-
-  - id: advance-round
-    name: Advance the round counter
-    run-by: {execution: runtime}
-    inputs: [round]
-    set:
-      round: round + 1
-    next: screen-read
+    next: authority-approve
 
   - id: authority-approve
     name: Owner decides on the screened draft
@@ -214,14 +200,15 @@ steps:
     inputs: [set, round_log]
     outputs: [set, review]
     prompt: |
-      The screened draft and its round log are in front of you. Your
-      decision is the review's verdict. "clean" or "tradeoffs-accepted"
-      approves: the set is stamped — status approved, the approval date,
-      your role as owner — and from that point it is the standard
-      activities are checked against, amendable only through this
-      process by your decision. "findings" returns the draft to the author
-      with your findings; the round counter keeps running, so a draft
-      that cannot satisfy you within the cap parks instead of looping.
+      The draft, revised once where the one screen found anything, and
+      that screen's review are in front of you. Your decision is the
+      review's verdict. "clean" or "tradeoffs-accepted" approves: the
+      set is stamped — status approved, the approval date, your role
+      as owner — and from that point it is the standard activities are
+      checked against, amendable only through this process by your
+      decision. "findings" parks the draft with your findings filed as
+      a work item for a later run to take up — the single review cycle
+      admits no second pass here.
       Silence holds the run after the declared window — `hold-after` in
       this definition's frontmatter — per the process-definition
       typedef's run lifecycle; the held run keeps its resume point.
@@ -230,22 +217,19 @@ steps:
   - id: route-approval
     name: Route on the owner's decision
     run-by: {execution: runtime}
-    inputs: [review, round]
+    inputs: [review]
     branches:
       - label: "success exit: owner approves"
         when: review.verdict in ["clean", "tradeoffs-accepted"]
         next: end
-      - label: "failsafe exit: round >= 6"
-        when: round >= 6
-        next: park
-      - else: revise
+      - else: park
 
   - id: park
     name: Park the draft with a finding
     run-by: {execution: runtime}
-    inputs: [scope, round, review]
+    inputs: [scope, review]
     run: |
-      bd create --title "Principle set parked: ${scope} scope after ${round} rounds" \
+      bd create --title "Principle set parked: ${scope} scope with the owner's findings" \
         --body "${review.top_changes}"
     next: end
 ```
@@ -256,14 +240,14 @@ steps:
 |---|---|---|---|
 | O1 | draft scope matches the requested scope | mechanical | `draft.checks` |
 | O1 | four-part form; screen present and covering | judged | fitness scenarios 1 and 5, scored in `screen-read` |
-| O2 | every round recorded; judge fresh per round | mechanical | `log-round` set; `screen-read` `fresh-context` |
+| O2 | the one review recorded; judge fresh | mechanical | `log-round` set; `screen-read` `fresh-context` |
 | O3 | `end` reached only by the owner's approving verdict or `park`; only the verdict puts the set in force | mechanical | `route-approval` branches |
-| O4 | both loops capped; parked drafts carry a filed finding | mechanical | `route-verdict` and `route-approval` failsafe branches; `park.run` |
+| O4 | no loop — `revise` continues to `authority-approve`, whose non-approving verdict parks; parked drafts carry a filed finding | mechanical | `revise.next`; `route-approval` branches; `park.run` |
 | all | this definition compiles and screens against the principle set | mechanical + judged | the compiler; the principles screen |
 
 ## Sources
 
-The draft → fresh cold read → dual-exit route loop is the shop's
+The draft → fresh cold read → one revision shape is the shop's
 stakeholder-presentation shape, reapplied; the owner's terminal gate
 composes the review-conversation model (the authority's close is the
 only end). Deming grounds the role separation: the author and the
@@ -288,3 +272,4 @@ the dual-exit rule) lives in the process-definition typedef, not here.
 | 6 | 2026-08-26 | update | Owner decision: lead-pm is held by the authority in person; the Roles header now names what the role's agent steps prepare and what the authority decides, per the lead-pm role's Interfaces. |
 | 6 | 2026-08-26 | review | Assist re-basing screened: the header named a step that does not exist — repaired in place. |
 | 7 | 2026-09-02 | update | Carried-by reference repointed to the load point (.claude/skills/) — the skill-rendering process's first run removed the retired home basis/skills/; the owner's sweep per its second-home escalation. |
+| 8 | 2026-09-05 | update | Single review cycle, per req-2026-09-05-single-review-cycle on the authority's words of 2026-09-05 — "I want all of the processes limited to a single review cycle, so author -> review -> revise -> continue to next step": the screen runs once; revise runs once and continues to the owner's decision; the advance-round step, the round data, and both failsafe branches removed; the owner's "findings" verdict parks the draft with the finding filed instead of returning it to revise, so no uncapped loop remains; park no longer counts rounds. |

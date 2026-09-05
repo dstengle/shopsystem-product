@@ -8,12 +8,12 @@ type: skill
 id: principle-set-authoring-skill
 status: approved
 created: 2026-08-22
-updated: 2026-09-02
+updated: 2026-09-05
 generated: true
 generated-by: basis/tools/compile_process.py
 derived-from: principle-set-authoring-process
 source: basis/processes/principle-set-authoring.md
-source-digest: sha256:ce2000cbaf69
+source-digest: sha256:6e8f2e79e618
 activation: model-judged
 promotion: experiment-local
 ---
@@ -31,26 +31,22 @@ flowchart TD
   draft(["Draft the set — agent: lead-pm<br/>in — sources: string[], scope: string, guideline_paths: string[], glossary: glossary<br/>out — set: principle-set, glossary: glossary"])
   screen_read(["Screen read — agent: cold-reviewer<br/>in — set: principle-set, fitness_path: string<br/>out — review: review"])
   log_round["Record the round — runtime<br/>in — review: review, round_log: review[]<br/>sets — round_log: review[]"]
-  route_verdict{"Route on the verdict<br/>in — review: review, round: integer"}
+  route_verdict{"Route on the verdict<br/>in — review: review"}
   revise(["Revise — agent: lead-pm<br/>in — set: principle-set, review: review, guideline_paths: string[]<br/>out — set: principle-set"])
-  advance_round["Advance the round counter — runtime<br/>in — round: integer<br/>sets — round: integer"]
   authority_approve[["Owner decides on the screened draft — human: product-authority<br/>in — set: principle-set, round_log: review[]<br/>out — set: principle-set, review: review"]]
-  route_approval{"Route on the owner's decision<br/>in — review: review, round: integer"}
-  park["Park the draft with a finding — runtime<br/>in — scope: string, round: integer, review: review"]
+  route_approval{"Route on the owner's decision<br/>in — review: review"}
+  park["Park the draft with a finding — runtime<br/>in — scope: string, review: review"]
   __end(("end<br/>result — set: principle-set"))
   __start(("start")) --> draft
   draft --> screen_read
   screen_read --> log_round
   log_round --> route_verdict
   route_verdict -->|success exit: clean or tradeoffs accepted| authority_approve
-  route_verdict -->|failsafe exit: round >= 3| park
   route_verdict -->|else| revise
-  revise --> advance_round
-  advance_round --> screen_read
+  revise --> authority_approve
   authority_approve --> route_approval
   route_approval -->|success exit: owner approves| __end
-  route_approval -->|failsafe exit: round >= 6| park
-  route_approval -->|else| revise
+  route_approval -->|else| park
   park --> __end
 ```
 
@@ -106,23 +102,20 @@ next: route-verdict
 
 ## route-verdict — Route on the verdict
 
-Run by the runtime — no agent, no prose. reads: review, round · writes: —.
+Run by the runtime — no agent, no prose. reads: review · writes: —.
 
 ```yaml
 branches:
 - label: 'success exit: clean or tradeoffs accepted'
   when: review.verdict in ["clean", "tradeoffs-accepted"]
   next: authority-approve
-- label: 'failsafe exit: round >= 3'
-  when: round >= 3
-  next: park
 - else: revise
 ```
 
 ## revise — Revise
 
 Run by an agent in role `lead-pm`. reads: set, review, guideline_paths · writes: set.
-- then: `advance-round`
+- then: `authority-approve`
 
 Prompt:
 
@@ -135,16 +128,6 @@ Mark any finding you will not repair as an accepted tradeoff, in
 the text, with one sentence saying why.
 ```
 
-## advance-round — Advance the round counter
-
-Run by the runtime — no agent, no prose. reads: round · writes: round.
-
-```yaml
-set:
-  round: round + 1
-next: screen-read
-```
-
 ## authority-approve — Owner decides on the screened draft
 
 Run by a human holding role `product-authority`. reads: set, round_log · writes: set, review.
@@ -153,14 +136,15 @@ Run by a human holding role `product-authority`. reads: set, round_log · writes
 Prompt:
 
 ```text
-The screened draft and its round log are in front of you. Your
-decision is the review's verdict. "clean" or "tradeoffs-accepted"
-approves: the set is stamped — status approved, the approval date,
-your role as owner — and from that point it is the standard
-activities are checked against, amendable only through this
-process by your decision. "findings" returns the draft to the author
-with your findings; the round counter keeps running, so a draft
-that cannot satisfy you within the cap parks instead of looping.
+The draft, revised once where the one screen found anything, and
+that screen's review are in front of you. Your decision is the
+review's verdict. "clean" or "tradeoffs-accepted" approves: the
+set is stamped — status approved, the approval date, your role
+as owner — and from that point it is the standard activities are
+checked against, amendable only through this process by your
+decision. "findings" parks the draft with your findings filed as
+a work item for a later run to take up — the single review cycle
+admits no second pass here.
 Silence holds the run after the declared window — `hold-after` in
 this definition's frontmatter — per the process-definition
 typedef's run lifecycle; the held run keeps its resume point.
@@ -168,25 +152,22 @@ typedef's run lifecycle; the held run keeps its resume point.
 
 ## route-approval — Route on the owner's decision
 
-Run by the runtime — no agent, no prose. reads: review, round · writes: —.
+Run by the runtime — no agent, no prose. reads: review · writes: —.
 
 ```yaml
 branches:
 - label: 'success exit: owner approves'
   when: review.verdict in ["clean", "tradeoffs-accepted"]
   next: end
-- label: 'failsafe exit: round >= 6'
-  when: round >= 6
-  next: park
-- else: revise
+- else: park
 ```
 
 ## park — Park the draft with a finding
 
-Run by the runtime — no agent, no prose. reads: scope, round, review · writes: —.
+Run by the runtime — no agent, no prose. reads: scope, review · writes: —.
 
 ```yaml
-run: "bd create --title \"Principle set parked: ${scope} scope after ${round} rounds\"\
+run: "bd create --title \"Principle set parked: ${scope} scope with the owner's findings\"\
   \ \\\n  --body \"${review.top_changes}\"\n"
 next: end
 ```

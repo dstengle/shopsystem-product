@@ -4,9 +4,9 @@ id: initiative-check-process
 owner: product-authority
 status: approved
 approved: 2026-08-31
-version: 6
+version: 7
 created: 2026-08-31
-updated: 2026-09-02
+updated: 2026-09-05
 produces: []
 carried-by: initiative-check-skill
 condition-language: cel
@@ -37,12 +37,13 @@ reviser's to rewrite.
   and Decomposition sections were written by the roles that own them —
   witnessed by `attach-architecture` and `attach-usability` preceding
   `screen`, each outputting the initiative.
-- O2. Every round is screened in a fresh context against the
-  initiative fitness set and logged — witnessed by `screen`'s
-  `fresh-context` and inputs, and by `log-round`.
-- O3. The screen loop exits on a clean verdict, on findings no
-  criterion names, or at the round cap — witnessed by `route-screen`'s
-  labeled branches.
+- O2. The one screen runs in a fresh context against the initiative
+  fitness set and is logged — witnessed by `screen`'s `fresh-context`
+  and inputs, and by `log-round`.
+- O3. The screen runs once: a clean verdict, or findings no criterion
+  names, goes straight to the decision; any other finding is revised
+  once and the decision follows — witnessed by `route-screen`'s
+  labeled branches and `revise`'s `next`.
 - O4. The decision — bet, hold, or cancel — is the authority's alone,
   taken in a human step; a bet is available only on a screen the
   typedef's commitment admits, and the status the run writes follows
@@ -60,7 +61,7 @@ accountability). attacher (usability) —
 (writes the usability evidence or hypothesis where an interaction type
 is named). screener —
 [`../roles/cold-reviewer.md`](../roles/cold-reviewer.md) (fresh
-context every round; the check of record — the
+context for the one screen; the check of record — the
 [initiative typedef](../artifacts/initiative.md) says why no other
 role checks the PM role's framing). the authority —
 product-authority (human-held; takes the bet). the PM role —
@@ -85,9 +86,8 @@ flowchart TD
   attach_usability(["Attach usability evidence — agent: lead-product-designer<br/>in — initiative: string, experience_principles: string, core_tasks: string<br/>out — initiative: string"])
   screen(["Screen against the fitness set — agent: cold-reviewer<br/>in — initiative: string, criteria_path: string<br/>out — review: screen-review, judge_stamp: string"])
   log_round["Record the round — runtime<br/>in — review: screen-review, round_log: screen-review[], judge_stamp: string, judge_log: string[]<br/>sets — round_log: screen-review[], judge_log: string[]"]
-  route_screen{"Route on the screen<br/>in — review: screen-review, round: integer, round_cap: integer"}
+  route_screen{"Route on the screen<br/>in — review: screen-review"}
   revise(["Revise the initiative — agent: lead-pm<br/>in — initiative: string, review: screen-review, ask: ask<br/>out — initiative: string"])
-  advance_round["Advance the round — runtime<br/>in — round: integer<br/>sets — round: integer"]
   decide[["Take the bet — human: product-authority<br/>in — review: screen-review, round_log: screen-review[], initiative: string<br/>out — bet: string, reasons: string"]]
   record(["Record the bet — agent: lead-pm<br/>in — initiative: string, bet: string, reasons: string, round_log: screen-review[], judge_log: string[]<br/>out — initiative: string"])
   __end(("end<br/>result — initiative: string"))
@@ -98,10 +98,8 @@ flowchart TD
   log_round --> route_screen
   route_screen -->|success exit: clean| decide
   route_screen -->|definition exit: every finding is uncovered — nothing a repair can reach| decide
-  route_screen -->|failsafe exit: round >= round_cap — decide with findings open| decide
   route_screen -->|else| revise
-  revise --> advance_round
-  advance_round --> screen
+  revise --> decide
   decide --> record
   record --> __end
 ```
@@ -135,8 +133,6 @@ data:
   experience_principles: {type: string, format: uri-reference}
   core_tasks: {type: string, format: uri-reference}
   review: {$ref: screen-review, from: ../types/screen-review.md}
-  round: {type: integer, initial: 1}
-  round_cap: {type: integer, initial: 3}
   round_log: {type: array, items: {$ref: screen-review}, initial: []}
   judge_stamp: {type: string}
   judge_log: {type: array, items: {type: string}, initial: []}
@@ -221,16 +217,13 @@ steps:
   - id: route-screen
     name: Route on the screen
     run-by: {execution: runtime}
-    inputs: [review, round, round_cap]
+    inputs: [review]
     branches:
       - label: "success exit: clean"
         when: review.verdict == "clean"
         next: decide
       - label: "definition exit: every finding is uncovered — nothing a repair can reach"
         when: size(review.findings) > 0 && review.findings.all(f, f.criterion == "uncovered")
-        next: decide
-      - label: "failsafe exit: round >= round_cap — decide with findings open"
-        when: round >= round_cap
         next: decide
       - else: revise
 
@@ -253,15 +246,7 @@ steps:
       findings marked "uncovered" as they are — they are the decide
       step's. On the first pass ask is absent; if it carries an answer
       or resolved defaulted, apply it and finish the repairs.
-    next: advance-round
-
-  - id: advance-round
-    name: Advance the round
-    run-by: {execution: runtime}
-    inputs: [round]
-    set:
-      round: round + 1
-    next: screen
+    next: decide
 
   - id: decide
     name: Take the bet
@@ -269,15 +254,17 @@ steps:
     inputs: [review, round_log, initiative]
     outputs: [bet, reasons]
     prompt: |
-      From the final review, the round log, and the initiative's
-      Framing, For whom, and Appetite sections, take the go/no-go on
-      spending the appetite. "bet": spend it — the initiative becomes
-      planned and features are made from it; available when the
-      screen is clean, or when its only findings are uncovered and
-      you judge none of them needs a criterion — say so in the
-      reasons. An initiative still failing a named criterion at the
-      round cap cannot be bet on — the typedef's commitment: it stays
-      proposed with the criterion named. "hold": it stays proposed —
+      From the one review and the initiative as revised — its
+      Framing, For whom, and Appetite sections, read against the
+      review's findings — take the go/no-go on spending the appetite.
+      "bet": spend it — the initiative becomes planned and features
+      are made from it; available when the screen is clean, or when
+      every named finding is repaired in the revision and the only
+      findings still open are uncovered and you judge none of them
+      needs a criterion — say so in the reasons. An initiative still
+      failing a named criterion after the one revision cannot be bet
+      on — the typedef's commitment: it stays proposed with the
+      criterion named. "hold": it stays proposed —
       say what would change your mind. "cancel": with the reason —
       the record of the decline survives. Record your reasons.
     next: record
@@ -306,8 +293,8 @@ steps:
 | Outcome | Check | Kind | Where |
 |---|---|---|---|
 | O1 | both attach steps precede `screen` and output `initiative` | mechanical | step order, `attach-*` outputs |
-| O2 | `screen` carries `fresh-context: true` and reads only `initiative` and `criteria_path`; every round appended | mechanical | `screen`, `log-round` |
-| O3 | three labeled exits on the loop | mechanical | `route-screen.branches` |
+| O2 | `screen` carries `fresh-context: true` and reads only `initiative` and `criteria_path`; the one review appended | mechanical | `screen`, `log-round` |
+| O3 | two labeled exits to `decide` and an else to `revise`; `revise.next` is `decide` | mechanical | `route-screen.branches`, `revise.next` |
 | O4 | `decide` is a human step outputting `bet` and `reasons`, its prompt bounding the bet by the typedef's commitment; `record` reads them | mechanical, judged | `decide`, `record.inputs` |
 | O5 | `revise` carries `asks`; process carries `ask-cap`; `ask` listed in inputs | mechanical | `revise`, frontmatter |
 
@@ -322,3 +309,4 @@ steps:
 | 4 | 2026-08-31 | state | draft → approved with batch A+B as one block (brief-032 ask 2, default accepted). |
 | 5 | 2026-08-31 | review | Batch E screen round 2: planned written only over proposed, matching the typedef's lifecycle. Post-approval repair from the end-to-end screen. |
 | 6 | 2026-09-02 | update | Carried-by reference repointed to the load point (.claude/skills/) — the skill-rendering process's first run removed the retired home basis/skills/; the owner's sweep per its second-home escalation. |
+| 7 | 2026-09-05 | update | Single review cycle, per req-2026-09-05-single-review-cycle on the authority's words of 2026-09-05 — "I want all of the processes limited to a single review cycle, so author -> review -> revise -> continue to next step": the screen runs once; revise runs once and continues to decide; the advance-round step, the round and round_cap data, and route-screen's failsafe branch removed; decide reads the one review and the revised initiative. |

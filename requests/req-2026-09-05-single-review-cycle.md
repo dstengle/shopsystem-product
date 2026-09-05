@@ -1,8 +1,8 @@
 ---
 type: request
 id: req-2026-09-05-single-review-cycle
-status: routed
-version: 3
+status: done
+version: 6
 date: 2026-09-05
 reader: lead-pm
 owner: lead-pm
@@ -12,7 +12,7 @@ originator: product-authority
 received-through: operational-contract
 route: small-change
 route-reason: "one change to each screening process's round cap — author, review, revise, continue — within the lead shop's own definitions, demonstrable on the next screen, no appetite worth a bet"
-routed-to: ""
+routed-to: requests/req-2026-09-05-single-review-cycle.md#result
 work-item: lead-6nc6r
 ---
 
@@ -155,6 +155,101 @@ and that the skill at the load point equals a fresh render.
 ( python3 basis/tools/lint_basis.py && s=$(mktemp -d) && mkdir -p "$s/defs" && ln -s "$PWD/basis/types" "$s/types" && ln -s "$PWD/basis/artifacts" "$s/artifacts" && for n in initiative-check po-output-check adr-authoring principle-set-authoring stakeholder-presentation; do d="basis/processes/$n.md"; c=$(sed '/^## Document History/,$d' "$d" | grep -c -E 'round[-_]cap|advance[-_]round'); [ "$c" -eq 0 ] || { echo "$n: $c round-cap/advance-round occurrence(s)"; exit 1; }; cp "$d" "$s/defs/$n.md" && python3 basis/tools/compile_process.py "$s/defs/$n.md" --skill "$s/$n/SKILL.md" >/dev/null && diff -q "$s/defs/$n.md" "$d" && diff -q "$s/$n/SKILL.md" ".claude/skills/$n/SKILL.md" && echo "$n: no round cap, diagram current, skill equals fresh render" || exit 1; done )
 ```
 
+### Change made
+
+**Round 1.** Maker: the lead-solutions-architect role, 2026-09-05, at
+the small-change process's make step. Paths changed, with the version
+each stood at before and after:
+
+| Path | Before | After |
+|---|---|---|
+| basis/processes/initiative-check.md | 6 | 7 |
+| basis/processes/po-output-check.md | 7 | 8 |
+| basis/processes/adr-authoring.md | 1 | 2 |
+| basis/processes/principle-set-authoring.md | 7 | 8 |
+| basis/processes/stakeholder-presentation.md | 5 | 6 |
+| .claude/skills/initiative-check/SKILL.md | rendering of v6 | rendering of v7 |
+| .claude/skills/po-output-check/SKILL.md | rendering of v7 | rendering of v8 |
+| .claude/skills/adr-authoring/SKILL.md | rendering of v1 | rendering of v2 |
+| .claude/skills/principle-set-authoring/SKILL.md | rendering of v7 | rendering of v8 |
+| .claude/skills/stakeholder-presentation/SKILL.md | rendering of v5 | rendering of v6 |
+
+In each definition: the screen (cold-read) step stays; `revise`'s
+`next` is now the deciding step (`decide`; `authority-approve` for
+principle-set-authoring; `deliver` for stakeholder-presentation); the
+advance-round step, the `round` and `round_cap` data, and the route
+step's failsafe branch are removed; the route step keeps its success
+exit, its all-uncovered exit where one existed, and else → revise.
+`round_log` stays as a one-element list, so each record step's "one
+review entry per round" holds for the one round. Purpose, Outcomes,
+Roles, Data, and Derived checks reworded to the single cycle where
+they named rounds, caps, or the loop; each definition carries one
+Document History row citing this request and the authority's words of
+2026-09-05. The Flow diagrams were regenerated and the five skills
+re-rendered by basis/tools/compile_process.py; the tool is unchanged.
+
+Two choices the checker should judge against the definition:
+
+- Acceptance statement 2 makes the deciding step's inputs the one
+  review and the revised artifact. In po-output-check and adr-authoring
+  the artifact had been excluded from `decide`'s inputs by design
+  (their former O2/O3 and derived checks). With no second screen, the
+  PM role cannot otherwise see whether the one revision repaired what
+  the findings quote, so `artifact` was added to `decide`'s inputs in
+  both, and those outcomes and derived-check rows reworded to match.
+  The other three deciding steps already read their artifact.
+- principle-set-authoring had a second loop: the owner's "findings"
+  verdict returned the draft to `revise` under a cap of 6. Without the
+  round counter that loop would have no exit, so `route-approval`'s
+  else now parks the draft with the owner's findings filed (the
+  existing `park` step, its title no longer counting rounds); the
+  owner's prompt says so. The Sources paragraph's "dual-exit route
+  loop" phrase was reworded to the one-revision shape so it stays
+  true.
+
+Verifying observation run from the repository root after the change:
+exit 0 — lint PASS, and for each of the five, "no round cap, diagram
+current, skill equals fresh render".
+
+### Check
+
+**Round 1** — verdict: **pass** — by the lead-pm role, 2026-09-05, at
+the small-change process's check step; the maker was the
+lead-solutions-architect role. Each statement decided against the
+changed definitions: every screening process's revise step continues
+to its deciding step, no advance-round step, round counter, or cap
+remains in the screen loop, the deciding step reads the one review and
+the revised artifact, the diagrams are regenerated and the skills equal
+a fresh render, each definition carries its history row citing this
+request with its version bumped, the rendering and repair loops of the
+other processes are untouched. The maker's two disclosed judgment
+calls — the artifact added to the deciding step's inputs in two
+processes, and the principle set's owner loop routed to its park step
+— are within the definition. Every path in Change made is in the
+Definition's list. Finding: none.
+
+### Verified result
+
+The verifying observation the Definition named was run by the runtime
+from the repository root on 2026-09-05; its evidence:
+
+```
+PASS: 0 violation(s)
+initiative-check: no round cap, diagram current, skill equals fresh render
+po-output-check: no round cap, diagram current, skill equals fresh render
+adr-authoring: no round cap, diagram current, skill equals fresh render
+principle-set-authoring: no round cap, diagram current, skill equals fresh render
+stakeholder-presentation: no round cap, diagram current, skill equals fresh render
+exit 0
+```
+
+Recorded by the lead-pm role, 2026-09-05. The Definition, the Check's
+verdict by the lead-pm role, and this result stand; between the
+request and this result no bet was taken and no check of record was
+run. The effect in the running system: the harness lists the five
+re-rendered skills, and every screen from now on runs once, the maker
+revises once, and the deciding step follows.
+
 ## Document History
 
 | Version | Date | Kind | Entry |
@@ -162,3 +257,6 @@ and that the skill at the load point equals a fresh render.
 | 1 | 2026-09-05 | update | Recorded by the lead-pm at the request-intake process's record step, the words read as an ask and the authority's "I want" the confirmation; routed small-change at decide-route, said, awaiting the originator's answer; applied as practice to the screens in flight on the authority's words. |
 | 2 | 2026-09-05 | update | The route accepted by the originator; landed at the intake's land step; work item lead-6nc6r opened; dispatched to the small-change lane. |
 | 3 | 2026-09-05 | update | Definition written by the lead-po role at the small-change process's define step: judged a simple change by the glossary's entry; seven acceptance statements; paths — the five screening process definitions, their five skill renderings with source and tool, the rendering tool read only; maker lead-solutions-architect; verifying observation as one command from the repository root. |
+| 4 | 2026-09-05 | update | Change made by the lead-solutions-architect role at the small-change process's make step, round 1: the five screening process definitions amended to the single review cycle (versions 6→7, 7→8, 1→2, 7→8, 5→6) and their five skills re-rendered by the compiler; observation exit 0, lint PASS; two judgment calls disclosed for the check — the artifact added to decide's inputs in po-output-check and adr-authoring, and principle-set-authoring's owner-rejection loop now parks. |
+| 5 | 2026-09-05 | update | Check passed (round 1) by the lead-pm role; the verifying observation run by the runtime, exit 0; the verified result recorded and status set to done at the small-change process's record step. |
+| 6 | 2026-09-05 | update | Where the route led written into routed-to — this request's own Result section — by the lead-pm at the request-intake process's land-result step; the lane's work item lead-6nc6r closed as done. |

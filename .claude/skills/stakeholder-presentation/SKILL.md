@@ -8,12 +8,12 @@ type: skill
 id: stakeholder-presentation-skill
 status: approved
 created: 2026-08-10
-updated: 2026-09-02
+updated: 2026-09-05
 generated: true
 generated-by: basis/tools/compile_process.py
 derived-from: stakeholder-presentation-process
 source: basis/processes/stakeholder-presentation.md
-source-digest: sha256:551ab1d7652e
+source-digest: sha256:e3b1d3c566ce
 activation: model-judged
 promotion: experiment-local
 ---
@@ -32,9 +32,8 @@ flowchart TD
   compose(["Compose — agent: lead-pm<br/>in — request: request, frame: frame<br/>out — brief: decision-brief, annex: string"])
   cold_read(["Cold read — agent: cold-reviewer<br/>in — brief: decision-brief<br/>out — review: review"])
   log_round["Record the round — runtime<br/>in — review: review, round_log: review[]<br/>sets — round_log: review[]"]
-  route_verdict{"Route on the verdict<br/>in — review: review, round: integer"}
+  route_verdict{"Route on the verdict<br/>in — review: review"}
   revise(["Revise — agent: lead-pm<br/>in — brief: decision-brief, review: review<br/>out — brief: decision-brief"])
-  advance_round["Advance the round counter — runtime<br/>in — round: integer<br/>sets — round: integer"]
   deliver(["Deliver — agent: lead-pm<br/>in — brief: decision-brief, annex: string, review: review, round_log: review[]<br/>out — brief: decision-brief"])
   __end(("end<br/>result — brief: decision-brief"))
   __start(("start")) --> frame
@@ -43,10 +42,8 @@ flowchart TD
   cold_read --> log_round
   log_round --> route_verdict
   route_verdict -->|success exit: clean or tradeoffs accepted| deliver
-  route_verdict -->|failsafe exit: round >= 4| deliver
   route_verdict -->|else| revise
-  revise --> advance_round
-  advance_round --> cold_read
+  revise --> deliver
   deliver --> __end
 ```
 
@@ -121,15 +118,12 @@ next: route-verdict
 
 ## route-verdict — Route on the verdict
 
-Run by the runtime — no agent, no prose. reads: review, round · writes: —.
+Run by the runtime — no agent, no prose. reads: review · writes: —.
 
 ```yaml
 branches:
 - label: 'success exit: clean or tradeoffs accepted'
   when: review.verdict in ["clean", "tradeoffs-accepted"]
-  next: deliver
-- label: 'failsafe exit: round >= 4'
-  when: round >= 4
   next: deliver
 - else: revise
 ```
@@ -137,7 +131,7 @@ branches:
 ## revise — Revise
 
 Run by an agent in role `lead-pm`. reads: brief, review · writes: brief.
-- then: `advance-round`
+- then: `deliver`
 
 Prompt:
 
@@ -149,16 +143,6 @@ finding you will not repair as an accepted tradeoff, in the text,
 with one sentence saying why.
 ```
 
-## advance-round — Advance the round counter
-
-Run by the runtime — no agent, no prose. reads: round · writes: round.
-
-```yaml
-set:
-  round: round + 1
-next: cold-read
-```
-
 ## deliver — Deliver
 
 Run by an agent in role `lead-pm`. reads: brief, annex, review, round_log · writes: brief.
@@ -168,9 +152,9 @@ Prompt:
 
 ```text
 Deliver the brief to the reader with the annex linked. Set the
-brief's status to "delivered" and record the round log in the
+brief's status to "delivered" and record the one review in the
 brief's Document History: one review entry per round with the
-verdict and the judge's model. If the final verdict is
-"findings" (the failsafe exit fired), state the open findings at
-the top of the brief before anything else.
+verdict and the judge's model. If the verdict is "findings",
+state at the top of the brief, before anything else, the
+findings the one revision left open.
 ```
