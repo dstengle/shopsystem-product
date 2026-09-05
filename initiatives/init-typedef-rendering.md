@@ -3,7 +3,7 @@ type: initiative
 id: init-typedef-rendering
 name: Typedef rendering
 status: proposed
-version: 1
+version: 5
 owner: lead-pm
 created: 2026-09-05
 updated: 2026-09-05
@@ -22,45 +22,59 @@ guidelines and fitness checks and those were just renderings. We need
 to get that in place (if not already) since it will be easier to
 evaluate everything for consistency for an artifact."
 
-Problem: an artifact type's standard is split across three
-hand-written documents — its typedef, its guideline, its fitness set —
-so the maker and the checker read different words, no one can see the
-whole standard in one place, and a change to the standard reaches
-neither reliably. Outcome: one document per artifact type carries the
-whole definition of good; what the writer reads and what the checker
-reads render from it; the tests stay as they are, executable by the
-author and by a check.
+Problem: whoever makes an artifact and whoever checks it work from
+different words, because the standard for an artifact type is written
+in several places by hand, and a change to it does not reliably reach
+both. Outcome: the
+maker and the checker of an artifact work from the same standard, a
+change to the standard reaches both, and the checker's tests, the fitness
+set's scenarios, can be run by the author first.
 
 ## For whom
 
 The makers and checkers of every artifact type, and the authority when
-the standard changes. Measure: artifact types whose standard has one
-home with current renderings, and one entire process run on that
-standard. Now: 0 of 22. Target: 1, proven on the product decision
-record, then 22 of 22 in the batch. Interaction types: none — the
-renderings are read inside process steps; no core task carries them.
+the standard changes. Measure: artifact types whose maker and checker
+work from one standard and have each used it once — the maker to make
+an artifact of that type, the check to screen it. Now: 0 of 22.
+Target: 1, the product decision record. Interaction types: none — the standard is
+read inside process steps; no core task carries it.
 
 ## Appetite
 
 One working session of the lead shop for the proof on the product
-decision record: its renderings used by the PO role making, and the
-check screening, the decision record for this initiative's own bet.
-Then the other 21 types convert as one batch, not demand-pull, sized by
-the PO role after the proof as this initiative's second feature.
-No-gos, each with its reason:
+decision record: the PO role makes this initiative's own bet record
+— the product decision record its bet requires — from the one
+standard, and that record's own check, the PO output check, screens it
+from the same standard.
+The other 21 types follow as one batch, a second bet sized after the
+proof. No-gos, each with its reason:
 
 - Any change to the checking processes themselves — a later request;
-  this initiative changes what they read, not how they run.
-- A consistency check of typedefs against each other — struck by the
-  authority as not needed for this initiative.
+  the checks are not what this bet changes.
+- Checking that the standards of different types agree with each
+  other — struck by the authority as not needed here.
 
 ## Feasibility and usability
 
-Not yet.
+Feasible in one session. The three documents already match rule for
+rule (guideline rule N, fitness scenario N, checklist item N), so
+folding them into the typedef is mechanical. The compiler follows
+`basis/tools/compile_process.py`: parse the typedef, write two texts,
+stamp a `source-digest`. The artifact-typedef typedef already names
+such texts renderings. Rendered at the paths the checks read, the
+checks stay unchanged. Risk: the bet's record is checked for form
+only, a light first run for the checker's text. No contract exists;
+no feature touches typedefs. (architect, 2026-09-05)
+
+No usability attachment is due: the For whom section names no
+interaction type — the renderings are read inside process steps, and
+no core task carries them. (designer, 2026-09-05)
 
 ## Decomposition
 
-Not yet.
+None: no Bounded Context is touched. The typedef, the compiler, and
+the renderings sit in the lead shop's tree; no contract exists on this
+branch to rely on. Cross-context flow: none.
 
 ## Features
 
@@ -71,3 +85,7 @@ None yet.
 | Version | Date | Kind | Entry |
 |---|---|---|---|
 | 1 | 2026-09-05 | update | Recorded `proposed` by the discovery conversation's frame step, on the authority's convergence — "Converged" (work item lead-kda8l; session sess-2026-09-05-a) — the first initiative made from a request through the hinge (discovery-conversation v11). Positions reached in the interview: the slice is the product decision record ("Okay, use the pdr"); the tests stay as they are, executable by the author and by a check, rendered for prompts; the typedef consistency check struck; the sweep is a batch after proving, not demand-pull. |
+| 2 | 2026-09-05 | update | Feasibility and decomposition attached by the architect at the initiative-check's attach step. |
+| 3 | 2026-09-05 | update | Usability attachment: none due, by the designer at the attach step. |
+| 4 | 2026-09-05 | review | Initiative-check screen round 1 (judge: claude-fable-5-1 / screen prompt v5): five confident findings, all scenario 4 — mechanism and structure words ("renderings", "render from it", "one document per artifact type", the originator's "typdef") in Framing, For whom, and Appetite — plus "the tests" unintroduced; wobbly: the batch unbounded, the compound measure, the form-only check, the artifact-less contract, the word bound. Repaired by the lead-pm in its own sections: the outcome stated as its effect; the measure one per-type property with one target; the batch made a second bet; the form-only run counted in the measure; the tests introduced as the fitness set's scenarios. The originator's quote stands pending the authority's restatement (the framer's wording changes — the 2026-09-04 ruling). |
+| 5 | 2026-09-05 | review | Screen round 2 (judge: claude-fable-5-1 / screen prompt v5): three confident — the originator's quote (pending the restatement), the measure naming no run while the Appetite counted one, "the check" and "form only" unintroduced — and three wobbly ("derive from" as structure, the first no-go's reason naming the mechanism, the word bound). Repaired by the lead-pm: the measure now counts a type whose maker and checker work from one standard and have each used it once; the Appetite names the product decision record's own check, the PO output check, and drops "form only"; "work from" for "derive from"; the no-go's reason reworded. |
