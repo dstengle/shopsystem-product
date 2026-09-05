@@ -47,11 +47,26 @@ Checks:
      paths, each resolving from the repository root (decision-brief
      typedef §Required frontmatter). `--brief <path>` runs the same
      rules on that one file alone. Checks 1-9 as before.
+ 11. Every repository tool path a process definition under
+     `basis/processes/` names — `basis/tools/<name>.py`, written in a
+     step's `run:` template or held as the `initial:` value of a data
+     value or parameter that a template interpolates (`${compiler}` and
+     its kind) — exists in the repository; each that does not is
+     reported naming the definition and the missing path
+     (process-definition typedef §Commitment: a process is not approved
+     while a step names a tool the repository lacks — the tool is a
+     request, routed before the process runs, never built mid-process).
+     `bd`, `python3`, and the sh utilities are the environment and are
+     not checked. `--process <path>` runs the same check on the one
+     process definition at that path, wherever it lives. Checks 1-10 as
+     before.
 
 Modes:
   lint_basis.py                     # lint the whole basis tree
   lint_basis.py --brief PATH        # check one decision brief alone by
                                     # check 10's rules (exit 0 on pass)
+  lint_basis.py --process PATH      # check one process definition alone
+                                    # by check 11's rule (exit 0 on pass)
   lint_basis.py --derive-chain X    # print the derived definition chain
                                     # for artifact type X (definition-chain
                                     # is assembled from references, never
@@ -102,6 +117,10 @@ BRIEF_KEYS = ["type", "id", "status", "version", "date", "reader",
               "decisions-requested", "annex"]
 BRIEF_OPTIONAL = {"relates-to"}
 BRIEF_STATUS = {"draft", "delivered", "decided"}
+
+# 11. tools a process names (process-definition typedef §Commitment)
+PROCESSES = BASIS / "processes"
+TOOL_PATH = re.compile(r"basis/tools/[A-Za-z0-9_.-]+\.py")
 
 
 def front_matter(path):
@@ -244,6 +263,10 @@ def lint():
                             errors.append(f"{rel}: from `{src}` does not define `{ref}`")
     errors += lint_requests()
     errors += lint_briefs()
+    for path in sorted(PROCESSES.glob("*.md")):
+        fm, _ = front_matter(path)
+        if fm is not None and fm.get("type") == "process-definition":
+            errors += lint_process_tools(path)
     return errors
 
 
@@ -342,6 +365,47 @@ def lint_brief(path):
     return errors
 
 
+def lint_process_tools(path):
+    """11. Every repository tool path one process definition names exists
+    (process-definition typedef §Commitment: a process is not approved
+    while a step names a tool the repository lacks — the tool is a
+    request, routed before the process runs, never built mid-process).
+    A tool path is `basis/tools/<name>.py`, written in a step's `run:`
+    template or held as the `initial:` value of a data value or
+    parameter a template interpolates; it resolves from the repository
+    root. `bd`, `python3`, and the sh utilities are the environment and
+    are not checked. The same rule for the tree walk and for --process."""
+    errors = []
+    clause = "(process-definition typedef §Commitment)"
+    root = BASIS.parent
+    full = path.resolve()
+    rel = full.relative_to(root) if full.is_relative_to(root) else path
+    fm, text = front_matter(path)
+    if fm is None:
+        errors.append(f"{rel}: front-matter missing or unparseable {clause}")
+        return errors
+    spec = yaml_blocks(text)
+    sites = []  # (where the path is named, text to scan)
+    for block in ("data", "parameters"):
+        values = spec.get(block)
+        if isinstance(values, dict):
+            for name, decl in values.items():
+                if isinstance(decl, dict) and isinstance(decl.get("initial"), str):
+                    sites.append((f"`{block}.{name}` initial", decl["initial"]))
+    for step in spec.get("steps") or []:
+        if isinstance(step, dict) and isinstance(step.get("run"), str):
+            sites.append((f"step `{step.get('id', '?')}` run", step["run"]))
+    seen = set()
+    for where, scanned in sites:
+        for tool in TOOL_PATH.findall(scanned):
+            if (where, tool) in seen:
+                continue
+            seen.add((where, tool))
+            if not (root / tool).is_file():
+                errors.append(f"{rel}: {where} names `{tool}`, which does not exist in the repository {clause}")
+    return errors
+
+
 def derive_chain(artifact_type):
     """definition-chain is derived from document references, never authored:
     typedef by `defines`, guideline and fitness by `target-type`, process by
@@ -384,6 +448,8 @@ def main():
         return
     if len(sys.argv) > 2 and sys.argv[1] == "--brief":
         errors = lint_brief(pathlib.Path(sys.argv[2]))
+    elif len(sys.argv) > 2 and sys.argv[1] == "--process":
+        errors = lint_process_tools(pathlib.Path(sys.argv[2]))
     else:
         errors = lint()
     for e in errors:

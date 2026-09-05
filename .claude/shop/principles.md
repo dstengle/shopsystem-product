@@ -6,7 +6,7 @@ generated: true
 generated-by: basis/tools/compile_principles.py
 derived-from: principles
 source: basis/principles.md
-source-digest: sha256:db2146e7321d
+source-digest: sha256:87b81b1e3a36
 scope: working
 ---
 
@@ -20,6 +20,8 @@ named in the front-matter; on conflict the source wins.
   - Every activity MUST operate from a stated definition of what good looks like.
   - That definition MUST drive both the performance of the activity and its check.
   - The check MUST sit with a different role holding a different accountability.
+  - Whoever makes an activity's output MUST evaluate that output against the definition of good before submitting it to the check.
+  - That evaluation MUST be recorded with the output — in its Document History or the step's own output.
 - **Govern the generating context** (`governed-context`):
   - Everything loaded into an agent's generating context — prompts, skills, memories, primers — MUST trace to an approved definition or a governed record.
   - An unsanctioned context channel MUST NOT be created or retained.

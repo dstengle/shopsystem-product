@@ -5,9 +5,9 @@ defines: process-definition
 owner: product-authority
 status: approved
 approved: 2026-08-22
-version: 6
+version: 7
 created: 2026-08-19
-updated: 2026-08-28
+updated: 2026-09-05
 ancestry: [definition, process-definition]
 ---
 
@@ -160,6 +160,18 @@ the diagram and renderings generate, `result` (if declared) names a data
 value — and every loop declares its exit. **Consequence on failure:** it
 cannot be dispatched, carried by a skill, or cited by a check.
 
+**No tools built mid-process.** A process definition is not approved
+while any step's `run` script or `prompt` names a tool that does not
+exist in the repository — a `basis/tools/<name>.py` path written in a
+`run` template or held as the `initial` value a template interpolates
+(`${compiler}` and its kind). The rule serves the lead shop's goal,
+set by the product authority: no tool is built mid-process — a tool a
+process needs and the repository lacks is a request, routed before the
+process runs, never work the run does for itself. The lint
+(`basis/tools/lint_basis.py`, its check 11) reports every such path
+that does not exist; `bd`, `python3`, and the sh utilities are the
+environment, not tools the repository holds, and are not checked.
+
 ## Sources
 
 ISO/IEC/IEEE 24774 (name/purpose/outcomes header); GitHub Actions (step
@@ -182,6 +194,9 @@ round cap (the dual-exit rule).
 - Outcomes each name a witness. *(§Required sections 3)*
 - `result`, if absent, is justified by outcomes that pin the run's value.
   *(§The steps section)*
+- Every tool a step names — a `basis/tools/<name>.py` path in a `run`
+  template or in an `initial` value — exists in the repository; none is
+  built mid-process. *(§Commitment)*
 
 ## Document History
 
@@ -195,3 +210,4 @@ round cap (the dual-exit rule).
 | 4 | 2026-08-25 | review | Screened with the ask data type: findings — the ask loop lacked an exit; the resumed ask had no data name; answering had no named activity; the recurrence measure had no channel; an old use of "ask" collided. Repaired in place: one ask per step per run, the `ask` value declared and listed, answering placed in the answering role's process, the registry named as the count's home, wording fixed. |
 | 5 | 2026-08-28 | update | Owner direction, from the scenario-assignment screen: how arrays and item fields interpolate into a `run` template defined, so a fan-out over contexts is a defined form. |
 | 6 | 2026-08-28 | update | From the scenario-assignment screen: how a `run` step yields its output (standard output, line-split for arrays) and that interpolation names may be field paths — both were silent conventions. |
+| 7 | 2026-09-05 | update | Under req-2026-09-05-no-tools-mid-process at the small-change process's make step, on the product authority's words of 2026-09-05 — "Building tools as part of a process should never be necessary and a goal for the lead shop should be to never build tools mid-process." — §Commitment gains the rule: a process definition is not approved while any step's `run` script or `prompt` names a tool that does not exist in the repository; and the goal it serves: no tool is built mid-process — a tool a process needs and the repository lacks is a request, routed before the process runs. The checklist gains its row; the lint's check 11 is named as the check. Made by the lead-solutions-architect role. |

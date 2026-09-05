@@ -4,7 +4,7 @@ id: basis-index
 owner: product-authority
 status: approved
 approved: 2026-08-23
-version: 10
+version: 11
 created: 2026-08-10
 updated: 2026-09-05
 ---
@@ -79,8 +79,18 @@ briefs: it walks `briefs/` at the repository root and checks each
 [decision brief](artifacts/decision-brief.md)'s frontmatter against
 the typedef's closed field set and that every path under `relates-to`
 resolves from the repository root; the same rules run on one brief
-alone with `tools/lint_basis.py --brief <path>`. The exit is nonzero
-on any violation.
+alone with `tools/lint_basis.py --brief <path>`. The lint also checks
+the tools a process names: for every process definition under
+`processes/`, each repository tool path — `basis/tools/<name>.py`,
+written in a step's `run:` template or held as an `initial:` value a
+template interpolates — must exist, per the
+[process-definition typedef](artifacts/process-definition.md)
+§Commitment (no tool is built mid-process; a tool a process needs and
+the repository lacks is a request, routed before the process runs);
+each that does not is reported naming the definition and the path,
+and the same check runs on one definition alone with
+`tools/lint_basis.py --process <path>`. The exit is nonzero on any
+violation.
 
 ## Document History
 
@@ -96,3 +106,4 @@ on any violation.
 | 8 | 2026-09-04 | update | Under req-2026-09-04-brief-relates-to at the small-change process's make step: tools/lint_basis.py extended (its check 10) to walk briefs/ at the repository root and check each decision brief's frontmatter against the decision-brief typedef's closed field set — now admitting `relates-to` — and that every relates-to path resolves from the repository root, with a `--brief <path>` mode that runs the same rules on one brief; §Checks names both. Checks 1–9 and --derive-chain as before. Made by the lead-solutions-architect role. |
 | 9 | 2026-09-04 | update | Lint check 9 resolves `routed-to` before its fragment — the small-change lane's result is the request's Result section by fragment, which the first run of request-intake wrote; found by that run under init-request-routing. |
 | 10 | 2026-09-05 | update | Under init-typedef-rendering / feat-typedef-rendering (adr-2026-09-05-typedef-rendering): tools/compile_typedef.py added — it produces a type's guideline and fitness set from the Writing rules and Fitness scenarios sections of its typedef, at the paths the checks read, and its --check reports a text not current with the typedef; the guidelines/ and fitness/ entries say which texts are renderings and who keeps them current; §Checks names the compiler's check and records that lint check 7 (version and Document History) exempts a file marked `generated: true` — an exemption that stood since the versioning standard and now covers the produced guideline and fitness set, so no lint code changed. Checks 1–10, --brief, and --derive-chain as before. Made by the lead-solutions-architect role. |
+| 11 | 2026-09-05 | update | Under req-2026-09-05-no-tools-mid-process at the small-change process's make step: tools/lint_basis.py extended (its check 11) to walk processes/ and check that every repository tool path a process definition names — `basis/tools/<name>.py` in a step's `run:` template or an `initial:` value — exists, reporting the definition and the missing path, with a `--process <path>` mode that runs the same check on one definition; §Checks names both. Checks 1–10, --brief, and --derive-chain as before. Made by the lead-solutions-architect role. |

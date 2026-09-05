@@ -5,9 +5,9 @@ scope: working
 owner: product-authority
 status: approved
 approved: 2026-08-22
-version: 7
+version: 9
 created: 2026-08-10
-updated: 2026-08-23
+updated: 2026-09-05
 ---
 
 # Founding principles
@@ -55,6 +55,10 @@ to the principles above it.
   its check.
 - The check MUST sit with a different role holding a different
   accountability.
+- Whoever makes an activity's output
+  MUST evaluate that output against the definition of good before submitting it to the check.
+- That evaluation MUST be recorded with the output — in its Document
+  History or the step's own output.
 
 **Rationale.** A definition applied only at the check puts the full weight
 of quality after implementation, where rework is most frequent and most
@@ -279,7 +283,7 @@ associate with specific work. (Least privilege, applied to context.)
 | Screen | define-good-up-front | governed-context | no-orphan-activities | use-defined-terms | external-standards-first | single-source-of-truth | feedback-loops-with-consumers | delivery-verified | least-context |
 |---|---|---|---|---|---|---|---|---|---|
 | Statement testable (TOGAF: understandable, complete, consistent) | pass | pass | pass | pass | pass | pass | pass | pass | pass |
-| Helps you say no (Spool) | yes: rejects definition-less checks and self-checked work | yes: rejects unsanctioned channels | yes: rejects orphan activities | yes: rejects undefined coinages and synonym pairs | yes: rejects unjustified invention | yes: rejects duplicate authorities | yes: rejects consumer-less channels | yes: rejects artifact-only done claims | yes: rejects ambient loads and unapproved sources |
+| Helps you say no (Spool) | yes: rejects checks held by the maker alone, and submission without the maker's own evaluation | yes: rejects unsanctioned channels | yes: rejects orphan activities | yes: rejects undefined coinages and synonym pairs | yes: rejects unjustified invention | yes: rejects duplicate authorities | yes: rejects consumer-less channels | yes: rejects artifact-only done claims | yes: rejects ambient loads and unapproved sources |
 | Not fluff, not a goal-in-disguise (Rumelt) | pass — directs without prescribing method | pass | pass | pass | pass | pass | pass | pass | pass |
 | Not permission-to-play (Lencioni) | pass — most systems do NOT work this way | pass | pass | pass | pass | pass | pass | pass | pass |
 | Implies ≥1 practice and ≥1 check (this document's intro) | shared-definition practice; role-separation check | promotion gate; provenance audit | process-membership lint; loop-exit review | term lookup before writing; undefined-term and near-synonym lint | prior-art search; Sources-section audit | link-or-ref practice; duplicate-statement review | consumer named at creation; calibration schedule | demonstration named in DoD; close-reason citation check | per-step context declaration; undeclared-load audit |
@@ -303,3 +307,5 @@ associate with specific work. (Least privilege, applied to context.)
 | 5 | 2026-08-23 | review | Verification cold read round 4: clean — all scenarios pass; 5 polish-level stumbles (bare surname citations, the "projects" verb, two implicit actors), none a fail. |
 | 6 | 2026-08-23 | update | Owner direction: decision-ledger references removed — changes stand on their own; history entries and text no longer cite numbered decisions. |
 | 7 | 2026-08-23 | update | Close-out polish: the opening's test sources named in full (Spool, Rumelt, Lencioni works cited; TOGAF expanded) — the standing cold-read stumble retired. |
+| 8 | 2026-09-05 | update | Amended under req-2026-09-05-maker-self-check at the small-change lane's make step by the lead-solutions-architect role, through principle-set-authoring's draft step — the set's own producing process, now one screen, one revise, the owner's approval: define-good-up-front gains a fourth statement, the maker of an activity's output evaluates it against the definition of good before submitting it to the check and records that it did; the three existing statements, every other principle, and the fitness screen unchanged. The author's self-check, as the new statement asks: the fitness screen's define-good-up-front column re-read against the amended statement — every cell holds as written (testable; rejects unevaluated submission as it rejects self-checked work; directs without method; practice and check implied). The process's one screen did not run in this step — it is the lead-pm's to run at the lane's check step and record here. The owner's approval stands on the product authority's ruling of 2026-09-05 accepting the request. |
+| 9 | 2026-09-05 | update | Repair under req-2026-09-05-maker-self-check, small-change lane round 2, by the lead-solutions-architect role: principle-set-authoring's one screen ran at the lane's check step (judge claude-fable-5-1, screen prompt v6) — one confident finding, the fourth statement carried two obligations in one bullet; two wobbly, "maker" outside the set's actor vocabulary and the record's home unnamed; one cosmetic, the screen cell for define-good-up-front's Spool test. Repairs: the fourth statement split into two bullets, one obligation each — whoever makes the output evaluates it against the definition of good before submitting it to the check; that evaluation is recorded with the output, in its Document History or the step's own output; the Spool cell reworded to reject checks held by the maker alone and submission without the maker's own evaluation. The first new bullet is wrapped as tightly as its verifying phrase allows — the lane's observation matches it on one source line. The owner's approval stands on the product authority's ruling of 2026-09-05 accepting the request. |
