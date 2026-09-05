@@ -26,7 +26,7 @@ date: 2026-09-05
 - `.claude/skills/typedef-rendering/SKILL.md` — rendered by skill-rendering (check clean, 22 approved); the runtime lists it.
 - `basis/README.md` v10.
 - `requests/req-2026-09-05-step-communication.md`, `-feasibility-defined.md`, `-no-tools-mid-process.md`, `-banned-words-inlined.md`, `-maker-self-check.md` — recorded through intake from the run review; each routed and said; awaiting the authority's answer.
-- `requests/req-2026-09-05-single-review-cycle.md` — the authority's ruling recorded, routed to the lane, accepted ("Proceed with the review cycle definition change only"); defined by the PO role at the lane's define step (v3); work item `lead-6nc6r`.
+- `requests/req-2026-09-05-single-review-cycle.md` — the authority's ruling recorded, routed to the lane, accepted ("Proceed with the review cycle definition change only"); done through the lane: initiative-check v7, po-output-check v8, adr-authoring v2, principle-set-authoring v8, stakeholder-presentation v6 — screen once, revise once, continue; skills re-rendered; verified by the observation (exit 0); work item `lead-6nc6r` closed.
 - `initiatives/init-request-routing.md` — Features line corrected to assigned.
 - `sessions/sess-2026-09-05-a.md` (the run review and the discovery), `sessions/sess-2026-09-05-b.md` (this delivery).
 
@@ -92,9 +92,10 @@ PASS: 0 violation(s)
 | Rounds per artifact | 2.5 | 2.7 |
 | Artifacts run to the cap | 7 of 8 | 5 of 6 |
 | Makers' self-check before the screen | none | 5 of 6 |
-| Agent time | 136 min (66 first implementation, 70 review cycles), the authority's figure | not measured the same way; commits span 16:47 (the request recorded) to 19:19 (measure met), 152 min wall clock, containing the run review's recording and five other requests' intake; from the bet (18:22) to the measure met, 57 min |
+| Agent time | 136 min (66 first implementation, 70 review cycles) | about 105 min (first implementation about 53; review cycles about 52 — screens 32, revises 20) |
+| Confident findings | not tallied | 25 in 16 rounds; 19 on the initiative and the ADR, 4 on the PO's three artifacts across 7 rounds, none on the backlog order |
 
-Reading: the self-check cut confident findings — the PO's three artifacts stood 4 across 7 rounds, none on the order — but wobbly findings drove the rounds, as the run review had found. The authority's single-review-cycle ruling arrived during the last screen (the process's round 3) and changed no figure here; it is in the lane as `req-2026-09-05-single-review-cycle`, defined, the architect's make step next.
+Reading: the self-check cut confident findings — the PO's three artifacts stood 4 across 7 rounds, none on the order — but wobbly findings drove the rounds, as the run review had found. The authority's single-review-cycle ruling arrived during the last screen (the process's round 3) and changed no figure here; it is done through the lane as `req-2026-09-05-single-review-cycle`, and this brief's one cold read is its first use.
 
 ## Rulings the lead-pm role made in the authority's absence, all recorded
 
@@ -109,7 +110,7 @@ Reading: the self-check cut confident findings — the PO's three artifacts stoo
 - **Single-review-cycle**: the authority's words recorded as a request and routed to the lane; applied as practice to every screen in flight — decide after the current round and one revise.
 - **Maker self-check as practice**: applied before the principle change the request `maker-self-check` asks for, awaiting the authority's answer.
 
-## The six requests awaiting the authority's answer
+## The requests routed from the run review (five awaiting the authority's answer; Ask 3)
 
 | Request | Route said | Reason in one line | State |
 |---|---|---|---|
@@ -118,7 +119,7 @@ Reading: the self-check cut confident findings — the PO's three artifacts stoo
 | `req-2026-09-05-no-tools-mid-process` | small-change | one rule in the process-definition typedef, lint-checked | routed, awaiting |
 | `req-2026-09-05-banned-words-inlined` | small-change | the compiler already inlines the guiding statement; the banned list is the same mechanism | routed, awaiting |
 | `req-2026-09-05-maker-self-check` | small-change | one sentence in the define-good-up-front principle, through principle-set-authoring | routed, awaiting |
-| `req-2026-09-05-single-review-cycle` | small-change | one change to each of five screening processes' round cap | accepted; defined (v3); `lead-6nc6r` |
+| `req-2026-09-05-single-review-cycle` | small-change | one change to each of five screening processes' round cap | done; `lead-6nc6r` closed |
 
 Also parked: the discovery on `req-2026-09-04-operational-contract` (`lead-bmmzh`), held on inactivity.
 
@@ -131,6 +132,8 @@ Also parked: the discovery on `req-2026-09-04-operational-contract` (`lead-bmmzh
 
 Follow-on from the build, not in the ADR: the produced guideline and fitness set carry the typedef's `version` and dates in their frontmatter without saying they are the typedef's.
 
-## The brief's cold reads
+## The brief's cold read (judge claude-fable-5-1, the rendered cold-reviewer role, fresh context; one round under stakeholder-presentation v6)
 
-Recorded at the deliver step, one row per round, in the brief's Document History.
+| Round | Verdict | Asks decidable | Findings in short | Repaired |
+|---|---|---|---|---|
+| 1 | findings | Asks 1 and 2 wobbly | overload in Ask 1 and the informational paragraph; Ask 1 without the proof record's outcome, the two undemonstrated scenarios unpriced, what a no does unstated, a five-document version list, "Get this started" cited as the authority; Ask 2 without "stop here" as an option or the drafting's size; six requests as information the reader could not act on; cost not like for like; a dangling "Bet"; "one standard" before its introduction; "each reads the path it always read"; the two 22s; screen, cap, run, order, work item, frontmatter, operational contract, the artifact-typedef typedef unglossed | all, in the one revise (brief v2); none left open |
