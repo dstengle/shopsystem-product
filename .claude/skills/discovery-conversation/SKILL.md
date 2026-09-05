@@ -120,6 +120,8 @@ request's section 1 (What is requested — the originator's words),
 quoted with the request's id as the reference, not the
 transcript; the dialogue refines the direction, never the record
 of the ask.
+
+Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```
 
 ## handoff — Close onto the session record
@@ -169,6 +171,8 @@ decline survives; state in the cancellation entry that the
 product decision record for the decline is the PO role's to
 make and the PO output check screens it, linked once made — the
 initiative typedef's rule. Return the initiative's path.
+
+Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```
 
 ## close-out — Close the work item

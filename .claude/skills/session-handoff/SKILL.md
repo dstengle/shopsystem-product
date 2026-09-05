@@ -60,6 +60,8 @@ preference, or mode change that should outlive the session — file a
 bead targeting the definition it amends and list the pair here. The
 record points; the definition carries. Nothing goes to a memory
 channel: memory writes are frozen.
+
+Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```
 
 ## validate — Validate the record
@@ -99,6 +101,8 @@ Prompt:
 Repair every named violation in the validation errors. Do not
 remove content to pass validation — a section the schema demands is
 written, not deleted.
+
+Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```
 
 ## advance-round — Advance the round counter

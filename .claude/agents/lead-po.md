@@ -114,3 +114,5 @@ language; the [working principle set](../../basis/principles.md).
   here.
 - "I'll specify how, it's faster." → The how is the shops'; specifying
   it removes their ownership and the architect's check.
+
+Do not use these words: ratif, disposition, rebaseline bill, surface, seat

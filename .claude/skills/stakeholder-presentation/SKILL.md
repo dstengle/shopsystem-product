@@ -63,6 +63,8 @@ a deferral is a note, never an ask. Group related asks and order
 them by consequence. If the material holds more decisions than one
 reading can carry, split it by decision, not by topic, and frame
 only the first split.
+
+Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```
 
 ## compose — Compose
@@ -86,6 +88,8 @@ to an ask or label it informational. Demote the original material
 to a labeled annex and link it. Style rules:
 guidelines/stakeholder-communication.md, layered on
 guidelines/base-writing-style.md.
+
+Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```
 
 ## cold-read — Cold read
@@ -104,6 +108,8 @@ an overload verdict; your top three changes. Verdict "clean" only
 if you found nothing. Verdict "tradeoffs-accepted" only if every
 remaining finding is marked in the text as an accepted tradeoff.
 Otherwise verdict "findings".
+
+Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```
 
 ## log-round — Record the round
@@ -141,6 +147,8 @@ sweep: counts and cross-references match, and every promise the
 text makes holds against every line that follows it. Mark any
 finding you will not repair as an accepted tradeoff, in the text,
 with one sentence saying why.
+
+Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```
 
 ## deliver — Deliver
@@ -157,4 +165,6 @@ brief's Document History: one review entry per round with the
 verdict and the judge's model. If the verdict is "findings",
 state at the top of the brief, before anything else, the
 findings the one revision left open.
+
+Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```

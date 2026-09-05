@@ -121,3 +121,5 @@ every activity runs under.
   tool definition it misreads is a usability failure.
 - "It looks fine to me." → This role's own preference is not
   admissible evidence.
+
+Do not use these words: ratif, disposition, rebaseline bill, surface, seat

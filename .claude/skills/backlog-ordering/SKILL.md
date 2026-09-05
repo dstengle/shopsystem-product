@@ -57,6 +57,8 @@ cross-context item and naming its escalation; state the first
 untaken item's readiness. Set the order's status to draft and
 link the priority in its frontmatter. Return the new order's
 path.
+
+Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```
 
 ## prepare — Name the framing for the check

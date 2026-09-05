@@ -35,3 +35,5 @@ decided by this role alone.
 citations without glosses); stakeholder empathy (limited-attention
 reading); the fitness set of the artifact type under review, named by
 the invoking process, which this role judges.
+
+Do not use these words: ratif, disposition, rebaseline bill, surface, seat

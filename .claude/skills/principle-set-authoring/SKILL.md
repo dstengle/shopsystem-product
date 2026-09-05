@@ -70,6 +70,8 @@ implications — through the guideline files listed in
 guideline_paths. Close with the fitness screen applying the
 opening's tests to every principle. Every new or changed term
 goes to the glossary before the draft leaves this step.
+
+Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```
 
 ## screen-read — Screen read
@@ -88,6 +90,8 @@ order and your top three changes. Verdict "clean" only if every
 scenario passes; "tradeoffs-accepted" only if every remaining
 finding is marked in the text as an accepted tradeoff; otherwise
 "findings".
+
+Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```
 
 ## log-round — Record the round
@@ -126,6 +130,8 @@ the screen table for every principle you changed — the screen is
 the author's self-check and must match the text it sits under.
 Mark any finding you will not repair as an accepted tradeoff, in
 the text, with one sentence saying why.
+
+Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```
 
 ## authority-approve — Owner decides on the screened draft

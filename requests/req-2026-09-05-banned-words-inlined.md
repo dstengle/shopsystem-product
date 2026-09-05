@@ -1,8 +1,8 @@
 ---
 type: request
 id: req-2026-09-05-banned-words-inlined
-status: routed
-version: 3
+status: done
+version: 6
 date: 2026-09-05
 reader: lead-pm
 owner: lead-pm
@@ -12,7 +12,7 @@ originator: product-authority
 received-through: operational-contract
 route: small-change
 route-reason: "the compiler already inlines the guiding statement into every rendered step; inlining the banned list with its words is the same mechanism — a tool changed with the definition that names it, demonstrable by a re-render; the wider prompt assembly tooling is req-2026-09-05-step-communication's"
-routed-to: ""
+routed-to: requests/req-2026-09-05-banned-words-inlined.md#result
 work-item: lead-6s02k
 ---
 
@@ -138,6 +138,75 @@ shows the effect, its output is the evidence:
 python3 basis/tools/lint_basis.py && L="$(python3 -c 'import sys; sys.path.insert(0, "basis/tools"); import lint_basis; print(", ".join(lint_basis.BANNED))')" && echo "banned line: Do not use these words: $L" && for f in .claude/skills/*/SKILL.md; do n=$(grep -c '^Run by an agent in role' "$f"); [ "$n" -gt 0 ] || continue; [ "$(grep -cF "Do not use these words: $L" "$f")" -ge "$n" ] || { echo "banned line missing: $f"; exit 1; }; done && for f in .claude/agents/*.md; do grep -qF "Do not use these words: $L" "$f" || { echo "banned line missing: $f"; exit 1; }; done && echo "banned line present at both load points" && s=$(mktemp -d) && mkdir -p "$s/defs" && ln -s "$PWD/basis/types" "$s/types" && ln -s "$PWD/basis/artifacts" "$s/artifacts" && for d in $(grep -l '^status: approved' basis/processes/*.md); do n=$(sed -n 's/^carried-by: //p' "$d" | sed 's/-skill$//'); cp "$d" "$s/defs/"; python3 basis/tools/compile_process.py "$s/defs/$(basename "$d")" --skill "$s/$n/SKILL.md" >/dev/null && diff -q "$s/$n/SKILL.md" ".claude/skills/$n/SKILL.md" || { echo "diverged: $d"; rm -rf "$s"; exit 1; }; done && rm -rf "$s" && echo "skill-rendering check: nothing" && python3 basis/tools/compile_role.py --check .claude/agents --roles basis/roles --findings $(for d in basis/roles/*.md; do awk 'NR == 1 && !/^---$/ {exit 1} NR > 1 && /^---$/ {exit} NR > 1 && /^status: approved$/ {f = 1} END {exit !f}' "$d" && printf '%s\n' "$d"; done) && echo "role-rendering check: nothing"
 ```
 
+### Change made
+
+Round 1 — maker: lead-solutions-architect, 2026-09-05.
+
+- `basis/tools/lint_basis.py` — unchanged: `BANNED` already stands at
+  module level and the file imports without running its main, so the
+  compilers read it as it is.
+- `basis/tools/compile_process.py` — changed: imports `BANNED` from the
+  lint beside it (its own directory put on `sys.path`, then
+  `from lint_basis import BANNED`) and closes every agent-run step's
+  prompt block with the banned line, after the prompt text; runtime and
+  human-run steps get none. The tool carries no version field; before
+  and after are the repository's two states of the file.
+- `basis/tools/compile_role.py` — changed: the same import; the banned
+  line closes every rendered agent body. No version field, as above.
+- `basis/processes/skill-rendering.md` — version 6 → 7: a Data sentence
+  names the lint at `basis/tools/lint_basis.py` as the one home the
+  compiler loads the list from, under the name `BANNED`; history row
+  citing this request.
+- `basis/processes/role-rendering.md` — version 6 → 7: the same Data
+  sentence for the rendered role's body; history row citing this request.
+- Renderings: 22 skills, 6 agents re-rendered through the compilers,
+  never by hand — every approved process definition under
+  `basis/processes/` (the two definitions above at version 7) to
+  `.claude/skills/<name>/SKILL.md`, every approved role definition under
+  `basis/roles/` to `.claude/agents/<name>.md`. Each rendering carries
+  its source's digest as its version: the two definitions' skills now
+  carry the version-7 digests. One skill, `corpus-close-out`, has no
+  agent-run step and its re-render is byte-equal to what stood.
+
+The verifying observation, run as written: exit 0, its last lines
+"banned line present at both load points", "skill-rendering check:
+nothing", "role-rendering check: nothing". The lint: PASS, 0 violations.
+
+### Check
+
+**Round 1** — verdict: **pass** — by the lead-pm role, 2026-09-05, at
+the small-change process's check step; the maker was the
+lead-solutions-architect role. Each statement decided against the
+changed artifacts: every rendered agent-run step and every rendered
+agent file carries the line with the words themselves; the compilers
+hold no copy and read the lint's list, its one home; the two
+rendering definitions say so with history rows citing this request and
+versions bumped; both load points carry the line after the re-render
+and both rendering checks report nothing; the lint passes. Every path
+in Change made is in the Definition's list. Noted, not a finding: the
+lint's list holds stems (ratif), so the prompts carry stems; readable
+forms are a change to the list, the owner's. Finding: none.
+
+### Verified result
+
+The verifying observation the Definition named was run by the runtime
+from the repository root on 2026-09-05; its evidence:
+
+```
+PASS: 0 violation(s)
+banned line: Do not use these words: ratif, disposition, rebaseline bill, surface, seat
+banned line present at both load points
+skill-rendering check: nothing
+role-rendering check: nothing
+exit 0
+```
+
+Recorded by the lead-pm role, 2026-09-05. The Definition, the Check's
+verdict by the lead-pm role, and this result stand; between the
+request and this result no bet was taken and no check of record was
+run. The effect in the running system: every skill and role the
+harness loads now tells the agent the words not to use.
+
 ## Document History
 
 | Version | Date | Kind | Entry |
@@ -145,3 +214,6 @@ python3 basis/tools/lint_basis.py && L="$(python3 -c 'import sys; sys.path.inser
 | 1 | 2026-09-05 | update | Recorded by the lead-pm at the request-intake process's record step; the originator's "record the other requests" confirmed the reading of these words as asks. Route decided and said at decide-route; awaiting the originator's answer. |
 | 2 | 2026-09-05 | update | The route accepted by the originator (brief-036 ask 3); landed at the intake's land step; work item lead-6s02k opened; dispatched to the small-change lane. |
 | 3 | 2026-09-05 | update | Definition written by the lead-po at the small-change lane's define step: judged a simple change by the glossary's entry; acceptance statements, paths (three tools, two process definitions, the 22 skill and 6 agent renderings with source and tool), maker lead-solutions-architect, and the verifying observation recorded under Result. |
+| 4 | 2026-09-05 | update | Change made by the lead-solutions-architect at the small-change lane's make step, round 1: both compilers load `BANNED` from the lint and inline the banned line; skill-rendering and role-rendering at version 7 name the lint in Data; 22 skills and 6 agents re-rendered; the observation exits 0 and the lint passes. |
+| 5 | 2026-09-05 | update | Check passed (round 1) by the lead-pm role; the verifying observation run by the runtime, exit 0; the verified result recorded and status set to done at the small-change process's record step. |
+| 6 | 2026-09-05 | update | Where the route led written into routed-to by the lead-pm at the request-intake process's land-result step; the lane's work item lead-6s02k closed as done. |

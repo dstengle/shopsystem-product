@@ -78,6 +78,8 @@ will apply if unanswered, and a checkpoint holding the draft so
 far. On the first pass ask is absent; if it carries an answer or
 resolved defaulted, act on it and finish the draft. Return the
 record's path as artifact.
+
+Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```
 
 ## screen — Screen against the criteria
@@ -103,6 +105,8 @@ decides from the review alone. A defect no criterion names is a
 finding with criterion "uncovered". Verdict "clean" only if
 there are no findings; otherwise "findings" with the top three
 changes.
+
+Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```
 
 ## log-round — Record the round
@@ -151,6 +155,8 @@ instead of guessing: the question, its kind, the default you
 will apply if unanswered, and a checkpoint holding the repairs
 made so far. On the first pass ask is absent; if it carries an
 answer or resolved defaulted, act on it and finish the repairs.
+
+Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```
 
 ## decide — Decide on the verdict
@@ -199,4 +205,6 @@ on pass, "returned" on fail with the criterion named,
 the Document History of the definition the decision names;
 return that file's path as definition and the entry's text as
 gap_entry. Otherwise return both empty. Return the artifact.
+
+Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```

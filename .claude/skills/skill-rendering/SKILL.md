@@ -15,12 +15,12 @@ type: skill
 id: skill-rendering-skill
 status: approved
 created: 2026-09-02
-updated: 2026-09-04
+updated: 2026-09-05
 generated: true
 generated-by: basis/tools/compile_process.py
 derived-from: skill-rendering-process
 source: basis/processes/skill-rendering.md
-source-digest: sha256:914d68931adb
+source-digest: sha256:2f99fde4740b
 activation: model-judged
 promotion: experiment-local
 ---
@@ -135,6 +135,8 @@ marked no-skill-id: do not retry; write a review entry into that
 definition's Document History naming this process and the
 defect, and add the definition's path with the entry to
 escalations. Return escalations.
+
+Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```
 
 ## advance-round — Advance the round
@@ -170,4 +172,6 @@ unrecognized skill, the second-home notice — lands in this
 process definition's Document History entry for the run. The
 resulting action on each escalated row is the owner's decision.
 Return escalations.
+
+Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```

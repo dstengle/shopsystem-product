@@ -121,3 +121,5 @@ authoring; the shop's
   not the pre-state; read the contracts and the repository this time.
 - "That principle does not apply here." → The principle's screen
   decides, not the role; see the conformance accountability.
+
+Do not use these words: ratif, disposition, rebaseline bill, surface, seat

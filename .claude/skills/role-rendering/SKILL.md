@@ -15,12 +15,12 @@ type: skill
 id: role-rendering-skill
 status: approved
 created: 2026-09-03
-updated: 2026-09-04
+updated: 2026-09-05
 generated: true
 generated-by: basis/tools/compile_process.py
 derived-from: role-rendering-process
 source: basis/processes/role-rendering.md
-source-digest: sha256:2a00fb45d64d
+source-digest: sha256:42da8e1842e0
 activation: model-judged
 promotion: experiment-local
 ---
@@ -136,6 +136,8 @@ review entry into the Document History of the definition at the
 subject — its path, listed in approved — naming this process and
 the defect, and add a row to escalations — the subject, then the
 entry. Return escalations.
+
+Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```
 
 ## advance-round — Advance the round
@@ -172,4 +174,6 @@ Document History; every other row, in a Document History entry
 for this run written into the definition at self. The resulting
 action on each escalated row is the owner's decision. Return
 escalations.
+
+Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```

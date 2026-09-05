@@ -16,7 +16,9 @@ the agent's load point, `.claude/agents/<name>.md`:
     created, updated) are stripped;
   - a generated-file notice, then the definition's body with its
     `## Document History` section stripped and every relative markdown
-    link resolved so it is correct from the load point.
+    link resolved so it is correct from the load point, closing with the
+    banned line — "Do not use these words: " and the lint's BANNED list,
+    loaded from lint_basis.py beside this script.
 
 Only a definition with `status: approved` compiles; any other is refused.
 The rendering is a function of the definition and the declared load point
@@ -65,6 +67,13 @@ import sys
 
 import yaml
 
+# The banned vocabulary has one home: the lint beside this compiler. It is
+# read from there, never copied, so a change to the lint's list changes every
+# rendering at the next re-render with no change here.
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+from lint_basis import BANNED  # noqa: E402
+
+BANNED_LINE = "Do not use these words: " + ", ".join(BANNED)
 GENERATED_BY = "basis/tools/compile_role.py"
 DEFAULT_LOAD_POINT = ".claude/agents"
 DEFAULT_ROLES = "basis/roles"
@@ -170,7 +179,7 @@ def render(source: pathlib.Path, roles_dir: str, load_point: str):
     notice = (f"<!-- Generated from `{source_rel}` by `{GENERATED_BY}`; do not edit by\n"
               f"hand — edit the role definition and re-render. -->")
     body = resolve_links(strip_history(body), repo_relative(roles_dir), load_point)
-    body = body.strip("\n")
+    body = body.strip("\n") + "\n\n" + BANNED_LINE
     return name, f"---\n{front_text}\n---\n\n{notice}\n\n{body}\n"
 
 

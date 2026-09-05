@@ -149,6 +149,8 @@ Document History of the typedef at the subject — its path,
 listed in approved — naming this process and the row, and add a
 row to escalations — the subject, then the entry. Return
 escalations.
+
+Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```
 
 ## advance-round — Advance the round
@@ -184,4 +186,6 @@ Document History; every other row, in a Document History entry
 for this run written into the definition at self. The resulting
 action on each escalated row is the owner's decision. Return
 escalations.
+
+Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```

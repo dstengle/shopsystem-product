@@ -69,6 +69,8 @@ from the review alone. A defect no criterion names is a finding
 with criterion "uncovered". Verdict "clean"
 only if there are no findings; otherwise "findings" with the top
 three changes.
+
+Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```
 
 ## log-round — Record the round
@@ -116,6 +118,8 @@ of guessing: the question, its kind, the default you will apply
 if unanswered, and a checkpoint holding the repairs made so far.
 On the first pass ask is absent; if it carries an answer or
 resolved defaulted, act on it and finish the repairs.
+
+Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```
 
 ## decide — Decide on the verdict
@@ -167,4 +171,6 @@ state entry naming this feature's pass — the initiative
 typedef's writer, and planned is the only status it writes
 over — and return its path as initiative; otherwise return
 initiative empty. Return the artifact.
+
+Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```

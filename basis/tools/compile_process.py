@@ -10,7 +10,9 @@ Outputs:
      written back into the definition's "## Flow (compiled)" section.
   2. The skill (optional, --skill <path>) — a SKILL.md generated from the
      front-matter, purpose, data, and steps. The only prose it contains is
-     the step prompts, copied verbatim.
+     the step prompts, copied verbatim, each agent-run step's prompt block
+     closing with the banned line — "Do not use these words: " and the
+     lint's BANNED list, loaded from lint_basis.py beside this script.
 
 Usage:
   compile_process.py <process.md>                    # regenerate the diagram
@@ -22,6 +24,14 @@ import re
 import sys
 
 import yaml
+
+# The banned vocabulary has one home: the lint beside this compiler. It is
+# read from there, never copied, so a change to the lint's list changes every
+# rendering at the next re-render with no change here.
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+from lint_basis import BANNED  # noqa: E402
+
+BANNED_LINE = "Do not use these words: " + ", ".join(BANNED)
 
 
 def one_line(exc: BaseException) -> str:
@@ -228,7 +238,10 @@ def skill_step_section(step: dict) -> str:
             lines.append(f"- check: `{check}`")
         if step.get("next"):
             lines.append(f"- then: `{step['next']}`")
-        lines += ["", "Prompt:", "", "```text", step["prompt"].rstrip(), "```"]
+        prompt = step["prompt"].rstrip()
+        if run_by["execution"] == "agent":
+            prompt += "\n\n" + BANNED_LINE
+        lines += ["", "Prompt:", "", "```text", prompt, "```"]
     else:
         lines.append(f"Run by the runtime — no agent, no prose. {fmt_io(step)}.")
         machine = {

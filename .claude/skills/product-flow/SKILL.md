@@ -253,6 +253,8 @@ its features are done and every one is assigned. Return
 "another" or "done". This is your backlog accountability, not a
 check: the framing decides what is needed, the appetite bounds
 it.
+
+Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```
 
 ## advance-feature — Advance the feature count

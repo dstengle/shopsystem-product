@@ -69,6 +69,8 @@ returned in the repository, author that feature again instead:
 revise its own document — the id stays, and a changed scenario
 text is a new scenario by hash — and add no duplicate id.
 Return the feature's path.
+
+Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```
 
 ## add-usability — Add the designer's criteria
@@ -87,6 +89,8 @@ at experience_principles and the core-task list at core_tasks —
 and add to the Edges table any failure or boundary case those
 criteria name. Where the section says "none", record that no
 criteria are due, with its reason. Return the feature.
+
+Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```
 
 ## add-constraints — Add the architect's constraints
@@ -104,6 +108,8 @@ section as criteria riding on the scenarios they bound — and
 add to the Edges table any failure or boundary case those
 constraints name. Where none apply, record that the
 decomposition names none for this feature. Return the feature.
+
+Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```
 
 ## prepare — Name the framing for the check

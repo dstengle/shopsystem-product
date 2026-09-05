@@ -102,6 +102,8 @@ answer would imply is offered to the authority as the next
 observation, never applied here. Update the record's
 State to name the next ready action. Nothing binding stays only in
 the transcript or the record.
+
+Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```
 
 ## close-record — Close the record

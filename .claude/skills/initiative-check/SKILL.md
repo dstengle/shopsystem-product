@@ -71,6 +71,8 @@ feature repository at repository — your role's admissible
 evidence, never a context's internals. Infeasible is a verdict:
 give it with reasons rather than withholding one. Return the
 initiative.
+
+Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```
 
 ## attach-usability — Attach usability evidence
@@ -91,6 +93,8 @@ core_tasks, your role's standard. Where
 the For whom section says "none", write that no usability
 attachment is due, with the section's reason. Return the
 initiative.
+
+Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```
 
 ## screen — Screen against the fitness set
@@ -111,6 +115,8 @@ whole passage, since the authority decides from the review. A
 defect no criterion names is a finding with criterion
 "uncovered". Verdict "clean" only if there are no findings;
 otherwise "findings" with the top three changes.
+
+Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```
 
 ## log-round — Record the round
@@ -161,6 +167,8 @@ made so far; never rewrite another role's verdict. Leave
 findings marked "uncovered" as they are — they are the decide
 step's. On the first pass ask is absent; if it carries an answer
 or resolved defaulted, apply it and finish the repairs.
+
+Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```
 
 ## decide — Take the bet
@@ -204,4 +212,6 @@ on bet, written only over "proposed"; leave "proposed" on hold;
 decision record: state in the entry that the record is the PO
 role's to make and the PO output check screens it, and that the
 entry links it once made. Return the initiative.
+
+Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```

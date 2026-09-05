@@ -138,6 +138,8 @@ within its own definitions or one instance of them, demonstrable
 in one session, spending no appetite worth a bet; declined — the
 lead shop will not act, on the product authority's ruling, and
 the record survives.
+
+Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```
 
 ## route-reading — Route on the reading
@@ -211,6 +213,8 @@ request's id alongside them and never in place of them, and that
 the route follows. When arose_in names a process run, say in the
 same turn that that run continues without acting on the ask.
 Return the request's path.
+
+Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```
 
 ## decide-route — Decide and say the route
@@ -267,6 +271,8 @@ routes, what it means, why; for a decline, that the ask was
 declined, that the authority ruled, the reason, and what the
 originator can do next — never a code, a work-item id, or a
 route name alone. Return route, reason, form, and topic.
+
+Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```
 
 ## route-decided — Route on whether a route was decided
@@ -356,6 +362,8 @@ the id of an item an earlier run closed; the item points at the
 request and carries nothing of what was asked. Return the
 request and, on the small-change route, the item's id; otherwise
 an empty work_item.
+
+Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```
 
 ## dispatch — Dispatch to the route's destination
@@ -398,6 +406,8 @@ cancelled — write on the request that the conversation framed
 nothing, set route awaiting with that as route-reason and status
 recorded, so the request is again visible as awaiting its route,
 with a history row. Return the request.
+
+Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```
 
 ## open-lane — Hand the request to the small-change lane
@@ -475,6 +485,8 @@ fragment, where the definition, the check, and the verified
 result stand — and left the request done. Write change into the
 request's routed-to, with a history row; write nothing the lane
 wrote twice. Return the request.
+
+Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```
 
 ## decline — Settle the declined record
@@ -493,4 +505,6 @@ originator can do next; routed-to the request's own section 4,
 which carries the ruling; a history row. Remove nothing — the
 request remains readable as the record of the decline. Return
 the request.
+
+Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```

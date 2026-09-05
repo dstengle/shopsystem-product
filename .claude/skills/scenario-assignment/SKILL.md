@@ -75,6 +75,8 @@ the default you will apply, and a checkpoint of the tags written
 so far; on the first pass ask is absent, and if it carries an
 answer or resolved defaulted, act on it. Return the tagged
 feature.
+
+Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```
 
 ## route — Route on ownership
@@ -108,6 +110,8 @@ owning shop the decomposition places the behavior in, which is
 the PO role's; or the scenario contradicts one already specified
 in the feature repository, which the PO role resolves against
 the framing — the reason in unowned names which case.
+
+Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```
 
 ## dispatch — Send each shop its scenarios
@@ -136,4 +140,6 @@ sent (the tool's
 standard output, one line per message — its output contract is
 pinned when the messaging package is imported), the message sent to each. Return
 the feature.
+
+Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```

@@ -99,6 +99,8 @@ comment on the work item — what was asked, what was done, with
 links. Work that outgrows the item's scope is not absorbed: file it
 as its own item and say so. Nothing binding stays only in the
 transcript.
+
+Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```
 
 ## close-out — Land the close summary

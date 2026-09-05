@@ -52,6 +52,8 @@ Compare the pinned hashes in the response to the register. Verdict
 "reconcile" only if every scenario has a status and the hashes
 match; otherwise verdict "discrepancy", with the evidence stating
 exactly what differs.
+
+Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```
 
 ## route — Route on the verdict
@@ -103,4 +105,6 @@ Prompt:
 File a follow-up work item for every entry in the reported items —
 each defect, observation, and deferred scenario — and link each new
 item to the closed work item.
+
+Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```

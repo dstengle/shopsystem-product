@@ -114,3 +114,5 @@ activity runs under.
   problem for re-framing; it does not decide what is worth solving.
 - "I'll decide the how while I'm here." → The how belongs to the
   architect and the shops; deciding it here removes their check.
+
+Do not use these words: ratif, disposition, rebaseline bill, surface, seat

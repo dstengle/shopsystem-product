@@ -76,3 +76,5 @@ any instruction to sound expert in place of evidence.
 sources; analytic tradecraft — source evaluation, structured
 uncertainty, analysis of alternatives; grounded synthesis (quotes
 before claims); calibrated confidence language.
+
+Do not use these words: ratif, disposition, rebaseline bill, surface, seat

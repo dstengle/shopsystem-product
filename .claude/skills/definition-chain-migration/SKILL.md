@@ -76,6 +76,8 @@ family nominations come only from `actions` — the governed channel
 — never from retired documents. Family codes in `actions` are
 nominations: the chain review decides final record granularity, so
 do not pre-commit a collapse.
+
+Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```
 
 ## derive-chain — Derive the chain from references
@@ -108,6 +110,8 @@ record granularity. Record
 every point where the chain failed to decide something — that
 friction is a finding about the chain, and it goes to the authority
 with the exemplar.
+
+Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```
 
 ## authority-review — Authority reviews chain and exemplar
@@ -151,6 +155,8 @@ Repair every finding in the review across the chain's links, then
 re-run the exemplar through any link that changed. A finding
 repaired in one link is checked against the others — the chain is
 one definition in six parts, not six documents.
+
+Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```
 
 ## advance-round — Advance the round counter
@@ -209,6 +215,8 @@ cannot reach the bar
 after two attempts is nominated for demotion: file the nomination
 with a note naming the failing check; the authority decides it at
 the close-out. Never lower a check to pass a keeper.
+
+Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```
 
 ## queue-demoted — Queue demotions for the cut-over close-out
