@@ -3,7 +3,7 @@ type: feature
 id: feat-typedef-rendering
 name: Typedef rendering
 status: draft
-version: 3
+version: 4
 initiative: ../initiatives/init-typedef-rendering.md
 owner: lead-po
 created: 2026-09-05
@@ -41,6 +41,42 @@ contract exists on this branch to rely on.
 - *a check screens against the produced text as it did before* — shopsystem-product (the lead shop)
 - *the product decision record of this initiative's bet is made and checked from one standard* — shopsystem-product (the lead shop)
 
+Vocabulary: *standard* is the framing's word for what the maker and
+the checker of an artifact of a type work from — the type's writing
+rules and the tests an instance is checked against; the design
+decision the initiative rests on
+([adr-2026-09-05-typedef-rendering](../decisions/adr-2026-09-05-typedef-rendering.md))
+names that document: the type's *typedef*, the glossary's single
+source a type is generated from. The *maker's text* is what a maker
+of an artifact of the type reads for its writing rules — the
+glossary's `guideline`. The *checker's text* is what a check of an
+artifact of the type screens it against — the glossary's `fitness
+set`: judged Given/When/Then scenarios, the *checker's tests*. A text
+is *produced from* a standard when it is, in the glossary's term, a
+rendering of it — never edited by hand, never the source — and a
+produced text names the standard it is produced from. A text is
+*current with* its standard when the text is what a fresh production
+from the standard as it now stands would yield — so a standard
+changed since the production and a text changed by hand each leave a
+text that is not current; this is what "current with" means in every
+Then. *The check over the texts* is the check that reads each text
+against its standard and reports one that is not current, distinct
+from the checks that screen an artifact against the checker's text
+(the PO output check among them); it belongs to the process that
+keeps the texts current. *The linter* is the check the tree runs on
+every definition. *Highlights*, *Scenarios*, and *Compile mapping*
+are the parts the two texts carry today: Highlights the maker's
+text's, the layer loaded into an author's context; Scenarios and
+Compile mapping the checker's text's — the tests, and the table
+taking each test into one judge assertion. The *artifact-typedef*,
+*quality-guideline*, and *fitness-set* typedefs are the definitions
+of those three document types — of a typedef itself, of a maker's
+text, of a checker's text. *The proof* is the initiative's Appetite:
+the product decision record of this initiative's bet, made by the PO
+role from the maker's text and screened by its check against the
+checker's text, the check's use counting whether or not it screens
+for form only.
+
 No usability or accessibility criteria are due on this feature: its interaction types are none, and no entry in the core-task list carries reading a standard or a text produced from it, or running the checker's tests on a draft — the nearest, *submit output for a check*, begins after the author's self-run in scenario 2, which is a reading inside the feature-authoring step, not an option an interaction type must offer (designer, 2026-09-05).
 
 Non-functional constraints — due. The initiative's Decomposition
@@ -68,13 +104,14 @@ scenarios it bounds. (architect, 2026-09-05)
   not current with its standard is made current, whatever the
   cause*. (architect, 2026-09-05)
 - C2 — every produced text names its source and carries its digest
-  (the ADR's second consequence; `knowable-shape`): a produced text's
+  (the ADR's second consequence): a produced text's
   frontmatter marks it as produced, names the typedef it is produced
-  from, and carries the source-digest of that typedef's text, and
-  "current with" in every Then means that digest matches a fresh
-  production from the typedef as it stands — a text with no digest,
-  or naming a source that is not its type's typedef, is not current,
-  whatever else it says. Rides on *the maker's text and the checker's
+  from, and carries the source-digest of that typedef's text, and a
+  text is current with its typedef only when both that digest and the
+  text itself match a fresh production from the typedef as it
+  stands — a text with no digest, naming a source that is not its
+  type's typedef, or differing from the fresh production while its
+  digest matches, is not current, whatever else it says. Rides on *the maker's text and the checker's
   text for a type come from its one standard*, *a change to the
   standard reaches the maker's text and the checker's text*, *a text
   not current with its standard is reported*, *a text not current
@@ -98,7 +135,7 @@ scenarios it bounds. (architect, 2026-09-05)
   one standard*. (architect, 2026-09-05)
 - C4 — the checker's tests stay judged Given/When/Then, the same
   whoever produces them (the authority's direction in the ADR's
-  Context; `actor-neutral-discipline`): the type's fitness scenarios
+  Context): the type's fitness scenarios
   stand in its typedef as Given/When/Then, are produced into the
   checker's text in that form, and are applied by a reader — an
   author on a draft, a judge at a check — never turned into a test
@@ -107,8 +144,8 @@ scenarios it bounds. (architect, 2026-09-05)
   draft before the check*, *a check screens against the produced text
   as it did before*. (architect, 2026-09-05)
 - C5 — a change to a standard is a change to its typedef under that
-  typedef's own rules (the ADR's first and fifth consequences;
-  `bidirectional-conformance`): a type's rules, its tests, and a
+  typedef's own rules (the ADR's first and fifth consequences): a
+  type's rules, its tests, and a
   statement that no text is due for it change only by an edit to the
   type's typedef with a Document History row, under the
   artifact-typedef typedef as amended to require those sections, and
@@ -138,31 +175,6 @@ scenarios it bounds. (architect, 2026-09-05)
   this initiative's bet is made and checked from one standard*.
   (architect, 2026-09-05)
 
-Vocabulary: *standard* is the framing's word for what the maker and
-the checker of an artifact of a type work from — the type's writing
-rules and the tests an instance is checked against; which document of
-the lead shop's tree is that standard is the design decision the
-initiative rests on
-([adr-2026-09-05-typedef-rendering](../decisions/adr-2026-09-05-typedef-rendering.md)),
-not this feature's to say. The *maker's text* is what a maker of an
-artifact of the type reads for its writing rules — the glossary's
-`guideline`. The *checker's text* is what a check of an artifact of
-the type screens it against — the glossary's `fitness set`: judged
-Given/When/Then scenarios, the *checker's tests*. A text is *produced
-from* a standard when it is, in the glossary's term, a rendering of
-it — never edited by hand, never the source — and *current with* the
-standard when the standard has not changed since the text was
-produced from it; a text names the standard it is produced from, so a
-reader can tell both from the text. *The check over the texts* is the
-check that reads each text against its standard and reports one that
-is not current, distinct from the checks that screen an artifact
-against the checker's text (the PO output check among them); it
-belongs to the process that keeps the texts current. *The proof* is
-the initiative's Appetite: the product decision record of this
-initiative's bet, made by the PO role from the maker's text and
-screened by its check against the checker's text, the check's use
-counting whether or not it screens for form only.
-
 ## Interaction types
 
 None — the standard is read inside process steps; no core task
@@ -187,11 +199,11 @@ Feature: Typedef rendering
     When the maker's text and the checker's text for that type are read
     Then each names the one standard it is produced from and is current with it, and no rule in the maker's text and no test in the checker's text is absent from that standard
 
-  @feature:feat-typedef-rendering @hash:da49c43d4fb3
+  @feature:feat-typedef-rendering @hash:a1764d43919d
   Scenario: an author runs the checker's tests on their own draft before the check
     Given an author holding a draft of an artifact of a type whose checker's text is produced from its standard
     When the author applies the checker's text to the draft
-    Then the author has a pass or a fail on the draft for each test, each test read as Given/When/Then, before any check runs
+    Then the author has, recorded on the draft, a pass or a fail for each test, each test read as Given/When/Then, before any check runs
 
   @feature:feat-typedef-rendering @hash:dbd6fbd3b4c6
   Scenario: a change to the standard reaches the maker's text and the checker's text
@@ -245,8 +257,8 @@ Feature: Typedef rendering
 | A change to the standard that does not reach both texts | the framing ("a change to it does not reliably reach both"); the framing's outcome ("a change to the standard reaches both") | Scenario: a change to the standard reaches the maker's text and the checker's text — the framed remedy; Scenario: a text not current with its standard is reported — a standard changed without its texts following is a text not current, whatever the cause |
 | A hand edit to a produced text | the framing's outcome ("a change to the standard reaches both" — its boundary: a text changed other than through its standard); the design decision the initiative rests on ("a hand edit of a guideline or a fitness set — it is drift") | Scenario: a text not current with its standard is reported — the Given's "whatever the cause" holds a hand edit; Scenario: a text not current with its standard is made current, whatever the cause — the text that stands afterwards is produced from the standard, not from the edit |
 | The checker's tests changed in form so the author cannot run them | the framing's outcome ("the checker's tests, the fitness set's scenarios, can be run by the author first") | Scenario: an author runs the checker's tests on their own draft before the check — the Then's "each test read as Given/When/Then" |
-| An author skipping the self-run | the framing's outcome ("can be run by the author first" — the run is the author's option, not a gate) | Scenario: a check screens against the produced text as it did before — the check screens against the checker's text whether or not the author ran it; nothing in the feature makes the self-run a condition of the check |
-| A type with no maker's text or no checker's text today | the For whom section ("every artifact type"; "Now: 0 of 22") | Scenario: a type with no maker's text or no checker's text has both once its standard states them; Scenario: a type whose standard states that no text is due has none and is not reported |
+| An author skipping the self-run | the framing's outcome ("can be run by the author first" — the run is the author's option, not a gate) | Out of scope: the self-run is the author's option, not a gate — no scenario makes it a condition of the check, and skipping it is no failure of this feature |
+| A type with no maker's text or no checker's text today | the For whom section ("every artifact type"; "Now: 0 of 22"); the initiative's Appetite ("The other 21 types follow as one batch") — the 21 include the types with no guideline or fitness set today, so a standard must be able to state that none is due | Scenario: a type with no maker's text or no checker's text has both once its standard states them; Scenario: a type whose standard states that no text is due has none and is not reported — the second holds for a type of the batch whose standard states no text is due, so the batch can convert every type without inventing a text |
 | The batch of the other 21 types | the initiative's Appetite ("The other 21 types follow as one batch, a second bet sized after the proof") | Out of scope of this feature: the two batch-case scenarios state what holds for any one such type once its standard states its rules and tests, or states that none is due; converting the 21 is the second bet's work, not this feature's, and its measure is the initiative's target of 1 |
 | The measure's instance — the product decision record, 0 to 1 | the For whom section ("Target: 1, the product decision record"); the Appetite (the proof) | Scenario: the product decision record of this initiative's bet is made and checked from one standard |
 | The bet's record screened for form only | the initiative's Appetite ("a form-only screen counts as the check's use"); the product decision record type's rule that a record whose decider is the authority is checked for form only | Scenario: the product decision record of this initiative's bet is made and checked from one standard — the Then holds for a form-only screen: the check screened against the checker's text, whatever it screened for |
@@ -256,14 +268,17 @@ Feature: Typedef rendering
 | A produced text with no digest, or naming a source that is not its type's typedef | the architect's constraints (C2) | Scenario: a text not current with its standard is reported — the Given's "whatever the cause" holds a text whose digest cannot be matched to its typedef; Scenario: the maker's text and the checker's text for a type come from its one standard — the Then's "names the one standard it is produced from" |
 | A production that drops a heading or a type key the checks or the linter read | the architect's constraints (C3); the design decision the initiative rests on ("a renderer that drops one breaks a check without changing it") | Scenario: a check screens against the produced text as it did before — the check finds the checker's text where and as it read it before; a check that cannot is a defect of the production, not of the check |
 | A type's rules or tests changed other than by an edit to its typedef with a history row, or a produced text relying on a typedef amendment not yet made | the architect's constraints (C5) | Scenario: a change to the standard reaches the maker's text and the checker's text — the change the texts carry is the typedef's; Scenario: a check screens against the produced text as it did before — a text whose frontmatter its type's typedef does not yet admit is not found by the linter as it read before; whether a typedef's own history is in order is judged by the artifact-typedef typedef's check and the linter, not a behavior of this feature |
-| A production whose text differs by who ran it | the architect's constraints (C4) | Scenario: a text not current with its standard is reported — a fresh production that differs from the committed text is the mismatch the check reports, whoever produced either |
-| A text made inside a step and not committed, or produced from a typedef not yet approved | the architect's constraints (C6) | Scenario: a check screens against the produced text as it did before — the check reads a committed file where it read before; Scenario: the maker's text and the checker's text for a type come from its one standard — the Given's "standard stands approved"; a production run over a draft typedef is a case for the rendering process's own check, not a behavior of this feature |
+| A production whose text differs by who ran it | the architect's constraints (C4) | Out of scope of the scenarios: the case of the check belonging to the process that keeps the texts current — that a fresh production matches the committed text whoever ran either is what that check judges; scenario 4 specifies that a text not current is reported, not by whom it was produced |
+| A produced text carrying a version or a Document History of its own | the architect's constraints (C5) | Scenario: the maker's text and the checker's text for a type come from its one standard — the Then's "names the one standard it is produced from and is current with it"; C5 binds the form: a text's history is its standard's, and a text carrying its own is not what a fresh production yields |
+| A text made inside a step and not committed, or produced from a typedef not yet approved | the architect's constraints (C6) | Scenario: a check screens against the produced text as it did before — the check reads a committed file where it read before; Scenario: the maker's text and the checker's text for a type come from its one standard — the Given's "standard stands approved"; a production run over a draft typedef is a case for the check belonging to the process that keeps the texts current, not a behavior of this feature |
 | A Bounded Context shop's own guidelines and fitness sets | the architect's constraints (C6); the initiative's Decomposition ("no Bounded Context is touched") | Out of scope: no Bounded Context exists on this branch, and the design decision the initiative rests on binds none — extending the rule to a Bounded Context shop is a guardrail decision, not this feature's |
 
 ## Document History
 
 | Version | Date | Kind | Entry |
 |---|---|---|---|
-| 1 | 2026-09-05 | update | Authored by the PO role alone in the feature-authoring draft step, from init-typedef-rendering's Framing and For whom sections, with its Appetite as the source of the proof scenario; nine scenarios, all owned by the lead shop per the initiative's Decomposition; interaction types none per its For whom. Scenario hashes stand `@hash:pending`: the authoring session had no shell, so the values — sha256 of the scenario's text (its Scenario line and steps), first twelve hex digits, as in feat-request-routing — are filled by the lead-pm after the draft and before the check, disclosed here. |
+| 1 | 2026-09-05 | update | Authored by the PO role alone in the feature-authoring draft step, from init-typedef-rendering's Framing and For whom sections, with its Appetite as the source of the proof scenario; nine scenarios, all owned by the lead shop per the initiative's Decomposition; interaction types none per its For whom. Scenario hashes: the authoring session had no shell, so the draft carried `@hash:pending` and the lead-pm filled the values by the repository convention — sha256 of the scenario's text (its Scenario line and steps), first twelve hex digits, as in feat-request-routing — on 2026-09-05, before the check. |
 | 2 | 2026-09-05 | update | Designer's criteria: none due, at the add-usability step. |
 | 3 | 2026-09-05 | update | Architect's constraints C1–C6 at the add-constraints step. |
+| 4 | 2026-09-05 | review | PO output check round 1 (judge: claude-fable-5-1 / screen prompt v6): one confident — "current with" defined twice, the Vocabulary's (the standard unchanged since production) and C2's (the digest matches), neither holding a hand edit — and eight wobbly, ruled by the PM role: the self-run-skipped row covered by scenario 8 rather than excluded; C4's same-text-whoever case covered by scenario 4; C5's no-version-or-history clause with no Edges row; scenario 2's Then not observable; scenario 7 (no text due) resting on no framing words; the Vocabulary below the constraints it glosses, with "the linter", the three section names, and the three typedef names unglossed; the principle ids in C2, C4, and C5; the Vocabulary withholding the document C1 names; the v1 row's hash sentence stale. |
+| 4 | 2026-09-05 | update | Round 1 repairs: "current with" defined once in Vocabulary — the text is what a fresh production from the standard as it now stands would yield, holding a changed standard and a hand edit alike — and every Then reads it so; the self-run-skipped row made out of scope with its reason; C4's row excluded as the rendering process's own check's case; an Edges row added for a produced text carrying a version or history, covered by scenario 1's Then with C5 binding the form; scenario 2's Then made observable ("recorded on the draft"; new hash); scenario 7's row traced through the Appetite's batch — the 21 include the types with no guideline or fitness set today; the Vocabulary moved above the constraints and glossing the linter, Highlights, Scenarios, Compile mapping, and the artifact-typedef, quality-guideline, and fitness-set typedefs; the Vocabulary names the typedef as the standard's document per the design decision, "not this feature's to say" dropped; the v1 row's hash sentence amended. Architect's passages edited on the PM role's ruling, substance kept: C2 now requires the text itself, not only the digest, to match a fresh production; the principle ids dropped from C2, C4, and C5. |
