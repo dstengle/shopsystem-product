@@ -2,8 +2,8 @@
 type: adr
 id: adr-2026-09-05-role-offer
 title: A role's offer on attaching to an initiative is a data type the attach step outputs, rendered into the initiative
-status: draft
-version: 1
+status: checked
+version: 3
 date: 2026-09-05
 decided-by: product-authority
 right: escalation
@@ -22,7 +22,8 @@ owning the product-level definitions under `basis/` and no Bounded
 Context — a region of the product with its own model, built by a shop
 of its own, a BC shop. An *initiative* is the product-level problem
 artifact the PM role frames; before the authority *bets* on it — decides
-to spend its appetite — two roles *attach* to it in the
+to spend its *appetite*, the bound in time or capacity the initiative
+states — two roles *attach* to it in the
 [initiative-check](../basis/processes/initiative-check.md) process: the
 solutions architect role writes its feasibility verdict and the
 decomposition, the product designer role its usability evidence. A
@@ -30,8 +31,9 @@ role's *offer* is what it writes when it attaches.
 
 Pre-state, 2026-09-05. The
 [initiative typedef](../basis/artifacts/initiative.md) (v10) requires
-of §4 "the solutions architect role's feasibility verdict with its
-reasons" and bounds the whole document to 500 words; its
+of the initiative's §4 — its Feasibility and usability section — "the
+solutions architect role's feasibility verdict with its reasons" and
+bounds the whole document to 500 words; its
 [fitness set](../basis/fitness/initiative.fitness.md) (v4, scenario 5)
 judges "verdict present with reasons" and nothing more. The attach
 steps of initiative-check (v7) output `initiative: string` — the path
@@ -54,11 +56,13 @@ Forces. The evidence the discovery conversation reviewed
 ([sess-2026-09-05-d](../sessions/sess-2026-09-05-d.md)): across the
 last three runs the lead-pm shaped the architect's offer by hand — the
 verdict's form in an ask, the design decision the bet rests on in a
-brief, a risk to the measure that landed as prose and drew a finding
-because the verdict has no place for one. The initiative
+brief, a risk to the *measure* — the one quantity an initiative names,
+with its current condition and its target, by which the outcome is
+judged — that landed as prose and drew a finding because the verdict
+has no place for one. The initiative
 [init-role-decisions](../initiatives/init-role-decisions.md) carries
 the framing; its Document History (v2) holds the architect's first
-unprompted full offer, kept out of §4 by the 500-word rule. Work item
+unprompted full offer, kept out of the initiative's §4 by the 500-word rule. Work item
 lead-8hcu8 records the gap the offer closes by definition: the bet
 step does not ask whether the bet rests on a decision with no record.
 Working principles bearing: `define-good-up-front` — the attach
@@ -88,7 +92,7 @@ Options that were real:
 
 - **A typedef section alone.** The role-definition typedef gains a
   section naming the domain decisions each role owns; the offer stays
-  prose in §4, shaped by each role's own text. Declined: the section
+  prose in the initiative's §4, shaped by each role's own text. Declined: the section
   says what a role owns, not what its offer carries — the screen would
   still judge "verdict with reasons" and the lead-pm would still
   supply the rest by instruction, the evidence under review; and a
@@ -107,8 +111,11 @@ Options that were real:
   attachment before the check, and one type carrying both misnames
   the second (`use-defined-terms`).
 
-Not decided here: three candidates for records of their own are listed
-in this record's Document History (v1).
+Not decided here: three candidates for records of their own — the
+500-word cap's split (D2), whether the designer role's offer fits the
+one shape (U2), and the pre-bet route to adr-authoring (D3) — are
+listed with their owners and defaults in this record's Document
+History (v1).
 
 ## 2. Decision
 
@@ -116,9 +123,13 @@ A role's offer on attaching to an initiative is a data type — one type,
 whichever role attaches — that the attach step outputs, carrying the
 role's verdict, the decisions the bet depends on each with its record
 or "none", the risks to the measure, the unknowns each with a default,
-and the evidence read; the initiative's §4 carries the offer rendered
-from that value, and the role-definition typedef's section names the
-decisions a role owns without defining the offer's shape.
+and the evidence read; the initiative's §4 carries the offer's verdict
+rendered from that value, and the full offer's rendering there once
+the initiative typedef's cap is split (the first candidate); until
+then the full offer stands in the initiative's Document History.
+
+Bound, not a second decision: the role-definition typedef's section
+names the decisions a role owns; it does not define the offer's shape.
 
 ## Principles screen
 
@@ -139,7 +150,9 @@ attacher works from the initiative and its level's designated
 artifacts and names the evidence it read inside the offer; the
 authority bets from the initiative alone. `bidirectional-conformance`
 — this record precedes the type and the amendments; forward, the
-initiative's measure (0 of 4, then 4 of 4); reverse, the type's
+initiative's measure — roles whose definition names the decisions
+they own and that offer complete information on them unasked, 0 of 4
+now, 4 of 4 the target; reverse, the type's
 Purpose names its producing and consuming steps, so a step writing an
 offer no type calls for is a defect. `intent-provenance` — the
 request, its route, the initiative, and this record are each
@@ -152,7 +165,8 @@ the cited exception.
   joins `basis/types` beside check-decision, ask, and screen-review,
   its five parts as fields — the type's name and field names are its
   author's, under the data-type typedef; initiative-check's attach
-  steps output it, and §4 carries it rendered. For whom: the solutions
+  steps output it, and the initiative's §4 carries it rendered as §2
+  states. For whom: the solutions
   architect and product designer roles, which output it; the cold
   reviewer, whose scenario 5 reads the rendering; the lead-pm, which
   no longer supplies the shape; the authority at the bet, which reads
@@ -184,12 +198,16 @@ the cited exception.
   Cost: a shape gap goes unfilled silently until a screen finds it;
   the type is amended, never the instruction.
 - The rendering must fit or the cap must split. What changes: the
-  full offer is rendered into §4 under the 500-word rule; whether the
-  cap splits between §1–3 and the attachments, or the full offer's
+  verdict is rendered into the initiative's §4 under the 500-word
+  rule and the full offer into its Document History; whether the cap
+  splits between §1–3 and the attachments, or the full offer's
   durable rendering moves outside the cap, is the first candidate,
-  the initiative typedef owner's. Cost: until it is ruled, a full
-  offer overflows §4 as init-role-decisions shows — §1–3 at 363 words,
-  the offer in a history row.
+  the initiative typedef owner's. For whom: the attaching roles,
+  whose full offer lands in a history row until the cap is ruled; the
+  authority, reading the initiative's §4 at the bet. Cost: until it
+  is ruled, a full offer overflows the initiative's §4 as
+  init-role-decisions shows — §1–3 at 363 words, the offer in a
+  history row.
 
 Bound on Bounded Context shops: none — the offer is a lead-shop role's
 output at the coordinating level; a BC shop's own attachments stand
@@ -209,8 +227,9 @@ longer exists. Review triggers: a role whose domain the five parts
 cannot carry — the designer's offer is the first test; a second
 consumer, feature-level feasibility at feature-authoring, needing a
 different shape; the initiative typedef's ruling on the cap moving the
-offer's rendering out of §4; the step-communication request — how an
-agent's instruction is assembled, a no-go of the initiative — landing
+offer's rendering out of the initiative's §4; the step-communication
+request — how an agent's instruction is assembled, a *no-go* of the
+initiative, one of the things it states it will not do — landing
 a mechanism that carries the shape itself, so the type would be a
 second home.
 
@@ -219,3 +238,6 @@ second home.
 | Version | Date | Kind | Entry |
 |---|---|---|---|
 | 1 | 2026-09-05 | update | Authored through the adr-authoring process at its author step, on the lead-pm's routing before the bet on init-role-decisions, for the authority's direction of 2026-09-05 in the discovery conversation on req-2026-09-05-feasibility-defined (lead-ampnd; sess-2026-09-05-d) — the architect's D1 from the initiative's Document History (v2). Right: `escalation` — the decider is the authority, and none of the five rights the solutions architect role holds covers the shape of a lead-shop role's attachment; the adr typedef sends a decision no listed right covers to `right: escalation` in the type whose deciding side raised it, and the architect side raised this one in its feasibility attachment. Recorded as an adr rather than a product decision record because the decision is about the shape of the shop's process data and records, not product value or order. Three candidates not decided here: (1) D2 — the 500-word rule's split between §1–3 and the attachments, or the full offer's durable home outside the cap — the initiative typedef's owner's, put to the authority at the bet; (2) U2 — whether the designer role's offer fits the one shape, its domain, default one role-neutral type with a part the role's domain does not cover marked "none"; (3) D3 — the pre-bet route from the initiative check to adr-authoring for a decision entry marked "none", a process amendment under its owner, reversible. Maker's self-check against the adr fitness set: scenario 1 — one-line title, one decision sentence, actionable; scenario 2 — pre-state with five cited sources, three options each with its reason; scenario 3 — decider and right in frontmatter, the escalation named in §1; scenario 4 — five consequences each with what changes, for whom, cost or foreclosure, the BC bound stated as none; scenario 5 — reversibility with its threshold and four triggers; scenario 6 — the screen stated per principle, the intent-provenance exception cited to the record that carries it. Status draft pending the screen. |
+| 1 | 2026-09-05 | review | Screen round 1, the one screen (judge: claude-fable-5-1 / screen prompt v6): three confident — the fifth consequence without its "For whom"; the three candidates unnamed where §1 first points at them; "appetite", "the measure", and "no-go" unglossed at first use, and "§4" colliding with this record's own §4 — and three wobbly, ruled by the lead-pm — the decision sentence carried a second clause on the role-definition typedef, to become a bound after it; the rendering clause not actionable while the cap stands; "the initiative's measure" unglossed in the bidirectional-conformance line. |
+| 2 | 2026-09-05 | update | The one revision: the fifth consequence's "For whom" added (the attaching roles, the authority at the bet); the typedef clause moved out of the decision sentence into a bound stated after it, the title unchanged; the rendering clause made actionable now — the verdict rendered into the initiative's §4, the full offer there once the cap is split and in the Document History until then; the three candidates named in one line in §1; the measure glossed in the bidirectional-conformance line; "appetite", "measure", and "no-go" glossed at first use and "the initiative's §4" written wherever the section is meant. |
+| 3 | 2026-09-05 | state | `draft` → `checked`: the PM role's pass after the one screen and the one revise the process allows — the three confident findings (a consequence's bearer, the candidates named in reading order, glosses) repaired; the wobbly ones ruled: one decision with the typedef section as a bound; the rendering clause actionable now with the cap's split as the first candidate. The decider is the authority; the record checked for form; `right: escalation` accepted. Authored and revised from the step's own prompt, nothing added by the lead-pm. |
