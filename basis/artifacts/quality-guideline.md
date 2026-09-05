@@ -5,9 +5,9 @@ defines: quality-guideline
 owner: product-authority
 status: approved
 approved: 2026-08-26
-version: 4
+version: 5
 created: 2026-08-19
-updated: 2026-08-26
+updated: 2026-09-05
 ancestry: [definition, quality-guideline]
 ---
 
@@ -22,7 +22,13 @@ ancestry: [definition, quality-guideline]
   them (the common experience guideline is the one the per-type
   experience guidelines layer on).
 - **Produced by:** the owner (authority-authored styles are stored verbatim as guideline documents) or
-  a definition author deriving type-specific rules. **Consumed by:**
+  a definition author deriving type-specific rules; or produced from
+  the target type's typedef by the compiler
+  (`basis/tools/compile_typedef.py`, from the typedef's Writing rules
+  section), marked `generated: true`, `generated-by`, `source`,
+  `source-digest` in its frontmatter, never edited by hand — a change
+  to such a guideline is a change to its typedef, produced again.
+  **Consumed by:**
   authors at write time (the Highlights block is the layer compiled into
   generating context); mechanical style checks and judges, which cite
   rules by number.
@@ -39,6 +45,14 @@ matching the glossary's interaction types, `cli` and `tui` split — or
 guideline the "artifact type's typedef" in the precedence order is
 this typedef, and the common experience guideline ranks above the
 per-type ones.
+
+A produced guideline also carries `generated: true`, `generated-by`
+(the compiler's path), `source` (the typedef's path), and
+`source-digest` (`sha256:` and the first twelve hex digits of the
+typedef's text); no other guideline carries them. Its `version`,
+`approved`, `created`, and `updated` are the typedef's, and it has no
+Document History of its own — the typedef's is the history of its
+rules.
 
 ## Required sections
 
@@ -93,3 +107,4 @@ Plain Language guidelines.
 | 3 | 2026-08-26 | review | Screened with the experience guidelines: the closed set admitted one value where the cli guideline covers two; the precedence order's second rank had no referent for an interaction target. |
 | 4 | 2026-08-26 | update | interaction-type admits one or more values; the precedence referent for experience guidelines stated. |
 | 4 | 2026-08-26 | state | The experience-guideline amendment (v3–v4) approved by the owner. |
+| 5 | 2026-09-05 | update | Under init-typedef-rendering / feat-typedef-rendering (the architect's constraint C5; adr-2026-09-05-typedef-rendering): Produced by admits a guideline produced from the target type's typedef by the compiler, marked `generated: true`, `generated-by`, `source`, `source-digest` and never edited by hand; the closed frontmatter set admits those four keys for a produced guideline, whose version and dates are the typedef's and which carries no Document History; the required sections unchanged, so every reader finds Highlights and Rules as before. Made by the lead-solutions-architect role. |

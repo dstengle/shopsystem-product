@@ -5,10 +5,16 @@ target-type: product-decision-record
 owner: product-authority
 status: approved
 approved: 2026-08-31
-version: 2
-created: 2026-08-27
-updated: 2026-08-27
+version: 7
+created: 2026-08-26
+updated: 2026-09-05
+generated: true
+generated-by: basis/tools/compile_typedef.py
+source: basis/artifacts/product-decision-record.md
+source-digest: sha256:d2e74320dabb
 ---
+
+<!-- Generated from `basis/artifacts/product-decision-record.md` (its Writing rules section) by `basis/tools/compile_typedef.py`; do not edit by hand — edit the typedef and re-render. -->
 
 # Guideline: product decision record
 
@@ -88,13 +94,3 @@ enough and the alerting alternative is reopened."
 difficulty and, for a hard-to-reverse decision, the trigger that
 reopens it. *Decision:* yes/no per record.
 *Derived check:* judged — product-decision-record fitness scenario 5.
-
-## Document History
-
-| Version | Date | Kind | Entry |
-|---|---|---|---|
-| 1 | 2026-08-27 | update | Authored by owner direction to complete the type's definition chain; each rule maps to one fitness scenario; the form follows Nygard's ADR (decision, consequences) and MADR (alternatives) as the typedef's Sources state. |
-| 1 | 2026-08-27 | review | Screened: findings — rule 2 required a reason on every alternative where the fitness set asks for one; an idiom; an unintroduced right's name. |
-| 2 | 2026-08-27 | update | criterion aligned to the fitness set; idiom replaced; the right named as the role defines it. |
-| 2 | 2026-08-27 | review | Re-screened: clean. |
-| 2 | 2026-08-31 | state | draft → approved with batch C as one block (brief-032 ask 2, default accepted). |

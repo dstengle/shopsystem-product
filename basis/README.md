@@ -4,9 +4,9 @@ id: basis-index
 owner: product-authority
 status: approved
 approved: 2026-08-23
-version: 9
+version: 10
 created: 2026-08-10
-updated: 2026-09-04
+updated: 2026-09-05
 ---
 
 # Basis index
@@ -32,13 +32,22 @@ here is advisory.
 - `guidelines/` — prose quality rules per artifact type, layered on
   [`guidelines/base-writing-style.md`](guidelines/base-writing-style.md).
 - `fitness/` — judged Given/When/Then scenario sets per artifact type.
+- For a type whose typedef carries Writing rules and Fitness scenarios
+  sections (the [artifact-typedef typedef](artifacts/artifact-typedef.md)
+  §Required sections 6–7), its guideline and fitness set at those two
+  paths are renderings of the typedef — marked `generated: true`,
+  naming their `source` and its `source-digest` — produced by
+  [`tools/compile_typedef.py`](tools/compile_typedef.py) and kept
+  current by the typedef-rendering process
+  (`processes/typedef-rendering.md`, pending); never edited by hand.
 - `roles/` — role definitions (roles, accountabilities, competencies).
 - generated skill renderings live at the agent's load point —
   `.claude/skills/` at the repository root — maintained by the
   [skill-rendering process](processes/skill-rendering.md); never edited
   by hand.
-- `tools/` — the compilers and the lint
-  ([`tools/lint_basis.py`](tools/lint_basis.py)).
+- `tools/` — the compilers (`compile_principles.py`,
+  `compile_process.py`, `compile_role.py`, `compile_typedef.py`) and
+  the lint ([`tools/lint_basis.py`](tools/lint_basis.py)).
 
 ## How definitions change
 
@@ -51,9 +60,14 @@ decision ledger exists, and no live document cites one.
 ## Checks
 
 The whole tree lints with `tools/lint_basis.py`: frontmatter identity,
-version and Document History presence, resolvable links, required
-headings per type, banned vocabulary, and no numbered-decision
-references. The same lint walks `requests/` at the repository root —
+version and Document History presence (a file marked `generated: true`
+— a produced guideline or fitness set among them — is exempt from
+both, its typedef carrying its version and history), resolvable links,
+required headings per type, banned vocabulary, and no
+numbered-decision references. A produced guideline or fitness set is
+checked against its typedef with `tools/compile_typedef.py <typedef>
+--check`: a `missing` or `diverged` row names a text that is not
+current; no row means both are. The same lint walks `requests/` at the repository root —
 where a received ask's [request](artifacts/request.md) lives; the
 directory may not exist yet — and checks each request's frontmatter
 for what a received ask carries (`type: request`, identity, the
@@ -81,3 +95,4 @@ on any violation.
 | 7 | 2026-09-04 | update | Under init-request-routing / feat-request-routing on the authority's standing direction of 2026-09-04, per adr-2026-09-04-request-front-end: tools/lint_basis.py extended (its check 9) to walk requests/ at the repository root — absent until the first ask is recorded — and check each received request's frontmatter for the keys, status and route vocabularies the request typedef requires, and that routed-to resolves; §Checks names it. Checks 1–8 walk basis/ as before and the --derive-chain mode reads .claude/skills/ as before; no brief check added — the decision-brief change is the small-change lane's own example run. Made by the architect role. |
 | 8 | 2026-09-04 | update | Under req-2026-09-04-brief-relates-to at the small-change process's make step: tools/lint_basis.py extended (its check 10) to walk briefs/ at the repository root and check each decision brief's frontmatter against the decision-brief typedef's closed field set — now admitting `relates-to` — and that every relates-to path resolves from the repository root, with a `--brief <path>` mode that runs the same rules on one brief; §Checks names both. Checks 1–9 and --derive-chain as before. Made by the lead-solutions-architect role. |
 | 9 | 2026-09-04 | update | Lint check 9 resolves `routed-to` before its fragment — the small-change lane's result is the request's Result section by fragment, which the first run of request-intake wrote; found by that run under init-request-routing. |
+| 10 | 2026-09-05 | update | Under init-typedef-rendering / feat-typedef-rendering (adr-2026-09-05-typedef-rendering): tools/compile_typedef.py added — it produces a type's guideline and fitness set from the Writing rules and Fitness scenarios sections of its typedef, at the paths the checks read, and its --check reports a text not current with the typedef; the guidelines/ and fitness/ entries say which texts are renderings and who keeps them current; §Checks names the compiler's check and records that lint check 7 (version and Document History) exempts a file marked `generated: true` — an exemption that stood since the versioning standard and now covers the produced guideline and fitness set, so no lint code changed. Checks 1–10, --brief, and --derive-chain as before. Made by the lead-solutions-architect role. |

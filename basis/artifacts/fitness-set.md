@@ -5,9 +5,9 @@ defines: fitness-set
 owner: product-authority
 status: approved
 approved: 2026-08-22
-version: 2
+version: 3
 created: 2026-08-19
-updated: 2026-08-23
+updated: 2026-09-05
 ancestry: [definition, fitness-set]
 ---
 
@@ -19,8 +19,13 @@ ancestry: [definition, fitness-set]
   a judge scores against an artifact type's instances. Judged, never
   executed: there are no step definitions, and the schema says so where
   tools can read it.
-- **Produced by:** the author of the target type's quality definition.
-  **Consumed by:** the judging role named in the frontmatter, at the
+- **Produced by:** the author of the target type's quality definition;
+  or produced from the target type's typedef by the compiler
+  (`basis/tools/compile_typedef.py`, from the typedef's Fitness
+  scenarios section), marked `generated: true`, `generated-by`,
+  `source`, `source-digest` in its frontmatter, never edited by hand —
+  a change to such a fitness set is a change to its typedef, produced
+  again. **Consumed by:** the judging role named in the frontmatter, at the
   review step of the producing process and at any later re-verification.
 
 ## Required frontmatter
@@ -28,6 +33,15 @@ ancestry: [definition, fitness-set]
 `type: fitness-set`, `id`, `target-type` (the artifact type judged),
 `judged: true`, `executable: false`, `judged-by` (the role), `owner`,
 `status`, `created`, `updated`.
+
+A produced fitness set also carries `generated: true`, `generated-by`
+(the compiler's path), `source` (the typedef's path), and
+`source-digest` (`sha256:` and the first twelve hex digits of the
+typedef's text); no other fitness set carries them. Its `judged-by` is
+the role the typedef's Fitness scenarios section names; its `version`,
+`approved`, `created`, and `updated` are the typedef's, and it has no
+Document History of its own — the typedef's is the history of its
+scenarios.
 
 ## Required sections
 
@@ -71,3 +85,4 @@ llm-rubric assertions); EvalGen-style human calibration of judges.
 | 1 | 2026-08-19 | update | Authored (seed layer); earlier history, if any, in the repository history. |
 | 1 | 2026-08-22 | state | draft → approved. |
 | 2 | 2026-08-23 | update | Owner direction: decision-ledger references removed — changes stand on their own; history entries and text no longer cite numbered decisions. |
+| 3 | 2026-09-05 | update | Under init-typedef-rendering / feat-typedef-rendering (the architect's constraint C5; adr-2026-09-05-typedef-rendering): Produced by admits a fitness set produced from the target type's typedef by the compiler, marked `generated: true`, `generated-by`, `source`, `source-digest` and never edited by hand; the closed frontmatter set admits those four keys for a produced fitness set, whose judged-by comes from the typedef's Fitness scenarios section, whose version and dates are the typedef's, and which carries no Document History; the required sections unchanged, so every reader finds Scenarios and Compile mapping as before. Made by the lead-solutions-architect role. |
