@@ -3,7 +3,7 @@ type: initiative
 id: init-typedef-rendering
 name: Typedef rendering
 status: active
-version: 11
+version: 12
 owner: lead-pm
 created: 2026-09-05
 updated: 2026-09-05
@@ -95,3 +95,4 @@ branch to rely on. Cross-context flow: none.
 | 9 | 2026-09-05 | state | `proposed` → `planned`: the authority's bet — "Bet" — taken in the initiative-check decide step with the two held findings before it; the lead-pm recording it. The product decision record for the go is the PO role's to make and the PO output check screens it; by the Appetite, that record is the proof itself — made and screened from the one standard once the typedef rendering exists — so it is made after the build and linked here then. |
 | 10 | 2026-09-05 | state | `planned` → `active`: feat-typedef-rendering's pass through the PO output check (round 3, the cap; the PM role's pass with post-cap repairs disclosed; seven scenarios, the two batch cases moved to the second bet's feature) — written by that check's record step through its declared framing input. |
 | 11 | 2026-09-05 | update | The product decision record for the bet made and checked from the one standard: [pdr-2026-09-05-bet-typedef-rendering](../decisions/pdr-2026-09-05-bet-typedef-rendering.md) (checked, v4) — the PO role made it from the guideline produced from the product-decision-record typedef (source-digest d2e74320dabb), ran the produced fitness set's scenarios on the draft first (five of five), and the check screened it from the same produced fitness set; three rounds, no confident finding. The measure's first type has its maker and checker working from one standard, each having used it once. |
+| 12 | 2026-09-05 | update | Measure met in the running system: 1 of 22 — the product decision record's maker and checker work from one standard (its typedef, v7, carrying its writing rules and fitness scenarios), its guideline and fitness set produced from it by the compiler (source-digest d2e74320dabb), each used once (pdr-2026-09-05-bet-typedef-rendering made from the one and screened from the other); the typedef-rendering process (v4, approved, rendered; the harness lists its skill) ran once: one qualifying typedef, check clean. The batch of the other 21 is the second bet. The `completed` state is a pending amendment. |
