@@ -4,7 +4,7 @@ id: glossary
 owner: product-authority
 status: approved
 approved: 2026-08-19
-version: 22
+version: 23
 created: 2026-08-19
 updated: 2026-09-06
 ---
@@ -268,6 +268,15 @@ terms uses one of these when one fits.
   not; not sent in a message. Artifact type `implementation-guidance`;
   instances live in `guidance/` at the repository root.
 
+- **framework tool** — a tool the shop's definitions name for an
+  activity: the compilers, the lint, the work register's command, and
+  their like.
+- **skill** — the rendering at the agent's load point that states an
+  activity or a tool's use so an agent performs it from the definition
+  alone.
+- **gap** — a missing definition, tool, or skill the shop records as a
+  request rather than works around.
+
 ## Document History
 
 | Version | Date | Kind | Entry |
@@ -298,3 +307,4 @@ terms uses one of these when one fits.
 | 20 | 2026-09-02 | update | architecture decision record added with the adr chain — the term the architect role and the product-decision-record entry used without a definition. |
 | 21 | 2026-09-04 | update | The terms feat-request-routing's Vocabulary introduced, under init-request-routing on the authority's standing direction of 2026-09-04: ask gains its received sense beside the process sense; request (received-ask sense), simple change, small-change lane, and intake added — each used by the feature, the request typedef v3, and adr-2026-09-04-request-front-end. |
 | 22 | 2026-09-06 | update | implementation guidance added under req-2026-09-06-implementation-guidance at the small-change process's make step, on the authority's direction of 2026-09-06 the request records — the term the implementation-guidance typedef and the scenario-assignment process v12 use. Made by the lead-solutions-architect role. |
+| 23 | 2026-09-06 | update | framework tool, skill, and gap added under req-2026-09-06-tools-through-skills at the small-change lane's make step, round 2, by the lead-solutions-architect role — the terms the `tools-through-skills` principle's statements turn on, which the lane's one screen found undefined; the lead-pm widened the lane's paths to this glossary at the check step, use-defined-terms naming it as the terms' home. |

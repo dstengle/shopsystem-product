@@ -5,7 +5,7 @@ scope: working
 owner: product-authority
 status: approved
 approved: 2026-08-22
-version: 10
+version: 11
 created: 2026-08-10
 updated: 2026-09-06
 ---
@@ -105,7 +105,6 @@ work comes to depend on content no one has ever reviewed.
   artifact was produced.
 - Whoever operates a context channel closes it when it lacks a defined
   process and a consumer.
-- Tool owners ship each tool's skill with the tool, in lockstep.
 
 ## Every activity belongs to a process (`no-orphan-activities`)
 
@@ -281,11 +280,11 @@ associate with specific work. (Least privilege, applied to context.)
 **Statement.**
 
 - Every framework tool MUST be usable through a skill that states, for
-  a scenario, what it does, what it takes, what it returns, and how it
-  fails, so that an agent uses it without reading its help.
+  each use it supports, what it does, what it takes, what it returns,
+  and how it fails, so that an agent uses it without reading its help.
 - An agent MUST prefer that skill over a bare invocation of the tool.
-- A tool with no such skill MUST be recorded as a gap, not worked
-  around.
+- A tool with no such skill MUST be recorded as a gap.
+- A tool with no such skill MUST NOT be worked around.
 
 **Rationale.** A tool whose use must be reconstructed from its help
 output is reconstructed differently by every agent that meets it: each
@@ -300,13 +299,16 @@ is a design failure, not a user failure.)
 
 **Implications.**
 
-- Tool owners write each skill's scenario entries — what the tool does,
+- Tool owners ship each tool's skill with the tool, in lockstep.
+- Tool owners write each skill's use entries — what the tool does,
   what it takes, what it returns, how it fails — so the skill decides
   the invocation, not the agent reading help.
 - Process authors write an agent step's use of a tool as the skill's
-  use; the bare command stays in runtime steps, which carry no agent.
+  use; a step with no agent may carry the bare command.
 - Whoever meets a tool with no skill records the gap as a request
-  through intake and does not read the tool's help to proceed.
+  through intake.
+- Whoever meets a tool with no skill does not read the tool's help to
+  proceed.
 - Reviewers treat an agent-step invocation reconstructed from a tool's
   help output as a defect.
 
@@ -317,7 +319,7 @@ is a design failure, not a user failure.)
 | Screen | define-good-up-front | governed-context | no-orphan-activities | use-defined-terms | external-standards-first | single-source-of-truth | feedback-loops-with-consumers | delivery-verified | least-context | tools-through-skills |
 |---|---|---|---|---|---|---|---|---|---|---|
 | Statement testable (TOGAF: understandable, complete, consistent) | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass |
-| Helps you say no (Spool) | yes: rejects checks held by the maker alone, and submission without the maker's own evaluation | yes: rejects unsanctioned channels | yes: rejects orphan activities | yes: rejects undefined coinages and synonym pairs | yes: rejects unjustified invention | yes: rejects duplicate authorities | yes: rejects consumer-less channels | yes: rejects artifact-only done claims | yes: rejects ambient loads and unapproved sources | yes: rejects invocations reconstructed from help output, and working around a missing skill |
+| Helps you say no (Spool) | yes: rejects checks held by the maker alone, and submission without the maker's own evaluation | yes: rejects unsanctioned channels | yes: rejects orphan activities | yes: rejects undefined coinages and synonym pairs | yes: rejects unjustified invention | yes: rejects duplicate authorities | yes: rejects consumer-less channels | yes: rejects artifact-only done claims | yes: rejects ambient loads and unapproved sources | yes: rejects invocations reconstructed from help output, a missing skill left unrecorded, and a missing skill worked around |
 | Not fluff, not a goal-in-disguise (Rumelt) | pass — directs without prescribing method | pass | pass | pass | pass | pass | pass | pass | pass | pass |
 | Not permission-to-play (Lencioni) | pass — most systems do NOT work this way | pass | pass | pass | pass | pass | pass | pass | pass | pass |
 | Implies ≥1 practice and ≥1 check (this document's intro) | shared-definition practice; role-separation check | promotion gate; provenance audit | process-membership lint; loop-exit review | term lookup before writing; undefined-term and near-synonym lint | prior-art search; Sources-section audit | link-or-ref practice; duplicate-statement review | consumer named at creation; calibration schedule | demonstration named in DoD; close-reason citation check | per-step context declaration; undeclared-load audit | skill-per-tool practice; bare-invocation review |
@@ -344,3 +346,4 @@ is a design failure, not a user failure.)
 | 8 | 2026-09-05 | update | Amended under req-2026-09-05-maker-self-check at the small-change lane's make step by the lead-solutions-architect role, through principle-set-authoring's draft step — the set's own producing process, now one screen, one revise, the owner's approval: define-good-up-front gains a fourth statement, the maker of an activity's output evaluates it against the definition of good before submitting it to the check and records that it did; the three existing statements, every other principle, and the fitness screen unchanged. The author's self-check, as the new statement asks: the fitness screen's define-good-up-front column re-read against the amended statement — every cell holds as written (testable; rejects unevaluated submission as it rejects self-checked work; directs without method; practice and check implied). The process's one screen did not run in this step — it is the lead-pm's to run at the lane's check step and record here. The owner's approval stands on the product authority's ruling of 2026-09-05 accepting the request. |
 | 9 | 2026-09-05 | update | Repair under req-2026-09-05-maker-self-check, small-change lane round 2, by the lead-solutions-architect role: principle-set-authoring's one screen ran at the lane's check step (judge claude-fable-5-1, screen prompt v6) — one confident finding, the fourth statement carried two obligations in one bullet; two wobbly, "maker" outside the set's actor vocabulary and the record's home unnamed; one cosmetic, the screen cell for define-good-up-front's Spool test. Repairs: the fourth statement split into two bullets, one obligation each — whoever makes the output evaluates it against the definition of good before submitting it to the check; that evaluation is recorded with the output, in its Document History or the step's own output; the Spool cell reworded to reject checks held by the maker alone and submission without the maker's own evaluation. The first new bullet is wrapped as tightly as its verifying phrase allows — the lane's observation matches it on one source line. The owner's approval stands on the product authority's ruling of 2026-09-05 accepting the request. |
 | 10 | 2026-09-06 | update | Amended under req-2026-09-06-tools-through-skills at the small-change lane's make step by the lead-solutions-architect role, through principle-set-authoring's draft step — the set's own producing process, one screen, one revise, the owner's approval: the set gains a tenth principle, `tools-through-skills`, with the three statements the request's Definition fixes, one obligation per bullet; its rationale, implications, and fitness-screen column written in the set's own form; every existing principle and every existing screen cell unchanged. The author's self-check, as define-good-up-front asks: the new column re-read against the text it sits under — each cell holds as written (testable; rejects invocations reconstructed from help output and worked-around gaps; directs without method; practice and check implied; no normative capital outside the statement; each implication names its actor and follows from a statement bullet). Disclosed for the screen: the terms "framework tool", "skill", "agent", and "gap" have no glossary entry — "skill" is named only inside the glossary's rendering entry — and the glossary lies outside the lane's paths, so the draft step's term-to-glossary rule is not met here; the statements are the Definition's and were not altered. The process's one screen did not run in this step — it is the lead-pm's to run at the lane's check step and record here. The owner's approval stands on the product authority's acceptance of 2026-09-06, recorded in the request's section 3. |
+| 11 | 2026-09-06 | update | Repair under req-2026-09-06-tools-through-skills, small-change lane round 2, by the lead-solutions-architect role: principle-set-authoring's one screen ran at the lane's check step (judge claude-fable-5-1, screen prompt v6) — four confident findings: the statements' binding terms undefined; the third statement bullet carried two obligations; the third implication bullet carried two prices; the screen column to be re-run after repair. Three wobbly, ruled by the lead-pm: "for a scenario" in the first bullet; the second implication's step-kind clause; the lockstep obligation homed under governed-context. Repairs: framework tool, skill, and gap defined in the glossary, the lead-pm having widened the lane's paths to it at the check step; the first bullet reads "for each use it supports"; the third bullet split — recorded as a gap; not worked around — one obligation each; the third implication split in two, one per statement bullet; the second implication's clause became the permission that follows, "a step with no agent may carry the bare command"; governed-context's "Tool owners ship each tool's skill with the tool, in lockstep" moved under `tools-through-skills`, its one home, governed-context otherwise unchanged. The `tools-through-skills` column of the fitness screen re-run against the repaired text — every cell holds; the Spool cell now names the three rejections. The verifying phrases each still sit on one source line. The owner's approval stands on the product authority's acceptance of 2026-09-06, recorded in the request's section 3. |

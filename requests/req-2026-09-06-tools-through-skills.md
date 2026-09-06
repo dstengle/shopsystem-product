@@ -1,8 +1,8 @@
 ---
 type: request
 id: req-2026-09-06-tools-through-skills
-status: routed
-version: 4
+status: done
+version: 7
 date: 2026-09-06
 reader: lead-pm
 owner: lead-pm
@@ -12,7 +12,7 @@ originator: product-authority
 received-through: operational-contract
 route: small-change
 route-reason: "one principle added to the working principle set, made through principle-set-authoring, its one screen and the owner's approval standing on the authority's direction; within the lead shop's own definitions, demonstrable on the compiled principles page in one session, no appetite worth a bet"
-routed-to: ""
+routed-to: requests/req-2026-09-06-tools-through-skills.md#result
 work-item: lead-xsbuk
 ---
 
@@ -190,6 +190,91 @@ present with its three statements, history cites request, rendering
 fresh, lint clean". The lint run alone: "PASS: 0 violation(s)". Their
 results are the lane's to record at verify.
 
+**Round 2** (repair) — maker: the lead-solutions-architect role,
+2026-09-06. The one screen principle-set-authoring allows ran at the
+lane's check step (judge claude-fable-5-1, screen prompt v6): four
+confident findings, three wobbly, the wobbly three ruled by the lead-pm.
+At the check step the lead-pm widened the lane's paths to include
+`basis/glossary.md`: use-defined-terms requires the binding terms
+defined, and the glossary is their home.
+
+Paths changed this round:
+
+- `basis/glossary.md` — version 22 → 23. Three terms added at the end
+  of Terms: **framework tool** (a tool the shop's definitions name for
+  an activity: the compilers, the lint, the work register's command,
+  and their like), **skill** (the rendering at the agent's load point
+  that states an activity or a tool's use so an agent performs it from
+  the definition alone), **gap** (a missing definition, tool, or skill
+  the shop records as a request rather than works around). History row
+  citing this request. The set's opening claim that its terms are
+  defined in the glossary now holds for the new principle.
+- `basis/principles.md` — version 10 → 11. Statement bullet 1: "for a
+  scenario" → "for each use it supports". Statement bullet 3 split, one
+  obligation each: "A tool with no such skill MUST be recorded as a
+  gap." / "A tool with no such skill MUST NOT be worked around."
+  Implication bullet 2's second clause became the permission that
+  follows — "a step with no agent may carry the bare command" — the
+  step-kind terms dropped. Implication bullet 3 split in two, one per
+  statement bullet: records the gap as a request through intake; does
+  not read the tool's help to proceed. governed-context's "Tool owners
+  ship each tool's skill with the tool, in lockstep" moved under
+  `tools-through-skills` as its first implication, so the obligation
+  has one home; governed-context otherwise unchanged. The
+  `tools-through-skills` screen column re-run against the repaired text:
+  every cell holds; the Spool cell now names the three rejections.
+  The three verifying phrases each still sit on one source line.
+  History row 11: the screen's findings in short, the repairs, the
+  owner's approval on the authority's acceptance of 2026-09-06.
+- `.claude/shop/principles.md` — source-digest sha256:96ae4155dc8e →
+  sha256:3c4576a133a4. Re-rendered by the tool; not edited by hand.
+
+Nothing outside the widened paths changed. The verifying observation was
+run by the maker from the repository root after the repair: exit 0,
+last line "principles: tools-through-skills present with its three
+statements, history cites request, rendering fresh, lint clean" — the
+Definition's phrase "three statements" now names the three the
+Definition fixed, carried as four bullets after the split. The lint run
+alone: "PASS: 0 violation(s)".
+
+### Check
+
+**Round 1** — verdict: **fail** — by the lead-pm role, 2026-09-06: the
+principle set's own producing process, principle-set-authoring, ran its
+one screen at this step (judge claude-fable-5-1 / screen prompt v6):
+four confident findings in the amendment — two binding terms
+undefined; a bullet with two obligations; an implication with two
+changes; a screen cell not reproducible — and three wobbly. Returned to
+the maker for the one repair; the lead-pm widened the lane's paths to
+the glossary, the home of the binding terms, and recorded it.
+
+**Round 2** — verdict: **pass** — by the lead-pm role, 2026-09-06. The
+terms defined in the glossary; the statement and implication bullets
+one obligation each; the ship-with-the-tool obligation given one home;
+the screen column re-run; the set at v11 with its history row and the
+owner's approval standing on the authority's acceptance; the rendering
+produced by the compiler. Finding: none.
+
+### Verified result
+
+The verifying observation the Definition named was run by the runtime
+from the repository root on 2026-09-06; its evidence:
+
+```
+PASS: 0 violation(s)
+/tmp/tmp.PPPmWUq8eD: rendered 10 principles (digest 3c4576a133a4)
+principles: tools-through-skills present with its three statements, history cites request, rendering fresh, lint clean
+exit 0
+```
+
+Recorded by the lead-pm role, 2026-09-06. The Definition, the Check's
+verdict by the lead-pm role, and this result stand; between the
+request and this result no bet was taken and no check of record was
+run. The effect in the running system: the principles page compiled
+into every session now requires every framework tool to be usable
+through a skill, an agent to prefer the skill, and a missing skill to
+be recorded as a gap.
+
 ## Document History
 
 | Version | Date | Kind | Entry |
@@ -198,3 +283,6 @@ results are the lane's to record at verify.
 | 2 | 2026-09-06 | update | The route accepted by the originator's "record tools-through-skills", read as the answer and disclosed; landed; work item lead-xsbuk opened; dispatched to the small-change lane. |
 | 3 | 2026-09-06 | update | Definition written by the lead-po role at the small-change lane's define step: judged a simple change by the glossary's entry; the principle named (`tools-through-skills`) and its three statements fixed; four acceptance statements, two paths (the principle set and its rendering with source and tool), maker lead-solutions-architect, one verifying command in the form req-2026-09-05-maker-self-check's Definition used. No artifact but this request touched. |
 | 4 | 2026-09-06 | update | Change made by the lead-solutions-architect role at the small-change lane's make step, round 1: `basis/principles.md` v9 → v10 amended through principle-set-authoring's draft step (the principle `tools-through-skills` added with its rationale, implications, and screen column); `.claude/shop/principles.md` re-rendered by the tool. Entry written under Change made, disclosing the undefined terms for the screen and the sweep of both paths into HEAD by another commit. |
+| 5 | 2026-09-06 | update | Round 2 (repair) made by the lead-solutions-architect role at the small-change lane's make step on the check step's screen findings: `basis/glossary.md` v22 → v23 (framework tool, skill, gap defined — the lead-pm widened paths to the glossary at the check step); `basis/principles.md` v10 → v11 (bullet 1 reworded, bullet 3 split, implications 2 and 3 repaired, the lockstep implication moved from governed-context, screen column re-run); `.claude/shop/principles.md` re-rendered. Entry written under Change made. |
+| 6 | 2026-09-06 | update | Check: round 1 fail on the one screen, round 2 pass by the lead-pm role; the verifying observation run by the runtime, exit 0; the verified result recorded and status set to done at the small-change process's record step. |
+| 7 | 2026-09-06 | update | Where the route led written into routed-to by the lead-pm at the request-intake process's land-result step; the lane's work item lead-xsbuk closed as done. |

@@ -6,7 +6,7 @@ generated: true
 generated-by: basis/tools/compile_principles.py
 derived-from: principles
 source: basis/principles.md
-source-digest: sha256:96ae4155dc8e
+source-digest: sha256:3c4576a133a4
 scope: working
 ---
 
@@ -50,6 +50,7 @@ named in the front-matter; on conflict the source wins.
   - The activity's process MUST name what loads into context and the source each input comes from.
   - Context from an unapproved source MUST NOT be loaded.
 - **Use tools through skills** (`tools-through-skills`):
-  - Every framework tool MUST be usable through a skill that states, for a scenario, what it does, what it takes, what it returns, and how it fails, so that an agent uses it without reading its help.
+  - Every framework tool MUST be usable through a skill that states, for each use it supports, what it does, what it takes, what it returns, and how it fails, so that an agent uses it without reading its help.
   - An agent MUST prefer that skill over a bare invocation of the tool.
-  - A tool with no such skill MUST be recorded as a gap, not worked around.
+  - A tool with no such skill MUST be recorded as a gap.
+  - A tool with no such skill MUST NOT be worked around.
