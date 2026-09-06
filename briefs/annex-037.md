@@ -111,6 +111,22 @@ Bet to delivery: 38 minutes wall-clock, with the principle's lane (17:53–17:57
 - lead-j30gv: journal messages offline.
 - Glossary candidates: "offer" (the information a role gives on the decisions it owns) and "attach" (a role writing into an initiative the section it owns before the bet) — defined in feat-role-decisions's vocabulary paragraph; no glossary entry.
 
+## Not asked today
+
+- The order of this role-definition typedef amendment (v4) with brief-030's pending amendment to the same typedef: asked at the next amendment to the role-definition typedef.
+- The glossary candidacy of "offer" and "attach": the PO's, at the next glossary amendment.
+
 ## This brief's cold read
 
-Recorded in the brief's Document History.
+One round, as the definition allows. Before it, the composing agent read its own draft against the guidelines: the decision layer cut from 448 to 377 words, glosses added, a count corrected (nine → eleven).
+
+The fresh-context cold read (judge claude-fable-5-1, cold-reviewer) returned **findings**:
+
+- Ask 1 — wobbly: the 2 of 4 read as today's result where it is the pre-change baseline; the eleven changes listed by type, not counted; the bash/zsh caveat placed apart from the skill-rendering evidence it qualifies.
+- Ask 2 — wobbly: one sentence carried both the branch proposed and the path it takes; "left it out as bounded" unclear.
+- Ask 3 — half confident, half cannot-decide: the second request lacked the problem observed, what a discovery costs, and why now; the status-shorthand questions were not quoted, so the request was not recognizable.
+- Over-sized: the day's other work and the screen count in the body.
+- Hidden decisions: the attachment's home and the glossary candidacy as notes rather than asks or explicit deferrals.
+- Terms: route, lane, screen, fitness set unintroduced before the gate paragraph; work-item ids and "the operational contract gap" unglossed; "It did" unqualified; "are observed at their next steps" in the wrong tense.
+
+The one revise repaired all of it (the brief's Document History v2): the opener restated on what the run demonstrated; Ask 4 added; the four terms introduced; the counts and phrasings as the findings asked; the other work cut to one line each; the screen table, the timeline, and the ordering note here. Delivered at v2 with no finding left open.

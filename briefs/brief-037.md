@@ -1,10 +1,10 @@
 ---
 type: decision-brief
 id: brief-037
-status: draft
+status: delivered
 date: 2026-09-06
 reader: product-authority
-decisions-requested: 3
+decisions-requested: 4
 annex: annex-037.md
 relates-to:
   - initiatives/init-role-decisions.md
@@ -15,162 +15,167 @@ relates-to:
   - requests/req-2026-09-06-implementation-guidance.md
   - requests/req-2026-09-06-tools-through-skills.md
   - requests/req-2026-09-06-plain-status.md
-version: 1
+version: 2
 ---
 
-# Brief 037: roles own their decisions — delivered on step prompts alone; three decisions
+# Brief 037: roles own their decisions delivered; four decisions
 
 Yesterday you ruled that every role must offer complete information
 on the decisions it owns, as part of the role and not by instruction
-from the lead-pm (the product manager's role: yours, agent-assisted).
+from the lead-pm (your role, agent-assisted).
 Today you bet on the initiative — the record of one problem worth
 solving, which you commit a bound of time to — that carries that
 ruling, and the flow after the bet (order, feature, assignment,
-build) ran with every role given only its step's own prompt. Did it
-work, and what now? It did: all four role definitions now name the
-decisions they own (4 of 4), and two of the four roles have already
-offered unasked, observed (2 of 4; the other two are observed at
-their next steps). Confirm the approvals your bet carried (Ask 1),
-authorize the one small change that completes the design (Ask 2), and
-answer the two routes still owed (Ask 3). The day's other work is
-below the asks, informational.
+build) ran with every role given only its step's own prompt. What did
+it demonstrate; what now? Every role definition names the
+decisions it owns (4 of 4), and the attach steps now run from
+one-sentence prompts and output a typed offer; no role is yet
+observed offering under the changed definitions — the two offers
+observed are the pre-change baseline, read next at the initiative
+check, frame, and feature draft. Confirm the approvals your bet
+carried (1), authorize the change that completes the design (2),
+answer two routes owed (3), rule where an oversized attachment lives
+(4).
 
 **What was built.** Before you bet, two roles *attach* to the
-initiative: the solutions architect role writes its feasibility, the
-product designer role its usability evidence. An *attachment* is
-what a role writes there; the role's *offer* is the information it
-carries — a verdict with reasons, the decisions the bet depends on,
-the risks to the measure (the one number the initiative is judged
-by), what the role does not know, and the evidence it read. Until
-today that shape lived in prompts and in the lead-pm's hand-written
-instructions. Now: one data type, `role-offer`, holds the five parts,
-and each attach step outputs it from a one-sentence prompt; the
-role-definition typedef — the definition of what a role definition
-must contain — requires a Decisions owned section, and all four
-lead-shop roles carry one; the initiative's check judges each
-attachment by the five parts, by name. Every file the agents load is
-current with its definition.
+initiative: the architect writes its feasibility, the designer its
+usability evidence. An *attachment* is what a role writes there; the
+role's *offer* is the information it carries — a verdict with reasons,
+the decisions the bet depends on, the risks to the measure (the
+initiative's one judged number), what the role does not know, and the
+evidence it read. Now one data type, `role-offer`, holds the five
+parts, and each attach step outputs it from a one-sentence prompt; the
+role-definition typedef (what a role definition must contain) requires
+a Decisions owned section, which all four roles carry; the initiative's
+check judges each attachment by the five parts, by name.
 
-**What gates and what defaults.** Ask 1 confirms decisions already
-taken; on silence it stands. Asks 2 and 3 gate work; on silence the
-route in Ask 2 is filed as a note with no work, and each request in
-Ask 3 stays recorded.
+**Four terms.** A *fitness set* is the scenarios a checker scores an
+artifact against. A *screen* is a fresh-context judge's scoring of an
+artifact against its fitness set. A *route* is the lead-pm's proposed
+handling of a request: discovery (a conversation with you that frames
+an initiative), the lane, or decline. The *lane* is the small-change
+path: defined, made, checked, verified, no bet.
+
+**What gates and what defaults.** Asks 1 and 4 confirm rulings in
+force; on silence each stands. Asks 2 and 3 gate work; on silence Ask
+2's branch is filed as a note, no work, and Ask 3's requests stay
+recorded.
 
 **Ask 1 — confirm the approvals taken on your bet.** Your bet of
 2026-09-06 ("bet for init-role-decisions") was the authority for
-eleven definition changes with you absent, all owned by you and all
-made by the architect role: the `role-offer` data type (new); the
-role-definition typedef and its fitness set (the scenarios a checker
-scores against); the four role definitions (the PM, PO, architect, and
-designer roles); the initiative-check process, whose two attach
-prompts are now one sentence each; and the initiative typedef with
-its fitness set and guideline. Versions in the annex; each history
-row says the owner's approval is pending. Evidence: the lint — the
-script that checks every definition — passes; the role-rendering
-check reads ok for all four roles; the skill-rendering check is
-clean, run under bash (see the note below); the initiative fitness
-set's scenario 5 names the five parts, so a missing part is a finding
-by name. Accepted tradeoff: the feature's eighth scenario — each role
-offers at its own step — is not yet demonstrated for the PM and PO
-roles; the 2 of 4 observed are the architect and designer, before the
-definitions changed, and count as the baseline. What a no does: the
-type is now referenced by four roles, a fitness set, and the process,
-so reversal means re-pointing each and re-rendering, by a later
-record; until then the definitions stand. Recommendation: confirm.
-*Default:* stands.
+eleven definition changes with you absent — one type, one typedef and
+its fitness set, four roles, one process, one typedef with its
+fitness set and guideline — all owned by you, all made by the
+architect role, each pending your approval and in force until you
+cancel. The type is `role-offer`; the typedefs are the
+role-definition typedef and the initiative typedef; the process is
+initiative-check, whose two attach prompts are now one sentence each.
+Versions in the annex. Evidence: the lint — the script that checks
+every definition — passes; the rendering checks report every skill
+and role current with its definition, the skill check when run under
+bash — its script splits words only under that shell, and under zsh every
+skill reads missing, a defect the implementer found and filed as
+lead-1qzt0 (an item in the shop's work register); the initiative
+fitness set's scenario 5 names the five parts, so a missing part is a
+finding by name. Accepted tradeoff: the feature's eighth scenario —
+each role offers at its own step — is not demonstrated for any role
+under the changed definitions; the definitions are delivered, the
+observations are not. What a no does: the type is now referenced by
+four roles, a fitness set, and the process, so reversal means
+re-pointing each and re-rendering, by a later record; until then the
+definitions stand. Recommendation: confirm. *Default:* stands.
 
-**Ask 2 — authorize the pre-bet route, or file it.** Shall the
-initiative check gain one route — for each decision in an offer whose
+**Ask 2 — authorize the pre-bet branch, or file it.** The initiative
+check would gain one branch: for each decision in an offer whose
 record reads "none", send it to decision-record authoring before the
-screen (the fresh-context judge's scoring of the initiative against
-its fitness set) — as the next change through the lane, the
-small-change path: defined, made, checked, verified, no bet? Today
-the lead-pm does this by hand: yesterday it sent the architect's
-first such decision to an ADR (architecture decision record) before
-your bet. That ADR, `adr-2026-09-05-role-offer`, names this route
-the third of three candidates it left undecided — bounded,
-reversible, a process amendment — and this build left it out as
-bounded. Evidence: the offer's decisions field carries a record id or
-the literal "none" so a step can branch on it; the initiative's
-outcome — no bet rests on an unrecorded decision — depends on this
-route or on the lead-pm's hand; today's first lane ran define 2
-minutes, make 5, check and verify under 1, and the second, with one
-repair, 7 minutes define to done by commit times. *File it:* a
-request recorded, no work; the guarantee stays manual.
+screen. Shall that branch be made as the next change through the
+lane? Today the lead-pm does this by hand: yesterday it sent the
+architect's first such decision to an ADR (architecture decision
+record) before your bet. That ADR, `adr-2026-09-05-role-offer`,
+listed the branch as a reversible process change, and this build did
+not include it. Evidence: the offer's decisions field carries a
+record id or the literal "none" so a step can branch on it; the
+initiative's outcome — no bet rests on an unrecorded decision —
+depends on this branch or on the lead-pm's hand; today's first lane
+ran define 2 minutes, make 5, check and verify under 1, and the
+second, with one repair, 7 minutes define to done by commit times.
+*File it:* a request recorded, no work; the guarantee stays manual.
 Recommendation: authorize. *Default:* filed.
 
 **Ask 3 — answer the two routes owed.** For each, the lead-pm has
 said a route; nothing is acted on until you accept or object.
 
-- Status said plainly (`req-2026-09-06-plain-status`) → the lane: one
-  rule in the base writing style — when work waits, say what it waits
-  on and on whom, never a shorthand. Why a definition: the transcript
-  is not loaded by a later session; the guideline is.
+- Status said plainly (`req-2026-09-06-plain-status`), from your two
+  questions — "What is meant by nothing else is independent?" and
+  "How will you know to say that from here after the session ends?"
+  — → the lane: one rule in the base writing style — when work waits,
+  say what it waits on and on whom, never a shorthand. Why a
+  definition: the transcript is not loaded by a later session; the
+  guideline is.
 - Communication between steps and agents in the most effective format
-  (`req-2026-09-05-step-communication`) → discovery, a conversation
-  with you that frames an initiative: how an agent's instruction is
-  assembled, across every process. It waited on the typedef
-  renderings, yesterday's delivery, in since 2026-09-05.
+  (`req-2026-09-05-step-communication`) → discovery. The problem
+  observed: in the request-routing run, the lead-pm's prose
+  instructions to agents carried design errors, found at that run's
+  review. What it costs you: one interview. Why now: it depends on
+  the typedef renderings, yesterday's delivery, waiting since
+  2026-09-05.
 
 Recommendation: accept both. *Default:* each stays recorded, nothing
 acted on.
 
-**Also today — informational.** The implementation guidance artifact
-— the architect's notes to an implementer, one per Bounded Context,
-kept as a historical record — was made through the lane and first
-produced at this feature's assignment; the implementer built from the
-scenarios and that record alone. The tools-through-skills principle —
-every framework tool is used through a skill that states its uses; an
-agent prefers the skill; a tool with no skill is recorded as a gap —
-was made through the lane after one screen and one repair. Journaling
-messages offline is filed as work item lead-j30gv. Your two questions
-on the lead-pm's status shorthand are Ask 3's first request.
+**Ask 4 — where does an attachment larger than the cap live?** At the
+bet you ruled the initiative's 500-word cap soft with 20 percent
+variance (600); the two baseline attachments run 668 and 629 words,
+so each exceeds even that on its own. The ADR names this its first
+open candidate; the ruling is the initiative typedef's owner's, which
+is you. Recommendation: the full attachment stands outside the cap,
+in the attaching role's history entry as now, with the verdict in the
+section. Splitting the cap instead would need a number for the
+attachments and a screen criterion for it. *Default:* stands as now.
 
-**Three notes — informational.** The attachments' home: the two
-baseline attachments run 668 and 629 words; you ruled the
-initiative's 500-word cap soft with 20% variance (600), so neither
-fits, and the full offer stands in a history row while the verdict
-stands in the section. Where it lands is the ADR's first candidate,
-and the ruling is the initiative typedef's owner's, which is you. The
-implementer found that the skill-rendering check's script splits
-words only under bash; under zsh every skill reads missing. Filed as
-work item lead-1qzt0. The words "offer" and "attach" are defined in
-the feature's vocabulary, not the glossary; you asked yesterday what
-an offer is. Both are glossary candidates, on your word.
+**Also today — informational,** one line each; the annex has the
+rest. The implementation guidance artifact — the architect's notes to
+an implementer, one per Bounded Context, a historical record — was
+made through the lane, this feature's assignment produced the first
+record, and the implementer built from the scenarios and that record
+alone. The tools-through-skills principle — every framework tool is
+used through a skill that states its uses — was made through the lane
+after one screen and one repair. Journaling messages offline is filed
+as lead-j30gv.
 
 **What this run cost.** The flow after the bet — order, bet record,
 feature, assignment, build — ran 38 minutes wall-clock from commit
 times (17:48 to 18:26), with the principle's lane and one request
-intake inside it; the morning's review and the guidance lane ran
-15:43 to 15:53. Agent time by step is not in the repository, so no
-like-for-like against yesterday's 105 agent minutes. Screens on this
-initiative since its discovery: six — initiative, ADR, order, bet
-record, feature, principle — each once with one revise, under your
-single-cycle rule; the counts per screen are in the annex.
+intake inside it. Agent time by step is not in the repository, so no
+like-for-like against yesterday's 105 agent minutes. Every screen on
+this initiative ran once with one revise, under your single-cycle
+rule; the counts are in the annex.
 
 ## Deferred (notes, not asks)
 
-- The order of this typedef amendment with brief-030's pending
-  amendment to the same typedef is yours as owner.
+- "Offer" and "attach" are defined in the feature's vocabulary, not
+  the glossary; you asked yesterday what an offer is. Not asked
+  today; the PO's, at the next glossary amendment.
 - The designer's recommendation to screen the type's field names is
   pending, a recommendation.
 - The finding kept open at the bet — the architect's one-session
   verdict resting on an undescribed precedent — is answered by the
   run: delivery landed in one session.
 - The initiative stands `active`; the `completed` state is still a
-  pending amendment. The operational contract gap (lead-4kymc) is
-  unchanged.
+  pending amendment.
 
 ## Annex
 
 Optional: [annex-037](annex-037.md) — the artifacts with versions,
 the Decisions owned sections quoted, the attach prompt, the screens
 with their counts, the flow's timeline, the two lanes, the ADR's three
-candidates, the requests, and this brief's cold read.
+candidates, the requests, the notes, and this brief's cold read.
 
 ## Document History
 
 | Version | Date | Kind | Entry |
 |---|---|---|---|
-| 1 | 2026-09-06 | update | Composed by the lead-pm role's assisting agent from the session's records at the stakeholder-presentation frame and compose steps, for the authority's confirmation of the approvals its bet carried, the pre-bet route's authorization, and the two route answers owed. |
-| 1 | 2026-09-06 | review | Cold read by the composing agent in the same context, not a fresh one — disclosed; the process's fresh-context cold reviewer has not run (judge: claude-fable-5-1). Verdict findings: the decision layer at 448 words; "the whole flow" unnamed; "did it hold" ambiguous; the day's other work in the decision layer with "tools-through-skills" unglossed; Ask 1 counting nine changes where the list holds eleven; the skill-rendering check called clean without its shell; "uncovered"; "the design decision" before the ADR's introduction; "screen" never glossed; "guidance record" reaching Ask 2 unintroduced; a lane timing claimed for both lanes where one is recorded; "your — ruling"; "held" in two senses in one note; "filed" unexplained in the gate paragraph. All repaired in this version before it was recorded: the other work moved below the asks as informational and glossed; the count corrected; the shell stated; the glosses added; the second lane timed by commit; the decision layer at 377 words. |
+| 1 | 2026-09-06 | update | Composed by the lead-pm role's assisting agent from the session's records at the stakeholder-presentation frame and compose steps, after the agent's own read against the guidelines (the decision layer cut from 448 to 377 words, glosses added, a count corrected). |
+| 1 | 2026-09-06 | review | Cold read, the one round the definition allows (judge: claude-fable-5-1, cold-reviewer, fresh context): findings — Ask 1 wobbly (the 2 of 4 read as today's result where it is the pre-change baseline; the eleven changes listed as types, not counted; the shell caveat apart from the evidence it qualifies); Ask 2 wobbly (one sentence carrying the branch and its path; "left it out as bounded"); Ask 3 half confident, half cannot-decide (the second request without the problem observed, its cost, or why now; the status questions unquoted); over-sized; the attachment's home and the glossary candidacy as decisions hidden in notes; route, lane, screen, and fitness set unintroduced before the gate paragraph; "It did" unqualified and a tense slip; work-item ids and "the operational contract gap" unglossed. |
+| 2 | 2026-09-06 | update | Revised once on the cold read: the opener states what the run demonstrated and that no role is yet observed under the changed definitions; Ask 4 added (the attachment's home; recommendation the full attachment outside the cap in the history entry as now), decisions-requested 4; the four terms introduced before the gate paragraph; the eleven changes counted, "pending your approval, in force until you cancel"; the shell caveat moved beside the skill-rendering evidence and lead-1qzt0 glossed; Ask 2's question in two sentences and the ADR's listing restated; Ask 3's second request given the problem observed, the cost, and why now, the status questions quoted; the other work cut to one line each and the screen count, the amendment-ordering note, and the rest sent to the annex; the glossary candidacy a deferral in the words given; the operational contract gap cut. |
+| 2 | 2026-09-06 | state | draft → delivered after the one revise the definition allows; no finding left open. |
