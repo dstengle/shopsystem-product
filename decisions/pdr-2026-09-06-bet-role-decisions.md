@@ -18,24 +18,22 @@ updated: 2026-09-06
 The initiative-check — the process that attaches feasibility and
 usability to an initiative, screens it once, allows one revise, and
 ends in the authority's bet — reached its decide step on 2026-09-06
-with two findings held for the authority. The one screen (judge
-claude-fable-5-1 / screen prompt v5, 2026-09-05) found one defect the
-judge was sure of — the second no-go without its reason — and five it
-could not decide; the one revise repaired all six in the lead-pm's
-sections (initiative Document History, v5). Held, because neither is
-the lead-pm's to repair: the architect's one-session verdict resting
-on "the request-routing precedent" — an earlier change the shop made
-in one session, named in the initiative's Feasibility and usability
+with two findings held for the authority, because neither is the
+lead-pm's to repair: the architect's one-session verdict resting on
+"the request-routing precedent" — an earlier change the shop made in
+one session, named in the initiative's Feasibility and usability
 section as the reason but not described there, so a reader of the
 initiative alone cannot check it; and the 500-word cap's split (the
 architect's D2) — whether the initiative typedef's word bound divides
 between the framing sections and the attachments, or the full offer
 lives outside it. At the bet the authority ruled the cap soft, with
-20% variance, and left the attachments' home where the checked design
-decision put it: the first of its three candidates for a record of
-its own. That ruling is recorded in the initiative's Document History
-(v8); its home is the initiative typedef, the authority's own, not
-this record.
+20% variance, and left the attachments' home as the checked design
+decision's *first candidate* — the first of the three questions that
+decision names as needing a record of its own: whether the
+initiative's cap splits, or the full attachment stands outside it.
+That ruling is recorded in the initiative's Document History (v8);
+its home is the initiative typedef, the authority's own, not this
+record.
 
 The design decision the bet rests on stood checked before it:
 [adr-2026-09-05-role-offer](adr-2026-09-05-role-offer.md) (v3) — a
