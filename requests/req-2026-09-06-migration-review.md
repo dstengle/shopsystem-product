@@ -2,7 +2,7 @@
 type: request
 id: req-2026-09-06-migration-review
 status: routed
-version: 1
+version: 2
 date: 2026-09-06
 reader: lead-pm
 owner: lead-pm
@@ -40,8 +40,9 @@ typedef rendering, the single review cycle) — and the authority
 explores direction against it. Topic: "the migration re-evaluated
 (req-2026-09-06-migration-review)".
 
-Originator's answer: **not yet answered.** Nothing is acted on until
-the originator answers.
+Originator's answer: **accepted** — "accept for both", 2026-09-06.
+Landed by the lead-pm. Dispatch follows the tool-skills discovery's
+convergence, as the route said.
 
 ## 4. Result
 
@@ -50,3 +51,4 @@ the originator answers.
 | Version | Date | Kind | Entry |
 |---|---|---|---|
 | 1 | 2026-09-06 | update | Recorded by the lead-pm at the request-intake process's record step; the originator's "we should" the confirmation. Route decided and said; awaiting the originator's answer. |
+| 2 | 2026-09-06 | update | The route accepted by the originator; landed; the discovery conversation opens after req-2026-09-06-tool-skills converges. |
