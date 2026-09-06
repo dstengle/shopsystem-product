@@ -3,7 +3,7 @@ type: feature
 id: feat-role-decisions
 name: Roles own their decisions
 status: draft
-version: 1
+version: 2
 initiative: ../initiatives/init-role-decisions.md
 owner: lead-po
 created: 2026-09-06
@@ -63,6 +63,36 @@ The initiative's For whom section names no interaction type and its
 Decomposition names no Bounded Context; what usability, accessibility,
 and non-functional criteria are due is for the designer's and the
 architect's steps to record.
+
+Usability and accessibility criteria (product designer role, add-usability
+step, 2026-09-06): none due, on examination of the eight scenarios against
+the experience principle set v2 and the core-task list v4, not by default
+from the "none". Every reader the scenarios name — a role reading a
+definition, a role attaching, the check of record screening, the authority
+reading the initiative at the bet, a role running its step — reads inside
+a process step; the one person among them, the authority in scenario *the
+authority reads the roles' offers from the initiative at the bet*, reads
+an authored artifact in the repository, which is no interaction type in
+the glossary's closed set (not a generated document or notification).
+Against `core-task-parity`, no task on the list carries a role's
+attachment; the nearest, *read a decision*, reads the check-decision the
+attachment feeds, not the attachment, and no eighth task is added (the
+initiative's Document History v4, D5). Against `accessible-by-standard`,
+no interaction is delivered, so no accessibility target applies. Against
+`agent-is-a-user`, the offer's data type (adr-2026-09-05-role-offer) is
+outside the principle's closed set, so no interface screen is owed on this
+feature; the screen of the type's field names when it is drafted is a
+recommendation to the solutions architect role, recorded at the
+initiative's v4 (U4), not a criterion here. Scenarios a usability test
+would invalidate: none — no scenario claims an interaction is usable, so
+nothing is labeled a hypothesis under `evidence-not-opinion`; scenario
+*the authority reads the roles' offers from the initiative at the bet*
+asks that the offer be readable from the initiative alone, and where in
+the initiative it is read is the offer's home, ruled at the bet (the
+initiative's v8: the cap soft with 20% variance, the attachments' home the
+ADR's first candidate), with one observation bearing on it — the authority
+read both baseline offers from the initiative's Document History and ruled
+(v7–v8). No Edges rows are added: no criteria name a case.
 
 ## Interaction types
 
@@ -155,3 +185,4 @@ Feature: Roles own their decisions
 | Version | Date | Kind | Entry |
 |---|---|---|---|
 | 1 | 2026-09-06 | update | Authored by the PO role alone in the feature-authoring draft step, from init-role-decisions's Framing and For whom sections (v8, planned), with sess-2026-09-05-d for the originator's words; eight scenarios, all owned by the lead shop per the initiative's Decomposition; interaction types none per its For whom; every scenario `@hash:pending` — the authoring session had no shell, so the lead-pm fills the values (sha256 of the scenario's text, first twelve hex digits, as in the repository's other features) before the check. Maker's self-check against the feature fitness set (v8), each scenario read as Given/When/Then: scenario 1 (one observable behavior) pass — each When is one action or event (a definition read, the role attaching, the check of record screening, the initiative reaching the bet, the authority reading, each role running its step), each Then observable in the running system, no step naming a data type, a typedef section, a prompt, or a route; scenario 2 (ownership and criteria) pass — an owning shop named for each of the eight; no interaction type is named, so the designer's criteria are not due at this step, and the Contributors section leaves what is due for the designer's and the architect's steps to record; scenario 3 (identity tags) pass on presence — `@feature:feat-role-decisions` and `@hash:pending` on every scenario, the hash values disclosed as pending; scenario 4 (edges) pass — fourteen rows, every case the framing's Problem, outcome, originator words, For whom, Appetite no-gos, and Decomposition name present, ten covered by scenario name, four out of scope with reasons; scenario 5 (interaction types) pass — "none" with the For whom section's reason; scenario 6 (narrative) pass — who (the four lead-shop roles; the authority at the bet and the lead-pm), what (offer complete information from the step's instruction alone; read it from the initiative), the outcome the framing's ("no bet rests on an unrecorded decision"). Status draft pending the PO output check. |
+| 2 | 2026-09-06 | update | Designer's criteria added at the feature-authoring add-usability step, from the step's prompt with nothing added by the lead-pm: the Interaction types section says "none", so the Contributors section records that no usability or accessibility criteria are due, with the reason examined against the experience principle set v2 (`core-task-parity`, `accessible-by-standard`, `agent-is-a-user`, `evidence-not-opinion`) and the core-task list v4; the scenarios a usability test would invalidate named as none; no Edges rows added; no scenario text touched. Maker's self-check against the feature fitness set v8, the scenarios that concern this part: scenario 2 (ownership and criteria) pass — no type is named in the Interaction types section, so the designer's criteria are not required, and the Contributors section now states that with its reason rather than leaving it to a later step; scenario 4 (edges) pass — the contributor's criteria name no case, so the table gains no row and none is missing; scenario 5 (interaction types) pass — "none" with a reason the framing bears out: the framing's problem and outcome concern what a role offers and what the bet rests on, read inside the initiative check, and the For whom section's reason ("the attachment is read inside a process step; no core task carries it") holds against the list on examination, the one person-reading scenario reading an authored artifact that is no interaction type. Scenarios 1, 3, and 6 are the PO's part and were not re-judged here. |
