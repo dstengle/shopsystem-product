@@ -2,8 +2,8 @@
 type: feature
 id: feat-role-decisions
 name: Roles own their decisions
-status: draft
-version: 3
+status: checked
+version: 5
 initiative: ../initiatives/init-role-decisions.md
 owner: lead-po
 created: 2026-09-06
@@ -20,8 +20,8 @@ Feature: Roles own their decisions
   alone with nothing added by the lead-pm, complete information on
   the decisions in their domain — a verdict, the decisions the bet
   depends on, the risks to the measure, what the role does not know,
-  the evidence it used — and the authority at the bet and the lead-pm
-  can read that offer from the initiative,
+  the evidence it used — and the authority at the bet can read that
+  offer,
   so that no bet rests on an unrecorded decision.
 
 ## Contributors
@@ -37,7 +37,7 @@ sits in the lead shop's tree, and no contract exists on this branch.
 - *an attachment missing a part is found before the bet* — shopsystem-product (the lead shop)
 - *no bet rests on an unrecorded decision* — shopsystem-product (the lead shop)
 - *the authority reads the roles' offers from the initiative at the bet* — shopsystem-product (the lead shop)
-- *each of the four roles offers on its decisions at its own step* — shopsystem-product (the lead shop)
+- *a role offers on its decisions at its own step* — shopsystem-product (the lead shop)
 
 Vocabulary: *attach* is the initiative typedef's word for a role
 writing into an initiative the section it owns before the bet — the
@@ -61,8 +61,7 @@ definition says who and what for, never when.
 
 The initiative's For whom section names no interaction type and its
 Decomposition names no Bounded Context; what usability, accessibility,
-and non-functional criteria are due is for the designer's and the
-architect's steps to record.
+and non-functional criteria are due were recorded at their steps below.
 
 Usability and accessibility criteria (product designer role, add-usability
 step, 2026-09-06): none due, on examination of the eight scenarios against
@@ -146,16 +145,12 @@ conflict. Contracts: none exist. (architect, 2026-09-06)
   artifact-typedef typedef's rule for a type whose texts are not
   produced, each with a Document History row; the four role
   definitions gain the section after the typedef names it and are
-  re-rendered by role-rendering, never edited in the rendered file —
-  a definition carrying the section ahead of the typedef does not
-  count toward the measure's 4 of 4. The section names decisions,
-  not steps: it says what the role owns and that it offers, under
-  the typedef's no-sequencing rule, and it does not restate the
-  offer's parts (C1). Order with brief-030's ask 1 — six sections
-  to the same typedef, pending: the initiative's U1 default holds,
-  this section lands first with its own row; whichever lands second
-  goes through the typedef's rules with its own row, and the four
-  definitions are re-rendered after each. Rides on *a role's
+  re-rendered from the definition — a rendered file is never the
+  source; the definition is — and a definition carrying the section
+  ahead of the typedef does not count toward the measure's 4 of 4.
+  The section names decisions, not steps: it says what the role owns
+  and that it offers, under the typedef's no-sequencing rule, and it
+  does not restate the offer's parts (C1). Rides on *a role's
   definition names the decisions it owns*, *every lead-shop role's
   definition names the decisions it owns*, *each of the four roles
   offers on its decisions at its own step*. (architect, 2026-09-06)
@@ -171,8 +166,8 @@ conflict. Contracts: none exist. (architect, 2026-09-06)
   (C2), with a row, never by an instruction added at the step; and
   an observation counts toward the measure only when the step's
   prompt was the whole instruction. Rides on *a role attaching to an
-  initiative offers complete information unasked*, *each of the four
-  roles offers on its decisions at its own step*, *a role's
+  initiative offers complete information unasked*, *a role offers on its
+  decisions at its own step*, *a role's
   definition names the decisions it owns*. (architect, 2026-09-06)
 - C4 — the offer is read from the initiative alone, at the
   coordinating level (`local-comprehension`; the ADR's Decision on
@@ -228,8 +223,8 @@ conflict. Contracts: none exist. (architect, 2026-09-06)
   step's own rule — so a missing part must never be reportable only
   as uncovered. The initiative-check definition's attach steps
   output the type and are the only place the process changes for
-  this; the skill is re-produced from the definition by the
-  rendering tool, never edited by hand. Rides on *an attachment
+  this; the skill is re-produced from the definition — a rendered
+  file is never the source; the definition is. Rides on *an attachment
   missing a part is found before the bet*, *a part of the offer
   outside the role's domain reads none with its reason*, *no bet
   rests on an unrecorded decision*. (architect, 2026-09-06)
@@ -244,6 +239,11 @@ conflict. Contracts: none exist. (architect, 2026-09-06)
   own — none is made here. Rides on all eight scenarios as their
   scope; the Edges row *A Bounded Context shop's own role attaching*
   carries it. (architect, 2026-09-06)
+
+Provenance, outside the constraints: the initiative's U1 (the
+architect's attachment, v2) records brief-030's pending amendment to
+the same typedef; its order with the section C2 names is the typedef
+owner's, and no scenario here depends on it.
 
 Screened against the architecture principle set (v6):
 `knowable-shape` — conforms, the offer's shape readable from the
@@ -261,8 +261,11 @@ screen — not absorbed here, and no new exception is raised.
 
 ## Interaction types
 
-None — the attachment is read inside a process step; no core task
-carries it (the initiative's For whom section).
+None — the offer is made by a role at the attach step and read at the
+bet inside the initiative check; no one reaches it outside a process
+run (the initiative's For whom section: "the attachment is read inside
+a process step; no core task carries it" — the core-task list as
+provenance).
 
 ## Scenarios
 
@@ -273,8 +276,8 @@ Feature: Roles own their decisions
   alone with nothing added by the lead-pm, complete information on
   the decisions in their domain — a verdict, the decisions the bet
   depends on, the risks to the measure, what the role does not know,
-  the evidence it used — and the authority at the bet and the lead-pm
-  can read that offer from the initiative,
+  the evidence it used — and the authority at the bet can read that
+  offer,
   so that no bet rests on an unrecorded decision.
 
   @feature:feat-role-decisions @hash:aba312f2b1ae
@@ -319,11 +322,11 @@ Feature: Roles own their decisions
     When the authority reads the initiative at the bet
     Then each attaching role's complete offer is readable from the initiative alone — its verdict with reasons, the decisions the bet depends on with their records, the risks to the measure, what the role does not know, and the evidence it used
 
-  @feature:feat-role-decisions @hash:f7e1bb9a8d48
-  Scenario: each of the four roles offers on its decisions at its own step
-    Given the four lead-shop roles, each at the step of its own process where it acts on an initiative in its domain, given that step's instruction with nothing added by the lead-pm
-    When each role runs its step
-    Then each of the four comes back with complete information on the decisions its definition names — the measure's 4 of 4
+  @feature:feat-role-decisions @hash:a7aa73a0b41d
+  Scenario: a role offers on its decisions at its own step
+    Given one of the four lead-shop roles at the step of its process where it acts on an initiative, given that step's instruction with nothing added by the lead-pm
+    When the role runs that step
+    Then it comes back with complete information on the decisions its definition names
 ```
 
 ## Edges
@@ -331,13 +334,13 @@ Feature: Roles own their decisions
 | Case | Who named it | Covered by |
 |---|---|---|
 | A role attaching to an initiative with no defined shape for what it must offer | the framing ("a role attaching to an initiative has no defined shape for what it must offer") | Scenario: a role attaching to an initiative offers complete information unasked — the five parts are the shape; Scenario: a role's definition names the decisions it owns — the obligation is the role's, "an aspect of the role and not just instructions from the lead-pm" |
-| The lead-pm supplying the offer by hand each time — an ad-hoc instruction added to the step's | the framing ("the lead-pm supplies it by hand each time"); the For whom section's measure ("given only their step's instruction with nothing added by the lead-pm") | Scenario: a role attaching to an initiative offers complete information unasked; Scenario: each of the four roles offers on its decisions at its own step — each Given holds the instruction to the step's own; how an agent's instruction is assembled is the Appetite's first no-go, out of reach here |
+| The lead-pm supplying the offer by hand each time — an ad-hoc instruction added to the step's | the framing ("the lead-pm supplies it by hand each time"); the For whom section's measure ("given only their step's instruction with nothing added by the lead-pm") | Scenario: a role attaching to an initiative offers complete information unasked; Scenario: a role offers on its decisions at its own step — each Given holds the instruction to the step's own; how an agent's instruction is assembled is the Appetite's first no-go, out of reach here |
 | A decision the bet rests on reaching the record only if someone asks | the framing ("the decisions a bet rests on reach the record only if someone asks"; the outcome "no bet rests on an unrecorded decision") | Scenario: no bet rests on an unrecorded decision; Scenario: a role attaching to an initiative offers complete information unasked — each decision the bet depends on named with its record, or that it has none, so an unrecorded one is visible before the bet |
 | A part of the offer the role's domain does not cover — "decisions or parts of decisions that are in their domain" | the framing's originator words; the For whom section (the designer's offer, one of the two baseline offers, marked no usability attachment due) | Scenario: a part of the offer outside the role's domain reads none with its reason |
 | An attachment offering less than complete information — a part missing without a reason | the framing's outcome ("offers complete information on the decisions it owns") | Scenario: an attachment missing a part is found before the bet |
-| The two offers made before any definition named the decisions — the baseline, 0 of 4 | the For whom section ("Now: 0 of 4 — no definition names them yet; the two offers this check produced are the baseline") | Scenario: every lead-shop role's definition names the decisions it owns; Scenario: each of the four roles offers on its decisions at its own step — the measure counts a role whose definition names the decisions and that is observed offering on them; the baseline offers show the roles can, and are not counted |
-| Roles with no attach step in the initiative check — the PM and PO roles | the For whom section ("each observed at its own step") | Scenario: each of the four roles offers on its decisions at its own step — which step is each role's process's, not this feature's: a role definition says who and what for, never when |
-| The target, 4 of 4 | the For whom section ("Target: 4 of 4, each observed at its own step") | Scenario: every lead-shop role's definition names the decisions it owns — the definitions; Scenario: each of the four roles offers on its decisions at its own step — the observations |
+| The two offers made before any definition named the decisions — the baseline, 0 of 4 | the For whom section ("Now: 0 of 4 — no definition names them yet; the two offers this check produced are the baseline") | Scenario: every lead-shop role's definition names the decisions it owns; Scenario: a role offers on its decisions at its own step — the measure counts a role whose definition names the decisions and that is observed offering on them; the baseline offers show the roles can, and are not counted |
+| Roles with no attach step in the initiative check — the PM and PO roles | the For whom section ("each observed at its own step") | Scenario: a role offers on its decisions at its own step — which step is each role's process's, not this feature's: a role definition says who and what for, never when |
+| The target, 4 of 4 | the For whom section ("Target: 4 of 4, each observed at its own step") | Scenario: every lead-shop role's definition names the decisions it owns — the definitions; Scenario: a role offers on its decisions at its own step — one observation per role, at its own step; the measure's 4 of 4 is the aggregate: every definition naming the decisions, and each of the four roles observed by that scenario once — the count is read from the four observations, not from one run |
 | The authority reading the offer at the bet | the For whom section ("The authority at the bet"); the framing's outcome (the decisions the bet depends on, recorded) | Scenario: the authority reads the roles' offers from the initiative at the bet |
 | Where the full offer lives in the initiative — the word bound's split, ruled soft with 20% variance at the bet, the attachments' home the checked design decision's first candidate | the initiative's Document History (v8, the bet) | Out of scope: the initiative typedef's, the authority's own amendment outside this appetite; Scenario: the authority reads the roles' offers from the initiative at the bet holds wherever the home lands — readable from the initiative alone |
 | The architect's work list, or implementation guidance, inside the offer | the initiative's Document History (v7, the authority's review before the bet: "the architect's work list is not part of it") | Out of scope: implementation guidance is its own artifact, made through req-2026-09-06-implementation-guidance; Scenario: a role attaching to an initiative offers complete information unasked names the offer's parts, and a work list is not among them |
@@ -354,7 +357,6 @@ Feature: Roles own their decisions
 | An offer whose evidence is a Bounded Context's internals | the architect's constraints (C4) | Out of scope: no Bounded Context exists on this branch; the evidence a role may read is its definition's admissible evidence, judged at the role definition's own check |
 | A role definition's section saying at which step the role offers | the architect's constraints (C2); the role-definition typedef's no-sequencing rule | Scenario: a role's definition names the decisions it owns — "when it attaches to or acts on an initiative" names the activity, not a step; which step is the process's (the row *Roles with no attach step in the initiative check*) |
 | A role definition carrying the section before the typedef names it, or the initiative fitness set judging the parts before its amendment | the architect's constraints (C2, C6) | Scenario: every lead-shop role's definition names the decisions it owns — a section the typedef does not yet require does not count toward the measure's 4 of 4; Scenario: an attachment missing a part is found before the bet — the finding is by a named criterion, so the criterion stands first |
-| brief-030's amendment to the same typedef landing before or after this section | the architect's constraints (C2) | Out of scope: the order is the initiative's U1 default, the typedef owner's; either order holds under C2 — each through the typedef's rules with its own row, the definitions re-rendered after each — and no scenario here depends on it |
 | A rendered role file or the initiative-check skill edited by hand, or not re-produced after its definition's amendment | the architect's constraints (C2, C6) | Out of scope: feat-roles-availability's *a role not current with its approved definition is reconciled* and feat-skills-availability's *a hand-diverged skill is reconciled* carry it; this feature's scenarios read the definitions |
 | The offer's shape differing by which role attaches | the architect's constraints (C1); the designer's D4 (the initiative's v4) | Scenario: a part of the offer outside the role's domain reads none with its reason — one shape, the part outside the role's domain marked "none" with its reason |
 | An instruction added at the step to obtain a part the type lacks | the architect's constraints (C3) | Scenario: a role attaching to an initiative offers complete information unasked — the Given holds the instruction to the step's own; a gap is repaired in the type, and an observation made with an added instruction does not count toward the measure (the row *The lead-pm supplying the offer by hand each time*) |
@@ -366,3 +368,7 @@ Feature: Roles own their decisions
 | 1 | 2026-09-06 | update | Authored by the PO role alone in the feature-authoring draft step, from init-role-decisions's Framing and For whom sections (v8, planned), with sess-2026-09-05-d for the originator's words; eight scenarios, all owned by the lead shop per the initiative's Decomposition; interaction types none per its For whom; every scenario `@hash:pending` — the authoring session had no shell, so the lead-pm fills the values (sha256 of the scenario's text, first twelve hex digits, as in the repository's other features) before the check. Maker's self-check against the feature fitness set (v8), each scenario read as Given/When/Then: scenario 1 (one observable behavior) pass — each When is one action or event (a definition read, the role attaching, the check of record screening, the initiative reaching the bet, the authority reading, each role running its step), each Then observable in the running system, no step naming a data type, a typedef section, a prompt, or a route; scenario 2 (ownership and criteria) pass — an owning shop named for each of the eight; no interaction type is named, so the designer's criteria are not due at this step, and the Contributors section leaves what is due for the designer's and the architect's steps to record; scenario 3 (identity tags) pass on presence — `@feature:feat-role-decisions` and `@hash:pending` on every scenario, the hash values disclosed as pending; scenario 4 (edges) pass — fourteen rows, every case the framing's Problem, outcome, originator words, For whom, Appetite no-gos, and Decomposition name present, ten covered by scenario name, four out of scope with reasons; scenario 5 (interaction types) pass — "none" with the For whom section's reason; scenario 6 (narrative) pass — who (the four lead-shop roles; the authority at the bet and the lead-pm), what (offer complete information from the step's instruction alone; read it from the initiative), the outcome the framing's ("no bet rests on an unrecorded decision"). Status draft pending the PO output check. |
 | 2 | 2026-09-06 | update | Designer's criteria added at the feature-authoring add-usability step, from the step's prompt with nothing added by the lead-pm: the Interaction types section says "none", so the Contributors section records that no usability or accessibility criteria are due, with the reason examined against the experience principle set v2 (`core-task-parity`, `accessible-by-standard`, `agent-is-a-user`, `evidence-not-opinion`) and the core-task list v4; the scenarios a usability test would invalidate named as none; no Edges rows added; no scenario text touched. Maker's self-check against the feature fitness set v8, the scenarios that concern this part: scenario 2 (ownership and criteria) pass — no type is named in the Interaction types section, so the designer's criteria are not required, and the Contributors section now states that with its reason rather than leaving it to a later step; scenario 4 (edges) pass — the contributor's criteria name no case, so the table gains no row and none is missing; scenario 5 (interaction types) pass — "none" with a reason the framing bears out: the framing's problem and outcome concern what a role offers and what the bet rests on, read inside the initiative check, and the For whom section's reason ("the attachment is read inside a process step; no core task carries it") holds against the list on examination, the one person-reading scenario reading an authored artifact that is no interaction type. Scenarios 1, 3, and 6 are the PO's part and were not re-judged here. |
 | 3 | 2026-09-06 | update | Architect's constraints C1–C7 added at the feature-authoring add-constraints step, from the step's prompt with nothing added by the lead-pm: the initiative's Decomposition names no Bounded Context and no flow, so no cross-context constraint applies; what it names is a bound (the lead shop's tree; no contract), and the design decision the feature implements, adr-2026-09-05-role-offer (checked, v3), with the authority's rulings at the initiative's v7–v8, sets the constraints — one type, one home (C1); the typedef's section, then instances, then renders (C2); the obligation the role's and the activity's, the instruction unchanged (C3); the offer readable from the initiative alone (C4); a decision's record a decision record, the entry routable (C5); a missing part a named criterion's finding (C6); no Bounded Context bound (C7) — with the principles screen stated per principle. Fourteen Edges rows added and one amended (C7); no scenario text touched — the Gherkin block's sha256 before and after the edit is identical (407539f3…). Pre-state read: the feature repository in full (five features, no conflict, three touch-points named); contracts none. Maker's self-check against the feature fitness set v8, the scenarios that concern this part: scenario 2 (ownership and criteria) pass — the Contributors section says the decomposition names a bound and the design decision sets the constraints, and seven are present, each riding by name on the scenarios it bounds; scenario 4 (edges) pass — every failure or boundary case C1–C7 name has a row, each covered by a Scenario name or marked out of scope with its reason, and no earlier row was removed. Scenarios 1, 3, 5, and 6 are the PO's and the designer's parts and were not re-judged here. |
+| 3 | 2026-09-06 | update | Hashes filled by the lead-pm on 2026-09-06 by the repository convention — sha256 of each scenario's text (its Scenario line and steps), first twelve hex digits — replacing the eight `@hash:pending` values the draft carried; scenario text unchanged. |
+| 3 | 2026-09-06 | review | PO output check, the one screen (judge: claude-fable-5-1 / screen prompt v6): one confident — the Contributors sentence leaving the criteria "for the designer's and the architect's steps to record" stale once both were in; six wobbly, ruled by the PM role — the eighth scenario's Given and Then aggregating four roles in one run; the narrative's outcome clause naming the offer's home and the lead-pm beyond the framing's words; C2 carrying brief-030's ordering clause; C2 and C6 naming rendering tools; the Interaction types reason not in the framing's terms; the 4-of-4 count inside a scenario's Then. |
+| 4 | 2026-09-06 | update | The one revise, all seven: the Contributors sentence in the past tense ("were recorded at their steps below"); the eighth scenario made per role — *a role offers on its decisions at its own step*: Given one of the four lead-shop roles at the step of its process where it acts on an initiative, given that step's instruction with nothing added by the lead-pm; When the role runs that step; Then it comes back with complete information on the decisions its definition names — a new scenario by hash (`@hash:pending`, the lead-pm fills it), the 4-of-4 aggregate moved to the Edges row *The target, 4 of 4*, and the ownership list, four Edges rows, and C2's and C3's "Rides on" lists renamed to it; the narrative's outcome clause in the framing's words — "and the authority at the bet can read that offer" — in §1 and the block head alike (the narrative is not hashed), the offer's home left to C4; the Interaction types reason restated in the framing's terms with the core-task list as provenance. Edits to the architect's passages on the PM role's ruling, substance unchanged: C2's brief-030 ordering clause cut and its Edges row removed, a one-line provenance note added outside the constraints; C2's "re-rendered by role-rendering, never edited in the rendered file" and C6's "re-produced from the definition by the rendering tool, never edited by hand" each restated as the what — "a rendered file is never the source; the definition is". Maker's self-check against the feature fitness set v8 after the revise: scenario 1 pass — the new eighth scenario has one Given, one When (the role runs that step), one observable Then, no count and no implementation detail; the other seven unchanged; scenario 2 pass — the ownership list names the lead shop for the renamed scenario; the designer's and architect's passages present and the sentence introducing them no longer defers them; scenario 3 pass on presence — `@feature:` on all eight, `@hash:` on all eight, one pending; scenario 4 pass — the brief-030 row removed with its constraint clause, so no case in the table lacks a source, and the four rows naming the eighth scenario name its new title; scenario 5 pass — "none" with a reason in the framing's terms; scenario 6 pass — who, what, and the outcome, the outcome's clause now the framing's words. |
+| 5 | 2026-09-06 | state | `draft` → `checked`: the PM role's pass after the one screen and the one revise the process allows — the confident finding (a stale sentence) repaired; the wobbly ones ruled: the eighth scenario per role, the narrative in the framing's words, the tool names out of the constraints. The last hash filled by the lead-pm after the revise. |

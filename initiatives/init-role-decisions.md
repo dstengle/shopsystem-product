@@ -2,8 +2,8 @@
 type: initiative
 id: init-role-decisions
 name: Roles own their decisions
-status: planned
-version: 9
+status: active
+version: 10
 owner: lead-pm
 created: 2026-09-05
 updated: 2026-09-06
@@ -75,7 +75,7 @@ flow: none.
 
 ## Features
 
-[feat-role-decisions](../features/feat-role-decisions.md) — draft.
+[feat-role-decisions](../features/feat-role-decisions.md) — checked.
 
 ## Document History
 
@@ -90,3 +90,4 @@ flow: none.
 | 7 | 2026-09-06 | update | Positions reached in the authority's review before the bet, in its words: the attachment at the bet is the verdict with its reasons, the architecture decisions required ("What architecture decisions are required, so as to avoid getting into implementation details"), the risks, the unknowns, the evidence — the architect's work list is not part of it; implementation guidance is "the architect providing guidance to the implementer within the initiative", "related to whatever technical changes the implementer will need to do to the product", created "with the scenarios in mind", "per bounded context", "important as an artifact but … only part of a historical record". The artifact is being made now through the lane (req-2026-09-06-implementation-guidance) and is not this initiative's feature; journaling messages offline is backlog item lead-j30gv. The bet stands open. |
 | 8 | 2026-09-06 | state | `proposed` → `planned`: the authority's bet — "bet for init-role-decisions" — taken in the initiative-check decide step after the one screen and one revise, with two findings held (the architect's reason resting on a precedent; the cap's split, ruled soft with 20% variance and the attachments' home the ADR's first candidate); the lead-pm recording it. The product decision record for the go is the PO role's to make from the produced guideline and the PO output check screens it from the produced fitness set; made: [pdr-2026-09-06-bet-role-decisions](../decisions/pdr-2026-09-06-bet-role-decisions.md). |
 | 9 | 2026-09-06 | update | Features section: feat-role-decisions added, draft — written by the feature-authoring draft step (the PO role), the typedef's list of features as they are made; eight scenarios, all owned by the lead shop. |
+| 10 | 2026-09-06 | state | `planned` → `active`: feat-role-decisions's pass through the PO output check (one screen, one revise; the PM role's pass) — written by that check's record step through its declared framing input. |
