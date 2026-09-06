@@ -5,7 +5,7 @@ defines: role-offer
 owner: product-authority
 status: approved
 approved: 2026-09-06
-version: 1
+version: 2
 created: 2026-09-06
 updated: 2026-09-06
 ---
@@ -27,8 +27,13 @@ rendering into the initiative, as the
 [initiative typedef](../artifacts/initiative.md)'s Feasibility and
 usability section states: the verdict with its reasons rendered there,
 the full offer in the initiative's Document History until the cap's
-split is ruled; and by the pre-bet route to a decision record, once
-the process's owner adds it. The decision it implements is
+split is ruled; and by that process's `route-decisions` and
+`author-decision-record` steps — the pre-bet route, which reads each
+entry of the solutions architect role's `decisions` for a `record`
+reading `none`, runs
+[ADR authoring](../processes/adr-authoring.md) on the decision, and
+writes the record's id in place of `none`, in the offer and in the
+initiative. The decision it implements is
 [adr-2026-09-05-role-offer](../../decisions/adr-2026-09-05-role-offer.md).
 
 `role` is the attaching role's id. `verdict` is the role's judgment
@@ -104,3 +109,4 @@ schema:
 | Version | Date | Kind | Entry |
 |---|---|---|---|
 | 1 | 2026-09-06 | update | Authored under init-role-decisions / feat-role-decisions on the authority's bet of 2026-09-06, implementing adr-2026-09-05-role-offer (checked, v3) §2 — one type, whichever role attaches — and the feature's constraints C1 (one shape, one type, one home; the parts as fields; a part outside the role's domain carried as "none" with the reason, never omitted), C4 (the evidence the role's admissible evidence at the coordinating level), and C5 (each decision entry's `record` a decision record's id or the literal "none", a routable value; what "a record stands" means). The name and field names are the author's under the data-type typedef (v3); the designer's U4 (the initiative's Document History v4) recommends the product designer role screen the field names — pending, a recommendation. Status approved on the authority's bet under the checked decision, as the implementation-guidance typedef's same-day precedent. Maker's evaluation against the data-type typedef's checklist: `defines` matches the id initiative-check references; producers (the two attach steps) and consumers (screen, decide, the pending pre-bet route) named and linked; every field typed, the one enum-like value (`none`) stated as a literal in its comment, nesting inline as the typedef admits. Made by the lead-solutions-architect role. |
+| 2 | 2026-09-06 | update | Under req-2026-09-06-pre-bet-route at the small-change process's make step: the Purpose names `route-decisions` and `author-decision-record` of initiative-check as the consumer that reads each entry's `record` and the writer of the record's id in place of `none`, replacing "once the process's owner adds it"; the schema is unchanged — `record` already holds an id. Maker's evaluation against the data-type typedef's checklist: `defines` unchanged and still what initiative-check's `$ref` resolves; producers (the two attach steps) and consumers (screen, decide, the two route steps) named and linked; every field typed, the one literal (`none`) stated in its comment, no field added. Made by the lead-solutions-architect role. |

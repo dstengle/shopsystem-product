@@ -1,8 +1,8 @@
 ---
 type: request
 id: req-2026-09-06-pre-bet-route
-status: routed
-version: 2
+status: done
+version: 5
 date: 2026-09-06
 reader: lead-pm
 owner: lead-pm
@@ -13,7 +13,7 @@ received-through: operational-contract
 arose-in: brief-037
 route: small-change
 route-reason: "one route added to the initiative-check process — each decision in an attaching role's offer whose record reads none is sent to adr-authoring before the screen — within the lead shop's own definitions, demonstrable on the next initiative check, no appetite worth a bet; the checked ADR listed it as a reversible process change"
-routed-to: ""
+routed-to: requests/req-2026-09-06-pre-bet-route.md#result
 work-item: lead-ov7bc
 ---
 
@@ -215,9 +215,115 @@ skill at the load point equals a fresh render.
 ( python3 basis/tools/lint_basis.py && p=basis/processes/initiative-check.md && grep -q -E '^  - id: route-decisions$' "$p" && grep -q -E '^  - id: author-decision-record$' "$p" && grep -q -E 'execution: sub-process, process: adr-authoring-process, from: adr-authoring.md' "$p" && grep -q -E '^result: artifact$' basis/processes/adr-authoring.md && echo "initiative-check: route-decisions and author-decision-record present, adr-authoring runs as the sub-process; adr-authoring: result is the record" && s=$(mktemp -d) && mkdir -p "$s/defs" && ln -s "$PWD/basis/types" "$s/types" && ln -s "$PWD/basis/artifacts" "$s/artifacts" && for n in initiative-check adr-authoring; do d="basis/processes/$n.md"; cp "$d" "$s/defs/$n.md" && python3 basis/tools/compile_process.py "$s/defs/$n.md" --skill "$s/$n/SKILL.md" >/dev/null && diff -q "$s/defs/$n.md" "$d" && diff -q "$s/$n/SKILL.md" ".claude/skills/$n/SKILL.md" && echo "$n: diagram current, skill equals fresh render" || exit 1; done )
 ```
 
+### Change made
+
+**Round 1** — maker: the lead-solutions-architect role, 2026-09-06.
+
+Paths changed, each with its version before and after:
+
+- basis/processes/initiative-check.md — 8 → 9. The two steps added
+  between `attach-usability` and `screen`: `route-decisions`
+  (runtime; branches on `feasibility_offer` — "success exit: no entry
+  reads none" to `screen`, else to the sub-process step) and
+  `author-decision-record` (`{execution: sub-process, process:
+  adr-authoring-process, from: adr-authoring.md}`, inputs `subject,
+  principles, adr_criteria` mapping positionally to adr-authoring's
+  parameters, output `record`, `next: route-decisions`);
+  `attach-usability`'s `next` is `route-decisions`; the `parameters`
+  list, `result`, and every other step unchanged. Data gains
+  `principles` and `adr_criteria` at `initial` values (the
+  architecture principle set, the adr fitness set), `subject`, and
+  `record`; the frontmatter gains `produces: [adr]` and the declared
+  condition function `record_id` (string -> string: the `id` in the
+  record's frontmatter). O6 and its derived check; the Purpose and
+  Roles name the sub-process; the bound on the designer's offer
+  stated in one sentence in Data with its reason. The maker's
+  choices under the Definition's "whichever step writes it" and
+  their reasons: `route-decisions` writes the id — its `run` (sed)
+  into the initiative at the entry, matched by the type's field name
+  and literal `record: none`, the first in the document; its `set`
+  into the offer's entry through `record_id`, and the next subject
+  in adr-authoring's terms. The `run` and the `set` each read
+  `record` and neither reads what the other wrote, so their order
+  in the rendering does not bear; the `set`'s assignments apply in
+  the order written (the subject after the rewrite). Two runtime
+  contents in one step is a first in the corpus: the Definition
+  admits exactly two steps, the entry must be rewritten in the data
+  for the loop to reach its exit, and the initiative must show the
+  id before the screen — no single content kind does both. The
+  in-place write carries no history row of its own in the
+  initiative; the record's own Document History, which adr-authoring
+  writes, is the record of it.
+- basis/processes/adr-authoring.md — 2 → 3. `result: artifact`; the
+  Data prose states what a run returns; steps unchanged.
+- basis/types/role-offer.md — 1 → 2. The Purpose names
+  `route-decisions` and `author-decision-record` as the consumer and
+  the writer; schema unchanged.
+- .claude/skills/initiative-check/SKILL.md — re-rendered by
+  basis/tools/compile_process.py from its source; source-digest
+  sha256:08e85a0ae7ba → sha256:bc43f9ddb913.
+- .claude/skills/adr-authoring/SKILL.md — re-rendered by
+  basis/tools/compile_process.py from its source; source-digest
+  sha256:ab34ce6ef7d6 → sha256:9709209e8685.
+
+Evaluation of each changed definition against its definition of
+good, recorded in each one's history row: the two process
+definitions against the process-definition typedef's checklist and
+fitness set (compile clean and byte-stable, no prose outside
+`prompt`, the new loop's labeled exit, declared reads only, the
+result the artifact, no tool the repository lacks); the data type
+against the data-type typedef's checklist. Verifying observation:
+exit 0 — "initiative-check: route-decisions and
+author-decision-record present, adr-authoring runs as the
+sub-process; adr-authoring: result is the record"; "initiative-check:
+diagram current, skill equals fresh render"; "adr-authoring: diagram
+current, skill equals fresh render". Lint: PASS, 0 violations.
+
+### Check
+
+**Round 1** — verdict: **pass** — by the lead-pm role, 2026-09-06, at
+the small-change process's check step; the maker was the
+lead-solutions-architect role. Each statement decided against the
+changed definitions: the initiative check gains the route and the
+sub-process step, bounded by the entries, with its labeled exit to the
+screen; adr-authoring returns the record it made; the type names the
+steps; the diagrams are regenerated and the skills equal a fresh
+render; each history row cites this request with its version bumped;
+the product flow's mapping is untouched. The maker's two disclosures
+weighed: a runtime step carrying both a write to the initiative and a
+rewrite of the offer's entry is within the definition's statement on
+writing the record before the screen; the in-place write presumes the
+offer rendered in the type's field shape, which the initiative typedef
+(v11) requires, so the first attachment made under it is where the
+route is first exercised. Finding: none.
+
+### Verified result
+
+The verifying observation the Definition named was run by the runtime
+from the repository root on 2026-09-06; its evidence:
+
+```
+PASS: 0 violation(s)
+initiative-check: route-decisions and author-decision-record present, adr-authoring runs as the sub-process; adr-authoring: result is the record
+initiative-check: diagram current, skill equals fresh render
+adr-authoring: diagram current, skill equals fresh render
+exit 0
+```
+
+Recorded by the lead-pm role, 2026-09-06. The Definition, the Check's
+verdict by the lead-pm role, and this result stand; between the
+request and this result no bet was taken and no check of record was
+run. The effect in the running system: the next initiative check sends
+each decision the architect names as unrecorded to ADR authoring
+before the screen, so no bet rests on an unrecorded decision by
+definition — the gap filed as lead-8hcu8 closed.
+
 ## Document History
 
 | Version | Date | Kind | Entry |
 |---|---|---|---|
 | 1 | 2026-09-06 | update | Recorded by the lead-pm at the request-intake process's record step from brief-037 ask 2 and the authority's confirmation; routed small-change, said, and accepted by the authorization; work item lead-ov7bc opened; dispatched to the small-change lane. |
 | 2 | 2026-09-06 | update | Definition written by the lead-po role at the small-change process's define step: judged a simple change by the glossary's entry; twelve acceptance statements; paths — initiative-check and adr-authoring with their two skill renderings (source and tool named), the role-offer type; two paths beyond the route's three, each with its reason (adr-authoring's result must be the record for the route to have an id to write; the type's Purpose must name the step that consumes it); scope bound to the architect's offer with the reason recorded — the designer's side has no record type or authoring process under the adr typedef's rule — as a recommendation to the PM role; maker lead-solutions-architect; verifying observation as one command from the repository root. Maker's evaluation of this definition against the step's prompt: opens with the request's id; every statement decidable by reading a named artifact; every path listed with its rendering's source and tool; one observation whose exit 0 shows the effect, in the form req-2026-09-05-single-review-cycle used, with the grep by step id added. |
+| 3 | 2026-09-06 | update | Change made, round 1, by the lead-solutions-architect role at the small-change process's make step: initiative-check 8 → 9, adr-authoring 2 → 3, role-offer 1 → 2, the two skills re-rendered by the compiler; the maker's choices under "whichever step writes it" recorded with their reasons; the verifying observation exit 0 and the lint clean. |
+| 4 | 2026-09-06 | update | Check passed (round 1) by the lead-pm role; the verifying observation run by the runtime, exit 0; the verified result recorded and status set to done at the small-change process's record step. |
+| 5 | 2026-09-06 | update | Where the route led written into routed-to by the lead-pm at the request-intake process's land-result step; the lane's work item lead-ov7bc closed as done; lead-8hcu8 closed as applied. |

@@ -1,11 +1,13 @@
 ---
 name: initiative-check
 description: "Take a proposed initiative to the bet: the solutions architect and product\
-  \ designer roles attach the sections they own, the cold reviewer screens the whole\
-  \ against the initiative fitness set \u2014 the check of record on the PM role's\
-  \ framing \u2014 and the authority decides, from the verdict, whether to spend the\
-  \ appetite. Use when a proposed initiative needs its feasibility, decomposition,\
-  \ and usability attached, the check of record run, and the authority's bet taken."
+  \ designer roles attach the sections they own, each decision the solutions architect\
+  \ role's offer leaves unrecorded is recorded through the ADR authoring process before\
+  \ the screen, the cold reviewer screens the whole against the initiative fitness\
+  \ set \u2014 the check of record on the PM role's framing \u2014 and the authority\
+  \ decides, from the verdict, whether to spend the appetite. Use when a proposed\
+  \ initiative needs its feasibility, decomposition, and usability attached, the check\
+  \ of record run, and the authority's bet taken."
 type: skill
 id: initiative-check-skill
 status: approved
@@ -15,14 +17,14 @@ generated: true
 generated-by: basis/tools/compile_process.py
 derived-from: initiative-check-process
 source: basis/processes/initiative-check.md
-source-digest: sha256:08e85a0ae7ba
+source-digest: sha256:bc43f9ddb913
 activation: model-judged
 promotion: experiment-local
 ---
 
 # Initiative check (compiled from `initiative-check-process`)
 
-Take a proposed initiative to the bet: the solutions architect and product designer roles attach the sections they own, the cold reviewer screens the whole against the initiative fitness set — the check of record on the PM role's framing — and the authority decides, from the verdict, whether to spend the appetite.
+Take a proposed initiative to the bet: the solutions architect and product designer roles attach the sections they own, each decision the solutions architect role's offer leaves unrecorded is recorded through the ADR authoring process before the screen, the cold reviewer screens the whole against the initiative fitness set — the check of record on the PM role's framing — and the authority decides, from the verdict, whether to spend the appetite.
 
 **The bet is taken on the screen's verdict and the initiative's own first three sections, never on advocacy; a finding in another role's attachment is that role's to answer, not the reviser's to rewrite.**
 
@@ -32,6 +34,8 @@ Result of a run: `initiative` (string).
 flowchart TD
   attach_architecture(["Attach feasibility and decomposition — agent: lead-solutions-architect<br/>in — initiative: string, contracts: string, repository: string<br/>out — initiative: string, feasibility_offer: role-offer"])
   attach_usability(["Attach usability evidence — agent: lead-product-designer<br/>in — initiative: string, experience_principles: string, core_tasks: string<br/>out — initiative: string, usability_offer: role-offer"])
+  route_decisions{"Route each unrecorded decision to its record<br/>in — feasibility_offer: role-offer, record: string, initiative: string<br/>sets — feasibility_offer.decisions.entries: field of role-offer, subject: string"}
+  author_decision_record{{"Author the decision's record — sub-process: adr-authoring-process<br/>in — subject: string, principles: string, adr_criteria: string<br/>out — record: string"}}
   screen(["Screen against the fitness set — agent: cold-reviewer<br/>in — initiative: string, criteria_path: string<br/>out — review: screen-review, judge_stamp: string"])
   log_round["Record the round — runtime<br/>in — review: screen-review, round_log: screen-review[], judge_stamp: string, judge_log: string[]<br/>sets — round_log: screen-review[], judge_log: string[]"]
   route_screen{"Route on the screen<br/>in — review: screen-review"}
@@ -41,7 +45,10 @@ flowchart TD
   __end(("end<br/>result — initiative: string"))
   __start(("start")) --> attach_architecture
   attach_architecture --> attach_usability
-  attach_usability --> screen
+  attach_usability --> route_decisions
+  route_decisions -->|success exit: no entry reads none| screen
+  route_decisions -->|else| author_decision_record
+  author_decision_record --> route_decisions
   screen --> log_round
   log_round --> route_screen
   route_screen -->|success exit: clean| decide
@@ -70,7 +77,7 @@ Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ## attach-usability — Attach usability evidence
 
 Run by an agent in role `lead-product-designer`. reads: initiative, experience_principles, core_tasks · writes: initiative, usability_offer.
-- then: `screen`
+- then: `route-decisions`
 
 Prompt:
 
@@ -80,6 +87,41 @@ your offer, the role-offer type this step outputs, rendered
 into the initiative as its typedef states — or ask questions.
 
 Do not use these words: ratif, disposition, rebaseline bill, surface, seat
+```
+
+## route-decisions — Route each unrecorded decision to its record
+
+Run by the runtime — no agent, no prose. reads: feasibility_offer, record, initiative · writes: feasibility_offer.decisions.entries, subject.
+
+```yaml
+set:
+  feasibility_offer.decisions.entries: 'record == "" ? feasibility_offer.decisions.entries
+    : feasibility_offer.decisions.entries.map(e, e.record == "none" && e.decision
+    == feasibility_offer.decisions.entries.filter(n, n.record == "none")[0].decision
+    ? {"decision": e.decision, "record": record_id(record)} : e)'
+  subject: '!feasibility_offer.decisions.entries.exists(e, e.record == "none") ? ""
+    : "Decision: " + feasibility_offer.decisions.entries.filter(e, e.record == "none")[0].decision
+    + ". Decided by: " + feasibility_offer.role + ", under a right it holds, or by
+    the authority under escalation where no listed right covers it. Trigger: the bet
+    on the initiative at " + initiative + ". Evidence: the offer as rendered into
+    that initiative''s Document History."'
+run: '[ -z "${record}" ] || sed -i "0,/record: none/s//record: $(sed -n ''s/^id: //p''
+  ${record})/" ${initiative}
+
+  '
+branches:
+- label: 'success exit: no entry reads none'
+  when: '!feasibility_offer.decisions.entries.exists(e, e.record == "none")'
+  next: screen
+- else: author-decision-record
+```
+
+## author-decision-record — Author the decision's record
+
+Run by the runtime — no agent, no prose. reads: subject, principles, adr_criteria · writes: record.
+
+```yaml
+next: route-decisions
 ```
 
 ## screen — Screen against the fitness set

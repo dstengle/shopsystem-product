@@ -12,12 +12,12 @@ type: skill
 id: adr-authoring-skill
 status: approved
 created: 2026-09-02
-updated: 2026-09-05
+updated: 2026-09-06
 generated: true
 generated-by: basis/tools/compile_process.py
 derived-from: adr-authoring-process
 source: basis/processes/adr-authoring.md
-source-digest: sha256:ab34ce6ef7d6
+source-digest: sha256:9709209e8685
 activation: model-judged
 promotion: experiment-local
 ---
@@ -28,7 +28,7 @@ Author one architecture decision record from a decision the solutions architect 
 
 **The record is the decision made durable, not the discussion transcribed. A finding the criteria cannot name is a missing criterion, and the decision that follows is a definition change, not a verdict on the maker.**
 
-Result of a run: `decision` (check-decision).
+Result of a run: `artifact` (string).
 
 ```mermaid
 flowchart TD
@@ -39,7 +39,7 @@ flowchart TD
   revise(["Revise the record — agent: lead-solutions-architect<br/>in — artifact: string, review: screen-review, principles: string, ask: ask<br/>out — artifact: string"])
   decide[["Decide on the verdict — human: lead-pm<br/>in — review: screen-review, round_log: screen-review[], artifact: string<br/>out — decision: check-decision"]]
   record(["Record the decision — agent: lead-pm<br/>in — decision: check-decision, artifact: string, round_log: screen-review[], judge_log: string[]<br/>out — artifact: string, gap_entry: string, definition: string"])
-  __end(("end<br/>result — decision: check-decision"))
+  __end(("end<br/>result — artifact: string"))
   __start(("start")) --> author
   author --> screen
   screen --> log_round

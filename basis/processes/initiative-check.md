@@ -4,12 +4,14 @@ id: initiative-check-process
 owner: product-authority
 status: approved
 approved: 2026-08-31
-version: 8
+version: 9
 created: 2026-08-31
 updated: 2026-09-06
-produces: []
+produces: [adr]
 carried-by: initiative-check-skill
 condition-language: cel
+condition-functions:
+  record_id: "string -> string"
 hold-after: P7D
 ask-cap: P1D
 annotations:
@@ -22,7 +24,9 @@ annotations:
 # Process: Initiative check
 
 **Purpose:** Take a proposed initiative to the bet: the solutions
-architect and product designer roles attach the sections they own, the
+architect and product designer roles attach the sections they own,
+each decision the solutions architect role's offer leaves unrecorded
+is recorded through the ADR authoring process before the screen, the
 cold reviewer screens the whole against the initiative fitness set —
 the check of record on the PM role's framing — and the authority
 decides, from the verdict, whether to spend the appetite.
@@ -53,6 +57,10 @@ reviser's to rewrite.
 - O5. A repair that touches another role's attachment leaves the run
   as an ask to that role, with a default — witnessed by `revise`'s
   `asks` and the `ask` value.
+- O6. Every `none` in the solutions architect role's offer is a
+  decision record before the screen, or the run goes straight to the
+  screen — witnessed by `route-decisions`'s labeled branches and
+  `author-decision-record`'s `run-by`.
 
 **Roles:** attacher (architecture) —
 [`../roles/lead-solutions-architect.md`](../roles/lead-solutions-architect.md)
@@ -68,7 +76,9 @@ role checks the PM role's framing). the authority —
 product-authority (human-held; takes the bet). the PM role —
 [`../roles/lead-pm.md`](../roles/lead-pm.md) (held by the authority in
 person; its agent steps assist — `revise` repairs and asks, `record`
-writes the outcome).
+writes the outcome). At `author-decision-record` the
+[ADR authoring](adr-authoring.md) process's own roles run, unchanged
+by this process.
 
 **Carried by:**
 [`../../.claude/skills/initiative-check/SKILL.md`](../../.claude/skills/initiative-check/SKILL.md)
@@ -85,6 +95,8 @@ edit by hand.
 flowchart TD
   attach_architecture(["Attach feasibility and decomposition — agent: lead-solutions-architect<br/>in — initiative: string, contracts: string, repository: string<br/>out — initiative: string, feasibility_offer: role-offer"])
   attach_usability(["Attach usability evidence — agent: lead-product-designer<br/>in — initiative: string, experience_principles: string, core_tasks: string<br/>out — initiative: string, usability_offer: role-offer"])
+  route_decisions{"Route each unrecorded decision to its record<br/>in — feasibility_offer: role-offer, record: string, initiative: string<br/>sets — feasibility_offer.decisions.entries: field of role-offer, subject: string"}
+  author_decision_record{{"Author the decision's record — sub-process: adr-authoring-process<br/>in — subject: string, principles: string, adr_criteria: string<br/>out — record: string"}}
   screen(["Screen against the fitness set — agent: cold-reviewer<br/>in — initiative: string, criteria_path: string<br/>out — review: screen-review, judge_stamp: string"])
   log_round["Record the round — runtime<br/>in — review: screen-review, round_log: screen-review[], judge_stamp: string, judge_log: string[]<br/>sets — round_log: screen-review[], judge_log: string[]"]
   route_screen{"Route on the screen<br/>in — review: screen-review"}
@@ -94,7 +106,10 @@ flowchart TD
   __end(("end<br/>result — initiative: string"))
   __start(("start")) --> attach_architecture
   attach_architecture --> attach_usability
-  attach_usability --> screen
+  attach_usability --> route_decisions
+  route_decisions -->|success exit: no entry reads none| screen
+  route_decisions -->|else| author_decision_record
+  author_decision_record --> route_decisions
   screen --> log_round
   log_round --> route_screen
   route_screen -->|success exit: clean| decide
@@ -124,7 +139,31 @@ attach steps load nothing undeclared. `feasibility_offer` and
 [role-offer](../types/role-offer.md) each — the shape of what the
 attach steps produce, read by the screen and the authority through
 its rendering into the initiative as the initiative typedef states.
-The status
+The pre-bet route reads `feasibility_offer` only: a `none` in
+`usability_offer` stays a claim the screen judges against the role's
+domain, routed by hand by the PM role before the bet, because the
+designer's side has no record type and no authoring process under
+the adr typedef's rule. For the route, `principles` is the
+[architecture principle set](../architecture-principles.md) and
+`adr_criteria` the [adr fitness set](../fitness/adr.fitness.md) — the
+two criteria the [ADR authoring](adr-authoring.md) sub-process needs,
+each held at its `initial` value, not supplied at instantiation;
+`subject` is what that sub-process's Data calls a subject — the
+decision as the entry names it, the role whose offer raised it, the
+trigger, and where the evidence sits — composed by `route-decisions`
+for the first entry whose `record` reads `none`; `record` is the path
+of the record the sub-process returned, empty before any pass.
+`record_id(path)` is the one declared condition function: the `id` in
+the frontmatter of the record at `path` — the value the type's
+`record` field holds. `route-decisions`'s `run` and `set` are
+independent of each other — each reads `record` and neither reads
+what the other wrote — and its `set` assignments apply in the order
+written; the `run` finds the entry in the initiative by the type's
+field name and literal, `record: none`, the first such in the
+document, which is the entry the subject was composed for since the
+offer is rendered in the type's shape and order and the solutions
+architect role's entry precedes the designer's; it writes the id and
+nothing else. The status
 values this process writes — `planned` on bet, `proposed` kept on
 hold, `cancelled` on cancel — are the
 [initiative typedef](../artifacts/initiative.md)'s, written by this
@@ -140,6 +179,10 @@ data:
   core_tasks: {type: string, format: uri-reference}
   feasibility_offer: {$ref: role-offer, from: ../types/role-offer.md}
   usability_offer: {$ref: role-offer, from: ../types/role-offer.md}
+  principles: {type: string, format: uri-reference, initial: basis/architecture-principles.md}
+  adr_criteria: {type: string, format: uri-reference, initial: basis/fitness/adr.fitness.md}
+  subject: {type: string, initial: ""}
+  record: {type: string, format: uri-reference, initial: ""}
   review: {$ref: screen-review, from: ../types/screen-review.md}
   round_log: {type: array, items: {$ref: screen-review}, initial: []}
   judge_stamp: {type: string}
@@ -176,7 +219,33 @@ steps:
       Read the initiative at initiative and add your attachment —
       your offer, the role-offer type this step outputs, rendered
       into the initiative as its typedef states — or ask questions.
-    next: screen
+    next: route-decisions
+
+  - id: route-decisions
+    name: Route each unrecorded decision to its record
+    run-by: {execution: runtime}
+    inputs: [feasibility_offer, record, initiative]
+    run: |
+      [ -z "${record}" ] || sed -i "0,/record: none/s//record: $(sed -n 's/^id: //p' ${record})/" ${initiative}
+    set:
+      feasibility_offer.decisions.entries: >-
+        record == "" ? feasibility_offer.decisions.entries
+        : feasibility_offer.decisions.entries.map(e, e.record == "none" && e.decision == feasibility_offer.decisions.entries.filter(n, n.record == "none")[0].decision ? {"decision": e.decision, "record": record_id(record)} : e)
+      subject: >-
+        !feasibility_offer.decisions.entries.exists(e, e.record == "none") ? ""
+        : "Decision: " + feasibility_offer.decisions.entries.filter(e, e.record == "none")[0].decision + ". Decided by: " + feasibility_offer.role + ", under a right it holds, or by the authority under escalation where no listed right covers it. Trigger: the bet on the initiative at " + initiative + ". Evidence: the offer as rendered into that initiative's Document History."
+    branches:
+      - label: "success exit: no entry reads none"
+        when: "!feasibility_offer.decisions.entries.exists(e, e.record == \"none\")"
+        next: screen
+      - else: author-decision-record
+
+  - id: author-decision-record
+    name: Author the decision's record
+    run-by: {execution: sub-process, process: adr-authoring-process, from: adr-authoring.md}
+    inputs: [subject, principles, adr_criteria]
+    outputs: [record]
+    next: route-decisions
 
   - id: screen
     name: Screen against the fitness set
@@ -290,6 +359,7 @@ steps:
 | O3 | two labeled exits to `decide` and an else to `revise`; `revise.next` is `decide` | mechanical | `route-screen.branches`, `revise.next` |
 | O4 | `decide` is a human step outputting `bet` and `reasons`, its prompt bounding the bet by the typedef's commitment; `record` reads them | mechanical, judged | `decide`, `record.inputs` |
 | O5 | `revise` carries `asks`; process carries `ask-cap`; `ask` listed in inputs | mechanical | `revise`, frontmatter |
+| O6 | `route-decisions` stands between `attach-usability` and `screen` with a labeled success exit to `screen` and an else to `author-decision-record`, whose `run-by` names `adr-authoring-process` and whose `next` returns to `route-decisions`; each pass rewrites one `none` to an id, so the passes never exceed the offer's entries | mechanical | `route-decisions.branches`, `author-decision-record` |
 
 ## Document History
 
@@ -304,3 +374,4 @@ steps:
 | 6 | 2026-09-02 | update | Carried-by reference repointed to the load point (.claude/skills/) — the skill-rendering process's first run removed the retired home basis/skills/; the owner's sweep per its second-home escalation. |
 | 7 | 2026-09-05 | update | Single review cycle, per req-2026-09-05-single-review-cycle on the authority's words of 2026-09-05 — "I want all of the processes limited to a single review cycle, so author -> review -> revise -> continue to next step": the screen runs once; revise runs once and continues to decide; the advance-round step, the round and round_cap data, and route-screen's failsafe branch removed; decide reads the one review and the revised initiative. |
 | 8 | 2026-09-06 | update | Under init-role-decisions / feat-role-decisions on the authority's bet of 2026-09-06, per adr-2026-09-05-role-offer (its Decision and fourth consequence) and the feature's constraints C1, C3, and C6: the two attach steps output the role-offer type beside the initiative — feasibility_offer and usability_offer, declared in Data with their source — and each attach prompt is cut to one sentence naming the initiative and asking for the role's attachment or its questions; what the prompts carried is the type's and the role definitions' now, and a shape gap is repaired there, never by an instruction at the step. O1 and its derived check name the offer. Nothing else changes: the screen still reads the initiative and the criteria set only; the pre-bet route on a "none" decision entry (the ADR's third candidate) is bounded, not added — until it lands the PM role routes such an entry by hand before decide. The skill re-produced by basis/tools/compile_process.py under skill-rendering. Maker's evaluation against the process-definition typedef's producing rules: every step's inputs and outputs declared in Data, the two $refs sourced; the prompts reference declared names only; no tool named that the repository lacks; the derived checks each name a step. Made by the lead-solutions-architect role; the owner's approval of the amendment is pending. |
+| 9 | 2026-09-06 | update | Under req-2026-09-06-pre-bet-route at the small-change process's make step, on the authority's confirmation of brief-037 ask 2 — the third candidate of adr-2026-09-05-role-offer: the pre-bet route added between the attach steps and the screen. `route-decisions` (runtime) branches on `feasibility_offer` — success exit "no entry reads none" to `screen`, else to `author-decision-record`, which runs adr-authoring as a sub-process on the first entry whose `record` reads `none` and returns to the route; the loop's exit is the labeled success row and its bound the offer's entries, one rewritten per pass. The maker's choices under the Definition's "whichever step writes it": the id is written by `route-decisions` — its `run` into the initiative at the entry, its `set` into the offer's entry through the declared condition function `record_id`, the two independent of each other so their order does not bear; the subject composed by the same `set` in adr-authoring's terms; `principles` and `adr_criteria` declared with `initial` values, not parameters, so product-flow's `check` step maps as before; `produces` gains `adr`, the artifact a run now creates. Bound: the designer's offer is not read — one sentence in Data with the reason. O6 with its derived check. The skill re-rendered by basis/tools/compile_process.py. Maker's evaluation against the process-definition typedef's checklist and fitness set: compiles clean, the diagram and skill regenerated byte-stable (the verifying observation); no prose in a step outside `prompt`; the one new loop carries a labeled success exit; no step with `asks` added; every reference in the new step's `run` and `set` resolves to its declared inputs; `result` unchanged, the initiative; no tool named that the repository lacks — `sed` is the environment. Made by the lead-solutions-architect role; the owner's approval of the amendment is pending. |
