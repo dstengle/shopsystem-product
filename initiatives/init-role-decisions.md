@@ -2,8 +2,8 @@
 type: initiative
 id: init-role-decisions
 name: Roles own their decisions
-status: proposed
-version: 7
+status: planned
+version: 8
 owner: lead-pm
 created: 2026-09-05
 updated: 2026-09-05
@@ -88,3 +88,4 @@ None yet.
 | 5 | 2026-09-05 | review | Initiative-check's one screen (judge: claude-fable-5-1 / screen prompt v5): one confident — the second no-go without its reason — and five wobbly: the measure's "0 of 4" against the two data points; the outcome naming the solution's home and shape; "ADRs" in the originator's quote; the measure's given quoting an instruction; the architect's reason resting on a precedent the initiative does not carry. Repaired in the one revise, the lead-pm's sections: the no-go reasoned; the outcome stated as the condition alone; the measure counts definitions and observes each role at its own step, the two offers named as the baseline; the first quote moved here — the original words of the request's section 1: "Feasibility needs to be defined. Right now there isn't a way for the architect to express either ADRs or the need for them. This will become an issue for the designer as well." Held for the authority at the bet: the architect's precedent as a reason, and the cap's split (D2). |
 | 6 | 2026-09-05 | update | The architect's D1 recorded before the bet: [adr-2026-09-05-role-offer](../decisions/adr-2026-09-05-role-offer.md) (checked, v3; one screen, one revise) — a role's offer is one data type the attach step outputs; the role-definition typedef's section names what a role owns and does not define the shape; three candidates split out (the cap's split, the designer's fit, the pre-bet route). |
 | 7 | 2026-09-06 | update | Positions reached in the authority's review before the bet, in its words: the attachment at the bet is the verdict with its reasons, the architecture decisions required ("What architecture decisions are required, so as to avoid getting into implementation details"), the risks, the unknowns, the evidence — the architect's work list is not part of it; implementation guidance is "the architect providing guidance to the implementer within the initiative", "related to whatever technical changes the implementer will need to do to the product", created "with the scenarios in mind", "per bounded context", "important as an artifact but … only part of a historical record". The artifact is being made now through the lane (req-2026-09-06-implementation-guidance) and is not this initiative's feature; journaling messages offline is backlog item lead-j30gv. The bet stands open. |
+| 8 | 2026-09-06 | state | `proposed` → `planned`: the authority's bet — "bet for init-role-decisions" — taken in the initiative-check decide step after the one screen and one revise, with two findings held (the architect's reason resting on a precedent; the cap's split, ruled soft with 20% variance and the attachments' home the ADR's first candidate); the lead-pm recording it. The product decision record for the go is the PO role's to make from the produced guideline and the PO output check screens it from the produced fitness set; linked here once made. |

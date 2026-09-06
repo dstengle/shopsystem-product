@@ -2,7 +2,7 @@
 type: request
 id: req-2026-09-06-tools-through-skills
 status: routed
-version: 1
+version: 2
 date: 2026-09-06
 reader: lead-pm
 owner: lead-pm
@@ -13,6 +13,7 @@ received-through: operational-contract
 route: small-change
 route-reason: "one principle added to the working principle set, made through principle-set-authoring, its one screen and the owner's approval standing on the authority's direction; within the lead shop's own definitions, demonstrable on the compiled principles page in one session, no appetite worth a bet"
 routed-to: ""
+work-item: lead-xsbuk
 ---
 
 # Request: framework tools are used through skills
@@ -52,8 +53,11 @@ definitions, demonstrable in one session, spending no appetite worth a
 bet. Topic: "framework tools are used through skills
 (req-2026-09-06-tools-through-skills)".
 
-Originator's answer: **not yet answered.** Nothing is acted on until
-the originator answers.
+Originator's answer: **accepted** — "record tools-through-skills",
+2026-09-06, read by the lead-pm as the answer to the route said (the
+request itself was already recorded); disclosed here. Landed; work
+item lead-xsbuk opened for the lane; it points here and carries nothing
+of what was asked.
 
 ## 4. Result
 
@@ -62,3 +66,4 @@ the originator answers.
 | Version | Date | Kind | Entry |
 |---|---|---|---|
 | 1 | 2026-09-06 | update | Recorded by the lead-pm at the request-intake process's record step; the originator's "record it" confirmed the reading of the words as an ask. Route decided and said at decide-route; awaiting the originator's answer. Evidence at recording: the PO read three tools' argument handling to write verification commands this week; the intake process's scripts carry bare commands with their flags; the lead-pm ran the rendering checks by copying shell from a skill. |
+| 2 | 2026-09-06 | update | The route accepted by the originator's "record tools-through-skills", read as the answer and disclosed; landed; work item lead-xsbuk opened; dispatched to the small-change lane. |
