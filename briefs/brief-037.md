@@ -1,7 +1,7 @@
 ---
 type: decision-brief
 id: brief-037
-status: delivered
+status: decided
 date: 2026-09-06
 reader: product-authority
 decisions-requested: 4
@@ -15,7 +15,7 @@ relates-to:
   - requests/req-2026-09-06-implementation-guidance.md
   - requests/req-2026-09-06-tools-through-skills.md
   - requests/req-2026-09-06-plain-status.md
-version: 2
+version: 3
 ---
 
 # Brief 037: roles own their decisions delivered; four decisions
@@ -179,3 +179,4 @@ candidates, the requests, the notes, and this brief's cold read.
 | 1 | 2026-09-06 | review | Cold read, the one round the definition allows (judge: claude-fable-5-1, cold-reviewer, fresh context): findings — Ask 1 wobbly (the 2 of 4 read as today's result where it is the pre-change baseline; the eleven changes listed as types, not counted; the shell caveat apart from the evidence it qualifies); Ask 2 wobbly (one sentence carrying the branch and its path; "left it out as bounded"); Ask 3 half confident, half cannot-decide (the second request without the problem observed, its cost, or why now; the status questions unquoted); over-sized; the attachment's home and the glossary candidacy as decisions hidden in notes; route, lane, screen, and fitness set unintroduced before the gate paragraph; "It did" unqualified and a tense slip; work-item ids and "the operational contract gap" unglossed. |
 | 2 | 2026-09-06 | update | Revised once on the cold read: the opener states what the run demonstrated and that no role is yet observed under the changed definitions; Ask 4 added (the attachment's home; recommendation the full attachment outside the cap in the history entry as now), decisions-requested 4; the four terms introduced before the gate paragraph; the eleven changes counted, "pending your approval, in force until you cancel"; the shell caveat moved beside the skill-rendering evidence and lead-1qzt0 glossed; Ask 2's question in two sentences and the ADR's listing restated; Ask 3's second request given the problem observed, the cost, and why now, the status questions quoted; the other work cut to one line each and the screen count, the amendment-ordering note, and the rest sent to the annex; the glossary candidacy a deferral in the words given; the operational contract gap cut. |
 | 2 | 2026-09-06 | state | draft → delivered after the one revise the definition allows; no finding left open. |
+| 3 | 2026-09-06 | state | delivered → decided: the authority's ruling of 2026-09-06 on brief-037 — "1 & 2 confirm". Ask 1 confirmed (the eleven definition changes); ask 2 authorized (the pre-bet route as the next small change — req-2026-09-06-pre-bet-route); asks 3 and 4 stand on their defaults (the two requests recorded, nothing acted on; the attachments' home as now) until the authority says otherwise. The authority's next directions recorded as requests: the tool skills; the migration re-evaluated. |
