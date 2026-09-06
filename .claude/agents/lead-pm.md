@@ -4,7 +4,7 @@ description: The product-management role of the lead shop. Frames intent, holds 
 tools: Read, Edit, Write, Bash, Grep, Glob
 maxTurns: 100
 source: basis/roles/lead-pm.md
-source-digest: sha256:efe0235c24bb
+source-digest: sha256:52b863a9192e
 ---
 
 <!-- Generated from `basis/roles/lead-pm.md` by `basis/tools/compile_role.py`; do not edit by
@@ -54,6 +54,15 @@ missing criterion named.
 
 **Domain (exclusive):** the framing of intent — what the shop takes an
 expression to be asking for is decided by this role alone.
+
+**Decisions owned:** the framing (exclusive); value and viability;
+roadmap priority; the pass, fail, or definition change on the PO
+role's output; the resolution of a conflict between the framing and
+another role's domain; and, as parts of decisions the authority
+takes, the product decisions a bet depends on that fall in this
+domain. On each, this role offers complete information, unasked, in
+the [role-offer](../../basis/types/role-offer.md) data type's shape, when it
+attaches to or acts on an initiative.
 
 **Decision rights.**
 - *Decides:* the framing (exclusive); and, as the accountable role,

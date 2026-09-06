@@ -5,9 +5,9 @@ target-type: initiative
 owner: product-authority
 status: approved
 approved: 2026-08-31
-version: 4
+version: 5
 created: 2026-08-28
-updated: 2026-08-31
+updated: 2026-09-06
 ---
 
 # Guideline: initiative
@@ -86,11 +86,14 @@ After: "Feasibility (architect, 2026-08-21): feasible within the
 current stack; the run log already records failure. Usability: not yet
 — ask to the product designer role, default 'a hypothesis stands until
 the first user test'."
-*Test:* read the Feasibility and usability section. *Criterion:* the
-verdict with reasons is present; where §2 names an interaction type,
-the usability evidence or hypothesis is present or marked "not yet"
-with the ask that requests it. *Decision:* yes/no per
-initiative.
+*Test:* read the Feasibility and usability section and the Document
+History entry each attaching role's full offer stands in. *Criterion:*
+the verdict with reasons is present; where §2 names an interaction
+type, the usability evidence or hypothesis is present or marked "not
+yet" with the ask that requests it; and each attaching role's offer is
+complete by the [role-offer](../types/role-offer.md) data type's parts
+— a part reading "none" with the role's reason only where its domain
+holds nothing under it. *Decision:* yes/no per initiative.
 *Derived check:* judged — initiative fitness scenario 5.
 
 **6. Name the contexts and the flow, or "not yet".**
@@ -130,3 +133,4 @@ yes/no per initiative.
 | 3 | 2026-08-28 | review | Final screen (round 3): clean. |
 | 4 | 2026-08-31 | update | Batch A: the carrying process authored and linked. |
 | 4 | 2026-08-31 | state | draft → approved with batch A+B as one block (brief-032 ask 2, default accepted). |
+| 5 | 2026-09-06 | update | Under init-role-decisions / feat-role-decisions on the authority's bet of 2026-09-06 (the feature's constraint C6, with `single-source-of-truth`): rule 5's test and criterion widened to match the initiative fitness set's amended scenario 5, which projects this rule — each attaching role's offer complete by the role-offer data type's parts, referenced here and never restated, the full offer read in the Document History entry it stands in per the initiative typedef (v11). Hand-amended: the typedef carries no Writing rules section. Made by the lead-solutions-architect role; the owner's approval of the amendment is pending. |

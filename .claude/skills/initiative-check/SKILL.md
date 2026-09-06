@@ -10,12 +10,12 @@ type: skill
 id: initiative-check-skill
 status: approved
 created: 2026-08-31
-updated: 2026-09-05
+updated: 2026-09-06
 generated: true
 generated-by: basis/tools/compile_process.py
 derived-from: initiative-check-process
 source: basis/processes/initiative-check.md
-source-digest: sha256:d768bbc1d022
+source-digest: sha256:08e85a0ae7ba
 activation: model-judged
 promotion: experiment-local
 ---
@@ -30,8 +30,8 @@ Result of a run: `initiative` (string).
 
 ```mermaid
 flowchart TD
-  attach_architecture(["Attach feasibility and decomposition — agent: lead-solutions-architect<br/>in — initiative: string, contracts: string, repository: string<br/>out — initiative: string"])
-  attach_usability(["Attach usability evidence — agent: lead-product-designer<br/>in — initiative: string, experience_principles: string, core_tasks: string<br/>out — initiative: string"])
+  attach_architecture(["Attach feasibility and decomposition — agent: lead-solutions-architect<br/>in — initiative: string, contracts: string, repository: string<br/>out — initiative: string, feasibility_offer: role-offer"])
+  attach_usability(["Attach usability evidence — agent: lead-product-designer<br/>in — initiative: string, experience_principles: string, core_tasks: string<br/>out — initiative: string, usability_offer: role-offer"])
   screen(["Screen against the fitness set — agent: cold-reviewer<br/>in — initiative: string, criteria_path: string<br/>out — review: screen-review, judge_stamp: string"])
   log_round["Record the round — runtime<br/>in — review: screen-review, round_log: screen-review[], judge_stamp: string, judge_log: string[]<br/>sets — round_log: screen-review[], judge_log: string[]"]
   route_screen{"Route on the screen<br/>in — review: screen-review"}
@@ -54,45 +54,30 @@ flowchart TD
 
 ## attach-architecture — Attach feasibility and decomposition
 
-Run by an agent in role `lead-solutions-architect`. reads: initiative, contracts, repository · writes: initiative.
+Run by an agent in role `lead-solutions-architect`. reads: initiative, contracts, repository · writes: initiative, feasibility_offer.
 - then: `attach-usability`
 
 Prompt:
 
 ```text
-Read the initiative. Write into its Decomposition section the
-Bounded Contexts it touches, the relationship kind of each
-contract between them it relies on, and the cross-context flow —
-the saga or process manager that will carry it, or "none" when
-the contexts need no flow between them. Write into its
-Feasibility and usability section your feasibility verdict with
-its reasons. Judge from the contracts at contracts and the
-feature repository at repository — your role's admissible
-evidence, never a context's internals. Infeasible is a verdict:
-give it with reasons rather than withholding one. Return the
-initiative.
+Read the initiative at initiative and add your attachment —
+your offer, the role-offer type this step outputs, rendered
+into the initiative as its typedef states — or ask questions.
 
 Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```
 
 ## attach-usability — Attach usability evidence
 
-Run by an agent in role `lead-product-designer`. reads: initiative, experience_principles, core_tasks · writes: initiative.
+Run by an agent in role `lead-product-designer`. reads: initiative, experience_principles, core_tasks · writes: initiative, usability_offer.
 - then: `screen`
 
 Prompt:
 
 ```text
-Read the initiative. Where its For whom section names an
-interaction type, write into the Feasibility and usability
-section the usability evidence for the outcome on those types,
-or the hypothesis it stands on, or "not yet" with the text of
-the ask that requests it — judged against the experience
-principle set at experience_principles and the core-task list at
-core_tasks, your role's standard. Where
-the For whom section says "none", write that no usability
-attachment is due, with the section's reason. Return the
-initiative.
+Read the initiative at initiative and add your attachment —
+your offer, the role-offer type this step outputs, rendered
+into the initiative as its typedef states — or ask questions.
 
 Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```

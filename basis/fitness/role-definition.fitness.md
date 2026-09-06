@@ -4,9 +4,9 @@ id: role-definition-fitness
 owner: product-authority
 status: approved
 approved: 2026-08-23
-version: 2
+version: 3
 created: 2026-08-23
-updated: 2026-08-25
+updated: 2026-09-06
 target-type: role-definition
 judged: true
 executable: false
@@ -60,6 +60,18 @@ Scenario 5: the capability contract enforces the stance
   roles carry read-only tools, drift-prone roles carry a turn cap —
   and the prose promises nothing the contract permits violating
 
+Scenario 6: the decisions owned are named and offered on
+  Given the Decisions owned section, read against the role's
+  exclusive domain and decision rights
+  When each decision it names is checked against them
+  Then every decision, or part of a decision, it names falls in the
+  exclusive domain or a decision right, and none the domain holds is
+  left to another role's instruction
+  And the section states that the role offers complete information
+  on them, unasked, when it attaches to or acts on an initiative
+  And it references the role-offer data type for the offer's shape
+  and restates none of its parts, and names no step
+
 ## Compile mapping (each Then/And → one judge-rubric assertion)
 
 | Scenario Then | Judge-rubric assertion |
@@ -71,6 +83,9 @@ Scenario 5: the capability contract enforces the stance
 | 3 — one exclusive domain | "Count the exclusive-domain claims and quote the decision each names. Exactly one, decision-phrased = pass." |
 | 4 — answerable accountabilities | "For each bullet: could you verify after a run that the role delivered it? 4–6 bullets, all verifiable = pass; cite any character-trait bullet." |
 | 5 — contract enforces stance | "For each stance claim, name the frontmatter key that enforces it or state that no mechanical enforcement exists. Any enforceable-but-unenforced claim = fail, cite it." |
+| 6 (Then) — decisions in the domain | "For each decision the Decisions owned section names, cite the exclusive-domain claim or the decision right it falls under; cite any decision the domain or rights hold that the section leaves unnamed. All cited, none unnamed = pass." |
+| 6 (And) — the offer stated | "Quote the sentence stating that the role offers complete information on those decisions unasked when it attaches to or acts on an initiative. Present = pass." |
+| 6 (And) — shape referenced, no step | "Does the section reference the role-offer data type? Quote any offer part it restates and any step or moment it names. Referenced, both lists empty = pass." |
 
 ## Sources
 
@@ -87,3 +102,4 @@ established.
 | 1 | 2026-08-23 | update | Authored as the role-definition meta-chain's fitness set. |
 | 1 | 2026-08-23 | state | draft → approved by the owner, with the exemplar screens' findings accepted as valid and their repairs directed. |
 | 2 | 2026-08-25 | update | Owner direction: a near-synonym of "role" retired and banned. |
+| 3 | 2026-09-06 | update | Under init-role-decisions / feat-role-decisions on the authority's bet of 2026-09-06 (the feature's constraint C2): scenario 6 added, projecting the role-definition typedef's (v4) Decisions owned section — every decision named falls in the exclusive domain or a decision right and none the domain holds is left unnamed, the offer stated, the role-offer type referenced with no part restated and no step named — with three mapping rows. Hand-amended under the artifact-typedef typedef's rule for a type whose fitness set is not produced. Maker's evaluation against the fitness-set typedef's checklist: frontmatter guardrails unchanged; not under features/; every Then and And of scenario 6 in the mapping table, each falsifiable — a judge shown a section naming a decision outside the rights, omitting the offer sentence, listing the parts, or naming a step can point at it. Made by the lead-solutions-architect role; the owner's approval of the amendment is pending. |

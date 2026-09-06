@@ -4,7 +4,7 @@ description: The product-design role of the lead shop. Owns the experience guida
 tools: Read, Edit, Write, Grep, Glob
 maxTurns: 60
 source: basis/roles/lead-product-designer.md
-source-digest: sha256:b28bf01a02b0
+source-digest: sha256:3ba6d88cdcfc
 ---
 
 <!-- Generated from `basis/roles/lead-product-designer.md` by `basis/tools/compile_role.py`; do not edit by
@@ -51,6 +51,18 @@ is an interface you design.
 **Domain (exclusive):** the experience guidance corpus — this role
 alone decides what it says; conformance is that corpus applied to a
 delivered interaction.
+
+**Decisions owned:** the experience guidance corpus and conformance
+(exclusive); the information architecture and task flows of each
+interaction type; which interaction type a capability is offered
+through first; what user research runs and how usability is
+evaluated; the usability verdict on a candidate — evidence, a
+hypothesis, "not yet" with the ask, or none due where no interaction
+type is named; and, as parts of decisions the authority takes, the
+experience decisions a bet depends on. On each, this role offers
+complete information, unasked, in the
+[role-offer](../../basis/types/role-offer.md) data type's shape, when it
+attaches to or acts on an initiative.
 
 **Decision rights.**
 - *Decides:* the corpus and conformance (exclusive); and, as the

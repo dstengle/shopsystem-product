@@ -5,9 +5,9 @@ defines: role-definition
 owner: product-authority
 status: approved
 approved: 2026-08-22
-version: 3
+version: 4
 created: 2026-08-19
-updated: 2026-08-25
+updated: 2026-09-06
 ancestry: [definition, role-definition]
 ---
 
@@ -37,6 +37,15 @@ base: `type: role-definition`, `id`, `owner`, `status`, `created`,
 2. **Exclusive domain** — the one thing only this role may decide (e.g. a
    review round's verdict); derived from the rule that every decision has
    exactly one responsible role.
+3. **Decisions owned** — the decisions, or parts of decisions, in the
+   role's domain — its exclusive domain and its decision rights taken
+   together — named as the role's own, with the statement that the
+   role offers complete information on them, unasked, when it attaches
+   to or acts on an initiative. The offer's shape is the
+   [role-offer](../types/role-offer.md) data type's: this section
+   references that type and never restates its parts. It names
+   decisions, never a step or a moment — which step a role attaches or
+   acts at is the process's that names it (§Rules).
 
 ## Rules
 
@@ -61,6 +70,9 @@ RACI's one-Accountable rule.
 
 - Functional keys present and first. *(§Required frontmatter)*
 - 4–6 accountabilities; exactly one exclusive domain. *(§Required sections)*
+- Decisions owned names decisions the exclusive domain or the decision
+  rights cover, states the offer, references the role-offer type, and
+  restates no part. *(§Required sections 3)*
 - No sequencing text — judged check. *(§Rules)*
 
 ## Document History
@@ -71,3 +83,4 @@ RACI's one-Accountable rule.
 | 1 | 2026-08-22 | state | draft → approved. |
 | 2 | 2026-08-23 | update | Owner direction: decision-ledger references removed — changes stand on their own; history entries and text no longer cite numbered decisions. |
 | 3 | 2026-08-25 | update | Owner direction: a near-synonym of "role" retired and banned. |
+| 4 | 2026-09-06 | update | Under init-role-decisions / feat-role-decisions on the authority's bet of 2026-09-06, per adr-2026-09-05-role-offer's bound (the typedef's section names the decisions a role owns; it does not define the offer's shape) and the feature's constraint C2: one required section added, Decisions owned — the decisions, or parts of decisions, in the role's domain, named as the role's own, with the statement that the role offers complete information on them unasked when it attaches to or acts on an initiative; the shape referenced to the role-offer data type, never restated; no step named, under the no-sequencing rule; a checklist row added citing it. The fitness set (v3) is hand-amended beside it, under the artifact-typedef typedef's rule for a type whose texts are not produced. The four role definitions gain the section after this row, not before. Its order with brief-030's pending amendment to this typedef is the owner's. Maker's evaluation against the artifact-typedef typedef's checklist: `defines` unchanged; the required sections in order, the new one third; the commitment and sources unchanged; no pinned example link; the new checklist entry cites its clause; no Writing rules or Fitness scenarios section, as before. Made by the lead-solutions-architect role; the owner's approval of the amendment is pending. |

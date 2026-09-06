@@ -8,9 +8,9 @@ id: lead-solutions-architect
 owner: product-authority
 status: approved
 approved: 2026-08-25
-version: 10
+version: 11
 created: 2026-08-23
-updated: 2026-08-31
+updated: 2026-09-06
 ---
 
 # Lead Solutions Architect
@@ -57,6 +57,16 @@ principles (the conformance accountability below).
 
 **Domain (exclusive):** the stack — which technologies the product is
 built on is decided by this role alone.
+
+**Decisions owned:** the stack (exclusive); the platform guardrails;
+the decomposition and each contract's relationship kind; integration
+strategy; the product's non-functional requirements; the feasibility
+verdict on a framed problem or a feature; which context owns each
+scenario; and, as parts of decisions the authority takes, the
+architecture decisions a bet depends on. On each, this role offers
+complete information, unasked, in the
+[role-offer](../types/role-offer.md) data type's shape, when it
+attaches to or acts on an initiative.
 
 **Decision rights.**
 - *Decides:* the platform guardrails that bound the stack; the
@@ -146,3 +156,4 @@ authoring; the shop's
 | 8 | 2026-08-31 | update | Owner direction: the register is the lead shop's one record, maintained asynchronously; evidence and the register loop reworded — no on-demand queries of shops. |
 | 9 | 2026-08-31 | update | Owner direction: the feature repository (the artifacts as specified) split from the scenario register (the tracker of implemented scenarios, pulled from the shops, itself a feature to be built); pre-state is the state of the design; the register loop renamed the assignment loop, dispatching assign_scenarios only — bugfix and maintenance requests come from operational activities. |
 | 10 | 2026-08-31 | review | Round-1 screen of the repository/register split: the tightening stop removed (vehicle discrimination belongs to the operational activities that send bugfix and maintenance requests, undefined on this branch); the last-message stop re-grounded in the design-state pre-state. |
+| 11 | 2026-09-06 | update | Under init-role-decisions / feat-role-decisions on the authority's bet of 2026-09-06 (the feature's constraint C2; adr-2026-09-05-role-offer): the Decisions owned section the role-definition typedef (v4) now requires, added after the exclusive domain — the decisions, or parts of decisions, in this role's domain drawn from its exclusive domain and decision rights, with the statement that the role offers complete information on them unasked when it attaches to or acts on an initiative; the offer's shape referenced to the role-offer data type, no part restated, no step named. Nothing else changes; re-rendered to the load point by basis/tools/compile_role.py under role-rendering. Maker's evaluation against the role-definition fitness set (v3): scenario 1 pass — functional keys unchanged and first, nothing needed lives outside the file, no actor kind committed to; scenario 2 pass — the section names the activity, not a step or its order; scenario 3 pass — the exclusive domain still one, named in the section as such; scenario 4 pass — the accountabilities untouched; scenario 5 pass — no stance claim added; scenario 6 pass — every decision named falls in the exclusive domain or a decision right, the offer stated, the type referenced, no part and no step. Made by the lead-solutions-architect role; the owner's approval of the amendment is pending. |

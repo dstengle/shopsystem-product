@@ -5,9 +5,9 @@ defines: initiative
 owner: product-authority
 status: approved
 approved: 2026-08-31
-version: 10
+version: 11
 created: 2026-08-28
-updated: 2026-09-04
+updated: 2026-09-06
 ancestry: [initiative]
 ---
 
@@ -42,7 +42,8 @@ ancestry: [initiative]
   the check whose verdict the definitions rely on, since the authority
   holds the PM role in person and no other role checks the PM's
   framing. What it checks is completeness and form — originator
-  quoted, one measure, a bound, no solution, attachments present. It
+  quoted, one measure, a bound, no solution, each attachment complete
+  by its type's parts. It
   does not check whether the problem is worth solving; that value
   judgment stands unchecked by design and rests on the recorded
   originator's words and the measure. The authority *bets* on a
@@ -102,11 +103,16 @@ apply; the lifecycle stands in. Status values and their writers:
 3. **Appetite** — the bound the product will spend — time or capacity
    — that the features stay within; and the no-gos: what this
    initiative will not do, each with its reason.
-4. **Feasibility and usability** — the solutions architect role's
-   feasibility verdict with its reasons, present; and, where §2 names
-   an interaction type, the product designer role's usability evidence
+4. **Feasibility and usability** — each attaching role's offer, in
+   the [role-offer](../types/role-offer.md) data type's shape, its
+   verdict with its reasons rendered here: the solutions architect
+   role's feasibility verdict, present; and, where §2 names an
+   interaction type, the product designer role's usability evidence
    or the hypothesis it stands on, or "not yet" with the text of the
-   ask that requests it.
+   ask that requests it. Each role's full offer stands in the
+   Document History, in the attaching role's entry, until this
+   typedef's owner rules the cap's split — the first candidate of
+   [adr-2026-09-05-role-offer](../../decisions/adr-2026-09-05-role-offer.md).
 5. **Decomposition** — attached by the solutions architect role: the
    Bounded Contexts the initiative touches, the relationship kind of
    each contract between them it relies on, and the cross-context flow
@@ -163,7 +169,7 @@ of record.
 - Who; one measure with current condition and target; interaction types or "none". *(§Required sections 2; fitness 2)*
 - Appetite bounded; every no-go reasoned. *(§Required sections 3; fitness 3)*
 - Sections 1–3 name no solution or interface form. *(§Rules; fitness 4)*
-- Feasibility present; usability present or asked where §2 names a type. *(§Required sections 4; fitness 5)*
+- Each attaching role's offer complete by the role-offer type's parts, its verdict rendered; usability present or asked where §2 names a type; the full offer in the Document History. *(§Required sections 4; fitness 5)*
 - Decomposition attached or "not yet"; flow named or "none". *(§Required sections 5; fitness 6)*
 - At most 500 words; the bet statable from §1–3. *(§Rules; fitness 7)*
 
@@ -185,3 +191,4 @@ of record.
 | 8 | 2026-08-31 | review | Batch D screen round 2: the active entry names the status it replaces (planned, the only one written over) and the declared route the writer takes (the framing input), matching po-output-check v6. Repair after round 2; the end-to-end screen (batch E) covers it. |
 | 9 | 2026-08-31 | review | Batch E end-to-end screen round 1: the Features section's writer named (the feature-authoring draft step). |
 | 10 | 2026-09-04 | update | Under init-request-routing / feat-request-routing on the authority's standing direction of 2026-09-04, per adr-2026-09-04-request-front-end: optional frontmatter `request` — the request the initiative was made from, required when the discovery conversation was opened on one, written by its frame step; §1 Framing's rule states that the originator chain then begins at that request (its section 1 quoted, each quotation carrying the request's id); checklist row added. Nothing else changes; the Framing-refinement rule is lead-ghulb. Made by the architect role; the owner's approval of the amendment is pending. |
+| 11 | 2026-09-06 | update | Under init-role-decisions / feat-role-decisions on the authority's bet of 2026-09-06, per adr-2026-09-05-role-offer §2 and the feature's constraints C1 and C4: §4 states each attaching role's offer in the role-offer data type's shape with its verdict and reasons rendered there, restating no part, and names the Document History — the attaching role's entry — as the full offer's home until the owner rules the cap's split, the ADR's first candidate; the check-of-record sentence and the checklist row say each attachment is complete by its type's parts. The 500-word rule is not touched: at the bet the owner ruled the cap soft with 20% variance (the initiative's Document History v8), a ruling on the rule the owner applies until the split is recorded here. The fitness set (v5) and guideline (v5) are hand-amended beside it. Maker's evaluation against the artifact-typedef typedef's checklist: `defines` unchanged; the six required sections in order; commitment and sources unchanged; no pinned example link; the amended checklist entry cites its clause; no Writing rules or Fitness scenarios section, as before. Made by the lead-solutions-architect role; the owner's approval of the amendment is pending. |

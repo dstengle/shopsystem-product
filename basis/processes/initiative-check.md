@@ -4,9 +4,9 @@ id: initiative-check-process
 owner: product-authority
 status: approved
 approved: 2026-08-31
-version: 7
+version: 8
 created: 2026-08-31
-updated: 2026-09-05
+updated: 2026-09-06
 produces: []
 carried-by: initiative-check-skill
 condition-language: cel
@@ -34,9 +34,10 @@ reviser's to rewrite.
 
 **Outcomes:**
 - O1. The screen reads an initiative whose Feasibility and usability
-  and Decomposition sections were written by the roles that own them —
-  witnessed by `attach-architecture` and `attach-usability` preceding
-  `screen`, each outputting the initiative.
+  and Decomposition sections were written by the roles that own them,
+  each role's offer in the one shape its type defines — witnessed by
+  `attach-architecture` and `attach-usability` preceding `screen`,
+  each outputting the initiative and a `role-offer`.
 - O2. The one screen runs in a fresh context against the initiative
   fitness set and is logged — witnessed by `screen`'s `fresh-context`
   and inputs, and by `log-round`.
@@ -82,8 +83,8 @@ edit by hand.
 
 ```mermaid
 flowchart TD
-  attach_architecture(["Attach feasibility and decomposition — agent: lead-solutions-architect<br/>in — initiative: string, contracts: string, repository: string<br/>out — initiative: string"])
-  attach_usability(["Attach usability evidence — agent: lead-product-designer<br/>in — initiative: string, experience_principles: string, core_tasks: string<br/>out — initiative: string"])
+  attach_architecture(["Attach feasibility and decomposition — agent: lead-solutions-architect<br/>in — initiative: string, contracts: string, repository: string<br/>out — initiative: string, feasibility_offer: role-offer"])
+  attach_usability(["Attach usability evidence — agent: lead-product-designer<br/>in — initiative: string, experience_principles: string, core_tasks: string<br/>out — initiative: string, usability_offer: role-offer"])
   screen(["Screen against the fitness set — agent: cold-reviewer<br/>in — initiative: string, criteria_path: string<br/>out — review: screen-review, judge_stamp: string"])
   log_round["Record the round — runtime<br/>in — review: screen-review, round_log: screen-review[], judge_stamp: string, judge_log: string[]<br/>sets — round_log: screen-review[], judge_log: string[]"]
   route_screen{"Route on the screen<br/>in — review: screen-review"}
@@ -118,7 +119,12 @@ section, so the screen carries no separate framing input.
 are read, `repository` the path of the feature repository,
 `experience_principles` the experience principle set, and `core_tasks`
 the core-task list — each a lead-shop-held record, declared so the
-attach steps load nothing undeclared. The status
+attach steps load nothing undeclared. `feasibility_offer` and
+`usability_offer` are the attaching roles' offers, one
+[role-offer](../types/role-offer.md) each — the shape of what the
+attach steps produce, read by the screen and the authority through
+its rendering into the initiative as the initiative typedef states.
+The status
 values this process writes — `planned` on bet, `proposed` kept on
 hold, `cancelled` on cancel — are the
 [initiative typedef](../artifacts/initiative.md)'s, written by this
@@ -132,6 +138,8 @@ data:
   repository: {type: string, format: uri-reference}
   experience_principles: {type: string, format: uri-reference}
   core_tasks: {type: string, format: uri-reference}
+  feasibility_offer: {$ref: role-offer, from: ../types/role-offer.md}
+  usability_offer: {$ref: role-offer, from: ../types/role-offer.md}
   review: {$ref: screen-review, from: ../types/screen-review.md}
   round_log: {type: array, items: {$ref: screen-review}, initial: []}
   judge_stamp: {type: string}
@@ -152,37 +160,22 @@ steps:
     name: Attach feasibility and decomposition
     run-by: {role: lead-solutions-architect, execution: agent}
     inputs: [initiative, contracts, repository]
-    outputs: [initiative]
+    outputs: [initiative, feasibility_offer]
     prompt: |
-      Read the initiative. Write into its Decomposition section the
-      Bounded Contexts it touches, the relationship kind of each
-      contract between them it relies on, and the cross-context flow —
-      the saga or process manager that will carry it, or "none" when
-      the contexts need no flow between them. Write into its
-      Feasibility and usability section your feasibility verdict with
-      its reasons. Judge from the contracts at contracts and the
-      feature repository at repository — your role's admissible
-      evidence, never a context's internals. Infeasible is a verdict:
-      give it with reasons rather than withholding one. Return the
-      initiative.
+      Read the initiative at initiative and add your attachment —
+      your offer, the role-offer type this step outputs, rendered
+      into the initiative as its typedef states — or ask questions.
     next: attach-usability
 
   - id: attach-usability
     name: Attach usability evidence
     run-by: {role: lead-product-designer, execution: agent}
     inputs: [initiative, experience_principles, core_tasks]
-    outputs: [initiative]
+    outputs: [initiative, usability_offer]
     prompt: |
-      Read the initiative. Where its For whom section names an
-      interaction type, write into the Feasibility and usability
-      section the usability evidence for the outcome on those types,
-      or the hypothesis it stands on, or "not yet" with the text of
-      the ask that requests it — judged against the experience
-      principle set at experience_principles and the core-task list at
-      core_tasks, your role's standard. Where
-      the For whom section says "none", write that no usability
-      attachment is due, with the section's reason. Return the
-      initiative.
+      Read the initiative at initiative and add your attachment —
+      your offer, the role-offer type this step outputs, rendered
+      into the initiative as its typedef states — or ask questions.
     next: screen
 
   - id: screen
@@ -292,7 +285,7 @@ steps:
 
 | Outcome | Check | Kind | Where |
 |---|---|---|---|
-| O1 | both attach steps precede `screen` and output `initiative` | mechanical | step order, `attach-*` outputs |
+| O1 | both attach steps precede `screen` and output `initiative` and a `role-offer` | mechanical | step order, `attach-*` outputs |
 | O2 | `screen` carries `fresh-context: true` and reads only `initiative` and `criteria_path`; the one review appended | mechanical | `screen`, `log-round` |
 | O3 | two labeled exits to `decide` and an else to `revise`; `revise.next` is `decide` | mechanical | `route-screen.branches`, `revise.next` |
 | O4 | `decide` is a human step outputting `bet` and `reasons`, its prompt bounding the bet by the typedef's commitment; `record` reads them | mechanical, judged | `decide`, `record.inputs` |
@@ -310,3 +303,4 @@ steps:
 | 5 | 2026-08-31 | review | Batch E screen round 2: planned written only over proposed, matching the typedef's lifecycle. Post-approval repair from the end-to-end screen. |
 | 6 | 2026-09-02 | update | Carried-by reference repointed to the load point (.claude/skills/) — the skill-rendering process's first run removed the retired home basis/skills/; the owner's sweep per its second-home escalation. |
 | 7 | 2026-09-05 | update | Single review cycle, per req-2026-09-05-single-review-cycle on the authority's words of 2026-09-05 — "I want all of the processes limited to a single review cycle, so author -> review -> revise -> continue to next step": the screen runs once; revise runs once and continues to decide; the advance-round step, the round and round_cap data, and route-screen's failsafe branch removed; decide reads the one review and the revised initiative. |
+| 8 | 2026-09-06 | update | Under init-role-decisions / feat-role-decisions on the authority's bet of 2026-09-06, per adr-2026-09-05-role-offer (its Decision and fourth consequence) and the feature's constraints C1, C3, and C6: the two attach steps output the role-offer type beside the initiative — feasibility_offer and usability_offer, declared in Data with their source — and each attach prompt is cut to one sentence naming the initiative and asking for the role's attachment or its questions; what the prompts carried is the type's and the role definitions' now, and a shape gap is repaired there, never by an instruction at the step. O1 and its derived check name the offer. Nothing else changes: the screen still reads the initiative and the criteria set only; the pre-bet route on a "none" decision entry (the ADR's third candidate) is bounded, not added — until it lands the PM role routes such an entry by hand before decide. The skill re-produced by basis/tools/compile_process.py under skill-rendering. Maker's evaluation against the process-definition typedef's producing rules: every step's inputs and outputs declared in Data, the two $refs sourced; the prompts reference declared names only; no tool named that the repository lacks; the derived checks each name a step. Made by the lead-solutions-architect role; the owner's approval of the amendment is pending. |

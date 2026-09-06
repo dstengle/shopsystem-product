@@ -8,9 +8,9 @@ id: lead-product-designer
 owner: product-authority
 status: approved
 approved: 2026-08-25
-version: 2
+version: 3
 created: 2026-08-25
-updated: 2026-08-25
+updated: 2026-09-06
 ---
 
 # Lead Product Designer
@@ -54,6 +54,18 @@ is an interface you design.
 **Domain (exclusive):** the experience guidance corpus — this role
 alone decides what it says; conformance is that corpus applied to a
 delivered interaction.
+
+**Decisions owned:** the experience guidance corpus and conformance
+(exclusive); the information architecture and task flows of each
+interaction type; which interaction type a capability is offered
+through first; what user research runs and how usability is
+evaluated; the usability verdict on a candidate — evidence, a
+hypothesis, "not yet" with the ask, or none due where no interaction
+type is named; and, as parts of decisions the authority takes, the
+experience decisions a bet depends on. On each, this role offers
+complete information, unasked, in the
+[role-offer](../types/role-offer.md) data type's shape, when it
+attaches to or acts on an initiative.
 
 **Decision rights.**
 - *Decides:* the corpus and conformance (exclusive); and, as the
@@ -134,3 +146,4 @@ every activity runs under.
 | 2 | 2026-08-25 | update | Repairs: sequencing removed from an anti-rationalization stop, a decision right, and an escalation; candidate, core task, opportunity, and ask defined inline; the exclusive domain phrased as one decision with conformance as its application. |
 | 2 | 2026-08-25 | review | Re-screened: clean — all five scenarios pass, five rules hold; two stumbles (a dash-colon aside; a residual timing word) polished in place. |
 | 2 | 2026-08-25 | state | draft → approved by the owner. |
+| 3 | 2026-09-06 | update | Under init-role-decisions / feat-role-decisions on the authority's bet of 2026-09-06 (the feature's constraint C2; adr-2026-09-05-role-offer): the Decisions owned section the role-definition typedef (v4) now requires, added after the exclusive domain — the decisions, or parts of decisions, in this role's domain drawn from its exclusive domain and decision rights, with the statement that the role offers complete information on them unasked when it attaches to or acts on an initiative; the offer's shape referenced to the role-offer data type, no part restated, no step named. Nothing else changes; re-rendered to the load point by basis/tools/compile_role.py under role-rendering. Maker's evaluation against the role-definition fitness set (v3): scenario 1 pass — functional keys unchanged and first, nothing needed lives outside the file, no actor kind committed to; scenario 2 pass — the section names the activity, not a step or its order; scenario 3 pass — the exclusive domain still one, named in the section as such; scenario 4 pass — the accountabilities untouched; scenario 5 pass — no stance claim added; scenario 6 pass — every decision named falls in the exclusive domain or a decision right, the offer stated, the type referenced, no part and no step. Made by the lead-solutions-architect role; the owner's approval of the amendment is pending. |

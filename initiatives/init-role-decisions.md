@@ -3,7 +3,7 @@ type: initiative
 id: init-role-decisions
 name: Roles own their decisions
 status: active
-version: 10
+version: 11
 owner: lead-pm
 created: 2026-09-05
 updated: 2026-09-06
@@ -91,3 +91,4 @@ flow: none.
 | 8 | 2026-09-06 | state | `proposed` → `planned`: the authority's bet — "bet for init-role-decisions" — taken in the initiative-check decide step after the one screen and one revise, with two findings held (the architect's reason resting on a precedent; the cap's split, ruled soft with 20% variance and the attachments' home the ADR's first candidate); the lead-pm recording it. The product decision record for the go is the PO role's to make from the produced guideline and the PO output check screens it from the produced fitness set; made: [pdr-2026-09-06-bet-role-decisions](../decisions/pdr-2026-09-06-bet-role-decisions.md). |
 | 9 | 2026-09-06 | update | Features section: feat-role-decisions added, draft — written by the feature-authoring draft step (the PO role), the typedef's list of features as they are made; eight scenarios, all owned by the lead shop. |
 | 10 | 2026-09-06 | state | `planned` → `active`: feat-role-decisions's pass through the PO output check (one screen, one revise; the PM role's pass) — written by that check's record step through its declared framing input. |
+| 11 | 2026-09-06 | update | Delivered in the running system under the assignment: the role-definition typedef (v4) requires a Decisions owned section; all four lead-shop role definitions carry it and their agent files at the load point are current (role-rendering check ok); the role-offer type (v1) is what the initiative check's attach steps output, each prompt one sentence, the skill re-rendered and listed by the harness; the initiative typedef (v11) and its fitness set (v5) judge the five parts by name; the lint passes and the skill-rendering check is clean. Measure: definitions naming the decisions they own — 4 of 4; roles observed offering complete information from their step's instruction alone — 2 of 4 (the architect and the designer, in this initiative's own check, before the definitions changed); the PM and PO observations come at their next steps under the changed definitions. The implementer worked from the scenarios and the first implementation guidance record with nothing added by the lead-pm. |

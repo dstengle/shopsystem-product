@@ -4,9 +4,9 @@ id: initiative-fitness
 owner: product-authority
 status: approved
 approved: 2026-08-31
-version: 4
+version: 5
 created: 2026-08-28
-updated: 2026-08-31
+updated: 2026-09-06
 target-type: initiative
 judged: true
 executable: false
@@ -55,13 +55,21 @@ Scenario 4: the problem, not the solution
   Then no technology, structure, or interface form is named; an
   interaction type named is a what
 
-Scenario 5: feasibility and usability attached or asked
-  Given the Feasibility and usability section
-  When it is read
+Scenario 5: each attaching role's offer is complete
+  Given the Feasibility and usability section, and the Document
+  History entry each attaching role's full offer stands in
+  When they are read
   Then the solutions architect's verdict is present with reasons, and,
   where the For whom section names an interaction type, the designer's
   evidence or hypothesis is present or marked "not yet" with the ask
   that requests it
+  And each attaching role's offer carries every one of its five parts
+  — the verdict with its reasons; the decisions the bet depends on,
+  each with its record's id or "none"; the risks to the measure; the
+  unknowns, each with a default; the evidence read — a part reading
+  "none" with the role's reason passing only where the role's domain
+  holds nothing under it, and a part absent, or "none" without a
+  reason, a finding by this criterion's name
 
 Scenario 6: decomposition attached or not yet
   Given the Decomposition section
@@ -86,7 +94,8 @@ Scenario 7: one page
 | 2 — measured outcome | "Who has the problem? Quote the one measure, its quantified current condition, its target, and the interaction types or 'none' with a reason; any absent = fail." |
 | 3 — appetite and no-gos | "Is a bound in time or capacity stated? For each no-go, is a reason given? Cite any without." |
 | 4 — no solution | "In the Framing, For whom, and Appetite sections, list every sentence that names a technology, structure, or interface form (an interaction type is not a form). Empty list = pass." |
-| 5 — attachments | "Feasibility verdict present with reasons (absent = fail)? Where an interaction type is named, usability evidence or hypothesis present, or 'not yet' with an ask? Cite." |
+| 5 (Then) — attachments | "Feasibility verdict present with reasons (absent = fail)? Where an interaction type is named, usability evidence or hypothesis present, or 'not yet' with an ask? Cite." |
+| 5 (And) — complete offers | "For each attaching role, name each of the five parts — verdict with reasons, decisions with record id or 'none', risks to the measure, unknowns with defaults, evidence — as present, 'none' with a reason, or absent. Any absent, or 'none' without a reason, or 'none' where the role's domain plainly holds something = fail by this criterion; cite the part and the role." |
 | 6 — decomposition | "Contexts, relationship kinds, and flow-or-none present, or 'not yet'? Cite." |
 | 7 — one page | "Word count outside the Document History at most 500? Can the bet — spend, problem, outcome — be stated from the Framing, For whom, and Appetite sections alone? Cite." |
 
@@ -105,3 +114,4 @@ Scenario 7: one page
 | 4 | 2026-09-03 | review | Gap filed for the owner by the PM role, from the init-roles-availability screen (round 3, judge claude-fable-5-1): scenario 4 states no exemption for the originator's quoted words, so a quote naming a technology or form draws a wobbly finding on every initiative — init-skills-availability drew it too. The judge proposes exempting the originator's quoted words in scenario 4's Then. The owner decides; the set is unchanged until then. |
 | 4 | 2026-09-04 | review | Owner's ruling on the gap filed 2026-09-03: no exemption — scenario 4 stands as written; the framer's wording changes instead, and the discovery conversation is to catch solution words before the frame step (bead filed). Gap closed. |
 | 4 | 2026-09-04 | review | Gap filed for the owner by the PM role, from the init-request-routing screen (round 3, judge claude-fable-5-1): scenario 4 carries no reading for a no-go that names a structure in order to exclude it — the judge could not decide whether an exclusion names a structure. The PM role's reading at the bet: a no-go must name what it excludes, so exclusions are outside the rule; the owner's to confirm or amend. |
+| 5 | 2026-09-06 | update | Under init-role-decisions / feat-role-decisions on the authority's bet of 2026-09-06 (the feature's constraint C6; adr-2026-09-05-role-offer's first consequence): scenario 5 renamed and given a second Then judging each attaching role's offer against the five parts the role-offer data type carries, named here because the judge reads the criteria set and the initiative and nothing else — "none" with the role's reason a passing value the judge tests against the role's domain, a part absent or "none" without a reason a finding by this criterion's name, never reportable only as uncovered; the Given widened to the Document History entry the full offer stands in, the initiative typedef's (v11) home for it; a mapping row added. Hand-amended under the artifact-typedef typedef's rule for a type whose fitness set is not produced, before any screen is relied on for it. Maker's evaluation against the fitness-set typedef's checklist: frontmatter guardrails unchanged; not under features/; both Thens of scenario 5 in the mapping table, each falsifiable — a judge shown an offer missing a part, or a "none" without a reason, can point at it by name. Made by the lead-solutions-architect role; the owner's approval of the amendment is pending. |

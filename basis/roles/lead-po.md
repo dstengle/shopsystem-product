@@ -8,9 +8,9 @@ id: lead-po
 owner: product-authority
 status: approved
 approved: 2026-08-25
-version: 13
+version: 14
 created: 2026-08-23
-updated: 2026-08-31
+updated: 2026-09-06
 ---
 
 # Lead PO
@@ -56,6 +56,16 @@ the designer's and architect's criteria ride on your scenarios.
 
 **Domain (exclusive):** backlog order — this role alone decides which
 requirement the shops take up next, within the framing.
+
+**Decisions owned:** backlog order (exclusive); the placement or
+declining of enabler work; the declining of scope that serves no
+framed outcome; which scenario a clarify resolves against; the split
+of a returned crossing-contexts scenario within the framing; and, as
+parts of decisions the authority takes, the product decisions a bet
+depends on that fall in this domain. On each, this role offers
+complete information, unasked, in the
+[role-offer](../types/role-offer.md) data type's shape, when it
+attaches to or acts on an initiative.
 
 **Decision rights.**
 - *Decides:* backlog order (exclusive). The content of the artifacts
@@ -140,3 +150,4 @@ language; the [working principle set](../principles.md).
 | 11 | 2026-08-31 | review | Round-3 screen (final): the crossing-contexts escalation reconciled with the return path — the split is this role's act first, and only a scenario no split within the framing can resolve escalates to the PM role. This repair is after the last screening round; the next screen of this file covers it. |
 | 12 | 2026-08-31 | update | Owner direction: the sweep at assignment reads the feature repository (the artifacts as specified), not the scenario register (implemented scenarios, a feature to be built); evidence names the repository. |
 | 13 | 2026-08-31 | update | Batch C of brief-032's plan: the carrying processes named — features authored in feature-authoring, the order placed in backlog-ordering, each checked by the PO output check as sub-process. |
+| 14 | 2026-09-06 | update | Under init-role-decisions / feat-role-decisions on the authority's bet of 2026-09-06 (the feature's constraint C2; adr-2026-09-05-role-offer): the Decisions owned section the role-definition typedef (v4) now requires, added after the exclusive domain — the decisions, or parts of decisions, in this role's domain drawn from its exclusive domain and decision rights, with the statement that the role offers complete information on them unasked when it attaches to or acts on an initiative; the offer's shape referenced to the role-offer data type, no part restated, no step named. Nothing else changes; re-rendered to the load point by basis/tools/compile_role.py under role-rendering. Maker's evaluation against the role-definition fitness set (v3): scenario 1 pass — functional keys unchanged and first, nothing needed lives outside the file, no actor kind committed to; scenario 2 pass — the section names the activity, not a step or its order; scenario 3 pass — the exclusive domain still one, named in the section as such; scenario 4 pass — the accountabilities untouched; scenario 5 pass — no stance claim added; scenario 6 pass — every decision named falls in the exclusive domain or a decision right, the offer stated, the type referenced, no part and no step. Made by the lead-solutions-architect role; the owner's approval of the amendment is pending. |

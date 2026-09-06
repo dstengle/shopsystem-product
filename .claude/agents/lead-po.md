@@ -4,7 +4,7 @@ description: The product-ownership role of the lead shop. Makes the requirements
 tools: Read, Edit, Write, Grep, Glob
 maxTurns: 60
 source: basis/roles/lead-po.md
-source-digest: sha256:35d319b4aac7
+source-digest: sha256:2c0a8a7858cc
 ---
 
 <!-- Generated from `basis/roles/lead-po.md` by `basis/tools/compile_role.py`; do not edit by
@@ -53,6 +53,16 @@ the designer's and architect's criteria ride on your scenarios.
 
 **Domain (exclusive):** backlog order — this role alone decides which
 requirement the shops take up next, within the framing.
+
+**Decisions owned:** backlog order (exclusive); the placement or
+declining of enabler work; the declining of scope that serves no
+framed outcome; which scenario a clarify resolves against; the split
+of a returned crossing-contexts scenario within the framing; and, as
+parts of decisions the authority takes, the product decisions a bet
+depends on that fall in this domain. On each, this role offers
+complete information, unasked, in the
+[role-offer](../../basis/types/role-offer.md) data type's shape, when it
+attaches to or acts on an initiative.
 
 **Decision rights.**
 - *Decides:* backlog order (exclusive). The content of the artifacts
