@@ -1,8 +1,8 @@
 ---
 type: product-decision-record
 id: pdr-2026-09-06-bet-role-decisions
-status: draft
-version: 1
+status: checked
+version: 3
 date: 2026-09-06
 decided-by: product-authority
 right: bet
@@ -109,14 +109,15 @@ authority reverses it by a cancellation under the same right (§4).
   needs a new decision to reopen. Cost: a change to how an agent's
   instruction is assembled, should the offer's shape turn out to need
   one, has no remedy under this bet; it waits for that request.
-- The measure — role definitions naming the decisions they own, each
-  role observed offering on them at its own step, 0 of 4 → 4 of 4 —
-  is counted per role at its step: for the four roles and the
-  authority as the role-definition typedef's owner. Cost: the
-  initiative-check has an attach step for two roles only, so the PM
-  and PO data points come at their own steps, and nothing counts done
-  until each role is observed there — the session's appetite may close
-  before the count does.
+- The measure's count starts now, and the initiative cannot close
+  until four observations exist — each role seen offering on the
+  decisions its definition names, at its own step — across steps the
+  appetite does not contain: for the four roles and the authority as
+  the role-definition typedef's owner. Cost: the initiative-check has
+  an attach step for two roles only, so the PM and PO observations
+  come at their own steps, and nothing counts done until each role is
+  observed there — the session's appetite may close before the count
+  does.
 - The offer at the bet is bounded to the authority's five parts
   (Context): for the architect role, which authors the data type, and
   the designer role, which screens its field names; the work list and
@@ -147,3 +148,6 @@ reading (Context) was a defect it would not have bet on.
 | Version | Date | Kind | Entry |
 |---|---|---|---|
 | 1 | 2026-09-06 | update | Made by the PO role for the authority's go of 2026-09-06 on init-role-decisions — "bet for init-role-decisions", taken in person at the initiative-check decide step after the one screen and the one revise, the lead-pm recording it (initiative v8) — from the maker's text `basis/guidelines/product-decision-record.md` (v7; `generated: true`, produced by `basis/tools/compile_typedef.py` from `basis/artifacts/product-decision-record.md`, source-digest `sha256:d2e74320dabb`), layered on `basis/guidelines/base-writing-style.md` (v2). Before any check ran, the author applied the checker's text `basis/fitness/product-decision-record.fitness.md` (produced from the same source, the same digest) to this draft, each scenario read as Given/When/Then: scenario 1 (one decision) pass — §1's first sentence is the one go; the cap ruling taken at the same step is in Context with its home named as the initiative typedef, not a second decision here; scenario 2 (the alternatives were real) pass — the hold and the no-go, each a choice the authority could have made, each with its reason; scenario 3 (decider and right) pass — `decided-by: product-authority`, `right: bet`, and §1 naming both; scenario 4 (consequences priced) pass — six consequences, each with what changes, for whom, and its cost or what it forecloses; scenario 5 (reversibility) pass — §4 states the cost before and after the session, the threshold at which reversal turns hard, and five review triggers. Status draft pending the PO output check (form only — the decider is the authority). |
+| 1 | 2026-09-06 | review | PO output check, the one screen (judge: claude-fable-5-1 / screen prompt v6; criteria the produced fitness set `basis/fitness/product-decision-record.fitness.md`, source `basis/artifacts/product-decision-record.md`, source-digest `sha256:d2e74320dabb`): one confident — "first candidate" undefined at its first use in Context; two wobbly, ruled by the lead-pm — Context's first paragraph carrying the screen's tally (judge stamp, counts, "repaired all six") alongside the two held findings; the measure consequence's first clause restating the measure rather than what the go changes. |
+| 2 | 2026-09-06 | update | The one revise, all three: "first candidate" defined at its first use in Context — the attachments' home the checked ADR names as the first of three questions needing a record of its own, the initiative's cap splitting or the full attachment standing outside it; the screen's tally cut from Context's first paragraph, the two held findings and why they were held kept; the measure consequence's first clause now states what the go changes — the count starts now, and the initiative cannot close until four observations exist across steps the appetite does not contain. The author applied the produced fitness set's scenarios to the result again before returning: scenario 1 pass (§1's first sentence is the one go, unchanged); scenario 2 pass (hold and no-go, each with its reason, the hold's reason standing on Context's definition of the first candidate); scenario 3 pass (frontmatter and §1 unchanged on decider and right); scenario 4 pass (six consequences, the fifth now opening with what changes, its for-whom and cost unchanged); scenario 5 pass (§4 unchanged). |
+| 3 | 2026-09-06 | state | `draft` → `checked`: the PM role's pass after the one screen and the one revise — the confident finding (a term before its explanation) repaired, the two wobbly ruled; the criteria the judge read were the fitness set produced from the typedef, the same source and digest the maker's text names. |
