@@ -2,7 +2,7 @@
 type: request
 id: req-2026-09-06-tools-through-skills
 status: routed
-version: 3
+version: 4
 date: 2026-09-06
 reader: lead-pm
 owner: lead-pm
@@ -140,6 +140,56 @@ this request; the rendering carries the first statement inside its
 `tools-through-skills` entry; a fresh render of the source equals the
 committed rendering (diff empty). Any failing part exits nonzero.
 
+### Change made
+
+**Round 1** — maker: the lead-solutions-architect role, 2026-09-06, at the
+small-change lane's make step.
+
+Paths changed this round:
+
+- `basis/principles.md` — version 9 → 10. The set gains a tenth
+  principle, `tools-through-skills`, in the set's four-part form: the
+  three statements the Definition fixes, one obligation per bullet,
+  each wrapped so its verifying phrase sits on one source line; a
+  rationale showing the generic failure (a tool's use reconstructed
+  from help output differently by every agent that meets it; a missing
+  skill worked around and reconstructed again), supported by Norman,
+  *The Design of Everyday Things*; four implications, each on a named
+  actor (tool owners, process authors, whoever meets a tool with no
+  skill, reviewers), each following from a statement bullet; a
+  `tools-through-skills` column in the fitness screen, every row
+  filled. Every existing principle and every existing screen cell
+  unchanged; `updated` set to 2026-09-06; one Document History row
+  citing this request, recording the make through
+  principle-set-authoring's draft step, the author's self-check against
+  the set's opening tests, that the process's one screen is the
+  lead-pm's to run at the lane's check step and record there, and the
+  owner's approval standing on the product authority's acceptance of
+  2026-09-06 in section 3.
+- `.claude/shop/principles.md` — source-digest sha256:87b81b1e3a36 →
+  sha256:96ae4155dc8e (the rendering carries no version of its own).
+  Re-rendered by `python3 basis/tools/compile_principles.py
+  basis/principles.md .claude/shop/principles.md`; not edited by hand.
+
+Nothing outside paths changed by the maker. Disclosed: while this
+round ran, a commit of other work by the lead-pm's session (`3b50b9b`)
+swept both changed paths into HEAD before this entry was written; the
+committed content is byte-for-byte the maker's, as `git diff HEAD` on
+both paths shows empty.
+
+Disclosed for the check step's screen: the terms "framework tool",
+"skill", "agent", and "gap" have no glossary entry ("skill" is named
+only inside the glossary's rendering entry); the glossary lies outside
+the lane's paths, so principle-set-authoring's term-to-glossary rule
+could not be met in this round. The statements are the Definition's
+and were not altered.
+
+The verifying observation was run by the maker from the repository root
+after the change: exit 0, last line "principles: tools-through-skills
+present with its three statements, history cites request, rendering
+fresh, lint clean". The lint run alone: "PASS: 0 violation(s)". Their
+results are the lane's to record at verify.
+
 ## Document History
 
 | Version | Date | Kind | Entry |
@@ -147,3 +197,4 @@ committed rendering (diff empty). Any failing part exits nonzero.
 | 1 | 2026-09-06 | update | Recorded by the lead-pm at the request-intake process's record step; the originator's "record it" confirmed the reading of the words as an ask. Route decided and said at decide-route; awaiting the originator's answer. Evidence at recording: the PO read three tools' argument handling to write verification commands this week; the intake process's scripts carry bare commands with their flags; the lead-pm ran the rendering checks by copying shell from a skill. |
 | 2 | 2026-09-06 | update | The route accepted by the originator's "record tools-through-skills", read as the answer and disclosed; landed; work item lead-xsbuk opened; dispatched to the small-change lane. |
 | 3 | 2026-09-06 | update | Definition written by the lead-po role at the small-change lane's define step: judged a simple change by the glossary's entry; the principle named (`tools-through-skills`) and its three statements fixed; four acceptance statements, two paths (the principle set and its rendering with source and tool), maker lead-solutions-architect, one verifying command in the form req-2026-09-05-maker-self-check's Definition used. No artifact but this request touched. |
+| 4 | 2026-09-06 | update | Change made by the lead-solutions-architect role at the small-change lane's make step, round 1: `basis/principles.md` v9 → v10 amended through principle-set-authoring's draft step (the principle `tools-through-skills` added with its rationale, implications, and screen column); `.claude/shop/principles.md` re-rendered by the tool. Entry written under Change made, disclosing the undefined terms for the screen and the sweep of both paths into HEAD by another commit. |
