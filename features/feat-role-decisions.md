@@ -2,8 +2,8 @@
 type: feature
 id: feat-role-decisions
 name: Roles own their decisions
-status: checked
-version: 5
+status: assigned
+version: 6
 initiative: ../initiatives/init-role-decisions.md
 owner: lead-po
 created: 2026-09-06
@@ -280,49 +280,49 @@ Feature: Roles own their decisions
   offer,
   so that no bet rests on an unrecorded decision.
 
-  @feature:feat-role-decisions @hash:aba312f2b1ae
+  @bounded-context:shopsystem-product @feature:feat-role-decisions @hash:aba312f2b1ae
   Scenario: a role's definition names the decisions it owns
     Given one of the four lead-shop roles
     When its definition is read
     Then the definition names the decisions in the role's domain and states that the role offers complete information on them, unasked, when it attaches to or acts on an initiative
 
-  @feature:feat-role-decisions @hash:d24c8e22069d
+  @bounded-context:shopsystem-product @feature:feat-role-decisions @hash:d24c8e22069d
   Scenario: every lead-shop role's definition names the decisions it owns
     Given the four lead-shop roles — the PM, PO, solutions architect, and product designer roles
     When their definitions are read
     Then each of the four names the decisions in its domain, and none leaves them to the lead-pm's instruction
 
-  @feature:feat-role-decisions @hash:74a11c38f2ce
+  @bounded-context:shopsystem-product @feature:feat-role-decisions @hash:74a11c38f2ce
   Scenario: a role attaching to an initiative offers complete information unasked
     Given a role attaching to an initiative in the initiative check, given its step's instruction with nothing added by the lead-pm
     When the role attaches
     Then its attachment offers its verdict with reasons, the decisions the bet depends on — each with its record, or that it has none — the risks to the measure, what the role does not know, and the evidence it used
 
-  @feature:feat-role-decisions @hash:a66e2bd3cd35
+  @bounded-context:shopsystem-product @feature:feat-role-decisions @hash:a66e2bd3cd35
   Scenario: a part of the offer outside the role's domain reads none with its reason
     Given a role attaching to an initiative whose domain holds nothing under one part of the offer
     When the role attaches
     Then that part reads "none" with the role's reason, the other parts are offered, and the attachment is complete
 
-  @feature:feat-role-decisions @hash:2fef03c8cc09
+  @bounded-context:shopsystem-product @feature:feat-role-decisions @hash:2fef03c8cc09
   Scenario: an attachment missing a part is found before the bet
     Given an initiative whose attachment lacks one part of the offer — neither content nor "none" with a reason
     When the check of record screens the initiative
     Then the missing part is reported by name as a finding, and the bet is not available while that finding stands
 
-  @feature:feat-role-decisions @hash:c15c4d3bdff0
+  @bounded-context:shopsystem-product @feature:feat-role-decisions @hash:c15c4d3bdff0
   Scenario: no bet rests on an unrecorded decision
     Given an initiative whose attachment names a decision the bet depends on as having no record
     When the initiative reaches the bet
     Then a record of that decision stands, made before the bet, and the initiative references it
 
-  @feature:feat-role-decisions @hash:3ffc45cf66b9
+  @bounded-context:shopsystem-product @feature:feat-role-decisions @hash:3ffc45cf66b9
   Scenario: the authority reads the roles' offers from the initiative at the bet
     Given an initiative with its attachments made
     When the authority reads the initiative at the bet
     Then each attaching role's complete offer is readable from the initiative alone — its verdict with reasons, the decisions the bet depends on with their records, the risks to the measure, what the role does not know, and the evidence it used
 
-  @feature:feat-role-decisions @hash:a7aa73a0b41d
+  @bounded-context:shopsystem-product @feature:feat-role-decisions @hash:a7aa73a0b41d
   Scenario: a role offers on its decisions at its own step
     Given one of the four lead-shop roles at the step of its process where it acts on an initiative, given that step's instruction with nothing added by the lead-pm
     When the role runs that step
@@ -372,3 +372,4 @@ Feature: Roles own their decisions
 | 3 | 2026-09-06 | review | PO output check, the one screen (judge: claude-fable-5-1 / screen prompt v6): one confident — the Contributors sentence leaving the criteria "for the designer's and the architect's steps to record" stale once both were in; six wobbly, ruled by the PM role — the eighth scenario's Given and Then aggregating four roles in one run; the narrative's outcome clause naming the offer's home and the lead-pm beyond the framing's words; C2 carrying brief-030's ordering clause; C2 and C6 naming rendering tools; the Interaction types reason not in the framing's terms; the 4-of-4 count inside a scenario's Then. |
 | 4 | 2026-09-06 | update | The one revise, all seven: the Contributors sentence in the past tense ("were recorded at their steps below"); the eighth scenario made per role — *a role offers on its decisions at its own step*: Given one of the four lead-shop roles at the step of its process where it acts on an initiative, given that step's instruction with nothing added by the lead-pm; When the role runs that step; Then it comes back with complete information on the decisions its definition names — a new scenario by hash (`@hash:pending`, the lead-pm fills it), the 4-of-4 aggregate moved to the Edges row *The target, 4 of 4*, and the ownership list, four Edges rows, and C2's and C3's "Rides on" lists renamed to it; the narrative's outcome clause in the framing's words — "and the authority at the bet can read that offer" — in §1 and the block head alike (the narrative is not hashed), the offer's home left to C4; the Interaction types reason restated in the framing's terms with the core-task list as provenance. Edits to the architect's passages on the PM role's ruling, substance unchanged: C2's brief-030 ordering clause cut and its Edges row removed, a one-line provenance note added outside the constraints; C2's "re-rendered by role-rendering, never edited in the rendered file" and C6's "re-produced from the definition by the rendering tool, never edited by hand" each restated as the what — "a rendered file is never the source; the definition is". Maker's self-check against the feature fitness set v8 after the revise: scenario 1 pass — the new eighth scenario has one Given, one When (the role runs that step), one observable Then, no count and no implementation detail; the other seven unchanged; scenario 2 pass — the ownership list names the lead shop for the renamed scenario; the designer's and architect's passages present and the sentence introducing them no longer defers them; scenario 3 pass on presence — `@feature:` on all eight, `@hash:` on all eight, one pending; scenario 4 pass — the brief-030 row removed with its constraint clause, so no case in the table lacks a source, and the four rows naming the eighth scenario name its new title; scenario 5 pass — "none" with a reason in the framing's terms; scenario 6 pass — who, what, and the outcome, the outcome's clause now the framing's words. |
 | 5 | 2026-09-06 | state | `draft` → `checked`: the PM role's pass after the one screen and the one revise the process allows — the confident finding (a stale sentence) repaired; the wobbly ones ruled: the eighth scenario per role, the narrative in the framing's words, the tool names out of the constraints. The last hash filled by the lead-pm after the revise. |
+| 6 | 2026-09-06 | state | `checked` → `assigned`: the scenario-assignment record step (process v12). One assignment entry — context shopsystem-product (the lead shop), scenarios @hash:aba312f2b1ae, @hash:d24c8e22069d, @hash:74a11c38f2ce, @hash:a66e2bd3cd35, @hash:2fef03c8cc09, @hash:c15c4d3bdff0, @hash:3ffc45cf66b9, @hash:a7aa73a0b41d — each tagged `@bounded-context:shopsystem-product`, the owning shop the Contributors section names for every scenario, and the decomposition's ruling — no Bounded Context touched; every amended definition in the lead shop's tree. Pre-state read from the lead shop's records: the role-definition typedef at v3 (two required sections, none naming a role's decisions) and its fitness set at v2, hand-written; the initiative typedef at v10 (§4 asking the verdict with reasons; the 500-word rule) and its fitness set at v4, hand-written, scenario 5 judging the verdict's presence alone; initiative-check at v7, its two attach steps outputting `initiative` only with the shape carried in their prompts; the data-type typedef at v3 with twelve types and none carrying an offer; the four role definitions at lead-pm v9, lead-po v13, lead-solutions-architect v10, lead-product-designer v2; adr-2026-09-05-role-offer at v3 (checked); the feature repository swept in full — five artifacts, this feature and the four assigned, no conflict: feat-request-routing specifies the recording and routing of asks and the lane, the two availability features checks over rendered role and process definitions, feat-typedef-rendering a type's produced texts, and no scenario of any names a role's decisions, an offer, an attachment, or the bet; the touch-points are the two reconcile scenarios (@hash:d707d4311bdf, @hash:26f78a3ca4a6), which carry the re-renders C2 and C6 rely on and contradict none, and feat-typedef-rendering, which binds produced texts only, the two fitness sets amended here being hand-written; no BC contract in the pre-state — the decomposition names no context and none exists on this branch. Implementation guidance written, one record for the one context: guidance/feat-role-decisions-shopsystem-product.md (v1, written) — the definitions and tools to change in order, with versions and invocations; maker's evaluation against the implementation-guidance fitness set v1, all five pass: at the architect's level (definitions, tools, and step ids named, no internals); cited never restated (hashes and versions only, the offer's parts pointed at in the ADR, not listed); actionable alone (every definition, tool, check, and order named; what is not in this assignment named as such); each thing not to do with its reason (ten entries, each to a principle, a constraint, a typedef's rule, or the bound); bound to one assignment (frontmatter and opening paragraph). Not sent. Sent: none — the owning shop is the lead shop itself; the freeze bars dispatch and no Bounded Context exists to receive; the gap stands as lead-ki66p. |
