@@ -4,9 +4,9 @@ id: basis-index
 owner: product-authority
 status: approved
 approved: 2026-08-23
-version: 11
+version: 12
 created: 2026-08-10
-updated: 2026-09-05
+updated: 2026-09-06
 ---
 
 # Basis index
@@ -41,6 +41,15 @@ here is advisory.
   current by the typedef-rendering process
   (`processes/typedef-rendering.md`, pending); never edited by hand.
 - `roles/` — role definitions (roles, accountabilities, competencies).
+- `guidance/` at the repository root — implementation guidance
+  records, one per Bounded Context per assignment, written by the
+  [scenario-assignment process](processes/scenario-assignment.md)'s
+  assign step; the directory may not exist yet. The type's typedef is
+  [`artifacts/implementation-guidance.md`](artifacts/implementation-guidance.md),
+  and its two produced texts are the guideline
+  [`guidelines/implementation-guidance.md`](guidelines/implementation-guidance.md)
+  and the fitness set
+  [`fitness/implementation-guidance.fitness.md`](fitness/implementation-guidance.fitness.md).
 - generated skill renderings live at the agent's load point —
   `.claude/skills/` at the repository root — maintained by the
   [skill-rendering process](processes/skill-rendering.md); never edited
@@ -89,8 +98,13 @@ template interpolates — must exist, per the
 the repository lacks is a request, routed before the process runs);
 each that does not is reported naming the definition and the path,
 and the same check runs on one definition alone with
-`tools/lint_basis.py --process <path>`. The exit is nonzero on any
-violation.
+`tools/lint_basis.py --process <path>`. The lint also checks
+implementation guidance: it walks `guidance/` at the repository root —
+the directory may not exist yet — and checks each record's frontmatter
+for the keys the
+[implementation-guidance typedef](artifacts/implementation-guidance.md)
+requires, reporting each missing key by name. The exit is nonzero on
+any violation.
 
 ## Document History
 
@@ -107,3 +121,4 @@ violation.
 | 9 | 2026-09-04 | update | Lint check 9 resolves `routed-to` before its fragment — the small-change lane's result is the request's Result section by fragment, which the first run of request-intake wrote; found by that run under init-request-routing. |
 | 10 | 2026-09-05 | update | Under init-typedef-rendering / feat-typedef-rendering (adr-2026-09-05-typedef-rendering): tools/compile_typedef.py added — it produces a type's guideline and fitness set from the Writing rules and Fitness scenarios sections of its typedef, at the paths the checks read, and its --check reports a text not current with the typedef; the guidelines/ and fitness/ entries say which texts are renderings and who keeps them current; §Checks names the compiler's check and records that lint check 7 (version and Document History) exempts a file marked `generated: true` — an exemption that stood since the versioning standard and now covers the produced guideline and fitness set, so no lint code changed. Checks 1–10, --brief, and --derive-chain as before. Made by the lead-solutions-architect role. |
 | 11 | 2026-09-05 | update | Under req-2026-09-05-no-tools-mid-process at the small-change process's make step: tools/lint_basis.py extended (its check 11) to walk processes/ and check that every repository tool path a process definition names — `basis/tools/<name>.py` in a step's `run:` template or an `initial:` value — exists, reporting the definition and the missing path, with a `--process <path>` mode that runs the same check on one definition; §Checks names both. Checks 1–10, --brief, and --derive-chain as before. Made by the lead-solutions-architect role. |
+| 12 | 2026-09-06 | update | Under req-2026-09-06-implementation-guidance at the small-change process's make step, on the authority's direction of 2026-09-06 the request records: the implementation-guidance typedef added (artifacts/implementation-guidance.md) with its guideline and fitness set produced from it by compile_typedef.py; the guidance/ home listed; tools/lint_basis.py extended (its check 12) to walk guidance/ at the repository root — absent until the first assignment writes a record — and check each record's frontmatter for the keys the typedef requires, each missing key named; §Checks names it. Checks 1–11, --brief, --process, and --derive-chain as before. Made by the lead-solutions-architect role. |

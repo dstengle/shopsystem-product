@@ -1,8 +1,8 @@
 ---
 type: request
 id: req-2026-09-06-implementation-guidance
-status: routed
-version: 2
+status: done
+version: 5
 date: 2026-09-06
 reader: lead-pm
 owner: lead-pm
@@ -13,7 +13,7 @@ received-through: operational-contract
 arose-in: init-role-decisions
 route: small-change
 route-reason: "one new artifact type within the lead shop's own definitions — its typedef carrying its writing rules and fitness scenarios so its texts render — and one step of the scenario-assignment process producing it; demonstrable in one session; no appetite worth a bet"
-routed-to: ""
+routed-to: requests/req-2026-09-06-implementation-guidance.md#result
 work-item: lead-i9mde
 ---
 
@@ -231,9 +231,123 @@ handling of `compile_typedef.py` and `compile_process.py` and the
 observation of a prior done request, taken to write the command
 exactly rather than guess it.
 
+### Change made
+
+**Round 1 — maker: lead-solutions-architect**, 2026-09-06, at the
+small-change process's make step. Every path the Definition lists,
+made through its own producing rules; nothing outside them touched.
+
+- `basis/artifacts/implementation-guidance.md` — new typedef, absent →
+  v1: identity (produced by the lead-solutions-architect role at the
+  scenario-assignment process's assign step, one per Bounded Context;
+  consumed by the implementing shop and the reconcile-and-close
+  process), required frontmatter (the eleven keys of statement 3, the
+  field set closed; `status` written | held | not-held), required
+  sections (What changes, References, What not to do), rules (a
+  historical record binding nothing after its assignment; never sent
+  in a message; the architect's level, never internals; instances at
+  `guidance/<feature>-<context>.md`), commitment (the shop can act on
+  it with the assigned scenarios alone), sources, Writing rules and
+  Fitness scenarios (five rules, five scenarios, the compile
+  mapping; judge `cold-reviewer` as the sibling decision-record types
+  name), derived review checklist; `status: approved`,
+  `approved: 2026-09-06`, on the authority's direction of 2026-09-06
+  this request records, the history row saying so.
+- `basis/guidelines/implementation-guidance.md` — rendering, absent →
+  produced (digest of typedef v1); and
+  `basis/fitness/implementation-guidance.fitness.md` — rendering,
+  absent → produced; both by
+  `python3 basis/tools/compile_typedef.py basis/artifacts/implementation-guidance.md`;
+  `--check` reports nothing.
+- `basis/processes/scenario-assignment.md` — v11 → v12: the `guidance`
+  data value (array of paths) added; the assign step outputs it and,
+  once every scenario is owned, writes one implementation guidance
+  record per context tagged at `guidance/<feature>-<context>.md`; the
+  record step reads `guidance` and names each record in the state
+  entry; `produces: [implementation-guidance]`, per the
+  process-definition typedef's clause that `produces` lists the
+  artifact types a run creates; history row citing this request.
+  Outcomes, roles, the route, return, and dispatch steps, and the
+  derived checks unchanged.
+- `.claude/skills/scenario-assignment/SKILL.md` — rendering, digest
+  ecd9f2c7b899 → f3662182a662, by
+  `python3 basis/tools/compile_process.py basis/processes/scenario-assignment.md --skill .claude/skills/scenario-assignment/SKILL.md`,
+  which also regenerated the definition's diagram.
+- `basis/glossary.md` — v21 → v22: **implementation guidance** added;
+  history row citing this request.
+- `basis/tools/lint_basis.py` — check 12 added: `lint_guidance()`,
+  beside the other per-type checks, walks `guidance/` at the
+  repository root when it exists and reports each required key a
+  record lacks by name (and a `type` that is not
+  `implementation-guidance`); the module docstring names it. Changed
+  together with the typedef that names the keys.
+- `basis/README.md` — v11 → v12: the `guidance/` home listed with the
+  typedef and its two produced texts; §Checks names check 12; history
+  row citing this request.
+
+**Maker's evaluation before the check.** Against the Definition's ten
+statements: 1–5 read from the typedef; 6 from the process's data
+block, assign and record steps; 7 from the glossary; 8 from the lint,
+which reports "front-matter lacks" for `status`, `version`,
+`initiative`, `feature`, `context`, `scenarios`, `owner`, `created`,
+`updated` for a probe carrying only `type` and `id`; 9 and 10 from
+the renderings, which the observation compares with fresh renders.
+The observation run as written exited 0 with its five lines; the
+plain lint reports `PASS: 0 violation(s)`. Reads beyond the paths,
+disclosed: the artifact-typedef typedef and the product-decision-record
+typedef for the typedef form, the process-definition typedef's
+`produces` clause, the assignment data type, the adr fitness set's
+judge, and the reconcile-and-close process's roles — each to make an
+artifact by its own producing rules, none changed. One judgement
+call: `produces` now lists the type, read as part of statement 6's
+"outputs include one implementation-guidance record" rather than as
+"else"; the checker decides.
+
+### Check
+
+**Round 1** — verdict: **pass** — by the lead-pm role, 2026-09-06, at
+the small-change process's check step; the maker was the
+lead-solutions-architect role. Each statement decided against the
+changed artifacts: the typedef exists with the identity, field set,
+sections, rules, commitment, and its writing rules and fitness
+scenarios; its guideline and fitness set are produced and current;
+the scenario-assignment process produces one record per context
+tagged and names them at its record step, its skill re-rendered; the
+glossary carries the term; the lint walks the guidance directory and
+refuses a record missing a required key; every history row cites this
+request with its version bumped. The maker's judgment call — the
+process declaring the type as produced — is within the definition's
+statement on the process's outputs. Every path in Change made is in
+the Definition's list. Finding: none.
+
+### Verified result
+
+The verifying observation the Definition named was run by the runtime
+from the repository root on 2026-09-06; its evidence:
+
+```
+PASS: 0 violation(s)
+implementation-guidance: guideline and fitness set current
+scenario-assignment: diagram current, skill equals fresh render
+glossary: implementation guidance defined
+lint: a guidance record missing required keys is rejected
+exit 0
+```
+
+Recorded by the lead-pm role, 2026-09-06. The Definition, the Check's
+verdict by the lead-pm role, and this result stand; between the
+request and this result no bet was taken and no check of record was
+run. The effect in the running system: the next scenario assignment
+produces one implementation guidance record per Bounded Context, the
+harness lists the re-rendered assignment skill, and the lint refuses a
+malformed record.
+
 ## Document History
 
 | Version | Date | Kind | Entry |
 |---|---|---|---|
 | 1 | 2026-09-06 | update | Recorded by the lead-pm at the request-intake process's record step from the authority's words in the review of init-role-decisions; routed small-change and said; accepted by the originator's own direction; work item lead-i9mde opened; dispatched to the small-change lane. |
 | 2 | 2026-09-06 | update | Definition written by the lead-po at the small-change process's define step: judged a simple change; ten Given/When/Then statements over the new typedef, the scenario-assignment process, the glossary, the lint, the README and the three renderings; maker lead-solutions-architect; one verifying observation. No artifact but this request touched. |
+| 3 | 2026-09-06 | update | Change made by the lead-solutions-architect at the small-change process's make step, round 1: the implementation-guidance typedef authored (v1, approved on the authority's direction of 2026-09-06) and its guideline and fitness set produced; scenario-assignment v12 with its skill re-rendered; glossary v22; lint check 12; README v12. The observation run as written exited 0; the plain lint passes. |
+| 4 | 2026-09-06 | update | Check passed (round 1) by the lead-pm role; the verifying observation run by the runtime, exit 0; the verified result recorded and status set to done at the small-change process's record step. |
+| 5 | 2026-09-06 | update | Where the route led written into routed-to by the lead-pm at the request-intake process's land-result step; the lane's work item lead-i9mde closed as done. |

@@ -11,12 +11,12 @@ type: skill
 id: scenario-assignment-skill
 status: approved
 created: 2026-08-28
-updated: 2026-09-02
+updated: 2026-09-06
 generated: true
 generated-by: basis/tools/compile_process.py
 derived-from: scenario-assignment-process
 source: basis/processes/scenario-assignment.md
-source-digest: sha256:ecd9f2c7b899
+source-digest: sha256:f3662182a662
 activation: model-judged
 promotion: experiment-local
 ---
@@ -31,11 +31,11 @@ Result of a run: `feature` (string).
 
 ```mermaid
 flowchart TD
-  assign(["Tag each scenario with its owning context — agent: lead-solutions-architect<br/>in — feature: string, decomposition: string, contracts: string, repository: string, ask: ask<br/>out — feature: string, unowned: string[], assignment: assignment"])
+  assign(["Tag each scenario with its owning context — agent: lead-solutions-architect<br/>in — feature: string, decomposition: string, contracts: string, repository: string, ask: ask<br/>out — feature: string, unowned: string[], assignment: assignment, guidance: string[]"])
   route{"Route on ownership<br/>in — unowned: string[]"}
   return(["Return the feature with the unowned scenarios named — agent: lead-solutions-architect<br/>in — feature: string, unowned: string[]<br/>out — feature: string"])
   dispatch["Send each shop its scenarios — runtime<br/>in — feature: string, assignment: assignment<br/>out — sent: string[]"]
-  record(["Record the assignment — agent: lead-solutions-architect<br/>in — feature: string, assignment: assignment, sent: string[]<br/>out — feature: string"])
+  record(["Record the assignment — agent: lead-solutions-architect<br/>in — feature: string, assignment: assignment, guidance: string[], sent: string[]<br/>out — feature: string"])
   __end(("end<br/>result — feature: string"))
   __start(("start")) --> assign
   assign --> route
@@ -48,7 +48,7 @@ flowchart TD
 
 ## assign — Tag each scenario with its owning context
 
-Run by an agent in role `lead-solutions-architect`. reads: feature, decomposition, contracts, repository, ask · writes: feature, unowned, assignment.
+Run by an agent in role `lead-solutions-architect`. reads: feature, decomposition, contracts, repository, ask · writes: feature, unowned, assignment, guidance.
 - may ask: `lead-pm` — return an `ask` (with default and checkpoint) in place of outputs; at most one per run.
 - then: `route`
 
@@ -68,7 +68,18 @@ at contracts and the feature repository at repository — and
 sweep the repository for conflicts: a scenario that contradicts
 one already specified there goes to unowned with the conflict
 as its reason. Write one assignment entry per context with
-the @hash: values of its scenarios and the pre-state read. If deciding needs what the decomposition
+the @hash: values of its scenarios and the pre-state read. When no
+scenario is unowned, write for each context tagged one
+implementation guidance record at guidance/<feature>-<context>.md
+— the feature's id and the context's name as tagged — by its
+guideline: what its scenarios change at the level you may see
+(its contract, the guardrails that apply, where the cross-context
+flow touches it; for the lead shop's own definitions, the
+definitions and tools to change), the references to the contract
+and the scenario hashes, and what not to do; evaluate it against
+its fitness set before you write it; it is a historical record of
+this assignment and is not sent. Put each record's path in
+guidance. If deciding needs what the decomposition
 cannot say — whether a behavior is meant to be in the product at
 all — return an ask to lead-pm (kind: scope) with the question,
 the default you will apply, and a checkpoint of the tags written
@@ -127,7 +138,7 @@ next: record
 
 ## record — Record the assignment
 
-Run by an agent in role `lead-solutions-architect`. reads: feature, assignment, sent · writes: feature.
+Run by an agent in role `lead-solutions-architect`. reads: feature, assignment, guidance, sent · writes: feature.
 - then: `end`
 
 Prompt:
@@ -135,7 +146,10 @@ Prompt:
 ```text
 Set the feature's status to "assigned" and write a state entry
 into its Document History listing, from assignment, each
-context's scenario hashes and the pre-state read, and, from
+context's scenario hashes and the pre-state read, from
+guidance, the implementation guidance record written for each
+context, by path, with your evaluation of it against its fitness
+set, and, from
 sent (the tool's
 standard output, one line per message — its output contract is
 pinned when the messaging package is imported), the message sent to each. Return

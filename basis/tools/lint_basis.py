@@ -60,6 +60,14 @@ Checks:
      not checked. `--process <path>` runs the same check on the one
      process definition at that path, wherever it lives. Checks 1-10 as
      before.
+ 12. Each implementation guidance record in `guidance/` at the
+     repository root — the directory may not exist yet: no records, no
+     violations — carries the implementation-guidance typedef's
+     required frontmatter: `type: implementation-guidance`, `id`,
+     `status`, `version`, `initiative`, `feature`, `context`,
+     `scenarios`, `owner`, `created`, `updated`; each missing key is
+     reported by name (implementation-guidance typedef §Required
+     frontmatter). Checks 1-11 as before.
 
 Modes:
   lint_basis.py                     # lint the whole basis tree
@@ -121,6 +129,12 @@ BRIEF_STATUS = {"draft", "delivered", "decided"}
 # 11. tools a process names (process-definition typedef §Commitment)
 PROCESSES = BASIS / "processes"
 TOOL_PATH = re.compile(r"basis/tools/[A-Za-z0-9_.-]+\.py")
+
+# 12. implementation guidance records (implementation-guidance typedef
+#     §Required frontmatter)
+GUIDANCE = BASIS.parent / "guidance"
+GUIDANCE_KEYS = ["type", "id", "status", "version", "initiative", "feature",
+                 "context", "scenarios", "owner", "created", "updated"]
 
 
 def front_matter(path):
@@ -267,6 +281,7 @@ def lint():
         fm, _ = front_matter(path)
         if fm is not None and fm.get("type") == "process-definition":
             errors += lint_process_tools(path)
+    errors += lint_guidance()
     return errors
 
 
@@ -403,6 +418,30 @@ def lint_process_tools(path):
             seen.add((where, tool))
             if not (root / tool).is_file():
                 errors.append(f"{rel}: {where} names `{tool}`, which does not exist in the repository {clause}")
+    return errors
+
+
+def lint_guidance():
+    """12. Each implementation guidance record in guidance/ at the
+    repository root carries the implementation-guidance typedef's
+    required frontmatter (implementation-guidance typedef §Required
+    frontmatter); each missing key is reported by name. The directory
+    may not exist yet: no records, no violations."""
+    errors = []
+    if not GUIDANCE.is_dir():
+        return errors
+    clause = "(implementation-guidance typedef §Required frontmatter)"
+    for path in sorted(GUIDANCE.glob("*.md")):
+        rel = path.relative_to(BASIS.parent)
+        fm, _ = front_matter(path)
+        if fm is None:
+            errors.append(f"{rel}: front-matter missing or unparseable {clause}")
+            continue
+        for key in GUIDANCE_KEYS:
+            if key not in fm:
+                errors.append(f"{rel}: front-matter lacks `{key}` {clause}")
+        if "type" in fm and fm["type"] != "implementation-guidance":
+            errors.append(f"{rel}: `type` is `{fm['type']}`, not `implementation-guidance` {clause}")
     return errors
 
 

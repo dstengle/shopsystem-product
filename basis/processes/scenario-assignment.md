@@ -4,10 +4,10 @@ id: scenario-assignment-process
 owner: product-authority
 status: approved
 approved: 2026-08-31
-version: 11
+version: 12
 created: 2026-08-28
-updated: 2026-09-02
-produces: []
+updated: 2026-09-06
+produces: [implementation-guidance]
 carried-by: scenario-assignment-skill
 condition-language: cel
 hold-after: P7D
@@ -73,11 +73,11 @@ edit by hand.
 
 ```mermaid
 flowchart TD
-  assign(["Tag each scenario with its owning context — agent: lead-solutions-architect<br/>in — feature: string, decomposition: string, contracts: string, repository: string, ask: ask<br/>out — feature: string, unowned: string[], assignment: assignment"])
+  assign(["Tag each scenario with its owning context — agent: lead-solutions-architect<br/>in — feature: string, decomposition: string, contracts: string, repository: string, ask: ask<br/>out — feature: string, unowned: string[], assignment: assignment, guidance: string[]"])
   route{"Route on ownership<br/>in — unowned: string[]"}
   return(["Return the feature with the unowned scenarios named — agent: lead-solutions-architect<br/>in — feature: string, unowned: string[]<br/>out — feature: string"])
   dispatch["Send each shop its scenarios — runtime<br/>in — feature: string, assignment: assignment<br/>out — sent: string[]"]
-  record(["Record the assignment — agent: lead-solutions-architect<br/>in — feature: string, assignment: assignment, sent: string[]<br/>out — feature: string"])
+  record(["Record the assignment — agent: lead-solutions-architect<br/>in — feature: string, assignment: assignment, guidance: string[], sent: string[]<br/>out — feature: string"])
   __end(("end<br/>result — feature: string"))
   __start(("start")) --> assign
   assign --> route
@@ -101,7 +101,12 @@ repository — the directory of feature artifacts themselves (typedef:
 [`../artifacts/feature.md`](../artifacts/feature.md)); neither of the
 first two has a typedef on this branch — an unfiled gap, named here —
 so each names the record the architect maintains, an approved source
-by the role's own admissible evidence.
+by the role's own admissible evidence. `guidance` is the paths of the
+implementation guidance records the `assign` step writes — one per
+Bounded Context tagged, at `guidance/<feature>-<context>.md`, the
+feature's id and the context's name as tagged (typedef:
+[`../artifacts/implementation-guidance.md`](../artifacts/implementation-guidance.md));
+the `record` step names them.
 
 ```yaml
 data:
@@ -112,6 +117,7 @@ data:
   ask: {$ref: ask, from: ../types/ask.md, initial: null}
   unowned: {type: array, items: {type: string}, initial: []}
   assignment: {$ref: assignment, from: ../types/assignment.md}
+  guidance: {type: array, items: {type: string, format: uri-reference}, initial: []}
   sent: {type: array, items: {type: string}, initial: []}
 ```
 
@@ -126,7 +132,7 @@ steps:
     name: Tag each scenario with its owning context
     run-by: {role: lead-solutions-architect, execution: agent}
     inputs: [feature, decomposition, contracts, repository, ask]
-    outputs: [feature, unowned, assignment]
+    outputs: [feature, unowned, assignment, guidance]
     asks: [lead-pm]
     prompt: |
       Read the decomposition and the feature. For each scenario, decide
@@ -142,7 +148,18 @@ steps:
       sweep the repository for conflicts: a scenario that contradicts
       one already specified there goes to unowned with the conflict
       as its reason. Write one assignment entry per context with
-      the @hash: values of its scenarios and the pre-state read. If deciding needs what the decomposition
+      the @hash: values of its scenarios and the pre-state read. When no
+      scenario is unowned, write for each context tagged one
+      implementation guidance record at guidance/<feature>-<context>.md
+      — the feature's id and the context's name as tagged — by its
+      guideline: what its scenarios change at the level you may see
+      (its contract, the guardrails that apply, where the cross-context
+      flow touches it; for the lead shop's own definitions, the
+      definitions and tools to change), the references to the contract
+      and the scenario hashes, and what not to do; evaluate it against
+      its fitness set before you write it; it is a historical record of
+      this assignment and is not sent. Put each record's path in
+      guidance. If deciding needs what the decomposition
       cannot say — whether a behavior is meant to be in the product at
       all — return an ask to lead-pm (kind: scope) with the question,
       the default you will apply, and a checkpoint of the tags written
@@ -195,12 +212,15 @@ steps:
   - id: record
     name: Record the assignment
     run-by: {role: lead-solutions-architect, execution: agent}
-    inputs: [feature, assignment, sent]
+    inputs: [feature, assignment, guidance, sent]
     outputs: [feature]
     prompt: |
       Set the feature's status to "assigned" and write a state entry
       into its Document History listing, from assignment, each
-      context's scenario hashes and the pre-state read, and, from
+      context's scenario hashes and the pre-state read, from
+      guidance, the implementation guidance record written for each
+      context, by path, with your evaluation of it against its fitness
+      set, and, from
       sent (the tool's
       standard output, one line per message — its output contract is
       pinned when the messaging package is imported), the message sent to each. Return
@@ -236,3 +256,4 @@ steps:
 | 10 | 2026-08-31 | review | Batch D screen round 1: the pre-state read gains its consumer — the record step writes it into the state entry, so the evidence O2 carries survives the run. |
 | 10 | 2026-08-31 | state | draft → approved with batch D as one block (brief-032 ask 2, default accepted). |
 | 11 | 2026-09-02 | update | Carried-by reference repointed to the load point (.claude/skills/) — the skill-rendering process's first run removed the retired home basis/skills/; the owner's sweep per its second-home escalation. |
+| 12 | 2026-09-06 | update | Under req-2026-09-06-implementation-guidance at the small-change process's make step, on the authority's direction of 2026-09-06 the request records: the assign step, once every scenario is owned, writes one implementation guidance record per Bounded Context tagged at guidance/<feature>-<context>.md (typedef basis/artifacts/implementation-guidance.md) and outputs their paths as the new `guidance` value; the record step reads it and names each record, with the maker's evaluation, in the state entry; `produces` lists the type, per the process-definition typedef's frontmatter clause. Nothing else in the process changes; the diagram and the skill re-rendered by compile_process.py. Made by the lead-solutions-architect role. |

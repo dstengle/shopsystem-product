@@ -4,9 +4,9 @@ id: glossary
 owner: product-authority
 status: approved
 approved: 2026-08-19
-version: 21
+version: 22
 created: 2026-08-19
-updated: 2026-09-04
+updated: 2026-09-06
 ---
 
 # Glossary
@@ -256,6 +256,17 @@ terms uses one of these when one fits.
   routed by the lead-pm role: the request-intake process; distinct
   from the small-change lane and from the discovery conversation, both
   of which a route may lead to.
+- **implementation guidance** — the solutions architect role's
+  guidance to one Bounded Context shop for the scenarios assigned to
+  it in one assignment, written at the scenario-assignment process's
+  assign step, one record per context: what those scenarios change at
+  the level the architect may see — the context's contracts, the
+  guardrails, the cross-context flow, never its internals — with the
+  contracts and scenarios cited, never restated, and what not to do.
+  A historical record of that assignment, not the contract: technical
+  implementation changes over time while the scenario contract does
+  not; not sent in a message. Artifact type `implementation-guidance`;
+  instances live in `guidance/` at the repository root.
 
 ## Document History
 
@@ -286,3 +297,4 @@ terms uses one of these when one fits.
 | 19 | 2026-08-31 | update | Owner direction: the scenario register split from the record of specified scenarios — the feature repository (new term) is the artifacts themselves, authoritative for specification and assignment; the register is the tracker of implemented scenarios pulled from the shops, itself a feature to be built; pre-state is the state of the design (contracts + repository); vehicles other than assign_scenarios come from operational activities, not assignment. |
 | 20 | 2026-09-02 | update | architecture decision record added with the adr chain — the term the architect role and the product-decision-record entry used without a definition. |
 | 21 | 2026-09-04 | update | The terms feat-request-routing's Vocabulary introduced, under init-request-routing on the authority's standing direction of 2026-09-04: ask gains its received sense beside the process sense; request (received-ask sense), simple change, small-change lane, and intake added — each used by the feature, the request typedef v3, and adr-2026-09-04-request-front-end. |
+| 22 | 2026-09-06 | update | implementation guidance added under req-2026-09-06-implementation-guidance at the small-change process's make step, on the authority's direction of 2026-09-06 the request records — the term the implementation-guidance typedef and the scenario-assignment process v12 use. Made by the lead-solutions-architect role. |
