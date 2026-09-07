@@ -3,7 +3,7 @@ type: initiative
 id: init-tool-skills
 name: Tool skills
 status: planned
-version: 8
+version: 9
 owner: lead-pm
 created: 2026-09-07
 updated: 2026-09-07
@@ -85,7 +85,7 @@ none.
 
 ## Features
 
-None yet.
+[feat-tool-skills](../features/feat-tool-skills.md) — draft.
 
 ## Document History
 
@@ -99,3 +99,4 @@ None yet.
 | 6 | 2026-09-07 | update | The initiative check's route-decisions step: the architect's one decision entry, recorded — [adr-2026-09-07-tool-answer](../decisions/adr-2026-09-07-tool-answer.md) (checked, v3; authored as the pre-bet route's sub-process, one screen, one revise) — written in place of its `none` before the screen. |
 | 7 | 2026-09-07 | review | Initiative-check's one screen (judge: claude-fable-5-1 / screen prompt v5): three confident — the originator's second quote naming a form; the designer's D2 record "none" while its record exists; the architect's §4 summary stale against its history — and five wobbly (a no-go naming an approach; the first no-go's second clause; the designer's D1 record as a corpus entry; the cap's margin; the work item's kind). Repaired in the one revise: the lead-pm's sections — the quote trimmed to its outcome half, the no-gos reworded, the work item's kind named; and on the PM role's ruling, in the roles' text, substance unchanged — the architect's §4 summary brought current (the ADR checked; the count risk taken), the designer's D2 record set to adr-2026-09-07-tool-answer. Held: the designer's D1 as a corpus entry (the reason stated). |
 | 8 | 2026-09-07 | state | `proposed` → `planned`: the authority's bet, taken in the initiative-check decide step on its standing direction for this initiative — "If it passes then proceed to the rest without asking me" (v2) — after the one screen and the one revise, with the designer's D1 record held as a corpus entry and the cap's margin noted; the lead-pm recording it. The decision the bet rests on stands checked before it: adr-2026-09-07-tool-answer. The product decision record for the go is the PO role's to make from the produced guideline and the PO output check screens it; made: [pdr-2026-09-07-bet-tool-skills](../decisions/pdr-2026-09-07-bet-tool-skills.md). |
+| 9 | 2026-09-07 | update | Features section: feat-tool-skills added, draft — written by the feature-authoring draft step (the PO role), the typedef's list of features as they are made; ten scenarios, all owned by the lead shop; scope declined with its reason in the feature's Edges table: whether the lint's help also answers as help, recommended to the PM role. |
