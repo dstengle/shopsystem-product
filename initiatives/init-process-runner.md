@@ -3,7 +3,7 @@ type: initiative
 id: init-process-runner
 name: Process runner
 status: proposed
-version: 1
+version: 2
 owner: lead-pm
 created: 2026-09-07
 updated: 2026-09-07
@@ -25,7 +25,7 @@ The lead-pm, who stops coordinating; every role, which receives only its inputs.
 
 ## Appetite
 
-To be set at the bet. No-gos: no change to the shape of a process definition that a running process does not need; the migration question (req-2026-09-06-migration-review) decides whether the runner is a lead-shop tool or the shopsystem engine, and that discovery opens beside this check.
+To be set at the bet. The authority's direction, 2026-09-07: "I would like to avoid the expense of a code implementation for now and just get a cheap model to do what the lead-pm has been doing to coordinate and do bookkeeping." No-gos: no code runner now — the runner is a cheap, fast model in a coordinator role that runs the definition as written; no change to the shape of a process definition that a running process does not need; the migration question (req-2026-09-06-migration-review) decides later whether a code runner is a lead-shop tool or the shopsystem engine.
 
 ## Feasibility and usability
 
@@ -44,3 +44,4 @@ None yet.
 | Version | Date | Kind | Entry |
 |---|---|---|---|
 | 1 | 2026-09-07 | update | Framed by the lead-pm at the discovery-conversation frame step (sess-2026-09-07-b) from the authority's words in req-2026-09-07-run-efficiency, section 1. |
+| 2 | 2026-09-07 | update | Appetite: the authority's direction at the start of the check — a cheap model as the coordinator, no code runner now. |
