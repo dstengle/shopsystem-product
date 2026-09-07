@@ -2,7 +2,7 @@
 type: roadmap-priority
 id: roadmap-priority
 status: draft
-version: 8
+version: 9
 owner: lead-pm
 created: 2026-09-02
 updated: 2026-09-07
@@ -24,8 +24,9 @@ amendment lands.
    the authority's direction of 2026-09-07; cost per delivered
    feature from about 42M context tokens to under 5M. Its
    sub-initiatives, bet on alone in this order:
-   1. **init-process-runner** — proposed; next: initiative-check,
-      with the migration-review discovery beside it.
+   1. **init-process-runner** — planned: the authority's bet of
+      2026-09-07; one session, one run end to end by the router,
+      measured.
    2. **init-run-measurement** — proposed.
    3. **init-artifact-tools** — proposed.
    4. **init-plain-voice** — proposed.
@@ -66,3 +67,4 @@ the initiative path.
 | 6 | 2026-09-06 | update | Re-recorded on the authority's bet of 2026-09-06: init-role-decisions placed first; the four active initiatives kept in order of their bets; the routed requests updated. Still pre-typedef. |
 | 7 | 2026-09-07 | update | Re-recorded on the authority's bet of 2026-09-07: init-tool-skills placed first; init-role-decisions active; the routed requests updated. Still pre-typedef. |
 | 8 | 2026-09-07 | update | init-run-efficiency placed first as a parent with its four sub-initiatives in the authority's order ("make process runner first"); init-tool-skills active, delivered. |
+| 9 | 2026-09-07 | update | init-process-runner planned on the authority's bet. |
