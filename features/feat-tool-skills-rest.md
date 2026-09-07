@@ -2,8 +2,8 @@
 type: feature
 id: feat-tool-skills-rest
 name: Tool skills for the rest
-status: checked
-version: 5
+status: assigned
+version: 6
 initiative: ../initiatives/init-tool-skills.md
 owner: lead-po
 created: 2026-09-07
@@ -436,97 +436,97 @@ Feature: Tool skills for the rest
   beside it in the same shape, and a change to what a tool says about
   itself reaches its skill.
 
-  @feature:feat-tool-skills-rest @hash:c648ef04449d
+  @bounded-context:shopsystem-product @feature:feat-tool-skills-rest @hash:c648ef04449d
   Scenario: a compiler the shop owns answers the standard question
     Given a compiler the shop owns, one of the five
     When the compiler is asked the standard question
     Then the compiler answers with what it says about itself — its name, what it does, and for each use it supports what that use does, what it takes, what it returns, and how it fails — and performs none of its uses in answering, so that nothing is rendered and no file changes
 
-  @feature:feat-tool-skills-rest @hash:6f6f93180b23
+  @bounded-context:shopsystem-product @feature:feat-tool-skills-rest @hash:6f6f93180b23
   Scenario: a compiler's skill is produced from the compiler's own answer
     Given a compiler's answer to the standard question
     When the compiler's skill is produced
     Then a skill for the compiler stands at the agent's load point, names the compiler as what it was produced from, states every use the answer states, and says nothing about the compiler that the answer does not say — produced from the answer and from nothing else, not the compiler's source, not its help
 
-  @feature:feat-tool-skills-rest @hash:f20a781be781
+  @bounded-context:shopsystem-product @feature:feat-tool-skills-rest @hash:f20a781be781
   Scenario: the producer of tool skills produces its own skill from its own answer
     Given the producer of tool skills, the framework tool that produces each tool's skill from that tool's answer, and its own answer to the standard question
     When the producer's skill is produced
     Then a skill for the producer stands at the agent's load point, names the producer as what it was produced from, states every use the producer's answer states, and says nothing about the producer that its answer does not say
 
-  @feature:feat-tool-skills-rest @hash:802c8401fbc7
+  @bounded-context:shopsystem-product @feature:feat-tool-skills-rest @hash:802c8401fbc7
   Scenario: a tool that cannot answer has a description beside it in the same shape
     Given a tool the shop runs but does not own, which does not answer the standard question
     When a description for the tool is written beside it
     Then a description stands beside the tool in the same shape an answer takes — the tool's name, what it does, and for each use it supports what that use does, what it takes, what it returns, and how it fails — naming the tool it stands beside and the shop that owns that tool
 
-  @feature:feat-tool-skills-rest @hash:a7657325c775
+  @bounded-context:shopsystem-product @feature:feat-tool-skills-rest @hash:a7657325c775
   Scenario: a description beside a tool that is not in the answer's shape yields no skill
     Given a description beside a tool that lacks a part the shape requires
     When the tool's skill is produced
     Then no skill is produced for that tool, and the lack is reported naming the tool and the part
 
-  @feature:feat-tool-skills-rest @hash:f3c767a50e31
+  @bounded-context:shopsystem-product @feature:feat-tool-skills-rest @hash:f3c767a50e31
   Scenario: the skill of a tool that cannot answer is produced from the description beside it
     Given a description beside a tool that cannot answer, in the same shape an answer takes
     When the tool's skill is produced
     Then a skill for the tool stands at the agent's load point, names the description beside the tool as what it was produced from and the tool it stands beside, states every use the description states, and says nothing about the tool that the description does not say
 
-  @feature:feat-tool-skills-rest @hash:5441feae9b88
+  @bounded-context:shopsystem-product @feature:feat-tool-skills-rest @hash:5441feae9b88
   Scenario: a tool that cannot answer is recorded as a gap against its owner
     Given a tool the shop runs but does not own, which does not answer the standard question
     When a description for the tool is written beside it
     Then a gap is recorded naming the tool and the shop that owns it — the tool does not answer the standard question, and its skill stands on a description beside it until it does
 
-  @feature:feat-tool-skills-rest @hash:4d3e67a4f717
+  @bounded-context:shopsystem-product @feature:feat-tool-skills-rest @hash:4d3e67a4f717
   Scenario: each use entry in a produced skill is complete
     Given the skill of any of the eleven tools, produced from the tool's answer or from the description beside it
     When a use entry in it is read
     Then it states what the use does; what it takes, each input named and an omitted input's treatment; what it returns; how it fails, each failure a stable code beside its explanation and next step; and the exact invocation
 
-  @feature:feat-tool-skills-rest @hash:d6d0e85cf003
+  @bounded-context:shopsystem-product @feature:feat-tool-skills-rest @hash:d6d0e85cf003
   Scenario: a change to what a compiler says about itself reaches its skill
     Given a compiler's answer to the standard question changed since its skill was produced
     When the process that keeps tool skills current runs
     Then the compiler's skill states what the compiler now says about itself and is current with the changed answer
 
-  @feature:feat-tool-skills-rest @hash:f87375439754
+  @bounded-context:shopsystem-product @feature:feat-tool-skills-rest @hash:f87375439754
   Scenario: a change to the description beside a tool reaches its skill
     Given the description beside a tool that cannot answer changed since the tool's skill was produced
     When the process that keeps tool skills current runs
     Then the tool's skill states what the description now says and is current with the changed description
 
-  @feature:feat-tool-skills-rest @hash:8dfa9ca5923e
+  @bounded-context:shopsystem-product @feature:feat-tool-skills-rest @hash:8dfa9ca5923e
   Scenario: a tool skill not current with the description beside its tool is reported
     Given a tool skill not current with the description beside its tool, whatever the cause
     When the check over tool skills runs
     Then the check reports that skill as not current, naming the tool
 
-  @feature:feat-tool-skills-rest @hash:62f7ccb607b9
+  @bounded-context:shopsystem-product @feature:feat-tool-skills-rest @hash:62f7ccb607b9
   Scenario: a tool that begins to answer is used through its answer, not the description beside it
     Given a tool with a description beside it that now answers the standard question
     When the process that keeps tool skills current runs
     Then the tool's skill is produced from the tool's answer, names the tool as what it was produced from, and no description beside the tool stands as a source of its skill
 
-  @feature:feat-tool-skills-rest @hash:1177727e510a
+  @bounded-context:shopsystem-product @feature:feat-tool-skills-rest @hash:1177727e510a
   Scenario: the check over the load point passes clean with every tool's skill in place
     Given the skills of the lint, the five compilers, and the six external tools at the agent's load point, each current with what its tool says about itself, beside the skills of the approved processes
     When the check over the load point runs
     Then the check reports every tool skill as current, every approved process's skill as current, and no skill at the load point as unrecognized
 
-  @feature:feat-tool-skills-rest @hash:14a7607203db
+  @bounded-context:shopsystem-product @feature:feat-tool-skills-rest @hash:14a7607203db
   Scenario: a tool's skill is loaded for a task that calls for the tool
     Given an agent in a fresh context with the skills of the twelve tools at its load point and no other source on any of them, and a task that calls for running one of the eleven
     When the agent begins the task
     Then that tool's skill is loaded for the task before any invocation of the tool, and the agent's invocation is the one the skill states, not a bare one
 
-  @feature:feat-tool-skills-rest @hash:8a5b9a35a86a
+  @bounded-context:shopsystem-product @feature:feat-tool-skills-rest @hash:8a5b9a35a86a
   Scenario: an agent completes a use of a tool on the first invocation the skill states
     Given an agent in a fresh context with one of the eleven tools' skill its only source on that tool, and a task calling for one of the uses the skill states
     When the agent performs the task
     Then the agent's first invocation of the tool is the one the skill states for that use, with no read of the tool's source or help and no second attempt, and the use completes with the return the skill states
 
-  @feature:feat-tool-skills-rest @hash:572bb00db7d9
+  @bounded-context:shopsystem-product @feature:feat-tool-skills-rest @hash:572bb00db7d9
   Scenario: a failure the agent meets is one the skill names, read as the skill states it
     Given an agent in a fresh context with one of the eleven tools' skill its only source on that tool
     When an invocation of the tool made through the skill fails
@@ -589,3 +589,4 @@ Feature: Tool skills for the rest
 | 3 | 2026-09-07 | review | PO output check, the one screen (judge: claude-fable-5-1 / screen prompt v6): nine findings — the vocabulary's "the tool's source" carrying two meanings (uncovered, confident); the Interaction types section deferring to a step that had run (criterion 5, confident); the Contributors section's length and the pre-state, principle, and verdict reasoning in the body (uncovered, confident); the description scenario's Then stating how the file was written (criterion 1); whether the gap scenario is framed (framing, wobbly); the measure's target (framing, wobbly); the first-invocation Edges row's case (criterion 4, wobbly); the referenced terms arriving without a gloss (uncovered, wobbly); the clean-pass Then's "as before" (criterion 1, wobbly) — each ruled by the PM role, with the two contributors' asks (the form of the gap record; what "for each use it supports" means for a description) decided on their defaults. |
 | 4 | 2026-09-07 | update | The one revise, by the PO role, on the nine findings as ruled and the two asks as decided. (1) The answer-or-description meaning given its own term, **what the tool says about itself**, in the vocabulary, in the Given of *the check over the load point passes clean with every tool's skill in place*, and in the "current with" reading; "the tool's source" now means the program's source everywhere, the vocabulary saying so; the two Edges rows on the hand edit re-worded to the new term. (2) The Interaction types section states the recorded answer: the description is not an interaction type, the gap record is a request record the lead shop holds, "none" stands. (3) The Contributors section cut to the ownership list, the vocabulary, the provenance, and each criterion and constraint as ride-on plus met/invalidated or what must hold; the rest moved here with its substance — the designer's and architect's passages edited on the PM role's ruling, as at feat-tool-skills v4: *the designer's interface reasoning* — four interfaces delivered and screened under `agent-is-a-user` whether or not a type is named: each tool's skill (`api`, the tool-skill use entry pattern); each compiler's answer to the standard question (`cli`, the self-description on request pattern); the producer's report on a description not in the answer's shape (`cli`, the error pattern — the one interaction here a person meets, as the description's writer); the gap record as the owning shop reads it (the designer's `document`; ruled at the check a request record the lead shop holds, so criterion (e) reads of that record once routed). The description beside a tool is not itself an interaction type: it is what a person gives the product, in the shape the tool-description data type publishes, and the product meets its writer through the producer, so no core task carries it, no pattern is wanted for the file, and the writer's criteria are (d). Under (c), the twelve tool skills stand beside the process skills at one load point, each offered on its `description`, and the remedy for a wrong or absent load is the producer's composed `description`. Under (d), whoever writes a description runs the producer over it with the producer's skill as their source, and the stable code is from the data type's closed set. Under (e), where the shape is published is the tool-description data type. *The designer's accessibility reasoning* — by `accessible-by-standard`, the skill is an agent-facing interface governed by `agent-is-a-user` (bullet 2's parenthetical), so no WCAG target applies; the compilers' answers and the producer's report are `cli` interactions of the same form as the lint's answer — text on standard output or standard error, no meaning resting on colour (cli rule 1) — whose WCAG2ICT applicability record is written once for the type at the delivery screen and reads of all of them; the description is a file its writer edits in their own editor, no rendering of the product's; the gap record's accessibility is that of the record it is kept in — the designer wrote the work register's, and the ruling on its form makes it the request lane's; no criterion names an output's form. *The designer's delivery-screen routing* — until (a) is observed on each tool and (b) once over the eleven, "usable" is a hypothesis per tool and the delivery says so; the skills (`api`), the answers and the report (`cli`), and the gap record are screened at delivery under the interaction-conformance-check process, with the lint's skill and answer whose screen stands pending from feat-tool-skills — findings to the solutions architect role, findings on a description's names to the lead shop as its writer, undecidables to the corpus. *The architect's pre-state* — read from lead-shop-held records, none from a context's internals: the feature repository in full, seven features, the five assigned before init-tool-skills naming no framework tool, answer, skill, or description, feat-tool-skills carrying the general scenario over a tool that answers and constraints (1)–(6), the one touch-point feat-skills-availability's check over the load point, no conflict; the decision records holding no contract; the tools observed by running each on the flag, not by reading any — none of the five compilers answers today (a traceback, the flag read as a file path, three usage sheets; exit 1, 1, 2, 1, 2, the producer among the three), none of the six external tools does, each rejecting the flag as unknown or as a missing command without performing a use (exit 1 or 2); the tool-description data type approved (v2), so the enabler bound the first feature's constraint (2) set now holds; the producer reads no description yet; skill-rendering v8's check asks only the tools under the tools directory, reads a skill sourced anywhere under it as `no-answer` when no fresh production of that name exists, and asks the six nothing — so a description-sourced skill placed before the recognition lands is a standing finding, and the order of the amendment is the process-definition typedef v7's commitment, the producer reading a description before the definition naming that use is approved. *The architect's guardrail reasoning* — the record's §2 fixes what counts as an answer, the shape, the contract artifact, the digest gate, the stand-in description, and the JSON bound; its §3 fourth consequence and its bound on Bounded Context shops fix what a description is and what a tool that does not answer owes; (7)–(9) are each a sentence of the stand-in part, the fourth consequence, or the bound. Under (1), "cannot answer" is every compiler's reply today. Under (5), read on the pre-state, the producer reads the contract's schema block through PyYAML, which every tool under the tools directory already imports — the shop's stack, nothing added. Under (7), writing a description from what the tool shows whoever runs it is the shop reasoning from an entity's observable shape at its own level (`knowable-shape`), not a read below it; the record's fourth consequence is silent on the interim relationship kind, and this role carries it into the record's history at the delivery — a resulting action outside the step's writes. Under (9), a tool that answers performs nothing when asked (the record's flag rule), and each of the six, observed today, rejects the flag without performing a use. (4) The description scenario's Then ends at "the shop that owns that tool"; the writing rule stays in constraint (7), and the Edges rows on the second no-go and on a tool from another shop cite the scenario for the shape and constraint (7) for the source rule — a rule on the maker, accepted as a row's cover. (5) The gap scenario in scope by the ruling — the stand-in part of the decision the bet rests on, presupposed by "until their owners answer" — its trigger aligned to constraint (8): the Given a tool that does not answer, the When the description written beside it; the form of the gap record on the architect's default, accepted: one request record per tool under the request lane, addressed to the owning shop, held and not routed while frozen, naming the tool, its owner, the standard flag, and the data type, no work item unless the lane asks one — written into constraint (8) and the Edges row, the provenance paragraph saying the ruling. (6) The measure stated as ruled: 6 of 12 after this feature, the lint and the five compilers; the six external tools usable through a skill produced from the description beside each and not counted until their owners answer — the vocabulary and the measure's Edges row, which now also cites the produced-skill scenario read once per compiler. (7) The first-invocation Edges row's case extended to a read of the answer or the description. (8) Each referenced term given one clause in the vocabulary, the definitions staying feat-tool-skills'. (9) The clean-pass Then reads "every approved process's skill as current"; its Edges row follows. The designer's ask on "for each use it supports", decided on its default: carried in the vocabulary's entry for a description beside a tool and the Edges row on the omitted use. Three scenarios changed and rehashed, each `@hash:pending` for the lead-pm to fill: *a tool that cannot answer has a description beside it in the same shape*; *a tool that cannot answer is recorded as a gap against its owner*; *the check over the load point passes clean with every tool's skill in place*. The narrative, the other thirteen scenarios, and the forty-one Edges rows' cases are unchanged; no ask returned — every repair had its ruling. Maker's self-check against the feature fitness set (v8) after the revise: scenario 1 pass — the three changed scenarios each keep one action in the When (a description written; the check run) and an outcome observable in the running system in the Then (a description standing with its parts and its two names; a gap recorded; the check's report), and the clause on how the description was written is gone from the block; scenario 2 pass — ownership unchanged for all sixteen; the designer's (a)–(e) and the architect's (1)–(9) present, each riding by name with what meets or invalidates it or what must hold; scenario 3 pass on presence — `@feature:` on all sixteen, `@hash:` on all sixteen, three pending; scenario 4 pass — forty-one rows, every case still sourced to the framing or a contributor's criteria, the eight edited rows each covered by Scenario name, by a constraint where the ruling accepts one for a rule on the maker, or out of scope with its reason, the two proposed defaults now recorded as ruled; scenario 5 pass — "none" with the For whom section's reason and the recorded answer; scenario 6 pass — the narrative untouched. The lint could not be run from this session (no shell); its mechanical checks applied by hand — frontmatter `version` 4, Document History the last section, no link added, no banned term, no numbered-decision reference. Not committed: the lead-pm commits. |
 | 5 | 2026-09-07 | state | `draft` → `checked`: the PM role's pass after the one screen and the one revise the process allows. Every finding with a named criterion is repaired in v4, read at the places the review's quotes point to: the Interaction types section states the designer's recorded answer; the description scenario's Then ends at the observable shape, the writing rule constraint (7)'s; the first-invocation Edges row names the answer and the description; the clean-pass Then reads "as current". The PM role's rulings on the framing findings, given with the review and applied: the gap scenario is in scope — the bound of the decision the bet rests on and how an owner comes to answer — its trigger the description's writing, its form one request record per tool held while frozen (the architect's default); the measure reads 6 of 12 after this feature, the six external tools usable through description-produced skills and not counted until their owners answer. The three uncovered findings ruled repaired in the same revise, none needing a criterion: one term for what the tool says about itself, the tool's source meaning the program's source; the Contributors section cut to what a shop reads to build, the reasoning in this history (the rule itself is req-2026-09-07-contributors-body's, routed to the lane); one clause per referenced term. The designer's ask on a description's uses: default accepted. The three hashes filled by the lead-pm after the revise (@hash:802c8401fbc7, @hash:5441feae9b88, @hash:1177727e510a). |
+| 6 | 2026-09-07 | state | `checked` → `assigned`: the scenario-assignment process (v12) record step, by the lead-solutions-architect role. Assignment — one context, shopsystem-product (the lead shop): the decomposition (init-tool-skills v13, Decomposition: none — every change in the lead shop's tree, no contract, no cross-context flow) and the Contributors section agree on all sixteen, and no scenario asks another shop to act (a tool's owner answering is a Given in @hash:62f7ccb607b9, not a behavior); scenarios @hash:c648ef04449d, @hash:6f6f93180b23, @hash:f20a781be781, @hash:802c8401fbc7, @hash:a7657325c775, @hash:f3c767a50e31, @hash:5441feae9b88, @hash:4d3e67a4f717, @hash:d6d0e85cf003, @hash:f87375439754, @hash:8dfa9ca5923e, @hash:62f7ccb607b9, @hash:1177727e510a, @hash:14a7607203db, @hash:8a5b9a35a86a, @hash:572bb00db7d9, each tagged @bounded-context:shopsystem-product on the line above its Scenario, no hash changed. Pre-state read: contracts — none exist on this branch; the tool-description data type (v2, approved) the shape every answer and description is read against; the feature repository in full — seven features, no conflict; touch-points feat-tool-skills (v8) @hash:5d004d52d1b4 (reads of any tool that answers, not specified again here) and @hash:d33276bcc8ba (the clean pass with the lint's skill, included in @hash:1177727e510a's Given), feat-skills-availability (v8) @hash:4899d4bba6ad and @hash:26f78a3ca4a6 (the load-point check, extended by one source kind and otherwise unchanged), feat-request-routing (v8) @hash:eec1236a2a09 and @hash:57f41d5f9f17 (the form the gap records take: an ask arising inside a run, recorded, awaiting its route); the tools observed on the flag alone 2026-09-07, not read — the lint answers, the five compilers cannot (a traceback, the flag read as a path, three usage sheets; exit 1, 1, 2, 1, 2), the six external tools reject the flag without performing a use (exit 1 or 2); basis/tools/descriptions/ absent; skill-rendering v8 reading two source kinds. Unowned: none. Ask: none — the one open question, an owner the lead shop cannot name (the Edges row, the PM role's to rule), is a datum of the delivery and not whether a behavior is in the product; the guidance names the default that stands and what to report. Implementation guidance written: guidance/feat-tool-skills-rest-shopsystem-product.md (v1, status written, not sent); maker's evaluation against the implementation-guidance fitness set (v1) — scenario 1 pass: each of the eight items in What changes names a lead-shop tool by path, a definition by id and version, a process step, a record's home, or the guardrail's section, none a context's internals; scenario 2 pass: scenarios by hash, the guardrail and definitions by id, version, and section, no scenario text, constraint text, or schema field list reproduced; scenario 3 pass: every tool and definition to change named with path or version, the producing and re-render invocations given, the descriptions' home, the gap records' form, and the minimum uses per external tool fixed, the order and its reason fixed, the one choice left to another owner and the one open datum each given what stands; scenario 4 pass: each of the sixteen entries in What not to do carries its reason in the guardrail, a constraint, a principle, a typedef's commitment, a no-go, the freeze, or the decomposition; scenario 5 pass: frontmatter and opening paragraph name the initiative, feature, context, and the sixteen hashes, and item 8 names what is outside this assignment rather than binding a later one. Sent: none — the dispatch step is barred under the freeze, no Bounded Context existing on this branch to receive (work item lead-ki66p); the lead shop's own scenarios stand assigned to itself and are taken up in its tree, as the previous assignments recorded. |

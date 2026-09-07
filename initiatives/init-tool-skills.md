@@ -87,7 +87,7 @@ none.
 
 [feat-tool-skills](../features/feat-tool-skills.md) — assigned, delivered 2026-09-07 (feature v7–v8).
 
-[feat-tool-skills-rest](../features/feat-tool-skills-rest.md) — checked.
+[feat-tool-skills-rest](../features/feat-tool-skills-rest.md) — assigned.
 
 ## Document History
 
