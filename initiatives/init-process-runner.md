@@ -55,7 +55,7 @@ exists on this branch. Cross-context flow: none.
 
 ## Features
 
-[feat-process-runner](../features/feat-process-runner.md) — checked (v5).
+[feat-process-runner](../features/feat-process-runner.md) — assigned (v6).
 
 ## Document History
 
