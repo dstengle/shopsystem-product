@@ -3,7 +3,7 @@ type: initiative
 id: init-tool-skills
 name: Tool skills
 status: active
-version: 12
+version: 13
 owner: lead-pm
 created: 2026-09-07
 updated: 2026-09-07
@@ -87,7 +87,7 @@ none.
 
 [feat-tool-skills](../features/feat-tool-skills.md) — assigned, delivered 2026-09-07 (feature v7–v8).
 
-[feat-tool-skills-rest](../features/feat-tool-skills-rest.md) — draft.
+[feat-tool-skills-rest](../features/feat-tool-skills-rest.md) — checked.
 
 ## Document History
 
@@ -105,3 +105,4 @@ none.
 | 10 | 2026-09-07 | state | `planned` → `active`: the po-output-check record step, on feat-tool-skills's pass (v5, checked) after the one screen and the one revise — the initiative typedef's writer, planned the only status it writes over. Features section: feat-tool-skills — checked. Next: scenario-assignment, the solutions architect role. |
 | 11 | 2026-09-07 | update | The proof passed: feat-tool-skills delivered in the lead shop's tree and verified by the lead-pm in the running tree (feature v7 and v8) — the lint answers the standard question, its skill is produced from the answer alone and stands at the load point, the load-point check recognizes it and runs clean, and one agent in a fresh context completed the lint's uses on the first invocation the skill states and read a failure from the skill alone. Measure: 1 of 12 — the denominator is twelve, as the architect's offer (v3) foresaw: the producer of tool skills, basis/tools/compile_tool.py, is itself a framework tool that must answer. The authority's standing direction ("If it passes then proceed to the rest without asking me") now authorizes the second feature: the other eleven — the five compilers the shop owns answering the standard question; the six external tools (bd, shop-msg, shop-knowledge, agent-vault, bc-emit, shop-templates) by descriptions beside them in the same shape until their owners answer. Open scope call kept: whether `--help` also answers as help. |
 | 12 | 2026-09-07 | update | Features section: feat-tool-skills-rest added, draft — written by the feature-authoring draft step (the PO role) under the authority's standing direction (v2, v11), the typedef's list of features as they are made; sixteen scenarios, all owned by the lead shop, over the five compilers answering the standard question and the six external tools by descriptions beside them until their owners answer; interaction types none. Held in the feature's Edges table with reasons: the open scope call on `--help`; the gap's reaching its owner while the shop is frozen. One question to the PM role with a proposed default: the owner of an external tool the lead shop cannot name. |
+| 13 | 2026-09-07 | update | Features section: feat-tool-skills-rest — checked (v5), the po-output-check record step after one screen and one revise; the initiative already active. Next: scenario-assignment. |
