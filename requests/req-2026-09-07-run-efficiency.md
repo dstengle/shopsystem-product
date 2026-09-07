@@ -1,8 +1,8 @@
 ---
 type: request
 id: req-2026-09-07-run-efficiency
-status: routed
-version: 2
+status: done
+version: 3
 date: 2026-09-07
 reader: lead-pm
 owner: lead-pm
@@ -13,7 +13,7 @@ received-through: operational-contract
 arose-in: init-tool-skills
 route: discovery
 route-reason: "the cost sits in more than one place — the lead-pm session's context, the builds, the PO's feature prose, sequential waiting — and the fix is a set of process and system changes worth framing against a measure, not one change through the lane; a review of evidence, the analysis below the evidence"
-routed-to: ""
+routed-to: ../initiatives/init-run-efficiency.md
 work-item: lead-rr5c0
 ---
 
@@ -108,9 +108,12 @@ cycle is not where the cost is; the revise is.
 
 ## 4. Result
 
+The discovery converged 2026-09-07 (work item lead-rr5c0, sess-2026-09-07-b) and framed [init-run-efficiency](../initiatives/init-run-efficiency.md), proposed with its sub-initiatives init-process-runner, init-run-measurement, init-artifact-tools, and init-plain-voice.
+
 ## Document History
 
 | Version | Date | Kind | Entry |
 |---|---|---|---|
 | 1 | 2026-09-07 | update | Recorded by the lead-pm at the request-intake process's record step from the authority's words on the cost analysis of init-tool-skills; the analysis attached as evidence; route discovery (review of evidence) decided, said, and accepted; opens next. |
 | 2 | 2026-09-07 | update | The discovery opened by the authority ("Open the run-efficiency discovery"): the discovery-conversation process's open step, work item lead-rr5c0; the request's section 1 is the Framing's source. |
+| 3 | 2026-09-07 | update | The discovery converged; init-run-efficiency framed at the frame step; status done. |

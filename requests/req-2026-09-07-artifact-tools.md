@@ -1,8 +1,8 @@
 ---
 type: request
 id: req-2026-09-07-artifact-tools
-status: routed
-version: 1
+status: done
+version: 2
 date: 2026-09-07
 reader: lead-pm
 owner: lead-pm
@@ -13,7 +13,7 @@ received-through: operational-contract
 arose-in: lead-rr5c0
 route: discovery
 route-reason: "tools that read and write artifacts by part, and render calculated fields, change how every role touches every artifact — a capability with its own measure and bet, framed as a sub-initiative of run efficiency in the discovery already open on that request, not a change through the lane"
-routed-to: ""
+routed-to: ../initiatives/init-artifact-tools.md
 ---
 
 # Request: tools to read and write artifacts
@@ -59,8 +59,11 @@ own direction.
 
 ## 4. Result
 
+The discovery converged 2026-09-07 (work item lead-rr5c0, sess-2026-09-07-b) and framed [init-artifact-tools](../initiatives/init-artifact-tools.md), proposed, a sub-initiative of init-run-efficiency.
+
 ## Document History
 
 | Version | Date | Kind | Entry |
 |---|---|---|---|
 | 1 | 2026-09-07 | update | Recorded by the lead-pm at the request-intake process's record step from the authority's words in the run-efficiency discovery; route discovery decided, said, and accepted — framed as a sub-initiative in the open discovery. |
+| 2 | 2026-09-07 | update | The discovery converged; init-artifact-tools framed at the frame step; status done. |

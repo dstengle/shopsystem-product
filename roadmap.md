@@ -2,7 +2,7 @@
 type: roadmap-priority
 id: roadmap-priority
 status: draft
-version: 7
+version: 8
 owner: lead-pm
 created: 2026-09-02
 updated: 2026-09-07
@@ -19,30 +19,34 @@ amendment lands.
 
 ## Priority
 
-1. **init-tool-skills** — the planned initiative
+1. **init-run-efficiency** — proposed, a parent
+   ([initiatives/init-run-efficiency.md](initiatives/init-run-efficiency.md)):
+   the authority's direction of 2026-09-07; cost per delivered
+   feature from about 42M context tokens to under 5M. Its
+   sub-initiatives, bet on alone in this order:
+   1. **init-process-runner** — proposed; next: initiative-check,
+      with the migration-review discovery beside it.
+   2. **init-run-measurement** — proposed.
+   3. **init-artifact-tools** — proposed.
+   4. **init-plain-voice** — proposed.
+2. **init-tool-skills** — active
    ([initiatives/init-tool-skills.md](initiatives/init-tool-skills.md)):
-   the authority's bet of 2026-09-07 on its standing direction; every
-   framework tool usable through a skill produced from the tool's own
-   answer, proven on the lint, then the rest without a further ask.
-2. **init-role-decisions** — active
-   ([initiatives/init-role-decisions.md](initiatives/init-role-decisions.md)):
-   delivered 2026-09-06; definitions 4 of 4, the roles' observations
-   at their next steps.
-3. **init-typedef-rendering** — active
-   ([initiatives/init-typedef-rendering.md](initiatives/init-typedef-rendering.md)):
-   its measure met 2026-09-05 (1 of 22); the batch of 21 noted, not
-   started (the second bet).
-4. **init-request-routing** — active; measure met 2026-09-04.
-5. **init-roles-availability** — active; measure met 2026-09-03.
-6. **init-skills-availability** — active; its one feature assigned.
-7. **More comprehensive rendering work** — the authority's direction,
+   both features delivered 2026-09-07; measure 6 of 12, the six
+   external tools counted when their owners answer.
+3. **init-role-decisions** — active: delivered 2026-09-06.
+4. **init-typedef-rendering** — active: measure met 2026-09-05 (1 of
+   22); the batch of 21 not started.
+5. **init-request-routing** — active; measure met 2026-09-04.
+6. **init-roles-availability** — active; measure met 2026-09-03.
+7. **init-skills-availability** — active; its one feature assigned.
+8. **More comprehensive rendering work** — the authority's direction,
    verbatim: "sibling process for now, more comprehensive work later"
-   (bead lead-sx9xj). Not yet framed as an initiative.
+   (bead lead-sx9xj). Not yet framed.
 
 Requests routed and awaiting the authority's answer (not yet in the
 priority): req-2026-09-05-step-communication (discovery);
 req-2026-09-06-plain-status (small-change); req-2026-09-06-migration-review
-(discovery, accepted, opens after init-tool-skills' proof);
+(discovery, accepted, opens beside init-process-runner's check);
 req-2026-09-04-operational-contract (discovery open, lead-bmmzh).
 
 Delivered and removed from the priority: **ADR artifact and
@@ -61,3 +65,4 @@ the initiative path.
 | 5 | 2026-09-05 | update | Re-recorded on the authority's bet of 2026-09-05: init-typedef-rendering placed first; the three active initiatives kept; the six routed requests noted as awaiting the authority's answer. Still pre-typedef. |
 | 6 | 2026-09-06 | update | Re-recorded on the authority's bet of 2026-09-06: init-role-decisions placed first; the four active initiatives kept in order of their bets; the routed requests updated. Still pre-typedef. |
 | 7 | 2026-09-07 | update | Re-recorded on the authority's bet of 2026-09-07: init-tool-skills placed first; init-role-decisions active; the routed requests updated. Still pre-typedef. |
+| 8 | 2026-09-07 | update | init-run-efficiency placed first as a parent with its four sub-initiatives in the authority's order ("make process runner first"); init-tool-skills active, delivered. |
