@@ -4,7 +4,7 @@ id: experience-patterns
 record: patterns
 owner: product-authority
 status: draft
-version: 3
+version: 4
 created: 2026-08-26
 updated: 2026-09-07
 maintained-by: lead-product-designer
