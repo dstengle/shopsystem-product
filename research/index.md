@@ -3,9 +3,9 @@ type: research-index
 id: research-index
 owner: product-authority
 status: approved
-version: 8
+version: 9
 created: 2026-08-23
-updated: 2026-08-27
+updated: 2026-09-07
 ---
 
 # Research index
@@ -25,6 +25,7 @@ system carries; it loads only inside a research activity.
 | pm-po-roles-2026-08 | How does industry define the product manager and product owner roles — accountabilities, decision rights, deliverables — and the interactions between them and with the solutions architect? | 2026-08-25 | delivered | `research:research/pm-po-roles-2026-08.md` |
 | solutions-architect-role-2026-08 | How does industry define the solutions architect role, and how would it replace lead-architect as lead-solutions-architect — owning product-wide technology stack decisions — complementing lead-po and lead-pm? | 2026-08-23 | delivered | `research:research/solutions-architect-role-2026-08.md` |
 | research-prompting-2026-08 | What should a prompt — and the role and process behind it — contain for an agent to do rigorous research? | 2026-08-23 | delivered | `research:research/research-prompting-2026-08.md` |
+| tool-self-description-2026-09 | What are the established best practices for making a command-line tool self-describing in a way an agent skill can consume — where the description lives, what shape it takes, and how drift is prevented? | 2026-09-07 | delivered | research:research/tool-self-description-2026-09.md |
 
 ## Reading a report
 
@@ -43,3 +44,4 @@ system carries; it loads only inside a research activity.
 | 6 | 2026-08-25 | update | Row added: the PM/PO one-role report, delivered (verification at cap with one label residual; cold read clean). |
 | 7 | 2026-08-26 | update | Row added: the product-process report, delivered at both round caps with residuals disclosed. |
 | 8 | 2026-08-27 | update | Row added: the system read, delivered (verification clean at round 2, cold read clean at round 3). |
+| 9 | 2026-09-07 | update | tool-self-description-2026-09 registered, delivered for the tool-skills discovery (req-2026-09-06-tool-skills). |
