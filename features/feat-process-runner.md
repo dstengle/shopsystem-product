@@ -3,7 +3,7 @@ type: feature
 id: feat-process-runner
 name: Process runner
 status: draft
-version: 1
+version: 2
 initiative: ../initiatives/init-process-runner.md
 owner: lead-po
 created: 2026-09-07
@@ -86,6 +86,121 @@ the five scenarios on start, hold, answer, resume, and cancel — the
 three core tasks the For whom section's interaction type carries and
 the designer's criteria (a)–(c). What criteria are due, the designer's
 and the architect's passages below record.
+
+The product designer role's criteria (feature-authoring's
+add-usability step, 2026-09-07):
+
+*Due: yes.* The Interaction types section names the command line. Read
+against the corpus (the initiative's usability section; its history
+v4): the router's own turns at the harness prompt are the `assistant`
+type, the assistant guideline (v3) governing them; the shell commands
+its runtime steps run are the `cli` type, the cli guideline (v3)
+governing them; the common guideline (v3) governs both. Three core
+tasks (core-tasks v4) are this interaction, each with its options:
+*start a run* — choose the process, supply parameters, see the run's
+id; *hold, resume, or cancel a run* — name the run, a reason on cancel;
+*answer an ask* — see the question, kind, and default; answer or
+accept the default. Each criterion is a hypothesis under
+`evidence-not-opinion` bullet 1 until the first run end to end is
+observed; the evidence form is measured task completion — every human
+turn recorded with the router's turn before it and whether it acted on
+the answer.
+
+Usability acceptance criteria, riding on the scenarios by name, no
+scenario text changed:
+
+- (a) *start in one turn* — rides on *a run starts against a work item
+  from an approved process definition*. Met when the person's one turn
+  names the process, the work item, and any parameters, and the
+  router's next turn shows the run's id. Invalidated by a second turn
+  from the person before the id is shown.
+- (b) *the question's form* — rides on *a human step holds the run for
+  the person*, *a condition the router cannot read holds the run and
+  is asked*, and *a return lacking a declared output holds the run*.
+  Met when the router's turn carries the run's id, the step, and one
+  question with its kind and its default — numbered when several.
+  Invalidated by a question without its kind or default, several
+  questions unnumbered, or two questions under one number.
+- (c) *the answer acted on* — rides on *an answer at the command line
+  resumes the held run*. Met when a number, a line, or "defaults" is
+  acted on and the router's next turn says what it took. Invalidated
+  by the router asking the same question again after an answer in that
+  form, or acting on other than the answer.
+- (d) *hold and cancel by name* — rides on *a person holds a running
+  run* and *a run is cancelled with a reason*. Met when the person
+  names the run in one turn — and, on cancel, the reason — and the
+  router's next turn states the run's state. Invalidated by a run the
+  router picks unasked, a reason it supplies, or a second turn to
+  identify the run.
+- (e) *stated and confirmed before the hard-to-reverse* — rides on *a
+  run is cancelled with a reason* and, for a default accepted, *an
+  answer at the command line resumes the held run* (hard-to-reverse
+  v3: cancel a run; resolve an ask by default). Met when the router
+  states the run, its state, and that it will not resume — or the
+  question, the default, and that the run resumes on it — and acts
+  only on the person's confirming turn. Invalidated by either taken in
+  the turn that asked for it.
+- (f) *a resumed router restates first* — rides on *a router started
+  from the anchor resumes the held run*. Met when its first turn
+  carries the run's id, the step, and what the run awaits, before
+  anything else. Invalidated by any other content first, or the person
+  asked for any of the three.
+- (g) *failure hands back* — rides on *a condition the router cannot
+  read holds the run and is asked*, *a return lacking a declared
+  output holds the run*, and *an ask returned by an agent step holds
+  the run for the role it names*. Met when the router's turn says what
+  happened in the vocabulary's words — the condition, or the step and
+  the missing output, or the ask and the role — and what the person
+  can do next, and the router does nothing further. Invalidated by a
+  branch with no recorded value, an output the router supplies, or an
+  ask the router answers.
+- (h) *a runtime step's command as a `cli` interaction* — rides on *a
+  runtime step runs as its definition writes it*. Met when the command
+  runs as written and unattended — no prompt answered by the router —
+  and a non-zero exit status is recorded on the anchor as a value the
+  step yielded, the run held at that step, the person shown the step,
+  the exit status, and the command's own message alongside.
+  Invalidated by a command re-run, altered, or continued past on
+  failure, or a prompt the router answers.
+- (i) *the vocabulary's words* — rides on every scenario whose Then
+  shows the person something. Met when every thing and action the
+  router names is the vocabulary's word or this feature's vocabulary
+  above (run, hold, resume, cancel, ask, step, anchor, work item,
+  process definition). Invalidated by a second word for one thing
+  across turns.
+
+Accessibility criteria — `accessible-by-standard` bullet 2, WCAG 2.2
+AA applied as WCAG2ICT describes for non-web software, to the
+`assistant` and `cli` types:
+
+- (A1) *text in reading order* — rides on the scenarios (a), (b), and
+  (f) name. Met when every turn is plain text whose meaning is
+  complete in its reading order (success criteria 1.3.1, 1.3.2), no
+  meaning resting on colour, glyph, or position alone (1.4.1).
+  Invalidated by a question, a default, or a run's state carried only
+  by colour, layout, or a character-drawn table.
+- (A2) *every option by typed text* — rides on *an answer at the
+  command line resumes the held run* and *a run is cancelled with a
+  reason*. Met when every option — each numbered choice, "defaults",
+  the confirmation, hold, cancel — is reachable by a typed line
+  (2.1.1). Invalidated by an option reachable only by a pointer, a key
+  chord, or a form the prompt does not carry.
+- (A3) *labels and errors in text* — rides on the scenarios (b) and
+  (g) name. Met when each question carries its kind and default as
+  text (3.3.2) and each hold names its cause and a next step as text
+  (3.3.1, 3.3.3). Invalidated as (b) and (g) are.
+- The applicability record — which success criteria do not apply to a
+  text prompt, and why — is this role's, written at the delivery
+  screen; the delivery attaches the result (common guideline rule 5).
+  A delivery gate in Edges, not a criterion.
+
+Until *an approved process runs end to end with the lead-pm at its own
+steps alone* is observed with every human turn recorded, "usable" is
+a hypothesis and the delivery says so. The delivered router
+(`assistant`) and its runtime commands (`cli`) are screened by this
+role at delivery under the interaction-conformance-check process;
+findings to the solutions architect role, undecidables to the corpus —
+the entries Edges names.
 
 ## Interaction types
 
@@ -246,9 +361,18 @@ Feature: Process runner
 | The fabro rendering target and the six `fabro:` annotations | the decision the bet rests on (§2.1, the carried exception) | Out of scope: parked until the migration review; no scenario reads them |
 | The word "router" already used for the lead-pm reading a request's route | the feature repository (feat-request-routing, v8) | Recorded in the vocabulary: two uses, the role here and the lead-pm's activity there; the glossary entry for the role is a consequence of the decision the bet rests on, due at the delivery |
 | The router's turns before init-plain-voice frames their voice | the designer's fifth unknown (history v4) | Out of scope: the sibling init-plain-voice's, not bet on; the router's turn carries the step it is on, what it needs, and nothing else — the designer's default, riding as the designer's criterion |
+| A runtime step's command exits non-zero | the designer's criterion (h); `control-stays-with-the-person` bullet 4 | Scenario: a runtime step runs as its definition writes it, read with (h): the exit status a value the step yielded, recorded on the anchor, the run held, the person shown the step and the command's message alongside. Proposed default, for the PO role: a scenario of its own at the next authoring |
+| A runtime step's command that waits on a prompt | the designer's criterion (h); the cli guideline rule 2 | Out of scope: the router answers no command's prompt; a command that needs one is a definition gap the process owner files (the second no-go — the definition is not changed for the run) |
+| A hold or cancel naming no run; a cancel with no reason | the designer's criterion (d) | Scenario: a person holds a running run; Scenario: a run is cancelled with a reason — the router asks for the run or the reason, never picks one (criterion (g)) |
+| The router answering a question a human step or an ask puts to a person or role | the designer's criterion (g) | Scenario: an ask returned by an agent step holds the run for the role it names; Scenario: the router writes no decision to the run |
+| A turn whose question, default, or state is carried by colour, layout, or a table alone; an option reachable only by other than a typed line | the designer's accessibility criteria (A1), (A2) | Scenario: a human step holds the run for the person; Scenario: an answer at the command line resumes the held run; Scenario: a router started from the anchor resumes the held run — text, as the criteria read them |
+| A turn naming a thing by other than the vocabulary's word — a second word for the run, the step, the ask | the designer's criterion (i); `consistent-not-uniform` bullet 1 | Every scenario whose Then shows the person something, read with (i); the entries the vocabulary lacks are the last row below |
+| The core tasks beyond the three this interaction carries — submit output for a check, read a decision, raise a clarify, deliver work for reconciliation | `core-task-parity` bullet 1; the common guideline rule 4 | Out of scope of a scenario: the parity screen at delivery reads the router against the whole list. Proposed default, this role's to record in the core-task list: the first two complete through a run (a check is a process the person starts; a decision is the run's result on the anchor); the last two are a Bounded Context shop's tasks, removed from this interaction with that reason |
+| The corpus entries the delivery screen reads and lacks — the vocabulary's step, anchor, work item, process definition, router; the patterns record's assistant entry (the initiative's D2, history v4); the WCAG2ICT applicability record for the assistant and cli types | the designer's fourth and fifth risks (history v4); the common guideline's Layers | Out of scope of a scenario: this role's own action before the delivery screen, which returns "undecidable" against the corpus until each is entered |
 
 ## Document History
 
 | Version | Date | Kind | Entry |
 |---|---|---|---|
 | 1 | 2026-09-07 | update | Authored by the PO role alone at feature-authoring's draft step, from init-process-runner's Framing and For whom sections (v6, planned; the order order-2026-09-07-b v3, its two enablers placed inside the item); the decision the bet rests on, adr-2026-09-07-coordinator-role (v3, checked), read for what must hold and named in no scenario; seventeen scenarios, all owned by the lead shop per the Decomposition; `@hash:pending` on each, for the lead-pm to fill. The repository read in full: seven features; touch-points feat-roles-availability (the check over the roles, in the Given of the router's availability scenario), feat-skills-availability (a definition not approved yields no rendering — an Edges row), feat-request-routing (the word "router" — the vocabulary and an Edges row); no conflict. Declined or held, with the reason in Edges: the measure's counting (the sibling init-run-measurement's); the ask-cap's unattended default, hold-after, the model tier, and the tool list (the first no-go, or a how); the router's voice (init-plain-voice's). Two proposed defaults for the PM role, in Edges: an ask past its cap; which process the first run runs. Resulting action outside this step's writes: the glossary entry for `router`, due at the delivery per the decision's first consequence. Self-check against the feature fitness set (v8): 1 pass — each When one action (a start, a move, an evaluation, a launch, a completion, a read, an answer, a hold, a cancel, a check run), each Then observable on the anchor, at the command line, or in the check's report, no step naming a model, a tool, a file path, or a launch mechanism; 2 pass — an owning shop per scenario; the interaction type named, so the designer's criteria are due at the next step and the section says so; 3 pass on presence — both tags on all seventeen, hashes disclosed pending; 4 pass — twenty-eight rows from the framing, For whom, both no-gos, the architect's five risks and five unknowns, the designer's (a)–(d), D2, and two unknowns, the Decomposition, the order's enablers and declines, the typedef's run lifecycle, and three repository touch-points, each covered by Scenario name or out of scope with a reason; 5 pass — command line, the For whom's word, with the designer's reading deferred to that role's step; 6 pass — who (the lead-pm; every role), what (a definition runs itself, moved by the router, started, held, resumed, answered, cancelled at the command line), the outcome the framing's ("whoever moves the run carries only the step it is on"). No shell in this session: the lint's checks applied by hand — no banned term, history last, version 1. Not committed. |
+| 2 | 2026-09-07 | update | The product designer role's criteria added to the Contributors section at feature-authoring's add-usability step: the type's reading (`assistant` for the router's turns, `cli` for its runtime commands — the initiative's history v4), the three core tasks with their options, nine usability criteria (a)–(i) and three accessibility criteria (A1)–(A3), each a ride-on with met and invalidated, each a hypothesis until the first end-to-end run is observed as measured task completion; eight Edges rows added for the cases the criteria name, two carrying proposed defaults (a scenario for a failing command, the PO role's; the four other core tasks, this role's in the core-task list); the WCAG2ICT applicability record and the corpus entries named as this role's actions before the delivery screen. No scenario text changed; the Interaction types section untouched. Self-check, as verdicts — feature fitness set (v8): 1 pass, no step changed; 2 pass, both criteria present for the named type; 3 pass, tags untouched; 4 pass, every case the criteria name in the table, each covered by Scenario name or out of scope with a reason; 5 pass, unchanged; 6 pass, unchanged. Experience principles (v2): consistent-not-uniform pass — the two guidelines named, the vocabulary's words, no variation; core-task-parity pass with one row — the three tasks with every option, the other four recorded for the delivery screen; agent-is-a-user not applicable — the agent step's prompt is the definition's rendering, screened with the role definition, not here; evidence-not-opinion pass — hypothesis labeled, the evidence form named; accessible-by-standard pass — bullet 2's criteria riding, the record due at delivery; errors-guide-recovery pass — (g), (h); control-stays-with-the-person pass — (e), (f), (g). Mechanical, by hand (no shell): no banned term, Document History last, version 2. Not committed. |
