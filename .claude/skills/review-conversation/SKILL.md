@@ -14,6 +14,7 @@ generated-by: basis/tools/compile_process.py
 derived-from: review-conversation-process
 source: basis/processes/review-conversation.md
 source-digest: sha256:52602e1635d3
+hold-after: P7D
 ---
 
 # Review conversation (compiled from `review-conversation-process`)
@@ -102,6 +103,8 @@ answer would imply is offered to the authority as the next
 observation, never applied here. Update the record's
 State to name the next ready action. Nothing binding stays only in
 the transcript or the record.
+
+Return each declared output on its own line as `<name>: <value>` — applied, record — a list as a JSON array, a value with line breaks as a JSON string; these lines close your reply.
 
 Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```

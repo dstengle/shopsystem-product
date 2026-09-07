@@ -16,6 +16,7 @@ source: basis/processes/principle-set-authoring.md
 source-digest: sha256:6e8f2e79e618
 activation: model-judged
 promotion: experiment-local
+hold-after: P7D
 ---
 
 # Principle set authoring (compiled from `principle-set-authoring-process`)
@@ -71,6 +72,8 @@ guideline_paths. Close with the fitness screen applying the
 opening's tests to every principle. Every new or changed term
 goes to the glossary before the draft leaves this step.
 
+Return each declared output on its own line as `<name>: <value>` — set, glossary — a list as a JSON array, a value with line breaks as a JSON string; these lines close your reply.
+
 Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```
 
@@ -90,6 +93,8 @@ order and your top three changes. Verdict "clean" only if every
 scenario passes; "tradeoffs-accepted" only if every remaining
 finding is marked in the text as an accepted tradeoff; otherwise
 "findings".
+
+Return each declared output on its own line as `<name>: <value>` — review — a list as a JSON array, a value with line breaks as a JSON string; these lines close your reply.
 
 Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```
@@ -130,6 +135,8 @@ the screen table for every principle you changed — the screen is
 the author's self-check and must match the text it sits under.
 Mark any finding you will not repair as an accepted tradeoff, in
 the text, with one sentence saying why.
+
+Return each declared output on its own line as `<name>: <value>` — set — a list as a JSON array, a value with line breaks as a JSON string; these lines close your reply.
 
 Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```

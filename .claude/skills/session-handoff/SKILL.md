@@ -61,6 +61,8 @@ bead targeting the definition it amends and list the pair here. The
 record points; the definition carries. Nothing goes to a memory
 channel: memory writes are frozen.
 
+Return each declared output on its own line as `<name>: <value>` — session_record, corrections — a list as a JSON array, a value with line breaks as a JSON string; these lines close your reply.
+
 Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```
 
@@ -101,6 +103,8 @@ Prompt:
 Repair every named violation in the validation errors. Do not
 remove content to pass validation — a section the schema demands is
 written, not deleted.
+
+Return each declared output on its own line as `<name>: <value>` — session_record — a list as a JSON array, a value with line breaks as a JSON string; these lines close your reply.
 
 Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```

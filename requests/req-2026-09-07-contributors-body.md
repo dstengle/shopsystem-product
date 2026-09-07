@@ -2,7 +2,7 @@
 type: request
 id: req-2026-09-07-contributors-body
 status: routed
-version: 1
+version: 2
 date: 2026-09-07
 reader: lead-pm
 owner: lead-pm
@@ -13,6 +13,7 @@ received-through: operational-contract
 route: small-change
 route-reason: "one rule in the feature typedef's Contributors section — a contributor's criteria and constraints stand in the body; the reasoning behind them, what was considered and not made a criterion, and the maker's self-check stand in the Document History — within the lead shop's own definitions, demonstrable in one session, no appetite worth a bet"
 routed-to: ""
+work-item: lead-ryr33
 ---
 
 # Request: the Contributors section carries criteria, not reasoning
@@ -61,3 +62,4 @@ change mid-flow.
 | Version | Date | Kind | Entry |
 |---|---|---|---|
 | 1 | 2026-09-07 | update | Recorded by the lead-pm at the request-intake process's record step from the screen's finding on feat-tool-skills (its Document History v3) and the ad-hoc instruction given at feat-tool-skills-rest's add-usability step; route decided, said, and accepted; the lane runs after the second feature. |
+| 2 | 2026-09-07 | update | Taken up by the first router run (anchors lead-5wzgl for intake, lead-ryr33 for the lane): the lane's define and make steps ran on the cheap model, and make changed the feature typedef beyond the Definition; that change is reverted and the lane re-runs from lead-ryr33 once the roles' model tier is set. |

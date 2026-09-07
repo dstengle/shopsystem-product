@@ -11,8 +11,11 @@ Outputs:
   2. The skill (optional, --skill <path>) — a SKILL.md generated from the
      front-matter, purpose, data, and steps. The only prose it contains is
      the step prompts, copied verbatim, each agent-run step's prompt block
-     closing with the banned line — "Do not use these words: " and the
-     lint's BANNED list, loaded from lint_basis.py beside this script.
+     closing with the outputs line — the step's declared outputs named as
+     the form its return takes, one `<name>: <value>` line per output, an
+     ask in place of them where the step may ask — and then the banned
+     line — "Do not use these words: " and the lint's BANNED list, loaded
+     from lint_basis.py beside this script.
 
 Usage:
   compile_process.py <process.md>                    # regenerate the diagram
@@ -112,9 +115,10 @@ DESCRIPTION = {
         "Mermaid flow diagram in the definition's `## Flow (compiled)` "
         "section, and — on request — renders the definition's loadable "
         "skill, whose only prose is the step prompts, verbatim, each "
-        "agent-run step closing with the banned-words line read from the "
-        "lint. Use it after a process definition changes, and to place or "
-        "refresh the definition's skill at the agent's load point."
+        "agent-run step closing with the line naming its declared outputs "
+        "as the form its return takes and with the banned-words line read "
+        "from the lint. Use it after a process definition changes, and to "
+        "place or refresh the definition's skill at the agent's load point."
     ),
     "uses": [
         {
@@ -147,9 +151,12 @@ DESCRIPTION = {
             "description": (
                 "Does what `compile` does, then renders the definition's "
                 "skill — front-matter with `generated: true`, `source`, and "
-                "`source-digest` over the definition's text, the purpose, "
+                "`source-digest` over the definition's text, its `ask-cap` "
+                "and `hold-after` where the definition carries them, the purpose, "
                 "guiding statement, diagram, and every step with its prompt "
-                "verbatim — and writes it to <out>, creating the "
+                "verbatim, each agent-run step's prompt closing with its "
+                "outputs line and the banned-words line — and writes it to "
+                "<out>, creating the "
                 "directories, overwriting what stands there, a hand edit "
                 "included."
             ),
@@ -190,6 +197,28 @@ sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 from lint_basis import BANNED  # noqa: E402
 
 BANNED_LINE = "Do not use these words: " + ", ".join(BANNED)
+
+
+def outputs_line(step: dict) -> str:
+    """The line closing an agent-run step's prompt that names the step's
+    declared outputs as the form its return takes, so a router reads each
+    output by name (adr-2026-09-07-coordinator-role §3: agent outputs become
+    parseable). Empty for a step that declares no outputs and may not ask."""
+    parts = []
+    if step.get("outputs"):
+        names = ", ".join(step["outputs"])
+        parts.append(
+            "Return each declared output on its own line as `<name>: <value>` "
+            f"— {names} — a list as a JSON array, a value with line breaks as "
+            "a JSON string; these lines close your reply."
+        )
+    if step.get("asks"):
+        parts.append(
+            "In place of the outputs, an ask: a line `ask:` then, each on its "
+            "own line, `to`, `kind`, `question`, `default`, and `checkpoint` "
+            "as `<field>: <value>`."
+        )
+    return " ".join(parts)
 
 
 def one_line(exc: BaseException) -> str:
@@ -401,6 +430,9 @@ def skill_step_section(step: dict) -> str:
             lines.append(f"- then: `{step['next']}`")
         prompt = step["prompt"].rstrip()
         if run_by["execution"] == "agent":
+            line = outputs_line(step)
+            if line:
+                prompt += "\n\n" + line
             prompt += "\n\n" + BANNED_LINE
         lines += ["", "Prompt:", "", "```text", prompt, "```"]
     else:
@@ -437,6 +469,11 @@ def generate_skill(front: dict, spec: dict, purpose: str, guiding: str, diagram:
     for key in ("activation", "promotion"):
         if key in cc:
             fm[key] = cc[key]
+    # The run lifecycle's two windows travel with the rendering, so a router
+    # running from it knows a process's ask-cap and hold-after.
+    for key in ("ask-cap", "hold-after"):
+        if key in front:
+            fm[key] = front[key]
     title = front["carried-by"].removesuffix("-skill").replace("-", " ").capitalize()
     parts = [
         "---\n" + yaml.safe_dump(fm, sort_keys=False).rstrip() + "\n---",

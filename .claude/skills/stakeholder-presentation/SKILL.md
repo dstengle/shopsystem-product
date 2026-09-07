@@ -64,6 +64,8 @@ them by consequence. If the material holds more decisions than one
 reading can carry, split it by decision, not by topic, and frame
 only the first split.
 
+Return each declared output on its own line as `<name>: <value>` — frame — a list as a JSON array, a value with line breaks as a JSON string; these lines close your reply.
+
 Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```
 
@@ -89,6 +91,8 @@ to a labeled annex and link it. Style rules:
 guidelines/stakeholder-communication.md, layered on
 guidelines/base-writing-style.md.
 
+Return each declared output on its own line as `<name>: <value>` — brief, annex — a list as a JSON array, a value with line breaks as a JSON string; these lines close your reply.
+
 Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```
 
@@ -108,6 +112,8 @@ an overload verdict; your top three changes. Verdict "clean" only
 if you found nothing. Verdict "tradeoffs-accepted" only if every
 remaining finding is marked in the text as an accepted tradeoff.
 Otherwise verdict "findings".
+
+Return each declared output on its own line as `<name>: <value>` — review — a list as a JSON array, a value with line breaks as a JSON string; these lines close your reply.
 
 Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```
@@ -148,6 +154,8 @@ text makes holds against every line that follows it. Mark any
 finding you will not repair as an accepted tradeoff, in the text,
 with one sentence saying why.
 
+Return each declared output on its own line as `<name>: <value>` — brief — a list as a JSON array, a value with line breaks as a JSON string; these lines close your reply.
+
 Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```
 
@@ -165,6 +173,8 @@ brief's Document History: one review entry per round with the
 verdict and the judge's model. If the verdict is "findings",
 state at the top of the brief, before anything else, the
 findings the one revision left open.
+
+Return each declared output on its own line as `<name>: <value>` — brief — a list as a JSON array, a value with line breaks as a JSON string; these lines close your reply.
 
 Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```

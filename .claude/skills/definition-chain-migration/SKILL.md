@@ -77,6 +77,8 @@ family nominations come only from `actions` — the governed channel
 nominations: the chain review decides final record granularity, so
 do not pre-commit a collapse.
 
+Return each declared output on its own line as `<name>: <value>` — authored — a list as a JSON array, a value with line breaks as a JSON string; these lines close your reply.
+
 Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```
 
@@ -110,6 +112,8 @@ record granularity. Record
 every point where the chain failed to decide something — that
 friction is a finding about the chain, and it goes to the authority
 with the exemplar.
+
+Return each declared output on its own line as `<name>: <value>` — exemplar — a list as a JSON array, a value with line breaks as a JSON string; these lines close your reply.
 
 Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```
@@ -155,6 +159,8 @@ Repair every finding in the review across the chain's links, then
 re-run the exemplar through any link that changed. A finding
 repaired in one link is checked against the others — the chain is
 one definition in six parts, not six documents.
+
+Return each declared output on its own line as `<name>: <value>` — chain — a list as a JSON array, a value with line breaks as a JSON string; these lines close your reply.
 
 Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```
@@ -215,6 +221,8 @@ cannot reach the bar
 after two attempts is nominated for demotion: file the nomination
 with a note naming the failing check; the authority decides it at
 the close-out. Never lower a check to pass a keeper.
+
+Return each declared output on its own line as `<name>: <value>` — rewritten, demoted — a list as a JSON array, a value with line breaks as a JSON string; these lines close your reply.
 
 Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```

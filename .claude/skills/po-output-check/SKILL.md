@@ -17,6 +17,8 @@ source: basis/processes/po-output-check.md
 source-digest: sha256:331a0e4b3131
 activation: model-judged
 promotion: experiment-local
+ask-cap: P1D
+hold-after: P7D
 ---
 
 # Po output check (compiled from `po-output-check-process`)
@@ -70,6 +72,8 @@ with criterion "uncovered". Verdict "clean"
 only if there are no findings; otherwise "findings" with the top
 three changes.
 
+Return each declared output on its own line as `<name>: <value>` — review, judge_stamp — a list as a JSON array, a value with line breaks as a JSON string; these lines close your reply.
+
 Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```
 
@@ -118,6 +122,8 @@ of guessing: the question, its kind, the default you will apply
 if unanswered, and a checkpoint holding the repairs made so far.
 On the first pass ask is absent; if it carries an answer or
 resolved defaulted, act on it and finish the repairs.
+
+Return each declared output on its own line as `<name>: <value>` — artifact — a list as a JSON array, a value with line breaks as a JSON string; these lines close your reply. In place of the outputs, an ask: a line `ask:` then, each on its own line, `to`, `kind`, `question`, `default`, and `checkpoint` as `<field>: <value>`.
 
 Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```
@@ -171,6 +177,8 @@ state entry naming this feature's pass — the initiative
 typedef's writer, and planned is the only status it writes
 over — and return its path as initiative; otherwise return
 initiative empty. Return the artifact.
+
+Return each declared output on its own line as `<name>: <value>` — artifact, gap_entry, definition, initiative — a list as a JSON array, a value with line breaks as a JSON string; these lines close your reply.
 
 Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```

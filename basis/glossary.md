@@ -4,7 +4,7 @@ id: glossary
 owner: product-authority
 status: approved
 approved: 2026-08-19
-version: 24
+version: 25
 created: 2026-08-19
 updated: 2026-09-07
 ---
@@ -282,6 +282,11 @@ terms uses one of these when one fits.
   alone.
 - **gap** — a missing definition, tool, or skill the shop records as a
   request rather than works around.
+- **router** — the role of the lead shop that moves one run from step
+  to step, from the run's anchor and the definition's rendering alone,
+  and decides nothing a step decides — no verdict, route, or bet
+  (role definition `roles/router.md`). Not the lead-pm role reading a
+  request's route, which feat-request-routing calls by the same word.
 
 ## Document History
 
@@ -315,3 +320,4 @@ terms uses one of these when one fits.
 | 22 | 2026-09-06 | update | implementation guidance added under req-2026-09-06-implementation-guidance at the small-change process's make step, on the authority's direction of 2026-09-06 the request records — the term the implementation-guidance typedef and the scenario-assignment process v12 use. Made by the lead-solutions-architect role. |
 | 23 | 2026-09-06 | update | framework tool, skill, and gap added under req-2026-09-06-tools-through-skills at the small-change lane's make step, round 2, by the lead-solutions-architect role — the terms the `tools-through-skills` principle's statements turn on, which the lane's one screen found undefined; the lead-pm widened the lane's paths to this glossary at the check step, use-defined-terms naming it as the terms' home. |
 | 24 | 2026-09-07 | update | sub-initiative added under req-2026-09-07-sub-initiative at the small-change process's make step, on the authority's words the request records ("I prefer subinitiative"; "one type with parent link") — the term the initiative typedef v12 and the initiative-check process v10 use. Made by the lead-solutions-architect role. |
+| 25 | 2026-09-07 | update | router added, in the role sense, under init-process-runner / feat-process-runner (adr-2026-09-07-coordinator-role §3) — the term the router role definition, session-handoff, and reconcile-and-close use; feat-request-routing's use of the word for the lead-pm's route reading told apart. Made by the lead-solutions-architect role. |

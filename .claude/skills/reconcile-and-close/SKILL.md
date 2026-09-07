@@ -53,6 +53,8 @@ Compare the pinned hashes in the response to the register. Verdict
 match; otherwise verdict "discrepancy", with the evidence stating
 exactly what differs.
 
+Return each declared output on its own line as `<name>: <value>` — verification — a list as a JSON array, a value with line breaks as a JSON string; these lines close your reply.
+
 Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```
 
@@ -105,6 +107,8 @@ Prompt:
 File a follow-up work item for every entry in the reported items —
 each defect, observation, and deferred scenario — and link each new
 item to the closed work item.
+
+Return each declared output on its own line as `<name>: <value>` — filed — a list as a JSON array, a value with line breaks as a JSON string; these lines close your reply.
 
 Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```

@@ -13,6 +13,7 @@ generated-by: basis/tools/compile_process.py
 derived-from: work-conversation-process
 source: basis/processes/work-conversation.md
 source-digest: sha256:ef7e662c2c71
+hold-after: P7D
 ---
 
 # Work conversation (compiled from `work-conversation-process`)
@@ -99,6 +100,8 @@ comment on the work item — what was asked, what was done, with
 links. Work that outgrows the item's scope is not absorbed: file it
 as its own item and say so. Nothing binding stays only in the
 transcript.
+
+Return each declared output on its own line as `<name>: <value>` — applied — a list as a JSON array, a value with line breaks as a JSON string; these lines close your reply.
 
 Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```

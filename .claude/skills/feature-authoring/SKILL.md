@@ -17,6 +17,7 @@ source: basis/processes/feature-authoring.md
 source-digest: sha256:36b8aaabc8c6
 activation: model-judged
 promotion: experiment-local
+hold-after: P7D
 ---
 
 # Feature authoring (compiled from `feature-authoring-process`)
@@ -70,6 +71,8 @@ revise its own document — the id stays, and a changed scenario
 text is a new scenario by hash — and add no duplicate id.
 Return the feature's path.
 
+Return each declared output on its own line as `<name>: <value>` — artifact, initiative — a list as a JSON array, a value with line breaks as a JSON string; these lines close your reply.
+
 Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```
 
@@ -90,6 +93,8 @@ and add to the Edges table any failure or boundary case those
 criteria name. Where the section says "none", record that no
 criteria are due, with its reason. Return the feature.
 
+Return each declared output on its own line as `<name>: <value>` — artifact — a list as a JSON array, a value with line breaks as a JSON string; these lines close your reply.
+
 Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```
 
@@ -108,6 +113,8 @@ section as criteria riding on the scenarios they bound — and
 add to the Edges table any failure or boundary case those
 constraints name. Where none apply, record that the
 decomposition names none for this feature. Return the feature.
+
+Return each declared output on its own line as `<name>: <value>` — artifact — a list as a JSON array, a value with line breaks as a JSON string; these lines close your reply.
 
 Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```

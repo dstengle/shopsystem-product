@@ -17,6 +17,7 @@ source: basis/processes/backlog-ordering.md
 source-digest: sha256:f05550e0c689
 activation: model-judged
 promotion: experiment-local
+hold-after: P7D
 ---
 
 # Backlog ordering (compiled from `backlog-ordering-process`)
@@ -57,6 +58,8 @@ cross-context item and naming its escalation; state the first
 untaken item's readiness. Set the order's status to draft and
 link the priority in its frontmatter. Return the new order's
 path.
+
+Return each declared output on its own line as `<name>: <value>` — artifact — a list as a JSON array, a value with line breaks as a JSON string; these lines close your reply.
 
 Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```

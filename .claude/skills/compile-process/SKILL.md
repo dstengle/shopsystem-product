@@ -4,7 +4,8 @@ description: 'Compiles a process definition: checks that every `$ref` in its dat
   block has a source that defines the type, regenerates the Mermaid flow diagram in
   the definition''s `## Flow (compiled)` section, and — on request — renders the definition''s
   loadable skill, whose only prose is the step prompts, verbatim, each agent-run step
-  closing with the banned-words line read from the lint. Use it after a process definition
+  closing with the line naming its declared outputs as the form its return takes and
+  with the banned-words line read from the lint. Use it after a process definition
   changes, and to place or refresh the definition''s skill at the agent''s load point.
   Tool: `basis/tools/compile_process.py`. Uses, each with its exact invocation below:
   `compile`, `compile-skill`.'
@@ -14,12 +15,12 @@ generated: true
 generated-by: basis/tools/compile_tool.py
 derived-from: compile-process
 source: basis/tools/compile_process.py
-source-digest: sha256:a1b0583fc8a9
+source-digest: sha256:1d26fe286eca
 ---
 
 # compile-process (produced from the answer of `basis/tools/compile_process.py`)
 
-Compiles a process definition: checks that every `$ref` in its data block has a source that defines the type, regenerates the Mermaid flow diagram in the definition's `## Flow (compiled)` section, and — on request — renders the definition's loadable skill, whose only prose is the step prompts, verbatim, each agent-run step closing with the banned-words line read from the lint. Use it after a process definition changes, and to place or refresh the definition's skill at the agent's load point.
+Compiles a process definition: checks that every `$ref` in its data block has a source that defines the type, regenerates the Mermaid flow diagram in the definition's `## Flow (compiled)` section, and — on request — renders the definition's loadable skill, whose only prose is the step prompts, verbatim, each agent-run step closing with the line naming its declared outputs as the form its return takes and with the banned-words line read from the lint. Use it after a process definition changes, and to place or refresh the definition's skill at the agent's load point.
 
 Uses: [compile](#compile), [compile-skill](#compile-skill).
 
@@ -50,7 +51,7 @@ Fails:
 
 ## compile-skill
 
-Does what `compile` does, then renders the definition's skill — front-matter with `generated: true`, `source`, and `source-digest` over the definition's text, the purpose, guiding statement, diagram, and every step with its prompt verbatim — and writes it to <out>, creating the directories, overwriting what stands there, a hand edit included.
+Does what `compile` does, then renders the definition's skill — front-matter with `generated: true`, `source`, and `source-digest` over the definition's text, its `ask-cap` and `hold-after` where the definition carries them, the purpose, guiding statement, diagram, and every step with its prompt verbatim, each agent-run step's prompt closing with its outputs line and the banned-words line — and writes it to <out>, creating the directories, overwriting what stands there, a hand edit included.
 
 Invocation:
 

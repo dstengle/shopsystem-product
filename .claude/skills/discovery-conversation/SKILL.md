@@ -17,6 +17,7 @@ generated-by: basis/tools/compile_process.py
 derived-from: discovery-conversation-process
 source: basis/processes/discovery-conversation.md
 source-digest: sha256:ac0804bd4704
+hold-after: P7D
 ---
 
 # Discovery conversation (compiled from `discovery-conversation-process`)
@@ -121,6 +122,8 @@ quoted with the request's id as the reference, not the
 transcript; the dialogue refines the direction, never the record
 of the ask.
 
+Return each declared output on its own line as `<name>: <value>` — reply, initiative_draft — a list as a JSON array, a value with line breaks as a JSON string; these lines close your reply.
+
 Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```
 
@@ -171,6 +174,8 @@ decline survives; state in the cancellation entry that the
 product decision record for the decline is the PO role's to
 make and the PO output check screens it, linked once made — the
 initiative typedef's rule. Return the initiative's path.
+
+Return each declared output on its own line as `<name>: <value>` — initiative, request — a list as a JSON array, a value with line breaks as a JSON string; these lines close your reply.
 
 Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```

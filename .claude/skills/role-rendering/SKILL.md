@@ -137,6 +137,8 @@ subject — its path, listed in approved — naming this process and
 the defect, and add a row to escalations — the subject, then the
 entry. Return escalations.
 
+Return each declared output on its own line as `<name>: <value>` — escalations — a list as a JSON array, a value with line breaks as a JSON string; these lines close your reply.
+
 Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```
 
@@ -174,6 +176,8 @@ Document History; every other row, in a Document History entry
 for this run written into the definition at self. The resulting
 action on each escalated row is the owner's decision. Return
 escalations.
+
+Return each declared output on its own line as `<name>: <value>` — escalations — a list as a JSON array, a value with line breaks as a JSON string; these lines close your reply.
 
 Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```

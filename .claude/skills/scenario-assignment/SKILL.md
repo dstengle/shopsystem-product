@@ -19,6 +19,8 @@ source: basis/processes/scenario-assignment.md
 source-digest: sha256:f3662182a662
 activation: model-judged
 promotion: experiment-local
+ask-cap: P1D
+hold-after: P7D
 ---
 
 # Scenario assignment (compiled from `scenario-assignment-process`)
@@ -87,6 +89,8 @@ so far; on the first pass ask is absent, and if it carries an
 answer or resolved defaulted, act on it. Return the tagged
 feature.
 
+Return each declared output on its own line as `<name>: <value>` — feature, unowned, assignment, guidance — a list as a JSON array, a value with line breaks as a JSON string; these lines close your reply. In place of the outputs, an ask: a line `ask:` then, each on its own line, `to`, `kind`, `question`, `default`, and `checkpoint` as `<field>: <value>`.
+
 Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```
 
@@ -122,6 +126,8 @@ the PO role's; or the scenario contradicts one already specified
 in the feature repository, which the PO role resolves against
 the framing — the reason in unowned names which case.
 
+Return each declared output on its own line as `<name>: <value>` — feature — a list as a JSON array, a value with line breaks as a JSON string; these lines close your reply.
+
 Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```
 
@@ -154,6 +160,8 @@ sent (the tool's
 standard output, one line per message — its output contract is
 pinned when the messaging package is imported), the message sent to each. Return
 the feature.
+
+Return each declared output on its own line as `<name>: <value>` — feature — a list as a JSON array, a value with line breaks as a JSON string; these lines close your reply.
 
 Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```

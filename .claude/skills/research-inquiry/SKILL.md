@@ -18,6 +18,7 @@ source: basis/processes/research-inquiry.md
 source-digest: sha256:3a6627e0d0bc
 activation: model-judged
 promotion: experiment-local
+hold-after: P7D
 ---
 
 # Research inquiry (compiled from `research-inquiry-process`)
@@ -85,6 +86,8 @@ assumptions the question carries. If the answer would rest
 mainly on knowledge the run cannot verify, say so here — that
 returns to the consumer as a scoping question.
 
+Return each declared output on its own line as `<name>: <value>` — frame, report_id — a list as a JSON array, a value with line breaks as a JSON string; these lines close your reply.
+
 Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```
 
@@ -102,6 +105,8 @@ sub-question into search tasks that can run independently: the
 query, the source kinds expected, and what a good result looks
 like. Cover more than one angle per sub-question so a single
 search path cannot decide the answer alone.
+
+Return each declared output on its own line as `<name>: <value>` — plan — a list as a JSON array, a value with line breaks as a JSON string; these lines close your reply.
 
 Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```
@@ -122,6 +127,8 @@ as an abstract, and the passages relevant to its task, quoted.
 A source that could not be opened is recorded as unopened, never
 summarized from memory.
 
+Return each declared output on its own line as `<name>: <value>` — notes — a list as a JSON array, a value with line breaks as a JSON string; these lines close your reply.
+
 Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```
 
@@ -139,6 +146,8 @@ source identifier, and whether the source is primary or
 secondary. Quotes come before claims — no claim enters the
 evidence without the passage it rests on. Note where sources
 conflict.
+
+Return each declared output on its own line as `<name>: <value>` — evidence — a list as a JSON array, a value with line breaks as a JSON string; these lines close your reply.
 
 Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```
@@ -161,6 +170,8 @@ distinguishable. State confidence and likelihood in separate
 phrases, never one. Mark any claim resting on model knowledge
 as knowledge-only with lowered confidence.
 
+Return each declared output on its own line as `<name>: <value>` — draft — a list as a JSON array, a value with line breaks as a JSON string; these lines close your reply.
+
 Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```
 
@@ -182,6 +193,8 @@ not exist, does not say it, or was never opened is a finding:
 it must be retracted or marked UNVERIFIED. Verdict "clean" only
 if every finding survives; otherwise "findings", with the top
 changes.
+
+Return each declared output on its own line as `<name>: <value>` — review — a list as a JSON array, a value with line breaks as a JSON string; these lines close your reply.
 
 Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```
@@ -215,6 +228,8 @@ confidence where the evidence thinned, and add the reviewer's
 unanswered verification questions to Limitations. Do not add
 new sources here — a new source is a new gather.
 
+Return each declared output on its own line as `<name>: <value>` — draft — a list as a JSON array, a value with line breaks as a JSON string; these lines close your reply.
+
 Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```
 
@@ -243,6 +258,8 @@ review's open findings stated in Limitations as residuals. Write
 it to the research branch at research/ followed by report_id
 and .md, and return that path.
 
+Return each declared output on its own line as `<name>: <value>` — report, report_path — a list as a JSON array, a value with line breaks as a JSON string; these lines close your reply.
+
 Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```
 
@@ -261,6 +278,8 @@ before the report explains it, and whether each finding's
 confidence label is reproducible from its stated sources.
 Verdict "clean" if the consumer can act on it; otherwise
 "findings" with the top three changes.
+
+Return each declared output on its own line as `<name>: <value>` — review — a list as a JSON array, a value with line breaks as a JSON string; these lines close your reply.
 
 Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```
@@ -295,6 +314,8 @@ substance; a finding the reader could not reproduce is recorded
 as a residual in Limitations. Record read_round in the report's
 Document History.
 
+Return each declared output on its own line as `<name>: <value>` — report — a list as a JSON array, a value with line breaks as a JSON string; these lines close your reply.
+
 Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```
 
@@ -322,6 +343,8 @@ index_path (id, question, date, status, location). Deliver the executive summary
 to the consumer with report_path; if verify_round or read_round
 reached round_cap, say so first and point at the Limitations
 section that discloses the residuals.
+
+Return each declared output on its own line as `<name>: <value>` — report — a list as a JSON array, a value with line breaks as a JSON string; these lines close your reply.
 
 Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```

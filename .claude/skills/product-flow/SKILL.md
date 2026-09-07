@@ -16,6 +16,7 @@ generated-by: basis/tools/compile_process.py
 derived-from: product-flow-process
 source: basis/processes/product-flow.md
 source-digest: sha256:20330e9224ee
+hold-after: P7D
 ---
 
 # Product flow (compiled from `product-flow-process`)
@@ -253,6 +254,8 @@ its features are done and every one is assigned. Return
 "another" or "done". This is your backlog accountability, not a
 check: the framing decides what is needed, the appetite bounds
 it.
+
+Return each declared output on its own line as `<name>: <value>` — more — a list as a JSON array, a value with line breaks as a JSON string; these lines close your reply.
 
 Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```

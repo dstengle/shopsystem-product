@@ -139,6 +139,8 @@ not_simple false, reason empty, observation as the command
 exactly as written, and paths as the artifacts the definition
 names.
 
+Return each declared output on its own line as `<name>: <value>` — request, not_simple, reason, observation, paths — a list as a JSON array, a value with line breaks as a JSON string; these lines close your reply.
+
 Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```
 
@@ -183,6 +185,8 @@ one entry for this round: your role as maker, every path
 changed with its version before and after, and round. Return
 the request and changed — the paths you changed this round.
 
+Return each declared output on its own line as `<name>: <value>` — request, changed — a list as a JSON array, a value with line breaks as a JSON string; these lines close your reply.
+
 Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```
 
@@ -210,6 +214,8 @@ check_finding the statement or rule that fails, quoted, and what
 fails it. Write under Check in the Result section: the verdict,
 your role, round, and the finding. Return the request, the
 verdict, and the finding — empty on pass.
+
+Return each declared output on its own line as `<name>: <value>` — request, check_verdict, check_finding — a list as a JSON array, a value with line breaks as a JSON string; these lines close your reply.
 
 Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```
@@ -284,6 +290,8 @@ the request and this result no bet was taken and no check of
 record was run. Set the request's status to done; bump its
 version with the history row. Return the request.
 
+Return each declared output on its own line as `<name>: <value>` — request — a list as a JSON array, a value with line breaks as a JSON string; these lines close your reply.
+
 Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```
 
@@ -312,6 +320,8 @@ section that the lane defined no change and made none, with the
 reason. The originator reads the changed route and its reason
 from the request, as the first route was read. Bump the
 request's version with the history row. Return the request.
+
+Return each declared output on its own line as `<name>: <value>` — request — a list as a JSON array, a value with line breaks as a JSON string; these lines close your reply.
 
 Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```
@@ -346,6 +356,8 @@ as awaiting its route. Revert nothing: the changed artifacts'
 histories stand as the maker wrote them, and the request records
 what stands. Bump the request's version with the history row.
 Return the request.
+
+Return each declared output on its own line as `<name>: <value>` — request — a list as a JSON array, a value with line breaks as a JSON string; these lines close your reply.
 
 Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```

@@ -20,6 +20,8 @@ source: basis/processes/initiative-check.md
 source-digest: sha256:3e1d69efe9b4
 activation: model-judged
 promotion: experiment-local
+ask-cap: P1D
+hold-after: P7D
 ---
 
 # Initiative check (compiled from `initiative-check-process`)
@@ -71,6 +73,8 @@ Read the initiative at initiative and add your attachment —
 your offer, the role-offer type this step outputs, rendered
 into the initiative as its typedef states — or ask questions.
 
+Return each declared output on its own line as `<name>: <value>` — initiative, feasibility_offer — a list as a JSON array, a value with line breaks as a JSON string; these lines close your reply.
+
 Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```
 
@@ -85,6 +89,8 @@ Prompt:
 Read the initiative at initiative and add your attachment —
 your offer, the role-offer type this step outputs, rendered
 into the initiative as its typedef states — or ask questions.
+
+Return each declared output on its own line as `<name>: <value>` — initiative, usability_offer — a list as a JSON array, a value with line breaks as a JSON string; these lines close your reply.
 
 Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```
@@ -143,6 +149,8 @@ defect no criterion names is a finding with criterion
 "uncovered". Verdict "clean" only if there are no findings;
 otherwise "findings" with the top three changes.
 
+Return each declared output on its own line as `<name>: <value>` — review, judge_stamp — a list as a JSON array, a value with line breaks as a JSON string; these lines close your reply.
+
 Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```
 
@@ -195,6 +203,8 @@ findings marked "uncovered" as they are — they are the decide
 step's. On the first pass ask is absent; if it carries an answer
 or resolved defaulted, apply it and finish the repairs.
 
+Return each declared output on its own line as `<name>: <value>` — initiative — a list as a JSON array, a value with line breaks as a JSON string; these lines close your reply. In place of the outputs, an ask: a line `ask:` then, each on its own line, `to`, `kind`, `question`, `default`, and `checkpoint` as `<field>: <value>`.
+
 Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```
 
@@ -242,6 +252,8 @@ on bet, written only over "proposed"; leave "proposed" on hold;
 decision record: state in the entry that the record is the PO
 role's to make and the PO output check screens it, and that the
 entry links it once made. Return the initiative.
+
+Return each declared output on its own line as `<name>: <value>` — initiative — a list as a JSON array, a value with line breaks as a JSON string; these lines close your reply.
 
 Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```

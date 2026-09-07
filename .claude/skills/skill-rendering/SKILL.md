@@ -199,6 +199,8 @@ definition's Document History naming this process and the
 defect, and add the definition's path with the entry to
 escalations. Return escalations.
 
+Return each declared output on its own line as `<name>: <value>` — escalations — a list as a JSON array, a value with line breaks as a JSON string; these lines close your reply.
+
 Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```
 
@@ -235,6 +237,8 @@ unrecognized skill, the second-home notice — lands in this
 process definition's Document History entry for the run. The
 resulting action on each escalated row is the owner's decision.
 Return escalations.
+
+Return each declared output on its own line as `<name>: <value>` — escalations — a list as a JSON array, a value with line breaks as a JSON string; these lines close your reply.
 
 Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```
