@@ -2,8 +2,8 @@
 type: feature
 id: feat-process-runner
 name: Process runner
-status: checked
-version: 5
+status: assigned
+version: 6
 initiative: ../initiatives/init-process-runner.md
 owner: lead-po
 created: 2026-09-07
@@ -248,115 +248,115 @@ Feature: Process runner
   place of the lead-pm running the definitions by hand in one long
   context.
 
-  @feature:feat-process-runner @hash:7f991d005cc5
+  @bounded-context:shopsystem-product @feature:feat-process-runner @hash:7f991d005cc5
   Scenario: a run starts against a work item from an approved process definition
     Given an approved process definition and a work item
     When the person starts a run of the process against the work item at the command line
     Then the run is recorded on the work item as running at the definition's first step, with its parameters and the router's model as the router's definition names it, and the person is shown the run's id
 
-  @feature:feat-process-runner @hash:21a0a96524fb
+  @bounded-context:shopsystem-product @feature:feat-process-runner @hash:21a0a96524fb
   Scenario: a runtime step runs as its definition writes it
     Given a run at a runtime step
     When the router moves the run through the step
     Then the step's assignments are applied and its command run exactly as the definition writes them, and the values they yield are recorded on the anchor before the next step
 
-  @feature:feat-process-runner @hash:dfb80114f737
+  @bounded-context:shopsystem-product @feature:feat-process-runner @hash:dfb80114f737
   Scenario: a runtime command that exits non-zero holds the run
     Given a run at a runtime step whose command exits non-zero
     When the router runs the command as written
     Then the exit status and the command's own message are recorded on the anchor as values the step yielded, the run holds at that step, and the person is shown the step, the exit status, and the message
 
-  @feature:feat-process-runner @hash:4353a5e45d00
+  @bounded-context:shopsystem-product @feature:feat-process-runner @hash:4353a5e45d00
   Scenario: a branch records the value it was taken on
     Given a run at a step whose next step depends on a condition
     When the router evaluates the condition
     Then the value it read and the branch it took are recorded on the anchor beside each other
 
-  @feature:feat-process-runner @hash:c32dd5b8b474
+  @bounded-context:shopsystem-product @feature:feat-process-runner @hash:c32dd5b8b474
   Scenario: a condition the router cannot read holds the run and is asked
     Given a run at a step whose condition the router cannot evaluate from the values it has
     When the router reaches the condition
     Then no branch is taken, the run holds at that step, and the person is shown the condition and asked which branch holds
 
-  @feature:feat-process-runner @hash:6c3bd78771bc
+  @bounded-context:shopsystem-product @feature:feat-process-runner @hash:6c3bd78771bc
   Scenario: an agent step is launched with its declared inputs alone
     Given a run at an agent step
     When the router launches the step
     Then the agent receives the step's prompt and the values of the step's declared inputs and nothing else of the run
 
-  @feature:feat-process-runner @hash:3a9dc4428ded
+  @bounded-context:shopsystem-product @feature:feat-process-runner @hash:3a9dc4428ded
   Scenario: an agent step's return names its declared outputs
     Given an agent step of any approved process definition, whose definition declares outputs
     When the agent completes the step
     Then its return states each declared output by name with its value, and the value recorded on the anchor for each output equals the value the return names
 
-  @feature:feat-process-runner @hash:c0234aab4a26
+  @bounded-context:shopsystem-product @feature:feat-process-runner @hash:c0234aab4a26
   Scenario: a return lacking a declared output holds the run
     Given an agent step whose return lacks one of its declared outputs
     When the router reads the return
     Then no value is recorded for that output, the run holds at that step, and the person is shown the step and the output that is missing
 
-  @feature:feat-process-runner @hash:6bcebb4e0073
+  @bounded-context:shopsystem-product @feature:feat-process-runner @hash:6bcebb4e0073
   Scenario: a human step holds the run for the person
     Given a run at a human step
     When the router reaches the step
     Then the run holds with the step and every value on the anchor, the person the step names is shown the run's id, the step, and its question with the question's kind and default, and no agent waits for the answer
 
-  @feature:feat-process-runner @hash:6c35e3f87cd0
+  @bounded-context:shopsystem-product @feature:feat-process-runner @hash:6c35e3f87cd0
   Scenario: an answer at the command line resumes the held run
     Given a run held at a human step or by an ask
     When the person the step or the ask names answers the question or accepts its default at the command line
     Then the answer is recorded on the anchor, the run resumes at the step that asked with the answer in its inputs, and the router says what it took
 
-  @feature:feat-process-runner @hash:767b608029a3
+  @bounded-context:shopsystem-product @feature:feat-process-runner @hash:767b608029a3
   Scenario: an ask returned by an agent step holds the run for the role it names
     Given a run at an agent step whose agent returns an ask in place of its outputs
     When the router receives the ask
     Then the run holds at that step with the ask recorded on the anchor for the role the ask names, and nothing further runs until it is answered
 
-  @feature:feat-process-runner @hash:4d31a463c42e
+  @bounded-context:shopsystem-product @feature:feat-process-runner @hash:4d31a463c42e
   Scenario: a person holds a running run
     Given a run that is running
     When the person holds it at the command line
     Then the run is recorded held at its current step with every value on the anchor, and nothing further runs until it is resumed or cancelled
 
-  @feature:feat-process-runner @hash:8f5b65dca426
+  @bounded-context:shopsystem-product @feature:feat-process-runner @hash:8f5b65dca426
   Scenario: a router started from the anchor resumes the held run
     Given a run held at a step, whether by the person, by an ask, or by its router stopping
     When a router is started from the run's anchor
     Then its first turn cites only the anchor's values and the step — the run's id, the step, and what the run awaits — and it continues from that step with the anchor and the definition's rendering as its only sources
 
-  @feature:feat-process-runner @hash:1809e3236eca
+  @bounded-context:shopsystem-product @feature:feat-process-runner @hash:1809e3236eca
   Scenario: a run is cancelled with a reason
     Given a run that is running or held
     When the person cancels it with a reason and confirms at the command line
     Then the run is recorded cancelled with the reason on its anchor, any open ask on it is marked cancelled, and nothing further runs
 
-  @feature:feat-process-runner @hash:28b4f5a6d5dc
+  @bounded-context:shopsystem-product @feature:feat-process-runner @hash:28b4f5a6d5dc
   Scenario: a sub-process step runs from its own definition and returns its result
     Given a run at a sub-process step
     When the router reaches the step
     Then the sub-process runs from its own definition as a run of its own, recording the parent it branched from, and its result is recorded on the parent's anchor as the step's output
 
-  @feature:feat-process-runner @hash:06a0e40f2325
+  @bounded-context:shopsystem-product @feature:feat-process-runner @hash:06a0e40f2325
   Scenario: the router is an approved role available at the point of work
     Given the router role's definition standing approved
     When the check over the roles at the point of work runs
     Then the router is available to the agent runtime, current with its definition, and the check reports it so
 
-  @feature:feat-process-runner @hash:d2f51245aa9a
+  @bounded-context:shopsystem-product @feature:feat-process-runner @hash:d2f51245aa9a
   Scenario: the router writes no decision to the run
     Given a run the router has moved to its end
     When the anchor is read
     Then every value the router wrote is a step's declared output, a condition's read value, or the run's state, and no verdict, route, or bet on the anchor is the router's
 
-  @feature:feat-process-runner @hash:fe0399304a46
+  @bounded-context:shopsystem-product @feature:feat-process-runner @hash:fe0399304a46
   Scenario: an approved process runs end to end with the lead-pm at its own steps alone
     Given an approved process definition with runtime, agent, and human steps, and a run of it started against a work item
     When the router moves the run to its end
     Then every step ran as the definition writes it, in the definition's order, the result is recorded on the anchor, and the lead-pm acted at its own steps and nowhere between them
 
-  @feature:feat-process-runner @hash:96124cdccf45
+  @bounded-context:shopsystem-product @feature:feat-process-runner @hash:96124cdccf45
   Scenario: the run's context is recorded on the anchor at its end
     Given a run the router is moving
     When the run ends
@@ -415,3 +415,4 @@ Feature: Process runner
 | 3 | 2026-09-07 | update | The solutions architect role's record added to the Contributors section at feature-authoring's add-constraints step: the decomposition (init-process-runner v7, §Decomposition) names no non-functional constraint for this feature — "None", placement in the lead shop's tree, cross-context flow none — so no criterion rides; one Edges row for the boundary it names, out of scope with its reason. Pre-state, from lead-shop-held records: the decomposition; adr-2026-09-07-coordinator-role v3 — bound on Bounded Context shops none new, and the one non-functional requirement the initiative carries, the measure, is the For whom section's, standing in Edges as the PM role's count; the process-definition typedef v7 (§Run lifecycle, already carried by the scenarios) and the role-definition typedef v4 (the harness keys the router's definition must carry — the maker's, within the role chain); compile_process.py and compile_role.py read through their skills, the renderings of their describe answers (uses compile, compile-skill; validate, render, check); the approved process definitions read for the roles their steps name — lead-shop roles, cold-reviewer, researcher, the authority, the originator, the router; none a Bounded Context shop's. No scenario text changed; the designer's passage and the Interaction types section untouched. Principles screen: knowable-shape pass — nothing added names an actor without a definition; contracts-between-contexts pass — the row keeps a shop reachable through its contract only; actor-neutral-discipline pass — no rule forked by who fills a step; local-comprehension pass — the record reads the decomposition alone; bidirectional-conformance pass — no definition changed; intent-provenance pass — the step and its source named. Self-check, as verdicts — feature fitness set (v8): 1 pass, no step changed; 2 pass, owning shop per scenario, designer criteria present, the architect's constraints recorded as none named; 3 pass, tags untouched; 4 pass, the new row out of scope with a reason, no case the record names left out; 5 pass, unchanged; 6 pass, unchanged. Mechanical: no banned term (grep of the lint's list); Document History last; version 3. Not committed. |
 | 4 | 2026-09-07 | update | The one revise, by the PO role, on the fifteen findings as ruled. F1 the narrative introduces the router as a role of the lead shop, in §1 and the block. F2 the launch scenario's Then ends at "nothing else of the run". F3 the return scenario's Then states the recorded value equals the value the return names. F4 the ask scenario's Then ends at the hold; the answer scenario widened to a run held at a human step or by an ask. F5 the resume scenario's Given drops the router that remembers; its Then states the first turn cites only the anchor's values and the step. F6 the cancel scenario's When names the confirmation. F7 *a runtime command that exits non-zero holds the run* added; the (h) row cites it, its proposed default closed. F8 the Edges rows cite the feature's own labels — (a), (b), (c), (e), (f), (h), (i) — and the initiative's unknowns as the initiative's. F9 the router-word row out of scope with its reason. F10 criterion (i) and its row list the seven scenarios by name. F11 *the run's context is recorded on the anchor at its end* added; the measure row cites it, the reading across runs init-run-measurement's. F12 the start scenario's Then records the router's model as the definition names it; the tool-list row cites it. F13 the sub-process scenario kept; a row names its source — the typedef's steps section and product-flow's composition. F14 order-2026-09-07-b cited by id in the vocabulary, provenance, and four rows; CEL and fabro each glossed in one clause. F15 the Interaction types section points at Contributors v2. Overload: rows 3, 5, 10, 11, 17, 18 cut to the Scenario names, the CEL clause kept on row 11 for F14; both proposed defaults for the PM role kept (an ask past its cap; which process the first run runs). Nine scenarios `@hash:pending` for the lead-pm: the start, launch, return, answer, ask, resume, and cancel scenarios changed; the non-zero-exit and context scenarios new — nineteen in all; the other ten hashes unchanged. The designer's criteria (a)–(h) and (A1)–(A3) untouched but (i)'s ride-on list; the architect's record untouched. Self-check, as verdicts — feature fitness set (v8): 1 pass — each changed Then one observable outcome, no step naming a model tier, a tool, or a launch form; 2 pass — an owning shop for all nineteen, the two new scenarios in the list; 3 pass on presence — both tags on all nineteen, nine hashes pending; 4 pass — thirty-nine rows, the new row and the two new scenarios in the table, every case covered by Scenario name or out of scope with a reason, no argument left where a name answers; 5 pass — command line, the reading placed at v2; 6 pass — who, what, and the framing's outcome, the router now introduced. Mechanical, by hand (no shell): no banned term; Document History last; version 4. Not committed. |
 | 5 | 2026-09-07 | state | `draft` → `checked`: the PM role's pass after the one screen (fifteen findings) and the one revise; every named finding repaired, the wobbly and uncovered ones ruled with the review — two scenarios added (a non-zero exit holds the run; the run's context recorded at its end), the router's model recorded at the start. The nine hashes filled by the lead-pm after the revise. |
+| 6 | 2026-09-07 | state | `checked` → `assigned`: the scenario-assignment process (v12) record step, by the lead-solutions-architect role. Assignment — one context, shopsystem-product (the lead shop): the decomposition (init-process-runner v8, Decomposition: none — the runner role, its rendering, and any compiler change in the lead shop's tree; no contract on this branch; cross-context flow none) and the Contributors section agree on all nineteen, and no scenario asks another shop to act (the person at the command line fills a lead-shop role; the harness is the environment); scenarios @hash:7f991d005cc5, @hash:21a0a96524fb, @hash:dfb80114f737, @hash:4353a5e45d00, @hash:c32dd5b8b474, @hash:6c3bd78771bc, @hash:3a9dc4428ded, @hash:c0234aab4a26, @hash:6bcebb4e0073, @hash:6c35e3f87cd0, @hash:767b608029a3, @hash:4d31a463c42e, @hash:8f5b65dca426, @hash:1809e3236eca, @hash:28b4f5a6d5dc, @hash:06a0e40f2325, @hash:d2f51245aa9a, @hash:fe0399304a46, @hash:96124cdccf45, each tagged @bounded-context:shopsystem-product on the line above its Scenario, no hash changed. Pre-state read from lead-shop-held records, none from a context's internals: contracts — none exist on this branch; the guardrail adr-2026-09-07-coordinator-role at v3 (checked), read for §2, §2.1, §3, §4; the role-definition typedef at v4 with its guideline v2 and fitness set v3 — the chain the router's definition goes through; basis/roles/ holding six definitions and no router, .claude/agents/ their six renderings; the process-definition typedef at v7 (§The steps section, §Run lifecycle, §Rendering contract); role-rendering at v7 and skill-rendering at v9; compile_role.py, compile_process.py, bd, and the lint read through their skills alone — compile_role.py admitting `model` among the harness keys its skill's check-failed row names; the ask data type at v2; the glossary at v24, `ask` in two senses and no `router` entry; the backlog order order-2026-09-07-b at v3 (§2, the two enablers placed inside the item); the working principle set v11 and the architecture principle set v6. The feature repository swept in full — eight artifacts, this feature and the seven assigned — no conflict: feat-roles-availability (v6) @hash:ce98da2b6467 and @hash:219547cc8cb5 bind the check @hash:06a0e40f2325 passes through, and @hash:c69e5a0eef5d agrees with its Given (approved); feat-skills-availability (v8) @hash:4899d4bba6ad and @hash:26f78a3ca4a6 bind the re-render the compiler change forces, the loadable form being the compiler's, as banned-words-inlined already showed; feat-role-decisions (v7) @hash:d24c8e22069d asks the router's definition for its Decisions owned section, which @hash:d2f51245aa9a fills with no verdict, route, or bet — consistent; feat-request-routing (v8) @hash:eec1236a2a09 (an ask outside a process's scope becomes a request and the run continues) against @hash:767b608029a3 (an in-process ask holds the run) — the glossary's two senses of `ask`, no contradiction; feat-tool-skills (v8), feat-tool-skills-rest (v8), and feat-typedef-rendering (v8) name no run, router, or step. Unowned: none. Ask: none — the two open questions the feature carries (an ask past its cap; which process the first run runs) are the PM role's at delivery, in Edges with proposed defaults, and no scenario's ownership turns on them. Implementation guidance written: guidance/feat-process-runner-shopsystem-product.md (v1, status written, not sent); maker's evaluation against the implementation-guidance fitness set (v1) — scenario 1 pass: each of the five items in What changes names a lead-shop definition by path and version, a tool by path through its skill, a process by id and version, or the guardrail's section, none a context's internals; scenario 2 pass: scenarios by hash, the guardrail and definitions by id, version, and section, no scenario, criterion, or contract text reproduced; scenario 3 pass: every definition and tool named with path or version, the three invocations given, the order fixed with its reason, the one choice left to the PM role named with what must hold, the maker's choices named as the maker's; scenario 4 pass: each of the fifteen entries in What not to do carries its reason in the guardrail, a no-go, a typedef, a principle, a designer criterion, the decomposition, or the freeze; scenario 5 pass: frontmatter and opening paragraph name the initiative, feature, context, and the nineteen hashes, and item 5 names another role's action at delivery rather than binding a later assignment. Sent: none — the dispatch step is barred under the freeze, no Bounded Context existing on this branch to receive (work item lead-ki66p); the lead shop's own scenarios stand assigned to itself and are taken up in its tree, as the previous assignments recorded. The initiative's Features section still reads checked; its update is the lead-pm's with the commit. |
