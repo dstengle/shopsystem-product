@@ -2,8 +2,8 @@
 type: feature
 id: feat-process-runner
 name: Process runner
-status: draft
-version: 3
+status: checked
+version: 5
 initiative: ../initiatives/init-process-runner.md
 owner: lead-po
 created: 2026-09-07
@@ -19,9 +19,9 @@ Feature: Process runner
   only its inputs,
   can have a process definition run itself — runtime steps as written,
   agent steps with their declared inputs only, human steps waiting for
-  the human — moved from step to step by the router from the run's
-  anchor, started, held, resumed, answered, and cancelled at the
-  command line,
+  the human — moved from step to step by a role of the lead shop, the
+  router, from the run's anchor, started, held, resumed, answered, and
+  cancelled at the command line,
   so that whoever moves the run carries only the step it is on, in
   place of the lead-pm running the definitions by hand in one long
   context.
@@ -36,6 +36,7 @@ scenario is owned by shopsystem-product (the lead shop):
 
 - *a run starts against a work item from an approved process definition* — shopsystem-product (the lead shop)
 - *a runtime step runs as its definition writes it* — shopsystem-product (the lead shop)
+- *a runtime command that exits non-zero holds the run* — shopsystem-product (the lead shop)
 - *a branch records the value it was taken on* — shopsystem-product (the lead shop)
 - *a condition the router cannot read holds the run and is asked* — shopsystem-product (the lead shop)
 - *an agent step is launched with its declared inputs alone* — shopsystem-product (the lead shop)
@@ -51,6 +52,7 @@ scenario is owned by shopsystem-product (the lead shop):
 - *the router is an approved role available at the point of work* — shopsystem-product (the lead shop)
 - *the router writes no decision to the run* — shopsystem-product (the lead shop)
 - *an approved process runs end to end with the lead-pm at its own steps alone* — shopsystem-product (the lead shop)
+- *the run's context is recorded on the anchor at its end* — shopsystem-product (the lead shop)
 
 Vocabulary, one clause each to read the scenarios by; the definitions
 stay where they are cited: **process definition**, **step**,
@@ -66,7 +68,7 @@ definition as a run of its own (the same typedef, its steps section).
 definition reads and writes, by name. **The router** — the role that
 moves one run from step to step, named by the session-handoff and
 reconcile-and-close processes; its definition is the first thing this
-feature produces (the backlog order's first placed enabler); not the
+feature produces (order-2026-09-07-b's first placed enabler); not the
 word's use in feat-request-routing, where it is the lead-pm reading a
 request's route. **The person** — whoever fills the role a human step
 or an ask names, at the command line. **The point of work** — where
@@ -76,16 +78,19 @@ human steps a process definition assigns to the lead-pm role.
 
 Provenance outside the ownership list: *an agent step's return names
 its declared outputs* and *a return lacking a declared output holds
-the run* — the order's second placed enabler (the architect's third
-risk, the initiative's history v3); *the router is an approved role
-available at the point of work* and *the router writes no decision to
-the run* — the first placed enabler (the architect's fifth risk); *a
-condition the router cannot read holds the run and is asked* — the
-architect's second risk and the designer's criterion (d) (history v4);
+the run* — order-2026-09-07-b's second placed enabler (the architect's
+third risk, the initiative's history v3); *the router is an approved
+role available at the point of work* and *the router writes no
+decision to the run* — its first placed enabler (the architect's fifth
+risk); *a condition the router cannot read holds the run and is asked*
+— the architect's second risk and the designer's criterion (g) below;
+*a runtime command that exits non-zero holds the run* — the designer's
+criterion (h); *the run's context is recorded on the anchor at its end*
+— the For whom section's measure, the PM role's ruling at the check;
 the five scenarios on start, hold, answer, resume, and cancel — the
 three core tasks the For whom section's interaction type carries and
-the designer's criteria (a)–(c). What criteria are due, the designer's
-and the architect's passages below record.
+the designer's criteria (a), (c)–(f). What criteria are due, the
+designer's and the architect's passages below record.
 
 The product designer role's criteria (feature-authoring's
 add-usability step, 2026-09-07):
@@ -162,8 +167,14 @@ scenario text changed:
   the exit status, and the command's own message alongside.
   Invalidated by a command re-run, altered, or continued past on
   failure, or a prompt the router answers.
-- (i) *the vocabulary's words* — rides on every scenario whose Then
-  shows the person something. Met when every thing and action the
+- (i) *the vocabulary's words* — rides on the scenarios whose Then
+  shows the person something: *a run starts against a work item from
+  an approved process definition*, *a runtime command that exits
+  non-zero holds the run*, *a condition the router cannot read holds
+  the run and is asked*, *a return lacking a declared output holds the
+  run*, *a human step holds the run for the person*, *an answer at the
+  command line resumes the held run*, and *a router started from the
+  anchor resumes the held run*. Met when every thing and action the
   router names is the vocabulary's word or this feature's vocabulary
   above (run, hold, resume, cancel, ask, step, anchor, work item,
   process definition). Invalidated by a second word for one thing
@@ -219,8 +230,8 @@ Command line — the For whom section's word: the person starts, holds,
 resumes, cancels, and answers a run there. The initiative's usability
 section reads it as the assistant type for the router's own turns and
 the command-line type for the shell commands its runtime steps run;
-that reading, and the criteria under it, are the product designer
-role's to state at the add-usability step.
+that reading, and the criteria under it, are stated in Contributors at
+the add-usability step (v2).
 
 ## Scenarios
 
@@ -230,24 +241,30 @@ Feature: Process runner
   only its inputs,
   can have a process definition run itself — runtime steps as written,
   agent steps with their declared inputs only, human steps waiting for
-  the human — moved from step to step by the router from the run's
-  anchor, started, held, resumed, answered, and cancelled at the
-  command line,
+  the human — moved from step to step by a role of the lead shop, the
+  router, from the run's anchor, started, held, resumed, answered, and
+  cancelled at the command line,
   so that whoever moves the run carries only the step it is on, in
   place of the lead-pm running the definitions by hand in one long
   context.
 
-  @feature:feat-process-runner @hash:434b63c16ea6
+  @feature:feat-process-runner @hash:7f991d005cc5
   Scenario: a run starts against a work item from an approved process definition
     Given an approved process definition and a work item
     When the person starts a run of the process against the work item at the command line
-    Then the run is recorded on the work item as running at the definition's first step, with its parameters, and the person is shown the run's id
+    Then the run is recorded on the work item as running at the definition's first step, with its parameters and the router's model as the router's definition names it, and the person is shown the run's id
 
   @feature:feat-process-runner @hash:21a0a96524fb
   Scenario: a runtime step runs as its definition writes it
     Given a run at a runtime step
     When the router moves the run through the step
     Then the step's assignments are applied and its command run exactly as the definition writes them, and the values they yield are recorded on the anchor before the next step
+
+  @feature:feat-process-runner @hash:dfb80114f737
+  Scenario: a runtime command that exits non-zero holds the run
+    Given a run at a runtime step whose command exits non-zero
+    When the router runs the command as written
+    Then the exit status and the command's own message are recorded on the anchor as values the step yielded, the run holds at that step, and the person is shown the step, the exit status, and the message
 
   @feature:feat-process-runner @hash:4353a5e45d00
   Scenario: a branch records the value it was taken on
@@ -261,17 +278,17 @@ Feature: Process runner
     When the router reaches the condition
     Then no branch is taken, the run holds at that step, and the person is shown the condition and asked which branch holds
 
-  @feature:feat-process-runner @hash:de2fcc71392f
+  @feature:feat-process-runner @hash:6c3bd78771bc
   Scenario: an agent step is launched with its declared inputs alone
     Given a run at an agent step
     When the router launches the step
-    Then the agent receives the step's prompt and the values of the step's declared inputs and nothing else of the run, and what it returns is recorded on the anchor as the step's declared outputs
+    Then the agent receives the step's prompt and the values of the step's declared inputs and nothing else of the run
 
-  @feature:feat-process-runner @hash:b112175a187c
+  @feature:feat-process-runner @hash:3a9dc4428ded
   Scenario: an agent step's return names its declared outputs
     Given an agent step of any approved process definition, whose definition declares outputs
     When the agent completes the step
-    Then its return states each declared output by name with its value, and the router records each on the anchor from that statement without interpreting the return's prose
+    Then its return states each declared output by name with its value, and the value recorded on the anchor for each output equals the value the return names
 
   @feature:feat-process-runner @hash:c0234aab4a26
   Scenario: a return lacking a declared output holds the run
@@ -285,17 +302,17 @@ Feature: Process runner
     When the router reaches the step
     Then the run holds with the step and every value on the anchor, the person the step names is shown the run's id, the step, and its question with the question's kind and default, and no agent waits for the answer
 
-  @feature:feat-process-runner @hash:be93a233eee2
+  @feature:feat-process-runner @hash:6c35e3f87cd0
   Scenario: an answer at the command line resumes the held run
-    Given a run held at a human step
-    When the person answers the question or accepts its default at the command line
-    Then the answer is recorded on the anchor, the run resumes at that step with the answer in its inputs, and the router says what it took
+    Given a run held at a human step or by an ask
+    When the person the step or the ask names answers the question or accepts its default at the command line
+    Then the answer is recorded on the anchor, the run resumes at the step that asked with the answer in its inputs, and the router says what it took
 
-  @feature:feat-process-runner @hash:91306c8a2c4f
+  @feature:feat-process-runner @hash:767b608029a3
   Scenario: an ask returned by an agent step holds the run for the role it names
     Given a run at an agent step whose agent returns an ask in place of its outputs
     When the router receives the ask
-    Then the run holds with the ask recorded on the anchor for the role the ask names, and on the answer the run resumes at the asking step with the ask in its inputs
+    Then the run holds at that step with the ask recorded on the anchor for the role the ask names, and nothing further runs until it is answered
 
   @feature:feat-process-runner @hash:4d31a463c42e
   Scenario: a person holds a running run
@@ -303,16 +320,16 @@ Feature: Process runner
     When the person holds it at the command line
     Then the run is recorded held at its current step with every value on the anchor, and nothing further runs until it is resumed or cancelled
 
-  @feature:feat-process-runner @hash:4d401977556c
+  @feature:feat-process-runner @hash:8f5b65dca426
   Scenario: a router started from the anchor resumes the held run
-    Given a run held at a step, whether by the person, by an ask, or by its router stopping, and no router that remembers it
+    Given a run held at a step, whether by the person, by an ask, or by its router stopping
     When a router is started from the run's anchor
-    Then it first restates the run's id, the step, and what the run awaits, and continues from that step with the anchor and the definition's rendering as its only sources
+    Then its first turn cites only the anchor's values and the step — the run's id, the step, and what the run awaits — and it continues from that step with the anchor and the definition's rendering as its only sources
 
-  @feature:feat-process-runner @hash:b6591f138dd3
+  @feature:feat-process-runner @hash:1809e3236eca
   Scenario: a run is cancelled with a reason
     Given a run that is running or held
-    When the person cancels it with a reason at the command line
+    When the person cancels it with a reason and confirms at the command line
     Then the run is recorded cancelled with the reason on its anchor, any open ask on it is marked cancelled, and nothing further runs
 
   @feature:feat-process-runner @hash:28b4f5a6d5dc
@@ -338,6 +355,12 @@ Feature: Process runner
     Given an approved process definition with runtime, agent, and human steps, and a run of it started against a work item
     When the router moves the run to its end
     Then every step ran as the definition writes it, in the definition's order, the result is recorded on the anchor, and the lead-pm acted at its own steps and nowhere between them
+
+  @feature:feat-process-runner @hash:96124cdccf45
+  Scenario: the run's context is recorded on the anchor at its end
+    Given a run the router is moving
+    When the run ends
+    Then the context tokens the router processed for the run, as the harness reports them, are recorded on the anchor beside the run's result
 ```
 
 ## Edges
@@ -346,38 +369,39 @@ Feature: Process runner
 |---|---|---|
 | Nothing runs a process definition; the lead-pm runs it by hand in one long context | the framing (Problem) | Scenario: an approved process runs end to end with the lead-pm at its own steps alone |
 | A runtime step run other than as written — a command changed, an assignment skipped | the framing (outcome: "runtime steps as written") | Scenario: a runtime step runs as its definition writes it |
-| An agent step that sees the run — a value it did not declare | the framing (outcome: "agent steps with their declared inputs only"); the For whom section ("every role, which receives only its inputs") | Scenario: an agent step is launched with its declared inputs alone. A step that needs an undeclared value is a definition gap the process owner files (the process-definition typedef, §Run lifecycle), not a behavior of the run — the agent returns an ask, Scenario: an ask returned by an agent step holds the run for the role it names |
+| An agent step that sees the run — a value it did not declare | the framing (outcome: "agent steps with their declared inputs only"); the For whom section ("every role, which receives only its inputs") | Scenario: an agent step is launched with its declared inputs alone; Scenario: an ask returned by an agent step holds the run for the role it names — a step that needs an undeclared value is a definition gap the process owner files |
 | A human step answered inside an agent, or an agent turn spent waiting | the framing (outcome: "human steps waiting for the human"); the architect's third unknown (history v3) | Scenario: a human step holds the run for the person — "no agent waits" |
-| Whoever moves the run carrying more than the step it is on — a router that keeps the run in its own context | the framing (outcome); the architect's verdict (history v3: the target holds only if restarted from the anchor) | Scenario: a router started from the anchor resumes the held run — the anchor and the rendering its only sources; Scenario: a runtime step runs as its definition writes it — values on the anchor before the next step |
-| The measure — the router's context tokens per delivered feature, 32M to under 1M | the For whom section | Out of scope of a scenario: the count is the PM role's to read at the delivery, and how it is counted is the sibling init-run-measurement's, not yet bet on; the behavior that makes it reachable is Scenario: a router started from the anchor resumes the held run |
+| Whoever moves the run carrying more than the step it is on — a router that keeps the run in its own context | the framing (outcome); the architect's verdict (history v3: the target holds only if restarted from the anchor) | Scenario: a router started from the anchor resumes the held run; Scenario: a runtime step runs as its definition writes it |
+| The measure — the router's context tokens per delivered feature, 32M to under 1M | the For whom section; the PM role's ruling at the check | Scenario: the run's context is recorded on the anchor at its end — the count per run; how the count is read across runs per delivered feature is the sibling init-run-measurement's, and the target is the PM role's to read at the delivery |
 | The lead-pm's own agent and human steps keep their cost | the architect's fourth risk (history v3); the decision the bet rests on (§3) | Scenario: an approved process runs end to end with the lead-pm at its own steps alone — the lead-pm's steps stay its own; their cost is the parent initiative's measure, the PM role's to read |
 | A code runner | the initiative's Appetite (first no-go) | Out of scope: no scenario names a program that moves a run; the router is a role, and whether an engine replaces it is the migration review's question |
 | A process definition changed for the run's sake | the initiative's Appetite (second no-go) | Scenario: an approved process runs end to end with the lead-pm at its own steps alone — "as the definition writes it"; a run that departs from its definition is the run's defect; the one compiler change the order places (the return's form) changes no definition |
-| The router cannot launch an agent step | the architect's first risk and first unknown (history v3) | Scenario: an agent step is launched with its declared inputs alone — met in whichever form the launch takes; the form is the maker's, with the decision the bet rests on naming the session's top-level agent as the default until a run shows otherwise |
-| A cheap model mis-reading a condition — a wrong branch | the architect's second risk and fourth unknown (history v3); the designer's second risk (history v4) | Scenario: a branch records the value it was taken on — checkable, not made correct; Scenario: a condition the router cannot read holds the run and is asked — asked, never guessed. A wrong branch with a recorded value is a review trigger of the decision the bet rests on, and a CEL evaluator enters a superseding order if it fires (the backlog order, §2) |
-| Outputs returned as prose the router must interpret | the architect's third risk (history v3); the order's second placed enabler | Scenario: an agent step's return names its declared outputs; Scenario: a return lacking a declared output holds the run |
-| The router with no definition — an undefined actor | the architect's fifth risk (history v3); the order's first placed enabler | Scenario: the router is an approved role available at the point of work |
+| The router cannot launch an agent step | the architect's first risk and first unknown (history v3) | Scenario: an agent step is launched with its declared inputs alone — in whichever form the launch takes, the maker's |
+| A cheap model mis-reading a condition — a wrong branch | the architect's second risk and fourth unknown (history v3); the designer's second risk (history v4) | Scenario: a branch records the value it was taken on; Scenario: a condition the router cannot read holds the run and is asked. An evaluator for CEL (the condition language the definitions use) is the enabler order-2026-09-07-b §2 declines until a run mis-reads |
+| Outputs returned as prose the router must interpret | the architect's third risk (history v3); order-2026-09-07-b's second placed enabler | Scenario: an agent step's return names its declared outputs; Scenario: a return lacking a declared output holds the run |
+| The router with no definition — an undefined actor | the architect's fifth risk (history v3); order-2026-09-07-b's first placed enabler | Scenario: the router is an approved role available at the point of work |
 | The router deciding — a verdict, a route, a bet | the decision the bet rests on (an option declined: the lead-pm on a cheap model) | Scenario: the router writes no decision to the run |
-| The router's tool list and model tier | the backlog order (§2, declined as a how) | Out of scope: the maker's, within the router's definition; no scenario names a model or a tool |
+| The router's tool list and model tier | order-2026-09-07-b (§2, declined as a how) | Out of scope: the maker's, within the router's definition; no scenario names a model or a tool — the run records the model as the definition names it, Scenario: a run starts against a work item from an approved process definition |
 | Where the run's state lives; a value too large for the anchor | the architect's second unknown (history v3) | Scenario: a runtime step runs as its definition writes it and Scenario: a human step holds the run for the person — on the anchor; a value too large for it is recorded there as a path, the architect's default, the maker's within it |
-| A second turn to get the run's id at start | the designer's criterion (a) (history v4) | Scenario: a run starts against a work item from an approved process definition — the id shown; the one-turn reading is the designer's to state |
-| The question shown without its kind or default; several questions unnumbered; the router asking again after an answer | the designer's criterion (b) and D2 (history v4) | Scenario: a human step holds the run for the person — kind and default shown; Scenario: an answer at the command line resumes the held run — "the router says what it took"; the form of the turn is the designer's pattern |
-| A resumed router that does not first restate the run's id, step, and what it awaits | the designer's criterion (c) and third unknown (history v4) | Scenario: a router started from the anchor resumes the held run |
-| Cancel, or a default taken, without confirmation | the designer's criterion (c) and the hard-to-reverse record (history v4) | Scenario: a run is cancelled with a reason and Scenario: an answer at the command line resumes the held run state what is recorded; the confirmation before either is the designer's criterion riding on them |
+| A second turn to get the run's id at start | the designer's criterion (a) | Scenario: a run starts against a work item from an approved process definition |
+| The question shown without its kind or default; several questions unnumbered; the router asking again after an answer | the designer's criteria (b), (c); the initiative's D2 (history v4) | Scenario: a human step holds the run for the person; Scenario: an answer at the command line resumes the held run |
+| A resumed router that does not first restate the run's id, step, and what it awaits | the designer's criterion (f); the initiative's third designer unknown (history v4) | Scenario: a router started from the anchor resumes the held run |
+| Cancel, or a default taken, without confirmation | the designer's criterion (e); the hard-to-reverse record (v3) | Scenario: a run is cancelled with a reason — confirmed in the When; Scenario: an answer at the command line resumes the held run, with (e) riding for the default |
 | An ask unanswered past the process's ask-cap | the process-definition typedef (§Run lifecycle: resolves to its default at the cap) | Out of scope: a runtime clock that takes the default unattended is a code runner's, barred by the first no-go; the ask stays held until the person answers or accepts the default — Scenario: an answer at the command line resumes the held run. Proposed default, for the PM role: a router started from the anchor after the cap shows the ask as past its cap and offers the default, taken only on the person's confirmation |
 | A run held by inactivity (`hold-after`) | the process-definition typedef (§Run lifecycle) | Scenario: a router started from the anchor resumes the held run — a router that stops leaves the run held at the step last recorded; the window itself is a runtime's, out of scope with the first no-go |
 | A start on a process definition that does not stand approved | the feature repository (feat-skills-availability: a definition that does not stand approved yields no loadable skill) | Out of scope here: specified there — no rendering, so nothing for the router to run from; Scenario: a run starts against a work item from an approved process definition holds for an approved one only |
 | Which process the first run runs | the initiative's Appetite ("one process run end to end") | Scenario: an approved process runs end to end with the lead-pm at its own steps alone, read of any approved process; the choice is the PM role's at the delivery. Proposed default: the next run the lead shop has to make whose definition holds all three step kinds and a branch on a declared output |
 | A Bounded Context shop's process definitions | the initiative's Decomposition section; the decision the bet rests on (its bound on Bounded Context shops) | Out of scope: no context is touched; what runs a BC shop's definitions is the migration review's decision, and until then a shop chooses |
-| The fabro rendering target and the six `fabro:` annotations | the decision the bet rests on (§2.1, the carried exception) | Out of scope: parked until the migration review; no scenario reads them |
-| The word "router" already used for the lead-pm reading a request's route | the feature repository (feat-request-routing, v8) | Recorded in the vocabulary: two uses, the role here and the lead-pm's activity there; the glossary entry for the role is a consequence of the decision the bet rests on, due at the delivery |
-| The router's turns before init-plain-voice frames their voice | the designer's fifth unknown (history v4) | Out of scope: the sibling init-plain-voice's, not bet on; the router's turn carries the step it is on, what it needs, and nothing else — the designer's default, riding as the designer's criterion |
-| A runtime step's command exits non-zero | the designer's criterion (h); `control-stays-with-the-person` bullet 4 | Scenario: a runtime step runs as its definition writes it, read with (h): the exit status a value the step yielded, recorded on the anchor, the run held, the person shown the step and the command's message alongside. Proposed default, for the PO role: a scenario of its own at the next authoring |
+| The rendering target fabro (a rendering target the process-definition typedef names, parked) and the six `fabro:` annotations | the decision the bet rests on (§2.1, the carried exception) | Out of scope: parked until the migration review; no scenario reads them |
+| The word "router" already used for the lead-pm reading a request's route | the feature repository (feat-request-routing, v8) | Out of scope: not a behavior of the run — two uses of one word, this feature's vocabulary telling them apart; the glossary entry for the role is due at the delivery |
+| A step that runs another process — the composition the first run passes through | the process-definition typedef (the steps section: the sub-process step); product-flow, whose sub-processes initiative-check and the small-change lane the first run is a run of | Scenario: a sub-process step runs from its own definition and returns its result — "one process run end to end" is a run through that composition |
+| The router's turns before init-plain-voice frames their voice | the initiative's fifth designer unknown (history v4) | Out of scope: the sibling init-plain-voice's, not bet on; the router's turn carries the step it is on, what it needs, and nothing else — the designer's default, riding as criterion (i) |
+| A runtime step's command exits non-zero | the designer's criterion (h); `control-stays-with-the-person` bullet 4 | Scenario: a runtime command that exits non-zero holds the run |
 | A runtime step's command that waits on a prompt | the designer's criterion (h); the cli guideline rule 2 | Out of scope: the router answers no command's prompt; a command that needs one is a definition gap the process owner files (the second no-go — the definition is not changed for the run) |
 | A hold or cancel naming no run; a cancel with no reason | the designer's criterion (d) | Scenario: a person holds a running run; Scenario: a run is cancelled with a reason — the router asks for the run or the reason, never picks one (criterion (g)) |
 | The router answering a question a human step or an ask puts to a person or role | the designer's criterion (g) | Scenario: an ask returned by an agent step holds the run for the role it names; Scenario: the router writes no decision to the run |
 | A turn whose question, default, or state is carried by colour, layout, or a table alone; an option reachable only by other than a typed line | the designer's accessibility criteria (A1), (A2) | Scenario: a human step holds the run for the person; Scenario: an answer at the command line resumes the held run; Scenario: a router started from the anchor resumes the held run — text, as the criteria read them |
-| A turn naming a thing by other than the vocabulary's word — a second word for the run, the step, the ask | the designer's criterion (i); `consistent-not-uniform` bullet 1 | Every scenario whose Then shows the person something, read with (i); the entries the vocabulary lacks are the last row below |
+| A turn naming a thing by other than the vocabulary's word — a second word for the run, the step, the ask | the designer's criterion (i); `consistent-not-uniform` bullet 1 | Scenario: a run starts against a work item from an approved process definition; Scenario: a runtime command that exits non-zero holds the run; Scenario: a condition the router cannot read holds the run and is asked; Scenario: a return lacking a declared output holds the run; Scenario: a human step holds the run for the person; Scenario: an answer at the command line resumes the held run; Scenario: a router started from the anchor resumes the held run — each read with (i); the entries the vocabulary lacks are a row below |
 | The core tasks beyond the three this interaction carries — submit output for a check, read a decision, raise a clarify, deliver work for reconciliation | `core-task-parity` bullet 1; the common guideline rule 4 | Out of scope of a scenario: the parity screen at delivery reads the router against the whole list. Proposed default, this role's to record in the core-task list: the first two complete through a run (a check is a process the person starts; a decision is the run's result on the anchor); the last two are a Bounded Context shop's tasks, removed from this interaction with that reason |
 | The corpus entries the delivery screen reads and lacks — the vocabulary's step, anchor, work item, process definition, router; the patterns record's assistant entry (the initiative's D2, history v4); the WCAG2ICT applicability record for the assistant and cli types | the designer's fourth and fifth risks (history v4); the common guideline's Layers | Out of scope of a scenario: this role's own action before the delivery screen, which returns "undecidable" against the corpus until each is entered |
 | A step of a lead-shop process run by a role a Bounded Context shop fills, or a run reaching a shop's internals | the initiative's Decomposition section (cross-context flow: none) | Out of scope: no approved process definition assigns a step to a Bounded Context shop's role; a run reaches a shop only through that shop's contract (the decision the bet rests on, §2.1), and a step that would cross is a contract question for the solutions architect role, not a behavior of the run |
@@ -389,3 +413,5 @@ Feature: Process runner
 | 1 | 2026-09-07 | update | Authored by the PO role alone at feature-authoring's draft step, from init-process-runner's Framing and For whom sections (v6, planned; the order order-2026-09-07-b v3, its two enablers placed inside the item); the decision the bet rests on, adr-2026-09-07-coordinator-role (v3, checked), read for what must hold and named in no scenario; seventeen scenarios, all owned by the lead shop per the Decomposition; `@hash:pending` on each, for the lead-pm to fill. The repository read in full: seven features; touch-points feat-roles-availability (the check over the roles, in the Given of the router's availability scenario), feat-skills-availability (a definition not approved yields no rendering — an Edges row), feat-request-routing (the word "router" — the vocabulary and an Edges row); no conflict. Declined or held, with the reason in Edges: the measure's counting (the sibling init-run-measurement's); the ask-cap's unattended default, hold-after, the model tier, and the tool list (the first no-go, or a how); the router's voice (init-plain-voice's). Two proposed defaults for the PM role, in Edges: an ask past its cap; which process the first run runs. Resulting action outside this step's writes: the glossary entry for `router`, due at the delivery per the decision's first consequence. Self-check against the feature fitness set (v8): 1 pass — each When one action (a start, a move, an evaluation, a launch, a completion, a read, an answer, a hold, a cancel, a check run), each Then observable on the anchor, at the command line, or in the check's report, no step naming a model, a tool, a file path, or a launch mechanism; 2 pass — an owning shop per scenario; the interaction type named, so the designer's criteria are due at the next step and the section says so; 3 pass on presence — both tags on all seventeen, hashes disclosed pending; 4 pass — twenty-eight rows from the framing, For whom, both no-gos, the architect's five risks and five unknowns, the designer's (a)–(d), D2, and two unknowns, the Decomposition, the order's enablers and declines, the typedef's run lifecycle, and three repository touch-points, each covered by Scenario name or out of scope with a reason; 5 pass — command line, the For whom's word, with the designer's reading deferred to that role's step; 6 pass — who (the lead-pm; every role), what (a definition runs itself, moved by the router, started, held, resumed, answered, cancelled at the command line), the outcome the framing's ("whoever moves the run carries only the step it is on"). No shell in this session: the lint's checks applied by hand — no banned term, history last, version 1. Not committed. |
 | 2 | 2026-09-07 | update | The product designer role's criteria added to the Contributors section at feature-authoring's add-usability step: the type's reading (`assistant` for the router's turns, `cli` for its runtime commands — the initiative's history v4), the three core tasks with their options, nine usability criteria (a)–(i) and three accessibility criteria (A1)–(A3), each a ride-on with met and invalidated, each a hypothesis until the first end-to-end run is observed as measured task completion; eight Edges rows added for the cases the criteria name, two carrying proposed defaults (a scenario for a failing command, the PO role's; the four other core tasks, this role's in the core-task list); the WCAG2ICT applicability record and the corpus entries named as this role's actions before the delivery screen. No scenario text changed; the Interaction types section untouched. Self-check, as verdicts — feature fitness set (v8): 1 pass, no step changed; 2 pass, both criteria present for the named type; 3 pass, tags untouched; 4 pass, every case the criteria name in the table, each covered by Scenario name or out of scope with a reason; 5 pass, unchanged; 6 pass, unchanged. Experience principles (v2): consistent-not-uniform pass — the two guidelines named, the vocabulary's words, no variation; core-task-parity pass with one row — the three tasks with every option, the other four recorded for the delivery screen; agent-is-a-user not applicable — the agent step's prompt is the definition's rendering, screened with the role definition, not here; evidence-not-opinion pass — hypothesis labeled, the evidence form named; accessible-by-standard pass — bullet 2's criteria riding, the record due at delivery; errors-guide-recovery pass — (g), (h); control-stays-with-the-person pass — (e), (f), (g). Mechanical, by hand (no shell): no banned term, Document History last, version 2. Not committed. |
 | 3 | 2026-09-07 | update | The solutions architect role's record added to the Contributors section at feature-authoring's add-constraints step: the decomposition (init-process-runner v7, §Decomposition) names no non-functional constraint for this feature — "None", placement in the lead shop's tree, cross-context flow none — so no criterion rides; one Edges row for the boundary it names, out of scope with its reason. Pre-state, from lead-shop-held records: the decomposition; adr-2026-09-07-coordinator-role v3 — bound on Bounded Context shops none new, and the one non-functional requirement the initiative carries, the measure, is the For whom section's, standing in Edges as the PM role's count; the process-definition typedef v7 (§Run lifecycle, already carried by the scenarios) and the role-definition typedef v4 (the harness keys the router's definition must carry — the maker's, within the role chain); compile_process.py and compile_role.py read through their skills, the renderings of their describe answers (uses compile, compile-skill; validate, render, check); the approved process definitions read for the roles their steps name — lead-shop roles, cold-reviewer, researcher, the authority, the originator, the router; none a Bounded Context shop's. No scenario text changed; the designer's passage and the Interaction types section untouched. Principles screen: knowable-shape pass — nothing added names an actor without a definition; contracts-between-contexts pass — the row keeps a shop reachable through its contract only; actor-neutral-discipline pass — no rule forked by who fills a step; local-comprehension pass — the record reads the decomposition alone; bidirectional-conformance pass — no definition changed; intent-provenance pass — the step and its source named. Self-check, as verdicts — feature fitness set (v8): 1 pass, no step changed; 2 pass, owning shop per scenario, designer criteria present, the architect's constraints recorded as none named; 3 pass, tags untouched; 4 pass, the new row out of scope with a reason, no case the record names left out; 5 pass, unchanged; 6 pass, unchanged. Mechanical: no banned term (grep of the lint's list); Document History last; version 3. Not committed. |
+| 4 | 2026-09-07 | update | The one revise, by the PO role, on the fifteen findings as ruled. F1 the narrative introduces the router as a role of the lead shop, in §1 and the block. F2 the launch scenario's Then ends at "nothing else of the run". F3 the return scenario's Then states the recorded value equals the value the return names. F4 the ask scenario's Then ends at the hold; the answer scenario widened to a run held at a human step or by an ask. F5 the resume scenario's Given drops the router that remembers; its Then states the first turn cites only the anchor's values and the step. F6 the cancel scenario's When names the confirmation. F7 *a runtime command that exits non-zero holds the run* added; the (h) row cites it, its proposed default closed. F8 the Edges rows cite the feature's own labels — (a), (b), (c), (e), (f), (h), (i) — and the initiative's unknowns as the initiative's. F9 the router-word row out of scope with its reason. F10 criterion (i) and its row list the seven scenarios by name. F11 *the run's context is recorded on the anchor at its end* added; the measure row cites it, the reading across runs init-run-measurement's. F12 the start scenario's Then records the router's model as the definition names it; the tool-list row cites it. F13 the sub-process scenario kept; a row names its source — the typedef's steps section and product-flow's composition. F14 order-2026-09-07-b cited by id in the vocabulary, provenance, and four rows; CEL and fabro each glossed in one clause. F15 the Interaction types section points at Contributors v2. Overload: rows 3, 5, 10, 11, 17, 18 cut to the Scenario names, the CEL clause kept on row 11 for F14; both proposed defaults for the PM role kept (an ask past its cap; which process the first run runs). Nine scenarios `@hash:pending` for the lead-pm: the start, launch, return, answer, ask, resume, and cancel scenarios changed; the non-zero-exit and context scenarios new — nineteen in all; the other ten hashes unchanged. The designer's criteria (a)–(h) and (A1)–(A3) untouched but (i)'s ride-on list; the architect's record untouched. Self-check, as verdicts — feature fitness set (v8): 1 pass — each changed Then one observable outcome, no step naming a model tier, a tool, or a launch form; 2 pass — an owning shop for all nineteen, the two new scenarios in the list; 3 pass on presence — both tags on all nineteen, nine hashes pending; 4 pass — thirty-nine rows, the new row and the two new scenarios in the table, every case covered by Scenario name or out of scope with a reason, no argument left where a name answers; 5 pass — command line, the reading placed at v2; 6 pass — who, what, and the framing's outcome, the router now introduced. Mechanical, by hand (no shell): no banned term; Document History last; version 4. Not committed. |
+| 5 | 2026-09-07 | state | `draft` → `checked`: the PM role's pass after the one screen (fifteen findings) and the one revise; every named finding repaired, the wobbly and uncovered ones ruled with the review — two scenarios added (a non-zero exit holds the run; the run's context recorded at its end), the router's model recorded at the start. The nine hashes filled by the lead-pm after the revise. |

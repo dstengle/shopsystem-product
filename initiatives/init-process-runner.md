@@ -2,8 +2,8 @@
 type: initiative
 id: init-process-runner
 name: Process runner
-status: planned
-version: 7
+status: active
+version: 8
 owner: lead-pm
 created: 2026-09-07
 updated: 2026-09-07
@@ -55,7 +55,7 @@ exists on this branch. Cross-context flow: none.
 
 ## Features
 
-[feat-process-runner](../features/feat-process-runner.md) — draft, authored 2026-09-07.
+[feat-process-runner](../features/feat-process-runner.md) — checked (v5).
 
 ## Document History
 
@@ -69,3 +69,4 @@ exists on this branch. Cross-context flow: none.
 | 5 | 2026-09-07 | update | The one revise, by the lead-pm: appetite set to one session for one run end to end, measured; each no-go with its reason, the solution statement removed; the contract named; one current condition (32M per feature, 64M over two); the outcome's "coordinator" replaced by "whoever moves the run"; the ADR named as checked in §4; the condition language and the anchor glossed, section references by name. Left to the authority at the bet: the originator's quoted "model" stands as the originator's own words; the designer's D1 and D2 with record "none" — entered in the experience corpus, the precedent from init-tool-skills. Word count outside the history: 500. |
 | 6 | 2026-09-07 | state | `proposed` → `planned`: the authority's bet ("Bet, quotes stay, accept the designer's records"), taken at the initiative-check decide step after the one screen and the one revise; every named finding repaired; the two wobbly findings ruled — the originator's quoted words stand, the designer's D1 and D2 stand with record none in the experience corpus. |
 | 7 | 2026-09-07 | update | Features section: feat-process-runner added, draft — written by the feature-authoring draft step (the PO role), the typedef's list of features as they are made; seventeen scenarios, all owned by the lead shop; the order's two placed enablers carried as scenarios; scope declined with its reason in the feature's Edges table: the measure's counting (init-run-measurement's), the ask-cap's unattended default and hold-after (the first no-go), the router's voice (init-plain-voice's); two proposed defaults for the PM role there. |
+| 8 | 2026-09-07 | state | `planned` → `active`: the po-output-check record step, on feat-process-runner's pass (v5). Features: feat-process-runner — checked. Next: scenario-assignment. |
