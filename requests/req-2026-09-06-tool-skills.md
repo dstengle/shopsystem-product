@@ -1,8 +1,8 @@
 ---
 type: request
 id: req-2026-09-06-tool-skills
-status: routed
-version: 2
+status: done
+version: 3
 date: 2026-09-06
 reader: lead-pm
 owner: lead-pm
@@ -12,7 +12,7 @@ originator: product-authority
 received-through: operational-contract
 route: discovery
 route-reason: "what a tool skill is in this basis — the definition it renders from, the tool it describes, its shape for an agent — is a design decision across every framework tool; larger than a simple change, and the principle now in force requires it before the shop can operate"
-routed-to: ""
+routed-to: ../initiatives/init-tool-skills.md
 ---
 
 # Request: the tool skills
@@ -51,9 +51,14 @@ sess-2026-09-06-c.
 
 ## 4. Result
 
+The discovery conversation (lead-igvr4, review of evidence) converged
+on 2026-09-07: the initiative made is init-tool-skills, recorded
+proposed with this request as its origin.
+
 ## Document History
 
 | Version | Date | Kind | Entry |
 |---|---|---|---|
 | 1 | 2026-09-06 | update | Recorded by the lead-pm at the request-intake process's record step; the originator's "Next thing we need to do" the confirmation. Route decided and said; awaiting the originator's answer. |
 | 2 | 2026-09-06 | update | The route accepted by the originator; landed; dispatched to the discovery conversation opened on this request (work item lead-igvr4). |
+| 3 | 2026-09-07 | update | Where the route led written by the discovery conversation's frame step: init-tool-skills, proposed; status done. |
