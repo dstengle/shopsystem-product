@@ -1,8 +1,8 @@
 ---
 type: product-decision-record
 id: pdr-2026-09-07-bet-tool-skills
-status: draft
-version: 1
+status: checked
+version: 3
 date: 2026-09-07
 decided-by: product-authority
 right: bet
@@ -39,12 +39,11 @@ reason stated: the designer's D1 — the decision that a tool skill's
 use entry takes one shape per use — records as an entry in the
 experience guidance corpus's patterns record, the designer role's
 exclusive domain, not as a record in decisions/. The revise also
-noted the cap's margin: the initiative stands at 591 words against
-the initiative typedef's 500-word bound, within the 20% variance the
-authority ruled at the init-role-decisions bet
+noted the cap's margin — 591 words against the initiative typedef's
+500-word bound, within the 20% variance the authority ruled at the
+init-role-decisions bet
 ([pdr-2026-09-06-bet-role-decisions](pdr-2026-09-06-bet-role-decisions.md),
-Context) while the cap's split — whether the bound divides between
-the framing sections and the attachments — stands unrecorded.
+Context).
 
 The decision the bet rests on stood checked before it, for the first
 time through the check's own route-decisions step (initiative v6):
@@ -105,9 +104,10 @@ right (§4).
   work.
 - The standing direction authorizes the second feature on the proof's
   pass without a further ask: for the lead-pm and the PO role, the
-  other ten tools — the four compilers and the renderer by their own
-  answers, the six external tools by descriptions written beside them
-  — are authored, ordered, and taken up the moment the proof passes,
+  other ten tools and the renderer — the four compilers and the
+  renderer by their own answers, the six external tools by
+  descriptions written beside them — are authored, ordered, and taken
+  up the moment the proof passes,
   with no decide step before the authority. Cost: a second appetite,
   which the initiative does not state, is spent without the authority
   pricing it at the time; the authority's first sight of it is the
@@ -122,26 +122,33 @@ right (§4).
   step; and this is the first bet in the shop taken this way, so the
   standing-direction form has no observation before this one.
 - The designer's D1 stands as a corpus entry: for the designer role,
-  the use entry's one shape per use enters the patterns record for
-  the `api` type as a hypothesis, made before the feature's delivery
-  is screened; for the PO role, its usability scenario (b) — each use
-  entry states what it does, takes, returns, and how it fails, with
-  the exact invocation — rests on that entry. Cost: the entry is the
-  designer's work inside this session; without it the conformance
-  screen at delivery returns a finding against the corpus, not the
-  skill, and the skill reaches delivery with its shape unscreened.
+  the use entry's one shape per use enters the patterns record — the
+  designer's corpus record of the interaction patterns each type
+  follows — for the `api` type as a hypothesis, made before the
+  feature's delivery is screened; for the PO role, its usability
+  scenario (b) — each use entry states what it does, takes, returns,
+  and how it fails, with the exact invocation — rests on that entry.
+  Cost: the entry is the designer's work inside this session; without
+  it the conformance screen — the designer's check of a delivered
+  interface against its corpus records — returns at delivery a
+  finding against the corpus, not the skill, and the skill reaches
+  delivery with its shape unscreened.
 - The architecture decision's consequences start being spent: for the
   solutions architect role, the lint gains the `--describe` handler
-  first, `compile_tool.py` is made, and the skill-rendering process's
-  load-point check is amended to recognize a tool source; for the
-  product authority, the tool-description data type is written and
-  approved through the definition chain. Cost: one handler, one
-  compiler, one process amendment, one type definition and its
-  approval, all inside the session; until the amendment lands, the
-  tool skill at the load point is a standing `unrecognized`
-  escalation on every run. Forecloses: `--help` as the source of any
-  skill; a description that depends on anything but the tool's answer
-  — the initiative's second no-go.
+  first; `compile_tool.py` — the renderer that produces a tool's
+  skill from its answer — is made; and the check on the load point —
+  `.claude/skills/`, the directory the harness loads skills from,
+  where the skill-rendering process's check names any skill whose
+  source it does not recognize `unrecognized` — is amended to
+  recognize a tool source; for the product authority, the
+  tool-description data type is written and approved through the
+  definition chain. Cost: one handler, one compiler, one process
+  amendment, one type definition and its approval, all inside the
+  session; until the amendment lands, the tool skill at the load
+  point is a standing `unrecognized` escalation on every run.
+  Forecloses: `--help` as the source of any skill; a description that
+  depends on anything but the tool's answer — the initiative's second
+  no-go.
 - The measure's target of 1 is met as a hypothesis until the proof's
   last part runs: for the delivering agent and the PO role, "usable
   through a skill" is a usability claim, and the corpus's admissible
@@ -151,13 +158,6 @@ right (§4).
   Cost: the initiative cannot close on the skill standing; the
   delivery says "hypothesis" until the run is recorded, and the
   second feature's authorization waits on that run, not on the skill.
-- The initiative stays over the typedef's stated bound: for the cold
-  reviewer and every later check, the initiative typedef says 500
-  words, and the 20% variance lives in another initiative's history
-  row and in these two records. Cost: until the cap's split has a
-  record of its own, every initiative with two attachments repeats
-  this margin, and each PM ruling on it cites a bet's history rather
-  than the typedef.
 
 ## 4. Reversibility
 
@@ -179,13 +179,14 @@ to the authority; the appetite is exhausted with the load-point check
 still naming the tool skill `unrecognized`; the appetite is exhausted
 without the run recorded; the authority ruling that a bet taken on
 its standing direction, with the designer's D1 held, was one it would
-not have taken in person; the cap's split getting its record and
-moving the attachments out of the initiative; or any trigger the
-architecture decision names for itself, since this bet spends its
-consequences.
+not have taken in person; or any trigger the architecture decision
+names for itself, since this bet spends its consequences.
 
 ## Document History
 
 | Version | Date | Kind | Entry |
 |---|---|---|---|
 | 1 | 2026-09-07 | update | Made by the PO role for the authority's go of 2026-09-07 on init-tool-skills — taken at the initiative-check decide step on the authority's standing direction ("If it passes then proceed to the rest without asking me", initiative v2) after the one screen and the one revise, the lead-pm recording it (initiative v8) — from the maker's text `basis/guidelines/product-decision-record.md` (v7; `generated: true`, produced by `basis/tools/compile_typedef.py` from `basis/artifacts/product-decision-record.md`, source-digest `sha256:d2e74320dabb`), layered on `basis/guidelines/base-writing-style.md` (v2). Before any check ran, the author applied the checker's text `basis/fitness/product-decision-record.fitness.md` (produced from the same source, the same digest) to this draft, each scenario read as Given/When/Then: scenario 1 (one decision) pass — §1's first sentence is the one go; the standing direction is how the right was exercised, stated in §1's second paragraph and in Context, not a second decision; the architecture decision the bet rests on is linked, its own record; scenario 2 (the alternatives were real) pass — the hold, with its two grounds and the reason against each, and the no-go, with its reason, each a choice the authority could have made; scenario 3 (decider and right) pass — `decided-by: product-authority`, `right: bet`, and §1 naming both and the direction the right was exercised through; scenario 4 (consequences priced) pass — seven consequences, each with what changes, for whom, and its cost or what it forecloses; scenario 5 (reversibility) pass — §4 states the cost at three points (before the session, before the second feature, after the session), the threshold at which reversal turns hard, and six review triggers, the first being the direction's own condition. Status draft pending the PO output check (form only — the decider is the authority). |
+| 1 | 2026-09-07 | review | PO output check, the one screen (judge: claude-fable-5-1 / screen prompt v6; criteria the produced fitness set `basis/fitness/product-decision-record.fitness.md`, source `basis/artifacts/product-decision-record.md`, source-digest `sha256:d2e74320dabb`): one confident — §3's second consequence heading a list of eleven with "the other ten tools"; two wobbly, ruled by the lead-pm — the seventh consequence and §4's sixth trigger, the cap's split not being a consequence of this go; three terms unglossed at first use in §3 (`compile_tool.py`, the load point, the patterns record and the conformance screen). |
+| 2 | 2026-09-07 | update | The one revise, all three: the second consequence's count now "the other ten tools and the renderer", the list of eleven under it; the seventh consequence and §4's sixth trigger cut, the margin kept as one line in Context where it is reported, "these two records" dropped with the cut; §3's fifth consequence glossing `compile_tool.py` as the renderer that produces a tool's skill from its answer and the load point as `.claude/skills/`, where the skill-rendering process's check names any skill whose source it does not recognize `unrecognized`, and its fourth glossing the patterns record and the conformance screen as the designer's corpus records. The author applied the produced fitness set's scenarios to the result again before returning: scenario 1 pass (§1's first sentence is the one go, unchanged); scenario 2 pass (hold and no-go, each with its reason, unchanged); scenario 3 pass (frontmatter and §1 unchanged on decider and right); scenario 4 pass (six consequences, each with what changes, for whom, and its cost or what it forecloses — the second's count corrected, the fourth and fifth glossed, their for-whom and cost unchanged); scenario 5 pass (§4's three cost points and the hard threshold unchanged; five review triggers, the first still the direction's own condition). |
+| 3 | 2026-09-07 | state | `draft` → `checked`: the PM role's pass after the one screen and the one revise — the count corrected, the cap's-split consequence cut, the terms glossed; the criteria the judge read were the fitness set produced from the typedef, the same source and digest the maker's text names. |
