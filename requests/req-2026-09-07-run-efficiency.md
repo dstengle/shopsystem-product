@@ -2,7 +2,7 @@
 type: request
 id: req-2026-09-07-run-efficiency
 status: routed
-version: 1
+version: 2
 date: 2026-09-07
 reader: lead-pm
 owner: lead-pm
@@ -14,6 +14,7 @@ arose-in: init-tool-skills
 route: discovery
 route-reason: "the cost sits in more than one place — the lead-pm session's context, the builds, the PO's feature prose, sequential waiting — and the fix is a set of process and system changes worth framing against a measure, not one change through the lane; a review of evidence, the analysis below the evidence"
 routed-to: ""
+work-item: lead-rr5c0
 ---
 
 # Request: drastically higher efficiency per unit of work
@@ -112,3 +113,4 @@ cycle is not where the cost is; the revise is.
 | Version | Date | Kind | Entry |
 |---|---|---|---|
 | 1 | 2026-09-07 | update | Recorded by the lead-pm at the request-intake process's record step from the authority's words on the cost analysis of init-tool-skills; the analysis attached as evidence; route discovery (review of evidence) decided, said, and accepted; opens next. |
+| 2 | 2026-09-07 | update | The discovery opened by the authority ("Open the run-efficiency discovery"): the discovery-conversation process's open step, work item lead-rr5c0; the request's section 1 is the Framing's source. |
