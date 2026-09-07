@@ -3,7 +3,7 @@ type: initiative
 id: init-tool-skills
 name: Tool skills
 status: proposed
-version: 4
+version: 5
 owner: lead-pm
 created: 2026-09-07
 updated: 2026-09-07
@@ -68,6 +68,14 @@ the standard flag, its answer's shape, and the answer as the skill's
 source — an ADR before the bet. Risks: the load-point check rejects a
 tool skill until amended; §2's count. Full offer: history v3.
 (architect, 2026-09-07)
+
+Usability: none due — §2 names no interaction type. Stated
+regardless, the skill and flag being agent-facing interfaces the
+corpus screens (`agent-is-a-user`): a hypothesis until the proof's
+last part runs as measured task completion — one agent, fresh context,
+the skill its only source, the lint's uses completed and one failure
+read as the skill states it. Full offer: history v5. (designer,
+2026-09-07)
 
 ## Decomposition
 
