@@ -1,0 +1,179 @@
+{
+  "name": "bd",
+  "description": "The work register: the shop's issue database, opened, commented, and closed one work item at a time by the command `bd`, its Dolt history pushed to the register's remote at session close. Use it wherever a process step opens, comments on, or closes a work item, and to push the register when a session closes.",
+  "stands_beside": "bd",
+  "tool_owner": "no shop named — the tool's provenance as shown whoever runs it (`bd version 1.1.0 (8e4e59d39)` and its help) names none; the lead shop holds the gap as its own until an owner is found",
+  "uses": [
+    {
+      "name": "create",
+      "description": "Opens one work item in the register with the given title and prints its id. Does not close, assign, or link anything; with <dry_run> it prints what would be created and creates nothing.",
+      "invocation": "bd create --title <title> [--type <type>] [--priority <priority>] [--description <description>] [--dry-run]",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "the work item's title, one line"
+          },
+          "type": {
+            "type": "string",
+            "description": "the issue type: bug, feature, task, epic, chore, or decision",
+            "default": "task"
+          },
+          "priority": {
+            "type": "string",
+            "description": "the priority, 0 (highest) to 4, or P0 to P4",
+            "default": "2"
+          },
+          "description": {
+            "type": "string",
+            "description": "the work item's description; omitted, the item has none"
+          },
+          "dry_run": {
+            "type": "boolean",
+            "description": "preview only: print what would be created and create nothing",
+            "default": false
+          }
+        },
+        "required": [
+          "title"
+        ],
+        "additionalProperties": false
+      },
+      "returns": {
+        "form": "text",
+        "text": "on standard output, `✓ Created issue: <id> — <title>` then `  Priority: P<n>` and `  Status: open`, <id> the new item's id, `lead-` and five characters; with <dry_run>, `⚠ [DRY RUN] Would create issue:` and the fields, nothing created; exit status 0"
+      },
+      "failures": [
+        {
+          "code": "usage",
+          "exit_status": 1,
+          "condition": "no title was given; one line on standard error, `Error: title required (or use --file to create from markdown)`; nothing is created",
+          "next": "give `--title <title>` and run the invocation again"
+        },
+        {
+          "code": "usage",
+          "exit_status": 1,
+          "condition": "the arguments are not an invocation this tool states — an unknown command or flag, a flag without its value; one line on standard error beginning `Error:` says which, then the tool's usage sheet",
+          "next": "run the invocation the use states, as written"
+        }
+      ]
+    },
+    {
+      "name": "comment",
+      "description": "Appends one comment to the work item <id>, open or closed. Changes nothing else on the item.",
+      "invocation": "bd comment <id> <text>",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "the work item's id, for example lead-176ti"
+          },
+          "text": {
+            "type": "string",
+            "description": "the comment's text, quoted as one argument"
+          }
+        },
+        "required": [
+          "id",
+          "text"
+        ],
+        "additionalProperties": false
+      },
+      "returns": {
+        "form": "text",
+        "text": "one line on standard output, `✓ Comment added to <id> — <title>`; exit status 0"
+      },
+      "failures": [
+        {
+          "code": "unreadable",
+          "exit_status": 1,
+          "condition": "no work item with <id> exists in the register; one line on standard error, `Error: resolving ID <id>: no issue found matching \"<id>\"` (`Error: resolving <id>: ...` for comment); nothing changes",
+          "next": "give the id of an existing work item (`lead-` and five characters, as `bd create` returned it) and run the invocation again"
+        },
+        {
+          "code": "usage",
+          "exit_status": 1,
+          "condition": "no text was given; one line on standard error, `Error: no comment text provided (use positional args, --stdin, or --file)`; nothing is added",
+          "next": "give the comment's text after the id and run the invocation again"
+        },
+        {
+          "code": "usage",
+          "exit_status": 1,
+          "condition": "the arguments are not an invocation this tool states — an unknown command or flag, a flag without its value; one line on standard error beginning `Error:` says which, then the tool's usage sheet",
+          "next": "run the invocation the use states, as written"
+        }
+      ]
+    },
+    {
+      "name": "close",
+      "description": "Closes the work item <id> with the given reason, which the item keeps as its close reason. Closing an item already closed records the new reason and exits 0 as well.",
+      "invocation": "bd close <id> --reason <reason>",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "the work item's id, for example lead-176ti"
+          },
+          "reason": {
+            "type": "string",
+            "description": "why the item closes, one line, kept on the item as its close reason"
+          }
+        },
+        "required": [
+          "id",
+          "reason"
+        ],
+        "additionalProperties": false
+      },
+      "returns": {
+        "form": "text",
+        "text": "one line on standard output, `✓ Closed <id> — <title>: <reason>`; exit status 0"
+      },
+      "failures": [
+        {
+          "code": "unreadable",
+          "exit_status": 1,
+          "condition": "no work item with <id> exists in the register; one line on standard error, `Error: resolving ID <id>: no issue found matching \"<id>\"` (`Error: resolving <id>: ...` for comment); nothing changes",
+          "next": "give the id of an existing work item (`lead-` and five characters, as `bd create` returned it) and run the invocation again"
+        },
+        {
+          "code": "usage",
+          "exit_status": 1,
+          "condition": "the arguments are not an invocation this tool states — an unknown command or flag, a flag without its value; one line on standard error beginning `Error:` says which, then the tool's usage sheet",
+          "next": "run the invocation the use states, as written"
+        }
+      ]
+    },
+    {
+      "name": "dolt-push",
+      "description": "Pushes the register's local Dolt commits to its configured remote (`origin`, per `bd dolt remote list`), as the session-handoff process's land step does. Pushes nothing but the register; needs a remote configured and, for a hosted remote, DOLT_REMOTE_USER and DOLT_REMOTE_PASSWORD in the environment.",
+      "invocation": "bd dolt push",
+      "input_schema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false
+      },
+      "returns": {
+        "form": "text",
+        "text": "the push's report on standard output; exit status 0 — the form of the report is what the tool's help states for the push, not yet observed by this shop on this branch"
+      },
+      "failures": [
+        {
+          "code": "unwritable",
+          "exit_status": 1,
+          "condition": "the remote could not be written: none is configured, the credentials are missing, or the remote refuses the push; the reason on standard error — the tool's help names `--force` for a remote whose working set has uncommitted changes",
+          "next": "configure the remote (`bd dolt remote add <name> <url>`) or set the credentials, then run the invocation again; do not force without the lead-pm's say"
+        },
+        {
+          "code": "usage",
+          "exit_status": 1,
+          "condition": "the arguments are not an invocation this tool states — an unknown command or flag, a flag without its value; one line on standard error beginning `Error:` says which, then the tool's usage sheet",
+          "next": "run the invocation the use states, as written"
+        }
+      ]
+    }
+  ]
+}

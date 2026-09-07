@@ -35,6 +35,10 @@ Usage:
                                                    # against every approved one under
                                                    # --roles when none is given
   compile_role.py --check [<dir>] --findings       # the same, ok rows suppressed
+  compile_role.py --describe                       # answer the standard question
+                                                   # (DESCRIPTION below) as JSON on
+                                                   # standard output, exit 0, before
+                                                   # any other action
 Options:
   --load-point <dir>   the declared load point links resolve for
                        (default .claude/agents; repo-root-relative)
@@ -56,9 +60,13 @@ A row is one line: a newline in a path or reason is written as `\\n`.
 In check mode no failure escapes as a traceback: whatever cannot be
 checked is a row, and the exit is nonzero whenever any finding row exists.
 Exit 0 when every row is ok; 1 on any finding, refusal, or compile error;
-2 on a usage error.
+2 on a usage error. Outside check mode a failure is one line on standard
+error beginning with its code from the tool-description data type's
+closed set — `unreadable`, `unparseable`, `check-failed`, `unwritable`,
+`usage` — never a traceback.
 """
 import hashlib
+import json
 import os
 import pathlib
 import posixpath
@@ -66,6 +74,220 @@ import re
 import sys
 
 import yaml
+
+TOOL = "basis/tools/compile_role.py"
+EXIT = {"usage": 2, "unreadable": 2, "unparseable": 1, "check-failed": 1,
+        "unwritable": 1}
+
+
+def fail(code: str, message: str) -> None:
+    """A failure the answer names: its code beside the message, one line on
+    standard error, the exit status the answer states for that code."""
+    print(f"{code}: {' '.join(str(message).split())}", file=sys.stderr)
+    sys.exit(EXIT[code])
+
+
+DEFINITION_INPUT = {
+    "type": "string",
+    "description": "the path of the role definition, for example "
+                   "basis/roles/lead-pm.md; it must stand approved",
+}
+LOAD_POINT_INPUT = {
+    "type": "string",
+    "description": "the load point the rendering's links resolve for, "
+                   "repository-root-relative",
+    "default": ".claude/agents",
+}
+ROLES_INPUT = {
+    "type": "string",
+    "description": "the directory of the role definitions, "
+                   "repository-root-relative",
+    "default": "basis/roles",
+}
+UNREADABLE_FAILURE = {
+    "code": "unreadable", "exit_status": 2,
+    "condition": "no file exists at <definition>, or it cannot be read; one "
+                 "line on standard error beginning `unreadable:` names the "
+                 "path; nothing is written",
+    "next": "give the path of an existing role definition and run the "
+            "invocation again",
+}
+UNPARSEABLE_FAILURE = {
+    "code": "unparseable", "exit_status": 1,
+    "condition": "the definition has no front-matter, or its front-matter "
+                 "does not parse or is not a mapping; one line on standard "
+                 "error beginning `unparseable:` names the path and the "
+                 "defect; nothing is written",
+    "next": "repair the definition's front-matter and run the invocation "
+            "again",
+}
+RENDER_FAILURE = {
+    "code": "check-failed", "exit_status": 1,
+    "condition": "the definition does not render: its `type` is not "
+                 "role-definition, its `status` is not approved (refused), "
+                 "it lacks `name`, `description`, `tools`, or `maxTurns`, "
+                 "carries a front-matter key that is neither a runtime key "
+                 "the harness honors nor an identity key, or its `name` is "
+                 "not a subagent name; one line on standard error beginning "
+                 "`check-failed:` names the path and the defect; nothing is "
+                 "written",
+    "next": "repair the definition at the named defect (the "
+            "role-definition typedef states the keys) and run the "
+            "invocation again",
+}
+UNWRITABLE_FAILURE = {
+    "code": "unwritable", "exit_status": 1,
+    "condition": "<out> could not be written; one line on standard error "
+                 "beginning `unwritable:` names the path and the reason",
+    "next": "give a writable <out> path and run the invocation again",
+}
+USAGE_FAILURE = {
+    "code": "usage", "exit_status": 2,
+    "condition": "the arguments are not one of the three invocations this "
+                 "tool states — no definition or more than one outside "
+                 "check mode, `--agent` together with `--check`, "
+                 "`--findings` without `--check`, an option without its "
+                 "value, or an unknown option; the usage sheet on standard "
+                 "error; nothing is checked or written",
+    "next": "run the invocation the use states, as written",
+}
+# The answer to the standard question (adr-2026-09-07-tool-answer §2): an
+# instance of the tool-description data type, basis/types/tool-description.md.
+# This tool is its one home; the skill is produced from it, never edited.
+DESCRIPTION = {
+    "name": "compile-role",
+    "description": (
+        "Compiles an approved role definition into its loadable form — the "
+        "subagent file at the agent's load point, `.claude/agents/<name>.md`: "
+        "the runtime keys the harness honors, `source` and `source-digest`, "
+        "and the definition's body with its Document History stripped, its "
+        "links resolved for the load point, and the banned-words line from "
+        "the lint appended — and checks a load point against a fresh render "
+        "of each approved definition. Use it after a role definition "
+        "changes, to place its rendering, and to confirm every approved "
+        "role is available."
+    ),
+    "uses": [
+        {
+            "name": "validate",
+            "description": (
+                "Renders the definition to memory and prints the subagent "
+                "name and the path the rendering would take; writes "
+                "nothing. Exit 0 means the definition compiles."
+            ),
+            "invocation": f"python3 {TOOL} <definition> [--load-point <load_point>] [--roles <roles>]",
+            "input_schema": {
+                "type": "object",
+                "properties": {"definition": DEFINITION_INPUT,
+                               "load_point": LOAD_POINT_INPUT,
+                               "roles": ROLES_INPUT},
+                "required": ["definition"],
+                "additionalProperties": False,
+            },
+            "returns": {
+                "form": "text",
+                "text": "one line on standard output, `<definition>: compiles "
+                        "as \`<name>\` for <load_point>/<name>.md (digest "
+                        "<12 hex>)`; exit status 0",
+            },
+            "failures": [UNREADABLE_FAILURE, UNPARSEABLE_FAILURE, RENDER_FAILURE,
+                         USAGE_FAILURE],
+        },
+        {
+            "name": "render",
+            "description": (
+                "Renders the definition and writes the subagent file to "
+                "<out>, creating directories, overwriting what stands there "
+                "— a hand edit included. The content is a function of the "
+                "definition and the declared load point alone, so a render "
+                "into a scratch path is byte-equal to the one that would "
+                "stand at the load point."
+            ),
+            "invocation": f"python3 {TOOL} <definition> --agent <out> [--load-point <load_point>] [--roles <roles>]",
+            "input_schema": {
+                "type": "object",
+                "properties": {
+                    "definition": DEFINITION_INPUT,
+                    "out": {"type": "string",
+                            "description": "the path the subagent file is "
+                                           "written to: <load_point>/<name>.md "
+                                           "to place it, or a scratch path"},
+                    "load_point": LOAD_POINT_INPUT,
+                    "roles": ROLES_INPUT,
+                },
+                "required": ["definition", "out"],
+                "additionalProperties": False,
+            },
+            "returns": {
+                "form": "text",
+                "text": "one line on standard output, `<out>: generated from "
+                        "<name> (digest <12 hex>)`; exit status 0; the file "
+                        "written at <out>",
+            },
+            "failures": [UNREADABLE_FAILURE, UNPARSEABLE_FAILURE, RENDER_FAILURE,
+                         UNWRITABLE_FAILURE, USAGE_FAILURE],
+        },
+        {
+            "name": "check",
+            "description": (
+                "Checks a load point against a fresh render of each given "
+                "definition — or, when none is given, of every approved "
+                "definition under <roles> — and scans every file at the "
+                "load point for one that is no rendering of an approved "
+                "definition. Prints one row per line, kind first: `ok "
+                "<name> <definition>`, `missing <name> <definition>`, "
+                "`diverged <name> <definition>`, `will-not-compile "
+                "<definition> <reason>`, `stale <source> <file>`, "
+                "`unrecognized <file>`. Writes nothing; no failure escapes "
+                "as a traceback — whatever cannot be checked is a row."
+            ),
+            "invocation": f"python3 {TOOL} --check [<dir>] [--roles <roles>] [--findings] [<definition>...]",
+            "input_schema": {
+                "type": "object",
+                "properties": {
+                    "dir": {"type": "string",
+                            "description": "the load point directory to check",
+                            "default": ".claude/agents"},
+                    "roles": ROLES_INPUT,
+                    "findings": {"type": "boolean",
+                                 "description": "suppress the `ok` rows so "
+                                                "only findings are printed",
+                                 "default": False},
+                    "definition": {"type": "array",
+                                   "items": {"type": "string"},
+                                   "description": "the definitions to check "
+                                                  "against, each a path; a "
+                                                  "given definition that "
+                                                  "does not stand approved "
+                                                  "is a will-not-compile row",
+                                   "default": []},
+                },
+                "required": [],
+                "additionalProperties": False,
+            },
+            "returns": {
+                "form": "text",
+                "text": "the rows on standard output, one per line, kind "
+                        "first, every row `ok` (none printed with "
+                        "`--findings`); exit status 0",
+            },
+            "failures": [
+                {"code": "check-failed", "exit_status": 1,
+                 "condition": "at least one row is a finding — `missing`, "
+                              "`diverged`, `will-not-compile`, `stale`, or "
+                              "`unrecognized` — or no definition was checked; "
+                              "the rows on standard output name each finding "
+                              "by kind, name, and path",
+                 "next": "act on each row by kind through the role-rendering "
+                         "process: re-render a missing or diverged one with "
+                         "the `render` use, remove a stale one, escalate an "
+                         "unrecognized or will-not-compile one; then run the "
+                         "same invocation again until every row is `ok`"},
+                USAGE_FAILURE,
+            ],
+        },
+    ],
+}
 
 # The banned vocabulary has one home: the lint beside this compiler. It is
 # read from there, never copied, so a change to the lint's list changes every
@@ -274,11 +496,18 @@ def usage(code: int = 2) -> None:
 
 def main() -> None:
     args = sys.argv[1:]
+    # The standard question, answered before any other action; the other
+    # arguments are ignored (adr-2026-09-07-tool-answer §2).
+    if "--describe" in args:
+        sys.stdout.write(json.dumps(DESCRIPTION, indent=2) + "\n")
+        sys.exit(0)
     load_point, roles_dir, agent_out, check_dir = DEFAULT_LOAD_POINT, DEFAULT_ROLES, None, None
     findings_only, positional = False, []
     i = 0
     while i < len(args):
         arg = args[i]
+        if arg in ("--load-point", "--roles", "--agent") and i + 1 >= len(args):
+            usage()
         if arg == "--load-point":
             load_point = args[i + 1]; i += 2
         elif arg == "--roles":
@@ -317,16 +546,28 @@ def main() -> None:
     source = pathlib.Path(positional[0])
     if roles_dir == DEFAULT_ROLES and repo_relative(str(source.parent)) != DEFAULT_ROLES:
         roles_dir = str(source.parent)
+    if not source.is_file():
+        fail("unreadable", f"{source}: no such file")
     try:
         name, text = render(source, roles_dir, load_point)
     except (CompileError, Refused) as exc:
-        sys.exit(str(exc))
+        reason = str(exc)
+        if "cannot be read" in reason:
+            fail("unreadable", reason)
+        if "front-matter" in reason and "lacks" not in reason and "key(s)" not in reason:
+            fail("unparseable", reason)
+        fail("check-failed", reason)
+    except Exception as exc:  # noqa: BLE001 — never a traceback
+        fail("check-failed", f"{source}: does not render: {type(exc).__name__}: {exc}")
     digest = text.split("source-digest: sha256:", 1)[1].split("\n", 1)[0]
     if agent_out is None:
         print(f"{source}: compiles as `{name}` for {load_point}/{name}.md (digest {digest})")
         return
-    agent_out.parent.mkdir(parents=True, exist_ok=True)
-    agent_out.write_text(text)
+    try:
+        agent_out.parent.mkdir(parents=True, exist_ok=True)
+        agent_out.write_text(text)
+    except OSError as exc:
+        fail("unwritable", f"{agent_out}: cannot be written: {exc}")
     print(f"{agent_out}: generated from {name} (digest {digest})")
 
 

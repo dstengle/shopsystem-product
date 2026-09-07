@@ -1,0 +1,66 @@
+{
+  "name": "shop-templates",
+  "description": "The templates context's command over the role-prompt templates it ships as package data: lists the template names and prints one template's text. Use it to read a canonical role template rather than a copy. Its other subcommands — bootstrap, update, check-writing-skills — scaffold or check a shop's repository and are described when a task first calls for one.",
+  "stands_beside": "shop-templates",
+  "tool_owner": "shopsystem-templates",
+  "uses": [
+    {
+      "name": "list",
+      "description": "Prints the names of the templates the installed package carries, one per line. Reads only.",
+      "invocation": "shop-templates list",
+      "input_schema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false
+      },
+      "returns": {
+        "form": "text",
+        "text": "one template name per line on standard output — today bc-implementer, bc-reviewer, lead-architect, lead-pm, lead-po; exit status 0"
+      },
+      "failures": [
+        {
+          "code": "usage",
+          "exit_status": 2,
+          "condition": "the arguments are not an invocation this tool states — no subcommand, an unknown one, or a required argument missing; the usage sheet and one line `shop-templates <subcommand>: error: ...` on standard error; nothing is printed",
+          "next": "run the invocation the use states, as written"
+        }
+      ]
+    },
+    {
+      "name": "show",
+      "description": "Prints the named template's text, byte-recoverable from the installed package data. Reads only.",
+      "invocation": "shop-templates show <name>",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "the template's name, one of those `list` prints, for example lead-pm"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "additionalProperties": false
+      },
+      "returns": {
+        "form": "text",
+        "text": "the template's markdown text on standard output; exit status 0"
+      },
+      "failures": [
+        {
+          "code": "unreadable",
+          "exit_status": 1,
+          "condition": "no template of that name: one line on standard error, `shop-templates show: no template named '<name>'. Available: <names>`; nothing on standard output",
+          "next": "give one of the names `list` prints and run the invocation again"
+        },
+        {
+          "code": "usage",
+          "exit_status": 2,
+          "condition": "the arguments are not an invocation this tool states — no subcommand, an unknown one, or a required argument missing; the usage sheet and one line `shop-templates <subcommand>: error: ...` on standard error; nothing is printed",
+          "next": "run the invocation the use states, as written"
+        }
+      ]
+    }
+  ]
+}

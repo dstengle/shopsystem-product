@@ -17,13 +17,171 @@ Outputs:
 Usage:
   compile_process.py <process.md>                    # regenerate the diagram
   compile_process.py <process.md> --skill <out.md>   # also generate the skill
+  compile_process.py --describe                      # answer the standard
+                                                     # question (DESCRIPTION
+                                                     # below) as JSON on standard
+                                                     # output, exit 0, before any
+                                                     # other action
+Any other arguments are a usage failure: one line on standard error
+beginning `usage:`, exit status 2. Every failure is one line on standard
+error beginning with its code from the tool-description data type's
+closed set, never a traceback.
 """
 import hashlib
+import json
 import pathlib
 import re
 import sys
 
 import yaml
+
+TOOL = "basis/tools/compile_process.py"
+EXIT = {"usage": 2, "unreadable": 2, "unparseable": 1, "check-failed": 1,
+        "unwritable": 1}
+
+
+def fail(code: str, message: str) -> None:
+    """A failure the answer names: its code beside the message, one line on
+    standard error, the exit status the answer states for that code."""
+    print(f"{code}: {' '.join(str(message).split())}", file=sys.stderr)
+    sys.exit(EXIT[code])
+
+
+UNREADABLE_FAILURE = {
+    "code": "unreadable", "exit_status": 2,
+    "condition": "no file exists at <definition>, or it cannot be read; one "
+                 "line on standard error beginning `unreadable:` names the "
+                 "path; nothing is written",
+    "next": "give the path of an existing process definition and run the "
+            "invocation again",
+}
+UNPARSEABLE_FAILURE = {
+    "code": "unparseable", "exit_status": 1,
+    "condition": "the definition has no front-matter, its front-matter or a "
+                 "yaml block does not parse, or no yaml block carries "
+                 "`steps` and `start`; one line on standard error beginning "
+                 "`unparseable:` names the path and the defect; nothing is "
+                 "written",
+    "next": "repair the definition at the named defect and run the "
+            "invocation again",
+}
+CHECK_FAILURE = {
+    "code": "check-failed", "exit_status": 1,
+    "condition": "the definition does not compile: a `$ref` without a "
+                 "`from:` source, a source that does not exist or does not "
+                 "define the type, a `result` that is not a declared data "
+                 "value, no `## Flow (compiled)` section to fill, or a step "
+                 "the renderer cannot render; one line on standard error "
+                 "beginning `check-failed:` names the path and the defect; "
+                 "nothing is written",
+    "next": "repair the definition at the named defect (the "
+            "process-definition typedef states the rules) and run the "
+            "invocation again",
+}
+UNWRITABLE_FAILURE = {
+    "code": "unwritable", "exit_status": 1,
+    "condition": "the definition, or the skill at <out>, could not be "
+                 "written; one line on standard error beginning "
+                 "`unwritable:` names the path and the reason",
+    "next": "make the path writable, or give one that is, and run the "
+            "invocation again",
+}
+USAGE_FAILURE = {
+    "code": "usage", "exit_status": 2,
+    "condition": "the arguments are not one of the two invocations this "
+                 "tool states — no definition, more than one, `--skill` "
+                 "without a path, or an unknown option; one line on "
+                 "standard error beginning `usage:` names them; nothing is "
+                 "written",
+    "next": "run the invocation the use states, as written",
+}
+DEFINITION_INPUT = {
+    "type": "string",
+    "description": "the path of the process definition, for example "
+                   "basis/processes/skill-rendering.md; its `$ref` sources "
+                   "resolve relative to that path",
+}
+# The answer to the standard question (adr-2026-09-07-tool-answer §2): an
+# instance of the tool-description data type, basis/types/tool-description.md.
+# This tool is its one home; the skill is produced from it, never edited.
+DESCRIPTION = {
+    "name": "compile-process",
+    "description": (
+        "Compiles a process definition: checks that every `$ref` in its "
+        "data block has a source that defines the type, regenerates the "
+        "Mermaid flow diagram in the definition's `## Flow (compiled)` "
+        "section, and — on request — renders the definition's loadable "
+        "skill, whose only prose is the step prompts, verbatim, each "
+        "agent-run step closing with the banned-words line read from the "
+        "lint. Use it after a process definition changes, and to place or "
+        "refresh the definition's skill at the agent's load point."
+    ),
+    "uses": [
+        {
+            "name": "compile",
+            "description": (
+                "Checks the definition's `$ref` sources and `result`, "
+                "regenerates the flow diagram, and writes it back into the "
+                "definition's `## Flow (compiled)` section in place — the "
+                "one write; nothing else in the definition changes and no "
+                "skill is written."
+            ),
+            "invocation": f"python3 {TOOL} <definition>",
+            "input_schema": {
+                "type": "object",
+                "properties": {"definition": DEFINITION_INPUT},
+                "required": ["definition"],
+                "additionalProperties": False,
+            },
+            "returns": {
+                "form": "text",
+                "text": "one line on standard output, `<definition>: flow "
+                        "diagram regenerated (<n> steps)`; exit status 0; "
+                        "the diagram written into the definition",
+            },
+            "failures": [UNREADABLE_FAILURE, UNPARSEABLE_FAILURE, CHECK_FAILURE,
+                         UNWRITABLE_FAILURE, USAGE_FAILURE],
+        },
+        {
+            "name": "compile-skill",
+            "description": (
+                "Does what `compile` does, then renders the definition's "
+                "skill — front-matter with `generated: true`, `source`, and "
+                "`source-digest` over the definition's text, the purpose, "
+                "guiding statement, diagram, and every step with its prompt "
+                "verbatim — and writes it to <out>, creating the "
+                "directories, overwriting what stands there, a hand edit "
+                "included."
+            ),
+            "invocation": f"python3 {TOOL} <definition> --skill <out>",
+            "input_schema": {
+                "type": "object",
+                "properties": {
+                    "definition": DEFINITION_INPUT,
+                    "out": {"type": "string",
+                            "description": "the path the skill is written to: "
+                                           ".claude/skills/<name>/SKILL.md at "
+                                           "the agent's load point, <name> "
+                                           "the definition's carried-by id "
+                                           "without `-skill`; or a scratch "
+                                           "path to render without placing"},
+                },
+                "required": ["definition", "out"],
+                "additionalProperties": False,
+            },
+            "returns": {
+                "form": "text",
+                "text": "two lines on standard output, `<definition>: flow "
+                        "diagram regenerated (<n> steps)` then `<out>: "
+                        "generated from <id> (digest <12 hex>)`; exit status "
+                        "0; the diagram written into the definition and the "
+                        "skill at <out>",
+            },
+            "failures": [UNREADABLE_FAILURE, UNPARSEABLE_FAILURE, CHECK_FAILURE,
+                         UNWRITABLE_FAILURE, USAGE_FAILURE],
+        },
+    ],
+}
 
 # The banned vocabulary has one home: the lint beside this compiler. It is
 # read from there, never copied, so a change to the lint's list changes every
@@ -45,26 +203,26 @@ def parse(path: pathlib.Path):
     try:
         text = path.read_text()
     except (OSError, UnicodeDecodeError) as exc:
-        sys.exit(f"{path}: cannot be read: {exc}")
+        fail("unreadable", f"{path}: cannot be read: {exc}")
     fm_match = re.match(r"---\n(.*?)\n---\n", text, re.S)
     if not fm_match:
-        sys.exit(f"{path}: no front-matter")
+        fail("unparseable", f"{path}: no front-matter")
     try:
         front = yaml.safe_load(fm_match.group(1))
     except yaml.YAMLError as exc:
-        sys.exit(f"{path}: front-matter does not parse: {one_line(exc)}")
+        fail("unparseable", f"{path}: front-matter does not parse: {one_line(exc)}")
     if not isinstance(front, dict):
-        sys.exit(f"{path}: front-matter is not a mapping")
+        fail("unparseable", f"{path}: front-matter is not a mapping")
     spec = {}
     for fence in re.findall(r"```yaml\n(.*?)```", text, re.S):
         try:
             block = yaml.safe_load(fence)
         except yaml.YAMLError as exc:
-            sys.exit(f"{path}: a yaml block does not parse: {one_line(exc)}")
+            fail("unparseable", f"{path}: a yaml block does not parse: {one_line(exc)}")
         if isinstance(block, dict):
             spec.update(block)
     if "steps" not in spec or "start" not in spec:
-        sys.exit(f"{path}: no `steps`/`start` yaml block found")
+        fail("unparseable", f"{path}: no `steps`/`start` yaml block found")
     purpose_match = re.search(r"\*\*Purpose:\*\*\s*(.*?)\n\n", text, re.S)
     purpose = " ".join(purpose_match.group(1).split()) if purpose_match else ""
     guiding_match = re.search(r"\*\*Guiding statement:\*\*\s*(.*?)\n\n", text, re.S)
@@ -91,21 +249,21 @@ def check_refs(source: pathlib.Path, front: dict, spec: dict) -> None:
     for ref in sorted(refs):
         src = sourced.get(ref)
         if not src:
-            sys.exit(f"{source}: $ref `{ref}` has no `from:` source "
-                     "(process-definition typedef §Data)")
+            fail("check-failed", f"{source}: $ref `{ref}` has no `from:` source "
+                 "(process-definition typedef §Data)")
         if src.startswith("pkg:"):
             if not re.match(r"^pkg:[a-z0-9-]+/[a-z0-9_-]+$", src):
-                sys.exit(f"{source}: `{src}` is not pkg:<package>/<type>")
+                fail("check-failed", f"{source}: `{src}` is not pkg:<package>/<type>")
             continue
         target = (source.parent / src).resolve()
         if not target.exists():
-            sys.exit(f"{source}: from `{src}` does not exist")
+            fail("check-failed", f"{source}: from `{src}` does not exist")
         fm_match = re.match(r"---\n(.*?)\n---\n", target.read_text(), re.S)
         if not fm_match or yaml.safe_load(fm_match.group(1)).get("defines") != ref:
-            sys.exit(f"{source}: from `{src}` does not define `{ref}`")
+            fail("check-failed", f"{source}: from `{src}` does not define `{ref}`")
     result = spec.get("result")
     if result and result not in spec.get("data", {}):
-        sys.exit(f"{source}: result '{result}' is not a declared data value")
+        fail("check-failed", f"{source}: result '{result}' is not a declared data value")
 
 
 def node_id(step_id: str) -> str:
@@ -213,8 +371,11 @@ def write_flow(path: pathlib.Path, text: str, diagram: str) -> None:
         re.escape(FLOW_HEADING) + r"\n.*?(?=\n## )", block, text, count=1, flags=re.S
     )
     if count != 1:
-        sys.exit(f'{path}: no "{FLOW_HEADING}" section to fill')
-    path.write_text(new_text)
+        fail("check-failed", f'{path}: no "{FLOW_HEADING}" section to fill')
+    try:
+        path.write_text(new_text)
+    except OSError as exc:
+        fail("unwritable", f"{path}: cannot be written: {one_line(exc)}")
 
 
 def fmt_io(step: dict) -> str:
@@ -302,24 +463,36 @@ def compile_definition(source: pathlib.Path, skill_out) -> None:
     if skill_out:
         digest = hashlib.sha256(source.read_text().encode()).hexdigest()[:12]
         source_rel = f"basis/processes/{source.name}"
-        skill_out.parent.mkdir(parents=True, exist_ok=True)
-        skill_out.write_text(
-            generate_skill(front, spec, purpose, guiding, diagram, digest, source_rel)
-        )
+        try:
+            skill_out.parent.mkdir(parents=True, exist_ok=True)
+            skill_out.write_text(
+                generate_skill(front, spec, purpose, guiding, diagram, digest, source_rel)
+            )
+        except OSError as exc:
+            fail("unwritable", f"{skill_out}: cannot be written: {one_line(exc)}")
         print(f"{skill_out}: generated from {front['id']} (digest {digest})")
+
+
+def usage() -> None:
+    fail("usage", f"python3 {TOOL} <definition> [--skill <out>] | --describe")
 
 
 def main() -> None:
     args = sys.argv[1:]
+    # The standard question, answered before any other action; the other
+    # arguments are ignored (adr-2026-09-07-tool-answer §2).
+    if "--describe" in args:
+        sys.stdout.write(json.dumps(DESCRIPTION, indent=2) + "\n")
+        sys.exit(0)
     skill_out = None
     if "--skill" in args:
         i = args.index("--skill")
         if i + 1 >= len(args):
-            sys.exit(__doc__.split("Usage:", 1)[1].rstrip())
+            usage()
         skill_out = pathlib.Path(args[i + 1])
         args = args[:i] + args[i + 2:]
-    if len(args) != 1:
-        sys.exit(__doc__.split("Usage:", 1)[1].rstrip())
+    if len(args) != 1 or args[0].startswith("--"):
+        usage()
     source = pathlib.Path(args[0])
     try:
         compile_definition(source, skill_out)
@@ -327,7 +500,7 @@ def main() -> None:
         raise
     except Exception as exc:  # noqa: BLE001 — a definition that does not
         # compile is a one-line reason on stderr, never a traceback
-        sys.exit(f"{source}: does not compile: {type(exc).__name__}: {one_line(exc)}")
+        fail("check-failed", f"{source}: does not compile: {type(exc).__name__}: {one_line(exc)}")
 
 
 if __name__ == "__main__":

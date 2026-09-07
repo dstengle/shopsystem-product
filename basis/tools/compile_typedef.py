@@ -30,6 +30,9 @@ Usage:
                                      # write both texts (defaults above)
   compile_typedef.py <typedef.md> --check [--guideline <path>] [--fitness <path>]
                                      # render afresh, compare with what stands
+  compile_typedef.py --describe      # answer the standard question (DESCRIPTION
+                                     # below) as JSON on standard output, exit 0,
+                                     # before any other action
 
 Check rows, one per line, kind first; nothing printed when both are current:
   missing <id>                       nothing stands at the text's path
@@ -39,14 +42,137 @@ Check rows, one per line, kind first; nothing printed when both are current:
                                      rendered — the one case that exits nonzero
 Exit 0 in every other check outcome; 1 on will-not-compile; 2 on a usage
 error. A newline in a reason is written as `\\n` so a row stays one line.
+The will-not-compile row's reason begins with the failure's code from the
+tool-description data type's closed set — `unreadable`, `unparseable`, or
+`check-failed` — the code this tool's answer names for it.
 """
 import hashlib
+import json
 import pathlib
 import posixpath
 import re
 import sys
 
 import yaml
+
+TOOL = "basis/tools/compile_typedef.py"
+TYPEDEF_INPUT = {
+    "type": "string",
+    "description": "the path of the artifact typedef, for example "
+                   "basis/artifacts/feature.md; it must stand approved and "
+                   "carry `## Writing rules` and `## Fitness scenarios`",
+}
+GUIDELINE_INPUT = {
+    "type": "string",
+    "description": "the guideline's path",
+    "default": "basis/guidelines/<type>.md, <type> the typedef's `defines`",
+}
+FITNESS_INPUT = {
+    "type": "string",
+    "description": "the fitness set's path",
+    "default": "basis/fitness/<type>.fitness.md, <type> the typedef's `defines`",
+}
+WILL_NOT_COMPILE = ("one row on standard output, `will-not-compile <typedef> "
+                    "<code>: <reason>`, exit status 1; nothing is written")
+COMPILE_FAILURES = [
+    {"code": "unreadable", "exit_status": 1,
+     "condition": "no file exists at <typedef>, or it cannot be read: "
+                  + WILL_NOT_COMPILE,
+     "next": "give the path of an existing typedef and run the invocation "
+             "again"},
+    {"code": "unparseable", "exit_status": 1,
+     "condition": "the typedef has no front-matter, or its front-matter "
+                  "does not parse or is not a mapping: " + WILL_NOT_COMPILE,
+     "next": "repair the typedef's front-matter and run the invocation "
+             "again"},
+    {"code": "check-failed", "exit_status": 1,
+     "condition": "the typedef does not qualify or does not render: its "
+                  "`type` is not artifact-typedef, its `status` is not "
+                  "approved (refused), it lacks an identity key, a `## "
+                  "Writing rules` or `## Fitness scenarios` section, or a "
+                  "`**Judged by:**` line, or a produced text lacks a mark "
+                  "its reader requires: " + WILL_NOT_COMPILE,
+     "next": "repair the typedef at the named defect (the artifact-typedef "
+             "typedef states the sections) and run the invocation again"},
+    {"code": "usage", "exit_status": 2,
+     "condition": "the arguments are not one of the two invocations this "
+                  "tool states — no typedef, more than one, an option "
+                  "without its path, or an unknown option; the usage sheet "
+                  "on standard error; nothing is written",
+     "next": "run the invocation the use states, as written"},
+]
+# The answer to the standard question (adr-2026-09-07-tool-answer §2): an
+# instance of the tool-description data type, basis/types/tool-description.md.
+# This tool is its one home; the skill is produced from it, never edited.
+DESCRIPTION = {
+    "name": "compile-typedef",
+    "description": (
+        "Produces an artifact typedef's two texts — its guideline from the "
+        "`## Writing rules` section and its fitness set from the `## Fitness "
+        "scenarios` section — at the paths the checks read, each stamped "
+        "`generated`, `source`, and `source-digest`, and checks whether the "
+        "texts that stand are current with the typedef. Only an approved "
+        "typedef compiles. Use it after such a typedef changes, and to "
+        "confirm that its guideline and fitness set are current."
+    ),
+    "uses": [
+        {
+            "name": "produce",
+            "description": (
+                "Renders both texts from the typedef and writes them, "
+                "creating directories, overwriting what stands at each path "
+                "— a hand edit included. The typedef itself is not changed."
+            ),
+            "invocation": f"python3 {TOOL} <typedef> [--guideline <guideline>] [--fitness <fitness>]",
+            "input_schema": {
+                "type": "object",
+                "properties": {"typedef": TYPEDEF_INPUT,
+                               "guideline": GUIDELINE_INPUT,
+                               "fitness": FITNESS_INPUT},
+                "required": ["typedef"],
+                "additionalProperties": False,
+            },
+            "returns": {
+                "form": "text",
+                "text": "two lines on standard output, `<guideline>: produced "
+                        "from basis/artifacts/<file>` then `<fitness>: "
+                        "produced from basis/artifacts/<file>`; exit status "
+                        "0; both texts written",
+            },
+            "failures": COMPILE_FAILURES,
+        },
+        {
+            "name": "check",
+            "description": (
+                "Renders both texts afresh to memory and compares each with "
+                "what stands at its path; prints one row per text that is "
+                "not current and nothing when both are. Writes nothing."
+            ),
+            "invocation": f"python3 {TOOL} <typedef> --check [--guideline <guideline>] [--fitness <fitness>]",
+            "input_schema": {
+                "type": "object",
+                "properties": {"typedef": TYPEDEF_INPUT,
+                               "guideline": GUIDELINE_INPUT,
+                               "fitness": FITNESS_INPUT},
+                "required": ["typedef"],
+                "additionalProperties": False,
+            },
+            "returns": {
+                "form": "text",
+                "text": "on standard output, zero, one, or two rows, one per "
+                        "line: `missing <type>-guideline` or `missing "
+                        "<type>-fitness` when nothing stands at the text's "
+                        "path, `diverged <type>-guideline` or `diverged "
+                        "<type>-fitness` when what stands differs from a "
+                        "fresh render; nothing printed when both are "
+                        "current; exit status 0 in each of these outcomes — "
+                        "a missing or diverged row is a result, not a "
+                        "failure",
+            },
+            "failures": COMPILE_FAILURES,
+        },
+    ],
+}
 
 GENERATED_BY = "basis/tools/compile_typedef.py"
 FM_RE = re.compile(r"---\n(.*?)\n---\n", re.S)
@@ -72,16 +198,16 @@ def split(path: pathlib.Path):
     try:
         text = path.read_text()
     except (OSError, UnicodeDecodeError) as exc:
-        raise CompileError(f"cannot be read: {exc}")
+        raise CompileError(f"unreadable: cannot be read: {exc}")
     m = FM_RE.match(text)
     if not m:
-        raise CompileError("no front-matter")
+        raise CompileError("unparseable: no front-matter")
     try:
         front = yaml.safe_load(m.group(1))
     except yaml.YAMLError as exc:
-        raise CompileError(f"front-matter does not parse: {exc}")
+        raise CompileError(f"unparseable: front-matter does not parse: {exc}")
     if not isinstance(front, dict):
-        raise CompileError("front-matter is not a mapping")
+        raise CompileError("unparseable: front-matter is not a mapping")
     return text, front, text[m.end():]
 
 
@@ -229,6 +355,11 @@ def usage(code: int = 2) -> None:
 
 def main() -> None:
     args = sys.argv[1:]
+    # The standard question, answered before any other action; the other
+    # arguments are ignored (adr-2026-09-07-tool-answer §2).
+    if "--describe" in args:
+        sys.stdout.write(json.dumps(DESCRIPTION, indent=2) + "\n")
+        sys.exit(0)
     guideline_out = fitness_out = None
     do_check, positional = False, []
     i = 0
@@ -258,8 +389,11 @@ def main() -> None:
         else:
             write(typedef, guideline_out, fitness_out)
     except Exception as exc:  # noqa: BLE001 — a typedef that does not compile
-        # is one row, never a traceback
+        # is one row, never a traceback; the reason begins with the
+        # failure's code (unreadable, unparseable, or check-failed)
         reason = str(exc) if isinstance(exc, CompileError) else f"{type(exc).__name__}: {exc}"
+        if not reason.startswith(("unreadable: ", "unparseable: ")):
+            reason = "check-failed: " + reason
         print(f"will-not-compile {typedef} {one_line(reason)}")
         sys.exit(1)
 

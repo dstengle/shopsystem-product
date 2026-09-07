@@ -1,0 +1,108 @@
+{
+  "name": "shop-msg",
+  "description": "The shop's messaging command: writes lead-to-BC messages into a Bounded Context shop's inbox and marks mailbox entries consumed on the lead side, over the messaging context's mailboxes. Use it where a process step sends a shop its scenarios or consumes a shop's response; while the shop is frozen these uses are described, not run.",
+  "stands_beside": "shop-msg",
+  "tool_owner": "shopsystem-messaging",
+  "uses": [
+    {
+      "name": "send",
+      "description": "Writes one assign_scenarios message into the named Bounded Context shop's inbox under a work id, its body the scenarios read from the given files wrapped under one Feature line, or the complete body pinned by a payload file. Sends nothing else; the six other message types this subcommand takes (request_maintenance, clarify_response, request_bugfix, request_completion_journal, request_scenario_register, nudge) carry their own options and are described when a task first calls for one.",
+      "invocation": "shop-msg send assign_scenarios --bc <bc> --work-id <work_id> --feature-title <feature_title> --bc-tag <bc_tag> --scenario-file <scenario_file> [--payload <payload>] [--depends-on <depends_on>] [--queue-on-dependency]",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "bc": {
+            "type": "string",
+            "description": "the canonical Bounded Context shop name, resolved through the registry"
+          },
+          "work_id": {
+            "type": "string",
+            "description": "the work id identifying this assignment"
+          },
+          "feature_title": {
+            "type": "string",
+            "description": "the title of the wrapping `Feature:` line for each scenario; required unless <payload> is given"
+          },
+          "bc_tag": {
+            "type": "string",
+            "description": "the shop name used in each scenario's @bc:<name> tag; required unless <payload> is given"
+          },
+          "scenario_file": {
+            "type": "string",
+            "description": "the path of a file holding one scenario body; repeat the option for each scenario; required unless <payload> is given"
+          },
+          "payload": {
+            "type": "string",
+            "description": "the path of a YAML or JSON file pinning the complete message body, with pre-computed hashes; omitted, the body is built from the other inputs"
+          },
+          "depends_on": {
+            "type": "string",
+            "description": "the work id of a prior dispatch this one depends on; omitted, no dependency"
+          },
+          "queue_on_dependency": {
+            "type": "boolean",
+            "description": "when the dependency is not yet closed, queue the dispatch instead of refusing it",
+            "default": false
+          }
+        },
+        "required": [
+          "bc",
+          "work_id"
+        ],
+        "additionalProperties": false
+      },
+      "returns": {
+        "form": "text",
+        "text": "the tool's report of the message written, on standard output; exit status 0 — not yet observed by this shop on this branch, the use being one the freeze bars"
+      },
+      "failures": [
+        {
+          "code": "usage",
+          "exit_status": 2,
+          "condition": "the arguments are not an invocation this tool states — a subcommand or message type missing or unknown, a required option missing, an option without its value; the usage sheet and one line `shop-msg <subcommand>: error: ...` on standard error; nothing is sent or marked",
+          "next": "run the invocation the use states, as written"
+        }
+      ]
+    },
+    {
+      "name": "consume",
+      "description": "Marks one row of a Bounded Context shop's outbox — a response the lead has read — as consumed, so it no longer appears among pending outbox entries. Marks that row only; `consume inbox --lead <lead> --work-id <work_id>` does the same for a row in the lead's own inbox.",
+      "invocation": "shop-msg consume outbox --bc <bc> --work-id <work_id> --message-type <message_type>",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "bc": {
+            "type": "string",
+            "description": "the canonical Bounded Context shop name, resolved through the registry"
+          },
+          "work_id": {
+            "type": "string",
+            "description": "the work id of the outbox row to consume"
+          },
+          "message_type": {
+            "type": "string",
+            "description": "the row's message type: clarify, work_done, mechanism_observation, request_completion_journal_response, or request_scenario_register_response"
+          }
+        },
+        "required": [
+          "bc",
+          "work_id",
+          "message_type"
+        ],
+        "additionalProperties": false
+      },
+      "returns": {
+        "form": "text",
+        "text": "the tool's report of the row marked, on standard output; exit status 0 — not yet observed by this shop on this branch, the use being one the freeze bars"
+      },
+      "failures": [
+        {
+          "code": "usage",
+          "exit_status": 2,
+          "condition": "the arguments are not an invocation this tool states — a subcommand or message type missing or unknown, a required option missing, an option without its value; the usage sheet and one line `shop-msg <subcommand>: error: ...` on standard error; nothing is sent or marked",
+          "next": "run the invocation the use states, as written"
+        }
+      ]
+    }
+  ]
+}

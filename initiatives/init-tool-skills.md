@@ -3,7 +3,7 @@ type: initiative
 id: init-tool-skills
 name: Tool skills
 status: active
-version: 13
+version: 14
 owner: lead-pm
 created: 2026-09-07
 updated: 2026-09-07
@@ -87,7 +87,7 @@ none.
 
 [feat-tool-skills](../features/feat-tool-skills.md) — assigned, delivered 2026-09-07 (feature v7–v8).
 
-[feat-tool-skills-rest](../features/feat-tool-skills-rest.md) — assigned.
+[feat-tool-skills-rest](../features/feat-tool-skills-rest.md) — assigned, delivered 2026-09-07 (feature v7–v8).
 
 ## Document History
 
@@ -106,3 +106,4 @@ none.
 | 11 | 2026-09-07 | update | The proof passed: feat-tool-skills delivered in the lead shop's tree and verified by the lead-pm in the running tree (feature v7 and v8) — the lint answers the standard question, its skill is produced from the answer alone and stands at the load point, the load-point check recognizes it and runs clean, and one agent in a fresh context completed the lint's uses on the first invocation the skill states and read a failure from the skill alone. Measure: 1 of 12 — the denominator is twelve, as the architect's offer (v3) foresaw: the producer of tool skills, basis/tools/compile_tool.py, is itself a framework tool that must answer. The authority's standing direction ("If it passes then proceed to the rest without asking me") now authorizes the second feature: the other eleven — the five compilers the shop owns answering the standard question; the six external tools (bd, shop-msg, shop-knowledge, agent-vault, bc-emit, shop-templates) by descriptions beside them in the same shape until their owners answer. Open scope call kept: whether `--help` also answers as help. |
 | 12 | 2026-09-07 | update | Features section: feat-tool-skills-rest added, draft — written by the feature-authoring draft step (the PO role) under the authority's standing direction (v2, v11), the typedef's list of features as they are made; sixteen scenarios, all owned by the lead shop, over the five compilers answering the standard question and the six external tools by descriptions beside them until their owners answer; interaction types none. Held in the feature's Edges table with reasons: the open scope call on `--help`; the gap's reaching its owner while the shop is frozen. One question to the PM role with a proposed default: the owner of an external tool the lead shop cannot name. |
 | 13 | 2026-09-07 | update | Features section: feat-tool-skills-rest — checked (v5), the po-output-check record step after one screen and one revise; the initiative already active. Next: scenario-assignment. |
+| 14 | 2026-09-07 | update | The second feature delivered in the lead shop's tree and verified by the lead-pm in the running tree (feat-tool-skills-rest v7 and v8): the five compilers answer the standard question and each has its skill produced from its own answer, the producer's from its own; the six external tools have descriptions beside them in the answer's shape at basis/tools/descriptions/, their skills produced from those, and one gap request each (requests/req-2026-09-07-<tool>-answer.md, recorded, route awaiting, held under the freeze); skill-rendering v9 recognizes three source kinds and asks each described tool every run; twelve tool skills at the load point, the check clean. Measure: 6 of 12 — the lint and the five compilers usable through a skill produced from the tool's own answer; the six external tools usable through a skill produced from the description beside each, not counted until their owners answer. Use observed in a fresh context on 9 of 11 tools; shop-msg and bc-emit a labeled hypothesis until the freeze lifts. Every feature of this initiative is delivered; what remains is the reconcile side (the initiative's completed state is an open amendment) and the six owners' answers. |

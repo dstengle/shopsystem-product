@@ -1,0 +1,143 @@
+{
+  "name": "shop-knowledge",
+  "description": "The knowledge context's command over the shop's record kinds: validates one document against the schema of its declared artifact type, and prints the schema of one of the eight recognized types (intent-record, candidate, session-record, prioritization-record, brief, pdr, adr, current-state). Use it where a process step validates a session record, and to read what a record kind requires before writing one.",
+  "stands_beside": "shop-knowledge",
+  "tool_owner": "shopsystem-knowledge",
+  "uses": [
+    {
+      "name": "validate",
+      "description": "Reads the document at <path> and checks its frontmatter and sections against the schema of the artifact type its `type` field names. Reads only; changes nothing.",
+      "invocation": "shop-knowledge validate <path>",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "path": {
+            "type": "string",
+            "description": "the path of the document to validate, relative to the current directory or absolute"
+          }
+        },
+        "required": [
+          "path"
+        ],
+        "additionalProperties": false
+      },
+      "returns": {
+        "form": "text",
+        "text": "one line on standard output, `conforming: <path>`; exit status 0"
+      },
+      "failures": [
+        {
+          "code": "check-failed",
+          "exit_status": 1,
+          "condition": "the document does not conform: on standard output `non-conforming: <path>` then one line `  - <finding>` per finding — a type not among the eight, a required field missing, a required section missing",
+          "next": "repair the document at each finding and run the same invocation again until it reads `conforming: <path>`"
+        },
+        {
+          "code": "unreadable",
+          "exit_status": 1,
+          "condition": "no file exists at <path>: a Python traceback on standard error whose last line is `FileNotFoundError: [Errno 2] No such file or directory: '<path>'`; nothing on standard output",
+          "next": "give the path of an existing document and run the invocation again"
+        },
+        {
+          "code": "usage",
+          "exit_status": 2,
+          "condition": "the arguments are not an invocation this tool states — no subcommand, an unknown one, or the wrong number of arguments; one line on standard error beginning `error:` says which; nothing is read",
+          "next": "run the invocation the use states, as written"
+        }
+      ]
+    },
+    {
+      "name": "schema",
+      "description": "Prints the schema of one recognized artifact type as JSON: its id pattern, required fields (shared and type-specific), required sections, and statuses. Reads only.",
+      "invocation": "shop-knowledge schema <artifact_type>",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "artifact_type": {
+            "type": "string",
+            "description": "one of the eight recognized artifact types: intent-record, candidate, session-record, prioritization-record, brief, pdr, adr, current-state"
+          }
+        },
+        "required": [
+          "artifact_type"
+        ],
+        "additionalProperties": false
+      },
+      "returns": {
+        "form": "json",
+        "output_schema": {
+          "type": "object",
+          "description": "the type's schema as the tool prints it",
+          "properties": {
+            "document_shape": {
+              "type": "string"
+            },
+            "generated": {
+              "type": "boolean"
+            },
+            "id_example": {
+              "type": "string"
+            },
+            "id_pattern": {
+              "type": "string"
+            },
+            "non_empty_fields": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "read_only": {
+              "type": "boolean"
+            },
+            "required_sections": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "shared_required_fields": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "statuses": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "type": {
+              "type": "string"
+            },
+            "type_required_fields": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "required": [
+            "document_shape",
+            "id_example",
+            "id_pattern",
+            "required_sections",
+            "shared_required_fields",
+            "statuses",
+            "type",
+            "type_required_fields"
+          ]
+        }
+      },
+      "failures": [
+        {
+          "code": "usage",
+          "exit_status": 2,
+          "condition": "<artifact_type> is not one of the eight, or is missing: on standard error `error: '<artifact_type>' is not a recognized artifact type` and a line naming the eight, or `error: 'schema' takes exactly one artifact type`",
+          "next": "give one of the eight recognized artifact types and run the invocation again"
+        }
+      ]
+    }
+  ]
+}

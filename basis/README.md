@@ -4,7 +4,7 @@ id: basis-index
 owner: product-authority
 status: approved
 approved: 2026-08-23
-version: 13
+version: 14
 created: 2026-08-10
 updated: 2026-09-06
 ---
@@ -53,20 +53,31 @@ here is advisory.
 - generated skill renderings live at the agent's load point —
   `.claude/skills/` at the repository root — maintained by the
   [skill-rendering process](processes/skill-rendering.md); never edited
-  by hand. Two source kinds stand there: a process skill, rendered from
-  an approved process definition by `compile_process.py`; and a tool
+  by hand. Three source kinds stand there: a process skill, rendered
+  from an approved process definition by `compile_process.py`; a tool
   skill, produced by [`tools/compile_tool.py`](tools/compile_tool.py)
   from a framework tool's answer to the standard question — the tool
   run with `--describe`, its answer an instance of the
   [tool-description](types/tool-description.md) data type — and from
   nothing else, per
-  [adr-2026-09-07-tool-answer](../decisions/adr-2026-09-07-tool-answer.md).
+  [adr-2026-09-07-tool-answer](../decisions/adr-2026-09-07-tool-answer.md);
+  and, for a framework tool the shop runs but does not own and that
+  cannot answer, a tool skill produced by the same compiler from the
+  description beside the tool under `tools/descriptions/` and from
+  nothing else, until the tool answers.
 - `tools/` — the compilers (`compile_principles.py`,
   `compile_process.py`, `compile_role.py`, `compile_typedef.py`,
   `compile_tool.py`) and the lint
-  ([`tools/lint_basis.py`](tools/lint_basis.py)). Every tool here is
-  to answer `--describe`; the lint answers today, and its skill at the
-  load point is the one an agent runs it through.
+  ([`tools/lint_basis.py`](tools/lint_basis.py)). Every tool here
+  answers `--describe`, and its skill at the load point is the one an
+  agent runs it through. `tools/descriptions/` is the home the
+  tool-description data type names for a description beside a tool
+  that cannot answer — one JSON file per such tool, an instance of the
+  same shape carrying `stands_beside` and `tool_owner`, written by this
+  shop from what the tool shows whoever runs it; six stand there (bd,
+  shop-msg, shop-knowledge, agent-vault, bc-emit, shop-templates), each
+  with its gap recorded to the tool's owner as a request under
+  `requests/`, and each retired when its tool answers.
 
 ## How definitions change
 
@@ -116,10 +127,13 @@ for the keys the
 requires, reporting each missing key by name. The exit is nonzero on
 any violation. A tool skill at the load point is checked by the
 skill-rendering process's check step, which asks the tool again with
-`--describe`, produces the skill afresh through
-`tools/compile_tool.py`, and diffs: a `tool-diverged` or
-`tool-missing` row names a tool whose skill is not current; no row
-means it is.
+`--describe` — or re-reads the description beside a tool that cannot
+answer — produces the skill afresh through `tools/compile_tool.py`,
+and diffs: a `tool-diverged`, `tool-missing`, `description-diverged`,
+or `description-missing` row names a tool whose skill is not current;
+a `tool-answers` row names a described tool that has begun to answer,
+its description then retired; no row means every tool skill is
+current.
 
 ## Document History
 
@@ -137,4 +151,5 @@ means it is.
 | 10 | 2026-09-05 | update | Under init-typedef-rendering / feat-typedef-rendering (adr-2026-09-05-typedef-rendering): tools/compile_typedef.py added — it produces a type's guideline and fitness set from the Writing rules and Fitness scenarios sections of its typedef, at the paths the checks read, and its --check reports a text not current with the typedef; the guidelines/ and fitness/ entries say which texts are renderings and who keeps them current; §Checks names the compiler's check and records that lint check 7 (version and Document History) exempts a file marked `generated: true` — an exemption that stood since the versioning standard and now covers the produced guideline and fitness set, so no lint code changed. Checks 1–10, --brief, and --derive-chain as before. Made by the lead-solutions-architect role. |
 | 11 | 2026-09-05 | update | Under req-2026-09-05-no-tools-mid-process at the small-change process's make step: tools/lint_basis.py extended (its check 11) to walk processes/ and check that every repository tool path a process definition names — `basis/tools/<name>.py` in a step's `run:` template or an `initial:` value — exists, reporting the definition and the missing path, with a `--process <path>` mode that runs the same check on one definition; §Checks names both. Checks 1–10, --brief, and --derive-chain as before. Made by the lead-solutions-architect role. |
 | 12 | 2026-09-06 | update | Under req-2026-09-06-implementation-guidance at the small-change process's make step, on the authority's direction of 2026-09-06 the request records: the implementation-guidance typedef added (artifacts/implementation-guidance.md) with its guideline and fitness set produced from it by compile_typedef.py; the guidance/ home listed; tools/lint_basis.py extended (its check 12) to walk guidance/ at the repository root — absent until the first assignment writes a record — and check each record's frontmatter for the keys the typedef requires, each missing key named; §Checks names it. Checks 1–11, --brief, --process, and --derive-chain as before. Made by the lead-solutions-architect role. |
+| 14 | 2026-09-07 | update | Under init-tool-skills / feat-tool-skills-rest, per adr-2026-09-07-tool-answer (v3, checked) and guidance/feat-tool-skills-rest-shopsystem-product.md (v1): the five compilers answer `--describe` (each its DESCRIPTION; their failures now carry a code from the data type's closed set on standard error, and their arguments are strict); tools/compile_tool.py reads its second source, a description beside a tool that cannot answer, at tools/descriptions/<name>.json, and answers the flag itself; tools/descriptions/ added with six descriptions and the six gap requests recorded under requests/; the skills/ entry says the three source kinds; §Checks names the description rows and the `tool-answers` finding of skill-rendering v9. Checks 1–12, --brief, --process, and --derive-chain as before. Made by the lead-solutions-architect role. |
 | 13 | 2026-09-07 | update | Under init-tool-skills / feat-tool-skills, per adr-2026-09-07-tool-answer (v3, checked) and guidance/feat-tool-skills-shopsystem-product.md (v1): the tool-description data type added (types/tool-description.md, draft pending the owner's approval) — the contract a framework tool's answer to `--describe` parses against; tools/compile_tool.py added — it asks a tool the standard question and produces the tool's skill at the agent's load point from the answer and from nothing else, stamped with the answer's digest; tools/lint_basis.py answers `--describe` (its DESCRIPTION, four uses: lint, check-brief, check-process, derive-chain), and its arguments are now strict — a `usage` failure on standard error, exit 2, and an `unreadable` one for a --brief or --process path that does not exist, the failures its answer names; the skills/ entry says the two source kinds; §Checks names the skill-rendering check over a tool skill. Checks 1–12, --brief, --process, and --derive-chain as before. Made by the lead-solutions-architect role. |

@@ -1,0 +1,75 @@
+{
+  "name": "bc-emit",
+  "description": "A Bounded Context shop's command for closing its work: runs the pre-emit preconditions on a dispatched work id — the deliverable reachable, the plan's sub-issues closed — then invokes `shop-msg respond work_done` to send the lead its response. Run by a Bounded Context shop at the end of its work; the lead shop describes it here because its definitions name the response it produces. Not run while the shop is frozen.",
+  "stands_beside": "bc-emit",
+  "tool_owner": "shopsystem-templates",
+  "uses": [
+    {
+      "name": "work-done",
+      "description": "Checks the preconditions for <work_id> — the deliverable commit or tag reachable on the remote, every sub-issue under the plan umbrella closed with at least one RED failing-test sub-issue when <plan_umbrella> is given, no retired hash still carried under features/ — and, when they hold, invokes `shop-msg respond work_done` with the status and summary; when any precondition fails the emit is refused and respond is not invoked.",
+      "invocation": "bc-emit work-done --work-id <work_id> [--deliverable <deliverable>] [--tag <tag>] [--scenario-hash <scenario_hash>] [--retire-hash <retire_hash>] [--plan-umbrella <plan_umbrella>] [--status <status>] [--bc <bc>] [--summary <summary>] [--repo <repo>]",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "work_id": {
+            "type": "string",
+            "description": "the dispatched work id the response answers"
+          },
+          "deliverable": {
+            "type": "string",
+            "description": "the reachability mode: commit (the work id's commit on origin/main) or tag (a release); omitted, the tool's default mode"
+          },
+          "tag": {
+            "type": "string",
+            "description": "the release tag name, in tag mode"
+          },
+          "scenario_hash": {
+            "type": "string",
+            "description": "a scenario hash echoed in the payload; repeat the option for each"
+          },
+          "retire_hash": {
+            "type": "string",
+            "description": "a scenario hash the consumed dispatch named for retirement; repeat for each; the emit is refused while any is still carried by a scenario block under features/"
+          },
+          "plan_umbrella": {
+            "type": "string",
+            "description": "the bd umbrella bead id carrying the work id's sub-issue decomposition; omitted, the plan preconditions are not enforced"
+          },
+          "status": {
+            "type": "string",
+            "description": "the work_done status forwarded: complete, partial, or blocked"
+          },
+          "bc": {
+            "type": "string",
+            "description": "the canonical Bounded Context shop name, passed through"
+          },
+          "summary": {
+            "type": "string",
+            "description": "the work_done summary, passed through"
+          },
+          "repo": {
+            "type": "string",
+            "description": "the repository root the preconditions inspect",
+            "default": "the current directory"
+          }
+        },
+        "required": [
+          "work_id"
+        ],
+        "additionalProperties": false
+      },
+      "returns": {
+        "form": "text",
+        "text": "the output of `shop-msg respond work_done` on standard output; exit status 0 — not yet observed by this shop, the use being a Bounded Context shop's and one the freeze bars"
+      },
+      "failures": [
+        {
+          "code": "usage",
+          "exit_status": 2,
+          "condition": "the arguments are not the invocation this tool states — `--work-id` missing, an unknown option, an option without its value, or a value outside its choices; the usage sheet and one line `bc-emit work-done: error: ...` on standard error; nothing is checked or sent",
+          "next": "run the invocation the use states, as written"
+        }
+      ]
+    }
+  ]
+}
