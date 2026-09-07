@@ -5,9 +5,9 @@ defines: role-definition
 owner: product-authority
 status: approved
 approved: 2026-08-22
-version: 4
+version: 5
 created: 2026-08-19
-updated: 2026-09-06
+updated: 2026-09-07
 ancestry: [definition, role-definition]
 ---
 
@@ -30,6 +30,10 @@ Functional contract keys first — `name`, `description`, `tools` (the
 capability boundary: the list of allowed tool names), `maxTurns` — then the identity
 base: `type: role-definition`, `id`, `owner`, `status`, `created`,
 `updated`.
+
+A role that runs on a named model tier carries `model` — the tier's
+name as the harness names it — among the functional keys; absent, a
+fill runs on the tier of whatever launches it.
 
 ## Required sections
 
@@ -84,3 +88,4 @@ RACI's one-Accountable rule.
 | 2 | 2026-08-23 | update | Owner direction: decision-ledger references removed — changes stand on their own; history entries and text no longer cite numbered decisions. |
 | 3 | 2026-08-25 | update | Owner direction: a near-synonym of "role" retired and banned. |
 | 4 | 2026-09-06 | update | Under init-role-decisions / feat-role-decisions on the authority's bet of 2026-09-06, per adr-2026-09-05-role-offer's bound (the typedef's section names the decisions a role owns; it does not define the offer's shape) and the feature's constraint C2: one required section added, Decisions owned — the decisions, or parts of decisions, in the role's domain, named as the role's own, with the statement that the role offers complete information on them unasked when it attaches to or acts on an initiative; the shape referenced to the role-offer data type, never restated; no step named, under the no-sequencing rule; a checklist row added citing it. The fitness set (v3) is hand-amended beside it, under the artifact-typedef typedef's rule for a type whose texts are not produced. The four role definitions gain the section after this row, not before. Its order with brief-030's pending amendment to this typedef is the owner's. Maker's evaluation against the artifact-typedef typedef's checklist: `defines` unchanged; the required sections in order, the new one third; the commitment and sources unchanged; no pinned example link; the new checklist entry cites its clause; no Writing rules or Fitness scenarios section, as before. Made by the lead-solutions-architect role; the owner's approval of the amendment is pending. |
+| 5 | 2026-09-07 | update | Under req-2026-09-07-role-model-tiers: the optional `model` key stated in Required frontmatter — the model tier a role runs on, named as the harness names it, absent meaning the launcher's tier — so that a definition carrying the key the compiler already honors traces to this typedef. |

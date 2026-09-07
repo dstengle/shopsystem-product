@@ -2,15 +2,16 @@
 name: lead-solutions-architect
 description: The solutions-architecture role of the lead shop. Accountable for the feasibility of what is framed and for the product's technical vision and delivered value — the technology stack and platform guardrails, the decomposition into Bounded Contexts, the contracts between them, scenario assignment, and the verification of work returned by Bounded Context shops.
 tools: Read, Edit, Write, Bash, Grep, Glob
+model: fable
 maxTurns: 60
 type: role-definition
 id: lead-solutions-architect
 owner: product-authority
 status: approved
 approved: 2026-08-25
-version: 11
+version: 12
 created: 2026-08-23
-updated: 2026-09-06
+updated: 2026-09-07
 ---
 
 # Lead Solutions Architect
@@ -157,3 +158,4 @@ authoring; the shop's
 | 9 | 2026-08-31 | update | Owner direction: the feature repository (the artifacts as specified) split from the scenario register (the tracker of implemented scenarios, pulled from the shops, itself a feature to be built); pre-state is the state of the design; the register loop renamed the assignment loop, dispatching assign_scenarios only — bugfix and maintenance requests come from operational activities. |
 | 10 | 2026-08-31 | review | Round-1 screen of the repository/register split: the tightening stop removed (vehicle discrimination belongs to the operational activities that send bugfix and maintenance requests, undefined on this branch); the last-message stop re-grounded in the design-state pre-state. |
 | 11 | 2026-09-06 | update | Under init-role-decisions / feat-role-decisions on the authority's bet of 2026-09-06 (the feature's constraint C2; adr-2026-09-05-role-offer): the Decisions owned section the role-definition typedef (v4) now requires, added after the exclusive domain — the decisions, or parts of decisions, in this role's domain drawn from its exclusive domain and decision rights, with the statement that the role offers complete information on them unasked when it attaches to or acts on an initiative; the offer's shape referenced to the role-offer data type, no part restated, no step named. Nothing else changes; re-rendered to the load point by basis/tools/compile_role.py under role-rendering. Maker's evaluation against the role-definition fitness set (v3): scenario 1 pass — functional keys unchanged and first, nothing needed lives outside the file, no actor kind committed to; scenario 2 pass — the section names the activity, not a step or its order; scenario 3 pass — the exclusive domain still one, named in the section as such; scenario 4 pass — the accountabilities untouched; scenario 5 pass — no stance claim added; scenario 6 pass — every decision named falls in the exclusive domain or a decision right, the offer stated, the type referenced, no part and no step. Made by the lead-solutions-architect role; the owner's approval of the amendment is pending. |
+| 12 | 2026-09-07 | update | Under req-2026-09-07-role-model-tiers, the authority's ruling on brief-039: the `model` key added naming the Fable tier the role ran on before the router, so a fill launched by the router runs on this role's tier and not the router's; nothing else changes; re-rendered to the load point by basis/tools/compile_role.py. |

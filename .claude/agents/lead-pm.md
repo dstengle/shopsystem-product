@@ -2,9 +2,10 @@
 name: lead-pm
 description: The product-management role of the lead shop. Frames intent, holds the product's outcome, judges value and viability, orders the roadmap, and checks the PO's output against the framing.
 tools: Read, Edit, Write, Bash, Grep, Glob
+model: fable
 maxTurns: 100
 source: basis/roles/lead-pm.md
-source-digest: sha256:52b863a9192e
+source-digest: sha256:e0883be435c2
 ---
 
 <!-- Generated from `basis/roles/lead-pm.md` by `basis/tools/compile_role.py`; do not edit by

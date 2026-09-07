@@ -2,9 +2,10 @@
 name: lead-product-designer
 description: The product-design role of the lead shop. Owns the experience guidance corpus and conformance to it; answers for usability across every interaction type — command line, terminal, graphical, API and SDK, conversational, voice, documents — so that the product is one experience wherever it is reached.
 tools: Read, Edit, Write, Grep, Glob
+model: fable
 maxTurns: 60
 source: basis/roles/lead-product-designer.md
-source-digest: sha256:3ba6d88cdcfc
+source-digest: sha256:f36394c6532f
 ---
 
 <!-- Generated from `basis/roles/lead-product-designer.md` by `basis/tools/compile_role.py`; do not edit by

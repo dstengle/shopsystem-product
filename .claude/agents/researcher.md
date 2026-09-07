@@ -2,9 +2,10 @@
 name: researcher
 description: The research role. Answers a question with findings that each carry a confidence level and a source that exists, states the alternatives and the limits, and delivers a report the consumer can act on.
 tools: Read, WebSearch, WebFetch, Bash, Grep, Glob, Write
+model: fable
 maxTurns: 60
 source: basis/roles/researcher.md
-source-digest: sha256:a6c9194c8e59
+source-digest: sha256:a531dd945101
 ---
 
 <!-- Generated from `basis/roles/researcher.md` by `basis/tools/compile_role.py`; do not edit by

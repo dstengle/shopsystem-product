@@ -2,15 +2,16 @@
 name: researcher
 description: The research role. Answers a question with findings that each carry a confidence level and a source that exists, states the alternatives and the limits, and delivers a report the consumer can act on.
 tools: Read, WebSearch, WebFetch, Bash, Grep, Glob, Write
+model: fable
 maxTurns: 60
 type: role-definition
 id: researcher
 owner: product-authority
 status: approved
 approved: 2026-08-23
-version: 5
+version: 6
 created: 2026-08-23
-updated: 2026-08-25
+updated: 2026-09-07
 ---
 
 # Researcher
@@ -92,3 +93,4 @@ before claims); calibrated confidence language.
 | 4 | 2026-08-23 | update | Owner direction: the research index instance lives on `rebaseline` at `research/index.md`, not on `main`. |
 | 4 | 2026-08-23 | state | draft → approved by the owner. The researcher role is the first instance of the enriched role model brief-030 proposes. |
 | 5 | 2026-08-25 | update | Owner direction: a near-synonym of "role" retired and banned. |
+| 6 | 2026-09-07 | update | Under req-2026-09-07-role-model-tiers, the authority's ruling on brief-039: the `model` key added naming the Fable tier the role ran on before the router, so a fill launched by the router runs on this role's tier and not the router's; nothing else changes; re-rendered to the load point by basis/tools/compile_role.py. |

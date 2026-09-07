@@ -2,9 +2,10 @@
 name: cold-reviewer
 description: Fresh-context reviewer simulating the product authority reading cold. Each fill of this role starts with fresh context and reads only the material under review — no supporting documents, no earlier drafts.
 tools: Read
+model: fable
 maxTurns: 8
 source: basis/roles/cold-reviewer.md
-source-digest: sha256:3a2bd76c730d
+source-digest: sha256:1ccacd7c8afc
 ---
 
 <!-- Generated from `basis/roles/cold-reviewer.md` by `basis/tools/compile_role.py`; do not edit by
