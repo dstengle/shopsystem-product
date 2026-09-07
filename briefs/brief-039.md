@@ -1,7 +1,7 @@
 ---
 type: decision-brief
 id: brief-039
-status: delivered
+status: decided
 date: 2026-09-07
 reader: product-authority
 decisions-requested: 3
@@ -14,7 +14,7 @@ relates-to:
   - decisions/pdr-2026-09-07-bet-process-runner.md
   - basis/roles/router.md
   - requests/req-2026-09-07-contributors-body.md
-version: 2
+version: 3
 ---
 
 # Brief 039: the router ran; three decisions
@@ -52,3 +52,4 @@ Optional: [annex-039](annex-039.md) — the artifacts with versions, the two run
 | 1 | 2026-09-07 | review | Cold read, the one round the definition allows (judge: claude-fable-5-1, cold-reviewer, fresh context): findings — the two processes and the roles' prior tier unnamed; the run's stop explained after the asks; the prompt line's scope unclear; "observed" without a result; "well under" against 600k; twelve terms unglossed; Ask 3's trigger already fired on the brief's own count (cannot-decide); the measure's per-turn numbers presented as suggesting a per-feature result. |
 | 2 | 2026-09-07 | update | Revised once on the cold read: the two processes named and the stop explained in the opener; the prompt line inside Ask 1; "seen to hold"; the spread explained and the comparison stated plainly; Fable and haiku named, the roles listed; option (b)'s cost and (c)'s difference stated; "coordinator" replaced by router; the decision record named; Ask 3's trigger confronted and restated; the measure's deferral corrected; the lane, the lead-pm, and the sub-initiative structure glossed. Self-read after the revise: every proper noun glossed at first use, each ask in four parts, the decision layer within the cap's variance. |
 | 2 | 2026-09-07 | state | draft → delivered after the one revise the definition allows; no finding left open. |
+| 3 | 2026-09-07 | state | delivered → decided: the authority's ruling ("keep defaults on rulings, fix the role to model mappings") — Ask 1 confirmed (the router role and the declared-outputs line); Ask 2 option (a), each role definition names its tier, to be made now; Ask 3 keep haiku, the trigger restated. |
