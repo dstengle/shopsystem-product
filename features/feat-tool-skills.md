@@ -3,7 +3,7 @@ type: feature
 id: feat-tool-skills
 name: Tool skills
 status: draft
-version: 1
+version: 2
 initiative: ../initiatives/init-tool-skills.md
 owner: lead-po
 created: 2026-09-07
@@ -129,6 +129,97 @@ and its Decomposition names no Bounded Context; what usability,
 accessibility, and non-functional criteria are due, the designer's
 and the architect's steps record below.
 
+The product designer role's criteria (feature-authoring's
+add-usability step, 2026-09-07):
+
+*Due: none.* The Interaction types section says "none", and the
+reason holds against the corpus: the core-task list (v4) carries no
+task a tool skill or a tool's answer completes, so `core-task-parity`
+has no hold, and the typedef's §2 asks this role's usability and
+accessibility criteria only where a core task carries the capability.
+That section answers parity — which types the capability must be
+available on. It does not answer whether the capability delivers an
+interface, and this one delivers two an agent uses, which
+`agent-is-a-user` bullet 1 makes this role's to design and screen
+whether or not a type is named: the lint's skill, an agent tool
+definition (the `api` type, the api guideline's voice principle — an
+agent reading it with nothing else); and the lint's answer to the
+standard question, a command-line interaction on the lint (the `cli`
+type, the cli guideline; clig.dev its platform guideline). The
+criteria below stand on that ground, as the initiative attachment
+(v5) offered them, and each is a hypothesis under
+`evidence-not-opinion` bullet 1 until the run named under it is
+observed; the evidence form is measured task completion, the corpus's
+admissible form, the invocations and results recorded in the
+delivery.
+
+Usability acceptance criteria, riding on the scenarios by name, no
+scenario text changed:
+
+- (a) *the first invocation is the skill's* — rides on *an agent
+  completes a use of the lint on the first invocation the skill
+  states*, read once per use the skill states, and on *the lint's
+  skill is loaded for a task that calls for the lint*. Met when the
+  agent's first command to the lint for a use is the invocation the
+  skill states for that use and the use completes with the return the
+  skill states. Invalidated by a read of the lint's source or help, a
+  second attempt, or a bare invocation with the skill present.
+- (b) *each use entry is complete* — rides on *each use entry in the
+  lint's skill is complete* (the api guideline's rules 1–3: named for
+  the caller; the effect, omitted inputs' treatment, the return, each
+  failure; a stable code beside its explanation and next step — the
+  error pattern, common guideline rule 3) and, as its test in use, on
+  *a failure the agent meets is one the skill names, read as the skill
+  states it*. Met when every use entry carries the five parts the
+  scenario states and the one failing run's failure is one its entry
+  names, read by the agent from the skill alone. Invalidated by a
+  failure the agent meets that the skill does not name, or a part
+  inferred from another rather than present. The api guideline's rule
+  2 also asks whether a retry is safe and what a replay returns; not
+  made a criterion — the framing names four parts and the scenarios
+  state them; whether a fifth is wanted is the delivery screen's
+  finding to the solutions architect role, not a scenario here.
+- (c) *the skill is offered for the task* — rides on *the lint's
+  skill is loaded for a task that calls for the lint*. Met when, in a
+  fresh context with the skill at the load point, the skill is loaded
+  for a task calling for the lint before any invocation. Invalidated
+  by the agent proceeding to a bare invocation with the skill present,
+  whatever the cause; a description that does not name the tool and
+  its uses is the expected cause (the initiative's Document History
+  v5, R3), and its remedy is the producer's, not a scenario.
+
+Two rules of the corpus bear on the scenarios without adding a
+criterion. Names for the caller: *each use entry in the lint's skill
+is complete* asks each input "named for the caller", and that is
+judged at delivery by the agent's use under (a) and (b), not by the
+vocabulary screen — the vocabulary (v3) holds no tool term, so that
+screen returns undecidable until this role enters the terms (the
+attachment's R2 and D1; a corpus action pending outside this step;
+Edges row added). Nothing only an agent can do (`agent-is-a-user`
+bullet 2; api rule 4): every use the skill states is a command a
+person runs at the prompt, the lint being a command line; read at the
+delivery screen.
+
+*Accessibility criteria: none due* — no type is named; and by
+`accessible-by-standard`, the skill is an agent-facing interface
+governed by `agent-is-a-user` (bullet 2's parenthetical), so no WCAG
+target applies to it, and the lint's answer is a `cli` interaction
+whose WCAG2ICT application and applicability record (text on
+standard output; no meaning resting on colour, cli rule 1) are
+written at the delivery screen, not as an acceptance criterion: no
+scenario names the answer's form, and a criterion naming one would
+put an implementation detail in a Then (Edges row added).
+
+Until *an agent completes a use of the lint on the first invocation
+the skill states* and *a failure the agent meets is one the skill
+names, read as the skill states it* are observed, "usable" is a
+hypothesis and the delivery says so (the Edges row on it stands). The
+delivered skill (`api`) and the answer (`cli`) are screened by this
+role at delivery under the interaction-conformance-check process,
+findings to the solutions architect role and undecidables to the
+corpus — a delivery gate the Edges table already holds, not a
+criterion.
+
 ## Interaction types
 
 None — a skill is read by an agent inside a process step; no core
@@ -238,9 +329,12 @@ Feature: Tool skills
 | The check over the load point rejecting a tool skill as unrecognized | the initiative's Feasibility and usability section ("Risk: the load-point check rejects a tool skill until amended") | Scenario: the check over the load point passes clean with the lint's skill in place — a tool skill the check names unrecognized fails this Then; the amendment that makes it pass is the process owner's, not a scenario here |
 | The approved processes' skills at the load point still checked as before | feat-skills-availability's scenarios over the load point (the feature repository, read in full) | Scenario: the check over the load point passes clean with the lint's skill in place — the Given holds the approved processes' skills beside the lint's; nothing that feature specifies changes, one more source kind is recognized |
 | The delivered skill screened as an interface | the designer's attachment (the initiative's Document History v5, its third unknown: the conformance screen at delivery) | Out of scope of the scenarios: a delivery gate the designer's check judges, not a behavior of this feature |
+| The skill's names undecidable against the vocabulary until the tool terms are entered | the designer's criteria (this feature's Contributors section, v2; the initiative's Document History v5, R2) | Out of scope of the scenarios: a finding against the corpus, the designer's action before the delivery screen; the names in use are judged by Scenario: an agent completes a use of the lint on the first invocation the skill states and Scenario: a failure the agent meets is one the skill names, read as the skill states it |
+| The lint's answer as a command-line interaction — its WCAG2ICT applicability record | the designer's criteria (this feature's Contributors section, v2; `accessible-by-standard` bullet 2) | Out of scope of the scenarios: the record for the `cli` type, written at the delivery screen; no scenario names the answer's form, and Scenario: the lint answers the standard question states what the answer says, not how it is shown |
 
 ## Document History
 
 | Version | Date | Kind | Entry |
 |---|---|---|---|
 | 1 | 2026-09-07 | update | Authored by the PO role alone in the feature-authoring draft step, from init-tool-skills's Framing and For whom sections (v8, planned), its Appetite as the source of the proof, and the order's scope points — the architect's third risk (v3) and the designer's criteria (a)–(c) (v5); the decision the bet rests on, adr-2026-09-07-tool-answer (checked), read for what must hold and named in no scenario; ten scenarios, all owned by the lead shop per the initiative's Decomposition; interaction types none per its For whom; every scenario `@hash:pending` — the authoring session had no shell, so the lead-pm fills the values (sha256 of the scenario's text, first twelve hex digits, as in the repository's other features) before the check. The feature repository read in full: five features, none naming a framework tool, a tool's answer, or a tool skill; one touch-point, feat-skills-availability's check over the load point, carried as an Edges row and as the Given of *the check over the load point passes clean with the lint's skill in place*. Maker's self-check against the feature fitness set (v8), each scenario read as Given/When/Then: scenario 1 (one observable behavior) pass — each When is one action or event (the lint asked; a use entry read; the skill produced; the process run; the check run; the agent beginning or performing a task; an invocation failing), each Then observable in the running system (an answer given and no use performed; parts present; a skill standing at the load point; a report naming the tool; a skill loaded; a first invocation and its result; a failure and the agent's statement of it), and no step names a flag, a file, a format, a tool by its program name, or a compiler — "stable code" and "the exact invocation" are the designer's words for what the skill states, not how it is made; scenario 2 (ownership and criteria) pass — an owning shop named for each of the ten; no interaction type is named, so the designer's criteria are not due at this step, and the Contributors section says what the designer's and the architect's steps record; scenario 3 (identity tags) pass on presence — `@feature:feat-tool-skills` and `@hash:pending` on every scenario, the values disclosed as pending; scenario 4 (edges) pass — nineteen rows: every case the framing's Problem and outcome, the For whom section, the Appetite's two no-gos, the Feasibility and usability section's risk and hypothesis, the Decomposition, and the order's scope points name is present, fourteen covered by scenario name, four out of scope with reasons (a tool that cannot answer; the help's behavior; the other ten tools; the delivery screen), and one covered with its Bounded Context half out of scope (no Bounded Context on this branch); scenario 5 (interaction types) pass — "none" with the For whom section's reason; scenario 6 (narrative) pass — who (every agent of the shop that runs a tool, and the shops whose tools the product accepts), what (use a framework tool through a skill stating the four parts, produced from the tool's answer), the outcome the framing's ("every framework tool is usable through a skill produced from the tool's own answer … a change to what a tool says about itself reaches its skill"). Scope declined, with the reason in the Edges table: the help's behavior — serves no framed outcome here; recommended to the PM role. Status draft pending the PO output check. |
+| 2 | 2026-09-07 | update | The product designer role's criteria added in feature-authoring's add-usability step, from the step's declared inputs (the feature v1, the initiative v9, the experience principle set v2, the core-task list v4) and this role's own corpus (the api and cli guidelines v3, the patterns v2 and vocabulary v3 records, the feature typedef v12 and fitness set v8 for the check's shape). Verdict recorded in the Contributors section: no usability and no accessibility criteria due — the Interaction types section's "none" holds against the core-task list, and that section answers parity, not whether an interface is delivered; stated regardless under `agent-is-a-user` bullet 1, the skill (`api`) and the lint's answer (`cli`) being interfaces this role screens: criteria (a)–(c) placed on the scenarios by name with what meets and what invalidates each, each a hypothesis until measured task completion in the delivery; the api guideline's retry clause not made a criterion; names-for-the-caller and nothing-only-an-agent-can-do noted as delivery-screen reads; the WCAG2ICT record for the answer named as the screen's, not a criterion. Two Edges rows added: the vocabulary's missing tool terms (a finding against the corpus, this role's action pending); the answer's WCAG2ICT record. No scenario text changed; the Interaction types section untouched. Maker's self-check against the feature fitness set (v8), the scenarios that concern this part: scenario 2 (ownership and criteria) pass — no type named, so the designer's criteria are not required, and the section records none due with its reason; the criteria stated regardless each name the scenario they ride on; scenario 4 (edges) pass — every case these criteria name is in the table: (a), (b), (c) and the hypothesis label in the rows the draft carried, the two new cases added, twenty-one rows, each covered by Scenario name or out of scope with a reason; scenario 5 (interaction types) pass — "none" unchanged, the For whom reason the framing bears out (a skill read by an agent inside a process step), and the Contributors text says why the screen's two types do not change that answer. Scenario 1 re-read on the two new Edges rows only: neither names a scenario step, so no implementation detail enters the block. |
