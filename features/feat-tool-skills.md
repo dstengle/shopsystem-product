@@ -3,7 +3,7 @@ type: feature
 id: feat-tool-skills
 name: Tool skills
 status: draft
-version: 2
+version: 3
 initiative: ../initiatives/init-tool-skills.md
 owner: lead-po
 created: 2026-09-07
@@ -220,6 +220,129 @@ findings to the solutions architect role and undecidables to the
 corpus — a delivery gate the Edges table already holds, not a
 criterion.
 
+The solutions architect role's constraints (feature-authoring's
+add-constraints step, 2026-09-07):
+
+*Contract bound: none; cross-context flow: none.* The initiative's
+Decomposition section names no Bounded Context — every change sits in
+the lead shop's tree, no contract exists on this branch, and the
+cross-context flow is none — so no contract's bound and no flow binds
+these scenarios, and every scenario stays the lead shop's. Pre-state
+read from lead-shop-held records, none from a context's internals: the
+feature repository in full — six features; the five assigned ones name
+no framework tool, no tool's answer, and no tool skill; the one
+touch-point is feat-skills-availability's check over the load point,
+carried in the Given of *the check over the load point passes clean
+with the lint's skill in place* and in its Edges row; no conflict —
+and the decision records, which hold no contract on this branch.
+
+*Guardrail: one, and it binds.* The decision the bet rests on,
+[adr-2026-09-07-tool-answer](../decisions/adr-2026-09-07-tool-answer.md)
+(checked, v3), is a guardrail under this role's right, and its first
+consequence and its bound reach the lead shop's own tools as they
+reach a Bounded Context shop's: the lint is a framework tool the
+product uses, and the scenarios' "the standard question" and "the
+answer" are what that record fixes and this feature declines to name.
+The constraints below are that record's bounds read onto the
+scenarios — what must hold, not how the lint, the producer, or the
+check does it; the how is the maker's within them, and a choice
+outside them is raised as a question against the record, not vetoed
+here. Six, none new: each is a sentence of the record's §2, §3, or its
+bound, riding on the scenarios by name, no scenario text changed.
+
+- (1) *what counts as an answer* — rides on *the lint answers the
+  standard question* and *the answer states each use's returns and
+  failures as parts of their own*. The lint's reply is an answer only
+  as the record's §2 counts one: given on the standard flag the record
+  fixes, written to standard output with exit status 0 before any
+  other action and with other arguments ignored, and parsing against
+  the tool-description data type; any other reply — a traceback, a
+  usage sheet, the normal function run, an exit status other than 0,
+  output that does not parse — is "cannot answer", the first
+  scenario's Then unmet, and the proof not begun. Held only when both
+  observations are made together: the exit status and the parse.
+- (2) *the shape is the contract's* — rides on *the answer states each
+  use's returns and failures as parts of their own* and *each use
+  entry in the lint's skill is complete*. The parts a use entry states
+  — what it does, what it takes, what it returns, how it fails, the
+  exact invocation — are fields of the tool-description data type
+  (`basis/types/tool-description.md`, the versioned contract the
+  record's §2 names; relationship kind: the shape a published
+  language, the answering tool an open host service), under the data
+  type's names, each present as a field the check reads — the
+  initiative's third risk (Document History v3) — not as prose the
+  check interprets; a failure entry carries the four things the data
+  type fixes (a stable code from its closed set, the exit status, the
+  condition, the caller's next step); no per-tool variant of the
+  shape. Bound on this feature's delivery: the data type stands —
+  approved through the definition chain — before the check reads an
+  answer against it; the record's second consequence names it, and it
+  is enabler work this role recommends into the PO role's backlog
+  (Edges row added).
+- (3) *sole source, and the direction of repair* — rides on *the
+  lint's skill is produced from the lint's own answer*, *a change to
+  what the lint says about itself reaches its skill*, and *a tool
+  skill not current with its tool's answer is reported*. The answer is
+  the skill's sole source (the record's one sentence); "current with"
+  is decided by asking the tool again and digesting the fresh answer
+  as it comes — never from a copy of the answer kept since the last
+  production, never from the tool's source; and a difference resolves
+  toward the answer, always: the skill is re-produced from it, the
+  answer is not edited to agree with a skill, and a hand-edited skill
+  does not survive the next production.
+- (4) *the load-point check recognizes, never exempts* — rides on *the
+  check over the load point passes clean with the lint's skill in
+  place*. The lint's skill carries the provenance the check over the
+  load point already reads for a process skill — the source it was
+  produced from and a digest over that source — so the check reads it
+  by its source kind, whether the skill-rendering process is amended
+  or a sibling process is defined for tool skills (the record's third
+  consequence; the process owner's choice); it is not passed by an
+  exemption, a skip list, or a hand-marked exception. Until the
+  recognition lands, the lint's skill at the load point is a standing
+  `unrecognized` escalation and the scenario's Then is unmet — the
+  initiative's first risk — and feat-skills-availability's seven
+  scenarios pass exactly as they do today (the Edges row on them
+  stands).
+- (5) *the stack bound* — rides on *the lint answers the standard
+  question*. The answer is JSON serialized from the standard library
+  of the tool's language — the record's JSON bound — and nothing in
+  the proof (the lint's handler, the producer of the skill, the check
+  over tool skills) adds a dependency, a vendor, or a recurring cost;
+  any that would escalates to the authority before it is added, the
+  cost threshold being unset. Read at delivery against the tree's
+  dependencies by this role, not in a scenario (Edges row added).
+- (6) *the skill is the artifact of use* — rides on *the lint's skill
+  is loaded for a task that calls for the lint*, *an agent completes
+  a use of the lint on the first invocation the skill states*, and *a
+  failure the agent meets is one the skill names, read as the skill
+  states it*. The invocation the skill states for a use is the use's
+  command line as the answer gave it, and it is the invocation
+  whoever performs the step (the record's fifth consequence). The
+  proof's fresh context holds the skill and nothing else on the lint
+  — not the lint's answer either: the answer is the artifact for
+  producing the skill, the skill the designated artifact for using the
+  tool at the shop's level (`local-comprehension`), so the
+  vocabulary's "its only source on the lint" is read to exclude the
+  answer and the data type as well as the source and the help. A use
+  the agent completes only by reading the answer is a skill that does
+  not suffice — the designer's (b) invalidated (Edges row added).
+
+Screened against the
+[architecture principle set](../basis/architecture-principles.md)
+(v6): `knowable-shape` — (1), (2): the answer suffices without the
+lint's source; `contracts-between-contexts` — (2): the data type is the
+named, versioned contract with its relationship kind, and no Bounded
+Context on this branch builds to it yet; `actor-neutral-discipline` —
+(6): the invocation binds whoever performs the step;
+`local-comprehension` — (3), (6): no read below the designated
+artifact; `bidirectional-conformance` — (3), (4): the reverse direction
+fixed, drift re-produced or reported, never absorbed;
+`intent-provenance` — the record and this step each recorded, resting
+on the exception the record cites (work item lead-4kymc), no new one.
+No constraint a design cannot satisfy; nothing to escalate; no vendor
+and no recurring cost.
+
 ## Interaction types
 
 None — a skill is read by an agent inside a process step; no core
@@ -331,6 +454,12 @@ Feature: Tool skills
 | The delivered skill screened as an interface | the designer's attachment (the initiative's Document History v5, its third unknown: the conformance screen at delivery) | Out of scope of the scenarios: a delivery gate the designer's check judges, not a behavior of this feature |
 | The skill's names undecidable against the vocabulary until the tool terms are entered | the designer's criteria (this feature's Contributors section, v2; the initiative's Document History v5, R2) | Out of scope of the scenarios: a finding against the corpus, the designer's action before the delivery screen; the names in use are judged by Scenario: an agent completes a use of the lint on the first invocation the skill states and Scenario: a failure the agent meets is one the skill names, read as the skill states it |
 | The lint's answer as a command-line interaction — its WCAG2ICT applicability record | the designer's criteria (this feature's Contributors section, v2; `accessible-by-standard` bullet 2) | Out of scope of the scenarios: the record for the `cli` type, written at the delivery screen; no scenario names the answer's form, and Scenario: the lint answers the standard question states what the answer says, not how it is shown |
+| The lint's reply that exits other than 0 or does not parse against the tool-description data type — a traceback, a usage sheet, the normal function run | the solutions architect role's constraint (1) (this feature's Contributors section, v3); the initiative's Feasibility and usability section and the record's pre-state (the lint runs its normal function on `--help`) | Scenario: the lint answers the standard question — such a reply is not an answer and the Then is unmet; Scenario: the answer states each use's returns and failures as parts of their own — a reply with no use entries as fields |
+| The tool-description data type not standing approved when the check reads the answer | the solutions architect role's constraint (2) (this feature's Contributors section, v3); the record's second consequence | Out of scope of the scenarios: enabler work — the data type is written under adr-2026-09-07-tool-answer and approved through the definition chain before the proof's check, recommended by the solutions architect role into the PO role's backlog; until it stands, Scenario: the answer states each use's returns and failures as parts of their own has no shape to be read against and is pending its definition, not failed |
+| The check over tool skills reading a kept copy of the answer, or the lint's source, instead of asking the lint again | the solutions architect role's constraint (3) (this feature's Contributors section, v3) | Scenario: a change to what the lint says about itself reaches its skill — a kept copy does not see the change and the Then is unmet; Scenario: a tool skill not current with its tool's answer is reported |
+| The lint's skill passing the check over the load point by exemption rather than recognition of its source kind | the solutions architect role's constraint (4) (this feature's Contributors section, v3) | Scenario: the check over the load point passes clean with the lint's skill in place — the Then asks the check to report the skill as current, which an exemption cannot; Scenario: a tool skill not current with its tool's answer is reported |
+| A dependency, a vendor, or a recurring cost added by the proof | the solutions architect role's constraint (5) (this feature's Contributors section, v3); the record's JSON bound | Out of scope of the scenarios: read at delivery against the tree by the solutions architect role; any such addition escalates to the authority before it is made, the threshold being unset |
+| An agent completing a use of the lint only by reading the lint's answer or the data type | the solutions architect role's constraint (6) (this feature's Contributors section, v3); the designer's (b) | Scenario: an agent completes a use of the lint on the first invocation the skill states — the Given's "its only source on the lint" excludes the answer; Scenario: a failure the agent meets is one the skill names, read as the skill states it — "from the skill alone" |
 
 ## Document History
 
@@ -338,3 +467,4 @@ Feature: Tool skills
 |---|---|---|---|
 | 1 | 2026-09-07 | update | Authored by the PO role alone in the feature-authoring draft step, from init-tool-skills's Framing and For whom sections (v8, planned), its Appetite as the source of the proof, and the order's scope points — the architect's third risk (v3) and the designer's criteria (a)–(c) (v5); the decision the bet rests on, adr-2026-09-07-tool-answer (checked), read for what must hold and named in no scenario; ten scenarios, all owned by the lead shop per the initiative's Decomposition; interaction types none per its For whom; every scenario `@hash:pending` — the authoring session had no shell, so the lead-pm fills the values (sha256 of the scenario's text, first twelve hex digits, as in the repository's other features) before the check. The feature repository read in full: five features, none naming a framework tool, a tool's answer, or a tool skill; one touch-point, feat-skills-availability's check over the load point, carried as an Edges row and as the Given of *the check over the load point passes clean with the lint's skill in place*. Maker's self-check against the feature fitness set (v8), each scenario read as Given/When/Then: scenario 1 (one observable behavior) pass — each When is one action or event (the lint asked; a use entry read; the skill produced; the process run; the check run; the agent beginning or performing a task; an invocation failing), each Then observable in the running system (an answer given and no use performed; parts present; a skill standing at the load point; a report naming the tool; a skill loaded; a first invocation and its result; a failure and the agent's statement of it), and no step names a flag, a file, a format, a tool by its program name, or a compiler — "stable code" and "the exact invocation" are the designer's words for what the skill states, not how it is made; scenario 2 (ownership and criteria) pass — an owning shop named for each of the ten; no interaction type is named, so the designer's criteria are not due at this step, and the Contributors section says what the designer's and the architect's steps record; scenario 3 (identity tags) pass on presence — `@feature:feat-tool-skills` and `@hash:pending` on every scenario, the values disclosed as pending; scenario 4 (edges) pass — nineteen rows: every case the framing's Problem and outcome, the For whom section, the Appetite's two no-gos, the Feasibility and usability section's risk and hypothesis, the Decomposition, and the order's scope points name is present, fourteen covered by scenario name, four out of scope with reasons (a tool that cannot answer; the help's behavior; the other ten tools; the delivery screen), and one covered with its Bounded Context half out of scope (no Bounded Context on this branch); scenario 5 (interaction types) pass — "none" with the For whom section's reason; scenario 6 (narrative) pass — who (every agent of the shop that runs a tool, and the shops whose tools the product accepts), what (use a framework tool through a skill stating the four parts, produced from the tool's answer), the outcome the framing's ("every framework tool is usable through a skill produced from the tool's own answer … a change to what a tool says about itself reaches its skill"). Scope declined, with the reason in the Edges table: the help's behavior — serves no framed outcome here; recommended to the PM role. Status draft pending the PO output check. |
 | 2 | 2026-09-07 | update | The product designer role's criteria added in feature-authoring's add-usability step, from the step's declared inputs (the feature v1, the initiative v9, the experience principle set v2, the core-task list v4) and this role's own corpus (the api and cli guidelines v3, the patterns v2 and vocabulary v3 records, the feature typedef v12 and fitness set v8 for the check's shape). Verdict recorded in the Contributors section: no usability and no accessibility criteria due — the Interaction types section's "none" holds against the core-task list, and that section answers parity, not whether an interface is delivered; stated regardless under `agent-is-a-user` bullet 1, the skill (`api`) and the lint's answer (`cli`) being interfaces this role screens: criteria (a)–(c) placed on the scenarios by name with what meets and what invalidates each, each a hypothesis until measured task completion in the delivery; the api guideline's retry clause not made a criterion; names-for-the-caller and nothing-only-an-agent-can-do noted as delivery-screen reads; the WCAG2ICT record for the answer named as the screen's, not a criterion. Two Edges rows added: the vocabulary's missing tool terms (a finding against the corpus, this role's action pending); the answer's WCAG2ICT record. No scenario text changed; the Interaction types section untouched. Maker's self-check against the feature fitness set (v8), the scenarios that concern this part: scenario 2 (ownership and criteria) pass — no type named, so the designer's criteria are not required, and the section records none due with its reason; the criteria stated regardless each name the scenario they ride on; scenario 4 (edges) pass — every case these criteria name is in the table: (a), (b), (c) and the hypothesis label in the rows the draft carried, the two new cases added, twenty-one rows, each covered by Scenario name or out of scope with a reason; scenario 5 (interaction types) pass — "none" unchanged, the For whom reason the framing bears out (a skill read by an agent inside a process step), and the Contributors text says why the screen's two types do not change that answer. Scenario 1 re-read on the two new Edges rows only: neither names a scenario step, so no implementation detail enters the block. |
+| 3 | 2026-09-07 | update | The solutions architect role's constraints added in feature-authoring's add-constraints step, from the step's declared inputs (the feature v2; the decomposition — init-tool-skills' Decomposition section, v9) and this role's own records (adr-2026-09-07-tool-answer v3 checked, the decision the feature implements; the architecture principle set v6; the feature repository read in full, six features; the feature typedef v12, guideline v8, and fitness set v8 for the check's shape). Verdict recorded in the Contributors section: contract bound none and cross-context flow none, with the Decomposition's reason — no Bounded Context, no contract on this branch; one guardrail binds, the checked record, whose bound reaches the lead shop's own tools; six constraints placed on the scenarios by name, each a sentence of the record's §2, §3, or its bound stated as what must hold — what counts as an answer; the shape is the contract's; sole source and the direction of repair; the load-point check recognizes, never exempts; the stack bound; the skill is the artifact of use — and one enabler recommended into the PO role's backlog (the tool-description data type, approved before the check reads against it). The six screened against the architecture principle set: conforms on six, `intent-provenance` on the standing exception, no new escalation. Six Edges rows added, twenty-seven in all. No scenario text changed; the Interaction types section untouched. Maker's self-check against the feature fitness set (v8), the scenarios that concern this part: scenario 2 (ownership and criteria) pass — the Contributors section says a guardrail names constraints and six are present, each naming the scenarios it rides on; the contract bound and the flow read none with the Decomposition's reason; every scenario's owning shop unchanged; scenario 4 (edges) pass — every case the six constraints name is in the table, five covered by Scenario name and two out of scope with reasons (the enabler; the delivery read of the stack bound), the existing rows on the normal-function reply, the hand edit, and the load-point rejection left standing and now bound by (1), (3), and (4); scenario 1 re-read on the addition only: the constraints and rows sit outside the gherkin block, and the flag's behaviour, the data type's path, and the digest are named in Contributors and Edges alone, the flag's name nowhere, and none in a step. The lint run on the tree after the edit: `PASS: 0 violation(s)`, exit 0; the gherkin block byte-identical to v2. |
