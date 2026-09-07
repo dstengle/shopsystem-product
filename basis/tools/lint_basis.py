@@ -79,7 +79,24 @@ Modes:
                                     # for artifact type X (definition-chain
                                     # is assembled from references, never
                                     # hand-written)
+  lint_basis.py --describe          # answer the standard question: write
+                                    # this tool's description — DESCRIPTION
+                                    # below, an instance of the
+                                    # tool-description data type — as JSON
+                                    # to standard output and exit 0 before
+                                    # any other action, other arguments
+                                    # ignored (adr-2026-09-07-tool-answer
+                                    # §2); the skill at the agent's load
+                                    # point is produced from this answer
+                                    # by compile_tool.py and from nothing
+                                    # else
+
+Any other arguments are a usage failure: one line on standard error
+beginning `usage:`, exit status 2. A --brief or --process path that does
+not exist or cannot be read is an unreadable failure: one line on
+standard error beginning `unreadable:`, exit status 2.
 """
+import json
 import pathlib
 import re
 import sys
@@ -135,6 +152,172 @@ TOOL_PATH = re.compile(r"basis/tools/[A-Za-z0-9_.-]+\.py")
 GUIDANCE = BASIS.parent / "guidance"
 GUIDANCE_KEYS = ["type", "id", "status", "version", "initiative", "feature",
                  "context", "scenarios", "owner", "created", "updated"]
+
+TOOL = "basis/tools/lint_basis.py"
+USAGE_FAILURE = {
+    "code": "usage",
+    "exit_status": 2,
+    "condition": "the arguments are not one of the four invocations this "
+                 "tool states; one line on standard error beginning "
+                 "`usage:` names them; nothing is checked",
+    "next": "run the invocation the use states, as written",
+}
+CHECK_FAILURE = {
+    "code": "check-failed",
+    "exit_status": 1,
+    "condition": "the check found violations: one line per violation on "
+                 "standard output, `<path>[:<line>]: <what> (<clause>)`, "
+                 "then the last line `FAIL: <n> violation(s)`",
+    "next": "repair each named file at the named clause, then run the "
+            "same invocation again until its last line reads "
+            "`PASS: 0 violation(s)`",
+}
+UNREADABLE_FAILURE = {
+    "code": "unreadable",
+    "exit_status": 2,
+    "condition": "no file exists at <path>, or it cannot be read; one line "
+                 "on standard error beginning `unreadable:` names the path",
+    "next": "give the path of an existing file, relative to the current "
+            "directory or absolute, and run the invocation again",
+}
+PASS_TEXT = ("the last line `PASS: 0 violation(s)` on standard output, "
+             "nothing before it; exit status 0")
+# The answer to the standard question (adr-2026-09-07-tool-answer §2): an
+# instance of the tool-description data type, basis/types/tool-description.md.
+# This tool is its one home; the skill is produced from it, never edited.
+DESCRIPTION = {
+    "name": "lint-basis",
+    "description": (
+        "The lint over the lead shop's definition corpus: checks the basis "
+        "tree and the request, brief, and guidance records at the repository "
+        "root against their typedefs' rules, derives an artifact type's "
+        "definition chain from the references its documents carry, and "
+        "checks one decision brief or one process definition alone. Use it "
+        "before reporting any change to the tree, after editing a "
+        "definition, brief, request, or guidance record, when a process "
+        "definition names a tool, and when an artifact type's chain is "
+        "wanted; it changes no file."
+    ),
+    "uses": [
+        {
+            "name": "lint",
+            "description": (
+                "Runs checks 1-12 over every markdown file under basis/ and "
+                "over requests/, briefs/, and guidance/ at the repository "
+                "root: frontmatter identity, unique `defines`, `$ref` "
+                "sources, resolvable links, required headings, banned "
+                "vocabulary, version and Document History, no "
+                "numbered-decision reference, request frontmatter, brief "
+                "frontmatter, tools named by process definitions, and "
+                "guidance frontmatter. Reads only; writes and changes "
+                "nothing. The tree is found from the tool's own location, "
+                "so the current directory does not matter."
+            ),
+            "invocation": f"python3 {TOOL}",
+            "input_schema": {"type": "object", "properties": {},
+                             "additionalProperties": False},
+            "returns": {"form": "text", "text": PASS_TEXT},
+            "failures": [CHECK_FAILURE, USAGE_FAILURE],
+        },
+        {
+            "name": "check-brief",
+            "description": (
+                "Checks one decision brief alone by check 10's rules: the "
+                "decision-brief typedef's closed frontmatter field set, its "
+                "status vocabulary, and that every `relates-to` path "
+                "resolves from the repository root. Reads only; the rest of "
+                "the tree is not checked."
+            ),
+            "invocation": f"python3 {TOOL} --brief <path>",
+            "input_schema": {
+                "type": "object",
+                "properties": {"path": {
+                    "type": "string",
+                    "description": "the path of the decision brief to check, "
+                                   "relative to the current directory or "
+                                   "absolute"}},
+                "required": ["path"],
+                "additionalProperties": False,
+            },
+            "returns": {"form": "text", "text": PASS_TEXT},
+            "failures": [CHECK_FAILURE, UNREADABLE_FAILURE, USAGE_FAILURE],
+        },
+        {
+            "name": "check-process",
+            "description": (
+                "Checks one process definition alone by check 11's rule: "
+                "every repository tool path it names — `basis/tools/<name>.py` "
+                "in a step's `run:` template or an `initial:` value — exists "
+                "in the repository. Reads only; the rest of the tree is not "
+                "checked."
+            ),
+            "invocation": f"python3 {TOOL} --process <path>",
+            "input_schema": {
+                "type": "object",
+                "properties": {"path": {
+                    "type": "string",
+                    "description": "the path of the process definition to "
+                                   "check, relative to the current directory "
+                                   "or absolute"}},
+                "required": ["path"],
+                "additionalProperties": False,
+            },
+            "returns": {"form": "text", "text": PASS_TEXT},
+            "failures": [CHECK_FAILURE, UNREADABLE_FAILURE, USAGE_FAILURE],
+        },
+        {
+            "name": "derive-chain",
+            "description": (
+                "Derives the definition chain of one artifact type from the "
+                "references the documents under basis/ and the skills at "
+                ".claude/skills/ carry — the typedef by `defines`, the "
+                "guideline and fitness set by `target-type`, the process by "
+                "`produces`, its roles from the steps, the skill by "
+                "`derived-from` — and prints it. Never hand-written. An "
+                "artifact type no typedef defines yields a chain with every "
+                "link empty and status draft: that is a result, not a "
+                "failure. Reads only."
+            ),
+            "invocation": f"python3 {TOOL} --derive-chain <artifact_type>",
+            "input_schema": {
+                "type": "object",
+                "properties": {"artifact_type": {
+                    "type": "string",
+                    "description": "the artifact type whose chain to derive: "
+                                   "the `defines` value of its typedef, for "
+                                   "example `feature`"}},
+                "required": ["artifact_type"],
+                "additionalProperties": False,
+            },
+            "returns": {
+                "form": "yaml",
+                "output_schema": {
+                    "type": "object",
+                    "description": "the definition-chain data type, "
+                                   "basis/types/definition-chain.md: each "
+                                   "link is the id of the document found, or "
+                                   "empty when none is; status is approved "
+                                   "only when every link is found and "
+                                   "approved",
+                    "properties": {
+                        "artifact_type": {"type": "string"},
+                        "typedef": {"type": "string"},
+                        "guideline": {"type": "string"},
+                        "fitness": {"type": "string"},
+                        "process": {"type": "string"},
+                        "roles": {"type": "array", "items": {"type": "string"}},
+                        "skill": {"type": "string"},
+                        "status": {"type": "string", "enum": ["draft", "approved"]},
+                    },
+                    "required": ["artifact_type", "typedef", "guideline",
+                                 "fitness", "process", "roles", "skill",
+                                 "status"],
+                },
+            },
+            "failures": [USAGE_FAILURE],
+        },
+    ],
+}
 
 
 def front_matter(path):
@@ -481,16 +664,46 @@ def derive_chain(artifact_type):
     return chain
 
 
+USAGE = ("python3 basis/tools/lint_basis.py | --brief <path> | "
+         "--process <path> | --derive-chain <artifact_type> | --describe")
+
+
+def fail(code, message):
+    """A failure the answer names: its code beside the message, one line on
+    standard error, the exit status the answer states for that code."""
+    print(f"{code}: {message}", file=sys.stderr)
+    sys.exit({"usage": 2, "unreadable": 2}[code])
+
+
+def readable(arg):
+    path = pathlib.Path(arg)
+    if not path.is_file():
+        fail("unreadable", f"{arg}: no such file")
+    try:
+        path.read_bytes()
+    except OSError as exc:
+        fail("unreadable", f"{arg}: cannot be read: {exc}")
+    return path
+
+
 def main():
-    if len(sys.argv) > 2 and sys.argv[1] == "--derive-chain":
-        print(yaml.safe_dump(derive_chain(sys.argv[2]), sort_keys=False).rstrip())
+    args = sys.argv[1:]
+    # The standard question, answered before any other action; the other
+    # arguments are ignored (adr-2026-09-07-tool-answer §2).
+    if "--describe" in args:
+        sys.stdout.write(json.dumps(DESCRIPTION, indent=2) + "\n")
+        sys.exit(0)
+    if len(args) == 2 and args[0] == "--derive-chain":
+        print(yaml.safe_dump(derive_chain(args[1]), sort_keys=False).rstrip())
         return
-    if len(sys.argv) > 2 and sys.argv[1] == "--brief":
-        errors = lint_brief(pathlib.Path(sys.argv[2]))
-    elif len(sys.argv) > 2 and sys.argv[1] == "--process":
-        errors = lint_process_tools(pathlib.Path(sys.argv[2]))
-    else:
+    if len(args) == 2 and args[0] == "--brief":
+        errors = lint_brief(readable(args[1]))
+    elif len(args) == 2 and args[0] == "--process":
+        errors = lint_process_tools(readable(args[1]))
+    elif not args:
         errors = lint()
+    else:
+        fail("usage", USAGE)
     for e in errors:
         print(e)
     print(f"{'FAIL' if errors else 'PASS'}: {len(errors)} violation(s)")

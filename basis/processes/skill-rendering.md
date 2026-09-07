@@ -4,9 +4,9 @@ id: skill-rendering-process
 owner: product-authority
 status: approved
 approved: 2026-09-02
-version: 7
+version: 8
 created: 2026-09-02
-updated: 2026-09-05
+updated: 2026-09-07
 produces: []
 carried-by: skill-rendering-skill
 condition-language: cel
@@ -14,25 +14,30 @@ annotations:
   claude-code:
     activation: model-judged
     promotion: experiment-local
-    use-when: "an approved process definition changes or lands, a loadable skill at the agent's load point stands in doubt — missing, hand-edited, or left by a definition no longer approved — or the shop must confirm that every approved process is available"
+    use-when: "an approved process definition changes or lands, a framework tool's answer to the standard question changes or a tool begins to answer, a loadable skill at the agent's load point stands in doubt — missing, hand-edited, not current with its tool's answer, or left by a definition no longer approved — or the shop must confirm that every approved process and every answering tool is available"
 ---
 
 # Process: Skill rendering
 
-**Purpose:** Make every approved process definition of the lead shop
-available at the agent's load point — the `.claude/skills/` directory
-the harness loads skills from — by checking what stands there against
-a fresh render of each approved definition and reconciling every
-difference through the compiler, so that an agent beginning an
-activity operates from the approved definition of that activity:
-placement at the load point is what makes the skill load, and a clean
-check is the shop's evidence that every approved process is available.
+**Purpose:** Make every approved process definition of the lead shop,
+and every framework tool of the lead shop that answers the standard
+question, available at the agent's load point — the `.claude/skills/`
+directory the harness loads skills from — by checking what stands
+there against a fresh render of each approved definition and a fresh
+production from each tool's answer, and reconciling every difference
+through the compiler of that source kind, so that an agent beginning
+an activity operates from the approved definition of that activity
+and an agent running a tool operates from what the tool now says
+about itself: placement at the load point is what makes the skill
+load, and a clean check is the shop's evidence that every approved
+process and every answering tool is available.
 
 **Guiding statement:** A rendering is never the source of truth.
 Whatever stands at the load point that a fresh render of an approved
-definition would not put there is a finding, and every finding
-resolves toward the definition — a re-render, a removal, or the
-owner's decision on the definition — never an edit to a skill.
+definition, or a fresh production from a tool's answer, would not put
+there is a finding, and every finding resolves toward the source — a
+re-render, a removal, or the owner's decision on the definition —
+never an edit to a skill.
 
 **Outcomes:**
 - O1. Every approved process definition has its loadable skill at the
@@ -64,12 +69,21 @@ owner's decision on the definition — never an edit to a skill.
   amendment it demands is filed to the owner, never made here —
   witnessed by the `second-home` row of `findings` and
   `reconcile`'s prompt.
+- O6. Every framework tool under the lead shop's tools directory that
+  answers the standard question has its skill at the load point,
+  byte-equal to a fresh production from the answer the tool now gives
+  — "current with" decided by asking the tool again, never from a copy
+  kept since the last production and never from the tool's source; a
+  tool skill whose tool no longer answers is a `no-answer` finding,
+  escalated by tool and path, never removed — witnessed by `check`'s
+  tool loop (`tool-missing`, `tool-diverged`, `no-answer`) and
+  `reconcile`'s re-production into `load_point`.
 
 **Roles:** reconciler and reporter —
 [`../roles/lead-solutions-architect.md`](../roles/lead-solutions-architect.md)
 (the compilers and the lint are this role's apparatus; it consumes the
-check's findings, and its resulting action per finding is a re-render,
-a removal, or an escalation). The owner — the product authority —
+check's findings, and its resulting action per finding is a re-render
+or re-production, a removal, or an escalation). The owner — the product authority —
 decides every escalated definition change; that decision lands through
 governed evolution, not through a step of this process. The check
 itself is mechanical and runs by the runtime against the approved
@@ -95,9 +109,9 @@ edit by hand.
 ```mermaid
 flowchart TD
   enumerate["Enumerate the approved definitions — runtime<br/>in — definitions: string<br/>out — approved: string[]"]
-  check["Check the load point against a fresh render — runtime<br/>in — approved: string[], load_point: string, retired_home: string, compiler: string, definitions: string<br/>out — findings: string[]"]
+  check["Check the load point against a fresh render — runtime<br/>in — approved: string[], load_point: string, retired_home: string, compiler: string, definitions: string, tools: string, tool_compiler: string<br/>out — findings: string[]"]
   route{"Route on the findings<br/>in — findings: string[], escalations: string[], round: integer, round_cap: integer"}
-  reconcile(["Reconcile the findings — agent: lead-solutions-architect<br/>in — findings: string[], approved: string[], load_point: string, retired_home: string, compiler: string, escalations: string[]<br/>out — escalations: string[]"])
+  reconcile(["Reconcile the findings — agent: lead-solutions-architect<br/>in — findings: string[], approved: string[], load_point: string, retired_home: string, compiler: string, tool_compiler: string, escalations: string[]<br/>out — escalations: string[]"])
   advance_round["Advance the round — runtime<br/>in — round: integer<br/>sets — round: integer"]
   report(["Report the findings left open — agent: lead-solutions-architect<br/>in — findings: string[], approved: string[], escalations: string[]<br/>out — escalations: string[]"])
   __end(("end"))
@@ -153,7 +167,28 @@ holds a copy, so a change to the lint's list reaches every skill at
 the next re-render. An
 approved definition that names no `carried-by` skill id cannot render
 — at authoring time seven approved definitions stand so — and each is
-a first-run finding escalated to the owner. The run declares no
+a first-run finding escalated to the owner. The second source kind at
+the load point is a *framework tool*'s answer to the standard question
+(the glossary's term; [adr-2026-09-07-tool-answer](../../decisions/adr-2026-09-07-tool-answer.md)
+§2): `tools` names the directory of the lead shop's own tools and
+nothing else, and `tool_compiler` the compiler that asks a tool the
+question by running it with `--describe`, validates the answer against
+the tool-description data type
+([`../types/tool-description.md`](../types/tool-description.md)), and
+produces the skill from the answer and from nothing else, stamped
+`source` (the tool) and `source-digest` (over the answer's bytes).
+`check` asks every tool under `tools` afresh each run — the answer is
+never kept between runs, and the tool's source is never read — and
+expects a skill only of a tool that answers: a tool that cannot answer
+yields no row here, its gap being recorded to its owner through the
+initiative that brings the tool to answer (init-tool-skills' second
+feature), not by this process. A load-point skill whose `source` is a
+tool under `tools` is read by that source kind: re-asked and
+re-produced to scratch, diffed, and reported `tool-diverged` naming
+the tool when the texts differ, `no-answer` naming the tool and the
+path when the tool no longer produces a skill of that name;
+`unrecognized` is reserved for a source that is neither a process
+definition nor a tool. The run declares no
 `result`: `produces` is empty because the run's value is state change
 — every approved definition available at the load point — and O1's
 witness pins it.
@@ -163,6 +198,8 @@ data:
   definitions: {type: string, format: uri-reference, initial: basis/processes}
   compiler: {type: string, format: uri-reference, initial: basis/tools/compile_process.py}
   load_point: {type: string, format: uri-reference, initial: .claude/skills}
+  tools: {type: string, format: uri-reference, initial: basis/tools}
+  tool_compiler: {type: string, format: uri-reference, initial: basis/tools/compile_tool.py}
   retired_home: {type: string, format: uri-reference, initial: basis/skills}
   approved: {type: array, items: {type: string}, initial: []}
   findings: {type: array, items: {type: string}, initial: []}
@@ -188,11 +225,11 @@ steps:
   - id: check
     name: Check the load point against a fresh render
     run-by: {execution: runtime}
-    inputs: [approved, load_point, retired_home, compiler, definitions]
+    inputs: [approved, load_point, retired_home, compiler, definitions, tools, tool_compiler]
     outputs: [findings]
     run: |
       scratch=$(mktemp -d)
-      mkdir -p "$scratch/defs"
+      mkdir -p "$scratch/defs" "$scratch/tools"
       ln -s "$PWD/basis/types" "$scratch/types"
       ln -s "$PWD/basis/artifacts" "$scratch/artifacts"
       for def in ${approved}; do
@@ -207,12 +244,21 @@ steps:
         if [ ! -f "${load_point}/$name/SKILL.md" ]; then echo "missing $pid"; continue; fi
         diff -q "$scratch/$name/SKILL.md" "${load_point}/$name/SKILL.md" >/dev/null 2>&1 || echo "diverged $pid"
       done
+      for tool in ${tools}/*.py; do
+        out=$(python3 ${tool_compiler} "$tool" --load-point "$scratch/tools" 2>/dev/null) || continue
+        name=$(printf '%s\n' "$out" | sed -n 's/.*: generated from \([^ ]*\) .*/\1/p')
+        [ -n "$name" ] || continue
+        if [ ! -f "${load_point}/$name/SKILL.md" ]; then echo "tool-missing $tool"; continue; fi
+        diff -q "$scratch/tools/$name/SKILL.md" "${load_point}/$name/SKILL.md" >/dev/null 2>&1 || echo "tool-diverged $tool"
+      done
       for f in "${load_point}"/*/SKILL.md; do
         [ -f "$f" ] || continue
         src=$(sed -n 's/^source: //p' "$f")
         case "$src" in
           ${definitions}/*)
             printf '%s\n' ${approved} | grep -qxF -- "$src" || echo "stale $src $f" ;;
+          ${tools}/*)
+            [ -f "$scratch/tools/$(basename "$(dirname "$f")")/SKILL.md" ] || echo "no-answer $src $f" ;;
           *) echo "unrecognized $f" ;;
         esac
       done
@@ -239,18 +285,26 @@ steps:
   - id: reconcile
     name: Reconcile the findings
     run-by: {role: lead-solutions-architect, execution: agent}
-    inputs: [findings, approved, load_point, retired_home, compiler, escalations]
+    inputs: [findings, approved, load_point, retired_home, compiler, tool_compiler, escalations]
     outputs: [escalations]
     prompt: |
       Act on each row of findings by kind, skipping any definition
-      already named in escalations. "diverged", or "missing" with a
-      skill id: re-render — run
+      or tool already named in escalations. "diverged", or "missing"
+      with a skill id: re-render — run
       `python3 ${compiler} <definition> --skill
       <load_point>/<name>/SKILL.md`, the definition's path from
       approved and <name> its carried-by id without the -skill suffix;
       the render overwrites whatever stands, a hand-edit included —
       reconciliation is the re-render, never an edit to the skill.
-      "stale": remove that skill's directory from the load point — its
+      "tool-diverged" or "tool-missing": re-produce — run
+      `python3 ${tool_compiler} <tool> --load-point <load_point>`, the
+      tool's path from the row; the compiler asks the tool again and
+      writes the skill from the fresh answer over whatever stands, a
+      hand-edit included — never edit the skill, never edit the
+      tool's answer to agree with a skill. "no-answer": do not remove;
+      the tool named no longer produces a skill of that name — it
+      cannot answer, or answers under another name — so add the row's
+      tool and path to escalations as the owner's to decide. "stale": remove that skill's directory from the load point — its
       source names a process definition that does not stand approved,
       so nothing of it stays loadable. "unrecognized": do not remove;
       the skill is no rendering of any process definition, so add its
@@ -307,6 +361,7 @@ steps:
 | O3 | `enumerate` admits only `status: approved`; the scan covers every skill at the load point, marks `stale` only a source under `definitions`, and `reconcile` removes each `stale` row | mechanical | `enumerate.run`, `check.run`, `reconcile.prompt` |
 | O4 | each finding row names its process or its path in the rendering home it stands in; a will-not-compile, no-skill-id, or unrecognized row lands in `escalations` — the first two as review entries in the named definition's Document History, the unrecognized row by its path and never removed; every escalation row lands in a governed record, the named definition's Document History or this definition's run entry for a path-only row | judged | `check.run`, `route` branches, `reconcile` and `report` prompts |
 | O5 | a `second-home` row stands while `retired_home` exists; its removal and the filed index amendment are directed in `reconcile.prompt` | judged | `check.run`, `reconcile.prompt` |
+| O6 | `check` runs every tool under `tools` with `--describe` through `tool_compiler` on each run and keeps no answer between runs; a tool that produces a skill to scratch with none at the load point yields `tool-missing`, a differing text `tool-diverged`, each naming the tool; a load-point skill sourced under `tools` whose tool produced no skill of that name yields `no-answer` by tool and path, escalated and never removed; `reconcile` re-produces through `tool_compiler` and never edits | mechanical | `check.run`, `reconcile.prompt` |
 
 ## Document History
 
@@ -321,3 +376,4 @@ steps:
 | 5 | 2026-09-02 | update | Second run, invoked through its own carrier at the load point: the owner amended the seven no-skill-id definitions (carried-by added, each with its history row), round 1 found 7 missing and 10 diverged (every definition had changed after its render — the Carried-by sweep and the amendments), reconcile re-rendered all 17, round 2 clean with nothing escalated — the first success exit. Every approved process is available: 17 of 17, zero divergence. Consistency-maintenance process filed as backlog bead lead-dyz0o. |
 | 6 | 2026-09-04 | update | Owner's ruling of 2026-09-04 on brief-034 ask 4 (lead-xmuft), applied: a nonzero step exit is a failed step, not an empty result; compilers emit a will-not-compile row for a path they cannot read instead of crashing. |
 | 7 | 2026-09-05 | update | req-2026-09-05-banned-words-inlined, applied at the small-change lane's make step: the compiler inlines the banned line — "Do not use these words: " and the lint's list — into every agent-run step's prompt block of every rendered skill; the list is loaded from the lint at basis/tools/lint_basis.py, its one home, named in Data. |
+| 8 | 2026-09-07 | update | Under init-tool-skills / feat-tool-skills, the fourth item of guidance/feat-tool-skills-shopsystem-product.md (v1), per adr-2026-09-07-tool-answer (v3, checked) §3's third consequence: the load point's second source kind recognized — a framework tool's answer to the standard question. The process owner's choice the guidance names (amend this definition, or define a sibling process for tool skills) taken by its default here, one load point having one check, and raised to the owner with this entry. Data gains `tools` and `tool_compiler` (basis/tools/compile_tool.py, in the tree before this amendment, as the process-definition typedef's commitment requires); `check` asks every tool under `tools` afresh each run through the compiler and diffs a fresh production against what stands — `tool-missing`, `tool-diverged`, each naming the tool — and reads a load-point skill sourced under `tools` by that kind, `no-answer` when its tool no longer produces a skill of that name, `unrecognized` now reserved for a source that is neither; `reconcile` re-produces a tool skill through the compiler and escalates `no-answer`; O6 and its derived check added; purpose, guiding statement, and use-when widened to the second kind. No exemption, no skip list: the lint's skill is reported current or diverged like any process skill. A tool that cannot answer yields no row — its gap is init-tool-skills' second feature's. Made by the lead-solutions-architect role; screened by hand against the process-definition typedef (v7) checklist — refs resolve, the loop's exits unchanged, no prose outside prompts, every tool a step names exists (`python3 basis/tools/lint_basis.py --process basis/processes/skill-rendering.md` passes), O6 names its witness. |
