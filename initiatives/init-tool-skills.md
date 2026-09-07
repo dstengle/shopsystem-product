@@ -3,7 +3,7 @@ type: initiative
 id: init-tool-skills
 name: Tool skills
 status: proposed
-version: 1
+version: 2
 owner: lead-pm
 created: 2026-09-07
 updated: 2026-09-07
@@ -53,9 +53,10 @@ the skill produced from the answer and current with it by a check, an
 agent running the lint through the skill. No-gos, each with its
 reason:
 
-- The other nine tools — the second bet, sized after the proof; the
-  external tools' descriptions beside them until their owners answer
-  the question.
+- The other nine tools — a second feature the proof's pass
+  authorizes in advance (the authority: "If it passes then proceed to
+  the rest without asking me"); the external tools' descriptions
+  beside them until their owners answer the question.
 - Reading a tool's source to describe it — the authority's direction:
   the tool answers, the source stays its own.
 
@@ -76,3 +77,4 @@ None yet.
 | Version | Date | Kind | Entry |
 |---|---|---|---|
 | 1 | 2026-09-07 | update | Recorded `proposed` by the discovery conversation's frame step, on the authority's convergence — "Prove it on the lint first" (work item lead-igvr4; session sess-2026-09-06-c; review-of-evidence form). Evidence reviewed: the framework tools and how an agent learns each today (none of the five compilers or the lint answers --help; the work register's flags copied script to script); the research report tool-self-description-2026-09 (on the research branch), whose recommendation — the tool is the source, the skill generated from its export, the generated skill gated — the authority sharpened: the export is the tool's answer to a standard flag, not a walk of its source, so tools from other Bounded Contexts are usable without source; the digest over the answer; the flag and its answer's shape a guardrail for the architect to record; definitions beside tools that cannot answer. |
+| 2 | 2026-09-07 | update | The authority's standing direction for this initiative, recorded before the check: "If it passes then proceed to the rest without asking me" — the bet and the flow through the proof on the lint, and the other nine tools as a second feature on the proof's pass, without a further ask; the appetite's first no-go reworded to say so. |
