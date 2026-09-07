@@ -68,6 +68,16 @@ Checks:
      `scenarios`, `owner`, `created`, `updated`; each missing key is
      reported by name (implementation-guidance typedef §Required
      frontmatter). Checks 1-11 as before.
+ 13. Each initiative in `initiatives/` at the repository root — the
+     directory may not exist yet: no initiatives, no violations — whose
+     `parent` names another initiative is listed in that parent's
+     `Sub-initiatives` section, and that section lists nothing else:
+     the parent's list is derived from the children's `parent` fields
+     and held to them here (initiative typedef §Required sections 7).
+     A `parent` naming no initiative in the directory, a parent with
+     no `Sub-initiatives` section, a child missing from the list, and
+     an entry in the list that names no child are each reported.
+     Checks 1-12 as before.
 
 Modes:
   lint_basis.py                     # lint the whole basis tree
@@ -153,6 +163,10 @@ GUIDANCE = BASIS.parent / "guidance"
 GUIDANCE_KEYS = ["type", "id", "status", "version", "initiative", "feature",
                  "context", "scenarios", "owner", "created", "updated"]
 
+# 13. sub-initiatives (initiative typedef §Required sections 7)
+INITIATIVES = BASIS.parent / "initiatives"
+SUB_HEADING = re.compile(r"^#{2,3} (?:\d+\.\s*)?Sub-initiatives\s*$", re.M)
+
 TOOL = "basis/tools/lint_basis.py"
 USAGE_FAILURE = {
     "code": "usage",
@@ -202,14 +216,16 @@ DESCRIPTION = {
         {
             "name": "lint",
             "description": (
-                "Runs checks 1-12 over every markdown file under basis/ and "
-                "over requests/, briefs/, and guidance/ at the repository "
-                "root: frontmatter identity, unique `defines`, `$ref` "
-                "sources, resolvable links, required headings, banned "
+                "Runs checks 1-13 over every markdown file under basis/ and "
+                "over requests/, briefs/, guidance/, and initiatives/ at the "
+                "repository root: frontmatter identity, unique `defines`, "
+                "`$ref` sources, resolvable links, required headings, banned "
                 "vocabulary, version and Document History, no "
                 "numbered-decision reference, request frontmatter, brief "
-                "frontmatter, tools named by process definitions, and "
-                "guidance frontmatter. Reads only; writes and changes "
+                "frontmatter, tools named by process definitions, guidance "
+                "frontmatter, and each parent initiative's Sub-initiatives "
+                "list held to its children's `parent` fields. Reads only; "
+                "writes and changes "
                 "nothing. The tree is found from the tool's own location, "
                 "so the current directory does not matter."
             ),
@@ -465,6 +481,7 @@ def lint():
         if fm is not None and fm.get("type") == "process-definition":
             errors += lint_process_tools(path)
     errors += lint_guidance()
+    errors += lint_sub_initiatives()
     return errors
 
 
@@ -625,6 +642,58 @@ def lint_guidance():
                 errors.append(f"{rel}: front-matter lacks `{key}` {clause}")
         if "type" in fm and fm["type"] != "implementation-guidance":
             errors.append(f"{rel}: `type` is `{fm['type']}`, not `implementation-guidance` {clause}")
+    return errors
+
+
+def lint_sub_initiatives():
+    """13. Each parent initiative's Sub-initiatives section lists exactly
+    the initiatives whose `parent` names it (initiative typedef §Required
+    sections 7): the list is derived from the children's `parent` fields
+    and held to them here. The directory may not exist yet: no
+    initiatives, no violations."""
+    errors = []
+    if not INITIATIVES.is_dir():
+        return errors
+    clause = "(initiative typedef §Required sections 7)"
+    root = BASIS.parent
+    docs = {}  # id -> (rel, text)
+    for path in sorted(INITIATIVES.glob("*.md")):
+        fm, text = front_matter(path)
+        if fm is None or fm.get("type") != "initiative" or not fm.get("id"):
+            continue
+        docs[fm["id"]] = (path.relative_to(root), fm, text)
+    children = {}  # parent id -> set of child ids
+    for cid, (rel, fm, _) in docs.items():
+        parent = fm.get("parent")
+        if parent is None:
+            continue
+        if not isinstance(parent, str) or parent not in docs:
+            errors.append(f"{rel}: `parent` `{parent}` names no initiative in initiatives/ {clause}")
+            continue
+        children.setdefault(parent, set()).add(cid)
+    for pid, (rel, _, text) in docs.items():
+        m = SUB_HEADING.search(text)
+        listed = set()
+        if m:
+            section = text[m.end():]
+            nxt = re.search(r"^#{1,3} ", section, re.M)
+            if nxt:
+                section = section[:nxt.start()]
+            for cid in docs:
+                if re.search(r"(?<![\w-])" + re.escape(cid) + r"(?![\w-])", section):
+                    listed.add(cid)
+            for target in re.findall(r"\]\(([^)#\s]+)\)", section):
+                stem = pathlib.Path(target).stem
+                if stem not in listed:
+                    listed.add(stem)
+        expected = children.get(pid, set())
+        if m is None and expected:
+            errors.append(f"{rel}: named as `parent` by {', '.join(sorted(expected))} but has no `Sub-initiatives` section {clause}")
+            continue
+        for cid in sorted(expected - listed):
+            errors.append(f"{rel}: `Sub-initiatives` omits `{cid}`, whose `parent` names it {clause}")
+        for cid in sorted(listed - expected):
+            errors.append(f"{rel}: `Sub-initiatives` lists `{cid}`, whose `parent` does not name it {clause}")
     return errors
 
 

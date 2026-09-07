@@ -4,9 +4,9 @@ id: initiative-fitness
 owner: product-authority
 status: approved
 approved: 2026-08-31
-version: 5
+version: 6
 created: 2026-08-28
-updated: 2026-09-06
+updated: 2026-09-07
 target-type: initiative
 judged: true
 executable: false
@@ -86,6 +86,14 @@ Scenario 7: one page
   spent, on what, for which outcome — from the Framing, For whom, and
   Appetite sections alone
 
+Scenario 8: a parent lists its sub-initiatives and holds no features
+  Given an initiative whose Sub-initiatives section is present, or
+  that another initiative's `parent` field names
+  When it is read
+  Then its Sub-initiatives section lists, by id, exactly the
+  initiatives whose `parent` names it, and its Features section is
+  empty — the bet is taken on each sub-initiative alone, never on it
+
 ## Compile mapping (each Then → one judge-rubric assertion)
 
 | Scenario Then | Judge-rubric assertion |
@@ -98,6 +106,7 @@ Scenario 7: one page
 | 5 (And) — complete offers | "For each attaching role, name each of the five parts — verdict with reasons, decisions with record id or 'none', risks to the measure, unknowns with defaults, evidence — as present, 'none' with a reason, or absent. Any absent, or 'none' without a reason, or 'none' where the role's domain plainly holds something = fail by this criterion; cite the part and the role." |
 | 6 — decomposition | "Contexts, relationship kinds, and flow-or-none present, or 'not yet'? Cite." |
 | 7 — one page | "Word count outside the Document History at most 500? Can the bet — spend, problem, outcome — be stated from the Framing, For whom, and Appetite sections alone? Cite." |
+| 8 — parent | "Where a Sub-initiatives section is present: does it list exactly the initiatives whose `parent` names this one, by id, and is the Features section empty? Cite any feature listed or any id missing or extra." |
 
 ## Document History
 
@@ -115,3 +124,4 @@ Scenario 7: one page
 | 4 | 2026-09-04 | review | Owner's ruling on the gap filed 2026-09-03: no exemption — scenario 4 stands as written; the framer's wording changes instead, and the discovery conversation is to catch solution words before the frame step (bead filed). Gap closed. |
 | 4 | 2026-09-04 | review | Gap filed for the owner by the PM role, from the init-request-routing screen (round 3, judge claude-fable-5-1): scenario 4 carries no reading for a no-go that names a structure in order to exclude it — the judge could not decide whether an exclusion names a structure. The PM role's reading at the bet: a no-go must name what it excludes, so exclusions are outside the rule; the owner's to confirm or amend. |
 | 5 | 2026-09-06 | update | Under init-role-decisions / feat-role-decisions on the authority's bet of 2026-09-06 (the feature's constraint C6; adr-2026-09-05-role-offer's first consequence): scenario 5 renamed and given a second Then judging each attaching role's offer against the five parts the role-offer data type carries, named here because the judge reads the criteria set and the initiative and nothing else — "none" with the role's reason a passing value the judge tests against the role's domain, a part absent or "none" without a reason a finding by this criterion's name, never reportable only as uncovered; the Given widened to the Document History entry the full offer stands in, the initiative typedef's (v11) home for it; a mapping row added. Hand-amended under the artifact-typedef typedef's rule for a type whose fitness set is not produced, before any screen is relied on for it. Maker's evaluation against the fitness-set typedef's checklist: frontmatter guardrails unchanged; not under features/; both Thens of scenario 5 in the mapping table, each falsifiable — a judge shown an offer missing a part, or a "none" without a reason, can point at it by name. Made by the lead-solutions-architect role; the owner's approval of the amendment is pending. |
+| 6 | 2026-09-07 | update | Scenario 8 and its compile-mapping row added under req-2026-09-07-sub-initiative at the small-change process's make step, beside the initiative typedef v12: a parent lists exactly its sub-initiatives and holds no features. Hand-amended, as at v5 — compile_typedef.py refuses the typedef for want of a Writing rules section. Made by the lead-solutions-architect role. |

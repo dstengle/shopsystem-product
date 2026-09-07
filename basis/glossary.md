@@ -4,9 +4,9 @@ id: glossary
 owner: product-authority
 status: approved
 approved: 2026-08-19
-version: 23
+version: 24
 created: 2026-08-19
-updated: 2026-09-06
+updated: 2026-09-07
 ---
 
 # Glossary
@@ -155,6 +155,12 @@ terms uses one of these when one fits.
   usability attachments, and the solutions architect's decomposition;
   made by the PM role, screened by the cold reviewer, bet on by the
   authority; features are made from it.
+- **sub-initiative** — an initiative whose `parent` field names
+  another initiative, its parent; one type, no new type behind it. The
+  parent lists its sub-initiatives, derived from their `parent`
+  fields; it holds no features and is not bet on — the bet is taken on
+  each sub-initiative alone — and it completes when all of them
+  complete.
 - **acceptance scenario** — a Gherkin scenario in a feature that
   states, as a requirement, what counts as done for one behavior;
   authored by the PO role; assigned to its owning context by a
@@ -308,3 +314,4 @@ terms uses one of these when one fits.
 | 21 | 2026-09-04 | update | The terms feat-request-routing's Vocabulary introduced, under init-request-routing on the authority's standing direction of 2026-09-04: ask gains its received sense beside the process sense; request (received-ask sense), simple change, small-change lane, and intake added — each used by the feature, the request typedef v3, and adr-2026-09-04-request-front-end. |
 | 22 | 2026-09-06 | update | implementation guidance added under req-2026-09-06-implementation-guidance at the small-change process's make step, on the authority's direction of 2026-09-06 the request records — the term the implementation-guidance typedef and the scenario-assignment process v12 use. Made by the lead-solutions-architect role. |
 | 23 | 2026-09-06 | update | framework tool, skill, and gap added under req-2026-09-06-tools-through-skills at the small-change lane's make step, round 2, by the lead-solutions-architect role — the terms the `tools-through-skills` principle's statements turn on, which the lane's one screen found undefined; the lead-pm widened the lane's paths to this glossary at the check step, use-defined-terms naming it as the terms' home. |
+| 24 | 2026-09-07 | update | sub-initiative added under req-2026-09-07-sub-initiative at the small-change process's make step, on the authority's words the request records ("I prefer subinitiative"; "one type with parent link") — the term the initiative typedef v12 and the initiative-check process v10 use. Made by the lead-solutions-architect role. |

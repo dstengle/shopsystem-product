@@ -15,7 +15,7 @@ generated: true
 generated-by: basis/tools/compile_tool.py
 derived-from: lint-basis
 source: basis/tools/lint_basis.py
-source-digest: sha256:c523a32fcb0f
+source-digest: sha256:092f4fe2e9ee
 ---
 
 # lint-basis (produced from the answer of `basis/tools/lint_basis.py`)
@@ -26,7 +26,7 @@ Uses: [lint](#lint), [check-brief](#check-brief), [check-process](#check-process
 
 ## lint
 
-Runs checks 1-12 over every markdown file under basis/ and over requests/, briefs/, and guidance/ at the repository root: frontmatter identity, unique `defines`, `$ref` sources, resolvable links, required headings, banned vocabulary, version and Document History, no numbered-decision reference, request frontmatter, brief frontmatter, tools named by process definitions, and guidance frontmatter. Reads only; writes and changes nothing. The tree is found from the tool's own location, so the current directory does not matter.
+Runs checks 1-13 over every markdown file under basis/ and over requests/, briefs/, guidance/, and initiatives/ at the repository root: frontmatter identity, unique `defines`, `$ref` sources, resolvable links, required headings, banned vocabulary, version and Document History, no numbered-decision reference, request frontmatter, brief frontmatter, tools named by process definitions, guidance frontmatter, and each parent initiative's Sub-initiatives list held to its children's `parent` fields. Reads only; writes and changes nothing. The tree is found from the tool's own location, so the current directory does not matter.
 
 Invocation:
 

@@ -12,12 +12,12 @@ type: skill
 id: initiative-check-skill
 status: approved
 created: 2026-08-31
-updated: 2026-09-06
+updated: 2026-09-07
 generated: true
 generated-by: basis/tools/compile_process.py
 derived-from: initiative-check-process
 source: basis/processes/initiative-check.md
-source-digest: sha256:bc43f9ddb913
+source-digest: sha256:3e1d69efe9b4
 activation: model-judged
 promotion: experiment-local
 ---
@@ -216,9 +216,12 @@ findings still open are uncovered and you judge none of them
 needs a criterion — say so in the reasons. An initiative still
 failing a named criterion after the one revision cannot be bet
 on — the typedef's commitment: it stays proposed with the
-criterion named. "hold": it stays proposed —
-say what would change your mind. "cancel": with the reason —
-the record of the decline survives. Record your reasons.
+criterion named. An initiative with a Sub-initiatives section
+— a parent, in the typedef's terms — is not bet on: no bet is
+taken on it here; a bet is taken on each of its sub-initiatives
+alone, each in its own run of this process. "hold": it stays
+proposed — say what would change your mind. "cancel": with the
+reason — the record of the decline survives. Record your reasons.
 ```
 
 ## record — Record the bet

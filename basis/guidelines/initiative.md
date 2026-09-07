@@ -5,9 +5,9 @@ target-type: initiative
 owner: product-authority
 status: approved
 approved: 2026-08-31
-version: 5
+version: 6
 created: 2026-08-28
-updated: 2026-09-06
+updated: 2026-09-07
 ---
 
 # Guideline: initiative
@@ -121,6 +121,18 @@ from those three sections. *Decision:*
 yes/no per initiative.
 *Derived check:* judged — initiative fitness scenario 7.
 
+**8. A parent lists its sub-initiatives and bets on none of them itself.**
+Before: "Sub-initiatives: the measurement work, the runner work.
+Features: feat-run-measure."
+After: "Sub-initiatives: init-run-measure, init-process-runner.
+Features: (none — the bet is taken on each sub-initiative alone)."
+*Test:* read the Sub-initiatives section where another initiative's
+`parent` names this one. *Criterion:* the section lists exactly the
+initiatives whose `parent` names it, by id; the Features section is
+empty. *Decision:* yes/no per initiative.
+*Derived check:* judged — initiative fitness scenario 8; the list is
+also held to the children's `parent` fields by the lint.
+
 ## Document History
 
 | Version | Date | Kind | Entry |
@@ -134,3 +146,4 @@ yes/no per initiative.
 | 4 | 2026-08-31 | update | Batch A: the carrying process authored and linked. |
 | 4 | 2026-08-31 | state | draft → approved with batch A+B as one block (brief-032 ask 2, default accepted). |
 | 5 | 2026-09-06 | update | Under init-role-decisions / feat-role-decisions on the authority's bet of 2026-09-06 (the feature's constraint C6, with `single-source-of-truth`): rule 5's test and criterion widened to match the initiative fitness set's amended scenario 5, which projects this rule — each attaching role's offer complete by the role-offer data type's parts, referenced here and never restated, the full offer read in the Document History entry it stands in per the initiative typedef (v11). Hand-amended: the typedef carries no Writing rules section. Made by the lead-solutions-architect role; the owner's approval of the amendment is pending. |
+| 6 | 2026-09-07 | update | Rule 8 added under req-2026-09-07-sub-initiative at the small-change process's make step, beside the initiative typedef v12: a parent lists exactly the initiatives whose `parent` names it and holds no features. Hand-amended, as at v5 — compile_typedef.py refuses the typedef for want of a Writing rules section. Made by the lead-solutions-architect role. |

@@ -5,9 +5,9 @@ defines: initiative
 owner: product-authority
 status: approved
 approved: 2026-08-31
-version: 11
+version: 12
 created: 2026-08-28
-updated: 2026-09-06
+updated: 2026-09-07
 ancestry: [initiative]
 ---
 
@@ -59,7 +59,10 @@ ancestry: [initiative]
 (`lead-pm`), `created`, `updated`; optional `request` — a link to the
 [request](request.md) the initiative was made from, required when the
 discovery conversation was opened on one (its `request` parameter
-set), written by that conversation's `frame` step. `approved` does not
+set), written by that conversation's `frame` step; optional `parent` —
+the id of the initiative this one is a sub-initiative of. `parent` is
+the link's one home: the child names its parent, and the parent carries
+no link field. `approved` does not
 apply; the lifecycle stands in. Status values and their writers:
 - `proposed` — the PM role, when the discovery conversation's `frame`
   step records it: the framed-but-unbet state.
@@ -122,6 +125,11 @@ apply; the lifecycle stands in. Status values and their writers:
 6. **Features** — the features made from it, by id, as they are made
    — the feature-authoring draft step adds each; empty until the
    first.
+7. **Sub-initiatives** — present only on an initiative named in at
+   least one other initiative's `parent`: the initiatives that name it,
+   by id, exactly those and no other. The list is derived from the
+   children's `parent` fields and held to them by the lint
+   (`basis/tools/lint_basis.py`, check 13).
 
 ## Rules
 
@@ -137,6 +145,10 @@ apply; the lifecycle stands in. Status values and their writers:
   the Document History state entry; for the go/no-go, `decided-by` is
   `product-authority` and `right` is `bet`, values the decision-record
   typedef admits.
+- An initiative with sub-initiatives holds no features — its §6 stays
+  empty — and is not bet on: the bet is taken on each sub-initiative
+  alone. Its measure is moved by its sub-initiatives, and it completes
+  when all of them complete.
 - The count of initiatives whose §5 names more than one Bounded
   Context, per quarter, is a report the solutions architect role
   reads through its interface with the PO role; a rising count is its
@@ -172,6 +184,7 @@ of record.
 - Each attaching role's offer complete by the role-offer type's parts, its verdict rendered; usability present or asked where §2 names a type; the full offer in the Document History. *(§Required sections 4; fitness 5)*
 - Decomposition attached or "not yet"; flow named or "none". *(§Required sections 5; fitness 6)*
 - At most 500 words; the bet statable from §1–3. *(§Rules; fitness 7)*
+- Sub-initiatives present only where another initiative's `parent` names this one, listing exactly those; a parent holds no features and is not bet on. *(§Required frontmatter; §Required sections 7; §Rules; fitness 8)*
 
 ## Document History
 
@@ -192,3 +205,4 @@ of record.
 | 9 | 2026-08-31 | review | Batch E end-to-end screen round 1: the Features section's writer named (the feature-authoring draft step). |
 | 10 | 2026-09-04 | update | Under init-request-routing / feat-request-routing on the authority's standing direction of 2026-09-04, per adr-2026-09-04-request-front-end: optional frontmatter `request` — the request the initiative was made from, required when the discovery conversation was opened on one, written by its frame step; §1 Framing's rule states that the originator chain then begins at that request (its section 1 quoted, each quotation carrying the request's id); checklist row added. Nothing else changes; the Framing-refinement rule is lead-ghulb. Made by the architect role; the owner's approval of the amendment is pending. |
 | 11 | 2026-09-06 | update | Under init-role-decisions / feat-role-decisions on the authority's bet of 2026-09-06, per adr-2026-09-05-role-offer §2 and the feature's constraints C1 and C4: §4 states each attaching role's offer in the role-offer data type's shape with its verdict and reasons rendered there, restating no part, and names the Document History — the attaching role's entry — as the full offer's home until the owner rules the cap's split, the ADR's first candidate; the check-of-record sentence and the checklist row say each attachment is complete by its type's parts. The 500-word rule is not touched: at the bet the owner ruled the cap soft with 20% variance (the initiative's Document History v8), a ruling on the rule the owner applies until the split is recorded here. The fitness set (v5) and guideline (v5) are hand-amended beside it. Maker's evaluation against the artifact-typedef typedef's checklist: `defines` unchanged; the six required sections in order; commitment and sources unchanged; no pinned example link; the amended checklist entry cites its clause; no Writing rules or Fitness scenarios section, as before. Made by the lead-solutions-architect role; the owner's approval of the amendment is pending. |
+| 12 | 2026-09-07 | update | Under req-2026-09-07-sub-initiative at the small-change process's make step, on the authority's decisions the request records: optional frontmatter `parent` on the child as the link's one home; §7 Sub-initiatives on the parent, derived from the children's `parent` fields and held to them by the lint's check 13; the rule that a parent holds no features, is not bet on, has its measure moved by its sub-initiatives, and completes when they do; the checklist row. Guideline (v6) and fitness set (v6) hand-amended beside it, as at v11 — compile_typedef.py refuses this typedef for want of a Writing rules section. Made by the lead-solutions-architect role. |
