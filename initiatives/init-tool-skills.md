@@ -85,7 +85,7 @@ none.
 
 ## Features
 
-[feat-tool-skills](../features/feat-tool-skills.md) — checked.
+[feat-tool-skills](../features/feat-tool-skills.md) — assigned.
 
 ## Document History
 

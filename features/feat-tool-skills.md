@@ -2,8 +2,8 @@
 type: feature
 id: feat-tool-skills
 name: Tool skills
-status: checked
-version: 5
+status: assigned
+version: 6
 initiative: ../initiatives/init-tool-skills.md
 owner: lead-po
 created: 2026-09-07
@@ -343,61 +343,61 @@ Feature: Tool skills
   moment it answers, and a change to what a tool says about itself
   reaches its skill.
 
-  @feature:feat-tool-skills @hash:debc381f2c7e
+  @bounded-context:shopsystem-product @feature:feat-tool-skills @hash:debc381f2c7e
   Scenario: the lint answers the standard question
     Given the lint, the tool every session runs over the definition corpus
     When the lint is asked the standard question
     Then the lint answers with what it says about itself — its name, what it does, and for each use it supports what that use does, what it takes, what it returns, and how it fails — and performs none of its uses in answering
 
-  @feature:feat-tool-skills @hash:a32ca18f8bd7
+  @bounded-context:shopsystem-product @feature:feat-tool-skills @hash:a32ca18f8bd7
   Scenario: the answer states each use's returns and failures as parts of their own
     Given the lint's answer to the standard question
     When a use entry in the answer is read
     Then what the use does, what it takes, what it returns, and how it fails are each present as a part of its own, none of the four absent and none standing in for another
 
-  @feature:feat-tool-skills @hash:1bf0cead0957
+  @bounded-context:shopsystem-product @feature:feat-tool-skills @hash:1bf0cead0957
   Scenario: the lint's skill is produced from the lint's own answer
     Given the lint's answer to the standard question
     When the lint's skill is produced
     Then a skill for the lint stands at the agent's load point, names the lint as what it was produced from, states every use the answer states, and says nothing about the lint that the answer does not say — produced from the answer and from nothing else, not the lint's source, not its help
 
-  @feature:feat-tool-skills @hash:c51b20dd4cd9
+  @bounded-context:shopsystem-product @feature:feat-tool-skills @hash:c51b20dd4cd9
   Scenario: each use entry in the lint's skill is complete
     Given the lint's skill
     When a use entry in it is read
     Then it states what the use does; what it takes, each input named and an omitted input's treatment; what it returns; how it fails, each failure a stable code beside its explanation and next step; and the exact invocation
 
-  @feature:feat-tool-skills @hash:80ac83f71c06
+  @bounded-context:shopsystem-product @feature:feat-tool-skills @hash:80ac83f71c06
   Scenario: a change to what the lint says about itself reaches its skill
     Given the lint's answer to the standard question changed since its skill was produced
     When the process that keeps tool skills current runs
     Then the lint's skill states what the lint now says about itself and is current with the changed answer
 
-  @feature:feat-tool-skills @hash:5d004d52d1b4
+  @bounded-context:shopsystem-product @feature:feat-tool-skills @hash:5d004d52d1b4
   Scenario: a tool skill not current with its tool's answer is reported
     Given a tool skill not current with what its tool says about itself, whatever the cause
     When the check over tool skills runs
     Then the check reports that skill as not current, naming the tool
 
-  @feature:feat-tool-skills @hash:d33276bcc8ba
+  @bounded-context:shopsystem-product @feature:feat-tool-skills @hash:d33276bcc8ba
   Scenario: the check over the load point passes clean with the lint's skill in place
     Given the lint's skill at the agent's load point, current with the lint's answer, beside the skills of the approved processes
     When the check over the load point runs
     Then the check reports the lint's skill as current and no skill at the load point as unrecognized
 
-  @feature:feat-tool-skills @hash:c3bde3a9b657
+  @bounded-context:shopsystem-product @feature:feat-tool-skills @hash:c3bde3a9b657
   Scenario: the lint's skill is loaded for a task that calls for the lint
     Given an agent in a fresh context with the lint's skill at its load point and no other source on the lint, and a task that calls for running the lint
     When the agent begins the task
     Then the lint's skill is loaded for the task before any invocation of the lint, and the agent's invocation is the one the skill states, not a bare one
 
-  @feature:feat-tool-skills @hash:59116a209cb2
+  @bounded-context:shopsystem-product @feature:feat-tool-skills @hash:59116a209cb2
   Scenario: an agent completes a use of the lint on the first invocation the skill states
     Given an agent in a fresh context with the lint's skill its only source on the lint, and a task calling for one of the uses the skill states
     When the agent performs the task
     Then the agent's first invocation of the lint is the one the skill states for that use, with no read of the lint's source or help and no second attempt, and the use completes with the return the skill states
 
-  @feature:feat-tool-skills @hash:0ca7705b8397
+  @bounded-context:shopsystem-product @feature:feat-tool-skills @hash:0ca7705b8397
   Scenario: a failure the agent meets is one the skill names, read as the skill states it
     Given an agent in a fresh context with the lint's skill its only source on the lint
     When an invocation of the lint made through the skill fails
@@ -447,3 +447,4 @@ Feature: Tool skills
 | 3 | 2026-09-07 | review | PO output check, the one screen (judge: claude-fable-5-1 / screen prompt v6): three confident by named criterion — the produced-skill Then one-directional against the framing's "for each use it supports" (criterion 4); the not-a-criterion passages and the makers' principle screens in the body (framing); and two wobbly, ruled by the PM role — "named for the caller" not observable from the skill alone (criterion 1); constraint (5) tracing to the record and not the framing (framing); the "nothing only an agent can do" read with no Edges row (criterion 4). Three more marked uncovered, the PM role's to decide: "digest", "the renderer", and "the producer" unintroduced; Edges rows 5 and 21 naming different scenarios as what tells an answer from a non-answer; the Contributors section's length against the block. |
 | 4 | 2026-09-07 | update | The one revise, by the PO role, the findings with a named criterion. Criterion 4: *the lint's skill is produced from the lint's own answer*'s Then made two-directional — "states every use the answer states, and says nothing about the lint that the answer does not say" — a new scenario by hash (`@hash:pending`, the lead-pm fills it; no shell at this step); an Edges row added, *A use the answer states that the skill omits*, covered by that scenario and by *a tool skill not current with its tool's answer is reported*; the measure's row now reads "once per use the answer states — every one of which the skill states". Criterion 1: "named for the caller" dropped from *each use entry in the lint's skill is complete*'s Then, which now reads "each input named and an omitted input's treatment" (new hash, `@hash:pending`); the designer's criterion (b) carries "named for the caller" as before, judged at delivery by the agent's use. Framing, other roles' passages edited on the PM role's ruling, substance kept here: the designer's (b) sentence on the api guideline's rule 2 — a retry's safety and a replay's return are not made a criterion, the framing naming four parts and the scenarios stating them; whether a fifth is wanted is the delivery screen's finding to the solutions architect role — moved to this row; the designer's "two rules of the corpus" paragraph moved to this row — names for the caller are judged at delivery by the agent's use under (a) and (b), not by the vocabulary screen, the vocabulary (v3) holding no tool term so that screen returns undecidable until the designer enters the terms (the initiative's v5, R2 and D1; the Edges row stands, its source re-pointed here); and nothing only an agent can do (`agent-is-a-user` bullet 2; api rule 4) — every use the skill states is a command a person runs at the prompt, the lint being a command line — is a delivery-screen read, struck from the body rather than given an Edges row (the PM role's ruling on the wobbly finding); the architect's screen of the six constraints against the architecture principle set (v6) moved to this row — `knowable-shape` (1), (2): the answer suffices without the lint's source; `contracts-between-contexts` (2): the data type the named, versioned contract with its relationship kind, no Bounded Context on this branch building to it yet; `actor-neutral-discipline` (6): the invocation binds whoever performs the step; `local-comprehension` (3), (6): no read below the designated artifact; `bidirectional-conformance` (3), (4): the reverse direction fixed, drift re-produced or reported, never absorbed; `intent-provenance`: the record and the step each recorded, resting on the exception the record cites (work item lead-4kymc), no new one; no constraint a design cannot satisfy, nothing to escalate, no vendor and no recurring cost — a one-line pointer to this history left in the body. Framing, constraint (5) restated on the framed outcome it protects — a tool from any shop is usable the moment it answers — as *the answer's form binds no shop's language*: the answer in a form any shop's language gives from its standard library, no dependency binding a shop's language added by answering or producing; the cost, vendor, and dependency read kept as the record's delivery read in its Edges row, now naming the framed half's cover. Left as marked uncovered, the PM role's: the three unintroduced terms; rows 5 and 21; the section's length — the framing repair shortens it by three passages and no more. Maker's self-check against the feature fitness set (v8) after the revise: scenario 1 pass — the two changed Thens each remain one observable outcome (a skill standing with every use and nothing more; an entry's parts read), "named" without "for the caller" observable from the skill alone, no implementation detail added; scenario 2 pass — ownership unchanged for all ten; the designer's criteria (a)–(c) and the architect's constraints (1)–(6) present, each riding by name; scenario 3 pass on presence — `@feature:` on all ten, `@hash:` on all ten, two pending; scenario 4 pass — twenty-eight rows, the new case covered by scenario name, every row's case still sourced to the framing or a contributor's criteria, the two re-pointed rows sourcing to criterion (b) and constraint (5) as they now stand; scenario 5 pass — unchanged; scenario 6 pass — the narrative untouched. |
 | 5 | 2026-09-07 | state | `draft` → `checked`: the PM role's pass after the one screen and the one revise the process allows. Every finding with a named criterion is repaired in v4 — read at the places the review's quotes point to: the produced-skill Then now two-directional with its Edges row; "named for the caller" out of the entry Then and carried by criterion (b); the not-a-criterion passages and the makers' principle screens in this history, not the body; constraint (5) on the framed outcome it protects; the agent-only sentence struck. The three findings still open are uncovered and none needs a criterion — the rulings: (i) the three unintroduced terms — "digest" is adr-2026-09-07-tool-answer's term for the sha256 stamp the skill carries over the answer it was produced from; "the producer" and "the renderer" both name the process that keeps tool skills current, the record's `compile_tool.py`; the implementation guidance record names them concretely and the designer enters them in the vocabulary at the delivery screen (R2), so no scenario criterion is wanted; (ii) Edges rows 5 and 21 — row 21 governs: *the lint answers the standard question* is the scenario that tells an answer from a non-answer, as constraint (1) rides on it; row 5's clause is read as naming the completeness of an answer's parts, not the answer/non-answer line; (iii) the Contributors section's length — the framing repair took the three passages the screen named; the remaining reasoning is the designer's and the architect's own record of their criteria and constraints, which the feature typedef places in that section, and the 500-word soft cap with its 20% variance is the authority's rule on the sections it names, not on contributors' passages; no criterion is wanted. The last two hashes filled by the lead-pm after the revise (@hash:1bf0cead0957, @hash:c51b20dd4cd9), the convention the repository's other features use. |
+| 6 | 2026-09-07 | state | `checked` → `assigned`: the scenario-assignment record step (process v12). One assignment entry — context shopsystem-product (the lead shop), scenarios @hash:debc381f2c7e, @hash:a32ca18f8bd7, @hash:1bf0cead0957, @hash:c51b20dd4cd9, @hash:80ac83f71c06, @hash:5d004d52d1b4, @hash:d33276bcc8ba, @hash:c3bde3a9b657, @hash:59116a209cb2, @hash:0ca7705b8397 — each tagged `@bounded-context:shopsystem-product`, the owning shop the Contributors section names for every scenario, and the decomposition's ruling (init-tool-skills v10, Decomposition: none — every change in the lead shop's tree, no contract on this branch, cross-context flow none); the tag added on the tag line above each Scenario, no hash changed. The process's lead-shop-internal gap stands as lead-ki66p and the run is handled disclosed as the two prior runs were. No scenario unowned; no ask — the one scope question the feature carries (whether `--help` also answers as help) is already out of scope in its Edges table and recommended to the PM role, and no scenario's ownership turns on it. Pre-state read from lead-shop-held records, none from a context's internals: contracts — none exist on this branch; the guardrail adr-2026-09-07-tool-answer at v3 (checked), read for §2, §2.1, §3; the tool-description data type it names at basis/types/tool-description.md — not yet in the tree, the enabler bound named in constraint (2); the lint at basis/tools/lint_basis.py observed on the flag by running it, 2026-09-07 — `--describe` runs the normal function, `PASS: 0 violation(s)`, exit 0: cannot answer, the first scenario's Then unmet today; basis/tools holding four compilers and the lint, no compile_tool.py; skill-rendering at v7, its check step marking any load-point skill whose `source:` is not under basis/processes `unrecognized` and escalating it by path — the standing escalation a tool skill would meet today; the process-definition typedef at v7, whose commitment bars approving a definition that names a tool the repository lacks (the order the guidance fixes); the data-type typedef at v3; reconcile-and-close at v4; interaction-conformance-check at v4, draft; the working principle set v11 and the architecture principle set v6; the research the guardrail rests on registered in research/index.md v9. The feature repository swept in full — six artifacts, this feature and the five assigned — no conflict: feat-request-routing (v8) specifies asks, requests, and the lane; feat-role-decisions (v7) roles' decisions and offers; feat-roles-availability (v6) rendered role definitions; feat-typedef-rendering (v8) a typedef's produced texts, the same generate-then-gate pattern on a different source with no scenario shared; and no scenario of any names a framework tool, a tool's answer, or a tool skill. The touch-point is feat-skills-availability (v8), whose seven scenarios bind process skills at the load point: @hash:4899d4bba6ad (the clean pass: no divergence and no missing skill) and @hash:26f78a3ca4a6 (a hand-diverged skill reconciled toward its definition) — @hash:d33276bcc8ba extends the same check by one recognized source kind and asks nothing that feature's Thens deny, and @hash:5d004d52d1b4 resolves drift in the same direction, toward the source; contradicts none. Implementation guidance written, one record for the one context: guidance/feat-tool-skills-shopsystem-product.md (v1, written) — the data type, the lint's handler, the compiler, the check's recognition, and the proof, in the order the guardrail and the typedef's commitment require, with versions, paths, and invocations; the one choice left to the process owner (amend skill-rendering or define a sibling) named with what must hold either way; maker's evaluation against the implementation-guidance fitness set v1, all five pass: at the architect's level (definitions, tools, step ids, and the guardrail's sections named; how the lint composes its answer left to the maker; no internals of any context); cited never restated (hashes, ids, versions, and sections only; the shape's parts pointed at, not listed); actionable alone (every definition, tool, invocation, check, and order named; what is not in this assignment named as such); each thing not to do with its reason (thirteen entries, each to the guardrail's section, a constraint, a principle, a typedef's commitment, the Appetite's no-go, or the decomposition); bound to one assignment (frontmatter and opening paragraph; the not-in-this-assignment items say so rather than bind a later one). Not sent. Sent: none — the owning shop is the lead shop itself; the freeze bars dispatch and no Bounded Context exists to receive; the gap stands as lead-ki66p. The initiative's Features section still reads checked; its update is the lead-pm's with the commit. |
