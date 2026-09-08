@@ -5,7 +5,7 @@ defines: feature
 owner: product-authority
 status: approved
 approved: 2026-08-31
-version: 15
+version: 17
 created: 2026-08-26
 updated: 2026-09-08
 ancestry: [feature]
@@ -116,6 +116,10 @@ resubmits it from `draft`.
   small-change lane; it links `request` in place of `initiative`,
   framed by the request's section 1, and is otherwise a feature like
   any other — no bet, no check of record between the request and it.
+- A Contributors passage names an owning shop, a criterion, or a
+  constraint in one short line, with no reasoning restated; the
+  reasoning stands in the Document History row of the step that added
+  it.
 
 ## Commitment (Definition of Done)
 
@@ -129,7 +133,229 @@ scenario is dispatched.
 
 Gherkin (Feature, narrative, Background, Scenario, tags — the block's
 form); the
-experience principles `core-task-parity` and `accessible-by-standard`.
+experience principles `core-task-parity` and `accessible-by-standard`;
+the [feature fitness set](../fitness/feature.fitness.md).
+
+## Writing rules
+
+**Voice principle.** Write the feature for the person or agent it
+serves and for the shops that will run its scenarios: a narrative that
+says who and why, then scenarios that each state one action and one
+observable outcome, with nothing about how, the whole document at or
+under its word target.
+
+**Highlights (the layer compiled into generating context):** a Feature
+line and a narrative — who, what, the outcome, in the framing's words ·
+one When, one observable Then, no how · each owning shop named per
+scenario · the architect's constraints where the decomposition names
+them · usability and accessibility criteria where there is an
+interaction · `@feature:` and `@hash:` on every scenario · every named
+edge covered or excluded with a reason · the interaction types stated,
+or "none" with a reason · the whole document at or under the
+base-writing-style word target for a feature.
+
+**Layers:** this guideline adds feature rules on top of the
+[base writing style](../guidelines/base-writing-style.md); the base
+always applies and is never overridden. When rules conflict, an
+approved principle beats the [feature typedef](feature.md), which
+beats this guideline. Gherkin's own syntax governs the Feature,
+Background, and Given/When/Then form. Every rule feeds the
+[feature fitness set](../fitness/feature.fitness.md), scored at
+feature-authoring's self-check step.
+
+---
+
+### Rules
+
+**1. A narrative that says who and why.**
+Before: "Feature: Run list" with scenarios beneath and no narrative.
+After: "Feature: Failed runs visible in the run list / An operator
+checking last night's runs / can see which failed without opening each
+/ so that a failed run is noticed within one glance (the framing's
+outcome)."
+*Test:* read the Feature line and the lines beneath it. *Criterion:*
+they name who the capability is for, what they can do, and the outcome
+it serves, and the outcome is the framing's. *Decision:* yes/no per
+feature.
+*Derived check:* judged — feature fitness scenario 6.
+
+**2. One action, one observable outcome, no implementation.**
+Before: "When the user clicks the red button and the API returns 200,
+Then the database row is updated."
+After: "When the operator lists runs, Then each failed run is marked as
+failed in the list."
+*Test:* for each scenario and the Background, count the actions in the
+When and check the Then against what a person or agent could observe
+from outside the system. *Criterion:* one action or event; an outcome
+observable in the running system; no step names an implementation
+detail, such as a component, call, storage, algorithm, format, or
+vendor. *Decision:* yes/no per scenario.
+*Derived check:* judged — feature fitness scenario 1.
+
+**3. Name the owning shop and the criteria for every scenario.**
+Before: a feature with no contributors section.
+After: "Contributors: the list scenarios are the reporting context's,
+the CSV scenarios the export context's (per the decomposition); the
+product designer role's criteria: marked within one glance; failure
+not by color alone; the solutions architect role's constraint: the
+list renders within one second at ten thousand runs."
+*Test:* read each scenario against the Contributors section.
+*Criterion:* every scenario has a named owning shop; where the
+Interaction types section names a type, both designer criteria are
+present; where the Contributors section says the decomposition names
+constraints, they are present. *Decision:* yes/no per scenario.
+*Derived check:* judged — feature fitness scenario 2.
+
+**4. Tag every scenario with its feature and hash.**
+Before: a scenario with a title only.
+After: `@feature:failed-runs-visible @hash:3f9a…` on the line above
+`Scenario:` (the `@bounded-context:` tag is the architect's, written at
+assignment; its presence is not this rule's).
+*Test:* read each scenario's tag line. *Criterion:* `@feature:` and
+`@hash:` are present. *Decision:* yes/no per scenario.
+*Derived check:* judged — feature fitness scenario 3.
+
+**5. List every edge and cover or exclude it.**
+Before: a happy path only, with the cancelled-run case the designer's
+criterion named absent from the Edges table.
+After: an Edges row "cancelled run · designer criterion · Scenario: a
+cancelled run is not marked failed" and a row "runs older than
+the retention window · framing · out of scope: the archive feature
+owns them".
+*Test:* read the Edges table and the cases the framing or a
+contributor's criteria name.
+*Criterion:* every row names a covering scenario or a reasoned
+exclusion, and every case the framing or a contributor's criteria name
+has a row. *Decision:* yes/no per case.
+*Derived check:* judged — feature fitness scenario 4.
+
+**6. State the interaction types, or "none" with a reason.**
+Before: no Interaction types section.
+After: "Interaction types: cli, gui — from the core-task list's 'read
+a decision' row." or "Interaction types: none — the capability is a
+nightly reconciliation with no person or agent at an interface."
+*Test:* read the Interaction types section. *Criterion:* it names the
+types the capability must be available on, or "none" with a reason the
+framing bears out. *Decision:* yes/no per feature.
+*Derived check:* judged — feature fitness scenario 5.
+
+**7. Put criteria in the Contributors body; put the reasoning in the
+Document History row.**
+Before: a Contributors section that, after each criterion, explains
+why it was chosen and closes with a self-check against the principles.
+After: "the product designer role's criteria, on Scenario: a failed
+run is marked: marked within one glance; failure not by color alone."
+— and, in the Document History row of the step that added them: "two
+candidates considered and not made criteria: neither serves the
+framing's outcome; self-check: both ride by name on the scenario they
+bound."
+*Test:* read each passage of the Contributors body. *Criterion:* every
+passage is an owning shop, a criterion, or a constraint, each riding by
+name on the scenarios it bounds, in one short line; the reasoning
+behind a criterion and the maker's self-check stand in the Document
+History row, not the body. *Decision:* yes/no per passage.
+*Derived check:* judged — feature fitness scenario 7.
+
+**8. Meet the feature's word target.**
+Before: a feature at 3,588 words, its Contributors and History rows
+carrying reasoning the base style keeps out of the body.
+After: a feature whose body holds only what rules 1–7 require, at or
+under the target.
+*Test:* count the words of the whole document. *Criterion:* the count
+is at or under the base-writing-style word target for a feature.
+*Decision:* yes/no per feature.
+*Derived check:* judged — feature fitness scenario 8.
+
+## Fitness scenarios
+
+A feature is a Gherkin Feature — one capability from the user's or
+agent's point of view with the scenarios that state what counts as
+done for it — authored by the PO role alone, product-level, its
+scenarios later assigned to Bounded Contexts by the solutions architect
+role. The scenarios are executable by the owning shops; this set judges
+the feature as a document and is never executed. These scenarios are
+evaluated by the PO role at feature-authoring's self-check step,
+alongside the framing (criterion `framing`). **Judged by:**
+`cold-reviewer`, never executed; the judge reads only the criteria set,
+the framing, and the feature; a fact the feature must carry — an
+owning shop, a tag, an edge — is what these scenarios make it carry.
+Assignment is not judged here: the `@bounded-context:` tag is set after
+the check.
+
+### Scenarios
+
+Scenario 1: each scenario is one observable behavior
+  Given a scenario in the feature's Gherkin block, Background steps
+  included
+  When its steps are read
+  Then the When is one action or event, the Then an outcome observable
+  in the running system, and no step names an implementation detail
+
+Scenario 2: ownership and criteria are present
+  Given the Contributors section
+  When each scenario is read against it
+  Then an owning shop is named for that scenario, and, where the
+  Interaction types section names a type, the product designer role's
+  usability acceptance criteria and the accessibility criteria are
+  present, and, where the Contributors section says the decomposition
+  names them, the solutions architect role's non-functional constraints
+  are present (sources are provenance, not documents to open)
+
+Scenario 3: identity tags are present
+  Given each scenario's tags
+  When they are read
+  Then `@feature:<id>` and `@hash:<sha>` are present (whether the hash
+  matches the text is a lint, not this judge's; the `@bounded-context:`
+  tag is assignment's and is not judged here, present or absent)
+
+Scenario 4: every listed edge is covered
+  Given the Edges table and the cases the framing or a contributor's
+  criteria name
+  When each case is read
+  Then it names the covering scenario by its Scenario name or is marked
+  out of scope with a reason, and every case the framing or a
+  contributor's criteria name appears in the table
+
+Scenario 5: interaction types are stated
+  Given the Interaction types section
+  When it is read
+  Then it names the types the capability must be available on, or
+  "none" with a reason the framing bears out (the experience principle
+  `core-task-parity`)
+
+Scenario 6: the feature says who it is for and why
+  Given the Feature line and its narrative
+  When they are read
+  Then they name who the capability is for, what they can do, and the
+  outcome it serves, and that outcome is the framing's
+
+Scenario 7: the Contributors body carries criteria, not reasoning
+  Given the Contributors section's body
+  When each passage is read
+  Then every passage is an owning shop, a criterion, or a constraint,
+  riding by name on the scenarios it bounds, in one short line; a
+  passage carrying the reasoning behind a criterion or a maker's
+  self-check fails, with the passage named (those stand in the
+  Document History row, not read here)
+
+Scenario 8: the feature meets its word target
+  Given the feature document
+  When its words are counted
+  Then the count is at or under the base-writing-style word target for
+  a feature
+
+### Compile mapping (each Then → one judge-rubric assertion)
+
+| Scenario Then | Judge-rubric assertion |
+|---|---|
+| 1 — one observable behavior | "For each scenario and the Background: is the When one action, the Then observable in the running system, and no step implementation-specific? Cite any failing step." |
+| 2 — ownership and criteria | "For each scenario: is an owning shop named? Where a type is named, are both designer criteria present? Where constraints are said to be named, are they present? Cite or name the absence." |
+| 3 — identity tags | "For each scenario: `@feature:` present? `@hash:` present? Cite any scenario without both." |
+| 4 — edges covered | "For each row of the Edges table and each case the framing or a contributor's criteria name: a covering scenario or a reasoned exclusion? Any uncovered or missing case = fail." |
+| 5 — interaction types stated | "Does the Interaction types section name types, or 'none' with a reason the framing bears out? Cite the sentence or its absence." |
+| 6 — narrative | "Does the Feature narrative name who, what, and the outcome, and is the outcome the framing's? Cite the lines or their absence." |
+| 7 — Contributors body | "For each passage of the Contributors body: is it an owning shop, a criterion, or a constraint riding by name on the scenarios it bounds, in one short line? A passage of reasoning or of a maker's self-check = fail; name the passage." |
+| 8 — word target | "Count the document's words. Is the count at or under the base-writing-style target for a feature? State the count and pass/fail." |
 
 ## Derived review checklist
 
@@ -140,6 +366,7 @@ experience principles `core-task-parity` and `accessible-by-standard`.
 - Every listed edge covered or excluded with reason. *(§Required sections 5; fitness 4)*
 - Interaction types section present, named or "none" with reason. *(§Required sections 3; fitness 5)*
 - `size` absent or `standard` with `initiative` linked; or `small` with `request` linked in its place, the framing the request's section 1. *(§Required frontmatter; §Rules)*
+- Whole document at or under the base-writing-style word target for a feature. *(§Writing rules rule 8; fitness 8)*
 
 ## Document History
 
@@ -166,3 +393,5 @@ experience principles `core-task-parity` and `accessible-by-standard`.
 | 13 | 2026-09-08 | update | Under req-2026-09-07-contributors-body through the small-change lane (work item lead-ryr33): the Contributors entry (Required sections, item 2) states that the body holds a contributor's criteria and constraints — each riding by name on the scenarios it bounds — and that the reasoning behind them, what was considered and not made a criterion, and the maker's self-check stand in the Document History row of the step that added them; the rule the screen of feat-tool-skills applied by hand. Nothing else changed. Made by the solutions architect role. |
 | 14 | 2026-09-08 | update | Under feat-plain-voice: the Contributors entry and the Rules section rewritten to the plain-voice rule, every requirement kept, prose cut. The hand-authored guideline and fitness set beside this typedef were not re-synchronized in this pass. |
 | 15 | 2026-09-08 | update | Under feat-flow-simplification, retiring the PO output check: `checked` is written by feature-authoring's own self-check step, not a separate check's record step; `returned` and `pending-definition` drop from the status list — a self-checked feature only goes `returned` from the scenario-assignment process; Produced-by and the Commitment section point to the self-check. |
+| 16 | 2026-09-08 | update | Under feat-plain-voice-rest (`@hash:7c2f4e9b6a13`): Rules gains a bullet — a Contributors passage names an owning shop, a criterion, or a constraint in one short line, no reasoning restated, the reasoning kept in the Document History row that added it. Made by the lead-solutions-architect role. |
+| 17 | 2026-09-08 | update | Under feat-plain-voice-rest (`@hash:9a4e7c1b2f56`, `@hash:5f2b8d4c9a17`, `@hash:3d8b1c5f9e24`): Writing rules and Fitness scenarios sections added, carrying forward the feature guideline (v9) and fitness set (v9), tightened per base-writing-style v3, plus a new rule 8 and fitness scenario 8 holding the whole document to the base-writing-style feature word target; references updated from the retired PO output check to feature-authoring's self-check step. From this version the guideline and fitness set are renderings of this typedef, produced by `basis/tools/compile_typedef.py`; their own histories end at guideline v9 and fitness v9 and stay readable in the repository history. Made by the lead-solutions-architect role. |

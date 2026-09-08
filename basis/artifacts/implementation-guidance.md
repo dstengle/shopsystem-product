@@ -5,9 +5,9 @@ defines: implementation-guidance
 owner: product-authority
 status: approved
 approved: 2026-09-06
-version: 1
+version: 2
 created: 2026-09-06
-updated: 2026-09-06
+updated: 2026-09-08
 ancestry: [implementation-guidance]
 ---
 
@@ -195,6 +195,16 @@ binds a later assignment or another context. *Decision:* yes/no per
 record.
 *Derived check:* judged — implementation-guidance fitness scenario 5.
 
+**6. Meet the guidance-record word target.**
+Before: a record at 1,305 words, its What changes and What not to do
+restating each scenario in full.
+After: a record whose What changes and What not to do state only what
+rules 1–5 require, the whole document at or under the target.
+*Test:* count the words of the whole document. *Criterion:* the count
+is at or under the base-writing-style word target for a guidance
+record. *Decision:* yes/no per record.
+*Derived check:* judged — implementation-guidance fitness scenario 6.
+
 ## Fitness scenarios
 
 An implementation guidance record is the solutions architect role's
@@ -253,6 +263,12 @@ Scenario 5: bound to one assignment
   and every statement is about those scenarios; no statement binds a
   later assignment or another context
 
+Scenario 6: the record meets its word target
+  Given the record document
+  When its words are counted
+  Then the count is at or under the base-writing-style word target for
+  a guidance record
+
 ### Compile mapping (each Then → one judge-rubric assertion)
 
 | Scenario Then | Judge-rubric assertion |
@@ -262,6 +278,7 @@ Scenario 5: bound to one assignment
 | 3 — actionable alone | "Reading the record with the assigned scenarios only: can the shop begin without asking the architect? Cite what is missing, or state none." |
 | 4 — reasons for what not to do | "For each entry in What not to do: is the reason named — decomposition, contract, guardrail, or principle? Cite any entry without one." |
 | 5 — one assignment | "Are the initiative, feature, context, and scenario hashes named, and is every statement about those scenarios only? Cite any statement that binds a later assignment or another context." |
+| 6 — word target | "Count the document's words. Is the count at or under the base-writing-style target for a guidance record? State the count and pass/fail." |
 
 ## Derived review checklist
 
@@ -270,6 +287,7 @@ Scenario 5: bound to one assignment
 - The shop can act on the record with the assigned scenarios alone. *(§Commitment; fitness 3)*
 - Each thing not to do carries its reason. *(§Required sections 3; fitness 4)*
 - Initiative, feature, context, and scenario hashes named; nothing binds past this assignment. *(§Required frontmatter, §Rules; fitness 5)*
+- Whole document at or under the base-writing-style word target for a guidance record. *(§Writing rules rule 6; fitness 6)*
 - The record is not sent in a message; it lives at `guidance/<feature>-<context>.md`. *(§Rules)*
 
 ## Document History
@@ -277,3 +295,4 @@ Scenario 5: bound to one assignment
 | Version | Date | Kind | Entry |
 |---|---|---|---|
 | 1 | 2026-09-06 | update | Authored under req-2026-09-06-implementation-guidance at the small-change process's make step, from the authority's direction of 2026-09-06 recorded in that request ("For now create an implementation guidance artifact that references the initiative"; "guidance per bounded context"; "created with the scenarios in mind"; "only be part of a historical record"): the type, its identity, frontmatter, sections, rules, commitment, and sources; the Writing rules and Fitness scenarios sections carried here so the guideline and fitness set are produced by basis/tools/compile_typedef.py. Status approved on the authority's direction of 2026-09-06 as the request records it. Maker's evaluation against the artifact-typedef typedef's checklist: defines matches the instance type; the eight required sections present in order; the commitment states a consequence; sources present, no pinned example links; every checklist entry cites a clause; Writing rules and Fitness scenarios both present, each in the produced text's form. Made by the lead-solutions-architect role. |
+| 2 | 2026-09-08 | update | Under feat-plain-voice-rest (`@hash:2c9f3a7e1b48`): Writing rules gains rule 6 and Fitness scenarios gains scenario 6, holding the whole record to the base-writing-style guidance-record word target (600 words); the checklist gains a row citing it. Made by the lead-solutions-architect role. |

@@ -5,35 +5,43 @@ target-type: feature
 owner: product-authority
 status: approved
 approved: 2026-08-31
-version: 9
-created: 2026-08-27
+version: 17
+created: 2026-08-26
 updated: 2026-09-08
+generated: true
+generated-by: basis/tools/compile_typedef.py
+source: basis/artifacts/feature.md
+source-digest: sha256:603c7514828f
 ---
+
+<!-- Generated from `basis/artifacts/feature.md` (its Writing rules section) by `basis/tools/compile_typedef.py`; do not edit by hand — edit the typedef and re-render. -->
 
 # Guideline: feature
 
 **Voice principle.** Write the feature for the person or agent it
-serves and for the shops that will run its scenarios against the real
-system: a narrative that says who and why, then scenarios that each
-state one action and one observable outcome, with nothing about how.
+serves and for the shops that will run its scenarios: a narrative that
+says who and why, then scenarios that each state one action and one
+observable outcome, with nothing about how, the whole document at or
+under its word target.
 
 **Highlights (the layer compiled into generating context):** a Feature
 line and a narrative — who, what, the outcome, in the framing's words ·
 one When, one observable Then, no how · each owning shop named per
 scenario · the architect's constraints where the decomposition names
-them · usability and accessibility
-criteria where there is an interaction · `@feature:` and `@hash:` on every
-scenario · every named edge
-covered or excluded with a reason · the interaction types stated, or "none" with a reason.
+them · usability and accessibility criteria where there is an
+interaction · `@feature:` and `@hash:` on every scenario · every named
+edge covered or excluded with a reason · the interaction types stated,
+or "none" with a reason · the whole document at or under the
+base-writing-style word target for a feature.
 
 **Layers:** this guideline adds feature rules on top of the
-[base writing style](base-writing-style.md); the base always applies
-and is never overridden. When rules conflict, an approved principle
-beats the [feature typedef](../artifacts/feature.md), which beats this
-guideline. Gherkin's own syntax governs the Feature, Background, and
-Given/When/Then form. Every rule feeds the
-[feature fitness set](../fitness/feature.fitness.md), scored in the
-[PO output check](../processes/po-output-check.md).
+[base writing style](base-writing-style.md); the base
+always applies and is never overridden. When rules conflict, an
+approved principle beats the [feature typedef](../artifacts/feature.md), which
+beats this guideline. Gherkin's own syntax governs the Feature,
+Background, and Given/When/Then form. Every rule feeds the
+[feature fitness set](../fitness/feature.fitness.md), scored at
+feature-authoring's self-check step.
 
 ---
 
@@ -75,8 +83,7 @@ list renders within one second at ten thousand runs."
 *Criterion:* every scenario has a named owning shop; where the
 Interaction types section names a type, both designer criteria are
 present; where the Contributors section says the decomposition names
-constraints,
-they are present. *Decision:* yes/no per scenario.
+constraints, they are present. *Decision:* yes/no per scenario.
 *Derived check:* judged — feature fitness scenario 2.
 
 **4. Tag every scenario with its feature and hash.**
@@ -98,9 +105,8 @@ owns them".
 *Test:* read the Edges table and the cases the framing or a
 contributor's criteria name.
 *Criterion:* every row names a covering scenario or a reasoned
-exclusion, and every case the framing or a contributor's criteria name has
-a row. *Decision:*
-yes/no per case.
+exclusion, and every case the framing or a contributor's criteria name
+has a row. *Decision:* yes/no per case.
 *Derived check:* judged — feature fitness scenario 4.
 
 **6. State the interaction types, or "none" with a reason.**
@@ -109,50 +115,33 @@ After: "Interaction types: cli, gui — from the core-task list's 'read
 a decision' row." or "Interaction types: none — the capability is a
 nightly reconciliation with no person or agent at an interface."
 *Test:* read the Interaction types section. *Criterion:* it names the
-types the capability must be available on (the typedef requires them
-to come from the [core-task list](../experience/core-tasks.md);
-whether they do is a gap to be filed, for a lint or the conformance
-check),
-or "none" with a reason the framing bears out. *Decision:* yes/no per feature.
+types the capability must be available on, or "none" with a reason the
+framing bears out. *Decision:* yes/no per feature.
 *Derived check:* judged — feature fitness scenario 5.
 
 **7. Put criteria in the Contributors body; put the reasoning in the
 Document History row.**
 Before: a Contributors section that, after each criterion, explains
-why it was chosen, lists the alternatives considered and not made a
-criterion, and closes with the contributor's own check of the section
-against the principles.
+why it was chosen and closes with a self-check against the principles.
 After: "the product designer role's criteria, on Scenario: a failed
 run is marked: marked within one glance; failure not by color alone."
 — and, in the Document History row of the step that added them: "two
-candidate criteria considered and not made criteria (a sound cue; a
-count in the title bar): neither serves the framing's outcome;
-self-check against the guideline: both criteria ride by name on the
-scenario they bound."
+candidates considered and not made criteria: neither serves the
+framing's outcome; self-check: both ride by name on the scenario they
+bound."
 *Test:* read each passage of the Contributors body. *Criterion:* every
 passage is an owning shop, a criterion, or a constraint, each riding by
-name on the scenarios it bounds; the reasoning behind a criterion, what
-was considered and not made a criterion, and the maker's self-check
-stand in the Document History row of the step that added them, not in
-the body. *Decision:* yes/no per passage.
+name on the scenarios it bounds, in one short line; the reasoning
+behind a criterion and the maker's self-check stand in the Document
+History row, not the body. *Decision:* yes/no per passage.
 *Derived check:* judged — feature fitness scenario 7.
 
-## Document History
-
-| Version | Date | Kind | Entry |
-|---|---|---|---|
-| 1 | 2026-08-27 | update | Authored as the acceptance-scenarios guideline to complete the type's definition chain. |
-| 1 | 2026-08-27 | review | Screened: findings — rule 5's criterion carried a clause no check decides; rule 1 narrower than the typedef; a section reference by number. |
-| 2 | 2026-08-27 | update | Repairs applied. |
-| 2 | 2026-08-27 | review | Re-screened: clean. |
-| 3 | 2026-08-28 | update | Owner decision: re-formed for the `feature` type — a narrative rule added; contributors per owning shop; the bounded-context tag left to assignment; the exclusion example names a feature, not a brief. File renamed. |
-| 3 | 2026-08-28 | review | Screened with the chain: findings — rule 4 stricter than its scenario and failing every assigned feature; a hash form Gherkin cannot parse; rule 5 reading a list the typedef did not require; rule 6 undecidable on absence; rule 2 narrower than scenario 1. |
-| 4 | 2026-08-28 | update | Repairs: rule 4 presence-only with the tag forms; rules 3, 5, 6 aligned to scenarios 2, 4, 5; rule 2 widened to any implementation detail. |
-| 4 | 2026-08-28 | review | Re-screened: findings — rule 4's absence clause; rule 2's test without Background and a closed detail list; an invented reference form; the core-task source unchecked anywhere. |
-| 5 | 2026-08-28 | update | Repairs applied; the core-task source named as a filed gap. |
-| 5 | 2026-08-28 | review | Final screen (round 3): clean; "to be filed" aligned with the typedef. |
-| 6 | 2026-08-31 | update | Owner decision: rule 3 checks ownership and the two roles' criteria; the co-authorship example replaced. |
-| 7 | 2026-08-31 | review | Round-1 screen of the co-production removal: rule 5's example attributed an edge to a shop at authoring time; re-attributed to the designer's criterion. |
-| 8 | 2026-08-31 | review | Round-2 screen: rule 5's test and criterion extended to cases a contributor's criteria name; rule 3's constraints clause names its antecedent (Contributors section). |
-| 8 | 2026-08-31 | state | draft → approved with batch C as one block (brief-032 ask 2, default accepted). |
-| 9 | 2026-09-08 | update | Under req-2026-09-07-contributors-body through the small-change lane (work item lead-ryr33): rule 7 added — the Contributors body holds criteria and constraints, each riding by name on the scenarios it bounds; the reasoning behind them, what was considered and not made a criterion, and the maker's self-check go in the Document History row of the step that added them; derived check feature fitness scenario 7. Nothing else changed. Made by the solutions architect role. |
+**8. Meet the feature's word target.**
+Before: a feature at 3,588 words, its Contributors and History rows
+carrying reasoning the base style keeps out of the body.
+After: a feature whose body holds only what rules 1–7 require, at or
+under the target.
+*Test:* count the words of the whole document. *Criterion:* the count
+is at or under the base-writing-style word target for a feature.
+*Decision:* yes/no per feature.
+*Derived check:* judged — feature fitness scenario 8.

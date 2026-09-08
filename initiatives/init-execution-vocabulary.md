@@ -2,8 +2,8 @@
 type: initiative
 id: init-execution-vocabulary
 name: Execution vocabulary
-status: planned
-version: 1
+status: active
+version: 3
 owner: lead-pm
 created: 2026-09-08
 updated: 2026-09-08
@@ -29,10 +29,12 @@ One working session. No-gos: no edit in place of a delivered artifact — supers
 
 ## Features
 
-None yet.
+feat-execution-vocabulary
 
 ## Document History
 
 | Version | Date | Kind | Entry |
 |---|---|---|---|
 | 1 | 2026-09-08 | update | Framed and planned by the lead-pm on the authority's decision and order ("follow your order"). |
+| 2 | 2026-09-08 | update | feat-execution-vocabulary authored by the PO role at feature-authoring's draft step, from this initiative's Framing and For whom sections. |
+| 3 | 2026-09-08 | state | `planned` → `active`: feat-execution-vocabulary's pass at feature-authoring's self-check step, recorded by the PO role. |

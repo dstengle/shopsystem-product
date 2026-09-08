@@ -8,13 +8,13 @@ judged-by: cold-reviewer
 owner: product-authority
 status: approved
 approved: 2026-09-06
-version: 1
+version: 2
 created: 2026-09-06
-updated: 2026-09-06
+updated: 2026-09-08
 generated: true
 generated-by: basis/tools/compile_typedef.py
 source: basis/artifacts/implementation-guidance.md
-source-digest: sha256:85b888063bbd
+source-digest: sha256:a5a16f257ca0
 ---
 
 <!-- Generated from `basis/artifacts/implementation-guidance.md` (its Fitness scenarios section) by `basis/tools/compile_typedef.py`; do not edit by hand — edit the typedef and re-render. -->
@@ -77,6 +77,12 @@ Scenario 5: bound to one assignment
   and every statement is about those scenarios; no statement binds a
   later assignment or another context
 
+Scenario 6: the record meets its word target
+  Given the record document
+  When its words are counted
+  Then the count is at or under the base-writing-style word target for
+  a guidance record
+
 ## Compile mapping (each Then → one judge-rubric assertion)
 
 | Scenario Then | Judge-rubric assertion |
@@ -86,3 +92,4 @@ Scenario 5: bound to one assignment
 | 3 — actionable alone | "Reading the record with the assigned scenarios only: can the shop begin without asking the architect? Cite what is missing, or state none." |
 | 4 — reasons for what not to do | "For each entry in What not to do: is the reason named — decomposition, contract, guardrail, or principle? Cite any entry without one." |
 | 5 — one assignment | "Are the initiative, feature, context, and scenario hashes named, and is every statement about those scenarios only? Cite any statement that binds a later assignment or another context." |
+| 6 — word target | "Count the document's words. Is the count at or under the base-writing-style target for a guidance record? State the count and pass/fail." |

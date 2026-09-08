@@ -5,13 +5,13 @@ target-type: implementation-guidance
 owner: product-authority
 status: approved
 approved: 2026-09-06
-version: 1
+version: 2
 created: 2026-09-06
-updated: 2026-09-06
+updated: 2026-09-08
 generated: true
 generated-by: basis/tools/compile_typedef.py
 source: basis/artifacts/implementation-guidance.md
-source-digest: sha256:85b888063bbd
+source-digest: sha256:a5a16f257ca0
 ---
 
 <!-- Generated from `basis/artifacts/implementation-guidance.md` (its Writing rules section) by `basis/tools/compile_typedef.py`; do not edit by hand — edit the typedef and re-render. -->
@@ -106,3 +106,13 @@ named and every statement is about those scenarios; no statement
 binds a later assignment or another context. *Decision:* yes/no per
 record.
 *Derived check:* judged — implementation-guidance fitness scenario 5.
+
+**6. Meet the guidance-record word target.**
+Before: a record at 1,305 words, its What changes and What not to do
+restating each scenario in full.
+After: a record whose What changes and What not to do state only what
+rules 1–5 require, the whole document at or under the target.
+*Test:* count the words of the whole document. *Criterion:* the count
+is at or under the base-writing-style word target for a guidance
+record. *Decision:* yes/no per record.
+*Derived check:* judged — implementation-guidance fitness scenario 6.
