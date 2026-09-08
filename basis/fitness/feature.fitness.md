@@ -4,9 +4,9 @@ id: feature-fitness
 owner: product-authority
 status: approved
 approved: 2026-08-31
-version: 8
+version: 9
 created: 2026-08-26
-updated: 2026-08-28
+updated: 2026-09-08
 target-type: feature
 judged: true
 executable: false
@@ -77,6 +77,16 @@ Scenario 6: the feature says who it is for and why
   Then they name who the capability is for, what they can do, and the
   outcome it serves, and that outcome is the framing's
 
+Scenario 7: the Contributors body carries criteria, not reasoning
+  Given the Contributors section's body
+  When each passage is read
+  Then every passage is an owning shop, a criterion, or a constraint,
+  riding by name on the scenarios it bounds; a passage carrying the
+  reasoning behind a criterion, what was considered and not made a
+  criterion, or a maker's self-check fails, with the passage named
+  (those stand in the Document History row of the step that added
+  them, which is not read here)
+
 ## Compile mapping (each Then → one judge-rubric assertion)
 
 | Scenario Then | Judge-rubric assertion |
@@ -87,6 +97,7 @@ Scenario 6: the feature says who it is for and why
 | 4 — edges covered | "For each row of the Edges table and each case the framing or a contributor's criteria name: a covering scenario or a reasoned exclusion? Any uncovered or missing case = fail." |
 | 5 — interaction types stated | "Does the Interaction types section name types, or 'none' with a reason the framing bears out? Cite the sentence or its absence." |
 | 6 — narrative | "Does the Feature narrative name who, what, and the outcome, and is the outcome the framing's? Cite the lines or their absence." |
+| 7 — Contributors body | "For each passage of the Contributors body: is it an owning shop, a criterion, or a constraint riding by name on the scenarios it bounds? A passage of reasoning behind a criterion, of what was considered and not made a criterion, or of a maker's self-check = fail; name the passage." |
 
 ## Document History
 
@@ -107,3 +118,4 @@ Scenario 6: the feature says who it is for and why
 | 7 | 2026-08-31 | update | Owner decision: scenario 2 checks ownership and the two roles' criteria, not shop authorship. |
 | 8 | 2026-08-31 | review | Round-2 screen: scenario 4 and its judge framing extended to cases a contributor's criteria name (matching the typedef's Edges sources); the constraints clause's antecedent named (Contributors section); the intro's source shop is an owning shop. |
 | 8 | 2026-08-31 | state | draft → approved with batch C as one block (brief-032 ask 2, default accepted). |
+| 9 | 2026-09-08 | update | Under req-2026-09-07-contributors-body through the small-change lane (work item lead-ryr33): scenario 7 added with its judge-rubric row — a Contributors body carrying reasoning, what was considered and not made a criterion, or a maker's self-check fails with the passage named; one carrying owning shops, criteria, and constraints only passes; decidable from the feature alone. Nothing else changed. Made by the solutions architect role. |

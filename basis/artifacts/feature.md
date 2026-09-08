@@ -5,9 +5,9 @@ defines: feature
 owner: product-authority
 status: approved
 approved: 2026-08-31
-version: 12
+version: 13
 created: 2026-08-26
-updated: 2026-09-04
+updated: 2026-09-08
 ancestry: [feature]
 ---
 
@@ -81,7 +81,13 @@ goes to `returned`.
    an interaction, the product designer role's usability acceptance
    criteria and the accessibility criteria; where the decomposition
    names them, the solutions architect role's non-functional
-   constraints, riding as criteria on the scenarios they bound.
+   constraints, riding as criteria on the scenarios they bound. The
+   body of the section holds a contributor's criteria and constraints
+   — each riding by name on the scenarios it bounds — and nothing
+   else: the reasoning behind them, what was considered and not made a
+   criterion, and the maker's self-check stand in the Document History
+   row of the step that added them, not in the body the shops read to
+   build.
 3. **Interaction types** — always present: the interaction types the
    capability must be available on, from the
    [core-task list](../experience/core-tasks.md), or "none" with the
@@ -173,3 +179,4 @@ experience principles `core-task-parity` and `accessible-by-standard`.
 | 11 | 2026-08-31 | update | Owner direction: the repository/register split — the feature repository (the artifacts as specified) is what the conflict sweep at assignment reads; the scenario register is the tracker of implemented scenarios, a feature to be built. |
 | 11 | 2026-08-31 | state | draft → approved with batch C as one block (brief-032 ask 2, default accepted). |
 | 12 | 2026-09-04 | update | Under init-request-routing / feat-request-routing on the authority's standing direction of 2026-09-04, per adr-2026-09-04-request-front-end: frontmatter `size` (`standard` | `small`, `standard` by default); when `small`, a `request` link stands in place of `initiative` and the framing is the request's section 1 (What is requested), which the PO output check's `framing` input names for a small feature; rule added — a small feature is made from a request routed to the small-change lane when the change is best expressed as scenarios, the lane's definition step may produce one; Type bullet and checklist updated. Scenario and hash rules unchanged. Made by the architect role; the owner's approval of the amendment is pending. |
+| 13 | 2026-09-08 | update | Under req-2026-09-07-contributors-body through the small-change lane (work item lead-ryr33): the Contributors entry (Required sections, item 2) states that the body holds a contributor's criteria and constraints — each riding by name on the scenarios it bounds — and that the reasoning behind them, what was considered and not made a criterion, and the maker's self-check stand in the Document History row of the step that added them; the rule the screen of feat-tool-skills applied by hand. Nothing else changed. Made by the solutions architect role. |

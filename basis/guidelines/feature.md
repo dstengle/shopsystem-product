@@ -5,9 +5,9 @@ target-type: feature
 owner: product-authority
 status: approved
 approved: 2026-08-31
-version: 8
+version: 9
 created: 2026-08-27
-updated: 2026-08-28
+updated: 2026-09-08
 ---
 
 # Guideline: feature
@@ -116,6 +116,27 @@ check),
 or "none" with a reason the framing bears out. *Decision:* yes/no per feature.
 *Derived check:* judged — feature fitness scenario 5.
 
+**7. Put criteria in the Contributors body; put the reasoning in the
+Document History row.**
+Before: a Contributors section that, after each criterion, explains
+why it was chosen, lists the alternatives considered and not made a
+criterion, and closes with the contributor's own check of the section
+against the principles.
+After: "the product designer role's criteria, on Scenario: a failed
+run is marked: marked within one glance; failure not by color alone."
+— and, in the Document History row of the step that added them: "two
+candidate criteria considered and not made criteria (a sound cue; a
+count in the title bar): neither serves the framing's outcome;
+self-check against the guideline: both criteria ride by name on the
+scenario they bound."
+*Test:* read each passage of the Contributors body. *Criterion:* every
+passage is an owning shop, a criterion, or a constraint, each riding by
+name on the scenarios it bounds; the reasoning behind a criterion, what
+was considered and not made a criterion, and the maker's self-check
+stand in the Document History row of the step that added them, not in
+the body. *Decision:* yes/no per passage.
+*Derived check:* judged — feature fitness scenario 7.
+
 ## Document History
 
 | Version | Date | Kind | Entry |
@@ -134,3 +155,4 @@ or "none" with a reason the framing bears out. *Decision:* yes/no per feature.
 | 7 | 2026-08-31 | review | Round-1 screen of the co-production removal: rule 5's example attributed an edge to a shop at authoring time; re-attributed to the designer's criterion. |
 | 8 | 2026-08-31 | review | Round-2 screen: rule 5's test and criterion extended to cases a contributor's criteria name; rule 3's constraints clause names its antecedent (Contributors section). |
 | 8 | 2026-08-31 | state | draft → approved with batch C as one block (brief-032 ask 2, default accepted). |
+| 9 | 2026-09-08 | update | Under req-2026-09-07-contributors-body through the small-change lane (work item lead-ryr33): rule 7 added — the Contributors body holds criteria and constraints, each riding by name on the scenarios it bounds; the reasoning behind them, what was considered and not made a criterion, and the maker's self-check go in the Document History row of the step that added them; derived check feature fitness scenario 7. Nothing else changed. Made by the solutions architect role. |
