@@ -6,12 +6,12 @@ type: skill
 id: session-handoff-skill
 status: approved
 created: 2026-08-21
-updated: 2026-09-02
+updated: 2026-09-08
 generated: true
 generated-by: basis/tools/compile_process.py
 derived-from: session-handoff-process
 source: basis/processes/session-handoff.md
-source-digest: sha256:f2d4b26fbc81
+source-digest: sha256:fa4e0c01233f
 ---
 
 # Session handoff (compiled from `session-handoff-process`)
@@ -25,6 +25,7 @@ Result of a run: `session_record` (session-record).
 ```mermaid
 flowchart TD
   collect(["Write the session record — agent: router<br/>out — session_record: session-record, corrections: correction[]"])
+  write_cost_rows["Write the cost rows — runtime<br/>in — session_record: session-record, run_anchor: string<br/>out — cost_artifact: string"]
   validate["Validate the record — runtime<br/>in — session_record: session-record<br/>out — validation: validation-report"]
   route_validation{"Route on validation<br/>in — validation: validation-report, round: integer"}
   repair(["Repair the record — agent: router<br/>in — session_record: session-record, validation: validation-report<br/>out — session_record: session-record"])
@@ -33,7 +34,8 @@ flowchart TD
   land["Land the handoff — runtime<br/>in — session_record: session-record"]
   __end(("end<br/>result — session_record: session-record"))
   __start(("start")) --> collect
-  collect --> validate
+  collect --> write_cost_rows
+  write_cost_rows --> validate
   validate --> route_validation
   route_validation -->|success exit: record validates| land
   route_validation -->|failsafe exit: round >= 3| file_defect
@@ -48,7 +50,7 @@ flowchart TD
 
 Run by an agent in role `router`. reads: — · writes: session_record, corrections.
 - check: `corrections.all(c, c.target != "" && c.bead != "")`
-- then: `validate`
+- then: `write-cost-rows`
 
 Prompt:
 
@@ -64,6 +66,17 @@ channel: memory writes are frozen.
 Return each declared output on its own line as `<name>: <value>` — session_record, corrections — a list as a JSON array, a value with line breaks as a JSON string; these lines close your reply.
 
 Do not use these words: ratif, disposition, rebaseline bill, surface, seat
+```
+
+## write-cost-rows — Write the cost rows
+
+Run by the runtime — no agent, no prose. reads: session_record, run_anchor · writes: cost_artifact.
+
+```yaml
+run: 'python3 basis/tools/write_cost_rows.py ${session_record.id} --anchor ${run_anchor}
+
+  '
+next: validate
 ```
 
 ## validate — Validate the record
