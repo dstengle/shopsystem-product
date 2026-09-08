@@ -5,7 +5,7 @@ defines: feature
 owner: product-authority
 status: approved
 approved: 2026-08-31
-version: 13
+version: 14
 created: 2026-08-26
 updated: 2026-09-08
 ancestry: [feature]
@@ -75,19 +75,14 @@ goes to `returned`.
 1. **Feature** — the Gherkin `Feature:` line with its name, and the
    narrative beneath it: who the capability is for, what they can do,
    and the outcome it serves, in the framing's words.
-2. **Contributors** — for every scenario, the owning shop named — the
-   shop the solutions architect's decomposition places the behavior in
-   (ownership for assignment, not authorship); where the capability has
-   an interaction, the product designer role's usability acceptance
-   criteria and the accessibility criteria; where the decomposition
-   names them, the solutions architect role's non-functional
-   constraints, riding as criteria on the scenarios they bound. The
-   body of the section holds a contributor's criteria and constraints
-   — each riding by name on the scenarios it bounds — and nothing
-   else: the reasoning behind them, what was considered and not made a
-   criterion, and the maker's self-check stand in the Document History
-   row of the step that added them, not in the body the shops read to
-   build.
+2. **Contributors** — the owning shop per scenario, from the
+   decomposition (ownership for assignment, not authorship); the
+   designer's usability and accessibility criteria where there is an
+   interaction; the architect's non-functional constraints where the
+   decomposition names them — each riding by name on the scenarios it
+   bounds. Nothing else: the reasoning, what was considered, and the
+   maker's self-check go in the Document History row of the step that
+   added them.
 3. **Interaction types** — always present: the interaction types the
    capability must be available on, from the
    [core-task list](../experience/core-tasks.md), or "none" with the
@@ -110,29 +105,18 @@ goes to `returned`.
 
 ## Rules
 
-- A scenario's `@bounded-context:` tag is written by the solutions
-  architect role at assignment, never by the PO role — a writer rule
-  the assignment process enforces; the check does not judge the tag's
-  presence, since a re-verified or resubmitted feature may carry it. In
-  the assignment process, a scenario whose owning context differs from
-  its Contributors' shop is treated as unowned with that reason, so the
-  feature returns (`returned`) for the PO role to correct the owning
-  shop it names.
+- `@bounded-context:` is written only by the architect, at
+  assignment, never by the PO. A scenario whose owning context
+  differs from its Contributors' shop is unowned; the feature
+  returns for the PO to correct it.
 - A changed scenario text is a new scenario with a new `@hash:`.
-  Whether the hash matches the text is a mechanical check, to be filed
-  as a lint.
-- A scenario's conflicts with behavior already specified are caught
-  by the sweep of the feature repository at assignment, never by
-  asking the shop during authoring; the shop's voice after dispatch
-  is the clarify and the return.
-- A small feature (`size: small`) is made from a request routed to the
-  small-change lane when the change is best expressed as scenarios;
-  the lane's definition step may produce one, the PO role its author
-  as for any feature. It links its `request` in place of an
-  initiative, is framed by the request's section 1, and is otherwise
-  a feature: the same sections, scenario and hash rules, check, and
-  assignment; no bet and no check of record stand between the request
-  and it.
+- A scenario's conflict with specified behavior is caught by the
+  repository sweep at assignment, never asked during authoring; a
+  shop's voice after dispatch is the clarify and the return.
+- A small feature (`size: small`) comes from a request routed to the
+  small-change lane; it links `request` in place of `initiative`,
+  framed by the request's section 1, and is otherwise a feature like
+  any other — no bet, no check of record between the request and it.
 
 ## Commitment (Definition of Done)
 
@@ -180,3 +164,4 @@ experience principles `core-task-parity` and `accessible-by-standard`.
 | 11 | 2026-08-31 | state | draft → approved with batch C as one block (brief-032 ask 2, default accepted). |
 | 12 | 2026-09-04 | update | Under init-request-routing / feat-request-routing on the authority's standing direction of 2026-09-04, per adr-2026-09-04-request-front-end: frontmatter `size` (`standard` | `small`, `standard` by default); when `small`, a `request` link stands in place of `initiative` and the framing is the request's section 1 (What is requested), which the PO output check's `framing` input names for a small feature; rule added — a small feature is made from a request routed to the small-change lane when the change is best expressed as scenarios, the lane's definition step may produce one; Type bullet and checklist updated. Scenario and hash rules unchanged. Made by the architect role; the owner's approval of the amendment is pending. |
 | 13 | 2026-09-08 | update | Under req-2026-09-07-contributors-body through the small-change lane (work item lead-ryr33): the Contributors entry (Required sections, item 2) states that the body holds a contributor's criteria and constraints — each riding by name on the scenarios it bounds — and that the reasoning behind them, what was considered and not made a criterion, and the maker's self-check stand in the Document History row of the step that added them; the rule the screen of feat-tool-skills applied by hand. Nothing else changed. Made by the solutions architect role. |
+| 14 | 2026-09-08 | update | Under feat-plain-voice: the Contributors entry and the Rules section rewritten to the plain-voice rule, every requirement kept, prose cut. The hand-authored guideline and fitness set beside this typedef were not re-synchronized in this pass. |

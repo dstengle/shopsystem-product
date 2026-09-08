@@ -4,9 +4,9 @@ id: feature-authoring-process
 owner: product-authority
 status: approved
 approved: 2026-08-31
-version: 6
+version: 7
 created: 2026-08-31
-updated: 2026-09-02
+updated: 2026-09-08
 produces: [feature]
 carried-by: feature-authoring-skill
 condition-language: cel
@@ -132,23 +132,18 @@ steps:
     inputs: [initiative, repository]
     outputs: [artifact, initiative]
     prompt: |
-      From the initiative's Framing and For whom sections, write one
-      feature per its typedef into the feature repository at
-      repository: the Feature line and narrative in the framing's
-      words; the scenarios, steps included, each tagged @feature: and
-      @hash:; the Contributors section naming each scenario's owning
-      shop from the initiative's Decomposition section; the
-      Interaction types section stating the types the initiative's
-      For whom section names, or "none" with the reason; the Edges
-      table from the cases the framing names, covered or excluded
-      with a reason. You author alone — no shop is asked. Set the
-      feature's status to draft and link the initiative in its
-      frontmatter; add the feature's id to the initiative's Features
-      section — the typedef's list of features as they are made.
-      Where the Features section already lists a feature standing
-      returned in the repository, author that feature again instead:
-      revise its own document — the id stays, and a changed scenario
-      text is a new scenario by hash — and add no duplicate id.
+      From the initiative's Framing and For whom, write one feature
+      into repository, per its typedef. Feature line and narrative:
+      the framing's words. Scenarios: at most ten, steps included,
+      one line each, tagged @feature: and @hash:. Contributors:
+      owning shop per scenario from the Decomposition; each
+      contributor's criteria one line. Interaction types: For whom's
+      types, or "none" with reason. Edges: at most ten rows, from
+      the framing's cases, covered or excluded with reason. One
+      Document History row. Author alone, no shop asked. Status
+      draft; link the initiative; add the id to its Features
+      section. A returned feature already listed: revise in place —
+      id stays, a changed scenario is a new hash, no duplicate.
       Return the feature's path.
     next: add-usability
 
@@ -158,14 +153,13 @@ steps:
     inputs: [artifact, initiative, experience_principles, core_tasks]
     outputs: [artifact]
     prompt: |
-      Where the initiative's For whom section names an interaction
-      type, write into the feature's Contributors section the
-      usability acceptance criteria and the accessibility criteria
-      for its scenarios, judged against the experience principle set
-      at experience_principles and the core-task list at core_tasks —
-      and add to the Edges table any failure or boundary case those
-      criteria name. Where the section says "none", record that no
-      criteria are due, with its reason. Return the feature.
+      Where For whom names an interaction type, write the usability
+      and accessibility criteria for the feature's scenarios into
+      Contributors, one line each, judged against
+      experience_principles and core_tasks. Add to Edges any failure
+      or boundary case those criteria name. Where For whom says
+      "none", record that no criteria are due, with the reason.
+      Return the feature.
     next: add-constraints
 
   - id: add-constraints
@@ -174,13 +168,12 @@ steps:
     inputs: [artifact, decomposition]
     outputs: [artifact]
     prompt: |
-      Read the decomposition at decomposition. Where it names
-      non-functional constraints bounding the behaviors this
-      feature's scenarios state, write them into the Contributors
-      section as criteria riding on the scenarios they bound — and
-      add to the Edges table any failure or boundary case those
-      constraints name. Where none apply, record that the
-      decomposition names none for this feature. Return the feature.
+      Read decomposition. Where it names non-functional constraints
+      on this feature's scenarios, write them into Contributors as
+      criteria, one line each, riding by name on the scenarios they
+      bound. Add to Edges any failure or boundary case those
+      constraints name. Where none apply, record that decomposition
+      names none for this feature. Return the feature.
     next: prepare
 
   - id: prepare
@@ -219,3 +212,4 @@ steps:
 | 4 | 2026-08-31 | review | Batch E end-to-end screen round 1: the draft step writes the feature's id into the initiative's Features section — the §6 writer the product-flow loop's judgment reads. Post-approval repair from the end-to-end screen. |
 | 5 | 2026-08-31 | review | Batch E screen round 2: the re-author pass defined — a returned feature listed in the Features section is revised in place, its id kept, no duplicate id added. Post-approval repair from the end-to-end screen. |
 | 6 | 2026-09-02 | update | Carried-by reference repointed to the load point (.claude/skills/) — the skill-rendering process's first run removed the retired home basis/skills/; the owner's sweep per its second-home escalation. |
+| 7 | 2026-09-08 | update | The draft, add-usability, and add-constraints prompts tightened to the plain-voice rule under feat-plain-voice: each under 120 words, stating what to write; draft caps scenarios and Edges rows at ten, one line per step, one line per contributor's criteria. |

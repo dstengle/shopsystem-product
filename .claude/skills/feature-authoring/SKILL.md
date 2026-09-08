@@ -9,12 +9,12 @@ type: skill
 id: feature-authoring-skill
 status: approved
 created: 2026-08-31
-updated: 2026-09-02
+updated: 2026-09-08
 generated: true
 generated-by: basis/tools/compile_process.py
 derived-from: feature-authoring-process
 source: basis/processes/feature-authoring.md
-source-digest: sha256:36b8aaabc8c6
+source-digest: sha256:115b9f647309
 activation: model-judged
 promotion: experiment-local
 hold-after: P7D
@@ -52,23 +52,18 @@ Run by an agent in role `lead-po`. reads: initiative, repository · writes: arti
 Prompt:
 
 ```text
-From the initiative's Framing and For whom sections, write one
-feature per its typedef into the feature repository at
-repository: the Feature line and narrative in the framing's
-words; the scenarios, steps included, each tagged @feature: and
-@hash:; the Contributors section naming each scenario's owning
-shop from the initiative's Decomposition section; the
-Interaction types section stating the types the initiative's
-For whom section names, or "none" with the reason; the Edges
-table from the cases the framing names, covered or excluded
-with a reason. You author alone — no shop is asked. Set the
-feature's status to draft and link the initiative in its
-frontmatter; add the feature's id to the initiative's Features
-section — the typedef's list of features as they are made.
-Where the Features section already lists a feature standing
-returned in the repository, author that feature again instead:
-revise its own document — the id stays, and a changed scenario
-text is a new scenario by hash — and add no duplicate id.
+From the initiative's Framing and For whom, write one feature
+into repository, per its typedef. Feature line and narrative:
+the framing's words. Scenarios: at most ten, steps included,
+one line each, tagged @feature: and @hash:. Contributors:
+owning shop per scenario from the Decomposition; each
+contributor's criteria one line. Interaction types: For whom's
+types, or "none" with reason. Edges: at most ten rows, from
+the framing's cases, covered or excluded with reason. One
+Document History row. Author alone, no shop asked. Status
+draft; link the initiative; add the id to its Features
+section. A returned feature already listed: revise in place —
+id stays, a changed scenario is a new hash, no duplicate.
 Return the feature's path.
 
 Return each declared output on its own line as `<name>: <value>` — artifact, initiative — a list as a JSON array, a value with line breaks as a JSON string; these lines close your reply.
@@ -84,14 +79,13 @@ Run by an agent in role `lead-product-designer`. reads: artifact, initiative, ex
 Prompt:
 
 ```text
-Where the initiative's For whom section names an interaction
-type, write into the feature's Contributors section the
-usability acceptance criteria and the accessibility criteria
-for its scenarios, judged against the experience principle set
-at experience_principles and the core-task list at core_tasks —
-and add to the Edges table any failure or boundary case those
-criteria name. Where the section says "none", record that no
-criteria are due, with its reason. Return the feature.
+Where For whom names an interaction type, write the usability
+and accessibility criteria for the feature's scenarios into
+Contributors, one line each, judged against
+experience_principles and core_tasks. Add to Edges any failure
+or boundary case those criteria name. Where For whom says
+"none", record that no criteria are due, with the reason.
+Return the feature.
 
 Return each declared output on its own line as `<name>: <value>` — artifact — a list as a JSON array, a value with line breaks as a JSON string; these lines close your reply.
 
@@ -106,13 +100,12 @@ Run by an agent in role `lead-solutions-architect`. reads: artifact, decompositi
 Prompt:
 
 ```text
-Read the decomposition at decomposition. Where it names
-non-functional constraints bounding the behaviors this
-feature's scenarios state, write them into the Contributors
-section as criteria riding on the scenarios they bound — and
-add to the Edges table any failure or boundary case those
-constraints name. Where none apply, record that the
-decomposition names none for this feature. Return the feature.
+Read decomposition. Where it names non-functional constraints
+on this feature's scenarios, write them into Contributors as
+criteria, one line each, riding by name on the scenarios they
+bound. Add to Edges any failure or boundary case those
+constraints name. Where none apply, record that decomposition
+names none for this feature. Return the feature.
 
 Return each declared output on its own line as `<name>: <value>` — artifact — a list as a JSON array, a value with line breaks as a JSON string; these lines close your reply.
 
