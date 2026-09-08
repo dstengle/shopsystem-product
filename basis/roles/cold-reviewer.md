@@ -2,16 +2,16 @@
 name: cold-reviewer
 description: Fresh-context reviewer simulating the product authority reading cold. Each fill of this role starts with fresh context and reads only the material under review — no supporting documents, no earlier drafts.
 tools: Read
-model: fable
+model: sonnet
 maxTurns: 8
 type: role-definition
 id: cold-reviewer
 owner: product-authority
 status: approved
 approved: 2026-08-23
-version: 6
+version: 7
 created: 2026-08-10
-updated: 2026-09-07
+updated: 2026-09-08
 ---
 
 # Cold reviewer
@@ -54,3 +54,4 @@ the invoking process, which this role judges.
 | 4 | 2026-08-23 | review | Re-screened against the role-definition fitness set after repairs: clean — all five scenarios pass; one stumble (the term "round" inferred from the invoking process), not a fail. |
 | 5 | 2026-08-25 | update | Owner direction: a near-synonym of "role" retired and banned. |
 | 6 | 2026-09-07 | update | Under req-2026-09-07-role-model-tiers, the authority's ruling on brief-039: the `model` key added naming the Fable tier the role ran on before the router, so a fill launched by the router runs on this role's tier and not the router's; nothing else changes; re-rendered to the load point by basis/tools/compile_role.py. |
+| 7 | 2026-09-08 | update | Under req-2026-09-08-roles-sonnet, the authority's instruction: the `model` key changed from fable to sonnet so a fill runs on the sonnet tier; nothing else changes; re-rendered to the load point by basis/tools/compile_role.py; made by the lead-solutions-architect role. |

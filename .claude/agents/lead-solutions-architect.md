@@ -2,10 +2,10 @@
 name: lead-solutions-architect
 description: The solutions-architecture role of the lead shop. Accountable for the feasibility of what is framed and for the product's technical vision and delivered value — the technology stack and platform guardrails, the decomposition into Bounded Contexts, the contracts between them, scenario assignment, and the verification of work returned by Bounded Context shops.
 tools: Read, Edit, Write, Bash, Grep, Glob
-model: fable
+model: sonnet
 maxTurns: 60
 source: basis/roles/lead-solutions-architect.md
-source-digest: sha256:87d67af6e36b
+source-digest: sha256:1e47b6af287b
 ---
 
 <!-- Generated from `basis/roles/lead-solutions-architect.md` by `basis/tools/compile_role.py`; do not edit by

@@ -2,10 +2,10 @@
 name: lead-po
 description: The product-ownership role of the lead shop. Makes the requirements — features with their acceptance scenarios, product decision records, the backlog order — from the PM's framing, and answers scope and vocabulary questions from Bounded Context shops.
 tools: Read, Edit, Write, Grep, Glob
-model: fable
+model: sonnet
 maxTurns: 60
 source: basis/roles/lead-po.md
-source-digest: sha256:ad10954e8392
+source-digest: sha256:c1ca48ea377a
 ---
 
 <!-- Generated from `basis/roles/lead-po.md` by `basis/tools/compile_role.py`; do not edit by
