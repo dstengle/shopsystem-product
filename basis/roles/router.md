@@ -2,16 +2,16 @@
 name: router
 description: The role of the lead shop that moves one run of a process definition from step to step, from the run's anchor and the definition's rendering, and decides nothing a step decides — no verdict, route, or bet.
 tools: Read, Bash, Agent
-model: haiku
+model: sonnet
 maxTurns: 120
 type: role-definition
 id: router
 owner: product-authority
 status: approved
 approved: 2026-09-07
-version: 4
+version: 5
 created: 2026-09-07
-updated: 2026-09-07
+updated: 2026-09-08
 ---
 
 # Router
@@ -148,3 +148,4 @@ confirmation only.
 | 2 | 2026-09-07 | state | `draft` → `approved` on the authority's bet of 2026-09-07 on init-process-runner, whose appetite is one run by the runner the bet chose; the authority reads the definition at the delivery. |
 | 3 | 2026-09-07 | update | From the first run (anchor lead-4ppfo): the router took a cancel in the turn that asked for it and left the anchor open — one anti-rationalization line added, the cancel stated in one turn and taken in the next, the anchor closed with the reason. Made by the lead-solutions-architect role. |
 | 4 | 2026-09-07 | update | From the second run (anchor lead-5wzgl): the router answered the human step observe from the request's record — the human-step accountability now says the answer is the person's turn and comes from no record, file, or earlier value. Made by the lead-solutions-architect role. |
+| 5 | 2026-09-08 | update | req-2026-09-08-router-sonnet: on the authority's ruling raising the model tier on the first break after hardening, and the break itself — the run on init-run-measurement (anchor lead-fresb, 2026-09-08) launched an ADR revise step as a bare agent on haiku instead of from the architect role's rendering — `model: haiku` → `model: sonnet`. Made by the lead-solutions-architect role. |

@@ -3,7 +3,7 @@ type: adr
 id: adr-2026-09-07-coordinator-role
 title: A running process is run by the lead shop's router role from the process definition's rendering and the run's anchor, not by a code runner
 status: checked
-version: 3
+version: 4
 date: 2026-09-07
 decided-by: lead-solutions-architect
 right: guardrail
@@ -231,3 +231,4 @@ allows.
 | 2 | 2026-09-07 | update | The one revise from the screen and the PM role's rulings: the title names the process definition's rendering; "load point" and "coordinator" replaced by the harness loading the rendering, the session's top-level agent, and the router; the right carried as `guardrail` with one gloss and the missing value named as a typedef gap; §2 cut to the one sentence and its parts moved to §3 as priced consequences; the whole-skill load at each start said in §2.1 and §3; `bidirectional-conformance` carried as an exception with req-2026-09-06-migration-review as the escalation, the screen now conforms on four with two exceptions; the actor-neutral line restated; both measures named; the feature's authoring placed after the bet; the top-level agent set as the default until observed. Self-check: criterion 1 pass, 2 pass, 3 pass, 4 pass, 5 pass, 6 pass, principles pass as two carried exceptions. |
 | 2 | 2026-09-07 | review | The one screen (judge: claude-fable-5-1 / adr-authoring screen prompt v3): eleven findings — four confident (the title's referent, two terms, the unnamed feature), seven wobbly ruled by the PM role (one right with one gloss; the parts as consequences; the whole skill loaded per start; bidirectional-conformance carried as an exception until the migration review; the option's reason role-attached; the measures named; the top-level agent as default). |
 | 3 | 2026-09-07 | state | `draft` → `checked`: the PM role's pass after the one screen and the one revise; every finding repaired or ruled; the right ruled held. |
+| 4 | 2026-09-08 | review | The tier trigger fired: on the initiative-check run lead-fresb the router (haiku) launched an ADR revise step as a bare agent on its own tier instead of from the architect's rendering; that agent committed and changed the repository's remote. Under the authority's ruling (brief-039 Ask 3) the router moves to sonnet (req-2026-09-08-router-sonnet; router v5). The decision stands. |

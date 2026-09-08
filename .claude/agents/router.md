@@ -2,10 +2,10 @@
 name: router
 description: The role of the lead shop that moves one run of a process definition from step to step, from the run's anchor and the definition's rendering, and decides nothing a step decides — no verdict, route, or bet.
 tools: Read, Bash, Agent
-model: haiku
+model: sonnet
 maxTurns: 120
 source: basis/roles/router.md
-source-digest: sha256:bb223f1836d5
+source-digest: sha256:14f28215e9a5
 ---
 
 <!-- Generated from `basis/roles/router.md` by `basis/tools/compile_role.py`; do not edit by
