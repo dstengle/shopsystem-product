@@ -12,7 +12,7 @@ originator: lead-pm
 received-through: operational-contract
 route: small-change
 route-reason: "one rule in the feature typedef's Contributors section — a contributor's criteria and constraints stand in the body; the reasoning behind them, what was considered and not made a criterion, and the maker's self-check stand in the Document History — within the lead shop's own definitions, demonstrable in one session, no appetite worth a bet"
-routed-to: ""
+routed-to: "requests/req-2026-09-07-contributors-body.md#result"
 work-item: lead-ryr33
 ---
 
@@ -234,3 +234,4 @@ fitness set by name.
 | 4 | 2026-09-08 | update | Change made at the small-change lane's make step, round 1, by the solutions architect role: feature typedef 12 → 13 (Contributors entry), feature guideline 8 → 9 (rule 7), feature fitness set 8 → 9 (scenario 7 with its rubric row); verifying observation exits 0; each artifact's diff confined to what its acceptance statement allows. |
 | 5 | 2026-09-08 | review | Checked at the small-change lane's check step, round 1, by the lead-pm role against the Definition alone: pass, no finding — every acceptance statement holds on the three artifacts and the verifying observation (exit 0), and every change went through its artifact's own rules (history row citing this request, version bumped, no rendering hand-edited, changed paths equal to the named paths). |
 | 6 | 2026-09-08 | update | Verified result recorded at the small-change lane's record step by the lead-pm role: the Definition's verifying observation run from the root exits 0 — `PASS: 0 violation(s)`, then `rule present` for each of the three artifacts — so the effect is demonstrated in the running system; the Definition, the round-1 check's pass by the lead-pm role, and this result stand; no bet taken and no check of record run between the request and the result. Status set to done. |
+| 7 | 2026-09-08 | update | Routed-to field recorded at the request-intake process's land-result step by the lead-pm role: the change output from the small-change lane (the request's Result section by fragment) written to routed-to, completing the request's small-change route through the lane. |
