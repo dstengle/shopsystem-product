@@ -2,7 +2,7 @@
 type: request
 id: req-2026-09-08-initiative-cost-rollup
 status: routed
-version: 1
+version: 2
 date: 2026-09-08
 reader: lead-pm
 owner: lead-pm
@@ -23,7 +23,9 @@ routed-to: ""
 The product authority, 2026-09-08, to the implementer of run
 measurement: what happened during this initiative, which ran for an
 hour. The rows exist per session; nothing links a session or anchor
-to the initiative it served, and nothing sums them.
+to the initiative it served, and nothing sums them. The sum is wanted
+per initiative and up the tree: a leaf sub-initiative from its own
+sessions, a parent from its children.
 
 ## 2. From whom
 
@@ -34,7 +36,9 @@ through the lead shop's operational contract (lead-4kymc).
 
 Discovery, framed from this request as init-run-measurement's second
 feature: every run anchor records the initiative it serves; a rollup
-step, run on request, sums the rows per initiative. Accepted.
+step, run on request, sums the rows per initiative and up the parent
+tree; the router records usage per segment on every anchor.
+Accepted.
 
 ## 4. Result
 
@@ -43,3 +47,4 @@ step, run on request, sums the rows per initiative. Accepted.
 | Version | Date | Kind | Entry |
 |---|---|---|---|
 | 1 | 2026-09-08 | update | Recorded by the lead-pm from the authority's question; routed to init-run-measurement's second feature. |
+| 2 | 2026-09-08 | update | The tree rollup and the router's per-segment usage added from the authority's exchange with the implementer. |
