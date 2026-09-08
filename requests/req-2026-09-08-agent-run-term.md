@@ -2,7 +2,7 @@
 type: request
 id: req-2026-09-08-agent-run-term
 status: routed
-version: 1
+version: 2
 date: 2026-09-08
 reader: lead-pm
 owner: lead-pm
@@ -46,3 +46,4 @@ scenario text is a new scenario by hash. Accepted.
 | Version | Date | Kind | Entry |
 |---|---|---|---|
 | 1 | 2026-09-08 | update | Recorded by the lead-pm; routed to the lane, accepted. |
+| 2 | 2026-09-08 | update | Held under req-2026-09-08-definition-vs-instance: the instance term is decided there first; this rename follows it. |
