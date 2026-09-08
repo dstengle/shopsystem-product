@@ -2,7 +2,7 @@
 type: roadmap-priority
 id: roadmap-priority
 status: draft
-version: 10
+version: 11
 owner: lead-pm
 created: 2026-09-02
 updated: 2026-09-07
@@ -26,10 +26,12 @@ amendment lands.
    sub-initiatives, bet on alone in this order:
    1. **init-process-runner** — active: delivered 2026-09-08; the
       router runs the shop's processes.
-   2. **init-run-measurement** — planned: the authority's bet of
-      2026-09-08; one session.
-   3. **init-artifact-tools** — proposed.
-   4. **init-plain-voice** — proposed.
+   2. **init-flow-simplification** — proposed: no check cycle and no
+      human step after framing; ADRs after features; briefs dropped.
+   3. **init-plain-voice** — proposed: one terse writing rule; the
+      definitions rewritten to it.
+   4. **init-run-measurement** — planned; its feature drafted.
+   5. **init-artifact-tools** — proposed.
 2. **init-tool-skills** — active
    ([initiatives/init-tool-skills.md](initiatives/init-tool-skills.md)):
    both features delivered 2026-09-07; measure 6 of 12, the six
@@ -69,3 +71,4 @@ the initiative path.
 | 8 | 2026-09-07 | update | init-run-efficiency placed first as a parent with its four sub-initiatives in the authority's order ("make process runner first"); init-tool-skills active, delivered. |
 | 9 | 2026-09-07 | update | init-process-runner planned on the authority's bet. |
 | 10 | 2026-09-08 | update | init-run-measurement planned on the authority's bet; init-process-runner delivered. |
+| 11 | 2026-09-08 | update | The authority's direction: flow simplification and plain voice ahead of measurement and artifact tools. |

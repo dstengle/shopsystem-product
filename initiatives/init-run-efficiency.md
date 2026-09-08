@@ -3,7 +3,7 @@ type: initiative
 id: init-run-efficiency
 name: Run efficiency
 status: proposed
-version: 1
+version: 2
 owner: lead-pm
 created: 2026-09-07
 updated: 2026-09-07
@@ -41,12 +41,14 @@ None yet.
 ## Sub-initiatives
 
 1. init-process-runner
-2. init-run-measurement
-3. init-artifact-tools
-4. init-plain-voice
+2. init-flow-simplification
+3. init-plain-voice
+4. init-run-measurement
+5. init-artifact-tools
 
 ## Document History
 
 | Version | Date | Kind | Entry |
 |---|---|---|---|
 | 1 | 2026-09-07 | update | Framed by the lead-pm at the discovery-conversation frame step (sess-2026-09-07-b) from the authority's words in req-2026-09-07-run-efficiency, section 1. |
+| 2 | 2026-09-08 | update | init-flow-simplification added and ordered second with init-plain-voice third, on the authority's direction (req-2026-09-08-process-simplification); measurement and artifact tools follow. |

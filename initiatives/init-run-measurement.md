@@ -67,7 +67,7 @@ contract exists on this branch. Cross-context flow: none.
 
 ## Features
 
-None yet.
+[feat-run-measurement](../features/feat-run-measurement.md) — drafted at feature-authoring's draft step, 2026-09-08.
 
 ## Document History
 
