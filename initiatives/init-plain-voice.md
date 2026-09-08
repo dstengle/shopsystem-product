@@ -3,7 +3,7 @@ type: initiative
 id: init-plain-voice
 name: Plain voice
 status: active
-version: 3
+version: 4
 owner: lead-pm
 created: 2026-09-07
 updated: 2026-09-07
@@ -17,7 +17,7 @@ parent: init-run-efficiency
 
 Originator (product authority, 2026-09-07 and 2026-09-08; req-2026-09-07-run-efficiency and req-2026-09-08-process-simplification, section 1): "The language needs to be drastically simplified and much more terse." "Feature creation prompt needs significant tightening." "Existing definitions to new language. Foundational artifacts are creating bloat." "Language - agree but will need testing and verification."
 
-Problem: artifacts, prompts, and history rows are long and argued; a feature is 17,000 words, a role prompt 1,000 words before the task begins, and the language propagates. Outcome: one short writing rule governs every artifact, prompt, and history entry; the existing definitions and prompts are rewritten to it, the feature prompt first; the rule is tested on real runs before it stands.
+Problem: artifacts, prompts, and history rows are long and argued; a feature is 17,000 words, a role prompt 1,000 words before the task begins, and the language propagates. Outcome: one short writing rule governs every artifact, prompt, and history entry; the existing definitions and prompts are rewritten to it, the feature prompt first; the rule is tested on real runs before it stands. After the first pass (feat-plain-voice), what still exceeds the rule's targets: a feature's contributor passages, the implementation-guidance guideline and its records, and the feature guideline and fitness set kept by hand beside the typedef — a produced feature runs 3,588 words against 1,000, a guidance record 1,305 against 600.
 
 ## For whom
 
@@ -46,3 +46,4 @@ feat-plain-voice
 | 1 | 2026-09-07 | update | Framed by the lead-pm at the discovery-conversation frame step (sess-2026-09-07-b) from the authority's words in req-2026-09-07-run-efficiency, section 1. |
 | 2 | 2026-09-08 | update | Reframed from the authority's direction of 2026-09-08: existing definitions rewritten, the feature prompt first, tested before it stands. |
 | 3 | 2026-09-08 | update | Delivered in part: the rule and the rewritten roles and prompts; the feature and guidance targets not yet met; the rule stays under test. |
+| 4 | 2026-09-08 | update | Framing: what the first pass left over the targets, named for the second feature. |
