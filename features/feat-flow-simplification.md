@@ -2,8 +2,8 @@
 type: feature
 id: feat-flow-simplification
 name: Flow simplification
-status: draft
-version: 2
+status: delivered
+version: 3
 initiative: ../initiatives/init-flow-simplification.md
 owner: lead-po
 created: 2026-09-08
@@ -109,3 +109,4 @@ Feature: Flow simplification
 | 1 | 2026-09-08 | update | Authored by the PO role from the initiative's Framing and For whom sections. |
 | 2 | 2026-09-08 | update | Delivered as changed definitions, compiled and linted clean: "a feature is authored without a human check", "no cold read runs in the flow", "no brief runs in the flow", "a decision is recorded after the feature that needs it", "a human step completes only at discovery or framing", and "a quality sweep runs on request, not at session close" are shown directly by the definitions (no check/screen/revise/decide step, no cold-reviewer or brief step in product-flow's chain, adr-authoring gated between the feature's self-check and assignment, the one human step confined to discovery's frame, review-sweep uncalled and unscheduled). "a run goes from bet to verified build in six runs or fewer" and "a run holds only for a question outside the process's scope" need a run to observe. |
 </content>
+| 3 | 2026-09-08 | update | Verified on init-run-measurement: feature-authoring v8 ran four agent steps with no human step (anchor lead-lc00j), scenario-assignment one (lead-zdqn1), the build one — six runs, no cold read, no brief. |

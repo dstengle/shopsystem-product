@@ -2,8 +2,8 @@
 type: initiative
 id: init-plain-voice
 name: Plain voice
-status: proposed
-version: 2
+status: active
+version: 3
 owner: lead-pm
 created: 2026-09-07
 updated: 2026-09-07
@@ -45,3 +45,4 @@ feat-plain-voice
 |---|---|---|---|
 | 1 | 2026-09-07 | update | Framed by the lead-pm at the discovery-conversation frame step (sess-2026-09-07-b) from the authority's words in req-2026-09-07-run-efficiency, section 1. |
 | 2 | 2026-09-08 | update | Reframed from the authority's direction of 2026-09-08: existing definitions rewritten, the feature prompt first, tested before it stands. |
+| 3 | 2026-09-08 | update | Delivered in part: the rule and the rewritten roles and prompts; the feature and guidance targets not yet met; the rule stays under test. |

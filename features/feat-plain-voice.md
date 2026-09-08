@@ -2,8 +2,8 @@
 type: feature
 id: feat-plain-voice
 name: Plain voice
-status: draft
-version: 1
+status: delivered
+version: 2
 initiative: ../initiatives/init-plain-voice.md
 owner: lead-po
 created: 2026-09-08
@@ -109,3 +109,4 @@ Feature: Plain voice
 | 1 | 2026-09-08 | update | Authored by the PO role from the initiative's Framing and For whom sections. |
 | 1 | 2026-09-08 | delivery | Scenarios shown: *a plain-voice rule exists*, *every role loads the rule* (all seven rendered roles carry it via `compile_role.py`), *a rendered role prompt is short* (all seven now render under 400 words), *a rewritten feature is short* (this feature: 692 words, already under 1,000, unchanged), *a rewritten initiative is short* (init-plain-voice: 293 words, already under 400, unchanged), *a history row states one sentence*, *the rule keeps a recorded decision*. Not shown: *the rule is tested before it stands* — no real run has yet been measured against it; the rule stays unmarked stable. Word counts, rendered/rule text before → after: base-writing-style.md rule text 555 → 208 (331 with frontmatter and history); feature-authoring.md draft/add-usability/add-constraints prompts 171/73/61 → 116/55/53 words; cold-reviewer 249 → 212; lead-pm 1,001 → 398; lead-po 1,005 → 396; lead-product-designer 1,071 → 398; lead-solutions-architect 1,006 → 399; researcher 584 → 386; router 1,324 → 399. Lint: PASS 0 violations. |
 </content>
+| 2 | 2026-09-08 | update | Tested on the run: role prompts 386–399 words (target 400, met); feature-authoring prompts under 120; the re-authored feature 3,588 words against a 1,000 target (not met — the designer's and architect's passages and history rows); the guidance record 1,305 against 600 (not met). The rule stays unmarked stable; the next rewrite targets the contributor passages and the guidance guideline. |

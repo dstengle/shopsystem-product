@@ -2,8 +2,8 @@
 type: initiative
 id: init-flow-simplification
 name: Flow simplification
-status: proposed
-version: 1
+status: active
+version: 2
 owner: lead-pm
 created: 2026-09-08
 updated: 2026-09-08
@@ -44,3 +44,4 @@ feat-flow-simplification
 | Version | Date | Kind | Entry |
 |---|---|---|---|
 | 1 | 2026-09-08 | update | Framed by the lead-pm from the authority's words in req-2026-09-08-process-simplification. |
+| 2 | 2026-09-08 | update | Delivered: the flow runs from bet to build in six agent runs with no human step; measure met on init-run-measurement. |
