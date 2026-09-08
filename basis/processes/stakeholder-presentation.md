@@ -2,11 +2,11 @@
 type: process-definition
 id: stakeholder-presentation-process
 owner: product-authority
-status: approved
+status: retired
 approved: 2026-08-19
-version: 6
+version: 7
 created: 2026-08-10
-updated: 2026-09-05
+updated: 2026-09-08
 produces: [decision-brief]
 carried-by: stakeholder-presentation-skill
 condition-language: cel
@@ -51,11 +51,9 @@ make that decision possible in one reading. cold reviewer —
 [`../roles/cold-reviewer.md`](../roles/cold-reviewer.md) (Verifier; never
 the author).
 
-**Carried by:**
-[`../../.claude/skills/stakeholder-presentation/SKILL.md`](../../.claude/skills/stakeholder-presentation/SKILL.md)
-— generated from this definition by
-[`../tools/compile_process.py`](../tools/compile_process.py), never edited
-by hand.
+**Carried by:** none — retired; the skill-rendering process
+removes a retired definition's rendering from the load point,
+since it no longer stands approved.
 
 ## Flow (compiled)
 
@@ -239,3 +237,4 @@ steps:
 | 4 | 2026-08-26 | review | Assist re-basing screened: clean; one timing phrase polished in place. |
 | 5 | 2026-09-02 | update | Carried-by reference repointed to the load point (.claude/skills/) — the skill-rendering process's first run removed the retired home basis/skills/; the owner's sweep per its second-home escalation. |
 | 6 | 2026-09-05 | update | Single review cycle, per req-2026-09-05-single-review-cycle on the authority's words of 2026-09-05 — "I want all of the processes limited to a single review cycle, so author -> review -> revise -> continue to next step": the cold read runs once; revise runs once and continues to deliver; the advance-round step, the round data, and route-verdict's failsafe branch removed; deliver reads the one review and the revised brief and states the findings the one revision left open. |
+| 7 | 2026-09-08 | state | Retired under feat-flow-simplification: no human step stands after discovery's frame; a delivery to the authority is a review-sweep finding or a request. |

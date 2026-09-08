@@ -2,11 +2,11 @@
 type: process-definition
 id: backlog-ordering-process
 owner: product-authority
-status: approved
+status: retired
 approved: 2026-08-31
-version: 3
+version: 4
 created: 2026-08-31
-updated: 2026-09-02
+updated: 2026-09-08
 produces: [backlog-order]
 carried-by: backlog-ordering-skill
 condition-language: cel
@@ -47,11 +47,9 @@ check judges only what the order states.
 [PO output check](po-output-check.md) as a sub-process, with its own
 roles.
 
-**Carried by:**
-[`../../.claude/skills/backlog-ordering/SKILL.md`](../../.claude/skills/backlog-ordering/SKILL.md)
-— generated from this definition by
-[`../tools/compile_process.py`](../tools/compile_process.py), never
-edited by hand.
+**Carried by:** none — retired; the skill-rendering process
+removes a retired definition's rendering from the load point,
+since it no longer stands approved.
 
 ## Flow (compiled)
 
@@ -157,3 +155,4 @@ steps:
 | 2 | 2026-08-31 | review | Batch C screen round 1: O3 no longer denies the maker's own draft status; the enabler recommendations declared as a parameter and input, so place acts on no undeclared context. |
 | 2 | 2026-08-31 | state | draft → approved with batch C as one block (brief-032 ask 2, default accepted). |
 | 3 | 2026-09-02 | update | Carried-by reference repointed to the load point (.claude/skills/) — the skill-rendering process's first run removed the retired home basis/skills/; the owner's sweep per its second-home escalation. |
+| 4 | 2026-09-08 | state | Retired under feat-flow-simplification: product-flow runs feature-authoring directly from a planned initiative; no backlog order gates it. |

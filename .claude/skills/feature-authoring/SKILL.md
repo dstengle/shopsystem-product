@@ -1,10 +1,11 @@
 ---
 name: feature-authoring
-description: 'Author one feature from a planned initiative and take it through its
-  check: the PO role writes it alone from the initiative''s framing, the product designer
-  and solutions architect roles add the criteria that ride on its scenarios, and the
-  PO output check sets its status. Use when a planned initiative needs one more feature
-  authored, the designer''s and architect''s criteria added, and the check run.'
+description: 'Author one feature from a planned initiative: the PO role writes it
+  alone from the initiative''s framing, the product designer and solutions architect
+  roles add the criteria that ride on its scenarios, and the PO records its own evaluation
+  against the feature fitness set and sets the feature checked. Use when a planned
+  initiative needs one more feature authored, the designer''s and architect''s criteria
+  added, and the PO''s self-check recorded.'
 type: skill
 id: feature-authoring-skill
 status: approved
@@ -14,7 +15,7 @@ generated: true
 generated-by: basis/tools/compile_process.py
 derived-from: feature-authoring-process
 source: basis/processes/feature-authoring.md
-source-digest: sha256:115b9f647309
+source-digest: sha256:cc1e515014ea
 activation: model-judged
 promotion: experiment-local
 hold-after: P7D
@@ -22,9 +23,9 @@ hold-after: P7D
 
 # Feature authoring (compiled from `feature-authoring-process`)
 
-Author one feature from a planned initiative and take it through its check: the PO role writes it alone from the initiative's framing, the product designer and solutions architect roles add the criteria that ride on its scenarios, and the PO output check sets its status.
+Author one feature from a planned initiative: the PO role writes it alone from the initiative's framing, the product designer and solutions architect roles add the criteria that ride on its scenarios, and the PO records its own evaluation against the feature fitness set and sets the feature checked.
 
-**One feature per run, authored alone: scope and wording are the PO role's; the criteria ride on the scenarios; the check, not the author, sets the status. Conflicts with behavior already specified are the repository sweep's to catch at assignment, never a question to a shop during authoring.**
+**One feature per run, authored alone: scope and wording are the PO role's; the criteria ride on the scenarios; the maker's self-check is the last word, not a second checker's. Conflicts with behavior already specified are the repository sweep's to catch at assignment, never a question to a shop during authoring.**
 
 Result of a run: `artifact` (string).
 
@@ -33,15 +34,13 @@ flowchart TD
   draft(["Draft the feature — agent: lead-po<br/>in — initiative: string, repository: string<br/>out — artifact: string, initiative: string"])
   add_usability(["Add the designer's criteria — agent: lead-product-designer<br/>in — artifact: string, initiative: string, experience_principles: string, core_tasks: string<br/>out — artifact: string"])
   add_constraints(["Add the architect's constraints — agent: lead-solutions-architect<br/>in — artifact: string, decomposition: string<br/>out — artifact: string"])
-  prepare["Name the framing for the check — runtime<br/>in — initiative: string<br/>sets — framing: string"]
-  check{{"Check the feature — sub-process: po-output-check-process<br/>in — artifact: string, framing: string, criteria_path: string<br/>out — decision: check-decision"}}
+  self_check(["Self-check against the fitness set — agent: lead-po<br/>in — artifact: string, criteria_path: string, initiative: string<br/>out — artifact: string, initiative: string"])
   __end(("end<br/>result — artifact: string"))
   __start(("start")) --> draft
   draft --> add_usability
   add_usability --> add_constraints
-  add_constraints --> prepare
-  prepare --> check
-  check --> __end
+  add_constraints --> self_check
+  self_check --> __end
 ```
 
 ## draft — Draft the feature
@@ -95,7 +94,7 @@ Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ## add-constraints — Add the architect's constraints
 
 Run by an agent in role `lead-solutions-architect`. reads: artifact, decomposition · writes: artifact.
-- then: `prepare`
+- then: `self-check`
 
 Prompt:
 
@@ -103,29 +102,36 @@ Prompt:
 Read decomposition. Where it names non-functional constraints
 on this feature's scenarios, write them into Contributors as
 criteria, one line each, riding by name on the scenarios they
-bound. Add to Edges any failure or boundary case those
-constraints name. Where none apply, record that decomposition
-names none for this feature. Return the feature.
+bound. Where a constraint needs a decision not yet recorded,
+write "needs decision: <what>" on its line, so product-flow
+routes it to adr-authoring. Add to Edges any failure or
+boundary case those constraints name. Where none apply, record
+that decomposition names none for this feature. Return the
+feature.
 
 Return each declared output on its own line as `<name>: <value>` — artifact — a list as a JSON array, a value with line breaks as a JSON string; these lines close your reply.
 
 Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```
 
-## prepare — Name the framing for the check
+## self-check — Self-check against the fitness set
 
-Run by the runtime — no agent, no prose. reads: initiative · writes: framing.
+Run by an agent in role `lead-po`. reads: artifact, criteria_path, initiative · writes: artifact, initiative.
+- then: `end`
 
-```yaml
-set:
-  framing: initiative + "#framing"
-next: check
-```
+Prompt:
 
-## check — Check the feature
+```text
+Evaluate the feature against the fitness set at criteria_path
+— every scenario, the Contributors criteria, the Edges table,
+the Interaction types section. Write one Document History row
+recording that evaluation and any gap you accept rather than
+fix. Set the feature's status to checked. If the initiative's
+status is planned, set it to active with a one-line entry
+naming this feature's pass — the only status this step writes
+over. Return the feature.
 
-Run by the runtime — no agent, no prose. reads: artifact, framing, criteria_path · writes: decision.
+Return each declared output on its own line as `<name>: <value>` — artifact, initiative — a list as a JSON array, a value with line breaks as a JSON string; these lines close your reply.
 
-```yaml
-next: end
+Do not use these words: ratif, disposition, rebaseline bill, surface, seat
 ```

@@ -2,11 +2,11 @@
 type: process-definition
 id: po-output-check-process
 owner: product-authority
-status: approved
+status: retired
 approved: 2026-08-26
-version: 8
+version: 9
 created: 2026-08-25
-updated: 2026-09-05
+updated: 2026-09-08
 produces: []
 carried-by: po-output-check-skill
 condition-language: cel
@@ -63,11 +63,9 @@ context for the one screen; judges against the criteria). the PM role —
 decision; a human-held role that decides from the verdict; its
 assisting agent prepares the record and the gap entry).
 
-**Carried by:**
-[`../../.claude/skills/po-output-check/SKILL.md`](../../.claude/skills/po-output-check/SKILL.md)
-— generated from this definition by
-[`../tools/compile_process.py`](../tools/compile_process.py), never
-edited by hand.
+**Carried by:** none — retired; the skill-rendering process
+removes a retired definition's rendering from the load point,
+since it no longer stands approved.
 
 ## Flow (compiled)
 
@@ -275,3 +273,4 @@ steps:
 | 6 | 2026-08-31 | review | Batch D screen round 1: the initiative reached through the declared framing input, not an undeclared link-follow; active written only over planned, so a cancelled or unbet initiative is never activated. |
 | 7 | 2026-09-02 | update | Carried-by reference repointed to the load point (.claude/skills/) — the skill-rendering process's first run removed the retired home basis/skills/; the owner's sweep per its second-home escalation. |
 | 8 | 2026-09-05 | update | Single review cycle, per req-2026-09-05-single-review-cycle on the authority's words of 2026-09-05 — "I want all of the processes limited to a single review cycle, so author -> review -> revise -> continue to next step": the screen runs once; revise runs once and continues to decide; the advance-round step, the round and round_cap data, and route-screen's failsafe branch removed; decide reads the one review and the revised artifact, so the PM role can see whether the one revision repaired what the findings quote. |
+| 9 | 2026-09-08 | state | Retired under feat-flow-simplification: feature-authoring's and adr-authoring's own self-check steps replace it; no independent screen runs. |

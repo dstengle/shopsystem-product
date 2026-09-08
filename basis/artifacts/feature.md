@@ -5,7 +5,7 @@ defines: feature
 owner: product-authority
 status: approved
 approved: 2026-08-31
-version: 14
+version: 15
 created: 2026-08-26
 updated: 2026-09-08
 ancestry: [feature]
@@ -40,9 +40,10 @@ ancestry: [feature]
   The owning shops do not co-author: conflicts with behavior already
   specified are caught by the repository sweep at assignment, and a
   shop's objection travels as a clarify or a returned dispatch after
-  it receives its scenarios. Checked by the
-  [PO output check](../processes/po-output-check.md); its scenarios
-  assigned to Bounded Contexts by the solutions architect role in the
+  it receives its scenarios. Checked by its own self-check step in
+  [feature authoring](../processes/feature-authoring.md); its
+  scenarios assigned to Bounded Contexts by the solutions architect
+  role in the
   [scenario assignment](../processes/scenario-assignment.md) process.
   **Consumed by:** the shops, each receiving the scenarios tagged to it;
   the [interaction conformance check](../processes/interaction-conformance-check.md)
@@ -59,16 +60,14 @@ framing is that document's first section), `owner`, `created`,
 When `size: small`, `request` (link to the request routed to the
 small-change lane the feature is made from) stands in place of
 `initiative`, and the framing is that request's section 1 (What is
-requested): the PO output check's `framing` input names that section
-for a small feature, and its record step has no initiative to activate.
+requested); a small feature has no initiative to activate.
 `approved` does not apply: a feature's terminal state is
 `assigned`. Status values and their writers: `draft` (the PO role);
-`checked`, `returned`, `pending-definition` (the PO output check's
-record step, replacing `draft`); a returned or pending feature the PO
-role resubmits goes back to `draft`; `assigned` (the scenario
-assignment process's record step, replacing `checked` when every
-scenario carries its tag); a feature the assignment process returns
-goes to `returned`.
+`checked` (feature-authoring's own self-check step, replacing
+`draft`); `assigned` (the scenario assignment process's record step,
+replacing `checked` when every scenario carries its tag); a feature
+the assignment process returns goes to `returned`, and the PO role
+resubmits it from `draft`.
 
 ## Required sections
 
@@ -120,10 +119,11 @@ goes to `returned`.
 
 ## Commitment (Definition of Done)
 
-A feature is done when it has passed the PO output check against its
-fitness set and the framing, and every scenario carries a
-`@bounded-context:` tag. **Consequence on failure:** it is returned
-with the criterion named and no scenario is dispatched.
+A feature is done when feature-authoring's self-check step has set it
+checked against its fitness set and the framing, and every scenario
+carries a `@bounded-context:` tag. **Consequence:** a feature the
+scenario-assignment process cannot fully assign is returned and no
+scenario is dispatched.
 
 ## Sources
 
@@ -165,3 +165,4 @@ experience principles `core-task-parity` and `accessible-by-standard`.
 | 12 | 2026-09-04 | update | Under init-request-routing / feat-request-routing on the authority's standing direction of 2026-09-04, per adr-2026-09-04-request-front-end: frontmatter `size` (`standard` | `small`, `standard` by default); when `small`, a `request` link stands in place of `initiative` and the framing is the request's section 1 (What is requested), which the PO output check's `framing` input names for a small feature; rule added — a small feature is made from a request routed to the small-change lane when the change is best expressed as scenarios, the lane's definition step may produce one; Type bullet and checklist updated. Scenario and hash rules unchanged. Made by the architect role; the owner's approval of the amendment is pending. |
 | 13 | 2026-09-08 | update | Under req-2026-09-07-contributors-body through the small-change lane (work item lead-ryr33): the Contributors entry (Required sections, item 2) states that the body holds a contributor's criteria and constraints — each riding by name on the scenarios it bounds — and that the reasoning behind them, what was considered and not made a criterion, and the maker's self-check stand in the Document History row of the step that added them; the rule the screen of feat-tool-skills applied by hand. Nothing else changed. Made by the solutions architect role. |
 | 14 | 2026-09-08 | update | Under feat-plain-voice: the Contributors entry and the Rules section rewritten to the plain-voice rule, every requirement kept, prose cut. The hand-authored guideline and fitness set beside this typedef were not re-synchronized in this pass. |
+| 15 | 2026-09-08 | update | Under feat-flow-simplification, retiring the PO output check: `checked` is written by feature-authoring's own self-check step, not a separate check's record step; `returned` and `pending-definition` drop from the status list — a self-checked feature only goes `returned` from the scenario-assignment process; Produced-by and the Commitment section point to the self-check. |

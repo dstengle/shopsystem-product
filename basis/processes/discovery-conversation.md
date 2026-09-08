@@ -4,9 +4,9 @@ id: discovery-conversation-process
 owner: product-authority
 status: approved
 approved: 2026-08-22
-version: 11
+version: 12
 created: 2026-08-22
-updated: 2026-09-04
+updated: 2026-09-08
 produces: [session-record, initiative]
 carried-by: discovery-conversation-skill
 condition-language: cel
@@ -21,8 +21,10 @@ on a topic, or on a request routed to it: the
 authority explores direction with the lead-pm as interlocutor, nothing
 is operationalized before convergence, the session record anchors the
 conversation, and a converged discovery leaves an initiative recorded
-`proposed` — or `proposed` and then `cancelled` in the same document
-when what was asked is declined, so the record of the decline survives.
+`planned` — the bet, taken on the authority's own word — or `proposed`
+and then `cancelled` in the same document when what was asked is
+declined, so the record of the decline survives. This is the one
+human step past which the flow runs with no other human step.
 
 **Guiding statement:** Engage the authority's statements as an
 interlocutor; record and launch only after convergence.
@@ -38,11 +40,12 @@ interlocutor; record and launch only after convergence.
   the `route` branches.
 - O4. An inactive conversation holds instead of dangling — witnessed by
   `hold-after` and the run lifecycle.
-- O5. A converged discovery returns an initiative recorded `proposed`
-  (or `proposed` then `cancelled` with the authority's reason when
-  what was asked is declined); a close without convergence lands the
-  session record and frames nothing — witnessed by `route-frame`, which
-  reaches `frame` only from the authority's converge classification.
+- O5. A converged discovery returns an initiative recorded `planned` —
+  the bet, taken directly on the authority's word — or `proposed` then
+  `cancelled` with the authority's reason when what was asked is
+  declined; a close without convergence lands the session record and
+  frames nothing — witnessed by `route-frame`, which reaches `frame`
+  only from the authority's converge classification.
 - O6. A conversation opened on a request reads what was asked from the
   request — never from the transcript it arose in — and the initiative
   it frames references the request, which records that initiative as
@@ -143,10 +146,10 @@ steps:
     outputs: [statement, classification]
     prompt: |
       Think out loud. Your message is one of: a direction or exploration
-      to engage, a question, a convergence (the direction is settled —
-      record and route it), a close, or a cancel. Silence holds the
-      conversation after the declared window; the draft record carries
-      the resume point.
+      to engage, a question, a convergence naming the bet — say "bet":
+      the framing is done, and the initiative is planned on that word
+      — a close, or a cancel. Silence holds the conversation after the
+      declared window; the draft record carries the resume point.
     next: route
 
   - id: route
@@ -170,22 +173,17 @@ steps:
     checks:
       - reply != ""
     prompt: |
-      Engage the statement as an interlocutor, shaped to the declared
-      form — brainstorm: diverge into options before any convergence;
-      interview: draw out and quote the originator's own words; review
-      of evidence: read the record against its sources. Probe, reflect
-      back, name tensions with what is already decided, and offer
-      options with a recommendation when a decision is near. Do not
-      operationalize — no launching work, no writing definitions, no
-      dispatches — before the authority converges. Capture select
-      quotes into the draft session record, and maintain
-      initiative_draft — the initiative's Framing, For whom, and
-      Appetite sections, drafted from the authority's words — as the
-      dialogue moves. When request is set, the Framing's source is the
-      request's section 1 (What is requested — the originator's words),
-      quoted with the request's id as the reference, not the
-      transcript; the dialogue refines the direction, never the record
-      of the ask.
+      Engage the statement as an interlocutor, shaped to the form —
+      brainstorm: diverge before convergence; interview: draw out and
+      quote the originator; review of evidence: read the record
+      against its sources. Probe, reflect back, name tensions, offer
+      options with a recommendation near a decision. Do not
+      operationalize — no work, no definitions, no dispatches —
+      before convergence. Capture quotes into the draft record, and
+      maintain initiative_draft — Framing, For whom, Appetite — as
+      the dialogue moves. When request is set, Framing sources the
+      request's section 1, quoted with its id as reference, not the
+      transcript.
     next: observe
 
   - id: handoff
@@ -212,24 +210,18 @@ steps:
     outputs: [initiative, request]
     prompt: |
       Assist step. From the session record and initiative_draft,
-      write the initiative per its typedef: the
-      Framing with the originator quoted, For whom with one measure,
-      Appetite with its no-gos; Feasibility and usability and
-      Decomposition "not yet"; Features empty; status "proposed",
-      owner lead-pm. When request is set: write the initiative's
-      `request` frontmatter link to it; quote the originator's words
-      in the Framing from the request's section 1, each quotation
-      carrying the request's id as its reference; then record on the
-      request where its route led — `routed-to` linking the
-      initiative, section 4 (Result) naming the initiative by id, and
-      status "done", the request typedef's writer rule for that
-      status. Where the conversation declined what was asked,
-      record the initiative "proposed" and cancel it in the same
-      document with the authority's reason, so the record of the
-      decline survives; state in the cancellation entry that the
-      product decision record for the decline is the PO role's to
-      make and the PO output check screens it, linked once made — the
-      initiative typedef's rule. Return the initiative's path.
+      write the initiative per its typedef: Framing quoting the
+      originator, For whom with one measure, Appetite with its
+      no-gos; Feasibility and usability and Decomposition left
+      absent; Features empty; owner lead-pm. Status "planned" on the
+      authority's word "bet". When request is set: link it as
+      `request`; quote the Framing from its section 1, each
+      quotation referencing the request's id; record on the request
+      its route — `routed-to`, section 4, status "done". Where the
+      conversation declined what was asked: status "proposed" then
+      "cancelled" with the authority's reason in the same document;
+      note the decline's product decision record is the PO role's to
+      make, linked once made. Return the initiative's path.
     next: close-out
 
   - id: close-out
@@ -282,3 +274,4 @@ never released silently.
 | 9 | 2026-09-02 | review | Skill rendering run (skill-rendering-process): the definition stands approved with no carried-by skill id, so no loadable skill renders at the agent’s load point — finding "missing discovery-conversation-process no-skill-id" escalated; the owner decides the amendment. |
 | 10 | 2026-09-02 | update | Owner decision, resolving the skill-rendering first run's no-skill-id escalation: carried-by discovery-conversation-skill added, so the process renders to the agent's load point like every approved definition; the prose Carried-by paragraph left to the consistency pass (lead-dyz0o). |
 | 11 | 2026-09-04 | update | The hinge, under init-request-routing / feat-request-routing on the authority's standing direction of 2026-09-04, per adr-2026-09-04-request-front-end: the process accepts a request as its input — parameter `request` (path of a request in `requests/`, empty for a conversation opened without one; both admitted while the authority's direct conversation remains a door and the request-intake process dispatches with it set); when set, `open` titles the work item with the request id, `engage` drafts the Framing from the request's section 1 instead of the transcript, `frame` writes the initiative's `request` link, quotes the originator from the request with its id as reference (the quoting rule unchanged — its refinement is lead-ghulb), and records on the request where the route led (`routed-to`, Result, status `done` — the request typedef's writer rule). Outcome O6 and its derived check added; "the request is declined" reworded to "what was asked is declined" now that `request` names the artifact. Made by the architect role; the owner's approval of the amendment is pending. |
+| 12 | 2026-09-08 | update | Under feat-flow-simplification, on the authority's word ("the framing is done" is the bet): `frame` writes the initiative `planned` directly on convergence — the word "bet" is the bet — instead of `proposed`, leaving Feasibility and usability and Decomposition absent as optional sections feature authoring fills; a decline still records `proposed` then `cancelled` in the same document; the product decision record note no longer cites the retired PO output check. `observe`'s prompt names "bet" as the converging word. Initiative-check retired; this is now the only human step in product-flow. |

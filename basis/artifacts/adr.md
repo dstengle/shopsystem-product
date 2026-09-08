@@ -5,9 +5,9 @@ defines: adr
 owner: product-authority
 status: approved
 approved: 2026-09-02
-version: 2
+version: 3
 created: 2026-09-02
-updated: 2026-09-02
+updated: 2026-09-08
 ancestry: [adr]
 ---
 
@@ -24,19 +24,23 @@ ancestry: [adr]
   [product-decision-record](product-decision-record.md).
 - **Produced by:** the
   [solutions architect role](../roles/lead-solutions-architect.md),
-  for a decision that role or the authority has taken; authored and
-  checked through the [adr-authoring](../processes/adr-authoring.md)
-  process against the [adr fitness set](../fitness/adr.fitness.md).
-  **Consumed by:** Bounded Context shops, whose choices a checked
-  record bounds; every role whose later decision the record bounds;
-  the architect role reading the pre-state; the PM role at the check.
+  for a decision that role or the authority has taken; authored,
+  self-checked, and recorded through the
+  [adr-authoring](../processes/adr-authoring.md) process against the
+  [adr fitness set](../fitness/adr.fitness.md) and the
+  [architecture principle set](../architecture-principles.md) — no
+  independent screen runs. **Consumed by:** Bounded Context shops,
+  whose choices a recorded record bounds; every role whose later
+  decision the record bounds; the architect role reading the
+  pre-state.
 
 ## Required frontmatter
 
 `type: adr`, `id`, `title` (one line naming the decision — never a
-summary of the record), `status` (draft | checked | returned |
-pending-definition | superseded — replaces `checked` when a later
-record names this one in `supersedes`), `version`, `date`,
+summary of the record), `status` (draft | recorded | superseded —
+`recorded` written by adr-authoring's `record` step; `superseded`
+replaces it when a later record names this one in `supersedes`),
+`version`, `date`,
 `decided-by` (the role, or `product-authority`), `right` (the decision
 right exercised — `stack`, `guardrail`, `decomposition`, `contract`,
 or `non-functional-requirement`, as the solutions architect role
@@ -78,19 +82,20 @@ that settled it), `owner`, `created`, `updated`; optionally
   [architecture principle set](../architecture-principles.md):
   conformance, or the escalated exception named — the record never
   absorbs a deviation.
-- Whether the named role held the right it exercised is the PM role's
-  ruling at the check, not the record's claim; a record whose decider
-  is the authority is checked for form only.
+- Whether the named role held the right it exercised is the architect's
+  own reading against the roles' definitions, stated in the record; a
+  record whose decider is the authority stands on its word.
 - A superseding record names the superseded one in `supersedes`; the
   reverse edge is derived by search, never written into the superseded
   record's frontmatter.
 
 ## Commitment (Definition of Done)
 
-A record is done when it has passed the adr-authoring check against
-its fitness set. **Consequence on failure:** it is returned with the
-criterion named and binds nothing — no guardrail is in force and no
-Bounded Context choice is bounded by it.
+A record is done when adr-authoring's `record` step has set it
+`recorded`, its evaluation against the fitness set and the
+architecture principle set stated in it. **Consequence:** a decision
+the architect cannot make under its rights is escalated to the
+authority instead of recorded, and binds nothing until it is.
 
 ## Sources
 
@@ -133,3 +138,4 @@ home for one fact (`single-source-of-truth`); the
 | 1 | 2026-09-02 | review | Authority review of the chain with its exemplar (brief-033): approved as recommended. Asks 3 and 4 ruled — the exercised right decides the ADR/PDR boundary; one shared `decisions/` is the instance home, the owner weighing separate directories as near-cosmetic once type lives in frontmatter, with a per-audience publication boundary named as the trigger to revisit. |
 | 2 | 2026-09-02 | update | The rulings applied as rules: the instance home and the boundary rule; this typedef is the boundary rule's one home, the product-decision-record typedef references it. |
 | 2 | 2026-09-02 | state | draft → approved by the owner (brief-033 ask 1; the derived-by removal approved with the chain). |
+| 3 | 2026-09-08 | update | Under feat-flow-simplification, retiring the PM role's decide step: `status` drops `checked`, `returned`, and `pending-definition` for `recorded`, written by adr-authoring's own `record` step; the architect's self-evaluation against the fitness set and the architecture principle set stands in the record instead of a cold-reviewer verdict; the right-held ruling is the architect's own reading, stated in the record. |

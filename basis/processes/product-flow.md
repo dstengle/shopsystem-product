@@ -4,10 +4,10 @@ id: product-flow-process
 owner: product-authority
 status: approved
 approved: 2026-08-31
-version: 6
+version: 7
 created: 2026-08-31
-updated: 2026-09-02
-produces: [session-record, initiative, feature, backlog-order]
+updated: 2026-09-08
+produces: [session-record, initiative, feature, adr]
 carried-by: product-flow-skill
 condition-language: cel
 hold-after: P7D
@@ -15,42 +15,45 @@ hold-after: P7D
 
 # Process: Product flow
 
-**Purpose:** Carry one problem from discovery to assigned work: a
-discovery conversation frames an initiative, the initiative check
-takes it to the authority's bet, the backlog ordering places it, and
-the flow then loops — one feature authored, checked, and its
-scenarios assigned — until the PO role judges the initiative's
-features done. The shop's operating process; every sub-process is
-defined in its own document.
+**Purpose:** Carry one problem from discovery to a verified build: a
+discovery conversation frames the initiative and the authority bets on
+it in that same run's human step; one feature is authored and
+self-checked; a flagged constraint's decision is recorded; the
+feature's scenarios are assigned to their owning shops; and each
+shop's delivery is verified. The shop's operating process; every
+sub-process is defined in its own document.
 
 **Guiding statement:** One initiative per run, one feature per pass;
-every hand-off is a recorded status, and no step reaches the next
-except through the status the last one wrote.
+no human step stands after the frame; a run holds only when a
+sub-process's own ask reaches outside that sub-process's scope.
 
 **Outcomes:**
-- O1. Work reaches the shops only through a bet initiative, a checked
-  order, a checked feature, and an assignment — witnessed by
-  `route-bet`, `route-order`, and `route-checked`, which read the
-  statuses the sub-processes wrote, and by `assign` being the only
-  dispatching step.
-- O2. Each stage is its own defined sub-process with its own check;
-  this process adds no judgment of its own — witnessed by every step
-  being a sub-process, a runtime status read, route, or counter, or
-  the PO role's continue decision.
-- O3. The feature loop exits when the PO role judges the initiative's
-  features done, or at the feature cap — witnessed by `route-more`'s
-  labeled branches.
-- O4. A run without a proposed initiative — a cancelled discovery, a
-  close without convergence, or a request declined and cancelled at
-  the framing — or without a bet ends with the records standing —
-  witnessed by the else exits of `route-discover`, `route-framed`,
-  and `route-bet`.
+- O1. Work reaches a shop only through a planned initiative and a
+  checked feature — witnessed by `route-status` ("planned") and
+  `route-checked` ("checked"), which read the statuses the
+  sub-processes wrote.
+- O2. Each stage is its own defined sub-process; this process adds no
+  judgment of its own beyond the PO role's continue decision —
+  witnessed by every step being a sub-process, a runtime status read
+  or route, or the `more-features` judgment.
+- O3. A feature's flagged constraint is recorded through adr-authoring
+  before the feature's scenarios are assigned, never before the bet
+  — witnessed by `find-decision` and `route-decision` standing between
+  `route-checked` and `assign`.
+- O4. The feature loop exits when the PO role judges the initiative's
+  features done, or at the feature cap, and each pass's delivery is
+  verified before the judgment — witnessed by `verify` preceding
+  `more-features` and `route-more`'s labeled branches.
+- O5. A run without a planned initiative — a cancelled discovery, a
+  close without convergence, or a decline recorded and cancelled at
+  the frame — ends with the records standing — witnessed by the else
+  exits of `route-discover` and `route-status`.
 
 **Roles:** the sub-processes' own roles, unchanged by this process;
 plus the [PO role](../roles/lead-po.md) at `more-features` (judges,
-from the initiative's Features section and the backlog order, whether
-the initiative needs another feature — an exercise of its backlog
-accountability, not a check).
+from the initiative's Features section and the repository, whether the
+initiative needs another feature — its backlog accountability, not a
+check).
 
 **Carried by:**
 [`../../.claude/skills/product-flow/SKILL.md`](../../.claude/skills/product-flow/SKILL.md)
@@ -65,91 +68,92 @@ edit by hand.
 
 ```mermaid
 flowchart TD
-  discover{{"Discover the problem — sub-process: discovery-conversation-process<br/>in — topic: string, form: string<br/>out — initiative: string"}}
+  discover{{"Discover and bet the problem — sub-process: discovery-conversation-process<br/>in — topic: string, form: string<br/>out — initiative: string"}}
   route_discover{"Route on the discovery<br/>in — initiative: string"}
-  read_framed["Read the framed initiative's status — runtime<br/>in — initiative: string<br/>out — initiative_status: string"]
-  route_framed{"Route on the framing<br/>in — initiative_status: string"}
-  check{{"Check the initiative and take the bet — sub-process: initiative-check-process<br/>in — initiative: string, initiative_criteria: string, contracts: string, repository: string, experience_principles: string, core_tasks: string<br/>out — initiative: string"}}
-  read_bet["Read the initiative's status — runtime<br/>in — initiative: string<br/>out — initiative_status: string"]
-  route_bet{"Route on the bet<br/>in — initiative_status: string"}
-  place{{"Place the initiative in the backlog order — sub-process: backlog-ordering-process<br/>in — initiative: string, order: string, priority: string, recommendations: string, order_criteria: string<br/>out — new_order: string"}}
-  read_order["Read the order's status — runtime<br/>in — new_order: string<br/>out — order_status: string"]
-  route_order{"Route on the order's check<br/>in — order_status: string"}
-  author{{"Author and check one feature — sub-process: feature-authoring-process<br/>in — initiative: string, repository: string, decomposition: string, experience_principles: string, core_tasks: string, feature_criteria: string<br/>out — feature: string"}}
+  read_status["Read the initiative's status — runtime<br/>in — initiative: string<br/>out — initiative_status: string"]
+  route_status{"Route on the bet<br/>in — initiative_status: string"}
+  author{{"Author and self-check one feature — sub-process: feature-authoring-process<br/>in — initiative: string, repository: string, decomposition: string, experience_principles: string, core_tasks: string, feature_criteria: string<br/>out — feature: string"}}
   read_feature["Read the feature's status — runtime<br/>in — feature: string<br/>out — feature_status: string"]
-  route_checked{"Route on the check<br/>in — feature_status: string"}
+  route_checked{"Route on the self-check<br/>in — feature_status: string"}
+  find_decision["Find a flagged decision — runtime<br/>in — feature: string<br/>out — decision_text: string"]
+  route_decision{"Route on the flag<br/>in — decision_text: string"}
+  compose_subject["Compose the decision's subject — runtime<br/>in — decision_text: string, feature: string<br/>sets — subject: string"]
+  author_decision_record{{"Author the decision's record — sub-process: adr-authoring-process<br/>in — subject: string, principles: string, adr_criteria: string<br/>out — adr_record: string"}}
+  resolve_decision["Mark the flag recorded — runtime<br/>in — feature: string, adr_record: string"]
   assign{{"Assign the feature's scenarios — sub-process: scenario-assignment-process<br/>in — feature: string, decomposition: string, contracts: string, repository: string<br/>out — feature: string"}}
-  read_assigned["Read the feature's status after assignment — runtime<br/>in — feature: string<br/>out — feature_status: string"]
-  more_features(["Judge whether the initiative needs another feature — agent: lead-po<br/>in — initiative: string, new_order: string, repository: string, feature_status: string<br/>out — more: string"])
+  build["Read the feature's status after dispatch — runtime<br/>in — feature: string<br/>out — feature_status: string"]
+  route_build{"Route on the dispatch<br/>in — feature_status: string"}
+  verify{{"Verify the shop's delivery — sub-process: reconcile-and-close-process<br/>in — response: work-done-response, work_item: work-item, register: scenario-register<br/>out — verification: verification"}}
+  more_features(["Judge whether the initiative needs another feature — agent: lead-po<br/>in — initiative: string, feature: string, feature_status: string<br/>out — more: string"])
   advance_feature["Advance the feature count — runtime<br/>in — feature_count: integer<br/>sets — feature_count: integer"]
   route_more{"Route on the PO role's judgment<br/>in — more: string, feature_count: integer, feature_cap: integer"}
   __end(("end<br/>result — initiative: string"))
   __start(("start")) --> discover
   discover --> route_discover
-  route_discover -->|a document stands — read its status| read_framed
+  route_discover -->|a document stands — read its status| read_status
   route_discover -->|else| __end
-  read_framed --> route_framed
-  route_framed -->|proposed — the check begins| check
-  route_framed -->|else| __end
-  check --> read_bet
-  read_bet --> route_bet
-  route_bet -->|bet — the initiative is planned| place
-  route_bet -->|else| __end
-  place --> read_order
-  read_order --> route_order
-  route_order -->|checked — proceed to authoring| author
-  route_order -->|else| __end
+  read_status --> route_status
+  route_status -->|planned — author its features| author
+  route_status -->|else| __end
   author --> read_feature
   read_feature --> route_checked
-  route_checked -->|checked — assign its scenarios| assign
-  route_checked -->|returned — back through the PO role's judgment for another pass| more_features
+  route_checked -->|checked — route its constraints| find_decision
   route_checked -->|else| __end
-  assign --> read_assigned
-  read_assigned --> more_features
+  find_decision --> route_decision
+  route_decision -->|found — record it| compose_subject
+  route_decision -->|else| assign
+  compose_subject --> author_decision_record
+  author_decision_record --> resolve_decision
+  resolve_decision --> assign
+  assign --> build
+  build --> route_build
+  route_build -->|assigned — dispatched to the shop's build| verify
+  route_build -->|returned — back through the PO role's judgment| more_features
+  route_build -->|else| __end
+  verify --> more_features
   more_features --> advance_feature
   advance_feature --> route_more
-  route_more -->|success exit: the initiative's features are done and assigned| __end
-  route_more -->|failsafe exit: feature_count >= feature_cap — the run ends with the initiative's state recorded| __end
+  route_more -->|success exit: the initiative's features are done| __end
+  route_more -->|failsafe exit: feature_count >= feature_cap| __end
   route_more -->|else| author
 ```
 
 
 ## Data
 
-Each entry names a process-local value. Simple types use JSON Schema
-names inline; every structured shape is a `$ref` to a defined type
-with an explicit source. Conditions are CEL expressions over these
-names. A sub-process step's inputs map positionally to its child's
-parameters, so each criteria set is declared under its own name here
-— `initiative_criteria`, `feature_criteria`, `order_criteria` — and
-mapped to the child's `criteria_path`. `contracts`, `repository`,
-`decomposition`, `experience_principles`, `core_tasks`, `order`, `recommendations`, and
-`priority` are the lead-shop-held records the sub-processes declare;
-their meanings are those documents'. The status reads are `run`
-steps: a stage's outcome is the status its own record step wrote, and
-this process routes on that status, never on a judgment of its own.
+Each entry names a process-local value. `feature_criteria`,
+`contracts`, `repository`, `decomposition`, `experience_principles`,
+and `core_tasks` are lead-shop-held records, declared so no step loads
+undeclared context. `principles` and `adr_criteria` are held at their
+approved paths, not supplied at instantiation. `response`, `work_item`,
+and `register` are reconcile-and-close's own inputs, passed through
+unread by this process. `decision_text` is the first
+`needs decision:` line `find-decision` reads from the feature, empty
+when none stands.
 
 ```yaml
 data:
   topic: {type: string}
   form: {type: string, enum: [brainstorm, interview, review-of-evidence]}
-  initiative_criteria: {type: string, format: uri-reference}
   feature_criteria: {type: string, format: uri-reference}
-  order_criteria: {type: string, format: uri-reference}
   contracts: {type: string, format: uri-reference}
   repository: {type: string, format: uri-reference}
   decomposition: {type: string, format: uri-reference}
   experience_principles: {type: string, format: uri-reference}
   core_tasks: {type: string, format: uri-reference}
-  order: {type: string, format: uri-reference}
-  priority: {type: string, format: uri-reference}
-  recommendations: {type: string, format: uri-reference}
+  principles: {type: string, format: uri-reference, initial: basis/architecture-principles.md}
+  adr_criteria: {type: string, format: uri-reference, initial: basis/fitness/adr.fitness.md}
+  response: {$ref: work-done-response, from: pkg:shopsystem-messaging/work-done-response}
+  work_item: {$ref: work-item, from: pkg:beads/work-item}
+  register: {$ref: scenario-register, from: pkg:shopsystem-knowledge/scenario-register}
+  verification: {$ref: verification, from: ../types/verification.md}
   initiative: {type: string, format: uri-reference, initial: ""}
-  new_order: {type: string, format: uri-reference}
-  feature: {type: string, format: uri-reference}
   initiative_status: {type: string}
-  order_status: {type: string}
+  feature: {type: string, format: uri-reference}
   feature_status: {type: string}
+  decision_text: {type: string, initial: ""}
+  subject: {type: string, initial: ""}
+  adr_record: {type: string, format: uri-reference, initial: ""}
   more: {type: string, enum: [another, done]}
   feature_count: {type: integer, initial: 0}
   feature_cap: {type: integer, initial: 24}
@@ -159,11 +163,11 @@ data:
 
 ```yaml
 start: discover
-parameters: [topic, form, initiative_criteria, feature_criteria, order_criteria, contracts, repository, decomposition, experience_principles, core_tasks, order, priority, recommendations]
+parameters: [topic, form, feature_criteria, contracts, repository, decomposition, experience_principles, core_tasks, response, work_item, register]
 result: initiative
 steps:
   - id: discover
-    name: Discover the problem
+    name: Discover and bet the problem
     run-by: {execution: sub-process, process: discovery-conversation-process, from: discovery-conversation.md}
     inputs: [topic, form]
     outputs: [initiative]
@@ -176,82 +180,30 @@ steps:
     branches:
       - label: "a document stands — read its status"
         when: initiative != ""
-        next: read-framed
+        next: read-status
       - else: end
 
-  - id: read-framed
-    name: Read the framed initiative's status
-    run-by: {execution: runtime}
-    inputs: [initiative]
-    outputs: [initiative_status]
-    run: |
-      sed -n 's/^status: //p' ${initiative}
-    next: route-framed
-
-  - id: route-framed
-    name: Route on the framing
-    run-by: {execution: runtime}
-    inputs: [initiative_status]
-    branches:
-      - label: "proposed — the check begins"
-        when: initiative_status == "proposed"
-        next: check
-      - else: end
-
-  - id: check
-    name: Check the initiative and take the bet
-    run-by: {execution: sub-process, process: initiative-check-process, from: initiative-check.md}
-    inputs: [initiative, initiative_criteria, contracts, repository, experience_principles, core_tasks]
-    outputs: [initiative]
-    next: read-bet
-
-  - id: read-bet
+  - id: read-status
     name: Read the initiative's status
     run-by: {execution: runtime}
     inputs: [initiative]
     outputs: [initiative_status]
     run: |
       sed -n 's/^status: //p' ${initiative}
-    next: route-bet
+    next: route-status
 
-  - id: route-bet
+  - id: route-status
     name: Route on the bet
     run-by: {execution: runtime}
     inputs: [initiative_status]
     branches:
-      - label: "bet — the initiative is planned"
+      - label: "planned — author its features"
         when: initiative_status == "planned"
-        next: place
-      - else: end
-
-  - id: place
-    name: Place the initiative in the backlog order
-    run-by: {execution: sub-process, process: backlog-ordering-process, from: backlog-ordering.md}
-    inputs: [initiative, order, priority, recommendations, order_criteria]
-    outputs: [new_order]
-    next: read-order
-
-  - id: read-order
-    name: Read the order's status
-    run-by: {execution: runtime}
-    inputs: [new_order]
-    outputs: [order_status]
-    run: |
-      sed -n 's/^status: //p' ${new_order}
-    next: route-order
-
-  - id: route-order
-    name: Route on the order's check
-    run-by: {execution: runtime}
-    inputs: [order_status]
-    branches:
-      - label: "checked — proceed to authoring"
-        when: order_status == "checked"
         next: author
       - else: end
 
   - id: author
-    name: Author and check one feature
+    name: Author and self-check one feature
     run-by: {execution: sub-process, process: feature-authoring-process, from: feature-authoring.md}
     inputs: [initiative, repository, decomposition, experience_principles, core_tasks, feature_criteria]
     outputs: [feature]
@@ -267,51 +219,108 @@ steps:
     next: route-checked
 
   - id: route-checked
-    name: Route on the check
+    name: Route on the self-check
     run-by: {execution: runtime}
     inputs: [feature_status]
     branches:
-      - label: "checked — assign its scenarios"
+      - label: "checked — route its constraints"
         when: feature_status == "checked"
-        next: assign
-      - label: "returned — back through the PO role's judgment for another pass"
-        when: feature_status == "returned"
-        next: more-features
+        next: find-decision
       - else: end
+
+  - id: find-decision
+    name: Find a flagged decision
+    run-by: {execution: runtime}
+    inputs: [feature]
+    outputs: [decision_text]
+    run: |
+      grep -m1 'needs decision:' ${feature} | sed 's/.*needs decision: *//' || true
+    next: route-decision
+
+  - id: route-decision
+    name: Route on the flag
+    run-by: {execution: runtime}
+    inputs: [decision_text]
+    branches:
+      - label: "found — record it"
+        when: decision_text != ""
+        next: compose-subject
+      - else: assign
+
+  - id: compose-subject
+    name: Compose the decision's subject
+    run-by: {execution: runtime}
+    inputs: [decision_text, feature]
+    set:
+      subject: >-
+        "Decision: " + decision_text + ". Decided by: lead-solutions-architect, under a right it holds, or by the authority under escalation. Trigger: a constraint on " + feature + ". Evidence: the feature's Contributors section."
+    next: author-decision-record
+
+  - id: author-decision-record
+    name: Author the decision's record
+    run-by: {execution: sub-process, process: adr-authoring-process, from: adr-authoring.md}
+    inputs: [subject, principles, adr_criteria]
+    outputs: [adr_record]
+    next: resolve-decision
+
+  - id: resolve-decision
+    name: Mark the flag recorded
+    run-by: {execution: runtime}
+    inputs: [feature, adr_record]
+    run: |
+      id=$(sed -n 's/^id: //p' ${adr_record} | head -1)
+      sed -i "0,/needs decision:/s//decision recorded: ${id} —/" ${feature}
+    next: assign
 
   - id: assign
     name: Assign the feature's scenarios
     run-by: {execution: sub-process, process: scenario-assignment-process, from: scenario-assignment.md}
     inputs: [feature, decomposition, contracts, repository]
     outputs: [feature]
-    next: read-assigned
+    next: build
 
-  - id: read-assigned
-    name: Read the feature's status after assignment
+  - id: build
+    name: Read the feature's status after dispatch
     run-by: {execution: runtime}
     inputs: [feature]
     outputs: [feature_status]
     run: |
       sed -n 's/^status: //p' ${feature}
+    next: route-build
+
+  - id: route-build
+    name: Route on the dispatch
+    run-by: {execution: runtime}
+    inputs: [feature_status]
+    branches:
+      - label: "assigned — dispatched to the shop's build"
+        when: feature_status == "assigned"
+        next: verify
+      - label: "returned — back through the PO role's judgment"
+        when: feature_status == "returned"
+        next: more-features
+      - else: end
+
+  - id: verify
+    name: Verify the shop's delivery
+    run-by: {execution: sub-process, process: reconcile-and-close-process, from: reconcile-and-close.md}
+    inputs: [response, work_item, register]
+    outputs: [verification]
     next: more-features
 
   - id: more-features
     name: Judge whether the initiative needs another feature
     run-by: {role: lead-po, execution: agent}
-    inputs: [initiative, new_order, repository, feature_status]
+    inputs: [initiative, feature, feature_status]
     outputs: [more]
     prompt: |
-      Read the initiative's Features section — the features this and
-      earlier passes made, by id — the backlog order at new_order,
-      the status feature_status of the feature just processed, and,
-      for the listed features, their statuses in the feature
-      repository at repository. Judge whether the initiative needs
-      another feature — a behavior its framing serves that no feature
-      yet states, or a returned feature to author again — or whether
-      its features are done and every one is assigned. Return
+      Read the initiative's Features section and, for each listed
+      feature, its status in the feature repository. Judge whether
+      the initiative needs another feature — a behavior its framing
+      serves that no feature yet states, or a returned feature to
+      author again — or whether its features are done. Return
       "another" or "done". This is your backlog accountability, not a
-      check: the framing decides what is needed, the appetite bounds
-      it.
+      check.
     next: advance-feature
 
   - id: advance-feature
@@ -327,36 +336,32 @@ steps:
     run-by: {execution: runtime}
     inputs: [more, feature_count, feature_cap]
     branches:
-      - label: "success exit: the initiative's features are done and assigned"
+      - label: "success exit: the initiative's features are done"
         when: more == "done"
         next: end
-      - label: "failsafe exit: feature_count >= feature_cap — the run ends with the initiative's state recorded"
+      - label: "failsafe exit: feature_count >= feature_cap"
         when: feature_count >= feature_cap
         next: end
       - else: author
-
 ```
 
 A discovery that cancels or closes without convergence leaves no
-initiative — `route-discover` ends the run with the conversation's
-record standing; a request declined at the framing leaves one
-recorded `proposed` then `cancelled`, and `route-framed` ends the run
-the same way. A `returned` feature goes back through the PO role's
-judgment for another authoring pass; a `pending-definition` feature,
-and an order that is not `checked`, end the run. The sub-processes
-stand alone: the recovery is a fresh run of the one that stopped —
-`backlog-ordering` for the order, `feature-authoring` with its check
-for the feature — and a fresh `scenario-assignment` run carries the
-checked feature on; this flow does not resume a bet initiative.
+initiative — `route-discover` ends the run. A decline recorded and
+cancelled inside the frame step leaves an initiative not `planned` —
+`route-status` ends the run the same way. A `returned` feature from
+`route-build` goes back through the PO role's judgment for another
+authoring pass. The sub-processes stand alone: the recovery is a fresh
+run of the one that stopped.
 
 ## Derived checks
 
 | Outcome | Check | Kind | Where |
 |---|---|---|---|
-| O1 | `assign` reachable only through `route-framed` ("proposed"), `route-bet` ("planned"), `route-order` ("checked"), and `route-checked` ("checked") | mechanical | branch graph |
-| O2 | every step is a sub-process, a runtime status read, route, or counter, or the `more-features` judgment | mechanical | step list |
-| O3 | `route-more` carries the success and failsafe exits, labeled | mechanical | `route-more.branches` |
-| O4 | the no-initiative, not-proposed, and no-bet else exits end the run with the records standing | mechanical | `route-discover.branches`, `route-framed.branches`, `route-bet.branches` |
+| O1 | `author` reachable only through `route-status` ("planned"); `assign` reachable only through `route-checked` ("checked") | mechanical | branch graph |
+| O2 | every step is a sub-process, a runtime status read or route, or the `more-features` judgment | mechanical | step list |
+| O3 | `find-decision` and `route-decision` stand between `route-checked` and `assign`, with `author-decision-record` on the found branch | mechanical | step order |
+| O4 | `verify` precedes `more-features`; `route-more` carries the success and failsafe exits, labeled | mechanical | step order, `route-more.branches` |
+| O5 | the no-initiative and not-planned else exits end the run with the records standing | mechanical | `route-discover.branches`, `route-status.branches` |
 
 ## Document History
 
@@ -369,3 +374,4 @@ checked feature on; this flow does not resume a bet initiative.
 | 5 | 2026-08-31 | review | Batch E screen round 3 (final): the recovery path named — a fresh run of the stopped sub-process, never a resumed flow; the feature counter starts at zero so the cap admits the number it names. Repairs after the last screening round, disclosed here. |
 | 5 | 2026-08-31 | state | draft → approved with batch E as one block (brief-032 ask 2, default accepted); the primer's product statement confirmed by the owner. |
 | 6 | 2026-09-02 | update | Carried-by reference repointed to the load point (.claude/skills/) — the skill-rendering process's first run removed the retired home basis/skills/; the owner's sweep per its second-home escalation. |
+| 7 | 2026-09-08 | update | Rewritten under feat-flow-simplification: initiative-check and backlog-ordering removed — discovery-conversation's frame step now bets directly; a feature routes straight from its own self-check to a flagged-constraint check, adr-authoring, scenario-assignment, and reconcile-and-close's verify, with no check step and no human step after the frame. |

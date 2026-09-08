@@ -5,9 +5,9 @@ defines: initiative
 owner: product-authority
 status: approved
 approved: 2026-08-31
-version: 12
+version: 13
 created: 2026-08-28
-updated: 2026-09-07
+updated: 2026-09-08
 ancestry: [initiative]
 ---
 
@@ -30,28 +30,21 @@ ancestry: [initiative]
 - **Produced by:** the [PM role](../roles/lead-pm.md), in the
   [discovery conversation](../processes/discovery-conversation.md) —
   the role's assisting agent drafts, the PM decides its content.
-- **Attached and screened in** the
-  [initiative-check](../processes/initiative-check.md) process: it
-  mirrors the PO output check with maker
-  `lead-pm`; before the screen, two attach steps: the solutions
-  architect role attaches the decomposition and its feasibility verdict,
-  then the product designer role attaches its usability evidence or
-  hypothesis; then the cold reviewer's screen against the
-  [initiative fitness set](../fitness/initiative.fitness.md); then the
-  authority's decision. That screen is the *check of record*:
-  the check whose verdict the definitions rely on, since the authority
-  holds the PM role in person and no other role checks the PM's
-  framing. What it checks is completeness and form — originator
-  quoted, one measure, a bound, no solution, each attachment complete
-  by its type's parts. It
-  does not check whether the problem is worth solving; that value
-  judgment stands unchecked by design and rests on the recorded
-  originator's words and the measure. The authority *bets* on a
-  screened initiative — decides to spend the appetite — in that
-  process's own decide step, a human step.
-- **Consumed by:** the PO role, which makes features from it; the
-  solutions architect role; the PO output check, where a feature's
-  `framing` input names this document's first section.
+- **Bet directly at discovery.** The authority bets on the initiative —
+  decides to spend the appetite — inside the
+  [discovery conversation](../processes/discovery-conversation.md)'s
+  own human step: convergence naming the bet writes `planned` straight
+  from `proposed`, on the authority's own word, with no separate check
+  between framing and bet. That value judgment — whether the problem is
+  worth solving — rests on the recorded originator's words and the
+  measure, unchecked by design. Feasibility and usability and
+  Decomposition are optional: filled later, at feature authoring, by
+  the solutions architect and product designer roles, never before the
+  bet.
+- **Consumed by:** the PO role, which makes features from it and
+  attaches §4 and §5 through the roles that own them at feature
+  authoring; a feature's `framing` names this document's first
+  section.
 
 ## Required frontmatter
 
@@ -66,14 +59,12 @@ no link field. `approved` does not
 apply; the lifecycle stands in. Status values and their writers:
 - `proposed` — the PM role, when the discovery conversation's `frame`
   step records it: the framed-but-unbet state.
-- `planned` — the authority's bet, taken and recorded in the
-  [initiative-check](../processes/initiative-check.md) process's
-  decide and record steps, replacing `proposed`.
-- `active` — the PO output check's record step, when the first feature
-  made from it passes, replacing `planned` — the only status it writes
-  over; the step reaches this document through its declared framing
-  input, since a feature's framing names this document's first
-  section.
+- `planned` — the authority's bet, written by the discovery
+  conversation's `frame` step directly on the authority's word,
+  replacing `proposed`.
+- `active` — feature-authoring's self-check step, when the initiative's
+  first feature is set checked, replacing `planned` — the only status
+  it writes over.
 - `completed` — the [reconcile-and-close](../processes/reconcile-and-close.md)
   process, when the last delivery under it is reconciled — read from
   §6 and each feature's state — and the measure is recorded against
@@ -81,10 +72,9 @@ apply; the lifecycle stands in. Status values and their writers:
 - `cancelled` — with the reason recorded, from `proposed`, `planned`,
   or `active`: a request declined at discovery is recorded `proposed`
   and cancelled in the same discovery conversation (its `frame` step),
-  so the record of what was declined survives; a cancellation at the
-  bet is taken in the initiative-check decide step and written by its
-  record step; a later cancellation is
-  the PM role's decision recorded as an outcome of the
+  so the record of what was declined survives; a later cancellation,
+  of a planned or active initiative, is the PM role's decision recorded
+  as an outcome of the
   [review conversation](../processes/review-conversation.md)
   (amendment pending).
 
@@ -106,7 +96,8 @@ apply; the lifecycle stands in. Status values and their writers:
 3. **Appetite** — the bound the product will spend — time or capacity
    — that the features stay within; and the no-gos: what this
    initiative will not do, each with its reason.
-4. **Feasibility and usability** — each attaching role's offer, in
+4. **Feasibility and usability** (optional; filled at feature
+   authoring, not before the bet) — each attaching role's offer, in
    the [role-offer](../types/role-offer.md) data type's shape, its
    verdict with its reasons rendered here: the solutions architect
    role's feasibility verdict, present; and, where §2 names an
@@ -116,7 +107,8 @@ apply; the lifecycle stands in. Status values and their writers:
    Document History, in the attaching role's entry, until this
    typedef's owner rules the cap's split — the first candidate of
    [adr-2026-09-05-role-offer](../../decisions/adr-2026-09-05-role-offer.md).
-5. **Decomposition** — attached by the solutions architect role: the
+5. **Decomposition** (optional; filled at feature authoring, not
+   before the bet) — attached by the solutions architect role: the
    Bounded Contexts the initiative touches, the relationship kind of
    each contract between them it relies on, and the cross-context flow
    in one place — the saga or process manager (the one component that
@@ -141,10 +133,9 @@ apply; the lifecycle stands in. Status values and their writers:
   spent on what, for which outcome — must be statable from §1–3 alone.
 - The go/no-go and a cancellation are each carried by a
   [product decision record](product-decision-record.md) the PO role
-  makes for the decision and the PO output check screens, linked from
-  the Document History state entry; for the go/no-go, `decided-by` is
-  `product-authority` and `right` is `bet`, values the decision-record
-  typedef admits.
+  makes for the decision, linked from the Document History state
+  entry; for the go/no-go, `decided-by` is `product-authority` and
+  `right` is `bet`, values the decision-record typedef admits.
 - An initiative with sub-initiatives holds no features — its §6 stays
   empty — and is not bet on: the bet is taken on each sub-initiative
   alone. Its measure is moved by its sub-initiatives, and it completes
@@ -157,11 +148,11 @@ apply; the lifecycle stands in. Status values and their writers:
 
 ## Commitment (Definition of Done)
 
-An initiative is done — able to be bet on — when it has passed the
-cold reviewer's screen against its fitness set, which requires the
-feasibility verdict present and the measure with a current condition
-and a target. **Consequence on failure:** it stays `proposed` with the
-criterion named; no feature is made from it.
+An initiative is bet when the authority's word at discovery's
+convergence is "bet" and the Framing, For whom, and Appetite sections
+are complete per this typedef — originator quoted, one measure with a
+current condition and target, the appetite bounded. **Consequence on
+failure:** it stays `proposed`; no feature is made from it.
 
 ## Sources
 
@@ -206,3 +197,4 @@ of record.
 | 10 | 2026-09-04 | update | Under init-request-routing / feat-request-routing on the authority's standing direction of 2026-09-04, per adr-2026-09-04-request-front-end: optional frontmatter `request` — the request the initiative was made from, required when the discovery conversation was opened on one, written by its frame step; §1 Framing's rule states that the originator chain then begins at that request (its section 1 quoted, each quotation carrying the request's id); checklist row added. Nothing else changes; the Framing-refinement rule is lead-ghulb. Made by the architect role; the owner's approval of the amendment is pending. |
 | 11 | 2026-09-06 | update | Under init-role-decisions / feat-role-decisions on the authority's bet of 2026-09-06, per adr-2026-09-05-role-offer §2 and the feature's constraints C1 and C4: §4 states each attaching role's offer in the role-offer data type's shape with its verdict and reasons rendered there, restating no part, and names the Document History — the attaching role's entry — as the full offer's home until the owner rules the cap's split, the ADR's first candidate; the check-of-record sentence and the checklist row say each attachment is complete by its type's parts. The 500-word rule is not touched: at the bet the owner ruled the cap soft with 20% variance (the initiative's Document History v8), a ruling on the rule the owner applies until the split is recorded here. The fitness set (v5) and guideline (v5) are hand-amended beside it. Maker's evaluation against the artifact-typedef typedef's checklist: `defines` unchanged; the six required sections in order; commitment and sources unchanged; no pinned example link; the amended checklist entry cites its clause; no Writing rules or Fitness scenarios section, as before. Made by the lead-solutions-architect role; the owner's approval of the amendment is pending. |
 | 12 | 2026-09-07 | update | Under req-2026-09-07-sub-initiative at the small-change process's make step, on the authority's decisions the request records: optional frontmatter `parent` on the child as the link's one home; §7 Sub-initiatives on the parent, derived from the children's `parent` fields and held to them by the lint's check 13; the rule that a parent holds no features, is not bet on, has its measure moved by its sub-initiatives, and completes when they do; the checklist row. Guideline (v6) and fitness set (v6) hand-amended beside it, as at v11 — compile_typedef.py refuses this typedef for want of a Writing rules section. Made by the lead-solutions-architect role. |
+| 13 | 2026-09-08 | update | Under feat-flow-simplification, retiring initiative-check and po-output-check: the bet is taken directly in discovery's `frame` step on the authority's word, not in a separate check; §4 and §5 are optional, filled at feature authoring by the roles that own them, not before the bet; `active` is written by feature-authoring's self-check step; the Commitment section states the bet's condition without a cold-reviewer screen. |

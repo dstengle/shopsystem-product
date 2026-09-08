@@ -4,7 +4,7 @@ id: feature-authoring-process
 owner: product-authority
 status: approved
 approved: 2026-08-31
-version: 7
+version: 8
 created: 2026-08-31
 updated: 2026-09-08
 produces: [feature]
@@ -15,22 +15,22 @@ annotations:
   claude-code:
     activation: model-judged
     promotion: experiment-local
-    use-when: "a planned initiative needs one more feature authored, the designer's and architect's criteria added, and the check run"
+    use-when: "a planned initiative needs one more feature authored, the designer's and architect's criteria added, and the PO's self-check recorded"
 ---
 
 # Process: Feature authoring
 
-**Purpose:** Author one feature from a planned initiative and take it
-through its check: the PO role writes it alone from the initiative's
-framing, the product designer and solutions architect roles add the
-criteria that ride on its scenarios, and the PO output check sets its
-status.
+**Purpose:** Author one feature from a planned initiative: the PO role
+writes it alone from the initiative's framing, the product designer
+and solutions architect roles add the criteria that ride on its
+scenarios, and the PO records its own evaluation against the feature
+fitness set and sets the feature checked.
 
 **Guiding statement:** One feature per run, authored alone: scope and
 wording are the PO role's; the criteria ride on the scenarios; the
-check, not the author, sets the status. Conflicts with behavior
-already specified are the repository sweep's to catch at assignment,
-never a question to a shop during authoring.
+maker's self-check is the last word, not a second checker's. Conflicts
+with behavior already specified are the repository sweep's to catch at
+assignment, never a question to a shop during authoring.
 
 **Outcomes:**
 - O1. The feature is authored by the PO role alone, from the
@@ -39,28 +39,24 @@ never a question to a shop during authoring.
   witnessed by `draft`'s run-by and declared inputs.
 - O2. Where the initiative names an interaction type, the designer's
   usability and accessibility criteria are on the feature before the
-  check; where the decomposition names non-functional constraints,
-  the architect's constraints are — witnessed by `add-usability` and
-  `add-constraints` preceding `check`, each outputting the feature.
-- O3. The feature's check statuses — checked, returned,
-  pending-definition — are set only by the PO output check; draft is
-  the maker's own initial status, the typedef's writer list followed
-  — witnessed by `draft`'s prompt and `check`, the run's only other
-  status-writing step.
-- O4. A run returns the feature with the check's decision recorded in
-  its Document History — witnessed by `check`'s output and the child's
-  record step, whose prompt writes the review rounds and the decision
-  into the artifact's Document History.
+  self-check; where the decomposition names non-functional
+  constraints, the architect's constraints are — witnessed by
+  `add-usability` and `add-constraints` preceding `self-check`, each
+  outputting the feature.
+- O3. The PO records its evaluation of the feature against the fitness
+  set in one Document History row and sets the feature checked, and
+  activates a planned initiative on its first feature's pass —
+  witnessed by `self-check`'s prompt and output.
 
 **Roles:** maker — [`../roles/lead-po.md`](../roles/lead-po.md)
-(authors the feature alone; its feature-authoring accountability).
-criteria — [`../roles/lead-product-designer.md`](../roles/lead-product-designer.md)
+(authors and self-checks the feature; its feature-authoring
+accountability). criteria — [`../roles/lead-product-designer.md`](../roles/lead-product-designer.md)
 (usability and accessibility criteria where an interaction type is
 named) and
 [`../roles/lead-solutions-architect.md`](../roles/lead-solutions-architect.md)
-(non-functional constraints where the decomposition names them). the
-check — the [PO output check](po-output-check.md) as a sub-process,
-with its own roles.
+(non-functional constraints where the decomposition names them; where
+a constraint needs a decision not yet recorded, names it so
+product-flow can route it to adr-authoring).
 
 **Carried by:**
 [`../../.claude/skills/feature-authoring/SKILL.md`](../../.claude/skills/feature-authoring/SKILL.md)
@@ -78,33 +74,24 @@ flowchart TD
   draft(["Draft the feature — agent: lead-po<br/>in — initiative: string, repository: string<br/>out — artifact: string, initiative: string"])
   add_usability(["Add the designer's criteria — agent: lead-product-designer<br/>in — artifact: string, initiative: string, experience_principles: string, core_tasks: string<br/>out — artifact: string"])
   add_constraints(["Add the architect's constraints — agent: lead-solutions-architect<br/>in — artifact: string, decomposition: string<br/>out — artifact: string"])
-  prepare["Name the framing for the check — runtime<br/>in — initiative: string<br/>sets — framing: string"]
-  check{{"Check the feature — sub-process: po-output-check-process<br/>in — artifact: string, framing: string, criteria_path: string<br/>out — decision: check-decision"}}
+  self_check(["Self-check against the fitness set — agent: lead-po<br/>in — artifact: string, criteria_path: string, initiative: string<br/>out — artifact: string, initiative: string"])
   __end(("end<br/>result — artifact: string"))
   __start(("start")) --> draft
   draft --> add_usability
   add_usability --> add_constraints
-  add_constraints --> prepare
-  prepare --> check
-  check --> __end
+  add_constraints --> self_check
+  self_check --> __end
 ```
 
 
 ## Data
 
-Each entry names a process-local value. Simple types use JSON Schema
-names inline; every structured shape is a `$ref` to a defined type with
-an explicit source. Conditions are CEL expressions over these names.
-`repository` is the path of the feature repository the draft is
-written into; `decomposition` the path of the solutions architect's
+Each entry names a process-local value. `repository` is the feature
+repository's path; `decomposition` the solutions architect's
 structural model; `experience_principles` and `core_tasks` the
-experience principle set and core-task list — each a lead-shop-held
-record, declared so no step loads undeclared context. `criteria_path`
-names the [feature fitness set](../fitness/feature.fitness.md). The
-`framing` the check reads is the initiative's Framing section — the
-`prepare` step names it by fragment, since the
-[initiative typedef](../artifacts/initiative.md) rules that a check
-naming the framing as a criterion reads §1, not the whole document.
+experience principle set and core-task list. `criteria_path` names the
+[feature fitness set](../fitness/feature.fitness.md), the self-check's
+one criterion.
 
 ```yaml
 data:
@@ -115,8 +102,6 @@ data:
   core_tasks: {type: string, format: uri-reference}
   criteria_path: {type: string, format: uri-reference}
   artifact: {type: string, format: uri-reference}
-  framing: {type: string, format: uri-reference}
-  decision: {$ref: check-decision, from: ../types/check-decision.md}
 ```
 
 ## Steps
@@ -171,24 +156,28 @@ steps:
       Read decomposition. Where it names non-functional constraints
       on this feature's scenarios, write them into Contributors as
       criteria, one line each, riding by name on the scenarios they
-      bound. Add to Edges any failure or boundary case those
-      constraints name. Where none apply, record that decomposition
-      names none for this feature. Return the feature.
-    next: prepare
+      bound. Where a constraint needs a decision not yet recorded,
+      write "needs decision: <what>" on its line, so product-flow
+      routes it to adr-authoring. Add to Edges any failure or
+      boundary case those constraints name. Where none apply, record
+      that decomposition names none for this feature. Return the
+      feature.
+    next: self-check
 
-  - id: prepare
-    name: Name the framing for the check
-    run-by: {execution: runtime}
-    inputs: [initiative]
-    set:
-      framing: initiative + "#framing"
-    next: check
-
-  - id: check
-    name: Check the feature
-    run-by: {execution: sub-process, process: po-output-check-process, from: po-output-check.md}
-    inputs: [artifact, framing, criteria_path]
-    outputs: [decision]
+  - id: self-check
+    name: Self-check against the fitness set
+    run-by: {role: lead-po, execution: agent}
+    inputs: [artifact, criteria_path, initiative]
+    outputs: [artifact, initiative]
+    prompt: |
+      Evaluate the feature against the fitness set at criteria_path
+      — every scenario, the Contributors criteria, the Edges table,
+      the Interaction types section. Write one Document History row
+      recording that evaluation and any gap you accept rather than
+      fix. Set the feature's status to checked. If the initiative's
+      status is planned, set it to active with a one-line entry
+      naming this feature's pass — the only status this step writes
+      over. Return the feature.
     next: end
 ```
 
@@ -196,10 +185,9 @@ steps:
 
 | Outcome | Check | Kind | Where |
 |---|---|---|---|
-| O1 | `draft` run by `lead-po`, reading only `initiative` and `repository` (writing the feature and §6); no shop in any step | mechanical | `draft`, step list |
-| O2 | both criteria steps precede `check` and output `artifact` | mechanical | step order, outputs |
-| O3 | `draft` writes only the initial draft status; the check statuses come from the child | mechanical | `draft.prompt`, `check` |
-| O4 | `check` outputs `decision`; the child's record step writes the rounds and decision into the artifact's Document History | mechanical | `check`, po-output-check `record.prompt` |
+| O1 | `draft` run by `lead-po`, reading only `initiative` and `repository`; no shop in any step | mechanical | `draft`, step list |
+| O2 | both criteria steps precede `self-check` and output `artifact` | mechanical | step order, outputs |
+| O3 | `self-check` writes one Document History row and sets status `checked`; on a planned initiative's first pass, sets it `active` | judged | `self-check.prompt` |
 
 ## Document History
 
@@ -213,3 +201,4 @@ steps:
 | 5 | 2026-08-31 | review | Batch E screen round 2: the re-author pass defined — a returned feature listed in the Features section is revised in place, its id kept, no duplicate id added. Post-approval repair from the end-to-end screen. |
 | 6 | 2026-09-02 | update | Carried-by reference repointed to the load point (.claude/skills/) — the skill-rendering process's first run removed the retired home basis/skills/; the owner's sweep per its second-home escalation. |
 | 7 | 2026-09-08 | update | The draft, add-usability, and add-constraints prompts tightened to the plain-voice rule under feat-plain-voice: each under 120 words, stating what to write; draft caps scenarios and Edges rows at ten, one line per step, one line per contributor's criteria. |
+| 8 | 2026-09-08 | update | Rewritten under feat-flow-simplification: the po-output-check sub-process removed; a self-check step has the PO evaluate the feature against the fitness set, record that evaluation in one Document History row, set it checked, and activate the initiative on the first feature's pass (carried over from po-output-check's O6) — no screen, no revise, no decide. |
