@@ -2,7 +2,7 @@
 type: request
 id: req-2026-09-08-definition-vs-instance
 status: routed
-version: 1
+version: 2
 date: 2026-09-08
 reader: lead-pm
 owner: lead-pm
@@ -26,9 +26,11 @@ never the noun for the thing; "runner" only inside "process-runner";
 "anchor" is suspect, since the thing it names is a bead, bd's own
 term. Underneath: nothing distinguishes a process definition from one
 instance of it, and three coinages have patched that. Every artifact
-using the old terms is superseded, not edited in place. Awaits the
-authority's confirmation in the lead-pm's own conversation before
-the discovery opens.
+using the old terms is superseded, not edited in place. Confirmed by the authority, 2026-09-08: "we will use the process
+definition to refer to the definition and we will use 'execution' to
+represent the instance. Either in general as 'an execution of
+request-intake' or a specific instance of the form
+execution:request-intake-<bead id>".
 
 ## 2. From whom
 
@@ -39,8 +41,7 @@ operational contract (lead-4kymc).
 ## 3. Route
 
 Discovery: the instance term and what it replaces; the propagation's
-scope and cost; the supersession rule. Accepted on the authority's
-confirmation.
+scope and cost; the supersession rule. Accepted; the instance term decided: execution.
 
 ## 4. Result
 
@@ -49,3 +50,4 @@ confirmation.
 | Version | Date | Kind | Entry |
 |---|---|---|---|
 | 1 | 2026-09-08 | update | Recorded by the lead-pm from the implementer's report of the authority's direction; routed to discovery, held for the authority's confirmation. |
+| 2 | 2026-09-08 | update | The authority confirmed and decided the term: process definition for the definition, execution for the instance, execution:<process>-<bead id> for one. |
