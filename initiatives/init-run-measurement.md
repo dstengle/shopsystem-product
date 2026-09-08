@@ -3,7 +3,7 @@ type: initiative
 id: init-run-measurement
 name: Run measurement
 status: active
-version: 7
+version: 8
 owner: lead-pm
 created: 2026-09-07
 updated: 2026-09-08
@@ -17,7 +17,7 @@ parent: init-run-efficiency
 
 Originator (product authority, 2026-09-07; the discovery on req-2026-09-07-run-efficiency): "This should be completely mechanical data gathering that can even be executed for each run to support optional analysis."
 
-Problem: the cost of a run is known only when someone reads the transcripts by hand, as was done once for init-tool-skills. Outcome: every session close records, without a model, cost metrics for each agent run — step, role, minutes, context tokens, output tokens where the harness gives them, tool uses — beside the session record, so any run can be analysed on request.
+Problem: the cost of a run is known only when someone reads the transcripts by hand, as was done once for init-tool-skills. Outcome: every session close records, without a model, cost metrics for each agent run — step, role, minutes, context tokens, output tokens where the harness gives them, tool uses — beside the session record, so any run can be analysed on request. Second, from req-2026-09-08-initiative-cost-rollup: every execution's bead names the initiative it serves; the router records the harness's usage on every bead; a rollup on request sums a leaf initiative from its sessions' rows and a parent from its children.
 
 ## For whom
 
@@ -81,3 +81,4 @@ contract exists on this branch. Cross-context flow: none.
 | 5 | 2026-09-08 | state | `proposed` → `planned`: the authority's bet — "bet", 2026-09-08 — taken at the initiative-check decide step after the one screen and the one revise; the lead-pm recording it. Reasons, as given: every named finding repaired in the one revise; the two decisions the offer depends on recorded and checked before the bet — [adr-2026-09-08-run-cost-artifact](../decisions/adr-2026-09-08-run-cost-artifact.md) (D1, the artifact beside the session record, written by a runtime step, a field left blank rather than estimated) and [adr-2026-09-08-run-cost-initiative-scope](../decisions/adr-2026-09-08-run-cost-initiative-scope.md) (D2, the session-record anchor alone). The appetite as the lead-pm restates it at the bet: one working session; the bound the screen judged and the features stay within is §3's as written — 2 hours per initiative, 50K context tokens. What is spent is bounded by the architect's R2 as recorded: the "every session" target reaches only as far as the sibling init-process-runner's rollout, so the measure is read against router-moved sessions until then. The product decision record for the go is the PO role's to make and the PO output check screens it; linked here once made. |
 | 6 | 2026-09-08 | state | `planned` → `active`: feat-run-measurement's pass at feature-authoring's self-check step, recorded by the PO role. |
 | 7 | 2026-09-08 | update | Delivered: the cost step and its record; measure 1 session recorded (sess-2026-09-07-b), every close from now. |
+| 8 | 2026-09-08 | update | Framing: the rollup per initiative and up the tree, from req-2026-09-08-initiative-cost-rollup, as the second feature. |
