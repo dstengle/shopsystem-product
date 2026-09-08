@@ -1,9 +1,9 @@
 ---
 type: adr
 id: adr-2026-09-08-run-cost-initiative-scope
-title: Run-cost measurement in this initiative is scoped to session-handoff's session-record anchor; reconcile-and-close and review-conversation rows are separate decisions
-status: draft
-version: 1
+title: Run-cost measurement in this initiative is scoped to session-handoff's session-record anchor
+status: checked
+version: 3
 date: 2026-09-08
 decided-by: lead-solutions-architect
 right: decomposition
@@ -13,7 +13,7 @@ updated: 2026-09-08
 derives-from: [adr-2026-09-08-run-cost-artifact]
 ---
 
-# ADR: Run-cost measurement in this initiative is scoped to session-handoff's session-record anchor; reconcile-and-close and review-conversation rows are separate decisions
+# ADR: Run-cost measurement in this initiative is scoped to session-handoff's session-record anchor
 
 ## 1. Context
 
@@ -105,13 +105,12 @@ conforms, no exception carried. `knowable-shape` — the decision does not
 create or describe a first-class entity; it narrows the scope of an
 initiative to an existing process's anchor. `contracts-between-contexts`
 — no Bounded Context is in scope; the decision concerns the lead shop's
-own process decomposition. `actor-neutral-discipline` — the decision
-establishes that the session-handoff process collects run-cost rows;
-this rule applies regardless of actor kind — whether that process is
-performed by a human PM, an agent, or a service, the row-collection
-requirement attaches to the process itself, not to the actor kind. When
-reconcile-and-close later defines its own row-collection decision, that
-rule too will attach to the process, not to the actor kind. `local-comprehension` — by keeping the initiative's scope
+own process decomposition. `actor-neutral-discipline` — the
+row-collection requirement this decision establishes attaches to the
+`session-handoff-process` activity, not to whoever performs it: a
+human PM, an agent, or a service closing a session each produce the
+same row under the same requirement, with no fork by actor kind.
+`local-comprehension` — by keeping the initiative's scope
 to one process and one anchor, the feature that builds it stays
 comprehensible as one thing; bundling three close activities would
 force a reader into multiple process definitions to understand one
@@ -145,28 +144,31 @@ what was asked for.
   means the next two are opt-in, not bundled. Forecloses: assuming that
   the row-writing mechanics built for session-handoff automatically
   transfer to other close processes without a separate decision and bet.
-- The decision that produces the session-record artifact (D1, recorded
-  at adr-2026-09-08-run-cost-artifact) is unaffected. What changes:
-  nothing — D1 stands alone, independent of whether reconcile-and-close
-  or review conversations later decide to add their own row collection.
-  For whom: the PO role, who builds D1 as planned; any future initiative
-  for another close's rows. Cost: none. Forecloses: nothing — a future
-  initiative may reuse the artifact patterns D1 defines, or define new
-  ones tailored to a work-item close or a review close.
+- The decision that produces the session-record artifact, recorded at
+  adr-2026-09-08-run-cost-artifact, is unaffected. What changes:
+  nothing — adr-2026-09-08-run-cost-artifact stands alone, independent
+  of whether reconcile-and-close or review conversations later decide
+  to add their own row collection. For whom: the PO role, who builds
+  the artifact adr-2026-09-08-run-cost-artifact defines, as planned;
+  any future initiative for another close's rows. Cost: none.
+  Forecloses: nothing — a future initiative may reuse the artifact
+  patterns adr-2026-09-08-run-cost-artifact defines, or define new ones
+  tailored to a work-item close or a review close.
 
 Bound on Bounded Context shops: none. No Bounded Context is in scope;
 this decision governs the lead shop's own process decomposition.
 
 ## 4. Reversibility
 
-Reversible pre-ship only: the initiative stands or falls as a whole,
-and this scope decision falls with it. If the feature is built and
-shipped, the decision is embodied in what `session-handoff-process`
-does; reversing the decision at that point would incur scope-mismatch
-costs. Post-ship reversal is expensive. Review triggers: the authority
-later requests run-cost rows for a work-item close or review-conversation
-close, making a separate initiative necessary (not a reversal but a
-separate decision; this one holds).
+Reversible at low cost before the feature ships: the initiative can
+be re-scoped or reframed with nothing sunk beyond this record. After
+it ships, the decision is embodied in what `session-handoff-process`
+does, and reversal costs the scope mismatch — unwinding row collection
+built to the session-record anchor and re-deciding scope for a
+different one. Review triggers: the authority later requests run-cost
+rows for a work-item close or review-conversation close, making a
+separate initiative necessary (not a reversal but a separate decision;
+this one holds).
 
 ## Document History
 
@@ -174,3 +176,5 @@ separate decision; this one holds).
 |---|---|---|---|
 | 1 | 2026-09-08 | update | Authored by the lead-solutions-architect role from the D2 decision recorded at init-run-measurement's initiative-check attach-architecture step (that initiative's Document History v2), triggered by this role's bet on initiatives/init-run-measurement.md. Pre-state read from lead-shop-held records alone: the initiative in full, init-run-measurement's framing words, session-handoff-process (v3) and reconcile-and-close (v4), the branch primer's statement of open work on review conversations, and the appetite constraints stated in the initiative. Screened against the architecture principle set: conforms, no exception carried. One decision: the scope is the session record. |
 | 1 | 2026-09-08 | update | Finding 3 (reversibility criterion) repaired by lead-solutions-architect: PM answered that reversibility is pre-ship only; post-ship reversal incurs scope-mismatch costs and is expensive. Reversibility section restated to reflect this: "Reversible pre-ship only" replacing "Reversible at low cost." |
+| 2 | 2026-09-08 | update | Review round 1 repaired by lead-solutions-architect at the adr-authoring revise step, superseding the v1 out-of-role repair above (made outside the process, without this step's provenance): title trimmed to one line, one decision — the deferred-scope clause dropped, its substance already carried in Context and Consequences (criterion 1); the principles-screen `actor-neutral-discipline` paragraph rewritten to test actor-kind neutrality within `session-handoff-process` alone, dropping the cross-activity comparison it had wrongly carried (criterion principles); Reversibility restated directly from the lead-pm's answered ask — reversible at low cost before the feature ships, reversal costing the scope mismatch after (criterion 5); "D1" replaced throughout the affected Consequences bullet with the record's own id, adr-2026-09-08-run-cost-artifact (uncovered, per lead-pm ruling). |
+| 3 | 2026-09-08 | state | `draft` → `checked`: the PM role's pass, read from the record against the review — one decision in the title and §2, the actor-neutral screen on one activity, reversibility as the answered ask states, the record cited by id; the earlier out-of-role repair superseded by the architect's revise (v2). Recorded by the lead-pm at the record step, the child run lead-ml7u0 having ended before the revise was redone. |
