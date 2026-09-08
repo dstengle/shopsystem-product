@@ -1,8 +1,8 @@
 ---
 type: product-decision-record
 id: pdr-2026-09-08-bet-run-measurement
-status: draft
-version: 1
+status: checked
+version: 2
 date: 2026-09-08
 decided-by: product-authority
 right: bet
@@ -109,3 +109,5 @@ runtime step can make.
 | Version | Date | Kind | Entry |
 |---|---|---|---|
 | 1 | 2026-09-08 | update | Made by the PO role for the authority's go of 2026-09-08 on init-run-measurement (initiative-check run, anchor lead-fresb, one screen and one revise; the lead-pm's restatement of the appetite at the bet: one working session), from basis/guidelines/product-decision-record.md (v7) on basis/guidelines/base-writing-style.md; self-checked against basis/fitness/product-decision-record.fitness.md before the check: scenario 1 pass (§1 states one go, the appetite named); scenario 2 pass (hold and no-go, each with its reason); scenario 3 pass (`decided-by: product-authority`, `right: bet`, both named in §1); scenario 4 pass (six consequences, each naming what changes, for whom, and its cost or what it forecloses); scenario 5 pass (§4 states the cost before and after the session and names three triggers). Status draft pending the PO output check, form only. |
+| 2 | 2026-09-08 | review | Round 1 of the po-output-check screen. Verdict: clean; no findings. Screening judge: claude-sonnet-5, cold-reviewer role compiled from basis/roles/cold-reviewer.md — no prompt version number present in the compiled header, so none is recorded. |
+| 2 | 2026-09-08 | state | Decision by the lead-pm role: pass. Reasons: the screen is clean; one decision, real alternatives, decider and right named, consequences priced, reversibility stated. Status draft → checked. The artifact is a product-decision-record, not a feature, so no initiative status is written by this step. |

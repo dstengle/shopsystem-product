@@ -3,7 +3,7 @@ type: adr
 id: adr-2026-09-08-run-cost-artifact
 title: Each run's cost row lands in a new lead-shop artifact beside the session record, written only by a runtime step at session-handoff's collect step
 status: checked
-version: 2
+version: 3
 date: 2026-09-08
 decided-by: lead-solutions-architect
 right: guardrail
