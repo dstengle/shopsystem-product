@@ -2,7 +2,7 @@
 type: feature
 id: feat-run-measurement
 name: Run measurement
-status: draft
+status: returned
 version: 4
 initiative: ../initiatives/init-run-measurement.md
 owner: lead-po
