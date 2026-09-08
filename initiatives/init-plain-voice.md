@@ -3,7 +3,7 @@ type: initiative
 id: init-plain-voice
 name: Plain voice
 status: active
-version: 4
+version: 5
 owner: lead-pm
 created: 2026-09-07
 updated: 2026-09-07
@@ -39,6 +39,8 @@ Not yet.
 
 feat-plain-voice
 
+[feat-plain-voice-rest](../features/feat-plain-voice-rest.md) — draft.
+
 ## Document History
 
 | Version | Date | Kind | Entry |
@@ -47,3 +49,4 @@ feat-plain-voice
 | 2 | 2026-09-08 | update | Reframed from the authority's direction of 2026-09-08: existing definitions rewritten, the feature prompt first, tested before it stands. |
 | 3 | 2026-09-08 | update | Delivered in part: the rule and the rewritten roles and prompts; the feature and guidance targets not yet met; the rule stays under test. |
 | 4 | 2026-09-08 | update | Framing: what the first pass left over the targets, named for the second feature. |
+| 5 | 2026-09-08 | update | Features section: feat-plain-voice-rest added, draft — written by the feature-authoring draft step (the PO role); six scenarios, all owned by the lead shop, over the contributor passages, the hand-kept feature guideline and fitness set, and the implementation-guidance guideline and its records. |
