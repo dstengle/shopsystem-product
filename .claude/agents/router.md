@@ -5,7 +5,7 @@ tools: Read, Bash, Agent
 model: sonnet
 maxTurns: 120
 source: basis/roles/router.md
-source-digest: sha256:0f6b8a403a55
+source-digest: sha256:c7d991fc0953
 ---
 
 <!-- Generated from `basis/roles/router.md` by `basis/tools/compile_role.py`; do not edit by
@@ -33,6 +33,9 @@ it.
   on confirmation.
 - Sub-process steps run as their own, the parent holding until the
   child ends.
+- One usage comment on the anchor at the end of each turn: context
+  tokens, output tokens, and model, as the harness reports them,
+  blank where it does not.
 
 **Domain (exclusive):** the execution's next step.
 

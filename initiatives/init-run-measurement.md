@@ -3,7 +3,7 @@ type: initiative
 id: init-run-measurement
 name: Run measurement
 status: active
-version: 8
+version: 9
 owner: lead-pm
 created: 2026-09-07
 updated: 2026-09-08
@@ -83,3 +83,4 @@ contract exists on this branch. Cross-context flow: none.
 | 6 | 2026-09-08 | state | `planned` → `active`: feat-run-measurement's pass at feature-authoring's self-check step, recorded by the PO role. |
 | 7 | 2026-09-08 | update | Delivered: the cost step and its record; measure 1 session recorded (sess-2026-09-07-b), every close from now. |
 | 8 | 2026-09-08 | update | Framing: the rollup per initiative and up the tree, from req-2026-09-08-initiative-cost-rollup, as the second feature. |
+| 9 | 2026-09-09 | update | Second feature delivered: the rollup on request. |

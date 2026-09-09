@@ -9,7 +9,7 @@ id: router
 owner: product-authority
 status: approved
 approved: 2026-09-07
-version: 9
+version: 10
 created: 2026-09-07
 updated: 2026-09-09
 ---
@@ -36,6 +36,9 @@ it.
   on confirmation.
 - Sub-process steps run as their own, the parent holding until the
   child ends.
+- One usage comment on the anchor at the end of each turn: context
+  tokens, output tokens, and model, as the harness reports them,
+  blank where it does not.
 
 **Domain (exclusive):** the execution's next step.
 
@@ -81,3 +84,4 @@ it needs next, read through `artifact-tools`, alone. An ask past
 | 7 | 2026-09-09 | update | `run` propagated to `execution` as the noun for a process instance, under req-2026-09-08-definition-vs-instance / feat-execution-vocabulary (shopsystem-product): mechanical, determiner-adjacent occurrences only (`a/the/this/one/another/each/no/any run(s)`); `run-by`, `run` as a schema field or step key, and compound/heading uses (e.g. `run-cost`, `run list`, `Run lifecycle`) left unchanged, that residue disclosed as not done in this pass. Self-check against define-good-up-front: diffed against the file's pre-edit text; no requirement, field name, or heading changed. Made by the lead-solutions-architect role. |
 | 8 | 2026-09-09 | update | The frontmatter `description` field propagated (`run` → `execution` as the noun for a process instance), missed by the mechanical pass since it scans body text only, never frontmatter; the anchor concept (the governed record) left as `anchor` throughout, `bead` naming only the identifier, per the glossary's corrected router entry. Made by the lead-solutions-architect role. |
 | 9 | 2026-09-09 | update | Under init-artifact-tools / feat-artifact-tools (`@hash:8be406b70517`), guidance/feat-artifact-tools-shopsystem-product.md (v1) item 4: the router reads one step of a rendering at a time, through the new `artifact-tools` skill's `read` use, never the whole rendering — the opening, Interfaces, and Held-and-resumed passages updated; an unknown step is `artifact-tools`' own `unreadable` failure, held like any other. No accountability, decision owned, or anti-rationalization line changed. Maker's own evaluation against role-definition-fitness (v4), recorded here as define-good-up-front requires, the cold-reviewer role's formal check not run in this pass: the change is additive to what the router already read (a rendering), narrowing how much of it loads at once, not what it is or who decides; no new decision, verdict, or route granted, no accountability widened. Made by the lead-solutions-architect role. |
+| 10 | 2026-09-09 | update | req-2026-09-09-router-usage: an accountability added — the router writes one usage comment on the anchor at the end of each turn (context tokens, output tokens, model, as the harness reports them, blank where it does not), closing the gap the sonnet-tier router left silent. Made by the lead-solutions-architect role. |

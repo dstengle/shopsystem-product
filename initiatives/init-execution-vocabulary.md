@@ -3,7 +3,7 @@ type: initiative
 id: init-execution-vocabulary
 name: Execution vocabulary
 status: active
-version: 5
+version: 6
 owner: lead-pm
 created: 2026-09-08
 updated: 2026-09-08
@@ -40,3 +40,4 @@ feat-execution-vocabulary
 | 3 | 2026-09-08 | state | `planned` → `active`: feat-execution-vocabulary's pass at feature-authoring's self-check step, recorded by the PO role. |
 | 4 | 2026-09-08 | update | Framing: a delivered scenario the rename restates is superseded, not in conflict. |
 | 5 | 2026-09-09 | update | Framing: supersession covers any scenario, whatever its feature's status. |
+| 6 | 2026-09-09 | update | Delivered: measure 15 files of residue from 47; the two excluded features remain. |

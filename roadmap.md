@@ -2,7 +2,7 @@
 type: roadmap-priority
 id: roadmap-priority
 status: draft
-version: 13
+version: 14
 owner: lead-pm
 created: 2026-09-02
 updated: 2026-09-07
@@ -30,11 +30,10 @@ amendment lands.
       six agent runs from bet to build, no human step.
    3. **init-plain-voice** — active: the rule and the roles rewritten;
       feature and guidance targets still open.
-   4. **init-execution-vocabulary** — planned: execution names an
-      instance; run a verb; anchor a bead.
-   5. **init-run-measurement** — active: delivered 2026-09-08; the
-      rollup its second feature.
-   6. **init-artifact-tools** — proposed.
+   4. **init-execution-vocabulary** — active: delivered 2026-09-09;
+      15 files of residue from 47.
+   5. **init-run-measurement** — active: both features delivered.
+   6. **init-artifact-tools** — active: delivered 2026-09-09.
 2. **init-tool-skills** — active
    ([initiatives/init-tool-skills.md](initiatives/init-tool-skills.md)):
    both features delivered 2026-09-07; measure 6 of 12, the six
@@ -77,3 +76,4 @@ the initiative path.
 | 11 | 2026-09-08 | update | The authority's direction: flow simplification and plain voice ahead of measurement and artifact tools. |
 | 12 | 2026-09-08 | update | Flow simplification, plain voice, and run measurement delivered under the simplified flow. |
 | 13 | 2026-09-08 | update | init-execution-vocabulary planned; the order voice, vocabulary, rollup, artifact tools. |
+| 14 | 2026-09-09 | update | Every sub-initiative of run efficiency delivered at least once. |
