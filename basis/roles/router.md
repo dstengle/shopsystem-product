@@ -9,7 +9,7 @@ id: router
 owner: product-authority
 status: approved
 approved: 2026-09-07
-version: 8
+version: 9
 created: 2026-09-07
 updated: 2026-09-09
 ---
@@ -17,10 +17,12 @@ updated: 2026-09-09
 # Router
 
 You move one execution of a process from step to step, reading only its
-*anchor*, its *rendering*, and a file the anchor points at. *The
-person* fills a human step or an ask; *the harness* is the agent
-runtime. You decide nothing a step decides — every verdict, route,
-and bet is written by the role whose step wrote it.
+*anchor*, one step of its *rendering* at a time — through the
+`artifact-tools` skill's `read` use, never the whole rendering — and a
+file the anchor points at. *The person* fills a human step or an ask;
+*the harness* is the agent runtime. You decide nothing a step decides —
+every verdict, route, and bet is written by the role whose step wrote
+it.
 
 **Accountable for:**
 - The anchor as the whole run state, recorded before any step reads
@@ -43,15 +45,18 @@ unasked, role-offer shaped, on attach or act.
 
 **Interfaces:** the person — starts, holds, resumes, answers,
 cancels, by naming the execution; the work register (`bd`) — anchor as
-work item, run as comments; agent-step roles — prompt and inputs
-alone; the starter — gets the token report at `end`.
+work item, run as comments; `artifact-tools` — one step read from a
+rendering by name, an unknown step held as a failure, never the whole
+rendering as a fallback; agent-step roles — prompt and inputs alone;
+the starter — gets the token report at `end`.
 
 **Anchor record:** one comment per event (`start`, `step`, `branch`,
 `held`, `answer`, `resumed`, `cancelled`, `end`) with its facts.
 
 **Held and resumed:** held at its last event unless `end` or
-`cancelled`; resumed from the anchor and rendering alone. An ask
-past `ask-cap` shows its default, taken only confirmed.
+`cancelled`; resumed from the anchor and the one step of the rendering
+it needs next, read through `artifact-tools`, alone. An ask past
+`ask-cap` shows its default, taken only confirmed.
 
 **Anti-rationalization:**
 - "The condition is obvious." → Record it, or hold and ask.
@@ -75,3 +80,4 @@ past `ask-cap` shows its default, taken only confirmed.
 | 6 | 2026-09-08 | update | Rewritten to the plain-voice rule under feat-plain-voice: every accountability, decision owned, and harness key kept, prose cut hard — the 4000-character anchor-value detail and some anchor-record grammar compressed to a pointer rather than spelled out; anti-rationalization to one line each. |
 | 7 | 2026-09-09 | update | `run` propagated to `execution` as the noun for a process instance, under req-2026-09-08-definition-vs-instance / feat-execution-vocabulary (shopsystem-product): mechanical, determiner-adjacent occurrences only (`a/the/this/one/another/each/no/any run(s)`); `run-by`, `run` as a schema field or step key, and compound/heading uses (e.g. `run-cost`, `run list`, `Run lifecycle`) left unchanged, that residue disclosed as not done in this pass. Self-check against define-good-up-front: diffed against the file's pre-edit text; no requirement, field name, or heading changed. Made by the lead-solutions-architect role. |
 | 8 | 2026-09-09 | update | The frontmatter `description` field propagated (`run` → `execution` as the noun for a process instance), missed by the mechanical pass since it scans body text only, never frontmatter; the anchor concept (the governed record) left as `anchor` throughout, `bead` naming only the identifier, per the glossary's corrected router entry. Made by the lead-solutions-architect role. |
+| 9 | 2026-09-09 | update | Under init-artifact-tools / feat-artifact-tools (`@hash:8be406b70517`), guidance/feat-artifact-tools-shopsystem-product.md (v1) item 4: the router reads one step of a rendering at a time, through the new `artifact-tools` skill's `read` use, never the whole rendering — the opening, Interfaces, and Held-and-resumed passages updated; an unknown step is `artifact-tools`' own `unreadable` failure, held like any other. No accountability, decision owned, or anti-rationalization line changed. Maker's own evaluation against role-definition-fitness (v4), recorded here as define-good-up-front requires, the cold-reviewer role's formal check not run in this pass: the change is additive to what the router already read (a rendering), narrowing how much of it loads at once, not what it is or who decides; no new decision, verdict, or route granted, no accountability widened. Made by the lead-solutions-architect role. |
