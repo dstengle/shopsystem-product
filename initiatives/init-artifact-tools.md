@@ -2,8 +2,8 @@
 type: initiative
 id: init-artifact-tools
 name: Artifact tools
-status: planned
-version: 2
+status: active
+version: 3
 owner: lead-pm
 created: 2026-09-07
 updated: 2026-09-07
@@ -37,7 +37,7 @@ Not yet.
 
 ## Features
 
-None yet.
+[feat-artifact-tools](../features/feat-artifact-tools.md) — draft.
 
 ## Document History
 
@@ -45,3 +45,5 @@ None yet.
 |---|---|---|---|
 | 1 | 2026-09-07 | update | Framed by the lead-pm at the discovery-conversation frame step (sess-2026-09-07-b) from the authority's words in req-2026-09-07-artifact-tools, section 1. |
 | 2 | 2026-09-09 | state | `proposed` → `planned`: the authority's bet by its order of 2026-09-08 ("Follow your order"); the framing widened to what the runs showed. |
+| 2 | 2026-09-09 | update | Features section: feat-artifact-tools added, draft — written by the feature-authoring draft step (the PO role); seven scenarios, all owned by the lead shop per this step's judgment, the Decomposition section not yet attached; interaction types cli and api, from the For whom section's own words; every scenario's hash left pending for a later step to fill. |
+| 3 | 2026-09-09 | state | `planned` → `active`: feat-artifact-tools passed feature-authoring's self-check (v2) on its first pass. |
