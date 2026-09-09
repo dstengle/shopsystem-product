@@ -2,7 +2,7 @@
 type: roadmap-priority
 id: roadmap-priority
 status: draft
-version: 16
+version: 17
 owner: lead-pm
 created: 2026-09-02
 updated: 2026-09-09
@@ -53,6 +53,7 @@ Requests routed and awaiting the authority (not yet in the
 priority): req-2026-09-05-step-communication (discovery);
 req-2026-09-06-migration-review (discovery, accepted);
 req-2026-09-07-messaging-invocations (discovery open, lead-cj2o1);
+req-2026-09-09-lead-shop-builds (discovery, brainstorm, parked);
 req-2026-09-04-operational-contract (discovery open, lead-bmmzh).
 Routed to the lane, not started: req-2026-09-09-cost-per-execution,
 req-2026-09-09-artifact-tools-round-trip.
@@ -82,3 +83,4 @@ the initiative path.
 | 14 | 2026-09-09 | update | Every sub-initiative of run efficiency delivered at least once. |
 | 15 | 2026-09-09 | update | Plain voice's third feature delivered; plain-status done; messaging invocations to discovery; two lane requests recorded. |
 | 16 | 2026-09-09 | update | The usage report defined and the cost rows populated; two follow-up lane requests recorded. |
+| 17 | 2026-09-09 | update | The lead-shop-builds request recorded, discovery parked. |
