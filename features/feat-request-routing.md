@@ -3,11 +3,11 @@ type: feature
 id: feat-request-routing
 name: Request routing and the small-change lane
 status: assigned
-version: 8
+version: 10
 initiative: ../initiatives/init-request-routing.md
 owner: lead-po
 created: 2026-09-04
-updated: 2026-09-04
+updated: 2026-09-09
 ---
 
 # Feature: Request routing and the small-change lane
@@ -463,6 +463,12 @@ Feature: Request routing and the small-change lane
     Given a request recording the authority's ask that a decision brief say what it relates to, routed to the small-change lane
     When the lane records its result for the request
     Then a decision brief made afterwards says what it relates to, that effect is demonstrated in the running system, and the request records the verified result with no bet taken and no check of record run
+
+  @bounded-context:shopsystem-product @feature:feat-request-routing @hash:01cd380cbbe6
+  Scenario: an ask arising inside another process is recorded as a request, restated
+    Given a role running a process of the lead shop
+    When an ask outside that process's scope arises during the execution
+    Then a request records the ask in the words it arose in, and the execution continues without acting on the ask
 ```
 
 ## Edges
@@ -523,3 +529,5 @@ Feature: Request routing and the small-change lane
 | 6 | 2026-09-04 | state | `draft` → `checked`: the PM role's pass. Reasons: no finding in any round named a criterion the feature still fails; the cap's confident findings were wording no criterion names, repaired past the cap and disclosed; the one substantive question — whether the lead-pm's route is recorded before the originator answers — ruled: recorded as said, not acted on. The initiative moves to active on this pass, written by the check's record step. |
 | 7 | 2026-09-04 | state | `checked` → `assigned`: the scenario-assignment record step. One assignment entry — context shopsystem-product (the lead shop), scenarios @hash:d25c1b573bff, @hash:5cd27711d5fe, @hash:f2d38c0020da, @hash:eec1236a2a09, @hash:57f41d5f9f17, @hash:9e019e058ee2, @hash:1cb77cfffd40, @hash:f09ad469b17e, @hash:f529feca1e32, @hash:086df5ac784d, @hash:ca14b5a4169a, @hash:c04c2a23411c, @hash:4b038539c9e9, @hash:66cd94ec755c, @hash:91af507a8128, @hash:9699594c6fac. Pre-state read: the initiative's Decomposition ruling — no Bounded Context touched; every amended definition and the example change in the lead shop's tree, read from its records: the `request` typedef at v2, produced by "any process whose output asks for action or decision" — no producing process named and no received ask admitted; the discovery-conversation process at v10, opening on a topic string, not a request; the feature typedef at v11, requiring its `initiative` link; the decision-brief typedef at v3 with its closed frontmatter set, carrying nothing that says what a brief relates to; no `.claude/skills/request-intake` at the load point — the intake process is absent; the owning shop matches the Contributors section for every scenario; the feature repository swept in full — three artifacts, this feature, feat-roles-availability, and feat-skills-availability, no conflict: the two assigned features specify checks over rendered definitions (process definitions to `.claude/skills/`, role definitions to `.claude/agents/`) and no scenario of either names a request, a route, a lane, an originator, or a decline; the one touch-point is this feature's C9 and its Edges row, which place the rendering of the intake process under feat-skills-availability's check as a delivery gate, consistent with that feature's scenarios and contradicting none; no BC contract in the pre-state — the decomposition names no context whose contract bears on these behaviors, and none exists on this branch. Sent: none — the owning shop is the lead shop itself; the freeze bars dispatch and no Bounded Context exists to receive; the gap stands as lead-ki66p. |
 | 8 | 2026-09-04 | update | Delivered in the lead shop's own tree under the assignment: the request typedef v3 and glossary v21 (scenarios 1–2, 5–6, 13; C1–C3); the request-intake process (v4, approved, rendered) as the door — recognize, confirm, record, decide-route said before action, observe, land, dispatch, land-result, decline (scenarios 1–8, 12–13, the objection and said-not-answered scenarios; U1–U7, A1–A6, C5, C9, C10); the small-change process (v4, approved, rendered) as the lane — define by the lead-po, make by the architect, check by the lead-pm, verify by the runtime, record, the not-simple and failed exits (scenarios 9–12; C6, C8); discovery-conversation v11, initiative typedef v10, feature typedef v12 (the hinge and the small feature's form; scenario 8); lint checks 9 and 10. Demonstrated in the running system: scenario 16 (the example change) — req-2026-09-04-brief-relates-to recorded, routed, defined, made, checked, verified (observation exit 0), done; the harness lists request-intake and small-change among the session's skills. Not demonstrated by a run this session: the objection, not-answered, not-simple, decline, and discovery-route scenarios — the definitions carry them and their screens judged them; the first run's confirm and observe answers were the authority's standing direction, disclosed on the request. |
+| 9 | 2026-09-09 | update | Under lead-vtyh5 / feat-execution-vocabulary, one scenario naming a process instance "run" as a noun is superseded, not conflicted, by a new scenario restating it with "execution": @hash:eec1236a2a09 ("an ask arising inside another process is recorded as a request") superseded by "an ask arising inside another process is recorded as a request, restated" (@hash:pending). The other fifteen scenarios name no process-instance noun and no anchor-as-identifier and are untouched. "Anchor" does not appear in this feature. The old scenario's Gherkin text stands unchanged. Hash left pending for the lead-pm to fill by tool. Made by the PO role at feature-authoring's draft step, revising in place under lead-vtyh5. |
+| 10 | 2026-09-09 | update | Hashes of the one restated scenario filled by the lead-pm through artifact-tools fill-hash (lead-vtyh5); the old scenarios stand as they were built against, so no re-assignment. |

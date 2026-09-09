@@ -11,7 +11,7 @@ generated: true
 generated-by: basis/tools/compile_process.py
 derived-from: session-handoff-process
 source: basis/processes/session-handoff.md
-source-digest: sha256:3e79f88fa135
+source-digest: sha256:e108dbe18215
 ---
 
 # Session handoff (compiled from `session-handoff-process`)

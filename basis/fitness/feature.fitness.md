@@ -8,13 +8,13 @@ judged-by: cold-reviewer
 owner: product-authority
 status: approved
 approved: 2026-08-31
-version: 17
+version: 18
 created: 2026-08-26
-updated: 2026-09-08
+updated: 2026-09-09
 generated: true
 generated-by: basis/tools/compile_typedef.py
 source: basis/artifacts/feature.md
-source-digest: sha256:603c7514828f
+source-digest: sha256:5f2bb94d3311
 ---
 
 <!-- Generated from `basis/artifacts/feature.md` (its Fitness scenarios section) by `basis/tools/compile_typedef.py`; do not edit by hand — edit the typedef and re-render. -->
@@ -97,6 +97,14 @@ Scenario 8: the feature meets its word target
   Then the count is at or under the base-writing-style word target for
   a feature
 
+Scenario 9: each Document History row, Contributors passage, and Edges
+row meets its own target
+  Given a Document History row, the Contributors passage, or an Edges
+  row
+  When its words are counted
+  Then the count is at or under the base-writing-style target for that
+  item, with no overage accepted as a gap
+
 ## Compile mapping (each Then → one judge-rubric assertion)
 
 | Scenario Then | Judge-rubric assertion |
@@ -109,3 +117,4 @@ Scenario 8: the feature meets its word target
 | 6 — narrative | "Does the Feature narrative name who, what, and the outcome, and is the outcome the framing's? Cite the lines or their absence." |
 | 7 — Contributors body | "For each passage of the Contributors body: is it an owning shop, a criterion, or a constraint riding by name on the scenarios it bounds, in one short line? A passage of reasoning or of a maker's self-check = fail; name the passage." |
 | 8 — word target | "Count the document's words. Is the count at or under the base-writing-style target for a feature? State the count and pass/fail." |
+| 9 — section-item word targets | "Count the words of each Document History row, the Contributors passage, and each Edges row. Is each at or under its base-writing-style target? Cite any row or passage over, with its count." |

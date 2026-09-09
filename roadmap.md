@@ -2,10 +2,10 @@
 type: roadmap-priority
 id: roadmap-priority
 status: draft
-version: 14
+version: 15
 owner: lead-pm
 created: 2026-09-02
-updated: 2026-09-07
+updated: 2026-09-09
 ---
 
 # Roadmap priority
@@ -28,8 +28,9 @@ amendment lands.
       router runs the shop's processes.
    2. **init-flow-simplification** — active: delivered 2026-09-08;
       six agent runs from bet to build, no human step.
-   3. **init-plain-voice** — active: the rule and the roles rewritten;
-      feature and guidance targets still open.
+   3. **init-plain-voice** — active: three features delivered; per-row
+      targets bind a feature's history, Contributors, and Edges from
+      2026-09-09; no feature under 1,000 words yet.
    4. **init-execution-vocabulary** — active: delivered 2026-09-09;
       15 files of residue from 47.
    5. **init-run-measurement** — active: both features delivered.
@@ -48,11 +49,13 @@ amendment lands.
    verbatim: "sibling process for now, more comprehensive work later"
    (bead lead-sx9xj). Not yet framed.
 
-Requests routed and awaiting the authority's answer (not yet in the
+Requests routed and awaiting the authority (not yet in the
 priority): req-2026-09-05-step-communication (discovery);
-req-2026-09-06-plain-status (small-change); req-2026-09-06-migration-review
-(discovery, accepted, opens beside init-process-runner's check);
+req-2026-09-06-migration-review (discovery, accepted);
+req-2026-09-07-messaging-invocations (discovery open, lead-cj2o1);
 req-2026-09-04-operational-contract (discovery open, lead-bmmzh).
+Routed to the lane, not started: req-2026-09-09-usage-report-shape,
+req-2026-09-09-artifact-tools-round-trip.
 
 Delivered and removed from the priority: **ADR artifact and
 processes** (bead lead-mfcyp) — the ADR chain was authored and
@@ -77,3 +80,4 @@ the initiative path.
 | 12 | 2026-09-08 | update | Flow simplification, plain voice, and run measurement delivered under the simplified flow. |
 | 13 | 2026-09-08 | update | init-execution-vocabulary planned; the order voice, vocabulary, rollup, artifact tools. |
 | 14 | 2026-09-09 | update | Every sub-initiative of run efficiency delivered at least once. |
+| 15 | 2026-09-09 | update | Plain voice's third feature delivered; plain-status done; messaging invocations to discovery; two lane requests recorded. |

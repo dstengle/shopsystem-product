@@ -3,7 +3,7 @@
 
 Sibling of compile_process.py and the other interim tools: the lead
 shop's own tool for adr-2026-09-08-run-cost-artifact. Reads an execution's
-anchor — a `bd` work item — and writes one row per agent run beside
+anchor — a `bd` work item — and writes one row per step beside
 the session record it closes, without a model.
 
 A row is written only for a step the anchor records whose process
@@ -301,7 +301,7 @@ def produce(session_id: str, anchor_id: str) -> None:
         "",
         f"# Run cost: {session_id}",
         "",
-        "Cost rows for the agent runs recorded on the anchor above, read "
+        "Cost rows for the steps recorded on the anchor above, read "
         "without a model. A blank field is one the harness's usage report "
         "did not expose for that run.",
         "",

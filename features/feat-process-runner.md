@@ -3,11 +3,11 @@ type: feature
 id: feat-process-runner
 name: Process runner
 status: assigned
-version: 10
+version: 12
 initiative: ../initiatives/init-process-runner.md
 owner: lead-po
 created: 2026-09-07
-updated: 2026-09-07
+updated: 2026-09-09
 ---
 
 # Feature: Process runner
@@ -361,6 +361,108 @@ Feature: Process runner
     Given a run the router is moving
     When the run ends
     Then the context tokens the router processed for the run, as the harness reports them, are recorded on the anchor beside the run's result
+
+  @bounded-context:shopsystem-product @feature:feat-process-runner @hash:c67781d80a97
+  Scenario: an execution starts against a work item from an approved process definition, restated
+    Given an approved process definition and a work item
+    When the person starts an execution of the process against the work item at the command line
+    Then the execution is recorded on the work item as running at the definition's first step, with its parameters and the router's model as the router's definition names it, and the person is shown the execution's id
+
+  @bounded-context:shopsystem-product @feature:feat-process-runner @hash:549a5611782a
+  Scenario: a runtime step runs as its definition writes it, restated
+    Given an execution at a runtime step
+    When the router moves the execution through the step
+    Then the step's assignments are applied and its command run exactly as the definition writes them, and the values they yield are recorded on the anchor before the next step
+
+  @bounded-context:shopsystem-product @feature:feat-process-runner @hash:b90f5facee72
+  Scenario: a runtime command that exits non-zero holds the execution, restated
+    Given an execution at a runtime step whose command exits non-zero
+    When the router runs the command as written
+    Then the exit status and the command's own message are recorded on the anchor as values the step yielded, the execution holds at that step, and the person is shown the step, the exit status, and the message
+
+  @bounded-context:shopsystem-product @feature:feat-process-runner @hash:ca3f73ebcf0f
+  Scenario: a branch records the value it was taken on, restated
+    Given an execution at a step whose next step depends on a condition
+    When the router evaluates the condition
+    Then the value it read and the branch it took are recorded on the anchor beside each other
+
+  @bounded-context:shopsystem-product @feature:feat-process-runner @hash:3cb139b3cca9
+  Scenario: a condition the router cannot read holds the execution and is asked, restated
+    Given an execution at a step whose condition the router cannot evaluate from the values it has
+    When the router reaches the condition
+    Then no branch is taken, the execution holds at that step, and the person is shown the condition and asked which branch holds
+
+  @bounded-context:shopsystem-product @feature:feat-process-runner @hash:36ba77b2a3c8
+  Scenario: an agent step is launched with its declared inputs alone, restated
+    Given an execution at an agent step
+    When the router launches the step
+    Then the agent receives the step's prompt and the values of the step's declared inputs and nothing else of the execution
+
+  @bounded-context:shopsystem-product @feature:feat-process-runner @hash:e60befb0965f
+  Scenario: a return lacking a declared output holds the execution, restated
+    Given an agent step whose return lacks one of its declared outputs
+    When the router reads the return
+    Then no value is recorded for that output, the execution holds at that step, and the person is shown the step and the output that is missing
+
+  @bounded-context:shopsystem-product @feature:feat-process-runner @hash:7f37c6639785
+  Scenario: a human step holds the execution for the person, restated
+    Given an execution at a human step
+    When the router reaches the step
+    Then the execution holds with the step and every value on the anchor, the person the step names is shown the execution's id, the step, and its question with the question's kind and default, and no agent waits for the answer
+
+  @bounded-context:shopsystem-product @feature:feat-process-runner @hash:0c2fd5a19e70
+  Scenario: an answer at the command line resumes the held execution, restated
+    Given an execution held at a human step or by an ask
+    When the person the step or the ask names answers the question or accepts its default at the command line
+    Then the answer is recorded on the anchor, the execution resumes at the step that asked with the answer in its inputs, and the router says what it took
+
+  @bounded-context:shopsystem-product @feature:feat-process-runner @hash:6b64517f22d9
+  Scenario: an ask returned by an agent step holds the execution for the role it names, restated
+    Given an execution at an agent step whose agent returns an ask in place of its outputs
+    When the router receives the ask
+    Then the execution holds at that step with the ask recorded on the anchor for the role the ask names, and nothing further runs until it is answered
+
+  @bounded-context:shopsystem-product @feature:feat-process-runner @hash:17b844836687
+  Scenario: a person holds a running execution, restated
+    Given an execution that is running
+    When the person holds it at the command line
+    Then the execution is recorded held at its current step with every value on the anchor, and nothing further runs until it is resumed or cancelled
+
+  @bounded-context:shopsystem-product @feature:feat-process-runner @hash:ffdde1279857
+  Scenario: a router started from the anchor resumes the held execution, restated
+    Given an execution held at a step, whether by the person, by an ask, or by its router stopping
+    When a router is started from the execution's anchor
+    Then its first turn cites only the anchor's values and the step — the execution's id, the step, and what the execution awaits — and it continues from that step with the anchor and the definition's rendering as its only sources
+
+  @bounded-context:shopsystem-product @feature:feat-process-runner @hash:04704de76b1b
+  Scenario: an execution is cancelled with a reason, restated
+    Given an execution that is running or held
+    When the person cancels it with a reason and confirms at the command line
+    Then the execution is recorded cancelled with the reason on its anchor, any open ask on it is marked cancelled, and nothing further runs
+
+  @bounded-context:shopsystem-product @feature:feat-process-runner @hash:7b4e4b15eaf0
+  Scenario: a sub-process step runs from its own definition and returns its result, restated
+    Given an execution at a sub-process step
+    When the router reaches the step
+    Then the sub-process runs from its own definition as an execution of its own, recording the parent it branched from, and its result is recorded on the parent's anchor as the step's output
+
+  @bounded-context:shopsystem-product @feature:feat-process-runner @hash:38cd0de89f59
+  Scenario: the router writes no decision to the execution, restated
+    Given an execution the router has moved to its end
+    When the anchor is read
+    Then every value the router wrote is a step's declared output, a condition's read value, or the execution's state, and no verdict, route, or bet on the anchor is the router's
+
+  @bounded-context:shopsystem-product @feature:feat-process-runner @hash:aaa861bb0c1a
+  Scenario: an approved process runs end to end with the lead-pm at its own steps alone, restated
+    Given an approved process definition with runtime, agent, and human steps, and an execution of it started against a work item
+    When the router moves the execution to its end
+    Then every step ran as the definition writes it, in the definition's order, the result is recorded on the anchor, and the lead-pm acted at its own steps and nowhere between them
+
+  @bounded-context:shopsystem-product @feature:feat-process-runner @hash:8c232aaef73b
+  Scenario: the execution's context is recorded on the anchor at its end, restated
+    Given an execution the router is moving
+    When the execution ends
+    Then the context tokens the router processed for the execution, as the harness reports them, are recorded on the anchor beside the execution's result
 ```
 
 ## Edges
@@ -420,3 +522,5 @@ Feature: Process runner
 | 8 | 2026-09-07 | review | Verified by the lead-pm in the running tree: the router definition approved on the bet and rendered, the role check clean; the compiler's outputs line in every rendered agent step, 22 skills re-rendered, the skill-rendering check clean; the lint clean; the two runs read on their anchors — lead-4ppfo closed with its reason, lead-5wzgl held at open-lane, lead-ryr33 the child lane held at make. Thirteen of nineteen scenarios observed on the anchors. Six not observed: the unreadable condition; an ask returned; a person's hold; the sub-process returning; the human step held — the router answered observe from the record, a defect, the definition hardened at v4; end to end — the child lane's make step, on the cheap model the roles inherited, changed the feature typedef beyond its Definition, reverted by the lead-pm. Router context per segment, on the anchors: 70k to 600k cache-read tokens, all on claude-haiku-4-5. The launched roles inherited the router's model because no role definition names one; that is the open decision for the authority (brief-039). Status stays assigned; the end-to-end run closes it. |
 | 9 | 2026-09-08 | update | The end-to-end run, after the roles named their tiers (req-2026-09-07-role-model-tiers): the router (haiku) resumed the lane on anchor lead-ryr33 from name-result and ran it to done — define, make, check, and record launched on fable, every runtime step and branch recorded, the work item closed; then resumed the parent intake run lead-5wzgl from open-lane, read the lane's result, landed it on the request, done. Observed now: the sub-process returning its result (28b4f5a6d5dc) and end to end (fe0399304a46), fifteen of nineteen. Still unobserved: the unreadable condition, an ask returned, a person's hold, a human step held. Router context, the harness's usage per session: the lane run 40 turns, cache-read 1.69M on haiku (the launched roles 1.15M on fable beside it); the parent's resume 32 turns, 1.20M; with the earlier segments about 4.6M of router context for one small change through intake and the lane. Per turn about 40k. The measure, under 1M per delivered feature, is not met: the whole process skill loads on every turn, which init-artifact-tools addresses; the cost moved from the lead-pm's context to the router's. Verified by the lead-pm in the tree: the typedef, guideline, and fitness set changed as the Definition says, lint clean, both anchors closed. |
 | 10 | 2026-09-08 | review | The router's initiative-check run on init-run-measurement (anchor lead-fresb; children lead-o5nic, lead-ml7u0): observed — an ask returned by an agent step held the run for the lead-pm (767b608029a3), sixteen of nineteen. Two breaks after hardening: a resume read only the anchor's first event; the second ADR's revise step launched as a bare agent on haiku, not from the architect's rendering, and that agent committed and changed the git remote to SSH (restored by the lead-pm). The router moves to sonnet under the ruling (router v5). |
+| 11 | 2026-09-09 | update | Under req-2026-09-08-definition-vs-instance / feat-execution-vocabulary, scenario-assignment's supersession clause: seventeen scenarios naming a process instance "run" are superseded, not conflicted, by seventeen restated scenarios naming "execution" — hash:7f991d005cc5, 21a0a96524fb, dfb80114f737, 4353a5e45d00, c32dd5b8b474, 6c3bd78771bc, c0234aab4a26, 6bcebb4e0073, 6c35e3f87cd0, 767b608029a3, 4d31a463c42e, 8f5b65dca426, 1809e3236eca, 28b4f5a6d5dc, d2f51245aa9a, fe0399304a46, 96124cdccf45, each superseded by its own ", restated" title below. Two (3a9dc4428ded, 06a0e40f2325) name no process-instance noun, untouched. "Anchor" unchanged throughout — the governed record, not the identifier "bead" names. Old text stands unchanged, no-edit-in-place. Hashes pending, for the lead-pm to fill by tool. Made by the PO role at feature-authoring's draft step, revising in place under lead-y98mx. |
+| 12 | 2026-09-09 | update | Hashes of seventeen restated scenarios filled by the lead-pm through artifact-tools fill-hash (lead-y98mx); the old scenarios stand as they were built against, so no re-assignment. |

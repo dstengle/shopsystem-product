@@ -3,7 +3,7 @@ type: feature
 id: feat-run-measurement
 name: Run measurement
 status: delivered
-version: 10
+version: 13
 initiative: ../initiatives/init-run-measurement.md
 owner: lead-po
 created: 2026-09-08
@@ -18,7 +18,7 @@ Feature: Run measurement
   The authority, who reads the cost, and the run-efficiency parent,
   whose measure this feeds,
   can have every session close record, without a model, cost metrics
-  for each agent run — step, role, minutes, context tokens, output
+  for each step — step, role, minutes, context tokens, output
   tokens where the harness gives them, tool uses — beside the session
   record,
   so that any run can be analysed on request, in place of reading the
@@ -32,7 +32,7 @@ runtime step, and any tooling change sit in the lead shop's own tree;
 no contract exists on this branch. Every scenario is owned by
 shopsystem-product (the lead shop):
 
-- *a session close records a cost row for each agent run* — shopsystem-product (the lead shop)
+- *a session close records a cost row for each agent step* — shopsystem-product (the lead shop)
 - *a field the harness withholds is left blank* — shopsystem-product (the lead shop)
 - *minutes are recorded as wall-clock time* — shopsystem-product (the lead shop)
 - *no cost row is written for a runtime step* — shopsystem-product (the lead shop)
@@ -54,10 +54,10 @@ constraint rides on any of the five scenarios.
 
 ## Interaction types
 
-None — the framing's own outcome names no person-facing action: "every
-session close records, without a model, cost metrics for each agent
-run ... beside the session record, so any run can be analysed on
-request." The outcome is stated entirely as a system state change at
+None — the framing's own outcome names no person-facing action: every
+session close records, without a model, cost metrics for each step
+... beside the session record, so any run can be analysed on
+request. The outcome is stated entirely as a system state change at
 session close; it names no command line, terminal, graphical or web
 screen, API or SDK, conversational or voice exchange, or generated
 document through which the authority or the run-efficiency parent
@@ -70,28 +70,28 @@ Feature: Run measurement
   The authority, who reads the cost, and the run-efficiency parent,
   whose measure this feeds,
   can have every session close record, without a model, cost metrics
-  for each agent run — step, role, minutes, context tokens, output
+  for each step — step, role, minutes, context tokens, output
   tokens where the harness gives them, tool uses — beside the session
   record,
   so that any run can be analysed on request, in place of reading the
   transcripts by hand.
 
-  @bounded-context:shopsystem-product @feature:feat-run-measurement @hash:2eda37f33645
-  Scenario: a session close records a cost row for each agent run
-    Given a session whose run passed through the router, leaving an anchor that records each agent run's step and role
+  @bounded-context:shopsystem-product @feature:feat-run-measurement @hash:9e10b116b46f
+  Scenario: a session close records a cost row for each agent step
+    Given a session whose run passed through the router, leaving an anchor that records each agent step's step and role
     When the session closes
-    Then a cost row is written beside the session record for each agent run recorded on the anchor, naming its step, its role, its minutes, its context tokens, and its tool uses, none of them computed by a model
+    Then a cost row is written beside the session record for each agent step recorded on the anchor, naming its step, its role, its minutes, its context tokens, and its tool uses, none of them computed by a model
 
-  @bounded-context:shopsystem-product @feature:feat-run-measurement @hash:475294f4bb30
+  @bounded-context:shopsystem-product @feature:feat-run-measurement @hash:9d92ed6fc1dd
   Scenario: a field the harness withholds is left blank
-    Given an agent run whose harness usage report does not expose one of the cost row's fields
-    When the cost row for that run is written
+    Given an agent step whose harness usage report does not expose one of the cost row's fields
+    When the cost row for that step is written
     Then that field is left blank on the row, never estimated and never computed by a model
 
-  @bounded-context:shopsystem-product @feature:feat-run-measurement @hash:a156efde14c9
+  @bounded-context:shopsystem-product @feature:feat-run-measurement @hash:c89f144bfa9e
   Scenario: minutes are recorded as wall-clock time
-    Given an agent run whose start and end are recorded as timestamps on the anchor
-    When the cost row for that run is written
+    Given an agent step whose start and end are recorded as timestamps on the anchor
+    When the cost row for that step is written
     Then its minutes is the wall-clock span between those two timestamps
 
   @bounded-context:shopsystem-product @feature:feat-run-measurement @hash:b1e89524a00d
@@ -129,11 +129,11 @@ Feature: Run measurement
 
 | Case | Who named it | Covered by |
 |---|---|---|
-| The cost of a run known only by reading transcripts by hand | the framing (Problem) | Scenario: a session close records a cost row for each agent run |
-| Cost metrics computed or estimated by a model | the appetite's second no-go | Scenario: a session close records a cost row for each agent run; Scenario: a field the harness withholds is left blank |
+| The cost of a run known only by reading transcripts by hand | the framing (Problem) | Scenario: a session close records a cost row for each agent step |
+| Cost metrics computed or estimated by a model | the appetite's second no-go | Scenario: a session close records a cost row for each agent step; Scenario: a field the harness withholds is left blank |
 | Analysis of the recorded rows | the appetite's first no-go | Out of scope: analysis belongs to a separate orchestration step, not this one |
 | Whether "minutes" is wall-clock, agent-minutes, or both | the architect's unknown U1 (initiative history v2) | Scenario: minutes are recorded as wall-clock time — the architect's default; agent-minutes is a separate question, not decided here |
-| Whether a runtime step counts as an agent run for a row | the architect's unknown U3 (initiative history v2) | Scenario: no cost row is written for a runtime step |
+| Whether a runtime step counts as an agent step for a row | the architect's unknown U3 (initiative history v2) | Scenario: no cost row is written for a runtime step |
 | The new artifact drifting from the session record it sits beside, or amending its schema | the architect's risk R4 and decision D1 (initiative history v2; adr-2026-09-08-run-cost-artifact) | Scenario: the cost artifact stands beside the session record without restating it — a new artifact, never an amendment to `pkg:shopsystem-knowledge/session-record` |
 | A field the harness's usage report does not expose for a run | the architect's risk R1 (initiative history v2); the framing's own qualification ("where the harness gives them") | Scenario: a field the harness withholds is left blank |
 | A session no approved process definition moved through the router | the architect's feasibility finding (§3) | Out of scope: no anchor exists to key a row on; the "every session" target is bounded by the sibling init-process-runner's own rollout, not this feature's to reach |
@@ -154,3 +154,6 @@ Feature: Run measurement
 | 8 | 2026-09-08 | state | `checked` → `assigned`: the scenario-assignment process's record step, by the lead-solutions-architect role. One assignment entry — context shopsystem-product (the lead shop), scenarios @hash:2eda37f33645, @hash:475294f4bb30, @hash:a156efde14c9, @hash:b1e89524a00d, @hash:ca187608df17 — each already tagged `@bounded-context:shopsystem-product` on the line above its Scenario, no hash changed. Pre-state read from lead-shop-held records, none from a context's internals: the decomposition (init-run-measurement v6, Decomposition section) names no Bounded Context — the artifact, the runtime step, and the tooling change sit in the lead shop's own tree; no contract exists on this branch; contracts — none (basis/contexts/ absent on this branch); the feature repository swept in full, all eleven current features, for conflict — feat-flow-simplification (v2) names a session-close step (@hash:5b7bcafea6e1, a quality sweep run on request, not at close) on a different subject than a cost row; feat-process-runner (v9) the unchanged source of the anchor and harness-usage-report vocabulary this feature's scenarios read; no other feature names a session record, a cost row, or a close step; no conflict found; guardrails read: adr-2026-09-08-run-cost-artifact (v3, checked) and adr-2026-09-08-run-cost-initiative-scope. Unowned: none. Ask: none — no scenario's ownership turns on an open question. Implementation guidance written, one record for the one context: guidance/feat-run-measurement-shopsystem-product.md (v1, status written), naming the new artifact typedef, session-handoff-process's new runtime step and its two read sources (the anchor, the harness's usage report), and what stands outside this assignment (reconcile-and-close, a review conversation's anchor). Maker's evaluation against the implementation-guidance fitness set (v1) — scenario 1 (the architect's level) pass: each statement in What changes names a guardrail (D1/adr-2026-09-08-run-cost-artifact, D2/adr-2026-09-08-run-cost-initiative-scope), a definition by path and version (session-handoff-process v3, the new artifact typedef), or a tool by path (compile_process.py), none naming a context's internals; scenario 2 (cited, never restated) pass: every scenario cited by hash, the ADRs and definitions by id and version, no scenario or contract text reproduced; scenario 3 (actionable alone) pass: the artifact's fields, the new step's placement and its two read sources, the render invocation, and the two things left outside this assignment are all named; scenario 4 (reasons) pass: each of the seven entries in What not to do names D1, D2, the appetite's no-go, or `single-source-of-truth` as its reason; scenario 5 (one assignment) pass: frontmatter and opening paragraph name the initiative, feature, context, and the five hashes, item 3 stating what is not in this assignment rather than binding a later one. Not sent. Sent: none — the dispatch runtime step invoked no shop-msg send: the one context, shopsystem-product, is registered in shop-msg's registry as role "lead" (not "bc") — the lead shop itself, not a Bounded Context to receive a message — and the branch primer's operating rule bars dispatches and mailbox work while the shop is frozen; this is the already-recorded process gap bd lead-ki66p (scenario-assignment lacks a lead-shop-internal path); the lead shop's own scenarios stand assigned to itself and are taken up in its tree, as the previous assignments of record disclosed (feat-role-decisions, feat-process-runner, feat-tool-skills, feat-tool-skills-rest). The initiative's Features section still reads checked; its update is the lead-pm's with the commit. Version bumped 7 → 8. |
 | 9 | 2026-09-08 | update | Delivered and verified by the lead-pm: write_cost_rows.py run on anchor lead-5wzgl writes sessions/sess-2026-09-07-b-cost.md, one row per agent step and router turn, blank where the report gave no figure. Six agent runs from bet to build under product-flow v7. |
 | 10 | 2026-09-09 | update | Under req-2026-09-08-definition-vs-instance / feat-execution-vocabulary (shopsystem-product), scenario-assignment's widened supersession clause: three delivered scenarios naming a process instance "run" (as "agent run") are superseded, not conflicted, by three new scenarios restating them with "execution" — @hash:2eda37f33645 superseded by @hash:82021ef7322f ("a session close records a cost row for each agent execution, restated"); @hash:475294f4bb30 superseded by @hash:50fefe0d5e89 ("a field the harness withholds is left blank, restated"); @hash:a156efde14c9 superseded by @hash:72e451d72fcd ("minutes are recorded as wall-clock time, restated"); the other two scenarios (@hash:b1e89524a00d, @hash:ca187608df17) name no process-instance noun and are untouched. "Anchor" is left as is throughout, old and new scenarios alike — it names the governed record (kept sense), not the identifier `bead` names. The three old scenarios' Gherkin text stands unchanged, per the appetite's no-edit-in-place rule. Hashes computed sha256 of each new scenario's Scenario/Given/When/Then text, first twelve hex digits, the repository convention. Made by the lead-solutions-architect role. |
+| 11 | 2026-09-09 | update | Under req-2026-09-08-agent-run-term, whose Route explicitly accepts a changed scenario text as a new scenario by hash: the retired phrase this request names is replaced by "step" or, where the local sense is agent-only, "agent step" — matching the sibling ", restated" scenario's own choice of "agent execution" over the bare noun — in the Feature narrative (both copies), the Contributors bullet and the two Edges rows naming the same scenario, and the Given/When/Then text of the three scenarios @hash:2eda37f33645, @hash:475294f4bb30, @hash:a156efde14c9 — reopening the v10 no-edit-in-place commitment for these three specifically, since they are already dead (fully superseded by the "execution" restatements, which carry the live requirement) and this request's own Route weighed and accepted the consequence; their `@hash:` tags are left as before, a disclosed mismatch the feature fitness set's own scenario 3 does not judge. `run` (the instance noun, e.g. "a session whose run passed through the router") is left unchanged throughout — a different axis, out of this request's scope. Residue disclosed, not fixed: Document History rows 1, 4, 9, 10 above still carry the retired phrase in their own words — a governed record, excluded from vocabulary edits and never rewritten in place (basis/tools/lint_basis.py's check 14 states the same rule for the sibling "run"-to-"execution" measure); the verifying observation's `grep` still finds this file, so it does not exit 0 on this file alone, a gap named for the check step. Self-check against `define-good-up-front`: every edited passage re-read, no requirement's substance changed, only the phrase, `run` (the instance noun) intact everywhere it stood. Made by the lead-solutions-architect role. |
+| 12 | 2026-09-09 | update | Under req-2026-09-08-agent-run-term, round 2 (repair): the check's round-1 finding 2 — the feature typedef's rule (v18, Rules) that a changed scenario text is a new scenario with a new `@hash:` — repaired by minting a new hash for each of the three scenarios whose Given/When/Then text v11 changed, computed by `python3 basis/tools/artifact_tools.py fill-hash features/feat-run-measurement.md --scenario <name>`: `a session close records a cost row for each agent step` from `@hash:2eda37f33645` to `@hash:9e10b116b46f`; `a field the harness withholds is left blank` from `@hash:475294f4bb30` to `@hash:9d92ed6fc1dd`; `minutes are recorded as wall-clock time` from `@hash:a156efde14c9` to `@hash:c89f144bfa9e` — the other conforming form (restoring the three texts) was not chosen since it would need the Definition itself to exclude superseded scenarios, a change outside this maker's role this round. Nothing else on the tagged lines changed; no other section of this file touched. Consequence disclosed, not fixed, since guidance/feat-run-measurement-shopsystem-product.md is outside this request's named paths: that record still cites the three old hashes, now stale. Round-1 finding 1 (Document History rows 1, 4, 9, 10 carrying the retired phrase) is not repaired this round: the check found no rule authorizing a rewrite of a standing history row, the fitting repair is a change to the Definition's acceptance statement 1 and verifying observation excluding Document History, and the Definition is not this maker's to edit at the make step — left standing, as round 1's maker also escalated it. Self-check against `define-good-up-front`: the typedef's own rule (a changed text takes a new hash) is now met for all three scenarios; no scenario's Given/When/Then re-touched, only its tag line; the verifying observation re-run — `grep` still finds this file, on the disclosed and unrepaired Document History residue alone. Made by the lead-solutions-architect role. |
+| 13 | 2026-09-09 | update | Under req-2026-09-08-agent-run-term, round 3 (repair) on round 2's finding 1(b): the Interaction types section (then lines 58–59) carried the retired phrase split across a line break, in a passage introduced as a direct quotation (opening and closing quotation marks) of the initiative's Framing section, a document this request's paths do not include and this role has no authority to change — reading the quoted words to match the phrase's replacement would misquote an unedited source, the same defect the checker found in rewriting a Document History row. Repaired by dropping the quotation marks and restating the passage in this feature's own words, matching the wording this request already gave the Feature narrative at v11 ("cost metrics for each step ... so any run can be analysed on request"): the section no longer presents itself as a verbatim quotation of another artifact, so no source-fidelity rule is engaged, and the retired phrase is gone from this occurrence under the Definition's own rule (every place the phrase named a step now reads the substitute); `run` as the instance noun ("any run can be analysed on request") left unchanged, unaffected by this request. Judged within this role's authority as a feature wording matter under `paths`, not a rewrite of a governed append-only record: the Interaction types section is ordinary drafted body content, revised at this feature's own v2, v4, v5, and v6, with no rule — the feature typedef, the feature fitness set's scenario 5, or otherwise — binding it to quote its source verbatim. Round-2 finding 1(a) (Document History rows 1, 4, 9, 10) is not repaired this round, for the same reason both prior rounds gave: no rule authorizes rewriting a standing history row, and the checker's own named repair — excluding Document History from acceptance statement 1 and the verifying observation — is a Definition change, outside this maker's authority at the make step; left standing for the define role. Self-check against `define-good-up-front`: the Definition's own rule ("every place that phrase named a step now reads 'step', 'agent step', or 'human step'") is now met for the (b) occurrence, without touching the initiative or any artifact outside `paths`; no scenario, tag, or other section touched this round; the verifying observation re-run — `grep` finds this file only on the disclosed, unrepaired Document History rows. Made by the lead-solutions-architect role. |

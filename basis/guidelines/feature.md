@@ -5,13 +5,13 @@ target-type: feature
 owner: product-authority
 status: approved
 approved: 2026-08-31
-version: 17
+version: 18
 created: 2026-08-26
-updated: 2026-09-08
+updated: 2026-09-09
 generated: true
 generated-by: basis/tools/compile_typedef.py
 source: basis/artifacts/feature.md
-source-digest: sha256:603c7514828f
+source-digest: sha256:5f2bb94d3311
 ---
 
 <!-- Generated from `basis/artifacts/feature.md` (its Writing rules section) by `basis/tools/compile_typedef.py`; do not edit by hand — edit the typedef and re-render. -->
@@ -145,3 +145,20 @@ under the target.
 is at or under the base-writing-style word target for a feature.
 *Decision:* yes/no per feature.
 *Derived check:* judged — feature fitness scenario 8.
+
+**9. Hold each Document History row, Contributors passage, and Edges
+row to its own base-writing-style target.**
+Before: a Document History row run to 1,707 words over seven rows, a
+Contributors passage at 786 words, an Edges table at 541 words over
+ten rows — each accepted as a gap so long as the whole document met
+its target.
+After: each Document History row at or under the base-writing-style
+Document History row target, the Contributors passage at or under its
+target, and each Edges row at or under its target — no overage in any
+of the three accepted as a gap.
+*Test:* count the words of each Document History row, the Contributors
+passage, and each Edges row.
+*Criterion:* every count is at or under its base-writing-style target;
+none stands as an accepted gap.
+*Decision:* yes/no per row and per passage.
+*Derived check:* judged — feature fitness scenario 9.

@@ -4,7 +4,7 @@ id: session-handoff-process
 owner: product-authority
 status: approved
 approved: 2026-08-22
-version: 6
+version: 7
 created: 2026-08-21
 updated: 2026-09-09
 produces: [session-record]
@@ -34,7 +34,7 @@ correction amends the definition it corrects, never a memory.
   with a filed defect, so the handoff never silently fails — witnessed by
   the failsafe branch and `file-defect`.
 - O5. A session whose conversation ran tracked on a `bd` work item gets
-  a cost row for each agent run that item recorded, beside the session
+  a cost row for each step that item recorded, beside the session
   record and without a model — witnessed by `write-cost-rows`.
 
 **Roles:** router (Accountable — runs the handoff when a conversation
@@ -203,7 +203,7 @@ steps:
 | O2 | commit, registry push, and git push are one atomic act | mechanical | `land.atomic` |
 | O3 | every correction row carries a target and a bead | mechanical | `collect.checks` |
 | O4 | failsafe lands with a filed defect, never a silent drop | mechanical | `file-defect.run` |
-| O5 | a cost row per agent run on `run_anchor`, none computed by a model, no row for a runtime step | mechanical | `write-cost-rows.run` |
+| O5 | a cost row per step on `run_anchor`, none computed by a model, no row for a runtime step | mechanical | `write-cost-rows.run` |
 
 ## Document History
 
@@ -217,3 +217,4 @@ steps:
 | 4 | 2026-09-08 | update | Built under feat-run-measurement's five scenarios assigned to shopsystem-product (guidance/feat-run-measurement-shopsystem-product.md v1), per adr-2026-09-08-run-cost-artifact (D1, D2) and its unknowns' defaults (U1 wall-clock minutes; U3 no row for a runtime step). `write-cost-rows`, a runtime step, added between `collect` and `validate`: it reads the session's own run_anchor (new parameter and data value, distinct from the anchor-as-session-record sense the Scope note already carries) through `basis/tools/write_cost_rows.py`, and the process definition of the step the anchor names, and writes the run-cost typedef's rows to `sessions/<id>-cost.md` — never amending the session record, never a step naming a Bounded Context, no model computing a field. An empty run_anchor (no process definition moved the closed conversation through the router) writes nothing, per the feature's Edges row on that case. O5 and its derived check added. Self-check against the process-definition typedef's producing rules: every step's inputs and outputs declared in Data; no `$ref` added, none to source; the new tool exists at the path the step names before this version compiles, so check 11 passes; the loop's exits unchanged; no prose outside `prompt` fields, `write-cost-rows` carrying none since it is a runtime step. Observed in the running tree: `python3 basis/tools/write_cost_rows.py sess-2026-09-07-b --anchor lead-5wzgl` against the real anchor of the delivered request-intake run (feat-process-runner's own demonstration), producing `sessions/sess-2026-09-07-b-cost.md` — four agent/human-step rows and three router-turn rows, no row for any of the anchor's eight runtime or sub-process steps, one field blank where the anchor's own usage-report comment gave no separable per-step figure (never estimated), the session record itself unread by the write and unchanged. Made by the lead-solutions-architect role. |
 | 5 | 2026-09-09 | update | `run` propagated to `execution` as the noun for a process instance, under req-2026-09-08-definition-vs-instance / feat-execution-vocabulary (shopsystem-product): mechanical, determiner-adjacent occurrences only (`a/the/this/one/another/each/no/any run(s)`); `run-by`, `run` as a schema field or step key, and compound/heading uses (e.g. `run-cost`, `run list`, `Run lifecycle`) left unchanged, that residue disclosed as not done in this pass. Self-check against define-good-up-front: diffed against the file's pre-edit text; no requirement, field name, or heading changed. Made by the lead-solutions-architect role. |
 | 6 | 2026-09-09 | update | `anchor` propagated to `bead` for the identifier a process instance is tracked on, under feat-execution-vocabulary (shopsystem-product): 1 occurrence(s) changed in body text (`anchored to` → `tracked on`), the anchor sense of the governed record left unchanged; schema field names, tool flags, and step ids untouched. Made by the lead-solutions-architect role. |
+| 7 | 2026-09-09 | update | Under req-2026-09-08-agent-run-term: the retired phrase this request names is replaced by "step" in outcome O5 and its Derived checks row; `run_anchor`, the data value and parameter name, and `run` as the instance noun in the Scope note are unchanged, out of this request's scope. The Flow diagram is unaffected (no step's inputs, outputs, or branches changed) so it is not re-rendered. Self-check: the wording change carries the same outcome — a cost row per step on `run_anchor`, none computed by a model, none for a runtime step. Made by the lead-solutions-architect role. |

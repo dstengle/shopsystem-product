@@ -5,9 +5,9 @@ defines: feature
 owner: product-authority
 status: approved
 approved: 2026-08-31
-version: 17
+version: 18
 created: 2026-08-26
-updated: 2026-09-08
+updated: 2026-09-09
 ancestry: [feature]
 ---
 
@@ -266,6 +266,23 @@ is at or under the base-writing-style word target for a feature.
 *Decision:* yes/no per feature.
 *Derived check:* judged — feature fitness scenario 8.
 
+**9. Hold each Document History row, Contributors passage, and Edges
+row to its own base-writing-style target.**
+Before: a Document History row run to 1,707 words over seven rows, a
+Contributors passage at 786 words, an Edges table at 541 words over
+ten rows — each accepted as a gap so long as the whole document met
+its target.
+After: each Document History row at or under the base-writing-style
+Document History row target, the Contributors passage at or under its
+target, and each Edges row at or under its target — no overage in any
+of the three accepted as a gap.
+*Test:* count the words of each Document History row, the Contributors
+passage, and each Edges row.
+*Criterion:* every count is at or under its base-writing-style target;
+none stands as an accepted gap.
+*Decision:* yes/no per row and per passage.
+*Derived check:* judged — feature fitness scenario 9.
+
 ## Fitness scenarios
 
 A feature is a Gherkin Feature — one capability from the user's or
@@ -344,6 +361,14 @@ Scenario 8: the feature meets its word target
   Then the count is at or under the base-writing-style word target for
   a feature
 
+Scenario 9: each Document History row, Contributors passage, and Edges
+row meets its own target
+  Given a Document History row, the Contributors passage, or an Edges
+  row
+  When its words are counted
+  Then the count is at or under the base-writing-style target for that
+  item, with no overage accepted as a gap
+
 ### Compile mapping (each Then → one judge-rubric assertion)
 
 | Scenario Then | Judge-rubric assertion |
@@ -356,6 +381,7 @@ Scenario 8: the feature meets its word target
 | 6 — narrative | "Does the Feature narrative name who, what, and the outcome, and is the outcome the framing's? Cite the lines or their absence." |
 | 7 — Contributors body | "For each passage of the Contributors body: is it an owning shop, a criterion, or a constraint riding by name on the scenarios it bounds, in one short line? A passage of reasoning or of a maker's self-check = fail; name the passage." |
 | 8 — word target | "Count the document's words. Is the count at or under the base-writing-style target for a feature? State the count and pass/fail." |
+| 9 — section-item word targets | "Count the words of each Document History row, the Contributors passage, and each Edges row. Is each at or under its base-writing-style target? Cite any row or passage over, with its count." |
 
 ## Derived review checklist
 
@@ -395,3 +421,4 @@ Scenario 8: the feature meets its word target
 | 15 | 2026-09-08 | update | Under feat-flow-simplification, retiring the PO output check: `checked` is written by feature-authoring's own self-check step, not a separate check's record step; `returned` and `pending-definition` drop from the status list — a self-checked feature only goes `returned` from the scenario-assignment process; Produced-by and the Commitment section point to the self-check. |
 | 16 | 2026-09-08 | update | Under feat-plain-voice-rest (`@hash:7c2f4e9b6a13`): Rules gains a bullet — a Contributors passage names an owning shop, a criterion, or a constraint in one short line, no reasoning restated, the reasoning kept in the Document History row that added it. Made by the lead-solutions-architect role. |
 | 17 | 2026-09-08 | update | Under feat-plain-voice-rest (`@hash:9a4e7c1b2f56`, `@hash:5f2b8d4c9a17`, `@hash:3d8b1c5f9e24`): Writing rules and Fitness scenarios sections added, carrying forward the feature guideline (v9) and fitness set (v9), tightened per base-writing-style v3, plus a new rule 8 and fitness scenario 8 holding the whole document to the base-writing-style feature word target; references updated from the retired PO output check to feature-authoring's self-check step. From this version the guideline and fitness set are renderings of this typedef, produced by `basis/tools/compile_typedef.py`; their own histories end at guideline v9 and fitness v9 and stay readable in the repository history. Made by the lead-solutions-architect role. |
+| 18 | 2026-09-09 | update | Under feat-plain-voice-sections (@hash:8f709da780b8, @hash:f8be35985d2f, @hash:d416073e5310): rule 9, fitness scenario 9 added after rule 8, holding each item to its base-writing-style target (v5). Made by lead-solutions-architect. |
