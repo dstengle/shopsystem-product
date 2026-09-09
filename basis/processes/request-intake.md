@@ -4,7 +4,7 @@ id: request-intake-process
 owner: product-authority
 status: approved
 approved: 2026-09-04
-version: 6
+version: 7
 created: 2026-09-04
 updated: 2026-09-09
 produces: [request]
@@ -81,7 +81,7 @@ Contributors section.
   `decide-route`'s prompt, and `hold-after` (scenario 8; U4, A2).
 - O6. A route is acted on only as its destination: the discovery
   conversation opens on the request as its input; the small-change
-  lane takes the request, anchored to the work item `land` opens for
+  lane takes the request, tracked on the work item `land` opens for
   it; a decline is recorded only with the product authority's ruling,
   returned as an ask from `decide-route`, and its record survives —
   the request stays readable, `declined`, with the ruling and the
@@ -114,7 +114,7 @@ Contributors section.
 - lead-pm — [`../roles/lead-pm.md`](../roles/lead-pm.md): records and
   routes. Its agent steps say the reading (`recognize`), write the
   request (`record`), decide and say the route (`decide-route`), land
-  the originator's answer and anchor the lane's run (`land`), settle
+  the originator's answer and track the lane's run (`land`), settle
   the decline record (`decline`), and land what a destination returned
   (`land-outcome`, `land-result`); the route is this role's decision —
   "an extension of the human authority"
@@ -245,14 +245,13 @@ and resumes, in a fresh context, with the ask in its inputs; the
 resumed step writes the ask's `answer` — the authority's ruling — to
 the request's section 3, so the ruling has its home on the record and
 a later run entered with the request reads it there. The work
-register is `bd`, the beads tracker, whose items anchor runs
+register is `bd`, the beads tracker, whose items track runs
 (introduced in
 [adr-2026-09-04-request-front-end](../../decisions/adr-2026-09-04-request-front-end.md));
 lead-4kymc is the register item tracking the lead shop's operational
 contract, which has no artifact yet: the note `record` writes on each
 request is temporary until that item closes. `work_item` is the id of
-the register item `land` opens on the small-change route — the item the small-change process anchors its
-run to, titled with the request's id so the item points at the
+the register item `land` opens on the small-change route — the item the small-change process tracks its run on, titled with the request's id so the item points at the
 request and never the reverse (C4). The discovery conversation opens
 its own item, and a decline needs none, the request being the record.
 The lane closes the item it runs on at each of its three exits
@@ -711,3 +710,4 @@ steps:
 | 4 | 2026-09-04 | state | draft → approved by the owner, on the authority's standing direction for this session ("continue all the way through implementation … you have my permission to continue through"), recorded by the lead-pm: three screen rounds against the process-definition fitness set; round 1's three confident findings and round 2's one repaired, the cap's three repaired past it and disclosed; the carrier to be rendered by the skill-rendering process's next run. |
 | 5 | 2026-09-04 | update | The approval taken on the authority's standing direction confirmed by the authority's ruling of 2026-09-04 on brief-035 — "Take defaults. For 5. take discovery" (brief-035 ask 2, default taken). The carrier re-rendered by the skill-rendering process. |
 | 6 | 2026-09-09 | update | `run` propagated to `execution` as the noun for a process instance, under req-2026-09-08-definition-vs-instance / feat-execution-vocabulary (shopsystem-product): mechanical, determiner-adjacent occurrences only (`a/the/this/one/another/each/no/any run(s)`); `run-by`, `run` as a schema field or step key, and compound/heading uses (e.g. `run-cost`, `run list`, `Run lifecycle`) left unchanged, that residue disclosed as not done in this pass. Self-check against define-good-up-front: diffed against the file's pre-edit text; no requirement, field name, or heading changed. Made by the lead-solutions-architect role. |
+| 7 | 2026-09-09 | update | `anchor` propagated to `bead` for the identifier a process instance is tracked on, under feat-execution-vocabulary (shopsystem-product): 4 occurrence(s) changed in body text (`anchored to` → `tracked on`), the anchor sense of the governed record left unchanged; schema field names, tool flags, and step ids untouched. Made by the lead-solutions-architect role. |

@@ -17,7 +17,7 @@ generated: true
 generated-by: basis/tools/compile_process.py
 derived-from: small-change-process
 source: basis/processes/small-change.md
-source-digest: sha256:f69b4101a25c
+source-digest: sha256:055ff3421e09
 activation: model-judged
 promotion: experiment-local
 ---

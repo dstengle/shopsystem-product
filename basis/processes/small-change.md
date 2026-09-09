@@ -4,7 +4,7 @@ id: small-change-process
 owner: product-authority
 status: approved
 approved: 2026-09-04
-version: 6
+version: 7
 created: 2026-09-04
 updated: 2026-09-09
 produces: []
@@ -184,7 +184,7 @@ of the [request typedef](../artifacts/request.md)'s received-ask path,
 its `route` `small-change`. This process runs as a sub-process of the
 [request-intake](request-intake.md) process: its `open-lane` step maps
 `request` to this parameter and receives this execution's `result` as
-`change`; the execution is anchored to the work item that intake's `land`
+`change`; the execution is tracked on the work item that intake's `land`
 step opened for the routed ask and wrote to the request's `work-item`
 field. The work item lives in the work register, `bd` — the beads
 tracker; `bd close <item> --reason` closes an item with its reason.
@@ -194,8 +194,7 @@ there, before any work — and every exit runs `bd close` on it with a
 reason citing the request's id, read by `read-id`; no intake step
 closes it. `routed-to` is intake's to write, on the lane's return.
 The intake is the lane's one caller: the request typedef names the
-lane as where the route leads, and no anchor of its own is defined
-here.
+lane as where the route leads, and no bead of its own is defined here.
 The execution's `result` is `change`: the request's Result section by
 fragment, `<request>#result` — the one place the definition, the check,
 and the verified result stand, and what the request typedef's
@@ -263,7 +262,7 @@ output lines, standard error merged, then one closing line `exit <n>`
 carrying the command's exit status. The observation's nonzero exit is
 a failed verification — a finding routed back to `make` under the
 cap, never a halted run — while a nonzero exit of a `run` step itself
-(the shell failing, the anchor missing, a close refused) is a failed
+(the shell failing, the bead missing, a close refused) is a failed
 step, not an empty result: the execution halts at that step and the failure
 is reported to the lead-pm role, the sibling processes' rule. `round`
 counts make rounds and is shared by the check and the verification:
@@ -579,3 +578,4 @@ steps:
 | 4 | 2026-09-04 | state | draft → approved by the owner, on the authority's standing direction for this session ("continue all the way through implementation … you have my permission to continue through"), recorded by the lead-pm: three screen rounds against the process-definition fitness set; round 1's two confident findings repaired, round 2's one repaired, the cap with wobbly findings only; the carrier to be rendered by the skill-rendering process's next run. |
 | 5 | 2026-09-04 | update | The approval taken on the authority's standing direction confirmed by the authority's ruling of 2026-09-04 on brief-035 — "Take defaults. For 5. take discovery" (brief-035 ask 2, default taken). The carrier re-rendered by the skill-rendering process. |
 | 6 | 2026-09-09 | update | `run` propagated to `execution` as the noun for a process instance, under req-2026-09-08-definition-vs-instance / feat-execution-vocabulary (shopsystem-product): mechanical, determiner-adjacent occurrences only (`a/the/this/one/another/each/no/any run(s)`); `run-by`, `run` as a schema field or step key, and compound/heading uses (e.g. `run-cost`, `run list`, `Run lifecycle`) left unchanged, that residue disclosed as not done in this pass. Self-check against define-good-up-front: diffed against the file's pre-edit text; no requirement, field name, or heading changed. Made by the lead-solutions-architect role. |
+| 7 | 2026-09-09 | update | `anchor` propagated to `bead` for the identifier a process instance is tracked on, under feat-execution-vocabulary (shopsystem-product): 3 occurrence(s) changed in body text (`anchored to` → `tracked on`), the anchor sense of the governed record left unchanged; schema field names, tool flags, and step ids untouched. Made by the lead-solutions-architect role. |

@@ -5,7 +5,7 @@ defines: process-definition
 owner: product-authority
 status: approved
 approved: 2026-08-22
-version: 9
+version: 10
 created: 2026-08-19
 updated: 2026-09-09
 ancestry: [definition, process-definition]
@@ -117,18 +117,16 @@ is the reserved terminator id for `next`. Each step:
 
 ## Run lifecycle
 
-An execution is one execution of a process, anchored to a work item in the
-registry. Run states: `running`, `held`, `done`, `cancelled`.
+An execution is one execution of a process, tracked on a work item in the registry. Run states: `running`, `held`, `done`, `cancelled`.
 
 - **Hold** pauses an execution: the current step and every data value persist in
-  the execution's anchor, and the work item records the state. A held run is
+  the execution's bead, and the work item records the state. A held run is
   resumed at its recorded step or cancelled with a reason — never
   silently dropped.
 - The `hold-after` window makes parking automatic: an execution with no activity
   inside the window is held by the runtime. Unfinished work parks itself
   with a named resume point; nothing dangles in the lead repo.
-- **Ask** holds an execution the same way, with the ask recorded on the anchor
-  and routed to whoever fills the role it names — a person or an agent;
+- **Ask** holds an execution the same way, with the ask recorded on the bead and routed to whoever fills the role it names — a person or an agent;
   the answer is written to the ask and the execution resumes at the asking
   step with the ask in its inputs, in a fresh context loaded from the
   step's declared inputs and the checkpoint. There is no synchronous
@@ -139,8 +137,7 @@ registry. Run states: `running`, `held`, `done`, `cancelled`.
   held run marks its ask `cancelled`. Answering is an activity of the
   answering role: a human step for a human-held role, or a step the
   answering role's process names — those steps are defined in the
-  processes that answer, not here. The registry that anchors runs
-  records every ask; asks per run, per role, and per kind are read from
+  processes that answer, not here. The registry that tracks runs records every ask; asks per run, per role, and per kind are read from
   it. An ask that recurs across runs is a gap in a definition; the
   answering role files the definition change, and the ask stops.
 - **Cancel** closes the execution's work item with a reason and files the
@@ -215,3 +212,4 @@ round cap (the dual-exit rule).
 | 7 | 2026-09-05 | update | Under req-2026-09-05-no-tools-mid-process at the small-change process's make step, on the product authority's words of 2026-09-05 — "Building tools as part of a process should never be necessary and a goal for the lead shop should be to never build tools mid-process." — §Commitment gains the rule: a process definition is not approved while any step's `run` script or `prompt` names a tool that does not exist in the repository; and the goal it serves: no tool is built mid-process — a tool a process needs and the repository lacks is a request, routed before the process runs. The checklist gains its row; the lint's check 11 is named as the check. Made by the lead-solutions-architect role. |
 | 8 | 2026-09-09 | update | Reference convention added under req-2026-09-08-definition-vs-instance / feat-execution-vocabulary (shopsystem-product): a process definition is referenced by its full id, never bare or shortened, matching the glossary's `process definition` entry. Self-check against define-good-up-front: this is the one bullet the guidance names for this file; no other section's `run`-as-noun text touched in this pass, that propagation disclosed as not done here. Made by the lead-solutions-architect role. |
 | 9 | 2026-09-09 | update | `run` propagated to `execution` as the noun for a process instance, under req-2026-09-08-definition-vs-instance / feat-execution-vocabulary (shopsystem-product): mechanical, determiner-adjacent occurrences only (`a/the/this/one/another/each/no/any run(s)`); `run-by`, `run` as a schema field or step key, and compound/heading uses (e.g. `run-cost`, `run list`, `Run lifecycle`) left unchanged, that residue disclosed as not done in this pass. Self-check against define-good-up-front: diffed against the file's pre-edit text; no requirement, field name, or heading changed. Made by the lead-solutions-architect role. |
+| 10 | 2026-09-09 | update | `anchor` propagated to `bead` for the identifier a process instance is tracked on, under feat-execution-vocabulary (shopsystem-product): 4 occurrence(s) changed in body text (`anchored to` → `tracked on`), the anchor sense of the governed record left unchanged; schema field names, tool flags, and step ids untouched. Made by the lead-solutions-architect role. |
