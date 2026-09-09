@@ -11,7 +11,7 @@ generated: true
 generated-by: basis/tools/compile_tool.py
 derived-from: rollup-cost
 source: basis/tools/rollup_cost.py
-source-digest: sha256:725d92865af5
+source-digest: sha256:c8e25e33e0c2
 ---
 
 # rollup-cost (produced from the answer of `basis/tools/rollup_cost.py`)
@@ -33,7 +33,7 @@ python3 basis/tools/rollup_cost.py <initiative_id>
 Takes:
 - `<initiative_id>` — the initiative's own id, e.g. init-run-measurement; its file is initiatives/<initiative_id>.md (required)
 
-Returns (text): one line, `<id> (<kind>): minutes=<n> context_tokens=<n> output_tokens=<n> tool_uses=<n> sources=<n>` — <kind> is leaf or parent, <n> for a field blank when no contributing row supplied it, sources the session count (leaf) or child count (parent); exit status 0
+Returns (text): one line, `<id> (<kind>): minutes=<n> tokens=<n> tool_uses=<n> sources=<n>` — <kind> is leaf or parent, <n> for a field blank when no contributing row supplied it, sources the session count (leaf) or child count (parent); exit status 0
 
 Fails:
 

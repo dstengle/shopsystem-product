@@ -5,7 +5,7 @@ defines: run-cost
 owner: product-authority
 status: approved
 approved: 2026-09-08
-version: 4
+version: 5
 created: 2026-09-08
 updated: 2026-09-09
 ancestry: [run-cost]
@@ -16,9 +16,9 @@ ancestry: [run-cost]
 ## Identity and ancestry
 
 - **Type:** `run-cost` — the cost rows for one session's close: one row
-  per step recorded on the session's anchor, naming step, role,
-  minutes, context tokens, output tokens, and tool uses, none of them
-  computed by a model. A mechanical record, never a governing
+  per step recorded on the session's anchor, and one per router turn,
+  naming step, role, minutes, tokens, tool uses, and duration, none of
+  them computed by a model. A mechanical record, never a governing
   definition: nobody approves an instance, and none is amended once
   written.
 - **Produced by:** the `write-cost-rows` step of
@@ -35,9 +35,10 @@ read from), `created`, `updated`. The field set is closed.
 
 ## Required sections
 
-1. **Rows** — one table row per step the anchor records: step,
-   role, minutes, context tokens, output tokens, tool uses. A field the
-   harness's usage report does not expose for that run is blank.
+1. **Rows** — one table row per step the anchor records, and one per
+   router turn: step, role, minutes, tokens, tool uses, duration. A
+   field the harness's usage report does not expose for that run is
+   blank.
 
 ## Commitment (Definition of Done)
 
@@ -57,9 +58,9 @@ record it sits beside is never amended.
 
 - `session` and `anchor` present; the session record itself unchanged.
   *(§Required frontmatter)*
-- Every row names step, role, minutes, context tokens, output tokens,
-  tool uses; a field the usage report withheld is blank, never a
-  number a model supplied. *(§Required sections 1)*
+- Every row names step, role, minutes, tokens, tool uses, duration; a
+  field the usage report withheld is blank, never a number a model
+  supplied. *(§Required sections 1)*
 - No row for a runtime step. *(§Identity and ancestry)*
 
 ## Document History
@@ -71,3 +72,4 @@ record it sits beside is never amended.
 | 2 | 2026-09-09 | update | `run` propagated to `execution` as the noun for a process instance, under req-2026-09-08-definition-vs-instance / feat-execution-vocabulary (shopsystem-product): mechanical, determiner-adjacent occurrences only (`a/the/this/one/another/each/no/any run(s)`); `run-by`, `run` as a schema field or step key, and compound/heading uses (e.g. `run-cost`, `run list`, `Run lifecycle`) left unchanged, that residue disclosed as not done in this pass. Self-check against define-good-up-front: diffed against the file's pre-edit text; no requirement, field name, or heading changed. Made by the lead-solutions-architect role. |
 | 3 | 2026-09-09 | update | `anchor` propagated to `bead` for the identifier a process instance is tracked on, under feat-execution-vocabulary (shopsystem-product): 1 occurrence(s) changed in body text (`anchored to` → `tracked on`), the anchor sense of the governed record left unchanged; schema field names, tool flags, and step ids untouched. Made by the lead-solutions-architect role. |
 | 4 | 2026-09-09 | update | Under req-2026-09-08-agent-run-term: the retired phrase this request names is replaced by "step" in the Identity and ancestry bullet and Required sections item 1 (both named the countable unit a row is written for by that phrase); `run` as the instance noun (e.g. "one execution of a process") is unchanged, out of this request's scope. Self-check: the two edits change wording only, no field, requirement, or commitment altered. Made by the lead-solutions-architect role. |
+| 5 | 2026-09-09 | update | req-2026-09-09-usage-report-shape: the row's fields brought to match what the router's `usage` comment and the starter's `report` comment actually make available — a single `tokens` figure and `tool uses` replacing the retired input/cache-creation/cache-read/output quad, `duration` added for the harness's own `duration_ms` where it gives one, "and one per router turn" added to the Identity bullet and Required sections item 1 so the router's own blank-tokens rows are named; the blank-field rule unchanged. Made by the lead-solutions-architect role. |

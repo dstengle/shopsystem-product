@@ -40,7 +40,8 @@ TOOL = "basis/tools/rollup_cost.py"
 REPO = pathlib.Path(__file__).resolve().parent.parent.parent
 EXIT = {"usage": 2, "unreadable": 2, "unparseable": 1}
 
-FIELDS = ["minutes", "context_tokens", "output_tokens", "tool_uses"]
+FIELDS = ["minutes", "tokens", "tool_uses"]
+COLUMNS = {"minutes": "Minutes", "tokens": "Tokens", "tool_uses": "Tool uses"}
 
 
 def fail(code: str, message: str) -> None:
@@ -86,12 +87,11 @@ DESCRIPTION = {
             "returns": {
                 "form": "text",
                 "text": (
-                    "one line, `<id> (<kind>): minutes=<n> "
-                    "context_tokens=<n> output_tokens=<n> tool_uses=<n> "
-                    "sources=<n>` — <kind> is leaf or parent, <n> for a "
-                    "field blank when no contributing row supplied it, "
-                    "sources the session count (leaf) or child count "
-                    "(parent); exit status 0"
+                    "one line, `<id> (<kind>): minutes=<n> tokens=<n> "
+                    "tool_uses=<n> sources=<n>` — <kind> is leaf or "
+                    "parent, <n> for a field blank when no contributing "
+                    "row supplied it, sources the session count (leaf) "
+                    "or child count (parent); exit status 0"
                 ),
             },
             "failures": [
@@ -170,31 +170,42 @@ def to_number(cell: str, as_float: bool):
 
 
 def parse_rows(path: pathlib.Path) -> list:
+    """Rows read by the run-cost typedef's own column names (v5) — never
+    by position: a header naming `Tokens` and `Tool uses` may sit at any
+    position the typedef's Rows table carries them at."""
     text = path.read_text()
     section = text.split("## Rows", 1)
     if len(section) != 2:
         fail("unparseable", f"{path}: no `## Rows` section")
     rows = []
-    seen_header = False
+    header = None
+    col_index = {}
     for line in section[1].splitlines():
         if not ROW_RE.match(line):
-            if seen_header:
+            if header is not None:
                 break
             continue
-        if not seen_header:
-            seen_header = True  # this is the header row itself
+        if header is None:
+            header = [c.strip() for c in line.strip().strip("|").split("|")]
+            for field, column in COLUMNS.items():
+                if column not in header:
+                    fail(
+                        "unparseable",
+                        f"{path}: Rows table carries no {column!r} column",
+                    )
+                col_index[field] = header.index(column)
             continue
         if SEP_RE.match(line):
             continue
         cells = [c.strip() for c in line.strip().strip("|").split("|")]
-        if len(cells) != 6:
-            fail("unparseable", f"{path}: row does not carry six columns: {line!r}")
-        _, _, minutes, ctx, outp, tools = cells
+        if len(cells) != len(header):
+            fail(
+                "unparseable",
+                f"{path}: row does not carry {len(header)} columns: {line!r}",
+            )
         rows.append({
-            "minutes": to_number(minutes, True),
-            "context_tokens": to_number(ctx, False),
-            "output_tokens": to_number(outp, False),
-            "tool_uses": to_number(tools, False),
+            field: to_number(cells[idx], field == "minutes")
+            for field, idx in col_index.items()
         })
     return rows
 

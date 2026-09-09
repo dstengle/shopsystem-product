@@ -8,12 +8,30 @@ the session record it closes, without a model.
 
 A row is written only for a step the anchor records whose process
 definition names it `execution: agent` or `execution: human`, and for
-the router's own top-level turns between such steps (the anchor's
-`context` comments, the harness's own usage report). A runtime step,
-and a sub-process step (it opens its own anchor), get no row. Minutes
-is the wall-clock span between a step's own anchor event and the
-event immediately before it. A field the harness's usage report does
-not expose for an execution is left blank, never estimated.
+the router's own top-level turns (the anchor's `usage` comments, one
+per turn). A runtime step, and a sub-process step (it opens its own
+anchor), get no row. Per the run-measurement contract, a step's row
+carries the wall-clock span between that step's own start event (its
+`step` comment) and its own completion event — the next anchor event
+that is not a `usage` comment, never the event immediately before the
+step's launch; a router turn's row carries the span between the event
+immediately before it and its own `usage` comment, the turn's own
+completion.
+
+A router turn's `usage` comment never carries the harness's own
+per-step usage — the harness reports it only to the starter, at
+`end`, one figure per agent step in the anchor's `report` comment:
+`subagent_tokens`, `tool_uses`, and, where the harness gives it,
+`duration_ms`. This tool reads the router's `step` and `usage`
+comment forms and the starter's `report` comment form as
+basis/roles/router.md names them, and nothing else; a router turn's
+tokens, tool-uses, and duration stay blank — the harness gives it
+none — and a step's row takes those three fields from the `report`
+comment alone, never estimated or computed, blank where the report
+does not carry them. A `report` line naming no step the anchor
+records — such as a total the harness gives the starter for its own
+whole execution — is not a row basis/artifacts/run-cost.md names,
+and is read and not written.
 
 No anchor is not an error: a session no process definition moved
 through the router has none to key a row on (out of scope, per
@@ -57,15 +75,16 @@ def fail(code: str, message: str) -> None:
 DESCRIPTION = {
     "name": "write-cost-rows",
     "description": (
-        "Reads one execution's anchor (a `bd` work item) and the harness's own "
-        "usage report recorded on it, and writes the cost rows for that "
-        "session's close beside the session record: one row per agent or "
-        "human step and per top-level router turn, naming its step, role, "
-        "wall-clock minutes, context tokens, output tokens, and tool uses "
-        "— a field the usage report does not expose left blank, never "
-        "estimated. No model computes a row. Use it from "
-        "session-handoff-process's write-cost-rows step; an empty anchor "
-        "writes nothing."
+        "Reads one execution's anchor (a `bd` work item) — the router's own "
+        "`step` and `usage` comments and the starter's `report` comment, in "
+        "the forms basis/roles/router.md names — and writes the cost rows "
+        "for that session's close beside the session record: one row per "
+        "agent or human step and per top-level router turn, naming its "
+        "step, role, wall-clock minutes, tokens, tool uses, and duration "
+        "— a field the report does not carry left blank, a router turn's "
+        "tokens always blank, never estimated. No model computes a row. "
+        "Use it from session-handoff-process's write-cost-rows step; an "
+        "empty anchor writes nothing."
     ),
     "uses": [
         {
@@ -73,10 +92,11 @@ DESCRIPTION = {
             "description": (
                 "Reads the anchor's comments and, for each step they "
                 "record, the role and execution the named process "
-                "definition gives that step; writes "
-                "sessions/<session_id>-cost.md, creating the directory, "
-                "overwriting what stands there. An empty or absent anchor "
-                "writes nothing and prints nothing."
+                "definition gives that step, then the tokens, tool uses, "
+                "and duration the starter's `report` comment gives that "
+                "step; writes sessions/<session_id>-cost.md, creating the "
+                "directory, overwriting what stands there. An empty or "
+                "absent anchor writes nothing and prints nothing."
             ),
             "invocation": (
                 "python3 basis/tools/write_cost_rows.py <session_id> "
@@ -171,11 +191,13 @@ DESCRIPTION = {
     ],
 }
 
-STEP_RE = re.compile(r"^step\s+(\S+)")
+STEP_RE = re.compile(r"^step:\s*(\S+)")
 PROCESS_RE = re.compile(r"\b([a-z][a-z0-9-]*-process)\b")
-QUAD_RE = re.compile(
-    r"input\s+(\d+),\s*cache-creation\s+(\d+),\s*cache-read\s+(\d+),"
-    r"\s*output\s+(\d+)"
+USAGE_RE = re.compile(r"^usage:")
+REPORT_HEAD_RE = re.compile(r"^report\b")
+REPORT_LINE_RE = re.compile(
+    r"^([A-Za-z][\w() .-]*?):\s*subagent_tokens\s+(\d+),\s*tool_uses\s+(\d+)"
+    r"(?:,\s*duration_ms\s+(\d+))?\s*$"
 )
 
 
@@ -248,9 +270,23 @@ def produce(session_id: str, anchor_id: str) -> None:
         fail("unparseable", f"{anchor_id}: the start comment names no *-process id")
     steps = step_map(pm.group(1))
 
-    rows = []  # each: [step, role, minutes, ctx, out, tools]
+    rows = []  # each: [step, role, minutes, tokens, tool_uses, duration]
     row_by_step_id = {}
-    segment_start = events[0][0]
+
+    def completion_ts(after: int):
+        """The step's own completion timestamp: the first anchor event
+        after its own start event that is not a `usage` comment (a
+        turn-boundary log, neither the step's start nor its
+        completion) — per the run-measurement contract, the wall-clock
+        span a step's row carries runs between its own start and
+        completion events, never from the event before the step's
+        launch to the launch."""
+        for j in range(after + 1, len(events)):
+            candidate_first_line = events[j][1].splitlines()[0].strip()
+            if USAGE_RE.match(candidate_first_line):
+                continue
+            return events[j][0]
+        return None
 
     for i, (ts, text) in enumerate(events):
         first_line = text.splitlines()[0].strip()
@@ -259,34 +295,42 @@ def produce(session_id: str, anchor_id: str) -> None:
             step_id = sm.group(1)
             defn = steps.get(step_id)
             if defn and defn["execution"] in ("agent", "human"):
-                minutes = round((ts - events[i - 1][0]).total_seconds() / 60, 1)
+                end_ts = completion_ts(i)
+                minutes = (
+                    round((end_ts - ts).total_seconds() / 60, 1)
+                    if end_ts is not None
+                    else None
+                )
                 row = [step_id, defn["role"] or defn["execution"], minutes, None, None, None]
                 rows.append(row)
-                row_by_step_id.setdefault(step_id, []).append((ts, row))
+                row_by_step_id.setdefault(step_id, []).append(row)
             continue
-        if first_line.startswith("context"):
-            quads = QUAD_RE.findall(text)
-            label_m = re.search(r"context \(([^)]*)\)", text)
-            label = f"router: {label_m.group(1)}" if label_m else "router turn"
-            router_in, router_cc, router_cr, router_out = (int(x) for x in quads[0])
-            minutes = round((ts - segment_start).total_seconds() / 60, 1)
-            rows.append([
-                label, "router", minutes,
-                router_in + router_cc + router_cr, router_out, None,
-            ])
-            if len(quads) > 1:
-                agent_rows_here = [
-                    r for (rts, r) in [
-                        (rts, r) for step_rows in row_by_step_id.values()
-                        for (rts, r) in step_rows
-                    ]
-                    if segment_start <= rts <= ts and steps.get(r[0], {}).get("execution") == "agent"
-                ]
-                if len(agent_rows_here) == 1:
-                    sub_in, sub_cc, sub_cr, sub_out = (int(x) for x in quads[1])
-                    agent_rows_here[0][3] = sub_in + sub_cc + sub_cr
-                    agent_rows_here[0][4] = sub_out
-            segment_start = ts
+        if USAGE_RE.match(first_line):
+            # the router's own turn: the harness reports it no per-turn
+            # usage, so tokens, tool uses, and duration all stay blank.
+            minutes = round((ts - events[i - 1][0]).total_seconds() / 60, 1)
+            rows.append(["router turn", "router", minutes, None, None, None])
+            continue
+        if REPORT_HEAD_RE.match(first_line):
+            # the starter's report of what the harness gave it, as
+            # received: one line per step, matched to that step's row
+            # by label. A label naming no step this anchor recorded —
+            # e.g. a total the harness gives the starter for its own
+            # whole execution — is not a row basis/artifacts/run-cost.md
+            # names, and is read and not written.
+            for line in text.splitlines()[1:]:
+                m = REPORT_LINE_RE.match(line.strip())
+                if not m:
+                    continue
+                label, tokens, tool_uses, duration = m.groups()
+                existing = row_by_step_id.get(label)
+                if not existing:
+                    continue
+                target = existing[-1]
+                target[3] = int(tokens)
+                target[4] = int(tool_uses)
+                if duration is not None:
+                    target[5] = int(duration)
 
     out_path = REPO / "sessions" / f"{session_id}-cost.md"
     lines = [
@@ -307,11 +351,11 @@ def produce(session_id: str, anchor_id: str) -> None:
         "",
         "## Rows",
         "",
-        "| Step | Role | Minutes | Context tokens | Output tokens | Tool uses |",
+        "| Step | Role | Minutes | Tokens | Tool uses | Duration |",
         "|---|---|---|---|---|---|",
     ]
-    for step, role, minutes, ctx, outp, tools in rows:
-        lines.append(f"| {step} | {role} | {minutes} | {blank(ctx)} | {blank(outp)} | {blank(tools)} |")
+    for step, role, minutes, tokens, tool_uses, duration in rows:
+        lines.append(f"| {step} | {role} | {blank(minutes)} | {blank(tokens)} | {blank(tool_uses)} | {blank(duration)} |")
     lines.append("")
     try:
         out_path.parent.mkdir(parents=True, exist_ok=True)

@@ -5,7 +5,7 @@ tools: Read, Bash, Agent
 model: sonnet
 maxTurns: 120
 source: basis/roles/router.md
-source-digest: sha256:c7d991fc0953
+source-digest: sha256:5df79b349662
 ---
 
 <!-- Generated from `basis/roles/router.md` by `basis/tools/compile_role.py`; do not edit by
@@ -33,9 +33,11 @@ it.
   on confirmation.
 - Sub-process steps run as their own, the parent holding until the
   child ends.
-- One usage comment on the anchor at the end of each turn: context
-  tokens, output tokens, and model, as the harness reports them,
-  blank where it does not.
+- One `usage` comment on the anchor at the end of each turn, in the
+  form `usage: tokens=<value>; model=<model>`; `tokens` is always
+  blank — the harness reports no per-turn usage to the router itself
+  — never the router's own remaining budget or any other value it did
+  not report for that turn.
 
 **Domain (exclusive):** the execution's next step.
 
@@ -48,10 +50,29 @@ cancels, by naming the execution; the work register (`bd`) — anchor as
 work item, run as comments; `artifact-tools` — one step read from a
 rendering by name, an unknown step held as a failure, never the whole
 rendering as a fallback; agent-step roles — prompt and inputs alone;
-the starter — gets the token report at `end`.
+the starter — gets the harness's usage report at `end` and records it
+in the `report` comment form the Anchor record entry below names.
 
 **Anchor record:** one comment per event (`start`, `step`, `branch`,
-`held`, `answer`, `resumed`, `cancelled`, `end`) with its facts.
+`held`, `answer`, `resumed`, `cancelled`, `end`) with its facts, plus
+one `usage` comment per turn. The `step` and `usage` comments' exact
+forms:
+- `step`: first line `step: <step id>`, then one line each for
+  `role`, `reads`, `writes`, `next`.
+- `usage`: `usage: tokens=<value>; model=<model>`, `tokens` always
+  blank as the Accountable-for entry states.
+
+**The harness's usage report:** to the router itself, nothing per
+turn — a `usage` comment's `tokens` field stays blank until the
+harness reports one. To the starter, at `end`, one figure per agent
+step it ran — `subagent_tokens`, `tool_uses`, and, where the harness
+gives it, `duration_ms`. The starter records them, as received, in
+one `report` comment: one line per step, `<step id>: subagent_tokens
+<n>, tool_uses <n>[, duration_ms <n>]`. A total the harness gives the
+starter for something other than one of those steps is not part of
+this report form and is not recorded in it. Neither the router nor
+the starter computes, remembers, or estimates a figure the harness
+did not report.
 
 **Held and resumed:** held at its last event unless `end` or
 `cancelled`; resumed from the anchor and the one step of the rendering

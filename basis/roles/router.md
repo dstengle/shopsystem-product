@@ -9,7 +9,7 @@ id: router
 owner: product-authority
 status: approved
 approved: 2026-09-07
-version: 10
+version: 12
 created: 2026-09-07
 updated: 2026-09-09
 ---
@@ -36,9 +36,11 @@ it.
   on confirmation.
 - Sub-process steps run as their own, the parent holding until the
   child ends.
-- One usage comment on the anchor at the end of each turn: context
-  tokens, output tokens, and model, as the harness reports them,
-  blank where it does not.
+- One `usage` comment on the anchor at the end of each turn, in the
+  form `usage: tokens=<value>; model=<model>`; `tokens` is always
+  blank — the harness reports no per-turn usage to the router itself
+  — never the router's own remaining budget or any other value it did
+  not report for that turn.
 
 **Domain (exclusive):** the execution's next step.
 
@@ -51,10 +53,29 @@ cancels, by naming the execution; the work register (`bd`) — anchor as
 work item, run as comments; `artifact-tools` — one step read from a
 rendering by name, an unknown step held as a failure, never the whole
 rendering as a fallback; agent-step roles — prompt and inputs alone;
-the starter — gets the token report at `end`.
+the starter — gets the harness's usage report at `end` and records it
+in the `report` comment form the Anchor record entry below names.
 
 **Anchor record:** one comment per event (`start`, `step`, `branch`,
-`held`, `answer`, `resumed`, `cancelled`, `end`) with its facts.
+`held`, `answer`, `resumed`, `cancelled`, `end`) with its facts, plus
+one `usage` comment per turn. The `step` and `usage` comments' exact
+forms:
+- `step`: first line `step: <step id>`, then one line each for
+  `role`, `reads`, `writes`, `next`.
+- `usage`: `usage: tokens=<value>; model=<model>`, `tokens` always
+  blank as the Accountable-for entry states.
+
+**The harness's usage report:** to the router itself, nothing per
+turn — a `usage` comment's `tokens` field stays blank until the
+harness reports one. To the starter, at `end`, one figure per agent
+step it ran — `subagent_tokens`, `tool_uses`, and, where the harness
+gives it, `duration_ms`. The starter records them, as received, in
+one `report` comment: one line per step, `<step id>: subagent_tokens
+<n>, tool_uses <n>[, duration_ms <n>]`. A total the harness gives the
+starter for something other than one of those steps is not part of
+this report form and is not recorded in it. Neither the router nor
+the starter computes, remembers, or estimates a figure the harness
+did not report.
 
 **Held and resumed:** held at its last event unless `end` or
 `cancelled`; resumed from the anchor and the one step of the rendering
@@ -85,3 +106,5 @@ it needs next, read through `artifact-tools`, alone. An ask past
 | 8 | 2026-09-09 | update | The frontmatter `description` field propagated (`run` → `execution` as the noun for a process instance), missed by the mechanical pass since it scans body text only, never frontmatter; the anchor concept (the governed record) left as `anchor` throughout, `bead` naming only the identifier, per the glossary's corrected router entry. Made by the lead-solutions-architect role. |
 | 9 | 2026-09-09 | update | Under init-artifact-tools / feat-artifact-tools (`@hash:8be406b70517`), guidance/feat-artifact-tools-shopsystem-product.md (v1) item 4: the router reads one step of a rendering at a time, through the new `artifact-tools` skill's `read` use, never the whole rendering — the opening, Interfaces, and Held-and-resumed passages updated; an unknown step is `artifact-tools`' own `unreadable` failure, held like any other. No accountability, decision owned, or anti-rationalization line changed. Maker's own evaluation against role-definition-fitness (v4), recorded here as define-good-up-front requires, the cold-reviewer role's formal check not run in this pass: the change is additive to what the router already read (a rendering), narrowing how much of it loads at once, not what it is or who decides; no new decision, verdict, or route granted, no accountability widened. Made by the lead-solutions-architect role. |
 | 10 | 2026-09-09 | update | req-2026-09-09-router-usage: an accountability added — the router writes one usage comment on the anchor at the end of each turn (context tokens, output tokens, model, as the harness reports them, blank where it does not), closing the gap the sonnet-tier router left silent. Made by the lead-solutions-architect role. |
+| 11 | 2026-09-09 | update | req-2026-09-09-usage-report-shape: on the reading of anchor lead-lv37s, where the `usage` comment carried the router's own remaining budget as if it were consumption — the `tokens=<value>; model=<model>` form fixed so `tokens` is always blank, since the harness reports no per-turn usage to the router itself; the harness's usage report defined as a data type (nothing per turn to the router, one `subagent_tokens`/`tool_uses`/`duration_ms` figure per agent step and for the router's own whole execution, to the starter); the `step` comment's and the starter's `report` comment's exact forms named; the Interfaces entry for the starter pointed at the report form. Made by the lead-solutions-architect role. |
+| 12 | 2026-09-09 | update | req-2026-09-09-usage-report-shape, round 2, repair of the check's finding: the Request's Definition names one figure per agent step to the starter and no figure for the router's own whole execution, so the "plus the same three for the router's own whole execution, labeled `router (whole execution)`" clause v11 added is dropped — the `report` comment form is now one line per step only, with a sentence stating that a total the harness gives the starter for something other than a step is not part of this form. Made by the lead-solutions-architect role. |
