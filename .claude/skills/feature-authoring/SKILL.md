@@ -27,7 +27,7 @@ Author one feature from a planned initiative: the PO role writes it alone from t
 
 **One feature per run, authored alone: scope and wording are the PO role's; the criteria ride on the scenarios; the maker's self-check is the last word, not a second checker's. Conflicts with behavior already specified are the repository sweep's to catch at assignment, never a question to a shop during authoring.**
 
-Result of a run: `artifact` (string).
+Result of an execution: `artifact` (string).
 
 ```mermaid
 flowchart TD

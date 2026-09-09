@@ -4,9 +4,9 @@ id: skill-rendering-process
 owner: product-authority
 status: approved
 approved: 2026-09-02
-version: 9
+version: 10
 created: 2026-09-02
-updated: 2026-09-07
+updated: 2026-09-09
 produces: []
 carried-by: skill-rendering-skill
 condition-language: cel
@@ -62,7 +62,7 @@ edit to a skill.
   compile or names no skill id lands as a review entry in that
   definition's Document History, and a load-point skill that is no
   process rendering is `unrecognized` — escalated by its path, never
-  removed. An escalation never ends with the run: a clean check with
+  removed. An escalation never ends with the execution: a clean check with
   escalations standing routes through `report`, which files each row
   into the governed record the owner reads — witnessed by `check`'s
   output, `route`'s clean-with-escalations branch, and the `reconcile`
@@ -85,10 +85,10 @@ edit to a skill.
   standard question and has a description beside it at the
   descriptions home has its skill at the load point, byte-equal to a
   fresh production from the description's bytes as they now stand —
-  "current with" decided by re-producing from the file each run,
+  "current with" decided by re-producing from the file each execution,
   never from a copy kept since the last production; and the
   description is the skill's source only until the tool answers: each
-  run asks the tool every description stands beside, with the flag
+  execution asks the tool every description stands beside, with the flag
   alone, and an answer is a `tool-answers` finding — a second home for
   what the tool says about itself — resolved by producing the skill
   from the answer and retiring the description, never by editing
@@ -153,7 +153,7 @@ flowchart TD
 
 Each entry names a process-local value. Simple types use JSON Schema
 names inline; conditions are CEL expressions over these names. Paths
-are relative to the lead shop's repository root, the run's working
+are relative to the lead shop's repository root, the execution's working
 directory. The *loadable form* of a process definition is the skill
 the compiler generates from it under the process-definition typedef's
 rendering contract — front-matter carrying `generated: true`, its
@@ -177,7 +177,7 @@ the copy's data references resolve as its subject's would — and
 the write lands on the copy: the check never mutates its subject, and
 the definition itself is written only at reconciliation's re-render,
 where that write is the point. A `run` step that exits nonzero is a
-failed step, not an empty result: the run halts at that step and the
+failed step, not an empty result: the execution halts at that step and the
 failure is reported to the reconciler role — it is never read as empty
 `findings` and never routed as a clean check. The banned vocabulary
 a rendered prompt closes with — the line "Do not use these words:"
@@ -198,7 +198,7 @@ the tool-description data type
 ([`../types/tool-description.md`](../types/tool-description.md)), and
 produces the skill from the answer and from nothing else, stamped
 `source` (the tool) and `source-digest` (over the answer's bytes).
-`check` asks every tool under `tools` afresh each run — the answer is
+`check` asks every tool under `tools` afresh each execution — the answer is
 never kept between runs, and the tool's source is never read — and
 expects a skill only of a tool that answers: a tool that cannot answer
 yields no row in that loop; it is used through the third source kind.
@@ -209,7 +209,7 @@ the tool when the texts differ, `no-answer` naming the tool and the
 path when the tool no longer produces a skill of that name. A tool of
 another shop that has begun to answer is the same kind: its skill's
 `source` is the command the check asks (a name with no path
-separator, found on PATH), re-asked and re-produced each run under the
+separator, found on PATH), re-asked and re-produced each execution under the
 same two rows. The third source kind is a *description beside a tool*
 (the tool-description data type's stand-in part; the record's §2 and
 §3, fourth consequence): `descriptions` names the home the data type
@@ -218,7 +218,7 @@ description is an instance of the same shape, carrying
 `stands_beside` — the tool as this check invokes it — and
 `tool_owner`, written by the shop that runs a tool that cannot answer,
 the source of that tool's skill until the tool answers. `check`
-re-produces from every description at the home each run through
+re-produces from every description at the home each execution through
 `tool_compiler` and diffs — `description-missing`, `description-diverged`,
 each naming the description (its stem the tool's name);
 `description-invalid` when the file yields no skill, the producer's
@@ -241,8 +241,8 @@ request lane when its description is written, not by this process;
 it closes on one event only, this check observing the tool's answer,
 the skill produced from it, and the description retired, which
 `reconcile` records in that request's Result section for the lead-pm
-role to set its status. The run declares no
-`result`: `produces` is empty because the run's value is state change
+role to set its status. The execution declares no
+`result`: `produces` is empty because the execution's value is state change
 — every approved definition available at the load point — and O1's
 witness pins it.
 
@@ -437,7 +437,7 @@ steps:
     inputs: [findings, approved, escalations]
     outputs: [escalations]
     prompt: |
-      This step files what leaves the run for the owner; it runs at
+      This step files what leaves the execution for the owner; it runs at
       the round cap with findings open, or on a clean check with
       escalations standing. For each row of findings still open whose
       definition is not yet named in escalations, write a review entry
@@ -449,7 +449,7 @@ steps:
       the owner reads: a row naming a definition, as the review entry
       in that definition's Document History; a path-only row — an
       unrecognized skill, the second-home notice — lands in this
-      process definition's Document History entry for the run. The
+      process definition's Document History entry for the execution. The
       resulting action on each escalated row is the owner's decision.
       Return escalations.
     next: end
@@ -459,13 +459,13 @@ steps:
 
 | Outcome | Check | Kind | Where |
 |---|---|---|---|
-| O1 | the run ends only on `size(findings) == 0`, and with `escalations` standing the clean check routes through `report` | mechanical | `route` branches |
+| O1 | the execution ends only on `size(findings) == 0`, and with `escalations` standing the clean check routes through `report` | mechanical | `route` branches |
 | O2 | every approved definition without its skill at the load point yields a `missing` row; renders land only under `load_point` | mechanical | `check.run`, `reconcile.prompt` |
 | O3 | `enumerate` admits only `status: approved`; the scan covers every skill at the load point, marks `stale` only a source under `definitions`, and `reconcile` removes each `stale` row | mechanical | `enumerate.run`, `check.run`, `reconcile.prompt` |
 | O4 | each finding row names its process or its path in the rendering home it stands in; a will-not-compile, no-skill-id, or unrecognized row lands in `escalations` — the first two as review entries in the named definition's Document History, the unrecognized row by its path and never removed; every escalation row lands in a governed record, the named definition's Document History or this definition's run entry for a path-only row | judged | `check.run`, `route` branches, `reconcile` and `report` prompts |
 | O5 | a `second-home` row stands while `retired_home` exists; its removal and the filed index amendment are directed in `reconcile.prompt` | judged | `check.run`, `reconcile.prompt` |
-| O6 | `check` runs every tool under `tools` with `--describe` through `tool_compiler` on each run and keeps no answer between runs; a tool that produces a skill to scratch with none at the load point yields `tool-missing`, a differing text `tool-diverged`, each naming the tool; a load-point skill sourced under `tools`, or sourced from a command the check asks, whose tool produced no skill of that name yields `no-answer` by tool and path, escalated and never removed; `reconcile` re-produces through `tool_compiler` and never edits | mechanical | `check.run`, `reconcile.prompt` |
-| O7 | `check` re-produces from every description under `descriptions` through `tool_compiler` on each run and diffs against the load point — `description-missing`, `description-diverged`, `description-invalid`, each naming the description — and asks the tool each description stands beside through `tool_compiler` with the flag alone, a `tool-answers` row naming the tool and the description when it answers; a load-point skill sourced under `descriptions` whose description produced no skill of that name yields `no-description`, escalated and never removed; `reconcile` re-produces from the description, repairs a description and never a skill, and on `tool-answers` produces from the answer, retires the description, and records the closing event in the tool's gap request | mechanical | `check.run`, `reconcile.prompt` |
+| O6 | `check` runs every tool under `tools` with `--describe` through `tool_compiler` on each execution and keeps no answer between runs; a tool that produces a skill to scratch with none at the load point yields `tool-missing`, a differing text `tool-diverged`, each naming the tool; a load-point skill sourced under `tools`, or sourced from a command the check asks, whose tool produced no skill of that name yields `no-answer` by tool and path, escalated and never removed; `reconcile` re-produces through `tool_compiler` and never edits | mechanical | `check.run`, `reconcile.prompt` |
+| O7 | `check` re-produces from every description under `descriptions` through `tool_compiler` on each execution and diffs against the load point — `description-missing`, `description-diverged`, `description-invalid`, each naming the description — and asks the tool each description stands beside through `tool_compiler` with the flag alone, a `tool-answers` row naming the tool and the description when it answers; a load-point skill sourced under `descriptions` whose description produced no skill of that name yields `no-description`, escalated and never removed; `reconcile` re-produces from the description, repairs a description and never a skill, and on `tool-answers` produces from the answer, retires the description, and records the closing event in the tool's gap request | mechanical | `check.run`, `reconcile.prompt` |
 
 ## Document History
 
@@ -482,3 +482,4 @@ steps:
 | 7 | 2026-09-05 | update | req-2026-09-05-banned-words-inlined, applied at the small-change lane's make step: the compiler inlines the banned line — "Do not use these words: " and the lint's list — into every agent-run step's prompt block of every rendered skill; the list is loaded from the lint at basis/tools/lint_basis.py, its one home, named in Data. |
 | 9 | 2026-09-07 | update | Under init-tool-skills / feat-tool-skills-rest, the fifth item of guidance/feat-tool-skills-rest-shopsystem-product.md (v1), per adr-2026-09-07-tool-answer (v3, checked) §2's stand-in part and §3's fourth consequence, and the feature's constraints (4) and (9): the load point's third source kind recognized — a description beside a tool that cannot answer, at the home the tool-description data type (v2) names. The amendment this definition's v8 entry raised to the process owner, taken by the same default — one load point having one check — and raised to the owner with this entry. Data gains `descriptions` (basis/tools/descriptions, in the tree with six descriptions before this amendment, as the process-definition typedef v7's commitment requires; compile_tool.py reads the kind); `check` re-produces from every description each run through the producer and diffs — `description-missing`, `description-diverged`, `description-invalid` — asks the tool each description stands beside through the producer's `ask` use with the flag alone (the check's only invocation of another shop's tool), reporting `tool-answers` when it does, and reads a load-point skill sourced under the descriptions home by that kind (`no-description`) and one sourced from a command the check asks — a tool of another shop that has begun to answer — by the tool kind; `unrecognized` now reserved for a source of none of the three kinds; `reconcile` re-produces from a description, repairs a description and never a skill, and on `tool-answers` produces from the answer, retires the description, and records the closing event in the tool's gap request for the lead-pm role to set its status; O7 and its derived check added; O6 widened to the answering external tool; purpose, guiding statement, and use-when widened to the third kind. No exemption, no skip list. Made by the lead-solutions-architect role; screened by hand against the process-definition typedef (v7) checklist — refs resolve, the loop's exits unchanged, no prose outside prompts, every tool a step names exists (`python3 basis/tools/lint_basis.py --process basis/processes/skill-rendering.md` passes), O7 names its witness. Observed in the running tree at the delivery: the check step run as written over 22 approved definitions, six answering tools, and six descriptions — clean; the four change cases (an answer changed, a description changed, a skill hand-edited, a tool with a description beginning to answer) each reported and reconciled as the prompt directs. |
 | 8 | 2026-09-07 | update | Under init-tool-skills / feat-tool-skills, the fourth item of guidance/feat-tool-skills-shopsystem-product.md (v1), per adr-2026-09-07-tool-answer (v3, checked) §3's third consequence: the load point's second source kind recognized — a framework tool's answer to the standard question. The process owner's choice the guidance names (amend this definition, or define a sibling process for tool skills) taken by its default here, one load point having one check, and raised to the owner with this entry. Data gains `tools` and `tool_compiler` (basis/tools/compile_tool.py, in the tree before this amendment, as the process-definition typedef's commitment requires); `check` asks every tool under `tools` afresh each run through the compiler and diffs a fresh production against what stands — `tool-missing`, `tool-diverged`, each naming the tool — and reads a load-point skill sourced under `tools` by that kind, `no-answer` when its tool no longer produces a skill of that name, `unrecognized` now reserved for a source that is neither; `reconcile` re-produces a tool skill through the compiler and escalates `no-answer`; O6 and its derived check added; purpose, guiding statement, and use-when widened to the second kind. No exemption, no skip list: the lint's skill is reported current or diverged like any process skill. A tool that cannot answer yields no row — its gap is init-tool-skills' second feature's. Made by the lead-solutions-architect role; screened by hand against the process-definition typedef (v7) checklist — refs resolve, the loop's exits unchanged, no prose outside prompts, every tool a step names exists (`python3 basis/tools/lint_basis.py --process basis/processes/skill-rendering.md` passes), O6 names its witness. |
+| 10 | 2026-09-09 | update | `run` propagated to `execution` as the noun for a process instance, under req-2026-09-08-definition-vs-instance / feat-execution-vocabulary (shopsystem-product): mechanical, determiner-adjacent occurrences only (`a/the/this/one/another/each/no/any run(s)`); `run-by`, `run` as a schema field or step key, and compound/heading uses (e.g. `run-cost`, `run list`, `Run lifecycle`) left unchanged, that residue disclosed as not done in this pass. Self-check against define-good-up-front: diffed against the file's pre-edit text; no requirement, field name, or heading changed. Made by the lead-solutions-architect role. |

@@ -4,9 +4,9 @@ id: backlog-ordering-process
 owner: product-authority
 status: retired
 approved: 2026-08-31
-version: 4
+version: 5
 created: 2026-08-31
-updated: 2026-09-08
+updated: 2026-09-09
 produces: [backlog-order]
 carried-by: backlog-ordering-skill
 condition-language: cel
@@ -40,7 +40,7 @@ check judges only what the order states.
 - O3. The order's check statuses — checked, returned,
   pending-definition — are set only by the PO output check; draft is
   the maker's own initial status — witnessed by `place`'s prompt and
-  `check`, the run's only other status-writing step.
+  `check`, the execution's only other status-writing step.
 
 **Roles:** maker — [`../roles/lead-po.md`](../roles/lead-po.md)
 (orders the backlog; its exclusive domain). the check — the
@@ -156,3 +156,4 @@ steps:
 | 2 | 2026-08-31 | state | draft → approved with batch C as one block (brief-032 ask 2, default accepted). |
 | 3 | 2026-09-02 | update | Carried-by reference repointed to the load point (.claude/skills/) — the skill-rendering process's first run removed the retired home basis/skills/; the owner's sweep per its second-home escalation. |
 | 4 | 2026-09-08 | state | Retired under feat-flow-simplification: product-flow runs feature-authoring directly from a planned initiative; no backlog order gates it. |
+| 5 | 2026-09-09 | update | `run` propagated to `execution` as the noun for a process instance, under req-2026-09-08-definition-vs-instance / feat-execution-vocabulary (shopsystem-product): mechanical, determiner-adjacent occurrences only (`a/the/this/one/another/each/no/any run(s)`); `run-by`, `run` as a schema field or step key, and compound/heading uses (e.g. `run-cost`, `run list`, `Run lifecycle`) left unchanged, that residue disclosed as not done in this pass. Self-check against define-good-up-front: diffed against the file's pre-edit text; no requirement, field name, or heading changed. Made by the lead-solutions-architect role. |

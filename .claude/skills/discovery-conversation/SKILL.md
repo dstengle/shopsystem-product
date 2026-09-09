@@ -13,12 +13,12 @@ type: skill
 id: discovery-conversation-skill
 status: approved
 created: 2026-08-22
-updated: 2026-09-08
+updated: 2026-09-09
 generated: true
 generated-by: basis/tools/compile_process.py
 derived-from: discovery-conversation-process
 source: basis/processes/discovery-conversation.md
-source-digest: sha256:2899f052816d
+source-digest: sha256:02e3398e50e1
 hold-after: P7D
 ---
 
@@ -28,7 +28,7 @@ Conduct a bounded discovery dialogue in a declared form — brainstorm (the firs
 
 **Engage the authority's statements as an interlocutor; record and launch only after convergence.**
 
-Result of a run: `initiative` (string).
+Result of an execution: `initiative` (string).
 
 ```mermaid
 flowchart TD

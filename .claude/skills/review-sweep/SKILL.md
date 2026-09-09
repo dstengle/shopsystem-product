@@ -25,7 +25,7 @@ Read a set of delivered artifacts against their own definitions and the base wri
 
 **A class, not an instance. A rule that fails once is that artifact's to fix on its own next pass; a rule that fails across artifacts is the definition's gap, and only that gap is worth a request.**
 
-Result of a run: `requests_filed` (string[]).
+Result of an execution: `requests_filed` (string[]).
 
 ```mermaid
 flowchart TD

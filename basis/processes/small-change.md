@@ -4,9 +4,9 @@ id: small-change-process
 owner: product-authority
 status: approved
 approved: 2026-09-04
-version: 5
+version: 6
 created: 2026-09-04
-updated: 2026-09-04
+updated: 2026-09-09
 produces: []
 carried-by: small-change-skill
 condition-language: cel
@@ -26,9 +26,9 @@ this process: both protect the appetite an initiative's bet spends
 simple change — the glossary's term — spends none of it worth a bet.
 
 **Guiding statement:** The definition on the request is the whole of
-what good looks like for the change: every role in the run judges by
+what good looks like for the change: every role in the execution judges by
 it, and nothing outside it is made or counts as verified. Everything
-the run decides lands on the request or in the changed
+the execution decides lands on the request or in the changed
 artifacts' own histories; nothing binding lives only in the
 transcript.
 
@@ -78,7 +78,7 @@ outcome below names the scenarios of it that it witnesses.
   writing its state on the request, by the run templates of
   `close-done`, `close-not-simple`, and `close-failed`, by
   `name-result`'s `set`, and by the failsafe rows of `route-check`
-  and `route-verify`. A run halted by a failed step (Data,
+  and `route-verify`. An execution halted by a failed step (Data,
   Verification's rule) reaches no exit: it leaves the request as the
   last completed step wrote it, the work item open, and no `change`
   returned, and the failure is reported to the lead-pm role — the
@@ -123,7 +123,7 @@ edit by hand.
 
 ```mermaid
 flowchart TD
-  name_result["Name the request's Result section as the run's result — runtime<br/>in — request: string<br/>sets — change: string"]
+  name_result["Name the request's Result section as the execution's result — runtime<br/>in — request: string<br/>sets — change: string"]
   read_id["Read the request's id — runtime<br/>in — request: string<br/>out — request_id: string"]
   read_anchor["Read the work item the request names — runtime<br/>in — request: string<br/>out — work_item: string"]
   define(["Define the change — agent: lead-po<br/>in — request: string, glossary: string<br/>out — request: string, not_simple: boolean, reason: string, observation: string, paths: string[]"])
@@ -171,7 +171,7 @@ flowchart TD
 
 Each entry names a process-local value. Simple types use JSON Schema
 names inline; conditions are CEL expressions over these names. Paths
-are relative to the lead shop's repository root, the run's working
+are relative to the lead shop's repository root, the execution's working
 directory. The feature named over Outcomes is the definition of good
 the scenarios are cited from. *Simple change*,
 *small-change lane*, *request* (the received-ask sense), and *check of
@@ -183,8 +183,8 @@ one home and loads nothing else.
 of the [request typedef](../artifacts/request.md)'s received-ask path,
 its `route` `small-change`. This process runs as a sub-process of the
 [request-intake](request-intake.md) process: its `open-lane` step maps
-`request` to this parameter and receives this run's `result` as
-`change`; the run is anchored to the work item that intake's `land`
+`request` to this parameter and receives this execution's `result` as
+`change`; the execution is anchored to the work item that intake's `land`
 step opened for the routed ask and wrote to the request's `work-item`
 field. The work item lives in the work register, `bd` — the beads
 tracker; `bd close <item> --reason` closes an item with its reason.
@@ -196,14 +196,14 @@ closes it. `routed-to` is intake's to write, on the lane's return.
 The intake is the lane's one caller: the request typedef names the
 lane as where the route leads, and no anchor of its own is defined
 here.
-The run's `result` is `change`: the request's Result section by
+The execution's `result` is `change`: the request's Result section by
 fragment, `<request>#result` — the one place the definition, the check,
 and the verified result stand, and what the request typedef's
 `routed-to` points at for a simple change. `change` is the lane's
 record on every exit: the verified result on done, or the reason the
 lane has none on the other two. The Change made entry's `changed`
 list is what a reader follows from there to the artifacts.
-`produces` is empty because the run creates no
+`produces` is empty because the execution creates no
 artifact — the change lands in artifacts of their own types, and the
 request already exists.
 
@@ -264,7 +264,7 @@ carrying the command's exit status. The observation's nonzero exit is
 a failed verification — a finding routed back to `make` under the
 cap, never a halted run — while a nonzero exit of a `run` step itself
 (the shell failing, the anchor missing, a close refused) is a failed
-step, not an empty result: the run halts at that step and the failure
+step, not an empty result: the execution halts at that step and the failure
 is reported to the lead-pm role, the sibling processes' rule. `round`
 counts make rounds and is shared by the check and the verification:
 a fail from either advances it, and `round_cap` bounds both together.
@@ -280,7 +280,7 @@ with the reason, status unchanged (`routed`), written by `reroute` —
 the typedef's rule that a later change of route is the lead-pm
 role's; no artifact touched; the request, its route now discovery, is
 the discovery conversation's input, opened on it by the intake
-process's dispatch on the run the lead-pm role enters with the
+process's dispatch on the execution the lead-pm role enters with the
 request. *Failed*: the findings standing at the cap recorded on the
 request, its route set to `awaiting` with the reason and its status
 to `recorded`, so the request is again visible as awaiting its route
@@ -321,7 +321,7 @@ parameters: [request]
 result: change
 steps:
   - id: name-result
-    name: Name the request's Result section as the run's result
+    name: Name the request's Result section as the execution's result
     run-by: {execution: runtime}
     inputs: [request]
     set:
@@ -578,3 +578,4 @@ steps:
 | 4 | 2026-09-04 | review | Screen round 3, the cap (judge: claude-fable-5-1 / screen prompt v6): six wobbly, none confident — the absent carrier (deferred, ruled twice); O5 against the halted-run rule; `change` on the non-done exits; "the bound an initiative spends" unintroduced; the feature cited before introduced; hand-back's evidence attribution. Post-cap repairs, disclosed and not re-screened: O5 restated for every run that reaches an exit, with a halted run's state named (request as the last completed step wrote it, item open, no `change`, failure reported to the lead-pm); `change` stated as the lane's record on every exit; Purpose's phrase replaced by "the appetite an initiative's bet spends", the initiative typedef linked; a lead sentence over Outcomes introducing feat-request-routing, the Data sentence now referencing it; hand-back's prompt attributing evidence to the last round the observation ran, named, and saying so when the cap fell on a check. |
 | 4 | 2026-09-04 | state | draft → approved by the owner, on the authority's standing direction for this session ("continue all the way through implementation … you have my permission to continue through"), recorded by the lead-pm: three screen rounds against the process-definition fitness set; round 1's two confident findings repaired, round 2's one repaired, the cap with wobbly findings only; the carrier to be rendered by the skill-rendering process's next run. |
 | 5 | 2026-09-04 | update | The approval taken on the authority's standing direction confirmed by the authority's ruling of 2026-09-04 on brief-035 — "Take defaults. For 5. take discovery" (brief-035 ask 2, default taken). The carrier re-rendered by the skill-rendering process. |
+| 6 | 2026-09-09 | update | `run` propagated to `execution` as the noun for a process instance, under req-2026-09-08-definition-vs-instance / feat-execution-vocabulary (shopsystem-product): mechanical, determiner-adjacent occurrences only (`a/the/this/one/another/each/no/any run(s)`); `run-by`, `run` as a schema field or step key, and compound/heading uses (e.g. `run-cost`, `run list`, `Run lifecycle`) left unchanged, that residue disclosed as not done in this pass. Self-check against define-good-up-front: diffed against the file's pre-edit text; no requirement, field name, or heading changed. Made by the lead-solutions-architect role. |

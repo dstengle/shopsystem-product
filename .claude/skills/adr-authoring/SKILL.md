@@ -11,12 +11,12 @@ type: skill
 id: adr-authoring-skill
 status: approved
 created: 2026-09-02
-updated: 2026-09-08
+updated: 2026-09-09
 generated: true
 generated-by: basis/tools/compile_process.py
 derived-from: adr-authoring-process
 source: basis/processes/adr-authoring.md
-source-digest: sha256:543c60a09a46
+source-digest: sha256:74fef16df682
 activation: model-judged
 promotion: experiment-local
 ask-cap: P1D
@@ -28,7 +28,7 @@ Author one architecture decision record from a decision the solutions architect 
 
 **The record is the decision made durable, not the discussion transcribed. The architect's own evaluation is the record's last word; a decision this role cannot make under its rights is escalated, never absorbed as a deviation.**
 
-Result of a run: `artifact` (string).
+Result of an execution: `artifact` (string).
 
 ```mermaid
 flowchart TD

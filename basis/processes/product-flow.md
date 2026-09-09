@@ -4,9 +4,9 @@ id: product-flow-process
 owner: product-authority
 status: approved
 approved: 2026-08-31
-version: 7
+version: 9
 created: 2026-08-31
-updated: 2026-09-08
+updated: 2026-09-09
 produces: [session-record, initiative, feature, adr]
 carried-by: product-flow-skill
 condition-language: cel
@@ -17,14 +17,14 @@ hold-after: P7D
 
 **Purpose:** Carry one problem from discovery to a verified build: a
 discovery conversation frames the initiative and the authority bets on
-it in that same run's human step; one feature is authored and
+it in that same execution's human step; one feature is authored and
 self-checked; a flagged constraint's decision is recorded; the
 feature's scenarios are assigned to their owning shops; and each
 shop's delivery is verified. The shop's operating process; every
 sub-process is defined in its own document.
 
 **Guiding statement:** One initiative per run, one feature per pass;
-no human step stands after the frame; a run holds only when a
+no human step stands after the frame; an execution holds only when a
 sub-process's own ask reaches outside that sub-process's scope.
 
 **Outcomes:**
@@ -44,7 +44,7 @@ sub-process's own ask reaches outside that sub-process's scope.
   features done, or at the feature cap, and each pass's delivery is
   verified before the judgment — witnessed by `verify` preceding
   `more-features` and `route-more`'s labeled branches.
-- O5. A run without a planned initiative — a cancelled discovery, a
+- O5. An execution without a planned initiative — a cancelled discovery, a
   close without convergence, or a decline recorded and cancelled at
   the frame — ends with the records standing — witnessed by the else
   exits of `route-discover` and `route-status`.
@@ -346,9 +346,9 @@ steps:
 ```
 
 A discovery that cancels or closes without convergence leaves no
-initiative — `route-discover` ends the run. A decline recorded and
+initiative — `route-discover` ends the execution. A decline recorded and
 cancelled inside the frame step leaves an initiative not `planned` —
-`route-status` ends the run the same way. A `returned` feature from
+`route-status` ends the execution the same way. A `returned` feature from
 `route-build` goes back through the PO role's judgment for another
 authoring pass. The sub-processes stand alone: the recovery is a fresh
 run of the one that stopped.
@@ -361,7 +361,7 @@ run of the one that stopped.
 | O2 | every step is a sub-process, a runtime status read or route, or the `more-features` judgment | mechanical | step list |
 | O3 | `find-decision` and `route-decision` stand between `route-checked` and `assign`, with `author-decision-record` on the found branch | mechanical | step order |
 | O4 | `verify` precedes `more-features`; `route-more` carries the success and failsafe exits, labeled | mechanical | step order, `route-more.branches` |
-| O5 | the no-initiative and not-planned else exits end the run with the records standing | mechanical | `route-discover.branches`, `route-status.branches` |
+| O5 | the no-initiative and not-planned else exits end the execution with the records standing | mechanical | `route-discover.branches`, `route-status.branches` |
 
 ## Document History
 
@@ -375,3 +375,5 @@ run of the one that stopped.
 | 5 | 2026-08-31 | state | draft → approved with batch E as one block (brief-032 ask 2, default accepted); the primer's product statement confirmed by the owner. |
 | 6 | 2026-09-02 | update | Carried-by reference repointed to the load point (.claude/skills/) — the skill-rendering process's first run removed the retired home basis/skills/; the owner's sweep per its second-home escalation. |
 | 7 | 2026-09-08 | update | Rewritten under feat-flow-simplification: initiative-check and backlog-ordering removed — discovery-conversation's frame step now bets directly; a feature routes straight from its own self-check to a flagged-constraint check, adr-authoring, scenario-assignment, and reconcile-and-close's verify, with no check step and no human step after the frame. |
+| 8 | 2026-09-09 | update | `run` propagated to `execution` as the noun for a process instance, under req-2026-09-08-definition-vs-instance / feat-execution-vocabulary (shopsystem-product): mechanical, determiner-adjacent occurrences only (`a/the/this/one/another/each/no/any run(s)`); `run-by`, `run` as a schema field or step key, and compound/heading uses (e.g. `run-cost`, `run list`, `Run lifecycle`) left unchanged, that residue disclosed as not done in this pass. Self-check against define-good-up-front: diffed against the file's pre-edit text; no requirement, field name, or heading changed. Made by the lead-solutions-architect role. |
+| 9 | 2026-09-09 | update | One further `run`-as-noun occurrence fixed ("that same run's human step" → "that same execution's human step"), missed by the mechanical pass since "that" was not in its determiner list. Made by the lead-solutions-architect role. |

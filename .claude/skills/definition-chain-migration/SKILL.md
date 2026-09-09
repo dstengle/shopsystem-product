@@ -7,12 +7,12 @@ type: skill
 id: definition-chain-migration-skill
 status: approved
 created: 2026-08-20
-updated: 2026-09-02
+updated: 2026-09-09
 generated: true
 generated-by: basis/tools/compile_process.py
 derived-from: definition-chain-migration-process
 source: basis/processes/definition-chain-migration.md
-source-digest: sha256:707a35174138
+source-digest: sha256:0ee4a6e37322
 ---
 
 # Definition chain migration (compiled from `definition-chain-migration-process`)
@@ -21,7 +21,7 @@ Convert one artifact type from the frozen corpus into the new baseline: build it
 
 **Nothing enters the new baseline except through a approved definition. A document in an undefined format is source material for a rewrite, never a usable artifact.**
 
-Result of a run: `chain` (definition-chain).
+Result of an execution: `chain` (definition-chain).
 
 ```mermaid
 flowchart TD

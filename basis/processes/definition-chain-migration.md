@@ -4,9 +4,9 @@ id: definition-chain-migration-process
 owner: product-authority
 status: approved
 approved: 2026-08-22
-version: 5
+version: 6
 created: 2026-08-20
-updated: 2026-09-02
+updated: 2026-09-09
 produces: [definition]
 carried-by: definition-chain-migration-skill
 condition-language: cel
@@ -48,8 +48,8 @@ steps whether each stands and at the close-out whether a nomination
 holds.
 The per-instance reviewer roles come from the chain itself once approved.
 
-**Scope note:** one run migrates one artifact type. The order of runs
-comes from the approved migration plan; keepers for the run are the
+**Scope note:** one execution migrates one artifact type. The order of runs
+comes from the approved migration plan; keepers for the execution are the
 rows in `actions` whose action is keep-rewrite for that type. The
 retire and terminal mass is not this process's work — it closes out
 mechanically through
@@ -121,7 +121,7 @@ The `archive-move` command in `queue-demoted` follows the archive
 contract stated once in [`corpus-close-out.md`](corpus-close-out.md)
 (§Archive contract — recommended, pending the authority's decision); it is not
 restated here. Under the cut-over execution model no archive move happens
-per run: a demoted keeper's file lives on frozen `main`, so the run
+per run: a demoted keeper's file lives on frozen `main`, so the execution
 only QUEUES the demotion (`--queue` flips the keeper's action-table
 row to retire, recording the failing check); the actual move runs once,
 at the Phase 3 cut-over close-out. Until the tool exists and the
@@ -316,3 +316,4 @@ steps:
 | 4 | 2026-08-26 | review | Assist re-basing screened: the rewrite-keepers prompt had the agent demote a keeper with no review step behind it, and named an undefined "attention architecture" — repaired in place: the agent nominates, the authority decides at the close-out; spot-check rate set by the authority. |
 | 4 | 2026-09-02 | review | Skill rendering run (skill-rendering-process): the definition stands approved with no carried-by skill id, so no loadable skill renders at the agent’s load point — finding "missing definition-chain-migration-process no-skill-id" escalated; the owner decides the amendment. |
 | 5 | 2026-09-02 | update | Owner decision, resolving the skill-rendering first run's no-skill-id escalation: carried-by definition-chain-migration-skill added, so the process renders to the agent's load point like every approved definition; the prose Carried-by paragraph left to the consistency pass (lead-dyz0o). |
+| 6 | 2026-09-09 | update | `run` propagated to `execution` as the noun for a process instance, under req-2026-09-08-definition-vs-instance / feat-execution-vocabulary (shopsystem-product): mechanical, determiner-adjacent occurrences only (`a/the/this/one/another/each/no/any run(s)`); `run-by`, `run` as a schema field or step key, and compound/heading uses (e.g. `run-cost`, `run list`, `Run lifecycle`) left unchanged, that residue disclosed as not done in this pass. Self-check against define-good-up-front: diffed against the file's pre-edit text; no requirement, field name, or heading changed. Made by the lead-solutions-architect role. |

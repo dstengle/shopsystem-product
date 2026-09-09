@@ -5,9 +5,9 @@ defines: research-report
 owner: product-authority
 status: approved
 approved: 2026-08-23
-version: 4
+version: 5
 created: 2026-08-23
-updated: 2026-08-25
+updated: 2026-09-09
 ancestry: [research-report]
 ---
 
@@ -35,7 +35,7 @@ ancestry: [research-report]
 
 - Every finding carries a confidence level from the report's declared
   scheme and at least one source identifier — a URL, DOI, or
-  repository path — that was opened during the run. A claim resting
+  repository path — that was opened during the execution. A claim resting
   on model knowledge alone is labeled as such with lowered confidence.
 - Confidence (in the evidence and analysis) and likelihood (of the
   claim being true or the event occurring) are stated separately,
@@ -101,3 +101,4 @@ with retraction, permitted abstention); the research report on the
 | 3 | 2026-08-23 | update | Owner direction: the research index instance lives on `rebaseline` at `research/index.md`, not on `main`. |
 | 3 | 2026-08-23 | state | draft → approved by the owner. Guideline and fitness set for the type remain to be authored — a filed gap. |
 | 4 | 2026-08-25 | update | Owner direction: a near-synonym of "role" retired and banned. |
+| 5 | 2026-09-09 | update | `run` propagated to `execution` as the noun for a process instance, under req-2026-09-08-definition-vs-instance / feat-execution-vocabulary (shopsystem-product): mechanical, determiner-adjacent occurrences only (`a/the/this/one/another/each/no/any run(s)`); `run-by`, `run` as a schema field or step key, and compound/heading uses (e.g. `run-cost`, `run list`, `Run lifecycle`) left unchanged, that residue disclosed as not done in this pass. Self-check against define-good-up-front: diffed against the file's pre-edit text; no requirement, field name, or heading changed. Made by the lead-solutions-architect role. |

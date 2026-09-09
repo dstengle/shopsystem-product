@@ -4,9 +4,9 @@ id: principle-set-authoring-process
 owner: product-authority
 status: approved
 approved: 2026-08-23
-version: 8
+version: 9
 created: 2026-08-22
-updated: 2026-09-05
+updated: 2026-09-09
 produces: [principle-set]
 carried-by: principle-set-authoring-skill
 condition-language: cel
@@ -45,7 +45,7 @@ never on taste.
   revision parks with a filed finding instead of looping — witnessed
   by `revise`'s `next`, `route-approval`'s park branch, and the `park`
   step; an inactive authority exchange holds per `hold-after` and the
-  run lifecycle.
+  execution lifecycle.
 
 **Roles:** author — lead-pm, held by the authority; its agent steps
 assist: `draft` and `revise` prepare the set and keep new terms flowing
@@ -100,7 +100,7 @@ names inline; every structured shape is a `$ref` to a defined type with
 an explicit source — `from:` links the defining file, or names the owning
 package as `pkg:<package>/<type>` (fetched through that package's
 contract tool). Conditions are CEL (Common Expression Language)
-expressions over these names. `sources` lists the paths of the run's
+expressions over these names. `sources` lists the paths of the execution's
 source material — the owner's stated directions, autopsies of prior
 instances, external standards, and, for an amendment, the existing
 set; together with `guideline_paths` and `fitness_path` it is the
@@ -209,7 +209,7 @@ steps:
       decision. "findings" parks the draft with your findings filed as
       a work item for a later run to take up — the single review cycle
       admits no second pass here.
-      Silence holds the run after the declared window — `hold-after` in
+      Silence holds the execution after the declared window — `hold-after` in
       this definition's frontmatter — per the process-definition
       typedef's run lifecycle; the held run keeps its resume point.
     next: route-approval
@@ -273,3 +273,4 @@ the dual-exit rule) lives in the process-definition typedef, not here.
 | 6 | 2026-08-26 | review | Assist re-basing screened: the header named a step that does not exist — repaired in place. |
 | 7 | 2026-09-02 | update | Carried-by reference repointed to the load point (.claude/skills/) — the skill-rendering process's first run removed the retired home basis/skills/; the owner's sweep per its second-home escalation. |
 | 8 | 2026-09-05 | update | Single review cycle, per req-2026-09-05-single-review-cycle on the authority's words of 2026-09-05 — "I want all of the processes limited to a single review cycle, so author -> review -> revise -> continue to next step": the screen runs once; revise runs once and continues to the owner's decision; the advance-round step, the round data, and both failsafe branches removed; the owner's "findings" verdict parks the draft with the finding filed instead of returning it to revise, so no uncapped loop remains; park no longer counts rounds. |
+| 9 | 2026-09-09 | update | `run` propagated to `execution` as the noun for a process instance, under req-2026-09-08-definition-vs-instance / feat-execution-vocabulary (shopsystem-product): mechanical, determiner-adjacent occurrences only (`a/the/this/one/another/each/no/any run(s)`); `run-by`, `run` as a schema field or step key, and compound/heading uses (e.g. `run-cost`, `run list`, `Run lifecycle`) left unchanged, that residue disclosed as not done in this pass. Self-check against define-good-up-front: diffed against the file's pre-edit text; no requirement, field name, or heading changed. Made by the lead-solutions-architect role. |

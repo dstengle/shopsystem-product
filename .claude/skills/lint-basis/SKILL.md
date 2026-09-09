@@ -15,7 +15,7 @@ generated: true
 generated-by: basis/tools/compile_tool.py
 derived-from: lint-basis
 source: basis/tools/lint_basis.py
-source-digest: sha256:092f4fe2e9ee
+source-digest: sha256:ff33022b8dbc
 ---
 
 # lint-basis (produced from the answer of `basis/tools/lint_basis.py`)
@@ -26,7 +26,7 @@ Uses: [lint](#lint), [check-brief](#check-brief), [check-process](#check-process
 
 ## lint
 
-Runs checks 1-13 over every markdown file under basis/ and over requests/, briefs/, guidance/, and initiatives/ at the repository root: frontmatter identity, unique `defines`, `$ref` sources, resolvable links, required headings, banned vocabulary, version and Document History, no numbered-decision reference, request frontmatter, brief frontmatter, tools named by process definitions, guidance frontmatter, and each parent initiative's Sub-initiatives list held to its children's `parent` fields. Reads only; writes and changes nothing. The tree is found from the tool's own location, so the current directory does not matter.
+Runs checks 1-14 over every markdown file under basis/ and over requests/, briefs/, guidance/, and initiatives/ at the repository root: frontmatter identity, unique `defines`, `$ref` sources, resolvable links, required headings, banned vocabulary, version and Document History, no numbered-decision reference, request frontmatter, brief frontmatter, tools named by process definitions, guidance frontmatter, each parent initiative's Sub-initiatives list held to its children's `parent` fields, and the old-term vocabulary measure (run as a noun, anchor for the identifier) outside the superseded set. Reads only; writes and changes nothing. The tree is found from the tool's own location, so the current directory does not matter.
 
 Invocation:
 

@@ -8,12 +8,12 @@ type: skill
 id: review-conversation-skill
 status: approved
 created: 2026-08-22
-updated: 2026-09-02
+updated: 2026-09-09
 generated: true
 generated-by: basis/tools/compile_process.py
 derived-from: review-conversation-process
 source: basis/processes/review-conversation.md
-source-digest: sha256:52602e1635d3
+source-digest: sha256:8c546d6a4a33
 hold-after: P7D
 ---
 
@@ -23,7 +23,7 @@ Conduct a bounded review: the authority examines material and issues decisions; 
 
 **Everything binding lands in the governed artifacts it changes; nothing binding lives only in the transcript or the record.**
 
-Result of a run: `record` (review-record).
+Result of an execution: `record` (review-record).
 
 ```mermaid
 flowchart TD

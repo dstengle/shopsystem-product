@@ -3,9 +3,9 @@ type: process-definition
 id: interaction-conformance-check-process
 owner: product-authority
 status: draft
-version: 4
+version: 5
 created: 2026-08-26
-updated: 2026-09-02
+updated: 2026-09-09
 produces: []
 carried-by: interaction-conformance-check-skill
 condition-language: cel
@@ -45,13 +45,13 @@ is not held for it.
   gap is filed against the record or guideline named — witnessed by
   `file-findings`' `finding_item` and `record`'s `definition` and
   `gap_entry` outputs.
-- O4. A question the corpus cannot answer leaves the run as an ask to
+- O4. A question the corpus cannot answer leaves the execution as an ask to
   the PM or solutions architect role, with a default — witnessed by
   `decide`'s `asks` and the `ask` value.
 
 **Roles:** screener —
 [`../roles/lead-product-designer.md`](../roles/lead-product-designer.md)
-in a fresh context each run, judging the interaction fitness set as
+in a fresh context each execution, judging the interaction fitness set as
 its `judged-by` names. Decider — the same role, deciding from the
 review alone; the check sits with this role, not with the delivering
 shop, which is the separation `define-good-up-front` asks for.
@@ -246,3 +246,4 @@ steps:
 | 3 | 2026-08-26 | update | Repairs: a runtime file-findings step with `run`, branched on fail; all three corpus verdicts named in screen and decide; an absent record's gap filed on the guideline that needs it; the ask/gap rule stated with examples outside the corpus; interaction_type dropped from decide's inputs. |
 | 3 | 2026-08-26 | review | Final screen (round 3): one reference to a dropped input in decide's ask example; runtime steps conform; skill byte-derived. Repaired in place: example reworded; an unread input dropped from file-findings; interaction_type's use stated in screen; role sentences capitalized. |
 | 4 | 2026-09-02 | update | Carried-by reference repointed to the load point (.claude/skills/) — the skill-rendering process's first run removed the retired home basis/skills/; the owner's sweep per its second-home escalation. |
+| 5 | 2026-09-09 | update | `run` propagated to `execution` as the noun for a process instance, under req-2026-09-08-definition-vs-instance / feat-execution-vocabulary (shopsystem-product): mechanical, determiner-adjacent occurrences only (`a/the/this/one/another/each/no/any run(s)`); `run-by`, `run` as a schema field or step key, and compound/heading uses (e.g. `run-cost`, `run list`, `Run lifecycle`) left unchanged, that residue disclosed as not done in this pass. Self-check against define-good-up-front: diffed against the file's pre-edit text; no requirement, field name, or heading changed. Made by the lead-solutions-architect role. |

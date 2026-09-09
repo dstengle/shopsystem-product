@@ -4,9 +4,9 @@ id: scenario-assignment-process
 owner: product-authority
 status: approved
 approved: 2026-08-31
-version: 12
+version: 13
 created: 2026-08-28
-updated: 2026-09-06
+updated: 2026-09-09
 produces: [implementation-guidance]
 carried-by: scenario-assignment-skill
 condition-language: cel
@@ -48,7 +48,7 @@ finding, not a guess.
   Document History —
   judged in `record` from `assignment` and `sent`.
 - O4. A question the decomposition cannot answer — whether a behavior
-  is in scope at all — leaves the run as an ask to the PM role with a
+  is in scope at all — leaves the execution as an ask to the PM role with a
   default — witnessed by `assign`'s `asks` and the `ask` value.
 
 **Roles:** assigner —
@@ -232,7 +232,7 @@ steps:
 
 | Outcome | Check | Kind | Where |
 |---|---|---|---|
-| O1 | every scenario carries one `@bounded-context:` tag (judged), or `unowned` is non-empty and the run returns (mechanical) | judged, mechanical | `assign` outputs, `route` |
+| O1 | every scenario carries one `@bounded-context:` tag (judged), or `unowned` is non-empty and the execution returns (mechanical) | judged, mechanical | `assign` outputs, `route` |
 | O2 | every `assignment` entry records the pre-state read; one `assign_scenarios` message per entry | judged (`assign`), mechanical (`dispatch`) | `assignment`, `dispatch.run`, `sent` |
 | O3 | status `assigned` and a state entry listing contexts, pre-states, and messages | judged | `record` |
 | O4 | `assign` carries `asks`; process carries `ask-cap`; `ask` listed in inputs | mechanical | `assign`, frontmatter |
@@ -257,3 +257,4 @@ steps:
 | 10 | 2026-08-31 | state | draft → approved with batch D as one block (brief-032 ask 2, default accepted). |
 | 11 | 2026-09-02 | update | Carried-by reference repointed to the load point (.claude/skills/) — the skill-rendering process's first run removed the retired home basis/skills/; the owner's sweep per its second-home escalation. |
 | 12 | 2026-09-06 | update | Under req-2026-09-06-implementation-guidance at the small-change process's make step, on the authority's direction of 2026-09-06 the request records: the assign step, once every scenario is owned, writes one implementation guidance record per Bounded Context tagged at guidance/<feature>-<context>.md (typedef basis/artifacts/implementation-guidance.md) and outputs their paths as the new `guidance` value; the record step reads it and names each record, with the maker's evaluation, in the state entry; `produces` lists the type, per the process-definition typedef's frontmatter clause. Nothing else in the process changes; the diagram and the skill re-rendered by compile_process.py. Made by the lead-solutions-architect role. |
+| 13 | 2026-09-09 | update | `run` propagated to `execution` as the noun for a process instance, under req-2026-09-08-definition-vs-instance / feat-execution-vocabulary (shopsystem-product): mechanical, determiner-adjacent occurrences only (`a/the/this/one/another/each/no/any run(s)`); `run-by`, `run` as a schema field or step key, and compound/heading uses (e.g. `run-cost`, `run list`, `Run lifecycle`) left unchanged, that residue disclosed as not done in this pass. Self-check against define-good-up-front: diffed against the file's pre-edit text; no requirement, field name, or heading changed. Made by the lead-solutions-architect role. |

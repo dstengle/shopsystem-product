@@ -4,9 +4,9 @@ id: process-definition-fitness
 owner: product-authority
 status: approved
 approved: 2026-08-23
-version: 1
+version: 2
 created: 2026-08-23
-updated: 2026-08-23
+updated: 2026-09-09
 target-type: process-definition
 judged: true
 executable: false
@@ -38,8 +38,8 @@ Scenario 2: every outcome has a live witness
   Given the outcomes list and the steps section
   When each outcome's named witness is looked up
   Then every outcome names a step, check, or branch that exists, and a
-  reader can say from the witness alone whether the outcome held for a
-  run
+  reader can say from the witness alone whether the outcome held for an
+  execution
 
 Scenario 3: every loop declares its exits
   Given every cycle in the flow
@@ -53,11 +53,11 @@ Scenario 4: steps read only what they list
   Then each resolves to a declared input or output of that step, and
   no prompt directs the agent to load undeclared context
 
-Scenario 5: the run returns the artifact
+Scenario 5: the execution returns the artifact
   Given the result declaration and the purpose
   When they are compared
-  Then the run returns the artifact it exists to produce, or result is
-  absent and the outcomes pin the run's value
+  Then the execution returns the artifact it exists to produce, or result is
+  absent and the outcomes pin the execution's value
 
 Scenario 6: prose sits where prose belongs
   Given every step record and the guiding statement
@@ -74,12 +74,12 @@ Scenario 6: prose sits where prose belongs
 | 2 — outcomes witnessed | "For each outcome, name the witnessing step/check/branch and confirm it exists. Any outcome with a missing or unverifiable witness = fail, cite it." |
 | 3 — loop exits declared | "List every cycle and its labeled exits. Any cycle without a success exit or cap = fail, cite it." |
 | 4 — declared reads only | "For each step, quote any reference in prompt/checks/run that is not a declared input or output, and any prompt directing undeclared context loads. Empty list = pass." |
-| 5 — artifact result | "Name the result value and what the purpose says the run produces. Mismatch, or a status-shaped result = fail; absent result justified by value-pinning outcomes = pass." |
+| 5 — artifact result | "Name the result value and what the purpose says the execution produces. Mismatch, or a status-shaped result = fail; absent result justified by value-pinning outcomes = pass." |
 | 6 — prose placement | "Quote any prose in a step outside prompt, and quote the guiding statement if it sequences steps. Empty list = pass." |
 
 ## Sources
 
-Gherkin syntax (readable G/W/T frame — syntax only, no runner);
+Gherkin syntax (readable G/W/T frame — syntax only, no interpreter);
 G-Eval–style rubric decomposition for the mapping table; the tests
 project the process-definition typedef's checklist and Commitment and
 the guideline's rules, per the definition-chain shape the
@@ -91,3 +91,4 @@ principle-set chain established.
 |---|---|---|---|
 | 1 | 2026-08-23 | update | Authored as the process-definition meta-chain's fitness set. |
 | 1 | 2026-08-23 | state | draft → approved by the owner, with the exemplar screens' findings accepted as valid and their repairs directed. |
+| 2 | 2026-09-09 | update | `run` propagated to `execution` as the noun for a process instance, under req-2026-09-08-definition-vs-instance / feat-execution-vocabulary (shopsystem-product): mechanical, determiner-adjacent occurrences only (`a/the/this/one/another/each/no/any run(s)`); `run-by`, `run` as a schema field or step key, and compound/heading uses (e.g. `run-cost`, `run list`, `Run lifecycle`) left unchanged, that residue disclosed as not done in this pass. Self-check against define-good-up-front: diffed against the file's pre-edit text; no requirement, field name, or heading changed. Made by the lead-solutions-architect role. |

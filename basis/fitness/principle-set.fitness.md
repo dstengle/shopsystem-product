@@ -4,9 +4,9 @@ id: principle-set-fitness
 owner: product-authority
 status: approved
 approved: 2026-08-23
-version: 4
+version: 5
 created: 2026-08-22
-updated: 2026-08-23
+updated: 2026-09-09
 target-type: principle-set
 judged: true
 executable: false
@@ -88,7 +88,7 @@ Scenario 6: each principle rejects something
 
 ## Sources
 
-Gherkin syntax (the readable G/W/T frame — syntax only, no runner);
+Gherkin syntax (the readable G/W/T frame — syntax only, no interpreter);
 G-Eval–style rubric decomposition and promptfoo's llm-rubric assertion
 form for the mapping table; the tests themselves compose TOGAF
 (statement quality), Spool (helps you say no), Lencioni (not
@@ -104,3 +104,4 @@ principle-set typedef.
 | 2 | 2026-08-23 | update | Scenario 3 rewritten: generic failure, no product history. |
 | 3 | 2026-08-23 | update | Scenarios 2 and 4 tightened: one obligation or implication per bullet; decision terms defined in statement, opening, or glossary. |
 | 4 | 2026-08-23 | update | Owner direction: decision-ledger references removed — changes stand on their own; history entries and text no longer cite numbered decisions. |
+| 5 | 2026-09-09 | update | `runner` removed as a standalone word under req-2026-09-08-definition-vs-instance / feat-execution-vocabulary (shopsystem-product), "runner survives only inside process-runner": "no interpreter" for Gherkin's own syntax (Sources). Made by the lead-solutions-architect role. |

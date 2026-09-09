@@ -10,12 +10,12 @@ type: skill
 id: research-inquiry-skill
 status: approved
 created: 2026-08-23
-updated: 2026-09-02
+updated: 2026-09-09
 generated: true
 generated-by: basis/tools/compile_process.py
 derived-from: research-inquiry-process
 source: basis/processes/research-inquiry.md
-source-digest: sha256:3a6627e0d0bc
+source-digest: sha256:e87bd2c611ff
 activation: model-judged
 promotion: experiment-local
 hold-after: P7D
@@ -25,9 +25,9 @@ hold-after: P7D
 
 Answer a question with a research report: the researcher frames and plans, gathers in parallel, extracts grounded evidence, synthesizes findings with confidence and alternatives, verifies the claims in a fresh context, and delivers a report the consumer can act on — stored on the `research` branch and registered in the research index.
 
-**Every claim is grounded or marked. A reference the run did not open is not a source; a number without a checkable quote is not a finding; a persona is not evidence.**
+**Every claim is grounded or marked. A reference the execution did not open is not a source; a number without a checkable quote is not a finding; a persona is not evidence.**
 
-Result of a run: `report` (research-report).
+Result of an execution: `report` (research-report).
 
 ```mermaid
 flowchart TD
@@ -83,7 +83,7 @@ verbatim, who consumes the answer and what decision it serves,
 the scope boundary, the sources policy as it applies here, and
 the confidence scheme with each label's meaning. State the
 assumptions the question carries. If the answer would rest
-mainly on knowledge the run cannot verify, say so here — that
+mainly on knowledge the execution cannot verify, say so here — that
 returns to the consumer as a scoping question.
 
 Return each declared output on its own line as `<name>: <value>` — frame, report_id — a list as a JSON array, a value with line breaks as a JSON string; these lines close your reply.

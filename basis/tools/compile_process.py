@@ -419,8 +419,8 @@ def skill_step_section(step: dict) -> str:
     run_by = step.get("run-by", {})
     if run_by.get("execution") in ("agent", "human"):
         fresh = " (fresh context every run)" if run_by.get("fresh-context") else ""
-        runner = "an agent in role" if run_by["execution"] == "agent" else "a human holding role"
-        lines.append(f"Run by {runner} `{run_by.get('role')}`{fresh}. {fmt_io(step)}.")
+        actor = "an agent in role" if run_by["execution"] == "agent" else "a human holding role"
+        lines.append(f"Run by {actor} `{run_by.get('role')}`{fresh}. {fmt_io(step)}.")
         if step.get("asks"):
             roles = ", ".join(f"`{r}`" for r in step["asks"])
             lines.append(f"- may ask: {roles} — return an `ask` (with default and checkpoint) in place of outputs; at most one per run.")
@@ -469,7 +469,7 @@ def generate_skill(front: dict, spec: dict, purpose: str, guiding: str, diagram:
     for key in ("activation", "promotion"):
         if key in cc:
             fm[key] = cc[key]
-    # The run lifecycle's two windows travel with the rendering, so a router
+    # The execution lifecycle's two windows travel with the rendering, so a router
     # running from it knows a process's ask-cap and hold-after.
     for key in ("ask-cap", "hold-after"):
         if key in front:
@@ -485,7 +485,7 @@ def generate_skill(front: dict, spec: dict, purpose: str, guiding: str, diagram:
     result = spec.get("result")
     if result:
         rtype = display_type(spec.get("data", {}), result)
-        parts.append(f"Result of a run: `{result}` ({rtype}).")
+        parts.append(f"Result of an execution: `{result}` ({rtype}).")
     parts.append(f"```mermaid\n{diagram}\n```")
     parts += [skill_step_section(step) for step in spec["steps"]]
     return "\n\n".join(parts) + "\n"

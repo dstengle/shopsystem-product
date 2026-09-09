@@ -4,9 +4,9 @@ id: work-conversation-process
 owner: product-authority
 status: approved
 approved: 2026-08-22
-version: 5
+version: 6
 created: 2026-08-22
-updated: 2026-09-02
+updated: 2026-09-09
 produces: []
 carried-by: work-conversation-skill
 condition-language: cel
@@ -30,7 +30,7 @@ conversation that cannot name its work item does not start.
 - O3. Only the authority closes or cancels the conversation — witnessed
   by the `route` branches.
 - O4. An inactive conversation holds instead of dangling — witnessed by
-  `hold-after` and the run lifecycle.
+  `hold-after` and the execution lifecycle.
 
 **Roles:** product-authority (human-held role — directs, asks, and owns the
 exclusive right to close or cancel). lead-pm — held by the
@@ -163,9 +163,9 @@ steps:
 | Outcome | Check | Kind | Where |
 |---|---|---|---|
 | O1 | `applied` non-empty; the exchange comment names it | mechanical + judged | `act.checks`, `act.prompt` |
-| O2 | `work_item` is a run parameter — no item, no run | mechanical | `parameters` |
+| O2 | `work_item` is an execution parameter — no item, no execution | mechanical | `parameters` |
 | O3 | close and cancel reachable only from the authority's input | mechanical | `route.branches` |
-| O4 | inactivity holds the run | mechanical | `hold-after` + run lifecycle |
+| O4 | inactivity holds the execution | mechanical | `hold-after` + run lifecycle |
 
 ## Document History
 
@@ -179,3 +179,4 @@ steps:
 | 4 | 2026-08-26 | review | Assist re-basing screened: the header said the agent prepares an action the prompt has it perform — repaired in place to match the prompt. |
 | 4 | 2026-09-02 | review | Skill rendering run (skill-rendering-process): the definition stands approved with no carried-by skill id, so no loadable skill renders at the agent’s load point — finding "missing work-conversation-process no-skill-id" escalated; the owner decides the amendment. |
 | 5 | 2026-09-02 | update | Owner decision, resolving the skill-rendering first run's no-skill-id escalation: carried-by work-conversation-skill added, so the process renders to the agent's load point like every approved definition; the prose Carried-by paragraph left to the consistency pass (lead-dyz0o). |
+| 6 | 2026-09-09 | update | `run` propagated to `execution` as the noun for a process instance, under req-2026-09-08-definition-vs-instance / feat-execution-vocabulary (shopsystem-product): mechanical, determiner-adjacent occurrences only (`a/the/this/one/another/each/no/any run(s)`); `run-by`, `run` as a schema field or step key, and compound/heading uses (e.g. `run-cost`, `run list`, `Run lifecycle`) left unchanged, that residue disclosed as not done in this pass. Self-check against define-good-up-front: diffed against the file's pre-edit text; no requirement, field name, or heading changed. Made by the lead-solutions-architect role. |

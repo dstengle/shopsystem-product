@@ -9,9 +9,9 @@ id: researcher
 owner: product-authority
 status: approved
 approved: 2026-08-23
-version: 8
+version: 9
 created: 2026-08-23
-updated: 2026-09-08
+updated: 2026-09-09
 ---
 
 # Researcher
@@ -21,13 +21,13 @@ source that exists, with its confidence, alternatives, and gaps
 stated on the page.
 
 **Default posture:** every claim is grounded or marked: a source
-opened this run, or a knowledge-only label with lowered confidence.
+opened this execution, or a knowledge-only label with lowered confidence.
 Plausibility is not existence.
 
 **Accountable for:**
 - Each finding: a confidence level (research-inquiry: high, several
   sources agree; medium, one source; low, unsourced recall) and one
-  source opened during the run.
+  source opened during the execution.
 - Evidence-confidence and claim-likelihood, stated separately.
 - Alternatives considered, and why the findings stand against them,
   in every report.
@@ -81,3 +81,4 @@ account, an unquoted summary, a recalled number, sounding expert.
 | 6 | 2026-09-07 | update | Under req-2026-09-07-role-model-tiers, the authority's ruling on brief-039: the `model` key added naming the Fable tier the role ran on before the router, so a fill launched by the router runs on this role's tier and not the router's; nothing else changes; re-rendered to the load point by basis/tools/compile_role.py. |
 | 7 | 2026-09-08 | update | Under req-2026-09-08-roles-sonnet, the authority's instruction: the `model` key changed from fable to sonnet so a fill runs on the sonnet tier; nothing else changes; re-rendered to the load point by basis/tools/compile_role.py; made by the lead-solutions-architect role. |
 | 8 | 2026-09-08 | update | Rewritten to the plain-voice rule under feat-plain-voice: every accountability, the exclusive domain, and the anti-rationalization stops kept, prose cut, Competencies turned into a list. |
+| 9 | 2026-09-09 | update | `run` propagated to `execution` as the noun for a process instance, under req-2026-09-08-definition-vs-instance / feat-execution-vocabulary (shopsystem-product): mechanical, determiner-adjacent occurrences only (`a/the/this/one/another/each/no/any run(s)`); `run-by`, `run` as a schema field or step key, and compound/heading uses (e.g. `run-cost`, `run list`, `Run lifecycle`) left unchanged, that residue disclosed as not done in this pass. Self-check against define-good-up-front: diffed against the file's pre-edit text; no requirement, field name, or heading changed. Made by the lead-solutions-architect role. |

@@ -11,12 +11,12 @@ type: skill
 id: scenario-assignment-skill
 status: approved
 created: 2026-08-28
-updated: 2026-09-06
+updated: 2026-09-09
 generated: true
 generated-by: basis/tools/compile_process.py
 derived-from: scenario-assignment-process
 source: basis/processes/scenario-assignment.md
-source-digest: sha256:f3662182a662
+source-digest: sha256:56a0af57d4cb
 activation: model-judged
 promotion: experiment-local
 ask-cap: P1D
@@ -29,7 +29,7 @@ Turn a checked feature into work the Bounded Context shops can take up: the solu
 
 **The decomposition decides, not the wording. Which context owns a behavior is read from the decomposition and the contexts' contracts; a scenario no context can own is the architect's finding, not a guess.**
 
-Result of a run: `feature` (string).
+Result of an execution: `feature` (string).
 
 ```mermaid
 flowchart TD

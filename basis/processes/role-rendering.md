@@ -4,9 +4,9 @@ id: role-rendering-process
 owner: product-authority
 status: approved
 approved: 2026-09-03
-version: 7
+version: 8
 created: 2026-09-03
-updated: 2026-09-05
+updated: 2026-09-09
 produces: []
 carried-by: role-rendering-skill
 condition-language: cel
@@ -70,7 +70,7 @@ owner's decision on the definition — never an edit to a rendered role.
   nothing at the load point; `will-not-compile <definition> <reason>`
   — a definition in `approved` the compiler does not render, a refusal
   included, and for which it writes no `missing` or `diverged` row, so
-  an unrenderable definition never also burns the run toward the cap;
+  an unrenderable definition never also burns the execution toward the cap;
   `stale <source> <path>` — a rendered role whose source is
   under `definitions` but not in `approved`; `unrecognized <path>` — a
   file at the load point whose source is not under `definitions`, or
@@ -84,7 +84,7 @@ owner's decision on the definition — never an edit to a rendered role.
   after reconciliation; `stale` is removed; `unrecognized` is
   escalated by its path, never removed; `will-not-compile` lands as a
   review entry in that definition's Document History. An escalation
-  never ends with the run and never burns it: a row whose subject is
+  never ends with the execution and never burns it: a row whose subject is
   already named in `escalations` is not open, so a check clean of open
   rows with escalations standing routes through `report`, which files
   each row into the governed record the owner reads — witnessed by
@@ -146,7 +146,7 @@ flowchart TD
 
 Each entry names a process-local value. Simple types use JSON Schema
 names inline; conditions are CEL expressions over these names. Paths
-are relative to the lead shop's repository root, the run's working
+are relative to the lead shop's repository root, the execution's working
 directory. The definition of good for this process is the feature
 [feat-roles-availability](../../features/feat-roles-availability.md);
 each outcome names the scenarios it witnesses. The *loadable form* of
@@ -192,7 +192,7 @@ renders in memory for its check and writes only where `--agent`
 names, so `check` never mutates its subjects or the load point; the
 load point is written only at reconciliation's re-render, where that
 write is the point. A `run` step that exits nonzero is a failed step,
-not an empty result: the run halts at that step and the failure is
+not an empty result: the execution halts at that step and the failure is
 reported to the reconciler role — it is never read as empty
 `findings` and never routed as a clean check. The banned vocabulary
 a rendered role's body closes with — the line "Do not use these
@@ -203,8 +203,8 @@ the lint's list reaches every rendered role at the next re-render. The
 check sweeps this tree's load point: a role
 copied there from the frozen corpus is `unrecognized`; the corpus's
 own load, in its own checkout, is outside this tree and outside the
-sweep — the initiative's no-go. The run declares no `result`:
-`produces` is empty because the run's value is state change — every
+sweep — the initiative's no-go. The execution declares no `result`:
+`produces` is empty because the execution's value is state change — every
 approved role available at the load point — and O1's witness pins it.
 
 ```yaml
@@ -318,7 +318,7 @@ steps:
     inputs: [open, approved, escalations, self]
     outputs: [escalations]
     prompt: |
-      This step files what leaves the run for the owner; it runs at
+      This step files what leaves the execution for the owner; it runs at
       the round cap with rows open, or with no row open and
       escalations standing. Every row you add to escalations begins
       with the open row's subject — its second word — as its first
@@ -331,7 +331,7 @@ steps:
       escalations stands in a governed record the owner reads: a row
       naming a definition, as the review entry in that definition's
       Document History; every other row, in a Document History entry
-      for this run written into the definition at self. The resulting
+      for this execution written into the definition at self. The resulting
       action on each escalated row is the owner's decision. Return
       escalations.
     next: end
@@ -341,11 +341,11 @@ steps:
 
 | Outcome | Check | Kind | Where |
 |---|---|---|---|
-| O1 | the run's first exit requires `size(open) == 0 && size(escalations) == 0`; with `escalations` standing an open-clean check routes through `report` | mechanical | `route` branches |
+| O1 | the execution's first exit requires `size(open) == 0 && size(escalations) == 0`; with `escalations` standing an open-clean check routes through `report` | mechanical | `route` branches |
 | O2 | every approved definition without its rendering at the load point yields a `missing` row; renders land only under `load_point`, as `<load_point>/<name>.md` | mechanical | `check.run`, `reconcile.prompt` |
 | O3 | `enumerate` admits only a `status: approved` line inside the front-matter block; `check` passes `approved` to the compiler, which refuses any listed definition not approved and marks `stale` a source under `definitions` outside the list; `reconcile` removes each `stale` row | mechanical | `enumerate.run`, `check.run`, `reconcile.prompt` |
 | O4 | every row's first word is one of the five kinds O4 names, its second word its subject, and its third word — for `diverged`, `missing`, `stale` — the path acted on, `will-not-compile` carrying the reason as the remainder; the kinds are defined in O4 alone and referenced by name everywhere else | mechanical | `check.run` |
-| O5 | `filter` drops each row whose subject equals the first word of a row of `escalations`, whole-word, and `reconcile` and `report` write that word first; a `will-not-compile` definition yields no `missing` or `diverged` row, so once escalated it leaves nothing open; `diverged` and `missing` re-rendered, `stale` removed, `unrecognized` escalated by path and never removed, `will-not-compile` filed as a review entry; every escalation row lands in a governed record — the named definition's Document History, or the run entry in `self` | judged | `filter.run`, `reconcile` and `report` prompts, `route` branches |
+| O5 | `filter` drops each row whose subject equals the first word of a row of `escalations`, whole-word, and `reconcile` and `report` write that word first; a `will-not-compile` definition yields no `missing` or `diverged` row, so once escalated it leaves nothing open; `diverged` and `missing` re-rendered, `stale` removed, `unrecognized` escalated by path and never removed, `will-not-compile` filed as a review entry; every escalation row lands in a governed record — the named definition's Document History, or the execution entry in `self` | judged | `filter.run`, `reconcile` and `report` prompts, `route` branches |
 
 ## Document History
 
@@ -359,3 +359,4 @@ steps:
 | 5 | 2026-09-03 | update | First run over the corpus, invoked through its own carrier at the load point: round 1 — enumerate admitted 6 definitions, check found 6 `missing` (the load point `.claude/agents/` did not exist), filter left all 6 open, reconcile rendered each with `compile_role.py --agent` (the render created the load point); round 2 — check clean, no row open, nothing escalated: the first success exit. Every approved role is available: 6 of 6, zero divergence. No stale, unrecognized, or will-not-compile row. Observed in the run's harness, filed for the owner: a check whose compiler exits without rows — a crash, not a clean result — reads as empty `findings` and routes to the clean exit; the definition (skill-rendering's check has the same shape) does not distinguish an empty result from a failed step. |
 | 6 | 2026-09-04 | update | Owner's ruling of 2026-09-04 on brief-034 ask 4 (lead-xmuft), applied: a nonzero step exit is a failed step, not an empty result; compilers emit a will-not-compile row for a path they cannot read instead of crashing. |
 | 7 | 2026-09-05 | update | req-2026-09-05-banned-words-inlined, applied at the small-change lane's make step: the compiler inlines the banned line — "Do not use these words: " and the lint's list — into the body of every rendered role, at its end; the list is loaded from the lint at basis/tools/lint_basis.py, its one home, named in Data. |
+| 8 | 2026-09-09 | update | `run` propagated to `execution` as the noun for a process instance, under req-2026-09-08-definition-vs-instance / feat-execution-vocabulary (shopsystem-product): mechanical, determiner-adjacent occurrences only (`a/the/this/one/another/each/no/any run(s)`); `run-by`, `run` as a schema field or step key, and compound/heading uses (e.g. `run-cost`, `run list`, `Run lifecycle`) left unchanged, that residue disclosed as not done in this pass. Self-check against define-good-up-front: diffed against the file's pre-edit text; no requirement, field name, or heading changed. Made by the lead-solutions-architect role. |

@@ -5,9 +5,9 @@ target-type: decision-brief
 owner: product-authority
 status: approved
 approved: 2026-08-19
-version: 2
+version: 3
 created: 2026-08-10
-updated: 2026-08-23
+updated: 2026-09-09
 ---
 
 # Guideline: stakeholder communication
@@ -40,7 +40,7 @@ answer/recommendation. *Decision:* yes/no.
 
 **2. Gloss every proper noun and coinage at first mention.**
 Before: "adopt promptfoo (established)."
-After: "adopt promptfoo, an open-source LLM-evaluation runner (established)."
+After: "adopt promptfoo, an open-source LLM-evaluation tool (established)."
 *Test:* scan first mentions. *Criterion:* gloss present, or the reader
 demonstrably owns the term. *Decision:* yes/no per term.
 *Derived check:* mechanical heuristic (capitalized-term scan) + judged —
@@ -80,3 +80,4 @@ tool selection tracked in work item lead-gzlp2).
 | 1 | 2026-08-10 | update | Authored (seed layer); earlier history, if any, in the repository history. |
 | 1 | 2026-08-19 | state | draft → approved. |
 | 2 | 2026-08-23 | update | Owner direction: decision-ledger references removed — changes stand on their own; history entries and text no longer cite numbered decisions. |
+| 3 | 2026-09-09 | update | `runner` removed as a standalone word under req-2026-09-08-definition-vs-instance / feat-execution-vocabulary (shopsystem-product), "runner survives only inside process-runner": the promptfoo gloss example reworded to "LLM-evaluation tool". Made by the lead-solutions-architect role. |

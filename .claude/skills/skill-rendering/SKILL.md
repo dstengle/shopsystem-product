@@ -22,12 +22,12 @@ type: skill
 id: skill-rendering-skill
 status: approved
 created: 2026-09-02
-updated: 2026-09-07
+updated: 2026-09-09
 generated: true
 generated-by: basis/tools/compile_process.py
 derived-from: skill-rendering-process
 source: basis/processes/skill-rendering.md
-source-digest: sha256:14f2cf99e9ea
+source-digest: sha256:d0b81403be04
 activation: model-judged
 promotion: experiment-local
 ---
@@ -222,7 +222,7 @@ Run by an agent in role `lead-solutions-architect`. reads: findings, approved, e
 Prompt:
 
 ```text
-This step files what leaves the run for the owner; it runs at
+This step files what leaves the execution for the owner; it runs at
 the round cap with findings open, or on a clean check with
 escalations standing. For each row of findings still open whose
 definition is not yet named in escalations, write a review entry
@@ -234,7 +234,7 @@ Then confirm every escalation row stands in a governed record
 the owner reads: a row naming a definition, as the review entry
 in that definition's Document History; a path-only row — an
 unrecognized skill, the second-home notice — lands in this
-process definition's Document History entry for the run. The
+process definition's Document History entry for the execution. The
 resulting action on each escalated row is the owner's decision.
 Return escalations.
 

@@ -5,9 +5,9 @@ target-type: role-definition
 owner: product-authority
 status: approved
 approved: 2026-08-23
-version: 2
+version: 3
 created: 2026-08-23
-updated: 2026-08-25
+updated: 2026-09-09
 ---
 
 # Guideline: role definition
@@ -20,7 +20,7 @@ accountability, or claims the role's one decision — nothing narrates.
 **Highlights (the layer compiled into generating context):** who and
 what for, never when · the capability contract enforces the stance
 mechanically · exactly one exclusive domain, phrased as a decision ·
-accountabilities are answerable after a run · no actor-kind commitments
+accountabilities are answerable after an execution · no actor-kind commitments
 unless the role is an owner's human-held role.
 
 **Layers:** this guideline adds role-definition rules on top of the
@@ -103,3 +103,4 @@ this product's history.
 | 1 | 2026-08-23 | update | Authored as the role-definition meta-chain's guideline, with the existing basis roles as exemplars. |
 | 1 | 2026-08-23 | state | draft → approved by the owner, with the exemplar screens' findings accepted as valid and their repairs directed. |
 | 2 | 2026-08-25 | update | Owner direction: a near-synonym of "role" retired and banned. |
+| 3 | 2026-09-09 | update | `run` propagated to `execution` as the noun for a process instance, under req-2026-09-08-definition-vs-instance / feat-execution-vocabulary (shopsystem-product): mechanical, determiner-adjacent occurrences only (`a/the/this/one/another/each/no/any run(s)`); `run-by`, `run` as a schema field or step key, and compound/heading uses (e.g. `run-cost`, `run list`, `Run lifecycle`) left unchanged, that residue disclosed as not done in this pass. Self-check against define-good-up-front: diffed against the file's pre-edit text; no requirement, field name, or heading changed. Made by the lead-solutions-architect role. |

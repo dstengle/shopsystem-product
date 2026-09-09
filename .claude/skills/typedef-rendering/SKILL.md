@@ -16,12 +16,12 @@ type: skill
 id: typedef-rendering-skill
 status: approved
 created: 2026-09-05
-updated: 2026-09-05
+updated: 2026-09-09
 generated: true
 generated-by: basis/tools/compile_process.py
 derived-from: typedef-rendering-process
 source: basis/processes/typedef-rendering.md
-source-digest: sha256:f05359932523
+source-digest: sha256:4ac1f312cd4e
 activation: model-judged
 promotion: experiment-local
 ---
@@ -137,7 +137,7 @@ that subject as its first word, then what you filed. "missing",
 ${compiler} <typedef> --guideline ${guidelines}/<type>.md
 --fitness ${fitness}/<type>.fitness.md`, <typedef> the row's third
 word (the typedef's path, listed in approved) and <type> the
-value of `defines` in that typedef's front-matter; one run produces the type's two texts together
+value of `defines` in that typedef's front-matter; one execution produces the type's two texts together
 and overwrites whatever stands at either path, a hand edit
 included — reconciliation is the re-render by the compiler, never
 an edit to a rendered text, and never an edit to the typedef made
@@ -173,7 +173,7 @@ Run by an agent in role `lead-solutions-architect`. reads: open, approved, escal
 Prompt:
 
 ```text
-This step files what leaves the run for the owner. Every row
+This step files what leaves the execution for the owner. Every row
 you add to escalations begins
 with the open row's subject — its second word — as its first
 word, then what you filed. For each row of open that names a
@@ -185,7 +185,7 @@ as the subject then the row's kind. Then confirm every row of
 escalations stands in a governed record the owner reads: a row
 filed into a typedef, as the review entry in that typedef's
 Document History; every other row, in a Document History entry
-for this run written into the definition at self. The resulting
+for this execution written into the definition at self. The resulting
 action on each escalated row is the owner's decision. Return
 escalations.
 

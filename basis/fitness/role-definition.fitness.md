@@ -4,9 +4,9 @@ id: role-definition-fitness
 owner: product-authority
 status: approved
 approved: 2026-08-23
-version: 3
+version: 4
 created: 2026-08-23
-updated: 2026-09-06
+updated: 2026-09-09
 target-type: role-definition
 judged: true
 executable: false
@@ -81,7 +81,7 @@ Scenario 6: the decisions owned are named and offered on
 | 1 (And) — actor-neutral | "Quote any actor-kind commitment. A single owner's-role statement of authority = pass; working instructions tied to an actor kind = fail." |
 | 2 — no sequencing | "Quote every sentence that says when the role acts. Empty list = pass." |
 | 3 — one exclusive domain | "Count the exclusive-domain claims and quote the decision each names. Exactly one, decision-phrased = pass." |
-| 4 — answerable accountabilities | "For each bullet: could you verify after a run that the role delivered it? 4–6 bullets, all verifiable = pass; cite any character-trait bullet." |
+| 4 — answerable accountabilities | "For each bullet: could you verify after an execution that the role delivered it? 4–6 bullets, all verifiable = pass; cite any character-trait bullet." |
 | 5 — contract enforces stance | "For each stance claim, name the frontmatter key that enforces it or state that no mechanical enforcement exists. Any enforceable-but-unenforced claim = fail, cite it." |
 | 6 (Then) — decisions in the domain | "For each decision the Decisions owned section names, cite the exclusive-domain claim or the decision right it falls under; cite any decision the domain or rights hold that the section leaves unnamed. All cited, none unnamed = pass." |
 | 6 (And) — the offer stated | "Quote the sentence stating that the role offers complete information on those decisions unasked when it attaches to or acts on an initiative. Present = pass." |
@@ -89,7 +89,7 @@ Scenario 6: the decisions owned are named and offered on
 
 ## Sources
 
-Gherkin syntax (readable G/W/T frame — syntax only, no runner);
+Gherkin syntax (readable G/W/T frame — syntax only, no interpreter);
 G-Eval–style rubric decomposition for the mapping table; the tests
 project the role-definition typedef's checklist and the guideline's
 rules, per the definition-chain shape the principle-set chain
@@ -103,3 +103,4 @@ established.
 | 1 | 2026-08-23 | state | draft → approved by the owner, with the exemplar screens' findings accepted as valid and their repairs directed. |
 | 2 | 2026-08-25 | update | Owner direction: a near-synonym of "role" retired and banned. |
 | 3 | 2026-09-06 | update | Under init-role-decisions / feat-role-decisions on the authority's bet of 2026-09-06 (the feature's constraint C2): scenario 6 added, projecting the role-definition typedef's (v4) Decisions owned section — every decision named falls in the exclusive domain or a decision right and none the domain holds is left unnamed, the offer stated, the role-offer type referenced with no part restated and no step named — with three mapping rows. Hand-amended under the artifact-typedef typedef's rule for a type whose fitness set is not produced. Maker's evaluation against the fitness-set typedef's checklist: frontmatter guardrails unchanged; not under features/; every Then and And of scenario 6 in the mapping table, each falsifiable — a judge shown a section naming a decision outside the rights, omitting the offer sentence, listing the parts, or naming a step can point at it. Made by the lead-solutions-architect role; the owner's approval of the amendment is pending. |
+| 4 | 2026-09-09 | update | `run` propagated to `execution` as the noun for a process instance, under req-2026-09-08-definition-vs-instance / feat-execution-vocabulary (shopsystem-product): mechanical, determiner-adjacent occurrences only (`a/the/this/one/another/each/no/any run(s)`); `run-by`, `run` as a schema field or step key, and compound/heading uses (e.g. `run-cost`, `run list`, `Run lifecycle`) left unchanged, that residue disclosed as not done in this pass. Self-check against define-good-up-front: diffed against the file's pre-edit text; no requirement, field name, or heading changed. Made by the lead-solutions-architect role. |

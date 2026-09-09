@@ -5,9 +5,9 @@ defines: review-record
 owner: product-authority
 status: approved
 approved: 2026-08-22
-version: 2
+version: 3
 created: 2026-08-22
-updated: 2026-08-23
+updated: 2026-09-09
 ancestry: [review-record]
 ---
 
@@ -32,9 +32,9 @@ ancestry: [review-record]
 ## Required frontmatter
 
 `type: review-record`, `id`, `status` (open | held | closed | cancelled),
-`conversation-type: review`, `work-item` (the run's anchor in the
+`conversation-type: review`, `work-item` (the execution's anchor in the
 registry), `created`, `updated`; `branched-from` (the parent run) when
-the conversation is a sub-process of another run; `closed` (date) once
+the conversation is a sub-process of another execution; `closed` (date) once
 closed or cancelled.
 
 ## Required sections
@@ -79,3 +79,4 @@ revision history, not in a parallel decision log.
 | 1 | 2026-08-22 | update | Authored (seed layer). |
 | 1 | 2026-08-22 | state | draft → approved. |
 | 2 | 2026-08-23 | update | Ledger removed by owner direction: decisions live as changes in the affected artifacts' Document History; the Rulings section becomes Outcomes; closed records are history no live document may cite. |
+| 3 | 2026-09-09 | update | `run` propagated to `execution` as the noun for a process instance, under req-2026-09-08-definition-vs-instance / feat-execution-vocabulary (shopsystem-product): mechanical, determiner-adjacent occurrences only (`a/the/this/one/another/each/no/any run(s)`); `run-by`, `run` as a schema field or step key, and compound/heading uses (e.g. `run-cost`, `run list`, `Run lifecycle`) left unchanged, that residue disclosed as not done in this pass. Self-check against define-good-up-front: diffed against the file's pre-edit text; no requirement, field name, or heading changed. Made by the lead-solutions-architect role. |

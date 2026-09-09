@@ -5,9 +5,9 @@ defines: request
 owner: product-authority
 status: approved
 approved: 2026-08-19
-version: 3
+version: 4
 created: 2026-08-19
-updated: 2026-09-04
+updated: 2026-09-09
 ancestry: [request]
 ---
 
@@ -95,7 +95,7 @@ delivered | decided); the root requires only that `status` be present.
 
 1. **What is requested** — named early, not implied. For a received
    ask: the originator's words verbatim, quoted and dated — nothing
-   paraphrased; where the ask arose in a run or a conversation, the
+   paraphrased; where the ask arose in an execution or a conversation, the
    words it arose in.
 2. **From whom** — the reader, named. For a received ask: the reader
    (the lead-pm role) and the originator.
@@ -183,3 +183,4 @@ awaiting its route or its result, and no work counts as done for it.
 | 1 | 2026-08-19 | state | draft → approved. |
 | 2 | 2026-08-23 | update | Owner direction: decision-ledger references removed — changes stand on their own; history entries and text no longer cite numbered decisions. |
 | 3 | 2026-09-04 | update | The received-ask path added, under init-request-routing / feat-request-routing (constraint C1: the existing root amended, no new type) on the authority's standing direction of 2026-09-04, per adr-2026-09-04-request-front-end §2–3: a received ask's request is the durable record of an ask, made on arrival by any lead-shop role and routed by the lead-pm role. Added: the second producing path with the request-intake process named as pending (authored alongside); instances in `requests/`, id `req-YYYY-MM-DD-<slug>`; the received field set (`id`, `version`, `owner`, `created`, `updated`, `originator`, `received-through`, `arose-in`, `route`, `route-reason`, `routed-to`, `work-item`) closed over the root set; status values `recorded`, `routed`, `declined`, `done` with their writers; sections 3 Route and 4 Result; Rules (one home for the ask's words, no record in a register item or transcript, decline only with the authority, the contract stated, `intent-provenance`'s exception carried through lead-4kymc); Sources and Commitment extended; the checklist re-derived. The emitted path — the root sense `decision-brief` declares — stands unchanged. |
+| 4 | 2026-09-09 | update | `run` propagated to `execution` as the noun for a process instance, under req-2026-09-08-definition-vs-instance / feat-execution-vocabulary (shopsystem-product): mechanical, determiner-adjacent occurrences only (`a/the/this/one/another/each/no/any run(s)`); `run-by`, `run` as a schema field or step key, and compound/heading uses (e.g. `run-cost`, `run list`, `Run lifecycle`) left unchanged, that residue disclosed as not done in this pass. Self-check against define-good-up-front: diffed against the file's pre-edit text; no requirement, field name, or heading changed. Made by the lead-solutions-architect role. |

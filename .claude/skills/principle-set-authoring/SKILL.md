@@ -8,12 +8,12 @@ type: skill
 id: principle-set-authoring-skill
 status: approved
 created: 2026-08-22
-updated: 2026-09-05
+updated: 2026-09-09
 generated: true
 generated-by: basis/tools/compile_process.py
 derived-from: principle-set-authoring-process
 source: basis/processes/principle-set-authoring.md
-source-digest: sha256:6e8f2e79e618
+source-digest: sha256:2f09288e8cff
 activation: model-judged
 promotion: experiment-local
 hold-after: P7D
@@ -25,7 +25,7 @@ Author or amend a principle set: the author drafts through the guideline, an ind
 
 **Define good before governing with it. A principle enters the set only through the written definition of a good principle — the statement decides, the rationale evidences, the implications price — never on taste.**
 
-Result of a run: `set` (principle-set).
+Result of an execution: `set` (principle-set).
 
 ```mermaid
 flowchart TD
@@ -158,7 +158,7 @@ checked against, amendable only through this process by your
 decision. "findings" parks the draft with your findings filed as
 a work item for a later run to take up — the single review cycle
 admits no second pass here.
-Silence holds the run after the declared window — `hold-after` in
+Silence holds the execution after the declared window — `hold-after` in
 this definition's frontmatter — per the process-definition
 typedef's run lifecycle; the held run keeps its resume point.
 ```

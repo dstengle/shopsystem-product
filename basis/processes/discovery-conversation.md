@@ -4,9 +4,9 @@ id: discovery-conversation-process
 owner: product-authority
 status: approved
 approved: 2026-08-22
-version: 12
+version: 13
 created: 2026-08-22
-updated: 2026-09-08
+updated: 2026-09-09
 produces: [session-record, initiative]
 carried-by: discovery-conversation-skill
 condition-language: cel
@@ -39,7 +39,7 @@ interlocutor; record and launch only after convergence.
 - O3. Only the authority converges, closes, or cancels — witnessed by
   the `route` branches.
 - O4. An inactive conversation holds instead of dangling — witnessed by
-  `hold-after` and the run lifecycle.
+  `hold-after` and the execution lifecycle.
 - O5. A converged discovery returns an initiative recorded `planned` —
   the bet, taken directly on the authority's word — or `proposed` then
   `cancelled` with the authority's reason when what was asked is
@@ -252,9 +252,9 @@ never released silently.
 | O1 | `handoff` reachable only via the authority's classification | mechanical | `route.branches` |
 | O2 | the child process validates the record before landing | mechanical | `handoff` sub-process (session-handoff O1) |
 | O3 | close and cancel reachable only from the authority's input | mechanical | `route.branches` |
-| O4 | inactivity holds the run | mechanical | `hold-after` + run lifecycle |
+| O4 | inactivity holds the execution | mechanical | `hold-after` + run lifecycle |
 | O5 | `frame` reachable only from `converge`; a converged run returns an initiative recorded `proposed` | mechanical, judged | `route-frame.branches`, `frame` |
-| O6 | `request` declared on `engage` and `frame` and no transcript is; a run opened on a request returns an initiative whose `request` links it, the request's `routed-to` linking back | mechanical, judged | `engage.inputs`, `frame.inputs`, `frame.prompt` |
+| O6 | `request` declared on `engage` and `frame` and no transcript is; an execution opened on a request returns an initiative whose `request` links it, the request's `routed-to` linking back | mechanical, judged | `engage.inputs`, `frame.inputs`, `frame.prompt` |
 
 ## Document History
 
@@ -275,3 +275,4 @@ never released silently.
 | 10 | 2026-09-02 | update | Owner decision, resolving the skill-rendering first run's no-skill-id escalation: carried-by discovery-conversation-skill added, so the process renders to the agent's load point like every approved definition; the prose Carried-by paragraph left to the consistency pass (lead-dyz0o). |
 | 11 | 2026-09-04 | update | The hinge, under init-request-routing / feat-request-routing on the authority's standing direction of 2026-09-04, per adr-2026-09-04-request-front-end: the process accepts a request as its input — parameter `request` (path of a request in `requests/`, empty for a conversation opened without one; both admitted while the authority's direct conversation remains a door and the request-intake process dispatches with it set); when set, `open` titles the work item with the request id, `engage` drafts the Framing from the request's section 1 instead of the transcript, `frame` writes the initiative's `request` link, quotes the originator from the request with its id as reference (the quoting rule unchanged — its refinement is lead-ghulb), and records on the request where the route led (`routed-to`, Result, status `done` — the request typedef's writer rule). Outcome O6 and its derived check added; "the request is declined" reworded to "what was asked is declined" now that `request` names the artifact. Made by the architect role; the owner's approval of the amendment is pending. |
 | 12 | 2026-09-08 | update | Under feat-flow-simplification, on the authority's word ("the framing is done" is the bet): `frame` writes the initiative `planned` directly on convergence — the word "bet" is the bet — instead of `proposed`, leaving Feasibility and usability and Decomposition absent as optional sections feature authoring fills; a decline still records `proposed` then `cancelled` in the same document; the product decision record note no longer cites the retired PO output check. `observe`'s prompt names "bet" as the converging word. Initiative-check retired; this is now the only human step in product-flow. |
+| 13 | 2026-09-09 | update | `run` propagated to `execution` as the noun for a process instance, under req-2026-09-08-definition-vs-instance / feat-execution-vocabulary (shopsystem-product): mechanical, determiner-adjacent occurrences only (`a/the/this/one/another/each/no/any run(s)`); `run-by`, `run` as a schema field or step key, and compound/heading uses (e.g. `run-cost`, `run list`, `Run lifecycle`) left unchanged, that residue disclosed as not done in this pass. Self-check against define-good-up-front: diffed against the file's pre-edit text; no requirement, field name, or heading changed. Made by the lead-solutions-architect role. |

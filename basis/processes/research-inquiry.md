@@ -4,9 +4,9 @@ id: research-inquiry-process
 owner: product-authority
 status: approved
 approved: 2026-08-23
-version: 8
+version: 9
 created: 2026-08-23
-updated: 2026-09-02
+updated: 2026-09-09
 produces: [research-report]
 carried-by: research-inquiry-skill
 condition-language: cel
@@ -28,7 +28,7 @@ on — stored on the `research` branch and registered in the research
 index.
 
 **Guiding statement:** Every claim is grounded or marked. A reference
-the run did not open is not a source; a number without a checkable
+the execution did not open is not a source; a number without a checkable
 quote is not a finding; a persona is not evidence.
 
 **Outcomes:**
@@ -118,7 +118,7 @@ flowchart TD
 Each entry names a process-local value. Simple types use JSON Schema
 names inline; every structured shape is a `$ref` to a defined type
 with an explicit source. `sources_policy` is the admissible-evidence
-rule for this run (which source kinds count, which are excluded);
+rule for this execution (which source kinds count, which are excluded);
 `confidence_scheme` names the defined labels and their meanings.
 Together with `question`, `consumer`, and `scope` they are `frame`'s
 declared context load list per `least-context`.
@@ -128,7 +128,7 @@ data:
   question: {type: string}
   consumer: {type: string}
   scope: {type: string}
-  sources_policy: {type: string, initial: "sources opened this run, identifiable by URL, DOI, or repository path; abstracts labeled as abstracts; the frozen main tree via git show; model knowledge only when labeled knowledge-only"}
+  sources_policy: {type: string, initial: "sources opened this execution, identifiable by URL, DOI, or repository path; abstracts labeled as abstracts; the frozen main tree via git show; model knowledge only when labeled knowledge-only"}
   confidence_scheme: {type: string, initial: "high — multiple opened sources agree, primary among them; medium — one opened source, or secondary sources only; low — knowledge-only or an unreadable primary"}
   frame: {type: string}
   plan: {type: array, items: {type: string}}
@@ -165,7 +165,7 @@ steps:
       the scope boundary, the sources policy as it applies here, and
       the confidence scheme with each label's meaning. State the
       assumptions the question carries. If the answer would rest
-      mainly on knowledge the run cannot verify, say so here — that
+      mainly on knowledge the execution cannot verify, say so here — that
       returns to the consumer as a scoping question.
     next: plan
 
@@ -400,3 +400,4 @@ lives in the process-definition typedef.
 | 7 | 2026-08-26 | update | Owner decision: lead-pm is held by the authority in person; the Roles header now names what the role's agent steps prepare and what the authority decides, per the lead-pm role's Interfaces. |
 | 7 | 2026-08-26 | review | Assist re-basing screened: clean; the authority named at first use. |
 | 8 | 2026-09-02 | update | Carried-by reference repointed to the load point (.claude/skills/) — the skill-rendering process's first run removed the retired home basis/skills/; the owner's sweep per its second-home escalation. |
+| 9 | 2026-09-09 | update | `run` propagated to `execution` as the noun for a process instance, under req-2026-09-08-definition-vs-instance / feat-execution-vocabulary (shopsystem-product): mechanical, determiner-adjacent occurrences only (`a/the/this/one/another/each/no/any run(s)`); `run-by`, `run` as a schema field or step key, and compound/heading uses (e.g. `run-cost`, `run list`, `Run lifecycle`) left unchanged, that residue disclosed as not done in this pass. Self-check against define-good-up-front: diffed against the file's pre-edit text; no requirement, field name, or heading changed. Made by the lead-solutions-architect role. |

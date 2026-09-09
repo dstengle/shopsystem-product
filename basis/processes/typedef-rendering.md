@@ -4,9 +4,9 @@ id: typedef-rendering-process
 owner: product-authority
 status: approved
 approved: 2026-09-05
-version: 4
+version: 5
 created: 2026-09-05
-updated: 2026-09-05
+updated: 2026-09-09
 produces: []
 carried-by: typedef-rendering-skill
 condition-language: cel
@@ -44,7 +44,7 @@ each outcome names the scenarios of that feature it witnesses.
   points, each byte-equal to a fresh render of that typedef, and the
   check reports no finding of any kind — witnessed by `route`'s first
   success exit, on empty `open` with empty `escalations` (feature
-  scenarios 3 and 5: after a run, each text is current with its
+  scenarios 3 and 5: after an execution, each text is current with its
   typedef as it now stands).
 - O2. The texts land where the checks already read, and nowhere else:
   a type's guideline at `<guidelines>/<type>.md` and its fitness set
@@ -70,7 +70,7 @@ each outcome names the scenarios of that feature it witnesses.
   `hand-written`, and `stale` the third word is the path the
   reconciliation acts on, and `will-not-compile` acts on its subject
   and carries the reason as the remainder. Three kinds are the
-  compiler's rows, one run per typedef in `approved`: `missing <id>
+  compiler's rows, one execution per typedef in `approved`: `missing <id>
   <typedef>` — a text absent from its load point; `diverged <id>
   <typedef>` — a text not byte-equal to a fresh render of its typedef,
   whatever the cause, a hand edit or a typedef amended after its
@@ -81,7 +81,7 @@ each outcome names the scenarios of that feature it witnesses.
   `approved` the compiler does not render, its subject the typedef's
   path as the compiler prints it, for which the compiler writes no
   `missing` or `diverged` row and `check` runs no `hand-written`
-  sweep, so an unrenderable typedef never also burns the run toward
+  sweep, so an unrenderable typedef never also burns the execution toward
   the cap — one `will-not-compile` row is
   `check`'s own, not the compiler's: a typedef in `approved` with no
   `defines` key, reason "no defines key", written before the compiler
@@ -98,7 +98,7 @@ each outcome names the scenarios of that feature it witnesses.
   are current with the typedef as it now stands after reconciliation;
   `stale` is removed; `will-not-compile` lands as a review entry in
   that typedef's Document History. An escalation never ends with the
-  run and never burns it: a row whose subject is already named in
+  execution and never burns it: a row whose subject is already named in
   `escalations` is not open, so a check clean of open rows with
   escalations standing routes through `report`, which files each row
   into the governed record the owner reads — witnessed by `filter`'s
@@ -161,7 +161,7 @@ flowchart TD
 
 Each entry names a process-local value. Simple types use JSON Schema
 names inline; conditions are CEL expressions over these names. Paths
-are relative to the lead shop's repository root, the run's working
+are relative to the lead shop's repository root, the execution's working
 directory. The design decision the process rests on is
 [adr-2026-09-05-typedef-rendering](../../decisions/adr-2026-09-05-typedef-rendering.md).
 
@@ -235,11 +235,11 @@ of a row of `escalations`, matched whole, so a row already filed to
 the owner recurs in `findings` every round without recurring in
 `open`. Every row of `escalations` therefore begins with the subject
 it settles — a produced text's id, a typedef's path, or a path at a
-load point — followed by what was filed. The run entry `report`
+load point — followed by what was filed. The execution entry `report`
 writes into `self` changes the source of this process's carrier, so
 skill-rendering's next check reports the carrier `diverged` and
 re-renders it — the dynamic the shop records as the open backlog
-item lead-ghaiq; the run
+item lead-ghaiq; the execution
 entry stays in `self`, as the sibling processes make it. A write to a typedef whose
 path is listed in `approved` — the review entry `reconcile` or
 `report` puts in its Document History — is a write to a declared
@@ -248,7 +248,7 @@ input, as the `reconcile` and `report` steps of
 it.
 
 **Failure semantics.** A `run` step that exits nonzero is a failed
-step, not an empty result: the run halts at that step and the failure
+step, not an empty result: the execution halts at that step and the failure
 is reported to the reconciler role — it is never read as empty
 `findings` and never routed as a clean check. The compiler's rows,
 not its exit status, are its verdict, so `check.run` treats a
@@ -274,8 +274,8 @@ definition's Document History. During the transition, a hand-written
 file at a qualifying typedef's output path yields both a
 `hand-written` row from the sweep and, since it is not byte-equal to
 a fresh render, a `diverged` row from the compiler; one re-render
-clears both. The run declares no `result`: `produces` is empty
-because the run's value is state change — every qualifying typedef's
+clears both. The execution declares no `result`: `produces` is empty
+because the execution's value is state change — every qualifying typedef's
 two texts current at their load points — and O1's witness pins it.
 
 ```yaml
@@ -381,7 +381,7 @@ steps:
       ${compiler} <typedef> --guideline ${guidelines}/<type>.md
       --fitness ${fitness}/<type>.fitness.md`, <typedef> the row's third
       word (the typedef's path, listed in approved) and <type> the
-      value of `defines` in that typedef's front-matter; one run produces the type's two texts together
+      value of `defines` in that typedef's front-matter; one execution produces the type's two texts together
       and overwrites whatever stands at either path, a hand edit
       included — reconciliation is the re-render by the compiler, never
       an edit to a rendered text, and never an edit to the typedef made
@@ -409,7 +409,7 @@ steps:
     inputs: [open, approved, escalations, self]
     outputs: [escalations]
     prompt: |
-      This step files what leaves the run for the owner. Every row
+      This step files what leaves the execution for the owner. Every row
       you add to escalations begins
       with the open row's subject — its second word — as its first
       word, then what you filed. For each row of open that names a
@@ -421,7 +421,7 @@ steps:
       escalations stands in a governed record the owner reads: a row
       filed into a typedef, as the review entry in that typedef's
       Document History; every other row, in a Document History entry
-      for this run written into the definition at self. The resulting
+      for this execution written into the definition at self. The resulting
       action on each escalated row is the owner's decision. Return
       escalations.
     next: end
@@ -431,11 +431,11 @@ steps:
 
 | Outcome | Check | Kind | Where |
 |---|---|---|---|
-| O1 | the run's first exit requires `size(open) == 0 && size(escalations) == 0`; with `escalations` standing an open-clean check routes through `report` | mechanical | `route` branches |
-| O2 | renders land only at `<guidelines>/<type>.md` and `<fitness>/<type>.fitness.md`; the sweep reads those two directories and no other; no step writes to or edits a check's definition — every write of the run is a render into those paths, a removal there, or a Document History entry in a typedef or in `self` | mechanical | `check.run`, `reconcile.prompt`, `report.prompt` |
+| O1 | the execution's first exit requires `size(open) == 0 && size(escalations) == 0`; with `escalations` standing an open-clean check routes through `report` | mechanical | `route` branches |
+| O2 | renders land only at `<guidelines>/<type>.md` and `<fitness>/<type>.fitness.md`; the sweep reads those two directories and no other; no step writes to or edits a check's definition — every write of the execution is a render into those paths, a removal there, or a Document History entry in a typedef or in `self` | mechanical | `check.run`, `reconcile.prompt`, `report.prompt` |
 | O3 | `enumerate` admits only a typedef with `status: approved` inside its front-matter block and both second-level headings in its body; `check` runs the compiler over `approved` alone and marks `stale` a `source` outside the list; `reconcile` removes each `stale` row's file | mechanical | `enumerate.run`, `check.run`, `reconcile.prompt` |
 | O4 | every row's first word is one of the five kinds O4 names and its second word its subject; the third word is the path acted on — the typedef for `missing`, `diverged`, and `hand-written`, the rendering for `stale` — while `will-not-compile` acts on its subject, the typedef's path, and carries the reason as the remainder; a `missing` or `diverged` row names the text by its id and the type by the typedef's path; `check` writes the no-`defines` row itself before calling the compiler; the kinds are defined in O4 alone and referenced by name everywhere else | mechanical | `check.run` |
-| O5 | `filter` drops each row whose subject equals the first word of a row of `escalations`, whole-word, and `reconcile` and `report` write that word first; a `will-not-compile` typedef yields no `missing`, `diverged`, or `hand-written` row — `check` skips the sweep for it — so once escalated it leaves nothing open; `missing`, `diverged`, and `hand-written` re-rendered by one compiler run that writes both texts, `stale` removed, `will-not-compile` filed as a review entry; every escalation row lands in a governed record — the named typedef's Document History, or the run entry in `self` | judged | `filter.run`, `reconcile` and `report` prompts, `route` branches |
+| O5 | `filter` drops each row whose subject equals the first word of a row of `escalations`, whole-word, and `reconcile` and `report` write that word first; a `will-not-compile` typedef yields no `missing`, `diverged`, or `hand-written` row — `check` skips the sweep for it — so once escalated it leaves nothing open; `missing`, `diverged`, and `hand-written` re-rendered by one compiler run that writes both texts, `stale` removed, `will-not-compile` filed as a review entry; every escalation row lands in a governed record — the named typedef's Document History, or the execution entry in `self` | judged | `filter.run`, `reconcile` and `report` prompts, `route` branches |
 
 ## Document History
 
@@ -446,3 +446,4 @@ steps:
 | 3 | 2026-09-05 | review | Round 2 (judge: claude-fable-5-1 / screen prompt v6): no confident finding; five wobbly, ruled by the PM role: the guiding statement's second clause wider than the check (narrowed to a file naming a typedef not in `approved` as its source; a file sourced from an approved typedef but standing at the wrong path added to What is not a finding as a stated exclusion — the compiler reports `missing` at the right path); an empty `defines` reaching the compiler with a malformed path (`check.run` now writes the `will-not-compile` row itself and skips the call; O4 and Compiler contract say the row is `check`'s own); `report`'s run entry into `self` diverging the carrier (stated in Data; the entry stays in `self` as the siblings make it — lead-ghaiq); the definition-of-good sentence buried in Data (moved to the head of Outcomes; O1 the first to link the feature; O2 points forward to the Derived checks table); the carrier absent (deferred, as ruled). Repaired. Follow-on question for the owner: a file at a load point whose `source` names an approved typedef but which stands at a path other than that typedef's output path is swept by no step here. |
 | 4 | 2026-09-05 | review | Screen round 3, the cap (judge: claude-fable-5-1 / screen prompt v6): one confident — the hand-written sweep running for a typedef the compiler refused, leaving a row that recurs to the cap — and four wobbly (the compiler's row shape stated two ways; the absent carrier, deferred; lead-ghaiq unglossed; the Purpose overloaded). Repaired in the one revise the authority's ruling of 2026-09-05 allows (req-2026-09-05-single-review-cycle). |
 | 4 | 2026-09-05 | state | draft → approved by the owner, on the authority's bet of 2026-09-05 on init-typedef-rendering and its standing direction, recorded by the lead-pm: three screen rounds against the process-definition fitness set — the maker's own check before round 1, round 1's one confident and round 2's none, the cap's one repaired in the final revise; the carrier to be rendered by the skill-rendering process's next run. |
+| 5 | 2026-09-09 | update | `run` propagated to `execution` as the noun for a process instance, under req-2026-09-08-definition-vs-instance / feat-execution-vocabulary (shopsystem-product): mechanical, determiner-adjacent occurrences only (`a/the/this/one/another/each/no/any run(s)`); `run-by`, `run` as a schema field or step key, and compound/heading uses (e.g. `run-cost`, `run list`, `Run lifecycle`) left unchanged, that residue disclosed as not done in this pass. Self-check against define-good-up-front: diffed against the file's pre-edit text; no requirement, field name, or heading changed. Made by the lead-solutions-architect role. |

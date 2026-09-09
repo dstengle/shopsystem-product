@@ -1,31 +1,31 @@
 ---
 name: product-flow
 description: 'Carry one problem from discovery to a verified build: a discovery conversation
-  frames the initiative and the authority bets on it in that same run''s human step;
-  one feature is authored and self-checked; a flagged constraint''s decision is recorded;
-  the feature''s scenarios are assigned to their owning shops; and each shop''s delivery
-  is verified. The shop''s operating process; every sub-process is defined in its
-  own document.'
+  frames the initiative and the authority bets on it in that same execution''s human
+  step; one feature is authored and self-checked; a flagged constraint''s decision
+  is recorded; the feature''s scenarios are assigned to their owning shops; and each
+  shop''s delivery is verified. The shop''s operating process; every sub-process is
+  defined in its own document.'
 type: skill
 id: product-flow-skill
 status: approved
 created: 2026-08-31
-updated: 2026-09-08
+updated: 2026-09-09
 generated: true
 generated-by: basis/tools/compile_process.py
 derived-from: product-flow-process
 source: basis/processes/product-flow.md
-source-digest: sha256:bdbb7d8f7aed
+source-digest: sha256:3bfafd200271
 hold-after: P7D
 ---
 
 # Product flow (compiled from `product-flow-process`)
 
-Carry one problem from discovery to a verified build: a discovery conversation frames the initiative and the authority bets on it in that same run's human step; one feature is authored and self-checked; a flagged constraint's decision is recorded; the feature's scenarios are assigned to their owning shops; and each shop's delivery is verified. The shop's operating process; every sub-process is defined in its own document.
+Carry one problem from discovery to a verified build: a discovery conversation frames the initiative and the authority bets on it in that same execution's human step; one feature is authored and self-checked; a flagged constraint's decision is recorded; the feature's scenarios are assigned to their owning shops; and each shop's delivery is verified. The shop's operating process; every sub-process is defined in its own document.
 
-**One initiative per run, one feature per pass; no human step stands after the frame; a run holds only when a sub-process's own ask reaches outside that sub-process's scope.**
+**One initiative per run, one feature per pass; no human step stands after the frame; an execution holds only when a sub-process's own ask reaches outside that sub-process's scope.**
 
-Result of a run: `initiative` (string).
+Result of an execution: `initiative` (string).
 
 ```mermaid
 flowchart TD

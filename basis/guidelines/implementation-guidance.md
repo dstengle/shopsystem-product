@@ -5,9 +5,9 @@ target-type: implementation-guidance
 owner: product-authority
 status: approved
 approved: 2026-09-06
-version: 2
+version: 3
 created: 2026-09-06
-updated: 2026-09-08
+updated: 2026-09-09
 generated: true
 generated-by: basis/tools/compile_typedef.py
 source: basis/artifacts/implementation-guidance.md
@@ -48,7 +48,7 @@ assign step.
 ## Rules
 
 **1. Stay at the level the architect may see.**
-Before: "Add a `status` column to the runs table, index it, and
+Before: "Add a `status` column to the executions table, index it, and
 update the repository class."
 After: "The reporting context's list contract gains a status field —
 one contract version; the schema-migration guardrail applies; the
@@ -61,7 +61,7 @@ definition or tool — and none names the context's internals.
 *Derived check:* judged — implementation-guidance fitness scenario 1.
 
 **2. Cite, never restate.**
-Before: "Scenario: a failed run is listed. Given a run has failed,
+Before: "Scenario: a failed run is listed. Given an execution has failed,
 When the operator opens the run list, Then …"
 After: "Scenarios `@hash:a1b2c3` and `@hash:d4e5f6` of
 feat-run-status; the reporting list contract, version 3, §2."
@@ -75,7 +75,7 @@ is reproduced. *Decision:* yes/no per reference.
 Before: "Talk to the architect before starting on the contract
 change."
 After: "Version the list contract from 3 to 4 adding `status`
-(enum: the run states the reporting contract already defines);
+(enum: the execution states the reporting contract already defines);
 consumers are the operations context's run-list view only."
 *Test:* read the record as the implementing shop with the assigned
 scenarios beside it. *Criterion:* the shop can begin without a
@@ -116,3 +116,9 @@ rules 1–5 require, the whole document at or under the target.
 is at or under the base-writing-style word target for a guidance
 record. *Decision:* yes/no per record.
 *Derived check:* judged — implementation-guidance fitness scenario 6.
+
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+| 3 | 2026-09-09 | update | `run` propagated to `execution` as the noun for a process instance, under req-2026-09-08-definition-vs-instance / feat-execution-vocabulary (shopsystem-product): mechanical, determiner-adjacent occurrences only (`a/the/this/one/another/each/no/any run(s)`); `run-by`, `run` as a schema field or step key, and compound/heading uses (e.g. `run-cost`, `run list`, `Run lifecycle`) left unchanged, that residue disclosed as not done in this pass. Self-check against define-good-up-front: diffed against the file's pre-edit text; no requirement, field name, or heading changed. Made by the lead-solutions-architect role. |

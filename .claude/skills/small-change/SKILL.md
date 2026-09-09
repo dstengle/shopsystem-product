@@ -12,12 +12,12 @@ type: skill
 id: small-change-skill
 status: approved
 created: 2026-09-04
-updated: 2026-09-04
+updated: 2026-09-09
 generated: true
 generated-by: basis/tools/compile_process.py
 derived-from: small-change-process
 source: basis/processes/small-change.md
-source-digest: sha256:cceab5af9de0
+source-digest: sha256:f69b4101a25c
 activation: model-judged
 promotion: experiment-local
 ---
@@ -26,13 +26,13 @@ promotion: experiment-local
 
 Take a request whose route is the small-change lane to a verified result. No bet is taken and no check of record is run in this process: both protect the appetite an initiative's bet spends (the [initiative typedef](../artifacts/initiative.md)'s term), and a simple change — the glossary's term — spends none of it worth a bet.
 
-**The definition on the request is the whole of what good looks like for the change: every role in the run judges by it, and nothing outside it is made or counts as verified. Everything the run decides lands on the request or in the changed artifacts' own histories; nothing binding lives only in the transcript.**
+**The definition on the request is the whole of what good looks like for the change: every role in the execution judges by it, and nothing outside it is made or counts as verified. Everything the execution decides lands on the request or in the changed artifacts' own histories; nothing binding lives only in the transcript.**
 
-Result of a run: `change` (string).
+Result of an execution: `change` (string).
 
 ```mermaid
 flowchart TD
-  name_result["Name the request's Result section as the run's result — runtime<br/>in — request: string<br/>sets — change: string"]
+  name_result["Name the request's Result section as the execution's result — runtime<br/>in — request: string<br/>sets — change: string"]
   read_id["Read the request's id — runtime<br/>in — request: string<br/>out — request_id: string"]
   read_anchor["Read the work item the request names — runtime<br/>in — request: string<br/>out — work_item: string"]
   define(["Define the change — agent: lead-po<br/>in — request: string, glossary: string<br/>out — request: string, not_simple: boolean, reason: string, observation: string, paths: string[]"])
@@ -75,7 +75,7 @@ flowchart TD
   close_failed --> __end
 ```
 
-## name-result — Name the request's Result section as the run's result
+## name-result — Name the request's Result section as the execution's result
 
 Run by the runtime — no agent, no prose. reads: request · writes: change.
 

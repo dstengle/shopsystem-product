@@ -5,9 +5,9 @@ defines: fitness-set
 owner: product-authority
 status: approved
 approved: 2026-08-22
-version: 3
+version: 4
 created: 2026-08-19
-updated: 2026-09-05
+updated: 2026-09-09
 ancestry: [definition, fitness-set]
 ---
 
@@ -55,7 +55,7 @@ scenarios.
 
 - **Hard segregation from executable scenarios:** fitness sets never live
   in `features/`, and `executable: false` is schema-level, so no test
-  runner can pick one up by accident.
+  tool can pick one up by accident.
 - Judge verdicts are recorded with the judge's model and prompt version
   pinned; the owner grades a sample on a standing calibration loop.
 
@@ -67,7 +67,7 @@ standing in review.
 
 ## Sources
 
-Gherkin syntax (the readable G/W/T frame — syntax only, no runner);
+Gherkin syntax (the readable G/W/T frame — syntax only, no interpreter);
 LLM-judge practice (G-Eval–style rubric decomposition, promptfoo's
 llm-rubric assertions); EvalGen-style human calibration of judges.
 
@@ -86,3 +86,4 @@ llm-rubric assertions); EvalGen-style human calibration of judges.
 | 1 | 2026-08-22 | state | draft → approved. |
 | 2 | 2026-08-23 | update | Owner direction: decision-ledger references removed — changes stand on their own; history entries and text no longer cite numbered decisions. |
 | 3 | 2026-09-05 | update | Under init-typedef-rendering / feat-typedef-rendering (the architect's constraint C5; adr-2026-09-05-typedef-rendering): Produced by admits a fitness set produced from the target type's typedef by the compiler, marked `generated: true`, `generated-by`, `source`, `source-digest` and never edited by hand; the closed frontmatter set admits those four keys for a produced fitness set, whose judged-by comes from the typedef's Fitness scenarios section, whose version and dates are the typedef's, and which carries no Document History; the required sections unchanged, so every reader finds Scenarios and Compile mapping as before. Made by the lead-solutions-architect role. |
+| 4 | 2026-09-09 | update | `runner` removed as a standalone word under req-2026-09-08-definition-vs-instance / feat-execution-vocabulary (shopsystem-product), "runner survives only inside process-runner": no test tool can pick one up by accident" and "no interpreter" for Gherkin's own syntax. Made by the lead-solutions-architect role. |

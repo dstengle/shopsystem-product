@@ -4,9 +4,9 @@ id: brief-guideline
 target-type: brief
 owner: product-authority
 status: superseded
-version: 2
+version: 3
 created: 2026-08-27
-updated: 2026-08-28
+updated: 2026-09-09
 ---
 
 # Guideline: brief
@@ -58,7 +58,7 @@ named is a what, not a form. *Decision:* yes/no per brief.
 
 **3. Every exclusion carries its reason.**
 Before: "Out of scope: notifications."
-After: "Out of scope: notifying the operator when a run fails — a
+After: "Out of scope: notifying the operator when an execution fails — a
 separate framing (alerting) serves that outcome."
 *Test:* read each out-of-scope statement. *Criterion:* each names why
 it is out — for example, it serves another framing, is deferred by the
@@ -68,7 +68,7 @@ PM's priority, or belongs to another context. *Decision:* yes/no per exclusion.
 **4. Place every neighbour.**
 Before: silence on the archived-runs view that shares the run list.
 After: "Neighbouring: the archived-runs view — in, since it is the same
-list filtered; the run detail page — out, its own brief."
+list filtered; the execution detail page — out, its own brief."
 *Test:* for each piece of work the framing or the brief itself names
 as neighbouring, look for an in/out statement or a deciding rule.
 *Criterion:* every neighbour is placed. *Decision:* yes/no per
@@ -95,3 +95,4 @@ the brief raises that is neither answered nor listed as open.
 | 2 | 2026-08-27 | update | the reason list made illustrative; the undefined term removed. |
 | 2 | 2026-08-27 | review | Re-screened: one finding — rule 1's criterion compared against the framing, which fitness 5 does not; repaired in place to presence only. |
 | 2 | 2026-08-28 | state | superseded — owner decision: shops receive their assigned scenarios, not briefs; the brief's content lives in the feature's narrative and the initiative. Kept as a record; not to be instantiated. |
+| 3 | 2026-09-09 | update | `run` propagated to `execution` as the noun for a process instance, under req-2026-09-08-definition-vs-instance / feat-execution-vocabulary (shopsystem-product): mechanical, determiner-adjacent occurrences only (`a/the/this/one/another/each/no/any run(s)`); `run-by`, `run` as a schema field or step key, and compound/heading uses (e.g. `run-cost`, `run list`, `Run lifecycle`) left unchanged, that residue disclosed as not done in this pass. Self-check against define-good-up-front: diffed against the file's pre-edit text; no requirement, field name, or heading changed. Made by the lead-solutions-architect role. |

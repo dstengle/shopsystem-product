@@ -4,9 +4,9 @@ id: glossary
 owner: product-authority
 status: approved
 approved: 2026-08-19
-version: 25
+version: 26
 created: 2026-08-19
-updated: 2026-09-07
+updated: 2026-09-09
 ---
 
 # Glossary
@@ -30,7 +30,9 @@ terms uses one of these when one fits.
 - **schema** — the machine-checkable shape of a type: fields, types,
   enums, required sections.
 - **process definition** — the source of truth for a process: header
-  (purpose, outcomes, roles), data section, steps section.
+  (purpose, outcomes, roles), data section, steps section; referenced by
+  its full id (e.g. `request-intake-process`), never a bare or shortened
+  form.
 - **step** — one unit of a process: an agent step (carries a prompt) or a
   runtime step (carries `set`, `run`, or `branches`; no prose).
 - **rendering** — a generated output of a definition (a skill, a
@@ -71,6 +73,9 @@ terms uses one of these when one fits.
 - **anchor** — the governed record a conversation attaches to: a session
   record, a review record, or a work item; carries the conversation's
   state across transcript boundaries.
+- **bead** — the work register's (`bd`) identifier for one work item; the
+  identifier itself, never called anchor — anchor's sense is the record,
+  not the id.
 - **conversation type** — discovery (anchor: a session record), review
   (anchor: a review record and its outcomes), or work (anchor: a work
   item).
@@ -89,7 +94,7 @@ terms uses one of these when one fits.
   retire, or terminal, with its target.
 - **authority-call** — a row marker on a migration-plan row awaiting a
   decision from the authority; not an action — the row has no effect and
-  is out of scope for any run until ruled.
+  is out of scope for any execution until ruled.
 - **action table** — the table of records and their actions; approved row
   by row or in blocks at a review. Drives any bulk record change.
 - **close-out** — the mechanical execution of the migration plan's
@@ -100,16 +105,21 @@ terms uses one of these when one fits.
   pre-execution commit, preserving the full corpus for terminal-recovery;
   after close-out a terminal record exists only there.
 - **migration plan** — the rebaseline's action table plus the order of
-  the per-type migration runs. Replaces "rebaseline bill".
-- **run** — one execution of a process, anchored to a work item; states:
-  running, held, done, cancelled.
-- **hold** — a run state: paused with its step and data preserved in its
-  anchor, by inactivity or by an ask; a held run is resumed or
-  cancelled, never dropped.
+  the per-type migration executions. Replaces "rebaseline bill".
+- **execution** — one instance of a process definition, written
+  execution:<process>:<bead> (e.g. `execution:request-intake:lead-hf45`,
+  the bead being the work item's identifier); anchored to a work item;
+  states: running, held, done, cancelled. The noun for one instance;
+  replaces the sense `run` formerly carried.
+- **run** — to carry out a process's steps; a verb only, never the noun
+  for an instance (see execution).
+- **hold** — an execution state: paused with its step and data preserved
+  in its anchor, by inactivity or by an ask; a held execution is resumed
+  or cancelled, never dropped.
 - **checkpoint** — updating a conversation's anchor when a transcript
   ends mid-conversation; a checkpoint is not a close.
 - **branched conversation** — a conversation run as a sub-process of
-  another run; its anchor records the parent (`branched-from`).
+  another execution; its anchor records the parent (`branched-from`).
 - **Bounded Context** — a deliberately drawn region of the product with
   one internal language, one model, and one set of contracts to other
   regions; drawn by design, never discovered after the fact (Evans,
@@ -181,9 +191,9 @@ terms uses one of these when one fits.
   work.
 - **ask** — two senses. In a process: a question one activity puts to
   another role in place of its output, carrying a default and a
-  checkpoint; the run holds, the role answers, the step resumes — never
-  a wait in place (data type `ask`; process-definition typedef §Run
-  lifecycle). Received: one expression of intent by an originator,
+  checkpoint; the execution holds, the role answers, the step resumes —
+  never a wait in place (data type `ask`; process-definition typedef
+  §Run lifecycle). Received: one expression of intent by an originator,
   brought to the lead shop and recorded as a request on arrival.
 - **clarify** — an ask from a Bounded Context shop to the lead shop on
   scope, vocabulary, structure, or contract; answered by the role whose
@@ -282,8 +292,9 @@ terms uses one of these when one fits.
   alone.
 - **gap** — a missing definition, tool, or skill the shop records as a
   request rather than works around.
-- **router** — the role of the lead shop that moves one run from step
-  to step, from the run's anchor and the definition's rendering alone,
+- **router** — the role of the lead shop that moves one execution from
+  step to step, from the execution's anchor and the definition's
+  rendering alone,
   and decides nothing a step decides — no verdict, route, or bet
   (role definition `roles/router.md`). Not the lead-pm role reading a
   request's route, which feat-request-routing calls by the same word.
@@ -321,3 +332,4 @@ terms uses one of these when one fits.
 | 23 | 2026-09-06 | update | framework tool, skill, and gap added under req-2026-09-06-tools-through-skills at the small-change lane's make step, round 2, by the lead-solutions-architect role — the terms the `tools-through-skills` principle's statements turn on, which the lane's one screen found undefined; the lead-pm widened the lane's paths to this glossary at the check step, use-defined-terms naming it as the terms' home. |
 | 24 | 2026-09-07 | update | sub-initiative added under req-2026-09-07-sub-initiative at the small-change process's make step, on the authority's words the request records ("I prefer subinitiative"; "one type with parent link") — the term the initiative typedef v12 and the initiative-check process v10 use. Made by the lead-solutions-architect role. |
 | 25 | 2026-09-07 | update | router added, in the role sense, under init-process-runner / feat-process-runner (adr-2026-09-07-coordinator-role §3) — the term the router role definition, session-handoff, and reconcile-and-close use; feat-request-routing's use of the word for the lead-pm's route reading told apart. Made by the lead-solutions-architect role. |
+| 26 | 2026-09-09 | update | execution and bead added, run's instance sense and anchor's identifier use dropped, under req-2026-09-08-definition-vs-instance / feat-execution-vocabulary (shopsystem-product): execution is the instance noun (execution:<process>:<bead>), run stands only as a verb, bead names the work register's identifier (never the record itself, which keeps the anchor sense), anchor keeps its governed-record sense unchanged including for a run's own work item; the checkpoint, branched conversation, ask, and router entries and the authority-call and migration-plan entries carry run's execution replacement, anchor untouched in each; the process definition entry gains the reference convention — full id, never bare or shortened. Self-check against define-good-up-front: every changed entry read against the authority's decision (req-2026-09-08-definition-vs-instance) before this edit; the `§Run lifecycle` heading citation in the ask entry left unchanged, that heading itself not renamed in this pass. Made by the lead-solutions-architect role. |

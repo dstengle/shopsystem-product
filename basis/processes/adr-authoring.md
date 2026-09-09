@@ -4,9 +4,9 @@ id: adr-authoring-process
 owner: product-authority
 status: approved
 approved: 2026-09-02
-version: 4
+version: 5
 created: 2026-09-02
-updated: 2026-09-08
+updated: 2026-09-09
 produces: [adr]
 carried-by: adr-authoring-skill
 condition-language: cel
@@ -44,8 +44,8 @@ is escalated, never absorbed as a deviation.
   and states that evaluation in it — witnessed by `author`'s output.
 - O4. The record is set recorded, with one Document History row
   carrying the evaluation — witnessed by `record`'s prompt and output.
-- O5. A question the subject cannot answer leaves the run as an ask to
-  the PM role, with a default, and the run resumes — witnessed by
+- O5. A question the subject cannot answer leaves the execution as an ask to
+  the PM role, with a default, and the execution resumes — witnessed by
   `author`'s `asks` and the `ask` value.
 
 **Roles:** maker —
@@ -151,3 +151,4 @@ steps:
 | 2 | 2026-09-05 | update | Single review cycle, per req-2026-09-05-single-review-cycle: the screen runs once; revise runs once and continues to decide; the advance-round step, the round and round_cap data, and route-screen's failsafe branch removed; decide reads the one review and the revised record. |
 | 3 | 2026-09-06 | update | Under req-2026-09-06-pre-bet-route: `result` is `artifact`, so a sub-process caller receives the record and reads its id; the PM role's decision stands in the record's status and Document History. |
 | 4 | 2026-09-08 | update | Rewritten under feat-flow-simplification: the cold-reviewer screen and the PM role's decide step removed; the architect authors and self-checks the record against the fitness set and the architecture principle set in one pass, then records the evaluation and sets it recorded — no screen, no revise, no decide; runs from a checked feature's flagged constraint, not before a bet. |
+| 5 | 2026-09-09 | update | `run` propagated to `execution` as the noun for a process instance, under req-2026-09-08-definition-vs-instance / feat-execution-vocabulary (shopsystem-product): mechanical, determiner-adjacent occurrences only (`a/the/this/one/another/each/no/any run(s)`); `run-by`, `run` as a schema field or step key, and compound/heading uses (e.g. `run-cost`, `run list`, `Run lifecycle`) left unchanged, that residue disclosed as not done in this pass. Self-check against define-good-up-front: diffed against the file's pre-edit text; no requirement, field name, or heading changed. Made by the lead-solutions-architect role. |

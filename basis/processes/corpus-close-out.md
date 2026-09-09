@@ -4,9 +4,9 @@ id: corpus-close-out-process
 owner: product-authority
 status: approved
 approved: 2026-08-22
-version: 4
+version: 5
 created: 2026-08-22
-updated: 2026-09-02
+updated: 2026-09-09
 produces: []
 carried-by: corpus-close-out-skill
 condition-language: cel
@@ -20,14 +20,14 @@ external-refs: []
 
 **Purpose:** Execute the migration plan's pre-decided retire and
 terminal actions mechanically, at cut-over: snapshot the corpus, delete
-the terminal trees, move each run's retired rows to the archive,
+the terminal trees, move each execution's retired rows to the archive,
 regenerate the scenario refs, verify every actioned row landed where
 its action says, and finally promote the migration branch to `main`.
 
 **Guiding statement:** The decisions were made at the review; this process
 only carries them out. Mass moves are mechanical or they do not happen —
 no judgment, no review loop, and no silent completion: a row not where
-it should be fails the run loudly, by id.
+it should be fails the execution loudly, by id.
 
 **Outcomes:**
 - O1. The `pre-migration` snapshot tag exists before any terminal
@@ -39,7 +39,7 @@ it should be fails the run loudly, by id.
   check on `post-check`.
 - O3. At the final stage the scenario refs are regenerated — witnessed
   by the `regen-scenario-refs` run.
-- O4. A misplaced row fails the run loudly, listed by id in the
+- O4. A misplaced row fails the execution loudly, listed by id in the
   close-out report, never silently — witnessed by the check on
   `post-check`.
 - O5. The migration branch is promoted to `main` only at the final
@@ -52,15 +52,15 @@ every actioned row verifiably absent from the active tree and present
 on the archive branch (retire) or in the snapshot tag only (terminal) —
 followed, at the final stage only, by the `promote-branch` run that
 makes the migration branch `main`. The failure exit is `post-check`'s
-check failing, which halts the run with the `failed` list naming every
+check failing, which halts the execution with the `failed` list naming every
 misplaced row; a halted run never reaches promotion.
 
 **Roles:** runtime (every step is mechanical — no agent role, no
-judgment in the run). product-authority (human-held role — owns and approves
+judgment in the execution). product-authority (human-held role — owns and approves
 this definition and rules on the archive contract below; takes no step
-in a run).
+in an execution).
 
-**Scope note:** one run executes one close-out stage of the approved
+**Scope note:** one execution executes one close-out stage of the approved
 migration plan. Under the frozen-shop execution model ALL stages
 execute consecutively at cut-over — the end of the migration plan's
 Phase 3 — never at execution start or between migration runs: first
@@ -123,12 +123,12 @@ edit by hand.
 
 ```mermaid
 flowchart TD
-  derive_run_type["Derive the run type from the stage — runtime<br/>in — stage: string<br/>sets — run_type: string"]
+  derive_run_type["Derive the execution type from the stage — runtime<br/>in — stage: string<br/>sets — run_type: string"]
   select_rows["Select the actioned rows in scope — runtime<br/>in — actions: action-table, stage: string, run_type: string<br/>sets — terminal_ids: string[], terminal_paths: string[], retire_ids: string[]"]
   route_stage{"Route on the stage<br/>in — stage: string"}
   snapshot_tag["Tag the pre-migration snapshot — runtime"]
   delete_terminal["Delete the terminal trees — runtime<br/>in — terminal_paths: string[]"]
-  archive_retire["Move the run's retired rows to the archive — runtime<br/>in — run_type: string, retire_ids: string[]"]
+  archive_retire["Move the execution's retired rows to the archive — runtime<br/>in — run_type: string, retire_ids: string[]"]
   route_final{"Route on the final stage<br/>in — final: boolean"}
   regen_scenario_refs["Regenerate the scenario refs — runtime"]
   post_check["Verify every actioned row landed — runtime<br/>in — stage: string, retire_ids: string[], terminal_ids: string[]<br/>out — report: close-out-report"]
@@ -162,7 +162,7 @@ package as `pkg:<package>/<type>` (fetched through that package's
 contract tool).
 
 `stage` is `pre-run` or `post-run:<run-id>`, where the run-id is the
-artifact type the completed migration run converted (one run migrates
+artifact type the completed migration run converted (one execution migrates
 one artifact type). `final` is true only on the close-out of the plan's
 last run; only that stage regenerates the scenario refs and runs the
 promotion. `branch` is the migration branch to promote at the final
@@ -194,7 +194,7 @@ parameters: [actions, stage, final, branch]
 result: report
 steps:
   - id: derive-run-type
-    name: Derive the run type from the stage
+    name: Derive the execution type from the stage
     run-by: {execution: runtime}
     inputs: [stage]
     set:
@@ -242,7 +242,7 @@ steps:
     next: post-check
 
   - id: archive-retire
-    name: Move the run's retired rows to the archive
+    name: Move the execution's retired rows to the archive
     run-by: {execution: runtime}
     inputs: [run_type, retire_ids]
     run: |
@@ -306,7 +306,7 @@ steps:
 | O1 | snapshot tag exists before any terminal deletion | mechanical | step order `snapshot-tag` → `delete-terminal` |
 | O2 | retire rows on the archive branch, terminal rows in the tag only, none in the active tree | mechanical | `post-check.run` and `post-check.checks` |
 | O3 | scenario refs regenerated at the final stage | mechanical | `regen-scenario-refs.run` |
-| O4 | a non-empty `failed` list halts the run naming every misplaced row | mechanical | `post-check.checks` |
+| O4 | a non-empty `failed` list halts the execution naming every misplaced row | mechanical | `post-check.checks` |
 | O5 | promotion runs only at the final stage, only after `post-check` passes | mechanical | step order `post-check` → `route-promote` → `promote-branch`; the `route-promote` branch on `final` |
 | all | this definition compiles and screens against the principle set | mechanical + judged | the compiler; the principles screen |
 
@@ -320,3 +320,4 @@ steps:
 | 3 | 2026-08-25 | update | Owner direction: a near-synonym of "role" retired and banned. |
 | 3 | 2026-09-02 | review | Skill rendering run (skill-rendering-process): the definition stands approved with no carried-by skill id, so no loadable skill renders at the agent’s load point — finding "missing corpus-close-out-process no-skill-id" escalated; the owner decides the amendment. |
 | 4 | 2026-09-02 | update | Owner decision, resolving the skill-rendering first run's no-skill-id escalation: carried-by corpus-close-out-skill added, so the process renders to the agent's load point like every approved definition; the prose Carried-by paragraph left to the consistency pass (lead-dyz0o). |
+| 5 | 2026-09-09 | update | `run` propagated to `execution` as the noun for a process instance, under req-2026-09-08-definition-vs-instance / feat-execution-vocabulary (shopsystem-product): mechanical, determiner-adjacent occurrences only (`a/the/this/one/another/each/no/any run(s)`); `run-by`, `run` as a schema field or step key, and compound/heading uses (e.g. `run-cost`, `run list`, `Run lifecycle`) left unchanged, that residue disclosed as not done in this pass. Self-check against define-good-up-front: diffed against the file's pre-edit text; no requirement, field name, or heading changed. Made by the lead-solutions-architect role. |

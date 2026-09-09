@@ -2,37 +2,37 @@
 name: corpus-close-out
 description: 'Execute the migration plan''s pre-decided retire and terminal actions
   mechanically, at cut-over: snapshot the corpus, delete the terminal trees, move
-  each run''s retired rows to the archive, regenerate the scenario refs, verify every
-  actioned row landed where its action says, and finally promote the migration branch
-  to `main`.'
+  each execution''s retired rows to the archive, regenerate the scenario refs, verify
+  every actioned row landed where its action says, and finally promote the migration
+  branch to `main`.'
 type: skill
 id: corpus-close-out-skill
 status: approved
 created: 2026-08-22
-updated: 2026-09-02
+updated: 2026-09-09
 generated: true
 generated-by: basis/tools/compile_process.py
 derived-from: corpus-close-out-process
 source: basis/processes/corpus-close-out.md
-source-digest: sha256:157420881529
+source-digest: sha256:6265938659ff
 ---
 
 # Corpus close out (compiled from `corpus-close-out-process`)
 
-Execute the migration plan's pre-decided retire and terminal actions mechanically, at cut-over: snapshot the corpus, delete the terminal trees, move each run's retired rows to the archive, regenerate the scenario refs, verify every actioned row landed where its action says, and finally promote the migration branch to `main`.
+Execute the migration plan's pre-decided retire and terminal actions mechanically, at cut-over: snapshot the corpus, delete the terminal trees, move each execution's retired rows to the archive, regenerate the scenario refs, verify every actioned row landed where its action says, and finally promote the migration branch to `main`.
 
-**The decisions were made at the review; this process only carries them out. Mass moves are mechanical or they do not happen — no judgment, no review loop, and no silent completion: a row not where it should be fails the run loudly, by id.**
+**The decisions were made at the review; this process only carries them out. Mass moves are mechanical or they do not happen — no judgment, no review loop, and no silent completion: a row not where it should be fails the execution loudly, by id.**
 
-Result of a run: `report` (close-out-report).
+Result of an execution: `report` (close-out-report).
 
 ```mermaid
 flowchart TD
-  derive_run_type["Derive the run type from the stage — runtime<br/>in — stage: string<br/>sets — run_type: string"]
+  derive_run_type["Derive the execution type from the stage — runtime<br/>in — stage: string<br/>sets — run_type: string"]
   select_rows["Select the actioned rows in scope — runtime<br/>in — actions: action-table, stage: string, run_type: string<br/>sets — terminal_ids: string[], terminal_paths: string[], retire_ids: string[]"]
   route_stage{"Route on the stage<br/>in — stage: string"}
   snapshot_tag["Tag the pre-migration snapshot — runtime"]
   delete_terminal["Delete the terminal trees — runtime<br/>in — terminal_paths: string[]"]
-  archive_retire["Move the run's retired rows to the archive — runtime<br/>in — run_type: string, retire_ids: string[]"]
+  archive_retire["Move the execution's retired rows to the archive — runtime<br/>in — run_type: string, retire_ids: string[]"]
   route_final{"Route on the final stage<br/>in — final: boolean"}
   regen_scenario_refs["Regenerate the scenario refs — runtime"]
   post_check["Verify every actioned row landed — runtime<br/>in — stage: string, retire_ids: string[], terminal_ids: string[]<br/>out — report: close-out-report"]
@@ -56,7 +56,7 @@ flowchart TD
   promote_branch --> __end
 ```
 
-## derive-run-type — Derive the run type from the stage
+## derive-run-type — Derive the execution type from the stage
 
 Run by the runtime — no agent, no prose. reads: stage · writes: run_type.
 
@@ -118,7 +118,7 @@ run: 'git rm -r ${terminal_paths}
 next: post-check
 ```
 
-## archive-retire — Move the run's retired rows to the archive
+## archive-retire — Move the execution's retired rows to the archive
 
 Run by the runtime — no agent, no prose. reads: run_type, retire_ids · writes: —.
 

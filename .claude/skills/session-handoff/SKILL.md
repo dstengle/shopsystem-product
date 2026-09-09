@@ -6,12 +6,12 @@ type: skill
 id: session-handoff-skill
 status: approved
 created: 2026-08-21
-updated: 2026-09-08
+updated: 2026-09-09
 generated: true
 generated-by: basis/tools/compile_process.py
 derived-from: session-handoff-process
 source: basis/processes/session-handoff.md
-source-digest: sha256:fa4e0c01233f
+source-digest: sha256:07c82f60711d
 ---
 
 # Session handoff (compiled from `session-handoff-process`)
@@ -20,7 +20,7 @@ Close a conversation so later work starts from governed records alone — no mem
 
 **State crosses sessions only inside governed artifacts. A fact worth remembering has a governed home; a durable correction amends the definition it corrects, never a memory.**
 
-Result of a run: `session_record` (session-record).
+Result of an execution: `session_record` (session-record).
 
 ```mermaid
 flowchart TD

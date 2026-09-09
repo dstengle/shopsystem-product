@@ -3,11 +3,11 @@ type: feature
 id: feat-flow-simplification
 name: Flow simplification
 status: delivered
-version: 3
+version: 4
 initiative: ../initiatives/init-flow-simplification.md
 owner: lead-po
 created: 2026-09-08
-updated: 2026-09-08
+updated: 2026-09-09
 ---
 
 # Feature: Flow simplification
@@ -87,6 +87,36 @@ Feature: Flow simplification
     Given a session closing
     When the session close step runs
     Then no quality check runs at close, and a sweep runs only when requested
+
+  @feature:feat-flow-simplification @hash:d116c4de3e15
+  Scenario: an execution goes from bet to verified build in six executions or fewer
+    Given an initiative bet by the authority
+    When the execution moves from the bet to a verified build
+    Then the execution passes through six agent executions or fewer
+
+  @feature:feat-flow-simplification @hash:be96137a97da
+  Scenario: no cold read executes in the flow
+    Given an execution moving from bet to verified build
+    When the execution's steps are read
+    Then no step is a cold read
+
+  @feature:feat-flow-simplification @hash:82713ffaf451
+  Scenario: no brief executes in the flow
+    Given an execution moving from bet to verified build
+    When the execution's steps are read
+    Then no step produces or reads a brief
+
+  @feature:feat-flow-simplification @hash:5a9e88396213
+  Scenario: a human step completes only at discovery or framing, restated
+    Given an execution moving from bet to verified build
+    When the execution's human steps are read
+    Then every human step in the execution is a discovery step or a framing step
+
+  @feature:feat-flow-simplification @hash:b57766b6b387
+  Scenario: an execution holds only for a question outside the process's scope
+    Given an execution reaching an open question
+    When the question falls outside the process's own scope
+    Then the execution holds for it and for nothing else
 ```
 
 ## Edges
@@ -110,3 +140,4 @@ Feature: Flow simplification
 | 2 | 2026-09-08 | update | Delivered as changed definitions, compiled and linted clean: "a feature is authored without a human check", "no cold read runs in the flow", "no brief runs in the flow", "a decision is recorded after the feature that needs it", "a human step completes only at discovery or framing", and "a quality sweep runs on request, not at session close" are shown directly by the definitions (no check/screen/revise/decide step, no cold-reviewer or brief step in product-flow's chain, adr-authoring gated between the feature's self-check and assignment, the one human step confined to discovery's frame, review-sweep uncalled and unscheduled). "a run goes from bet to verified build in six runs or fewer" and "a run holds only for a question outside the process's scope" need a run to observe. |
 </content>
 | 3 | 2026-09-08 | update | Verified on init-run-measurement: feature-authoring v8 ran four agent steps with no human step (anchor lead-lc00j), scenario-assignment one (lead-zdqn1), the build one — six runs, no cold read, no brief. |
+| 4 | 2026-09-09 | update | Under req-2026-09-08-definition-vs-instance / feat-execution-vocabulary (shopsystem-product), scenario-assignment's widened supersession clause: five delivered scenarios that name a process instance "run" are superseded, not conflicted, by five new scenarios restating them with "execution" — @hash:527e1309b1f8 superseded by @hash:d116c4de3e15 ("an execution goes from bet to verified build in six executions or fewer"); @hash:73f755fc9e82 superseded by @hash:be96137a97da ("no cold read executes in the flow"); @hash:2edc17f010ba superseded by @hash:82713ffaf451 ("no brief executes in the flow"); @hash:00835d6f9fa0 superseded by @hash:5a9e88396213 ("a human step completes only at discovery or framing, restated"); @hash:ef0a19ddee98 superseded by @hash:b57766b6b387 ("an execution holds only for a question outside the process's scope"). The five old scenarios' Gherkin text stands unchanged, per the appetite's no-edit-in-place rule; nothing about what any scenario requires changed, only the noun for an instance. Hashes computed sha256 of each new scenario's Scenario/Given/When/Then text, first twelve hex digits, the repository convention. Made by the lead-solutions-architect role. |

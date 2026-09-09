@@ -5,9 +5,9 @@ defines: migration-plan
 owner: product-authority
 status: approved
 approved: 2026-08-22
-version: 3
+version: 4
 created: 2026-08-22
-updated: 2026-08-23
+updated: 2026-09-09
 ancestry: [request, migration-plan]
 ---
 
@@ -97,7 +97,7 @@ Records-management retention schedule (ISO 15489 practice — the
 schedule that assigns each record class its retain/transfer/destroy
 action) for the action-table form; data
 migration runbook practice (entry conditions, reversibility snapshot,
-verification gates) for the run structure; the decision-brief pairing
+verification gates) for the execution structure; the decision-brief pairing
 follows this shop's stakeholder-presentation process.
 
 ## Derived review checklist (from this schema — cite-or-delete rule)
@@ -120,3 +120,4 @@ follows this shop's stakeholder-presentation process.
 | 1 | 2026-08-22 | state | draft → approved. |
 | 2 | 2026-08-23 | update | Owner direction: decision-ledger references removed — changes stand on their own; history entries and text no longer cite numbered decisions. |
 | 3 | 2026-08-23 | update | Owner direction: a banned word removed — review touchpoints; decision material. |
+| 4 | 2026-09-09 | update | `run` propagated to `execution` as the noun for a process instance, under req-2026-09-08-definition-vs-instance / feat-execution-vocabulary (shopsystem-product): mechanical, determiner-adjacent occurrences only (`a/the/this/one/another/each/no/any run(s)`); `run-by`, `run` as a schema field or step key, and compound/heading uses (e.g. `run-cost`, `run list`, `Run lifecycle`) left unchanged, that residue disclosed as not done in this pass. Self-check against define-good-up-front: diffed against the file's pre-edit text; no requirement, field name, or heading changed. Made by the lead-solutions-architect role. |

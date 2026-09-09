@@ -1,25 +1,25 @@
 ---
 name: write-cost-rows
-description: 'Reads one run''s anchor (a `bd` work item) and the harness''s own usage
-  report recorded on it, and writes the cost rows for that session''s close beside
-  the session record: one row per agent or human step and per top-level router turn,
-  naming its step, role, wall-clock minutes, context tokens, output tokens, and tool
-  uses — a field the usage report does not expose left blank, never estimated. No
-  model computes a row. Use it from session-handoff-process''s write-cost-rows step;
-  an empty anchor writes nothing. Tool: `basis/tools/write_cost_rows.py`. Uses, each
-  with its exact invocation below: `produce`.'
+description: 'Reads one execution''s anchor (a `bd` work item) and the harness''s
+  own usage report recorded on it, and writes the cost rows for that session''s close
+  beside the session record: one row per agent or human step and per top-level router
+  turn, naming its step, role, wall-clock minutes, context tokens, output tokens,
+  and tool uses — a field the usage report does not expose left blank, never estimated.
+  No model computes a row. Use it from session-handoff-process''s write-cost-rows
+  step; an empty anchor writes nothing. Tool: `basis/tools/write_cost_rows.py`. Uses,
+  each with its exact invocation below: `produce`.'
 type: skill
 id: write-cost-rows-skill
 generated: true
 generated-by: basis/tools/compile_tool.py
 derived-from: write-cost-rows
 source: basis/tools/write_cost_rows.py
-source-digest: sha256:fdf9fed41e92
+source-digest: sha256:d32b2af40cc8
 ---
 
 # write-cost-rows (produced from the answer of `basis/tools/write_cost_rows.py`)
 
-Reads one run's anchor (a `bd` work item) and the harness's own usage report recorded on it, and writes the cost rows for that session's close beside the session record: one row per agent or human step and per top-level router turn, naming its step, role, wall-clock minutes, context tokens, output tokens, and tool uses — a field the usage report does not expose left blank, never estimated. No model computes a row. Use it from session-handoff-process's write-cost-rows step; an empty anchor writes nothing.
+Reads one execution's anchor (a `bd` work item) and the harness's own usage report recorded on it, and writes the cost rows for that session's close beside the session record: one row per agent or human step and per top-level router turn, naming its step, role, wall-clock minutes, context tokens, output tokens, and tool uses — a field the usage report does not expose left blank, never estimated. No model computes a row. Use it from session-handoff-process's write-cost-rows step; an empty anchor writes nothing.
 
 Uses: [produce](#produce).
 
@@ -35,7 +35,7 @@ python3 basis/tools/write_cost_rows.py <session_id> --anchor <anchor_id>
 
 Takes:
 - `<session_id>` — the session record's own id, e.g. sess-2026-09-08-a; the cost file pairs with sessions/<session_id>.md (required)
-- `<anchor_id>` — the bd work item id the run passed through the router on; empty (the default) means no anchor exists for this session (omitted: `""` is taken)
+- `<anchor_id>` — the bd work item id the execution passed through the router on; empty (the default) means no anchor exists for this session (omitted: `""` is taken)
 
 Returns (text): one line, the path written (sessions/<session_id>-cost.md), on a non-empty anchor; nothing on an empty one; exit status 0
 

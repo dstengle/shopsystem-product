@@ -2,7 +2,7 @@
 """Write the cost rows for one session's close.
 
 Sibling of compile_process.py and the other interim tools: the lead
-shop's own tool for adr-2026-09-08-run-cost-artifact. Reads a run's
+shop's own tool for adr-2026-09-08-run-cost-artifact. Reads an execution's
 anchor — a `bd` work item — and writes one row per agent run beside
 the session record it closes, without a model.
 
@@ -13,7 +13,7 @@ the router's own top-level turns between such steps (the anchor's
 and a sub-process step (it opens its own anchor), get no row. Minutes
 is the wall-clock span between a step's own anchor event and the
 event immediately before it. A field the harness's usage report does
-not expose for a run is left blank, never estimated.
+not expose for an execution is left blank, never estimated.
 
 No anchor is not an error: a session no process definition moved
 through the router has none to key a row on (out of scope, per
@@ -57,7 +57,7 @@ def fail(code: str, message: str) -> None:
 DESCRIPTION = {
     "name": "write-cost-rows",
     "description": (
-        "Reads one run's anchor (a `bd` work item) and the harness's own "
+        "Reads one execution's anchor (a `bd` work item) and the harness's own "
         "usage report recorded on it, and writes the cost rows for that "
         "session's close beside the session record: one row per agent or "
         "human step and per top-level router turn, naming its step, role, "
@@ -96,7 +96,7 @@ DESCRIPTION = {
                     "anchor_id": {
                         "type": "string",
                         "description": (
-                            "the bd work item id the run passed through "
+                            "the bd work item id the execution passed through "
                             "the router on; empty (the default) means no "
                             "anchor exists for this session"
                         ),

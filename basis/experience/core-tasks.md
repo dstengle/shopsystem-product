@@ -4,9 +4,9 @@ id: experience-core-tasks
 record: core-tasks
 owner: product-authority
 status: draft
-version: 4
+version: 5
 created: 2026-08-26
-updated: 2026-08-28
+updated: 2026-09-09
 maintained-by: lead-product-designer
 ---
 
@@ -29,9 +29,9 @@ tasks, and the product designer role settles the removals.
 
 | Task | What is accomplished | Interaction types it holds on | Removed from, with reason | Options every type must offer | Source | Status |
 |---|---|---|---|---|---|---|
-| start a run | a process begins against a work item with its parameters | every type | document: a document cannot start a run; it links to an interaction that can | choose the process; supply parameters; see the run's id | process-definition typedef §Run lifecycle | hypothesis |
-| hold, resume, or cancel a run | a run pauses with its state kept, continues, or ends with a reason | every type | document: as above | name the run; give a reason on cancel | process-definition typedef §Run lifecycle | hypothesis |
-| answer an ask | a question a run put to a role is answered or its default accepted | every type | document: the notification carries the question and links to the interaction that answers | see the question, kind, and default; answer or accept the default | ask type | hypothesis |
+| start an execution | a process begins against a work item with its parameters | every type | document: a document cannot start an execution; it links to an interaction that can | choose the process; supply parameters; see the execution's id | process-definition typedef §Run lifecycle | hypothesis |
+| hold, resume, or cancel an execution | an execution pauses with its state kept, continues, or ends with a reason | every type | document: as above | name the execution; give a reason on cancel | process-definition typedef §Run lifecycle | hypothesis |
+| answer an ask | a question an execution put to a role is answered or its default accepted | every type | document: the notification carries the question and links to the interaction that answers | see the question, kind, and default; answer or accept the default | ask type | hypothesis |
 | submit output for a check | a PO artifact enters the PO output check | every type | document: as above | name the artifact and its framing | po-output-check process | hypothesis |
 | read a decision | the result of a check is read with its reasons | every type | none | see verdict, criterion or gap, reasons | check-decision type | hypothesis |
 | raise a clarify | a shop asks the lead shop a scope, vocabulary, structure, or contract question | every type | document: as above | state the question and its kind | glossary: clarify | hypothesis |
@@ -56,3 +56,4 @@ scenario 5.
 | 3 | 2026-08-26 | update | document removed from that task with the notification's role stated. |
 | 3 | 2026-08-26 | review | Re-screened (round 3): clean. |
 | 4 | 2026-08-28 | update | Owner decision: acceptance-scenarios re-formed as feature (product-level, scenarios assigned per Bounded Context by tag); the brief retired — shops receive their assigned scenarios. |
+| 5 | 2026-09-09 | update | `run` propagated to `execution` as the noun for a process instance, under req-2026-09-08-definition-vs-instance / feat-execution-vocabulary (shopsystem-product): mechanical, determiner-adjacent occurrences only (`a/the/this/one/another/each/no/any run(s)`); `run-by`, `run` as a schema field or step key, and compound/heading uses (e.g. `run-cost`, `run list`, `Run lifecycle`) left unchanged, that residue disclosed as not done in this pass. Self-check against define-good-up-front: diffed against the file's pre-edit text; no requirement, field name, or heading changed. Made by the lead-solutions-architect role. |

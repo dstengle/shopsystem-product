@@ -7,12 +7,12 @@ type: skill
 id: work-conversation-skill
 status: approved
 created: 2026-08-22
-updated: 2026-09-02
+updated: 2026-09-09
 generated: true
 generated-by: basis/tools/compile_process.py
 derived-from: work-conversation-process
 source: basis/processes/work-conversation.md
-source-digest: sha256:ef7e662c2c71
+source-digest: sha256:ff418c5b992d
 hold-after: P7D
 ---
 
@@ -22,7 +22,7 @@ Conduct a bounded operational discussion scoped to one work item: every exchange
 
 **The work item carries the discussion; a conversation that cannot name its work item does not start.**
 
-Result of a run: `work_item` (work-item).
+Result of an execution: `work_item` (work-item).
 
 ```mermaid
 flowchart TD

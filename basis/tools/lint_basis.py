@@ -78,6 +78,19 @@ Checks:
      no `Sub-initiatives` section, a child missing from the list, and
      an entry in the list that names no child are each reported.
      Checks 1-12 as before.
+ 14. Old-term vocabulary measure (req-2026-09-08-definition-vs-instance;
+     feat-execution-vocabulary §the corpus measure reaches its target):
+     every file under `basis/` (`.md` and `basis/tools/*.py`) and every
+     delivered feature in `features/` at the repository root, outside
+     the superseded set (a feature this feature's scenarios restate:
+     `feat-process-runner.md`, `feat-request-routing.md`,
+     `feat-initiative-cost-rollup.md`, `feat-flow-simplification.md`,
+     `feat-plain-voice.md`, `feat-run-measurement.md`), reported once
+     if it still uses `run` as a noun for a process instance or
+     `anchor` to name the work register's identifier — a file's
+     `Document History` section is excluded, never edited in place.
+     Heuristic and line-pattern based, like check 6; reports files, not
+     a line total. Checks 1-13 as before.
 
 Modes:
   lint_basis.py                     # lint the whole basis tree
@@ -138,6 +151,17 @@ REQUIRED_HEADINGS = {
 DECISION_REF = re.compile(r"\bR\d{1,3}\b")
 BANNED = ["ratif", "disposition", "rebaseline bill", "surface", "seat"]
 PKG_RE = re.compile(r"^pkg:[a-z0-9-]+/[a-z0-9_-]+$")
+
+# 14. old-term vocabulary measure (req-2026-09-08-definition-vs-instance /
+# feat-execution-vocabulary): the superseded set this feature's scenarios
+# restate — never edited under this measure.
+VOCAB_SUPERSEDED_FEATURES = {
+    "feat-process-runner.md", "feat-request-routing.md",
+    "feat-initiative-cost-rollup.md", "feat-flow-simplification.md",
+    "feat-plain-voice.md", "feat-run-measurement.md",
+}
+RUN_NOUN_RE = re.compile(r"\b(a|the|this|one|another|each|no|any)\s+runs?\b|\brun's\b", re.I)
+ANCHOR_ID_RE = re.compile(r"--anchor\b|\banchor_id\b|\brun_anchor\b", re.I)
 
 # 9. received requests (request typedef §Required frontmatter)
 REQUESTS = BASIS.parent / "requests"
@@ -216,15 +240,17 @@ DESCRIPTION = {
         {
             "name": "lint",
             "description": (
-                "Runs checks 1-13 over every markdown file under basis/ and "
+                "Runs checks 1-14 over every markdown file under basis/ and "
                 "over requests/, briefs/, guidance/, and initiatives/ at the "
                 "repository root: frontmatter identity, unique `defines`, "
                 "`$ref` sources, resolvable links, required headings, banned "
                 "vocabulary, version and Document History, no "
                 "numbered-decision reference, request frontmatter, brief "
                 "frontmatter, tools named by process definitions, guidance "
-                "frontmatter, and each parent initiative's Sub-initiatives "
-                "list held to its children's `parent` fields. Reads only; "
+                "frontmatter, each parent initiative's Sub-initiatives "
+                "list held to its children's `parent` fields, and the "
+                "old-term vocabulary measure (run as a noun, anchor for the "
+                "identifier) outside the superseded set. Reads only; "
                 "writes and changes "
                 "nothing. The tree is found from the tool's own location, "
                 "so the current directory does not matter."
@@ -697,6 +723,38 @@ def lint_sub_initiatives():
     return errors
 
 
+def lint_vocabulary():
+    """14. Counts, once per file, every basis file (`.md` and
+    `basis/tools/*.py`) and every delivered feature outside the
+    superseded set that still uses `run` as a noun for a process
+    instance or `anchor` to name the work register's identifier
+    (req-2026-09-08-definition-vs-instance; feat-execution-vocabulary
+    §the corpus measure reaches its target). A file's `Document
+    History` section is excluded — history is never edited in place.
+    Heuristic and line-pattern based, like check 6. Report-only: never
+    added to the violation count, since legitimate residue (example
+    prose, protected field names, the check's own source) would
+    otherwise fail every tree permanently; printed as its own line."""
+    errors = []
+    clause = "(req-2026-09-08-definition-vs-instance; feat-execution-vocabulary)"
+    paths = sorted(BASIS.rglob("*.md")) + sorted(BASIS.glob("tools/*.py"))
+    features_dir = BASIS.parent / "features"
+    if features_dir.is_dir():
+        for path in sorted(features_dir.glob("*.md")):
+            if path.name in VOCAB_SUPERSEDED_FEATURES:
+                continue
+            fm, _ = front_matter(path)
+            if fm and fm.get("status") == "delivered":
+                paths.append(path)
+    for path in paths:
+        rel = path.relative_to(BASIS.parent)
+        text = path.read_text()
+        body = text.split("## Document History")[0]
+        if RUN_NOUN_RE.search(body) or ANCHOR_ID_RE.search(body):
+            errors.append(f"{rel}: still uses `run` as a noun or `anchor` for the identifier {clause}")
+    return errors
+
+
 def derive_chain(artifact_type):
     """definition-chain is derived from document references, never authored:
     typedef by `defines`, guideline and fitness by `target-type`, process by
@@ -775,6 +833,8 @@ def main():
         fail("usage", USAGE)
     for e in errors:
         print(e)
+    if not args:
+        print(f"vocabulary residue: {len(lint_vocabulary())} files")
     print(f"{'FAIL' if errors else 'PASS'}: {len(errors)} violation(s)")
     sys.exit(1 if errors else 0)
 

@@ -4,9 +4,9 @@ id: po-output-check-process
 owner: product-authority
 status: retired
 approved: 2026-08-26
-version: 9
+version: 10
 created: 2026-08-25
-updated: 2026-09-08
+updated: 2026-09-09
 produces: []
 carried-by: po-output-check-skill
 condition-language: cel
@@ -47,8 +47,8 @@ verdict on the maker.
   gap, and the gap is filed in the named definition's Document History
   — witnessed by the `check-decision` fields and `record`'s
   `definition` and `gap_entry` outputs.
-- O5. A question the framing cannot answer leaves the run as an ask to
-  the PM role, with a default, and the run resumes — witnessed by
+- O5. A question the framing cannot answer leaves the execution as an ask to
+  the PM role, with a default, and the execution resumes — witnessed by
   `revise`'s `asks` and the `ask` value.
 - O6. A feature's first pass activates its planned initiative — the
   `active` status the initiative typedef assigns this process, written
@@ -274,3 +274,4 @@ steps:
 | 7 | 2026-09-02 | update | Carried-by reference repointed to the load point (.claude/skills/) — the skill-rendering process's first run removed the retired home basis/skills/; the owner's sweep per its second-home escalation. |
 | 8 | 2026-09-05 | update | Single review cycle, per req-2026-09-05-single-review-cycle on the authority's words of 2026-09-05 — "I want all of the processes limited to a single review cycle, so author -> review -> revise -> continue to next step": the screen runs once; revise runs once and continues to decide; the advance-round step, the round and round_cap data, and route-screen's failsafe branch removed; decide reads the one review and the revised artifact, so the PM role can see whether the one revision repaired what the findings quote. |
 | 9 | 2026-09-08 | state | Retired under feat-flow-simplification: feature-authoring's and adr-authoring's own self-check steps replace it; no independent screen runs. |
+| 10 | 2026-09-09 | update | `run` propagated to `execution` as the noun for a process instance, under req-2026-09-08-definition-vs-instance / feat-execution-vocabulary (shopsystem-product): mechanical, determiner-adjacent occurrences only (`a/the/this/one/another/each/no/any run(s)`); `run-by`, `run` as a schema field or step key, and compound/heading uses (e.g. `run-cost`, `run list`, `Run lifecycle`) left unchanged, that residue disclosed as not done in this pass. Self-check against define-good-up-front: diffed against the file's pre-edit text; no requirement, field name, or heading changed. Made by the lead-solutions-architect role. |

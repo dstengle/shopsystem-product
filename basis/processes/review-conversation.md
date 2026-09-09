@@ -4,9 +4,9 @@ id: review-conversation-process
 owner: product-authority
 status: approved
 approved: 2026-08-22
-version: 5
+version: 6
 created: 2026-08-22
-updated: 2026-09-02
+updated: 2026-09-09
 produces: [review-record]
 carried-by: review-conversation-skill
 condition-language: cel
@@ -35,7 +35,7 @@ the record.
   by the `route` branches, which act only on the authority's classified
   input.
 - O4. An inactive conversation holds instead of dangling — witnessed by
-  `hold-after` and the run lifecycle it invokes.
+  `hold-after` and the execution lifecycle it invokes.
 
 **Roles:** product-authority (human-held role — observes, decides, and owns
 the exclusive right to close or cancel). lead-pm — held by the
@@ -170,7 +170,7 @@ steps:
 The observe–apply loop's success exit is the authority's close; the
 cancel branch is its second exit; `hold-after: P7D` is the failsafe — an
 inactive run holds with its resume point in the record's State section,
-per the run lifecycle.
+per the execution lifecycle.
 
 ## Derived checks
 
@@ -179,7 +179,7 @@ per the run lifecycle.
 | O1 | `applied` non-empty before the loop returns to `observe` | mechanical | `apply.checks` |
 | O2 | State section never empty (resume point or outcome) | mechanical presence + judged | review-record checklist |
 | O3 | close and cancel reachable only from the authority's classification | mechanical | `route.branches` |
-| O4 | inactivity holds the run | mechanical | `hold-after` + run lifecycle |
+| O4 | inactivity holds the execution | mechanical | `hold-after` + run lifecycle |
 
 ## Document History
 
@@ -193,3 +193,4 @@ per the run lifecycle.
 | 4 | 2026-08-26 | review | Assist re-basing screened: the apply prompt let the agent apply a decision its own answer produced — repaired in place: such a decision is offered to the authority, never applied. |
 | 4 | 2026-09-02 | review | Skill rendering run (skill-rendering-process): the definition stands approved with no carried-by skill id, so no loadable skill renders at the agent’s load point — finding "missing review-conversation-process no-skill-id" escalated; the owner decides the amendment. |
 | 5 | 2026-09-02 | update | Owner decision, resolving the skill-rendering first run's no-skill-id escalation: carried-by review-conversation-skill added, so the process renders to the agent's load point like every approved definition; the prose Carried-by paragraph left to the consistency pass (lead-dyz0o). |
+| 6 | 2026-09-09 | update | `run` propagated to `execution` as the noun for a process instance, under req-2026-09-08-definition-vs-instance / feat-execution-vocabulary (shopsystem-product): mechanical, determiner-adjacent occurrences only (`a/the/this/one/another/each/no/any run(s)`); `run-by`, `run` as a schema field or step key, and compound/heading uses (e.g. `run-cost`, `run list`, `Run lifecycle`) left unchanged, that residue disclosed as not done in this pass. Self-check against define-good-up-front: diffed against the file's pre-edit text; no requirement, field name, or heading changed. Made by the lead-solutions-architect role. |

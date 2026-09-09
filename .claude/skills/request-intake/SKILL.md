@@ -6,22 +6,22 @@ description: "Take an ask \u2014 one expression of intent brought to the lead sh
   \ make an ask before anything is recorded, the request records the words verbatim\
   \ with the date, the lead-pm decides the route \u2014 a discovery conversation,\
   \ the small-change lane, or a decline settled with the product authority \u2014\
-  \ and says it with its reason before it is acted on, and the run returns the request\
-  \ carrying its route and, once the destination exists, where the route led. Use\
-  \ when words that may be an ask reach the lead shop \u2014 brought directly, arising\
-  \ in open conversation, or arising during a run of another process \u2014 and no\
-  \ request records them yet; or a request stands recorded with its route awaiting\
+  \ and says it with its reason before it is acted on, and the execution returns the\
+  \ request carrying its route and, once the destination exists, where the route led.\
+  \ Use when words that may be an ask reach the lead shop \u2014 brought directly,\
+  \ arising in open conversation, or arising during a run of another process \u2014\
+  \ and no request records them yet; or a request stands recorded with its route awaiting\
   \ and the lead-pm role is to route it."
 type: skill
 id: request-intake-skill
 status: approved
 created: 2026-09-04
-updated: 2026-09-04
+updated: 2026-09-09
 generated: true
 generated-by: basis/tools/compile_process.py
 derived-from: request-intake-process
 source: basis/processes/request-intake.md
-source-digest: sha256:85de4feffcf0
+source-digest: sha256:dfdc77dd6f69
 activation: model-judged
 promotion: experiment-local
 ask-cap: P1D
@@ -30,11 +30,11 @@ hold-after: P7D
 
 # Request intake (compiled from `request-intake-process`)
 
-Take an ask — one expression of intent brought to the lead shop by an originator — from the words it arose in to a request recorded in the repository and routed by the lead-pm role: the originator confirms that the words make an ask before anything is recorded, the request records the words verbatim with the date, the lead-pm decides the route — a discovery conversation, the small-change lane, or a decline settled with the product authority — and says it with its reason before it is acted on, and the run returns the request carrying its route and, once the destination exists, where the route led.
+Take an ask — one expression of intent brought to the lead shop by an originator — from the words it arose in to a request recorded in the repository and routed by the lead-pm role: the originator confirms that the words make an ask before anything is recorded, the request records the words verbatim with the date, the lead-pm decides the route — a discovery conversation, the small-change lane, or a decline settled with the product authority — and says it with its reason before it is acted on, and the execution returns the request carrying its route and, once the destination exists, where the route led.
 
 **The request is the record and the route is said before it is acted on: nothing the originator did not confirm is recorded, nothing the originator has not answered is acted on, and what was asked is read from the request — never restated to the originator and never from a transcript.**
 
-Result of a run: `request` (string).
+Result of an execution: `request` (string).
 
 ```mermaid
 flowchart TD
@@ -171,7 +171,7 @@ record. If the reading is "ask": yes records those words as a
 request; no leaves no request. If the reading is "unclear": say
 whether you are making an ask — yes records the words, no leaves
 no request. Nothing is recorded until you answer; silence holds
-the run after the declared window and records nothing.
+the execution after the declared window and records nothing.
 ```
 
 ## route-confirm — Route on the confirmation
@@ -250,7 +250,7 @@ authority's exploration; name in form the form the conversation
 takes. On every decision, whatever the route, name in topic a
 one-line topic for the request, from its words, with its id —
 afresh each time. declined: only
-with the product authority's ruling. On a run entered with the
+with the product authority's ruling. On an execution entered with the
 request, the ruling is read from the request's section 3, where
 the resumed ask wrote it; when none stands there, and on the
 first pass, ask is absent: to decline, return an ask to
@@ -310,7 +310,7 @@ them. Accept: the route is acted on. Object: say
 why in objection; the lead-pm decides again and answers you
 before anything is acted on, and the route standing after that
 is the one recorded. Not answered: the route stands as said and
-nothing is acted on until you answer. Silence holds the run after
+nothing is acted on until you answer. Silence holds the execution after
 the declared window; the request carries the route as said and
 nothing is acted on.
 ```

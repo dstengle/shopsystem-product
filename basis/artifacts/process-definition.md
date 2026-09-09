@@ -5,9 +5,9 @@ defines: process-definition
 owner: product-authority
 status: approved
 approved: 2026-08-22
-version: 7
+version: 9
 created: 2026-08-19
-updated: 2026-09-05
+updated: 2026-09-09
 ancestry: [definition, process-definition]
 ---
 
@@ -16,25 +16,27 @@ ancestry: [definition, process-definition]
 ## Identity and ancestry
 
 - **Type:** `process-definition` — the single source of truth for a
-  process: what it is for, what a run produces, and every step in a form
+  process: what it is for, what an execution produces, and every step in a form
   a runtime can construct a workflow from. Skills, flow
   diagrams, and fabro graphs (fabro is the fleet's workflow-orchestrator
   runtime) are its renderings.
 - **Produced by:** seed drafting or governed evolution. **Consumed by:**
   the compiler (renderings), agents (via the rendered skill), reviewers
   (conformance and loop-exit review), fabro (via annotations).
+- **Referenced by its full id** (e.g. `request-intake-process`), never a
+  bare or shortened form (glossary, `process definition`).
 
 ## Required frontmatter
 
 `type: process-definition`, `id`, `owner`, `status`, `created`,
 `updated`; `produces` (artifact
-types a run creates; the generic root `definition` covers runs creating
-definition documents; empty when the run's value is state change);
+types an execution creates; the generic root `definition` covers runs creating
+definition documents; empty when the execution's value is state change);
 `condition-language: cel`; optional: `carried-by` (the rendered skill's
 id), `condition-functions` (declared extensions, name and signature),
 `annotations` (process-level rendering metadata, keyed by rendering
 target); `hold-after` (ISO 8601 duration — the inactivity window after
-which the runtime holds a run; required for any process that carries a
+which the runtime holds an execution; required for any process that carries a
 conversation); `ask-cap` (ISO 8601 duration — how long an ask may stand
 unanswered before its default applies; required for any process whose
 steps carry `asks`).
@@ -70,8 +72,8 @@ artifact-typedef rule).
 
 Top-level keys: `start` (first step id); optional `parameters` (data
 values supplied at instantiation rather than produced by any step);
-optional `result` (the data value a run returns — the artifact, not a
-status record; omit only when the outcomes pin the run's value). `end`
+optional `result` (the data value an execution returns — the artifact, not a
+status record; omit only when the outcomes pin the execution's value). `end`
 is the reserved terminator id for `next`. Each step:
 
 - `id`, `name`; `run-by` — `{role, execution: agent}`,
@@ -115,24 +117,24 @@ is the reserved terminator id for `next`. Each step:
 
 ## Run lifecycle
 
-A run is one execution of a process, anchored to a work item in the
+An execution is one execution of a process, anchored to a work item in the
 registry. Run states: `running`, `held`, `done`, `cancelled`.
 
-- **Hold** pauses a run: the current step and every data value persist in
-  the run's anchor, and the work item records the state. A held run is
+- **Hold** pauses an execution: the current step and every data value persist in
+  the execution's anchor, and the work item records the state. A held run is
   resumed at its recorded step or cancelled with a reason — never
   silently dropped.
-- The `hold-after` window makes parking automatic: a run with no activity
+- The `hold-after` window makes parking automatic: an execution with no activity
   inside the window is held by the runtime. Unfinished work parks itself
   with a named resume point; nothing dangles in the lead repo.
-- **Ask** holds a run the same way, with the ask recorded on the anchor
+- **Ask** holds an execution the same way, with the ask recorded on the anchor
   and routed to whoever fills the role it names — a person or an agent;
-  the answer is written to the ask and the run resumes at the asking
+  the answer is written to the ask and the execution resumes at the asking
   step with the ask in its inputs, in a fresh context loaded from the
   step's declared inputs and the checkpoint. There is no synchronous
   form: no step waits in place for an answer. An unanswered ask resolves
   to its `default` at the process's `ask-cap` (an ISO 8601 duration,
-  required for any process whose steps carry `asks`), and the run
+  required for any process whose steps carry `asks`), and the execution
   resumes on the default with the ask marked `defaulted`; cancelling a
   held run marks its ask `cancelled`. Answering is an activity of the
   answering role: a human step for a human-held role, or a step the
@@ -141,7 +143,7 @@ registry. Run states: `running`, `held`, `done`, `cancelled`.
   records every ask; asks per run, per role, and per kind are read from
   it. An ask that recurs across runs is a gap in a definition; the
   answering role files the definition change, and the ask stops.
-- **Cancel** closes the run's work item with a reason and files the
+- **Cancel** closes the execution's work item with a reason and files the
   resulting actions the outcomes demand.
 
 ## Rendering contract
@@ -167,7 +169,7 @@ exist in the repository — a `basis/tools/<name>.py` path written in a
 (`${compiler}` and its kind). The rule serves the lead shop's goal,
 set by the product authority: no tool is built mid-process — a tool a
 process needs and the repository lacks is a request, routed before the
-process runs, never work the run does for itself. The lint
+process runs, never work the execution does for itself. The lint
 (`basis/tools/lint_basis.py`, its check 11) reports every such path
 that does not exist; `bd`, `python3`, and the sh utilities are the
 environment, not tools the repository holds, and are not checked.
@@ -192,7 +194,7 @@ round cap (the dual-exit rule).
   checkpoint, and its `to` is in the step's `asks`; one ask per step per
   run. *(§The steps section, §Run lifecycle)*
 - Outcomes each name a witness. *(§Required sections 3)*
-- `result`, if absent, is justified by outcomes that pin the run's value.
+- `result`, if absent, is justified by outcomes that pin the execution's value.
   *(§The steps section)*
 - Every tool a step names — a `basis/tools/<name>.py` path in a `run`
   template or in an `initial` value — exists in the repository; none is
@@ -211,3 +213,5 @@ round cap (the dual-exit rule).
 | 5 | 2026-08-28 | update | Owner direction, from the scenario-assignment screen: how arrays and item fields interpolate into a `run` template defined, so a fan-out over contexts is a defined form. |
 | 6 | 2026-08-28 | update | From the scenario-assignment screen: how a `run` step yields its output (standard output, line-split for arrays) and that interpolation names may be field paths — both were silent conventions. |
 | 7 | 2026-09-05 | update | Under req-2026-09-05-no-tools-mid-process at the small-change process's make step, on the product authority's words of 2026-09-05 — "Building tools as part of a process should never be necessary and a goal for the lead shop should be to never build tools mid-process." — §Commitment gains the rule: a process definition is not approved while any step's `run` script or `prompt` names a tool that does not exist in the repository; and the goal it serves: no tool is built mid-process — a tool a process needs and the repository lacks is a request, routed before the process runs. The checklist gains its row; the lint's check 11 is named as the check. Made by the lead-solutions-architect role. |
+| 8 | 2026-09-09 | update | Reference convention added under req-2026-09-08-definition-vs-instance / feat-execution-vocabulary (shopsystem-product): a process definition is referenced by its full id, never bare or shortened, matching the glossary's `process definition` entry. Self-check against define-good-up-front: this is the one bullet the guidance names for this file; no other section's `run`-as-noun text touched in this pass, that propagation disclosed as not done here. Made by the lead-solutions-architect role. |
+| 9 | 2026-09-09 | update | `run` propagated to `execution` as the noun for a process instance, under req-2026-09-08-definition-vs-instance / feat-execution-vocabulary (shopsystem-product): mechanical, determiner-adjacent occurrences only (`a/the/this/one/another/each/no/any run(s)`); `run-by`, `run` as a schema field or step key, and compound/heading uses (e.g. `run-cost`, `run list`, `Run lifecycle`) left unchanged, that residue disclosed as not done in this pass. Self-check against define-good-up-front: diffed against the file's pre-edit text; no requirement, field name, or heading changed. Made by the lead-solutions-architect role. |

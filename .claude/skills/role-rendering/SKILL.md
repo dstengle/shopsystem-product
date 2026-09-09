@@ -15,12 +15,12 @@ type: skill
 id: role-rendering-skill
 status: approved
 created: 2026-09-03
-updated: 2026-09-05
+updated: 2026-09-09
 generated: true
 generated-by: basis/tools/compile_process.py
 derived-from: role-rendering-process
 source: basis/processes/role-rendering.md
-source-digest: sha256:42da8e1842e0
+source-digest: sha256:7877ffd9b22d
 activation: model-judged
 promotion: experiment-local
 ---
@@ -160,7 +160,7 @@ Run by an agent in role `lead-solutions-architect`. reads: open, approved, escal
 Prompt:
 
 ```text
-This step files what leaves the run for the owner; it runs at
+This step files what leaves the execution for the owner; it runs at
 the round cap with rows open, or with no row open and
 escalations standing. Every row you add to escalations begins
 with the open row's subject — its second word — as its first
@@ -173,7 +173,7 @@ subject then the row's kind. Then confirm every row of
 escalations stands in a governed record the owner reads: a row
 naming a definition, as the review entry in that definition's
 Document History; every other row, in a Document History entry
-for this run written into the definition at self. The resulting
+for this execution written into the definition at self. The resulting
 action on each escalated row is the owner's decision. Return
 escalations.
 

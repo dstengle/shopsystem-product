@@ -5,9 +5,9 @@ target-type: process-definition
 owner: product-authority
 status: approved
 approved: 2026-08-23
-version: 1
+version: 3
 created: 2026-08-23
-updated: 2026-08-23
+updated: 2026-09-09
 ---
 
 # Guideline: process definition
@@ -22,7 +22,8 @@ never inside a step.
 outcome names its witness · prose inside a step only in `prompt` ·
 every loop declares a labeled success exit, a cap, or both · a step
 reads only what it lists — the declared list is the context load list ·
-the result is the artifact, not a status.
+the result is the artifact, not a status · a process definition is
+referenced by its full id, never bare or shortened.
 
 **Layers:** this guideline adds process-definition rules on top of the
 [base writing style](base-writing-style.md); the base always applies
@@ -78,11 +79,11 @@ an undeclared load is a defect. *Decision:* yes/no per step.
 *Derived check:* judged — fitness scenario 4.
 
 **5. Return the artifact, not a status.**
-Before: "result: report — a summary of what the run did."
-After: "result: set — the principle-set the run produced."
+Before: "result: report — a summary of what the execution did."
+After: "result: set — the principle-set the execution produced."
 *Test:* read the `result` declaration against the purpose. *Criterion:*
-the run returns the artifact it exists to produce, or omits `result`
-with outcomes that pin the run's value. *Decision:* yes/no per
+the execution returns the artifact it exists to produce, or omits `result`
+with outcomes that pin the execution's value. *Decision:* yes/no per
 process.
 *Derived check:* judged — fitness scenario 5.
 
@@ -111,3 +112,5 @@ history.
 |---|---|---|---|
 | 1 | 2026-08-23 | update | Authored as the process-definition meta-chain's guideline, with the existing basis processes as exemplars. |
 | 1 | 2026-08-23 | state | draft → approved by the owner, with the exemplar screens' findings accepted as valid and their repairs directed. |
+| 2 | 2026-09-09 | update | Highlights gains the reference convention under req-2026-09-08-definition-vs-instance / feat-execution-vocabulary (shopsystem-product): a process definition is referenced by its full id, never bare or shortened, matching the glossary and the typedef's own new bullet. Self-check against define-good-up-front: the one line the guidance names for this file added, nothing else in the guideline touched. Made by the lead-solutions-architect role. |
+| 3 | 2026-09-09 | update | `run` propagated to `execution` as the noun for a process instance, under req-2026-09-08-definition-vs-instance / feat-execution-vocabulary (shopsystem-product): mechanical, determiner-adjacent occurrences only (`a/the/this/one/another/each/no/any run(s)`); `run-by`, `run` as a schema field or step key, and compound/heading uses (e.g. `run-cost`, `run list`, `Run lifecycle`) left unchanged, that residue disclosed as not done in this pass. Self-check against define-good-up-front: diffed against the file's pre-edit text; no requirement, field name, or heading changed. Made by the lead-solutions-architect role. |

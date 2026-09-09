@@ -5,9 +5,9 @@ target-type: initiative
 owner: product-authority
 status: approved
 approved: 2026-08-31
-version: 6
+version: 7
 created: 2026-08-28
-updated: 2026-09-07
+updated: 2026-09-09
 ---
 
 # Guideline: initiative
@@ -51,7 +51,7 @@ stated. *Decision:* yes/no per initiative.
 
 **2. Who, one measure, a current condition, a target, the types.**
 Before: "Success: operators are happier with the run list."
-After: "For: operators. Measure: time from a run's failure to an
+After: "For: operators. Measure: time from an execution's failure to an
 operator noticing it. Now: median 40 minutes. Target: under one
 minute. Interaction types: cli, gui."
 *Test:* read the For whom section. *Criterion:* who; exactly one
@@ -83,7 +83,7 @@ sentence naming a technology, structure, or interface form.
 **5. Attach feasibility; attach usability or ask.**
 Before: "Feasibility: to be confirmed."
 After: "Feasibility (architect, 2026-08-21): feasible within the
-current stack; the run log already records failure. Usability: not yet
+current stack; the execution log already records failure. Usability: not yet
 — ask to the product designer role, default 'a hypothesis stands until
 the first user test'."
 *Test:* read the Feasibility and usability section and the Document
@@ -100,7 +100,7 @@ holds nothing under it. *Decision:* yes/no per initiative.
 Before: "Touches reporting and maybe export."
 After: "Decomposition (architect): reporting, export; contract
 reporting → export: customer–supplier; cross-context flow: none — each
-context reads the run log directly." or "Decomposition: not yet."
+context reads the execution log directly." or "Decomposition: not yet."
 *Test:* read the Decomposition section. *Criterion:* contexts,
 relationship kinds, and the flow or "none" are stated, or the section
 says "not yet". *Decision:* yes/no per initiative.
@@ -122,7 +122,7 @@ yes/no per initiative.
 *Derived check:* judged — initiative fitness scenario 7.
 
 **8. A parent lists its sub-initiatives and bets on none of them itself.**
-Before: "Sub-initiatives: the measurement work, the runner work.
+Before: "Sub-initiatives: the measurement work, the process-runner work.
 Features: feat-run-measure."
 After: "Sub-initiatives: init-run-measure, init-process-runner.
 Features: (none — the bet is taken on each sub-initiative alone)."
@@ -147,3 +147,4 @@ also held to the children's `parent` fields by the lint.
 | 4 | 2026-08-31 | state | draft → approved with batch A+B as one block (brief-032 ask 2, default accepted). |
 | 5 | 2026-09-06 | update | Under init-role-decisions / feat-role-decisions on the authority's bet of 2026-09-06 (the feature's constraint C6, with `single-source-of-truth`): rule 5's test and criterion widened to match the initiative fitness set's amended scenario 5, which projects this rule — each attaching role's offer complete by the role-offer data type's parts, referenced here and never restated, the full offer read in the Document History entry it stands in per the initiative typedef (v11). Hand-amended: the typedef carries no Writing rules section. Made by the lead-solutions-architect role; the owner's approval of the amendment is pending. |
 | 6 | 2026-09-07 | update | Rule 8 added under req-2026-09-07-sub-initiative at the small-change process's make step, beside the initiative typedef v12: a parent lists exactly the initiatives whose `parent` names it and holds no features. Hand-amended, as at v5 — compile_typedef.py refuses the typedef for want of a Writing rules section. Made by the lead-solutions-architect role. |
+| 7 | 2026-09-09 | update | `run` propagated to `execution` as the noun for a process instance, under req-2026-09-08-definition-vs-instance / feat-execution-vocabulary (shopsystem-product): mechanical, determiner-adjacent occurrences only (`a/the/this/one/another/each/no/any run(s)`); `run-by`, `run` as a schema field or step key, and compound/heading uses (e.g. `run-cost`, `run list`, `Run lifecycle`) left unchanged, that residue disclosed as not done in this pass. Self-check against define-good-up-front: diffed against the file's pre-edit text; no requirement, field name, or heading changed. Made by the lead-solutions-architect role. |
