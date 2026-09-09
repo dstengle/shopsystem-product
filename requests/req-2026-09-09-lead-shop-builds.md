@@ -1,8 +1,8 @@
 ---
 type: request
 id: req-2026-09-09-lead-shop-builds
-status: routed
-version: 1
+status: done
+version: 2
 date: 2026-09-09
 reader: lead-pm
 owner: lead-pm
@@ -13,7 +13,7 @@ received-through: operational-contract
 arose-in: req-2026-09-09-cost-per-execution
 route: discovery
 route-reason: "how the lead shop builds its own assigned scenarios is undefined — no process names the step, the recorded gap lead-ki66p stands since the first internal assignment, and today's builds ran on beads no process opened, so their cost lands nowhere; the authority asks for brainstorming before any definition, so the discovery opens in the brainstorm form, parked until the authority opens it"
-routed-to: ""
+routed-to: "../initiatives/init-implementation-process.md"
 ---
 
 # Request: how the lead shop builds its own scenarios
@@ -55,8 +55,22 @@ ask.
 
 ## 4. Result
 
+Routed to the initiative
+[init-implementation-process](../initiatives/init-implementation-process.md),
+framed and bet in the discovery conversation of 2026-09-09 (anchor
+lead-z2nit, session record sess-2026-09-09-c). The brainstorm took the
+question past the lead shop: the system defines no implementation
+process and no implementation roles, and the lead shop's undefined
+builds exposed it. Two things were split off and are not in that bet:
+the amendment to the `delivery-verified` principle, which needs a
+request of its own and is not yet recorded; and the Bounded Context
+designation — what a context is responsible for, who depends on it,
+and how that dependency is met — carried to the operational-contract
+discovery (lead-bmmzh).
+
 ## Document History
 
 | Version | Date | Kind | Entry |
 |---|---|---|---|
 | 1 | 2026-09-09 | update | Recorded by the lead-pm at the request-intake process's record step from the authority's words; routed to discovery, brainstorm form; parked. |
+| 2 | 2026-09-09 | update | Closed by the lead-pm at the discovery conversation's frame step: `routed-to` init-implementation-process, status done, the result recorded with the two split-off threads. |
