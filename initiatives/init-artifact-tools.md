@@ -2,8 +2,8 @@
 type: initiative
 id: init-artifact-tools
 name: Artifact tools
-status: proposed
-version: 1
+status: planned
+version: 2
 owner: lead-pm
 created: 2026-09-07
 updated: 2026-09-07
@@ -21,7 +21,7 @@ Problem: a role reads a whole artifact to use one section, and history is 40 to 
 
 ## For whom
 
-Every role that reads or writes an artifact. Measure: context tokens loaded per artifact read by a role. Now: the whole file, up to 17,000 words. Target: the section asked for. Interaction types: command line and API — the tools are run at a prompt and by other tools.
+Every role that reads or writes an artifact. Measure: context tokens loaded per artifact read by a role. Now: the whole file, up to 17,000 words. Target: the section asked for. Interaction types: command line and API — the tools are run at a prompt and by other tools. The scenarios also cover what the runs showed: hashes filled by a tool, not by hand; an execution's bead naming its initiative; the router loading a step, not the whole skill, where a tool can serve it.
 
 ## Appetite
 
@@ -44,3 +44,4 @@ None yet.
 | Version | Date | Kind | Entry |
 |---|---|---|---|
 | 1 | 2026-09-07 | update | Framed by the lead-pm at the discovery-conversation frame step (sess-2026-09-07-b) from the authority's words in req-2026-09-07-artifact-tools, section 1. |
+| 2 | 2026-09-09 | state | `proposed` → `planned`: the authority's bet by its order of 2026-09-08 ("Follow your order"); the framing widened to what the runs showed. |
