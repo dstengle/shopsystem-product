@@ -68,6 +68,7 @@ contract exists on this branch. Cross-context flow: none.
 ## Features
 
 [feat-run-measurement](../features/feat-run-measurement.md) — drafted at feature-authoring's draft step, 2026-09-08.
+[feat-initiative-cost-rollup](../features/feat-initiative-cost-rollup.md) — drafted at feature-authoring's draft step, 2026-09-08.
 
 ## Document History
 
