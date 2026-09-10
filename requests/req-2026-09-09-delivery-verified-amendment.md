@@ -2,12 +2,12 @@
 type: request
 id: req-2026-09-09-delivery-verified-amendment
 status: routed
-version: 1
+version: 2
 date: 2026-09-09
 reader: lead-pm
 owner: lead-pm
 created: 2026-09-09
-updated: 2026-09-09
+updated: 2026-09-10
 originator: product-authority
 received-through: operational-contract
 arose-in: req-2026-09-09-lead-shop-builds
@@ -123,15 +123,34 @@ Topic: "the `delivery-verified` amendment — what replaces 'running
 system' and where the done bar sits
 (req-2026-09-09-delivery-verified-amendment)".
 
-Originator's answer: **not yet answered**. The route is recorded as
-said and nothing is acted on until the authority answers.
+Originator's answer: **accepted**, 2026-09-10 — the authority opened
+the conversation themselves, in the brainstorm form rather than the
+interview the lead-pm said. The form is the authority's to set by
+opening it: their first statement asks an open design question rather
+than answering the three named points, so the conversation diverges
+before it converges.
 
 ## 4. Result
 
-Empty: the route awaits the originator's answer.
+Routed to the discovery conversation of 2026-09-10, anchor lead-vfaj4,
+form brainstorm. `routed-to` stays empty until that conversation
+produces a destination document: the route is answered, the
+destination not yet made.
+
+The subject may be overtaken. The authority opened with: "Before we
+make any changes, how would a demonstration work? I could be
+comfortable leaving it on the implementer, but demonstrating is not
+defined and there is no process for it. I like the idea of scenarios
+and features getting demoed, I just don't see how it would work for
+agent shops, but if it can work I'd like to make it happen and we can
+get away from making this split." If a demonstration can be defined
+and made to work in an agent shop, `delivery-verified` stands as
+written and this request's own ask — the amendment — falls away. The
+conversation settles whether it does.
 
 ## Document History
 
 | Version | Date | Kind | Entry |
 |---|---|---|---|
 | 1 | 2026-09-09 | update | Recorded by the lead-pm at the request-intake process's record step from the authority's words of 2026-09-09, split out of the discovery on req-2026-09-09-lead-shop-builds (anchor lead-z2nit); routed at the route step to discovery, interview form, with the open question this request must settle stated in section 1. The originator has not answered the route; nothing is acted on. |
+| 2 | 2026-09-10 | update | Route answered by the originator, who opened the conversation in the brainstorm form: the result recorded with the anchor lead-vfaj4; `routed-to` left empty until the conversation produces a destination document. The authority's opening statement puts the request's own subject in question — if a demonstration can be defined for an agent shop, the amendment falls away. |
