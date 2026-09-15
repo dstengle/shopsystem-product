@@ -79,6 +79,8 @@ No-gos, each with its reason:
 
 ## Features
 
+- feat-implementation-good
+
 ## Document History
 
 | Version | Date | Kind | Entry |

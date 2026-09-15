@@ -2,10 +2,10 @@
 type: roadmap-priority
 id: roadmap-priority
 status: draft
-version: 17
+version: 18
 owner: lead-pm
 created: 2026-09-02
-updated: 2026-09-09
+updated: 2026-09-15
 ---
 
 # Roadmap priority
@@ -40,20 +40,36 @@ amendment lands.
    both features delivered 2026-09-07; measure 6 of 12, the six
    external tools counted when their owners answer.
 3. **init-role-decisions** — active: delivered 2026-09-06.
-4. **init-typedef-rendering** — active: measure met 2026-09-05 (1 of
+4. **init-implementation-process** — planned
+   ([initiatives/init-implementation-process.md](initiatives/init-implementation-process.md)):
+   the authority's bet of 2026-09-09. Placed here on the appetite's
+   own words — "Phase 2, above the unstarted typedef-rendering
+   batch" — and on no other stated direction. Its first feature is
+   in authoring.
+5. **init-typedef-rendering** — active: measure met 2026-09-05 (1 of
    22); the batch of 21 not started.
-5. **init-request-routing** — active; measure met 2026-09-04.
-6. **init-roles-availability** — active; measure met 2026-09-03.
-7. **init-skills-availability** — active; its one feature assigned.
-8. **More comprehensive rendering work** — the authority's direction,
+6. **init-request-routing** — active; measure met 2026-09-04.
+7. **init-roles-availability** — active; measure met 2026-09-03.
+8. **init-skills-availability** — active; its one feature assigned.
+9. **More comprehensive rendering work** — the authority's direction,
    verbatim: "sibling process for now, more comprehensive work later"
    (bead lead-sx9xj). Not yet framed.
+
+**In flight, outside the priority:**
+**init-delivery-verified-removal** — planned 2026-09-15
+([initiatives/init-delivery-verified-removal.md](initiatives/init-delivery-verified-removal.md)),
+on the authority's convergence: the `delivery-verified` principle
+removed whole from the working set, to return on the authority's own
+word when the system is more mature. Both sets stand drafted and
+screened at `status: draft`, awaiting the authority's verdict at
+`authority-approve`. It carries no rank here because the authority
+stated no placement for it; it is recorded so the priority does not
+read as if it were absent.
 
 Requests routed and awaiting the authority (not yet in the
 priority): req-2026-09-05-step-communication (discovery);
 req-2026-09-06-migration-review (discovery, accepted);
 req-2026-09-07-messaging-invocations (discovery open, lead-cj2o1);
-req-2026-09-09-lead-shop-builds (discovery, brainstorm, parked);
 req-2026-09-04-operational-contract (discovery open, lead-bmmzh).
 Routed to the lane, not started: req-2026-09-09-cost-per-execution,
 req-2026-09-09-artifact-tools-round-trip.
@@ -84,3 +100,4 @@ the initiative path.
 | 15 | 2026-09-09 | update | Plain voice's third feature delivered; plain-status done; messaging invocations to discovery; two lane requests recorded. |
 | 16 | 2026-09-09 | update | The usage report defined and the cost rows populated; two follow-up lane requests recorded. |
 | 17 | 2026-09-09 | update | The lead-shop-builds request recorded, discovery parked. |
+| 18 | 2026-09-15 | update | Re-recorded by the PM role after two initiatives went unplaced. init-implementation-process, planned on the authority's bet of 2026-09-09, placed fourth on its appetite's own words ("Phase 2, above the unstarted typedef-rendering batch") and on no other stated direction; the entries below it renumbered. init-delivery-verified-removal, planned 2026-09-15, recorded as in flight outside the priority — the authority stated no placement for it, and inventing one would put a rank in this record that no bet supports. req-2026-09-09-lead-shop-builds removed from the routed-and-awaiting list: it is done, routed to init-implementation-process. |
