@@ -3,11 +3,11 @@ type: principle-set
 id: architecture-principles
 scope: architecture
 owner: product-authority
-status: approved
+status: draft
 approved: 2026-08-23
-version: 6
+version: 7
 created: 2026-08-23
-updated: 2026-08-23
+updated: 2026-09-15
 derives-from:
   local-comprehension: least-context
 ---
@@ -248,10 +248,9 @@ product that no longer exists. Murphy, Notkin, and Sullivan's reflexion
 models (1995) demonstrated the two-directional comparison this
 statement requires — computing both what the design promises that the
 code lacks, and what the code contains that the design never called
-for. The working set holds the two flanking rules at working scope:
-`single-source-of-truth` gives every fact one authoritative home, and
-`delivery-verified` demands the forward direction be demonstrated in
-the running system; this rule adds the reverse direction and gates
+for. The working set holds one flanking rule at working scope:
+`single-source-of-truth` gives every fact one authoritative home. This
+rule carries both directions of the comparison itself and gates
 retirement and refactoring on the pair.
 
 **Implications.**
@@ -333,3 +332,5 @@ either matches what anyone asked for.
 | 4 | 2026-08-23 | state | draft → approved by the owner's ruling ; Phase 0 exit condition met. |
 | 5 | 2026-08-23 | update | Owner direction: decision-ledger references removed — changes stand on their own; history entries and text no longer cite numbered decisions. |
 | 6 | 2026-08-23 | update | Close-out polish: the opening's test sources named in full (Spool, Rumelt, Lencioni works cited; TOGAF expanded) — the standing cold-read stumble retired. |
+| 7 | 2026-09-15 | update | Under init-delivery-verified-removal, following the removal of `delivery-verified` from the working set (basis/principles.md v12) on the product authority's decision of 2026-09-15: `bidirectional-conformance`'s rationale no longer cites that principle as its forward-direction flank — the sentence now names `single-source-of-truth` as the one flanking rule and says that this rule carries both directions of the comparison itself, which its own statement already requires. No statement, implication, or fitness-screen cell changed; the initiative's no-go holds this set's obligations fixed. Self-check against `define-good-up-front`, recorded with the output: the reworded sentence was evaluated against the principle-set guideline before the screen. It adds no obligation, cites only a slug the set's own convention admits (`single-source-of-truth`, defined in the working set), and leaves `bidirectional-conformance`'s statement to carry both directions, which it already does — so the rationale now evidences the statement without leaning on a rule that no longer exists. Drafted by the lead-pm role. |
+| 7 | 2026-09-15 | state | approved → draft: the amendment stands drafted and screened, awaiting the owner's decision at the principle-set-authoring process's `authority-approve` step. `approved:` retains the last approved version's date. |

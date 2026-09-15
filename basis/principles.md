@@ -3,11 +3,11 @@ type: principle-set
 id: principles
 scope: working
 owner: product-authority
-status: approved
+status: draft
 approved: 2026-08-22
-version: 11
+version: 12
 created: 2026-08-10
-updated: 2026-09-06
+updated: 2026-09-15
 ---
 
 # Founding principles
@@ -227,28 +227,6 @@ grades the judge.
 - Definition owners treat measured ineffectiveness as an obligation to
   update the definition, not as background noise.
 
-## Delivery is verified in the running system (`delivery-verified`)
-
-**Statement.**
-
-- Work MUST be counted done only when its effect is demonstrated in
-  the running system.
-- Artifacts existing, checks passing, or reviews approving MUST NOT
-  count as done on their own.
-
-**Rationale.** The gap between green artifacts and working systems is
-where the worst defects live: builds publish without the built thing
-ever running, and checks stay green while decided behavior goes
-unrealized.
-
-**Implications.**
-
-- Definition authors name the runtime demonstration in every
-  Definition of Done.
-- Reviewers reject completion claims that cite only artifacts.
-- Whoever closes work cites the demonstration evidence in the close
-  reason — the reconcile process enforces this shape.
-
 ## Load the least context (`least-context`)
 
 **Statement.**
@@ -316,15 +294,15 @@ is a design failure, not a user failure.)
 
 ## Fitness screen (the intro's tests; sources: TOGAF, Spool, Rumelt, Lencioni)
 
-| Screen | define-good-up-front | governed-context | no-orphan-activities | use-defined-terms | external-standards-first | single-source-of-truth | feedback-loops-with-consumers | delivery-verified | least-context | tools-through-skills |
-|---|---|---|---|---|---|---|---|---|---|---|
-| Statement testable (TOGAF: understandable, complete, consistent) | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass |
-| Helps you say no (Spool) | yes: rejects checks held by the maker alone, and submission without the maker's own evaluation | yes: rejects unsanctioned channels | yes: rejects orphan activities | yes: rejects undefined coinages and synonym pairs | yes: rejects unjustified invention | yes: rejects duplicate authorities | yes: rejects consumer-less channels | yes: rejects artifact-only done claims | yes: rejects ambient loads and unapproved sources | yes: rejects invocations reconstructed from help output, a missing skill left unrecorded, and a missing skill worked around |
-| Not fluff, not a goal-in-disguise (Rumelt) | pass — directs without prescribing method | pass | pass | pass | pass | pass | pass | pass | pass | pass |
-| Not permission-to-play (Lencioni) | pass — most systems do NOT work this way | pass | pass | pass | pass | pass | pass | pass | pass | pass |
-| Implies ≥1 practice and ≥1 check (this document's intro) | shared-definition practice; role-separation check | promotion gate; provenance audit | process-membership lint; loop-exit review | term lookup before writing; undefined-term and near-synonym lint | prior-art search; Sources-section audit | link-or-ref practice; duplicate-statement review | consumer named at creation; calibration schedule | demonstration named in DoD; close-reason citation check | per-step context declaration; undeclared-load audit | skill-per-tool practice; bare-invocation review |
-| Normative keywords used in statements only; capitals elsewhere only as the opening's mentions (mechanical) | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass |
-| Implications derivable and actor-named, one per bullet (judged) | pass | pass | pass | pass | pass | pass | pass | pass | pass | pass |
+| Screen | define-good-up-front | governed-context | no-orphan-activities | use-defined-terms | external-standards-first | single-source-of-truth | feedback-loops-with-consumers | least-context | tools-through-skills |
+|---|---|---|---|---|---|---|---|---|---|
+| Statement testable (TOGAF: understandable, complete, consistent) | pass | pass | pass | pass | pass | pass | pass | pass | pass |
+| Helps you say no (Spool) | yes: rejects checks held by the maker alone, and submission without the maker's own evaluation | yes: rejects unsanctioned channels | yes: rejects orphan activities | yes: rejects undefined coinages and synonym pairs | yes: rejects unjustified invention | yes: rejects duplicate authorities | yes: rejects consumer-less channels | yes: rejects ambient loads and unapproved sources | yes: rejects invocations reconstructed from help output, a missing skill left unrecorded, and a missing skill worked around |
+| Not fluff, not a goal-in-disguise (Rumelt) | pass — directs without prescribing method | pass | pass | pass | pass | pass | pass | pass | pass |
+| Not permission-to-play (Lencioni) | pass — most systems do NOT work this way | pass | pass | pass | pass | pass | pass | pass | pass |
+| Implies ≥1 practice and ≥1 check (this document's intro) | shared-definition practice; role-separation check | promotion gate; provenance audit | process-membership lint; loop-exit review | term lookup before writing; undefined-term and near-synonym lint | prior-art search; Sources-section audit | link-or-ref practice; duplicate-statement review | consumer named at creation; calibration schedule | per-step context declaration; undeclared-load audit | skill-per-tool practice; bare-invocation review |
+| Normative keywords used in statements only; capitals elsewhere only as the opening's mentions (mechanical) | pass | pass | pass | pass | pass | pass | pass | pass | pass |
+| Implications derivable and actor-named, one per bullet (judged) | pass | pass | pass | pass | pass | pass | pass | pass | pass |
 
 ## Document History
 
@@ -347,3 +325,5 @@ is a design failure, not a user failure.)
 | 9 | 2026-09-05 | update | Repair under req-2026-09-05-maker-self-check, small-change lane round 2, by the lead-solutions-architect role: principle-set-authoring's one screen ran at the lane's check step (judge claude-fable-5-1, screen prompt v6) — one confident finding, the fourth statement carried two obligations in one bullet; two wobbly, "maker" outside the set's actor vocabulary and the record's home unnamed; one cosmetic, the screen cell for define-good-up-front's Spool test. Repairs: the fourth statement split into two bullets, one obligation each — whoever makes the output evaluates it against the definition of good before submitting it to the check; that evaluation is recorded with the output, in its Document History or the step's own output; the Spool cell reworded to reject checks held by the maker alone and submission without the maker's own evaluation. The first new bullet is wrapped as tightly as its verifying phrase allows — the lane's observation matches it on one source line. The owner's approval stands on the product authority's ruling of 2026-09-05 accepting the request. |
 | 10 | 2026-09-06 | update | Amended under req-2026-09-06-tools-through-skills at the small-change lane's make step by the lead-solutions-architect role, through principle-set-authoring's draft step — the set's own producing process, one screen, one revise, the owner's approval: the set gains a tenth principle, `tools-through-skills`, with the three statements the request's Definition fixes, one obligation per bullet; its rationale, implications, and fitness-screen column written in the set's own form; every existing principle and every existing screen cell unchanged. The author's self-check, as define-good-up-front asks: the new column re-read against the text it sits under — each cell holds as written (testable; rejects invocations reconstructed from help output and worked-around gaps; directs without method; practice and check implied; no normative capital outside the statement; each implication names its actor and follows from a statement bullet). Disclosed for the screen: the terms "framework tool", "skill", "agent", and "gap" have no glossary entry — "skill" is named only inside the glossary's rendering entry — and the glossary lies outside the lane's paths, so the draft step's term-to-glossary rule is not met here; the statements are the Definition's and were not altered. The process's one screen did not run in this step — it is the lead-pm's to run at the lane's check step and record here. The owner's approval stands on the product authority's acceptance of 2026-09-06, recorded in the request's section 3. |
 | 11 | 2026-09-06 | update | Repair under req-2026-09-06-tools-through-skills, small-change lane round 2, by the lead-solutions-architect role: principle-set-authoring's one screen ran at the lane's check step (judge claude-fable-5-1, screen prompt v6) — four confident findings: the statements' binding terms undefined; the third statement bullet carried two obligations; the third implication bullet carried two prices; the screen column to be re-run after repair. Three wobbly, ruled by the lead-pm: "for a scenario" in the first bullet; the second implication's step-kind clause; the lockstep obligation homed under governed-context. Repairs: framework tool, skill, and gap defined in the glossary, the lead-pm having widened the lane's paths to it at the check step; the first bullet reads "for each use it supports"; the third bullet split — recorded as a gap; not worked around — one obligation each; the third implication split in two, one per statement bullet; the second implication's clause became the permission that follows, "a step with no agent may carry the bare command"; governed-context's "Tool owners ship each tool's skill with the tool, in lockstep" moved under `tools-through-skills`, its one home, governed-context otherwise unchanged. The `tools-through-skills` column of the fitness screen re-run against the repaired text — every cell holds; the Spool cell now names the three rejections. The verifying phrases each still sit on one source line. The owner's approval stands on the product authority's acceptance of 2026-09-06, recorded in the request's section 3. |
+| 12 | 2026-09-15 | update | Under init-delivery-verified-removal, on the product authority's decision of 2026-09-15 (lead-vfaj4, sess-2026-09-15-a): the `delivery-verified` principle removed whole — both statements, its rationale and implications, and its column in the fitness screen. The authority's reason, in their words: "There is no mechanism that would be possible to implement in the current system that would meet the principle. This will need to be brought back when the system is more mature." A statement no activity can discharge teaches that a MUST in this set may be read as aspiration, which costs more than the bar earns while it cannot be met. The authority holds the reinstatement on their own word — by their decision no request is parked and no condition is recorded as a gate; this entry is the whole record of the intent. No glossary term is stranded: the small-change lane's "demonstrable in the running system" is that lane's own criterion and stands unchanged. Self-check against `define-good-up-front`, recorded with the output: the draft was evaluated against the principle-set guideline and fitness set before the screen. Scenario 1 (four-part form, self-definition first, slugged cross-references) holds — no remaining principle was touched. Scenario 5 (every claimed pass reproducible) was re-checked over the screen table: the removed column was dropped from every row and each row re-counted to nine principles; no surviving cell was edited. No glossary term was stranded. The one thing this draft does not do is repair what the removal exposes elsewhere: the migration-plan typedef still cites the removed slug (lead-dg6t9). Drafted by the lead-pm role. |
+| 12 | 2026-09-15 | state | approved → draft: the amendment stands drafted and screened, awaiting the owner's decision at the principle-set-authoring process's `authority-approve` step. `approved:` retains the last approved version's date. |
