@@ -304,6 +304,32 @@ is a design failure, not a user failure.)
 | Normative keywords used in statements only; capitals elsewhere only as the opening's mentions (mechanical) | pass | pass | pass | pass | pass | pass | pass | pass | pass |
 | Implications derivable and actor-named, one per bullet (judged) | pass | pass | pass | pass | pass | pass | pass | pass | pass |
 
+### Accepted tradeoffs
+
+The cold screen of 2026-09-15 returned findings that predate this
+amendment and are not repaired in it; each is marked here as an
+accepted tradeoff, per the principle-set-authoring process, and filed
+for its own decision as lead-zddhu.
+
+- **Three statement bullets carry two obligations each** —
+  `governed-context`'s "created or retained",
+  `feedback-loops-with-consumers`'s "its consumer and the resulting
+  action", and `least-context`'s "what loads into context and the
+  source each input comes from". Accepted here because splitting a
+  statement in force changes what every session is checked against,
+  which is its own bet rather than a rider on a removal.
+- **Three implications assert obligations their statements do not
+  make** — `define-good-up-front`'s spot check and its draft-instance
+  proposal, and `no-orphan-activities`'s header-plus-data-plus-steps
+  shape. Accepted on the same ground.
+- **The two judged screen rows below claim passes for those
+  principles that the judge could not reproduce.** Accepted, and
+  recorded here rather than silently: the rows state the author's
+  claim, this note states what an independent read of the same text
+  found, and the difference is the open work.
+
+None of these concerns the principle removed in this amendment.
+
 ## Document History
 
 | Version | Date | Kind | Entry |
@@ -327,3 +353,4 @@ is a design failure, not a user failure.)
 | 11 | 2026-09-06 | update | Repair under req-2026-09-06-tools-through-skills, small-change lane round 2, by the lead-solutions-architect role: principle-set-authoring's one screen ran at the lane's check step (judge claude-fable-5-1, screen prompt v6) — four confident findings: the statements' binding terms undefined; the third statement bullet carried two obligations; the third implication bullet carried two prices; the screen column to be re-run after repair. Three wobbly, ruled by the lead-pm: "for a scenario" in the first bullet; the second implication's step-kind clause; the lockstep obligation homed under governed-context. Repairs: framework tool, skill, and gap defined in the glossary, the lead-pm having widened the lane's paths to it at the check step; the first bullet reads "for each use it supports"; the third bullet split — recorded as a gap; not worked around — one obligation each; the third implication split in two, one per statement bullet; the second implication's clause became the permission that follows, "a step with no agent may carry the bare command"; governed-context's "Tool owners ship each tool's skill with the tool, in lockstep" moved under `tools-through-skills`, its one home, governed-context otherwise unchanged. The `tools-through-skills` column of the fitness screen re-run against the repaired text — every cell holds; the Spool cell now names the three rejections. The verifying phrases each still sit on one source line. The owner's approval stands on the product authority's acceptance of 2026-09-06, recorded in the request's section 3. |
 | 12 | 2026-09-15 | update | Under init-delivery-verified-removal, on the product authority's decision of 2026-09-15 (lead-vfaj4, sess-2026-09-15-a): the `delivery-verified` principle removed whole — both statements, its rationale and implications, and its column in the fitness screen. The authority's reason, in their words: "There is no mechanism that would be possible to implement in the current system that would meet the principle. This will need to be brought back when the system is more mature." A statement no activity can discharge teaches that a MUST in this set may be read as aspiration, which costs more than the bar earns while it cannot be met. The authority holds the reinstatement on their own word — by their decision no request is parked and no condition is recorded as a gate; this entry is the whole record of the intent. No glossary term is stranded: the small-change lane's "demonstrable in the running system" is that lane's own criterion and stands unchanged. Self-check against `define-good-up-front`, recorded with the output: the draft was evaluated against the principle-set guideline and fitness set before the screen. Scenario 1 (four-part form, self-definition first, slugged cross-references) holds — no remaining principle was touched. Scenario 5 (every claimed pass reproducible) was re-checked over the screen table: the removed column was dropped from every row and each row re-counted to nine principles; no surviving cell was edited. No glossary term was stranded. The one thing this draft does not do is repair what the removal exposes elsewhere: the migration-plan typedef still cites the removed slug (lead-dg6t9). Drafted by the lead-pm role. |
 | 12 | 2026-09-15 | state | approved → draft: the amendment stands drafted and screened, awaiting the owner's decision at the principle-set-authoring process's `authority-approve` step. `approved:` retains the last approved version's date. |
+| 12 | 2026-09-15 | review | Cold screen (principle-set-authoring `screen-read`, fresh context, against the principle-set fitness set): verdict findings. Every finding predates this amendment and none concerns it. On the authority's direction of 2026-09-15 — "don't repair those, they're out of scope for this work" — no repair was made; the findings are marked as accepted tradeoffs under the fitness screen, each with its reason, and filed as lead-zddhu for their own decision. |

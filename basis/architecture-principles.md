@@ -317,6 +317,34 @@ either matches what anyone asked for.
 | Normative keywords used in statements only; capitals elsewhere only as the opening's mentions (mechanical) | pass | pass | pass | pass | pass | pass |
 | Implications derivable and actor-named, one per bullet (judged) | pass | pass | pass | pass | pass | pass |
 
+### Accepted tradeoffs
+
+The cold screen of 2026-09-15 returned findings that predate this
+amendment and are not repaired in it; each is marked here as an
+accepted tradeoff, per the principle-set-authoring process, and filed
+for its own decision as lead-fstd0.
+
+- **Decision-turning terms used in statements are defined nowhere a
+  reader of this set can reach** — "first-class entity" and "artifact"
+  in `knowable-shape`, "role" in `actor-neutral-discipline`. Accepted
+  here because defining them touches statements in force, which is its
+  own bet.
+- **`local-comprehension` uses "the design" four sections before
+  `bidirectional-conformance` defines it.** Accepted on the same
+  ground; the forward reference is internal to this set, not a
+  working-set citation.
+- **Two implication bullets carry two implications each**
+  (`contracts-between-contexts` and `intent-provenance`, both the
+  "Reviewers..." bullets), and two others assert obligations their
+  statements do not make (`knowable-shape`'s "not yet created" and
+  `bidirectional-conformance`'s "silent drift is reverted"). Accepted
+  on the same ground.
+- **The judged screen rows claim passes for those principles that the
+  judge could not reproduce.** Accepted and recorded rather than left
+  implicit, on the same ground as the working set's.
+
+None of these concerns the sentence this amendment reworded.
+
 ## Document History
 
 | Version | Date | Kind | Entry |
@@ -334,3 +362,4 @@ either matches what anyone asked for.
 | 6 | 2026-08-23 | update | Close-out polish: the opening's test sources named in full (Spool, Rumelt, Lencioni works cited; TOGAF expanded) — the standing cold-read stumble retired. |
 | 7 | 2026-09-15 | update | Under init-delivery-verified-removal, following the removal of `delivery-verified` from the working set (basis/principles.md v12) on the product authority's decision of 2026-09-15: `bidirectional-conformance`'s rationale no longer cites that principle as its forward-direction flank — the sentence now names `single-source-of-truth` as the one flanking rule and says that this rule carries both directions of the comparison itself, which its own statement already requires. No statement, implication, or fitness-screen cell changed; the initiative's no-go holds this set's obligations fixed. Self-check against `define-good-up-front`, recorded with the output: the reworded sentence was evaluated against the principle-set guideline before the screen. It adds no obligation, cites only a slug the set's own convention admits (`single-source-of-truth`, defined in the working set), and leaves `bidirectional-conformance`'s statement to carry both directions, which it already does — so the rationale now evidences the statement without leaning on a rule that no longer exists. Drafted by the lead-pm role. |
 | 7 | 2026-09-15 | state | approved → draft: the amendment stands drafted and screened, awaiting the owner's decision at the principle-set-authoring process's `authority-approve` step. `approved:` retains the last approved version's date. |
+| 7 | 2026-09-15 | review | Cold screen (principle-set-authoring `screen-read`, fresh context, against the principle-set fitness set): verdict findings. Every finding predates this amendment and none concerns it. On the authority's direction of 2026-09-15 — "don't repair those, they're out of scope for this work" — no repair was made; the findings are marked as accepted tradeoffs under the fitness screen, each with its reason, and filed as lead-fstd0 for their own decision. |
