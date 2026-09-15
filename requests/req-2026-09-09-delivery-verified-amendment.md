@@ -1,19 +1,19 @@
 ---
 type: request
 id: req-2026-09-09-delivery-verified-amendment
-status: routed
-version: 2
+status: done
+version: 3
 date: 2026-09-09
 reader: lead-pm
 owner: lead-pm
 created: 2026-09-09
-updated: 2026-09-10
+updated: 2026-09-15
 originator: product-authority
 received-through: operational-contract
 arose-in: req-2026-09-09-lead-shop-builds
 route: discovery
 route-reason: "the `delivery-verified` principle is amended, not applied: 'running system' does not hold for a library or a corpus, and 'the scenario can close when the implementer shows it as complete' is on its face what the principle's second statement forbids; three things are unsettled and the open question of whether the feature's done bar itself moves decides sequencing against init-implementation-process, so the substance is framed and bet before an amendment is authored — and a principle amendment reaches every shop and every session, `.claude/shop/principles.md` being compiled from `basis/principles.md`, which is more than the small-change lane's appetite"
-routed-to: ""
+routed-to: ../initiatives/init-delivery-verified-removal.md
 ---
 
 # Request: the `delivery-verified` amendment — principle and definition of good
@@ -133,20 +133,36 @@ before it converges.
 ## 4. Result
 
 Routed to the discovery conversation of 2026-09-10, anchor lead-vfaj4,
-form brainstorm. `routed-to` stays empty until that conversation
-produces a destination document: the route is answered, the
-destination not yet made.
+form brainstorm. That conversation held at its last event, resumed
+2026-09-15, and converged; it is recorded in
+[sess-2026-09-15-a](../sessions/sess-2026-09-15-a.md).
 
-The subject may be overtaken. The authority opened with: "Before we
-make any changes, how would a demonstration work? I could be
-comfortable leaving it on the implementer, but demonstrating is not
-defined and there is no process for it. I like the idea of scenarios
-and features getting demoed, I just don't see how it would work for
-agent shops, but if it can work I'd like to make it happen and we can
-get away from making this split." If a demonstration can be defined
-and made to work in an agent shop, `delivery-verified` stands as
-written and this request's own ask — the amendment — falls away. The
-conversation settles whether it does.
+**The conversation overtook this request's own ask.** The authority
+opened it asking whether a demonstration could be defined for an agent
+shop, which would have left `delivery-verified` standing and this
+amendment unnecessary. The answer came the other way: "There is no
+mechanism that would be possible to implement in the current system
+that would meet the principle. This will need to be brought back when
+the system is more mature." So the destination is not the amendment
+recorded here — not a general form replacing "running system", not the
+two-level closure, not a per-product declaration — but the removal of
+the principle whole, to be reinstated on the authority's own word when
+a demonstration form exists that works in an agent shop.
+
+The three things §1 said an amendment would have to settle are
+therefore not settled; they are the shape of the future reinstatement,
+and this request does not hold them. The open question §1 named as
+deciding sequencing — whether the feature's done bar itself moves —
+falls away with the principle: there is no bar to sequence against,
+and
+[init-implementation-process](../initiatives/init-implementation-process.md)'s
+no-go on changing the principle's text is superseded by the removal.
+
+Routed to: [init-delivery-verified-removal](../initiatives/init-delivery-verified-removal.md),
+recorded `planned` on the authority's convergence. The removal itself
+is authored through
+[principle-set-authoring](../basis/processes/principle-set-authoring.md)
+and enters force only on the owner's approval.
 
 ## Document History
 
@@ -154,3 +170,4 @@ conversation settles whether it does.
 |---|---|---|---|
 | 1 | 2026-09-09 | update | Recorded by the lead-pm at the request-intake process's record step from the authority's words of 2026-09-09, split out of the discovery on req-2026-09-09-lead-shop-builds (anchor lead-z2nit); routed at the route step to discovery, interview form, with the open question this request must settle stated in section 1. The originator has not answered the route; nothing is acted on. |
 | 2 | 2026-09-10 | update | Route answered by the originator, who opened the conversation in the brainstorm form: the result recorded with the anchor lead-vfaj4; `routed-to` left empty until the conversation produces a destination document. The authority's opening statement puts the request's own subject in question — if a demonstration can be defined for an agent shop, the amendment falls away. |
+| 3 | 2026-09-15 | update | Route completed: the discovery lead-vfaj4 resumed and converged 2026-09-15 (sess-2026-09-15-a). `routed-to` set to init-delivery-verified-removal and the status to `done`. Section 4 records that the conversation overtook this request's ask — the destination is removal of the principle, not the amendment recorded in section 1, and the sequencing question section 1 named falls away with the principle. |
