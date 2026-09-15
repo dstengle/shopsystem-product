@@ -2,8 +2,8 @@
 type: initiative
 id: init-implementation-process
 name: Implementation process and roles
-status: planned
-version: 1
+status: active
+version: 2
 owner: lead-pm
 created: 2026-09-09
 updated: 2026-09-09
@@ -86,3 +86,4 @@ No-gos, each with its reason:
 | Version | Date | Kind | Entry |
 |---|---|---|---|
 | 1 | 2026-09-09 | update | Recorded by the lead-pm at the discovery conversation's frame step, framed across the discovery on request req-2026-09-09-lead-shop-builds (anchor lead-z2nit, session record sess-2026-09-09-c), and set `planned` on the authority's word "bet". Maker's evaluation against the initiative fitness set: 1 pass — the originator quoted from the request's section 1 and the authority's own reframing, with problem, outcome, and the operational contract named; 2 pass — one measure, current condition 0, target stated, interaction types "none" with the reason; 3 pass — two sessions, six no-gos each reasoned; 4 pass on the PM role's standing reading that a no-go must name what it excludes (the gap filed in this fitness set's history, 2026-09-04), no other solution word in sections 1–3; 5 and 6 not applicable — Feasibility and usability and Decomposition are filled at feature authoring, not before the bet (typedef v13); 7 pass — 459 words outside this history, the bet statable from sections 1–3; 8 not applicable — no sub-initiative names this one. |
+| 2 | 2026-09-15 | update | Feature feat-implementation-good's self-check passed (gaps recorded: Contributors reasoning, word-target overages); initiative active. |
