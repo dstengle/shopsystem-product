@@ -3,11 +3,11 @@ type: feature
 id: feat-implementation-good
 name: Implementation roles carry a stated definition of good
 status: checked
-version: 5
+version: 6
 initiative: ../initiatives/init-implementation-process.md
 owner: lead-po
 created: 2026-09-15
-updated: 2026-09-15
+updated: 2026-09-16
 ---
 
 # Feature: Implementation roles carry a stated definition of good
@@ -64,11 +64,11 @@ its execution are session two's, per the initiative's Appetite. No
 constraint written from either.
 
 - the solutions architect role's constraint, on Scenario: the checking
-  role requires an implementation's effect shown, not declared: needs
-  decision: what form of evidence a check accepts, and which role
-  declares it satisfied, now that `delivery-verified`'s removal
-  (init-delivery-verified-removal) leaves no fixed mechanism naming the
-  answer.
+  role requires an implementation's effect shown, not declared:
+  decision recorded: adr-2026-09-16-scenario-evidence-form — where the
+  scenario has an executable test, the evidence is the shop presenting
+  its pass/fail status; where it has none, the checking role marks the
+  scenario passed.
 
 ## Interaction types
 
@@ -140,7 +140,7 @@ Feature: Implementation roles carry a stated definition of good
 | The check held inside the maker's own prompt | the authority, confirmed defect (sess-2026-09-09-c) | Scenario: two implementation roles carry the definition, one making and one checking; Scenario: the maker role holds no accountability for checking its own work |
 | The implementation process, the lead shop's permission to execute it, and one proof execution | the initiative's Appetite (session two) | Out of scope: this feature is session one's content; the process, the permission, and the proof execution are a later feature's |
 | A Bounded Context shop dispatched new work | the initiative's Appetite no-gos (the shop stands frozen) | Out of scope: this feature's scenarios sit in the lead shop's own tree; no dispatch |
-| What form of evidence a check accepts, with no fixed mechanism after `delivery-verified`'s removal | the architect's constraints step, on Scenario: the checking role requires an implementation's effect shown, not declared | needs decision — routed to adr-authoring; no scenario covers it |
+| What form of evidence a check accepts, with no fixed mechanism after `delivery-verified`'s removal | the architect's constraints step, on Scenario: the checking role requires an implementation's effect shown, not declared | decision recorded: adr-2026-09-16-scenario-evidence-form; no scenario covers it |
 
 ## Document History
 
@@ -151,3 +151,4 @@ Feature: Implementation roles carry a stated definition of good
 | 3 | 2026-09-15 | update | add-usability run: read the core-task list (basis/experience/core-tasks.md) against all seven scenarios rather than taking the initiative's "none" on trust, and confirmed no core task — start, hold/resume/cancel, or read a decision on an execution; answer an ask; submit output for a check; raise a clarify; deliver work for reconciliation — is performed by a scenario that only reads or states a definition and two role definitions; the process and its first execution, where a core task would apply, are session two's, out of scope here. No usability or accessibility criteria added; the reason recorded in Contributors in place of the "to be added" placeholder; no Edges row added, since no criterion was written to name a failure or boundary case. Self-evaluation against define-good-up-front: this output's definition of good is the step's own prompt — write criteria or record their absence with reason, add Edges only for criteria actually written — and it is met: the "none" claim was checked against the named list rather than repeated, the reason given traces to the initiative's Appetite, and no criterion was manufactured to fill the section. Made by the lead-product-designer role. |
 | 4 | 2026-09-15 | update | add-constraints run: verified for myself, not taken on the coordinator's word, that no decomposition exists — the initiative carries no Decomposition section and the repository has no `basis/contexts/` directory or decomposition record — and recorded that in Contributors rather than inventing constraints. Screened `knowable-shape` and `bidirectional-conformance` against all seven scenarios: neither binds, since the first's entity-description obligation is closed to Bounded Context and shop, not roles or definitions, and the second binds code to design, with no code or running system in this feature's scope. Judged scenario @hash:bbccc3a1765c's open question — what evidence form a check accepts, and who declares it, now that `delivery-verified`'s removal leaves no fixed mechanism — an unrecorded decision rather than mine to settle, and wrote it as "needs decision" on the constraint line it rides on, with one Edges row naming it, so product-flow routes it to adr-authoring. Self-evaluation against `define-good-up-front`: this step's definition of good is its own prompt — read decomposition, write constraints that ride by name on scenarios, name a needed decision rather than deciding it, record "none" where decomposition names none, add Edges only for constraints actually written — and it is met: the "no decomposition" claim was verified against the repository rather than repeated from the ask, no constraint was invented to fill the section, and the one line written names a decision, not a verdict. Accepted gap: the Contributors passage runs over the 70-word target (rule 9) — the screening reasoning and the needs-decision line both ride on scenario text that cannot be shortened without losing which scenario or principle each clause answers to. Made by the lead-solutions-architect role. |
 | 5 | 2026-09-15 | update | Self-check: pass 1–6; fail 7 (designer/architect 'none' passages are reasoning); fail 8–9 (doc, Contributors, Edges, prior rows over word targets, unfixed). Needs-decision line correctly recorded. |
+| 6 | 2026-09-16 | update | product-flow's `resolve-decision` applied by hand by the runner: the flagged decision is recorded as adr-2026-09-16-scenario-evidence-form, and the Contributors constraint line and its Edges row now name it instead of asking for it. Applied by hand because the step's own `grep -m1 'needs decision:'` does not match this flag — the guideline wraps the Contributors line, so "needs" ends one line and "decision:" begins the next, and a single-line grep cannot see it. Filed as lead-ibme0. The feature's scenarios, hashes, and status `checked` are unchanged; no scenario text was touched, so no hash is stale. |
