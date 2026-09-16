@@ -3,11 +3,11 @@ type: principle-set
 id: principles
 scope: working
 owner: product-authority
-status: draft
-approved: 2026-08-22
+status: approved
+approved: 2026-09-16
 version: 12
 created: 2026-08-10
-updated: 2026-09-15
+updated: 2026-09-16
 ---
 
 # Founding principles
@@ -354,3 +354,4 @@ None of these concerns the principle removed in this amendment.
 | 12 | 2026-09-15 | update | Under init-delivery-verified-removal, on the product authority's decision of 2026-09-15 (lead-vfaj4, sess-2026-09-15-a): the `delivery-verified` principle removed whole — both statements, its rationale and implications, and its column in the fitness screen. The authority's reason, in their words: "There is no mechanism that would be possible to implement in the current system that would meet the principle. This will need to be brought back when the system is more mature." A statement no activity can discharge teaches that a MUST in this set may be read as aspiration, which costs more than the bar earns while it cannot be met. The authority holds the reinstatement on their own word — by their decision no request is parked and no condition is recorded as a gate; this entry is the whole record of the intent. No glossary term is stranded: the small-change lane's "demonstrable in the running system" is that lane's own criterion and stands unchanged. Self-check against `define-good-up-front`, recorded with the output: the draft was evaluated against the principle-set guideline and fitness set before the screen. Scenario 1 (four-part form, self-definition first, slugged cross-references) holds — no remaining principle was touched. Scenario 5 (every claimed pass reproducible) was re-checked over the screen table: the removed column was dropped from every row and each row re-counted to nine principles; no surviving cell was edited. No glossary term was stranded. The one thing this draft does not do is repair what the removal exposes elsewhere: the migration-plan typedef still cites the removed slug (lead-dg6t9). Drafted by the lead-pm role. |
 | 12 | 2026-09-15 | state | approved → draft: the amendment stands drafted and screened, awaiting the owner's decision at the principle-set-authoring process's `authority-approve` step. `approved:` retains the last approved version's date. |
 | 12 | 2026-09-15 | review | Cold screen (principle-set-authoring `screen-read`, fresh context, against the principle-set fitness set): verdict findings. Every finding predates this amendment and none concerns it. On the authority's direction of 2026-09-15 — "don't repair those, they're out of scope for this work" — no repair was made; the findings are marked as accepted tradeoffs under the fitness screen, each with its reason, and filed as lead-zddhu for their own decision. |
+| 12 | 2026-09-16 | state | draft → approved by the owner at the principle-set-authoring process's `authority-approve` step, verdict `tradeoffs-accepted`: the screen's findings stand marked in the text as accepted tradeoffs, none of them concerning this amendment. From this point the set is the standard activities are checked against. |

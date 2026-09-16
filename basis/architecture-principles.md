@@ -3,11 +3,11 @@ type: principle-set
 id: architecture-principles
 scope: architecture
 owner: product-authority
-status: draft
-approved: 2026-08-23
+status: approved
+approved: 2026-09-16
 version: 7
 created: 2026-08-23
-updated: 2026-09-15
+updated: 2026-09-16
 derives-from:
   local-comprehension: least-context
 ---
@@ -363,3 +363,4 @@ None of these concerns the sentence this amendment reworded.
 | 7 | 2026-09-15 | update | Under init-delivery-verified-removal, following the removal of `delivery-verified` from the working set (basis/principles.md v12) on the product authority's decision of 2026-09-15: `bidirectional-conformance`'s rationale no longer cites that principle as its forward-direction flank — the sentence now names `single-source-of-truth` as the one flanking rule and says that this rule carries both directions of the comparison itself, which its own statement already requires. No statement, implication, or fitness-screen cell changed; the initiative's no-go holds this set's obligations fixed. Self-check against `define-good-up-front`, recorded with the output: the reworded sentence was evaluated against the principle-set guideline before the screen. It adds no obligation, cites only a slug the set's own convention admits (`single-source-of-truth`, defined in the working set), and leaves `bidirectional-conformance`'s statement to carry both directions, which it already does — so the rationale now evidences the statement without leaning on a rule that no longer exists. Drafted by the lead-pm role. |
 | 7 | 2026-09-15 | state | approved → draft: the amendment stands drafted and screened, awaiting the owner's decision at the principle-set-authoring process's `authority-approve` step. `approved:` retains the last approved version's date. |
 | 7 | 2026-09-15 | review | Cold screen (principle-set-authoring `screen-read`, fresh context, against the principle-set fitness set): verdict findings. Every finding predates this amendment and none concerns it. On the authority's direction of 2026-09-15 — "don't repair those, they're out of scope for this work" — no repair was made; the findings are marked as accepted tradeoffs under the fitness screen, each with its reason, and filed as lead-fstd0 for their own decision. |
+| 7 | 2026-09-16 | state | draft → approved by the owner at the principle-set-authoring process's `authority-approve` step, verdict `tradeoffs-accepted`: the screen's findings stand marked in the text as accepted tradeoffs, none of them concerning this amendment. From this point the set is the standard activities are checked against. |

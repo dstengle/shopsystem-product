@@ -6,7 +6,7 @@ generated: true
 generated-by: basis/tools/compile_principles.py
 derived-from: principles
 source: basis/principles.md
-source-digest: sha256:3c4576a133a4
+source-digest: sha256:7fac09177110
 scope: working
 ---
 
@@ -42,9 +42,6 @@ named in the front-matter; on conflict the source wins.
   - Every feedback channel MUST name its consumer and the resulting action.
   - The effectiveness of processes, tools, and prompts MUST be measured.
   - The definitions of processes, tools, and prompts MUST be updated from what is measured.
-- **Delivery is verified in the running system** (`delivery-verified`):
-  - Work MUST be counted done only when its effect is demonstrated in the running system.
-  - Artifacts existing, checks passing, or reviews approving MUST NOT count as done on their own.
 - **Load the least context** (`least-context`):
   - An activity MUST load the minimum context necessary to accomplish its task.
   - The activity's process MUST name what loads into context and the source each input comes from.

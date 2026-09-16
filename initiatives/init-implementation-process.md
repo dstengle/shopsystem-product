@@ -3,10 +3,10 @@ type: initiative
 id: init-implementation-process
 name: Implementation process and roles
 status: active
-version: 2
+version: 3
 owner: lead-pm
 created: 2026-09-09
-updated: 2026-09-09
+updated: 2026-09-16
 request: ../requests/req-2026-09-09-lead-shop-builds.md
 ---
 
@@ -64,6 +64,13 @@ No-gos, each with its reason:
   those prompts are part of why the rebaseline exists.
 - No change to the text of the `delivery-verified` principle or its
   statements: that amendment is split to its own request and check.
+  **Superseded 2026-09-16** — that split request ended in the
+  principle's removal from the working set, not an amendment to it
+  (init-delivery-verified-removal). Nothing this bet produces may
+  reinstate its obligation; the open question it leaves — what form of
+  evidence a check accepts, and who declares it — rides on
+  feat-implementation-good's scenario `@hash:bbccc3a1765c` as a
+  recorded decision for adr-authoring.
 - No packaging, install, or rendering mechanism for delivering
   definitions to dependent shops: the authority named that work
   separate, and this process reads the corpus in place.
@@ -87,3 +94,4 @@ No-gos, each with its reason:
 |---|---|---|---|
 | 1 | 2026-09-09 | update | Recorded by the lead-pm at the discovery conversation's frame step, framed across the discovery on request req-2026-09-09-lead-shop-builds (anchor lead-z2nit, session record sess-2026-09-09-c), and set `planned` on the authority's word "bet". Maker's evaluation against the initiative fitness set: 1 pass — the originator quoted from the request's section 1 and the authority's own reframing, with problem, outcome, and the operational contract named; 2 pass — one measure, current condition 0, target stated, interaction types "none" with the reason; 3 pass — two sessions, six no-gos each reasoned; 4 pass on the PM role's standing reading that a no-go must name what it excludes (the gap filed in this fitness set's history, 2026-09-04), no other solution word in sections 1–3; 5 and 6 not applicable — Feasibility and usability and Decomposition are filled at feature authoring, not before the bet (typedef v13); 7 pass — 459 words outside this history, the bet statable from sections 1–3; 8 not applicable — no sub-initiative names this one. |
 | 2 | 2026-09-15 | update | Feature feat-implementation-good's self-check passed (gaps recorded: Contributors reasoning, word-target overages); initiative active. |
+| 3 | 2026-09-16 | update | The second no-go marked superseded by the lead-pm role: the split request it named (req-2026-09-09-delivery-verified-amendment) ended in the principle's removal from the working set, approved this day, rather than the amendment the no-go anticipated. The no-go's original text is kept as the bet recorded it; the supersession is stated beneath it so no later reader builds to a boundary drawn around a principle that no longer stands. The bet, its appetite, and its other five no-gos are unchanged. |
