@@ -4,10 +4,11 @@ id: principle-set-authoring-process
 owner: product-authority
 status: approved
 approved: 2026-08-23
-version: 9
+version: 10
 created: 2026-08-22
-updated: 2026-09-09
-produces: [principle-set]
+updated: '2026-09-17'
+produces:
+- principle-set
 carried-by: principle-set-authoring-skill
 condition-language: cel
 hold-after: P7D
@@ -15,7 +16,7 @@ annotations:
   claude-code:
     activation: model-judged
     promotion: experiment-local
-    use-when: "authoring or amending a principle set"
+    use-when: authoring or amending a principle set
 ---
 
 # Process: Principle-set authoring
@@ -109,7 +110,7 @@ declared context load list per `least-context`.
 ```yaml
 data:
   sources: {type: array, items: {type: string}}
-  scope: {type: string, enum: [working, architecture]}
+  scope: {type: string, enum: [working, architecture, experience, implementation]}
   guideline_paths: {type: array, items: {type: string}, initial: [../guidelines/principle-set.md, ../guidelines/base-writing-style.md]}
   fitness_path: {type: string, initial: ../fitness/principle-set.fitness.md}
   glossary: {$ref: glossary, from: ../artifacts/glossary-typedef.md}
@@ -274,3 +275,4 @@ the dual-exit rule) lives in the process-definition typedef, not here.
 | 7 | 2026-09-02 | update | Carried-by reference repointed to the load point (.claude/skills/) — the skill-rendering process's first run removed the retired home basis/skills/; the owner's sweep per its second-home escalation. |
 | 8 | 2026-09-05 | update | Single review cycle, per req-2026-09-05-single-review-cycle on the authority's words of 2026-09-05 — "I want all of the processes limited to a single review cycle, so author -> review -> revise -> continue to next step": the screen runs once; revise runs once and continues to the owner's decision; the advance-round step, the round data, and both failsafe branches removed; the owner's "findings" verdict parks the draft with the finding filed instead of returning it to revise, so no uncapped loop remains; park no longer counts rounds. |
 | 9 | 2026-09-09 | update | `run` propagated to `execution` as the noun for a process instance, under req-2026-09-08-definition-vs-instance / feat-execution-vocabulary (shopsystem-product): mechanical, determiner-adjacent occurrences only (`a/the/this/one/another/each/no/any run(s)`); `run-by`, `run` as a schema field or step key, and compound/heading uses (e.g. `run-cost`, `run list`, `Run lifecycle`) left unchanged, that residue disclosed as not done in this pass. Self-check against define-good-up-front: diffed against the file's pre-edit text; no requirement, field name, or heading changed. Made by the lead-solutions-architect role. |
+| 10 | 2026-09-17 | update | The data block's `scope` enum brought current with the principle-set typedef, its one authority: `experience` (typedef v6, 2026-08-26) had never reached this copy, and `implementation` (typedef v7, this day, owner direction) was being added. A repair of a stale restatement, not a change to what this process does; the duplication itself is filed as lead-qd0an, single-source-of-truth wanting the enum to have one home. |

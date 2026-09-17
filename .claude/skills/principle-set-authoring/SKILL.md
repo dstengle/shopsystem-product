@@ -8,12 +8,12 @@ type: skill
 id: principle-set-authoring-skill
 status: approved
 created: 2026-08-22
-updated: 2026-09-09
+updated: '2026-09-17'
 generated: true
 generated-by: basis/tools/compile_process.py
 derived-from: principle-set-authoring-process
 source: basis/processes/principle-set-authoring.md
-source-digest: sha256:2f09288e8cff
+source-digest: sha256:56dc8bd8a7f7
 activation: model-judged
 promotion: experiment-local
 hold-after: P7D
