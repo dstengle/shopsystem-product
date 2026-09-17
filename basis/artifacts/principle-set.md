@@ -5,10 +5,12 @@ defines: principle-set
 owner: product-authority
 status: approved
 approved: 2026-08-22
-version: 6
+version: 7
 created: 2026-08-19
-updated: 2026-08-26
-ancestry: [definition, principle-set]
+updated: '2026-09-17'
+ancestry:
+- definition
+- principle-set
 ---
 
 # Artifact type: principle-set
@@ -29,8 +31,10 @@ ancestry: [definition, principle-set]
 `type: principle-set`, `id`, `scope` (the level the set governs and whose
 context it loads into: `working` — how every activity is performed, loads
 everywhere; `architecture` — how the system is designed, loads where
-design work happens; or `experience` — how the product's interactions
-are designed, loads where interface work happens), `owner`, `status`, `created`, `updated`.
+design work happens; `experience` — how the product's interactions
+are designed, loads where interface work happens; or `implementation` —
+what counts as good engineering when work is built, loads where
+implementation happens), `owner`, `status`, `created`, `updated`.
 
 ## Rules
 
@@ -102,3 +106,4 @@ a screen row.
 | 4 | 2026-08-23 | update | Form rules added: one obligation or implication per bullet; checklist row added. |
 | 5 | 2026-08-23 | update | Owner direction: decision-ledger references removed — changes stand on their own; history entries and text no longer cite numbered decisions. |
 | 6 | 2026-08-26 | update | Owner direction: a third scope, `experience`, for the product designer role's principle set. |
+| 7 | 2026-09-17 | update | Owner direction: a fourth scope, `implementation`, for the definition of good implementation engineering that the two implementation roles carry. Taken on the route that added `experience` at v6. Asked and answered while feat-implementation-good stood assigned: its scenarios need the definition to hold outcome-over-mechanism and standing-principle-over-incident-ledger, which this type already enforces, and the enum held no value for a single discipline's definition of good. |
