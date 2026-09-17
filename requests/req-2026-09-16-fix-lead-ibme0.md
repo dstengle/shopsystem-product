@@ -1,13 +1,13 @@
 ---
 type: request
 id: req-2026-09-16-fix-lead-ibme0
-status: routed
-version: 3
+status: done
+version: 4
 date: 2026-09-16
 reader: lead-pm
 owner: lead-pm
 created: 2026-09-16
-updated: '2026-09-16'
+updated: '2026-09-17'
 originator: product-authority
 received-through: operational-contract
 route: discovery
@@ -16,7 +16,7 @@ route-reason: the ask's third turn is a question — what to name and where to d
   — with no defined term or schema home today, spanning feature-authoring, product-flow,
   the feature typedef, and the ADR chain; its shape is the authority's to explore,
   so not one definition or one instance for the lane
-routed-to: null
+routed-to: ../initiatives/init-adr-flag.md
 ---
 
 # req-2026-09-16-fix-lead-ibme0
@@ -73,6 +73,23 @@ the conversation opens its own.
 
 ## 4. Result
 
+Routed to the initiative
+[init-adr-flag](../initiatives/init-adr-flag.md), framed and bet in
+the discovery conversation opened on this request (anchor lead-imsnb,
+interview form, session record sess-2026-09-17-a; parent execution
+lead-ldyrn). The authority's word was "bet", 2026-09-17, with one
+direction riding on it: a defaulted ask is to be named in the
+record's Document History, not only in a record row. The interview
+answered the third turn — the flag the architect writes on a feature
+between its authoring and its sending is named and given a home the
+flow finds, its record traces to its trigger by reference, and the
+record's id reaches the Bounded Context shop with the scenario — and
+took the first two turns into the same bet: the wrapped-line defect
+lead-ibme0 and the bare text reaches in five process definitions are
+inside its appetite. Set aside, not in the bet: the `supersedes`
+reverse edge derived by search (lead-jzmz5) and the artifact-tools
+gaps that pull agents back to text matching (lead-ng3hc).
+
 ## Document History
 
 | Version | Date | Kind | Entry |
@@ -80,3 +97,4 @@ the conversation opens its own.
 | 1 | 2026-09-16 | update | Recorded by the lead-pm; the originator's three turns quoted verbatim; route awaiting. Execution anchor lead-ldyrn. |
 | 2 | 2026-09-16 | update | Route decided by the lead-pm at the request-intake process's decide-route step, first pass: discovery, form interview, for the reason in section 3 and `route-reason`; status routed; the originator's answer not yet answered, no action taken. Self-check against the step's definition of good before submitting: the ask read from section 1 only, never a transcript; a one-line topic named afresh; the route and reason said to the originator in words before any action; every part written through the artifact-tools skill. |
 | 3 | 2026-09-16 | update | The originator's answer landed by the lead-pm at the request-intake process's land step: accepted, no objection; the discovery route stands as said, acted on from here by the discovery conversation opening on this request. Status unchanged, routed. No work item opened: the route is discovery, not small-change, so `work_item` returns empty. Self-check against the step's definition of good before submitting: the answer written in section 3 in the word the step names; a history row; the check `route != small-change || work_item != ""` holds; every part written through the artifact-tools skill. Execution anchor lead-ldyrn. |
+| 4 | 2026-09-17 | update | Closed by the lead-pm at the discovery conversation's frame step (anchor lead-imsnb, execution lead-ldyrn): `routed-to` init-adr-flag, status done, the result in section 4 with the two threads set aside. Self-check against the step's definition of good before submitting: the initiative it frames links this request as `request` and quotes section 1 with this id as reference, the condition the typedef sets on `done`; every part written through the artifact-tools skill. |
