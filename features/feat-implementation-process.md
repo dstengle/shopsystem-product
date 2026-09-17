@@ -2,8 +2,8 @@
 type: feature
 id: feat-implementation-process
 name: Implementation executes through one defined process
-status: checked
-version: 3
+status: assigned
+version: 4
 initiative: ../initiatives/init-implementation-process.md
 owner: lead-po
 created: 2026-09-17
@@ -70,25 +70,25 @@ Feature: Implementation executes through one defined process
   so that each execution's cost lands on the initiative it belongs to,
   in place of a build made outside any process.
 
-  @feature:feat-implementation-process @hash:pending
+  @bounded-context:shopsystem-product @feature:feat-implementation-process @hash:e996f2d086ab
   Scenario: a defined implementation process exists
     Given a shop that implements, Bounded Context or lead
     When it looks for how to execute an implementation
     Then it finds one defined process, not an approach chosen anew per build
 
-  @feature:feat-implementation-process @hash:pending
+  @bounded-context:shopsystem-product @feature:feat-implementation-process @hash:afe74d3e9ff5
   Scenario: the process runs the maker role, then the checking role, before an execution counts done
     Given the implementation process
     When an execution runs
     Then the maker role produces the implementation and the checking role evaluates it before the execution counts done
 
-  @feature:feat-implementation-process @hash:pending
+  @bounded-context:shopsystem-product @feature:feat-implementation-process @hash:f90002450ad9
   Scenario: the lead shop executes the process on what it owns, without dispatch
     Given the lead shop's own tree, standing frozen to dispatch
     When the lead shop implements a scenario it owns
     Then it executes the defined process itself, with no step of that execution requiring dispatch to a Bounded Context shop or mailbox work
 
-  @feature:feat-implementation-process @hash:pending
+  @bounded-context:shopsystem-product @feature:feat-implementation-process @hash:0e92f2731640
   Scenario: every execution's cost lands on the initiative that owns it
     Given a completed execution of the process
     When the execution's cost is recorded
@@ -116,3 +116,4 @@ Feature: Implementation executes through one defined process
 | 1 | 2026-09-17 | update | Authored alone from the initiative's Framing and For whom, scoped to session two per Appetite v4: the process, the lead shop's permission to execute it, and the proof-execution boundary. Four scenarios, all lead-shop-owned; no Decomposition exists. feat-implementation-good read and not restated — its two roles named by role only. `@hash:pending` on all four, no shell here. Accepted gap: word targets not counted by hand. |
 | 2 | 2026-09-17 | update | add-constraints run: verified for myself that no Decomposition section exists on the initiative and no `basis/contexts/` directory exists in the repository, rather than taking the declared input on trust. Screened all six architecture principles against all four scenarios: `actor-neutral-discipline`, `local-comprehension`, and `bidirectional-conformance` bind, one per scenario, each written as a Contributors line; `knowable-shape` and `contracts-between-contexts` do not bind — no Bounded Context or shop entity is created or described, and no channel crosses Bounded Contexts, since the feature bars dispatch; `intent-provenance` does not bind — the feature carries no new intent, only the initiative's own. Read adr-2026-09-16-scenario-evidence-form before writing the checking-role scenario's constraint: it already sets the evidence bar the process's check step will read, so that scenario rides on the recorded decision rather than needing one of its own; no "needs decision" line was written. Two Edges rows added, for the two constraints naming a case not already in the table; the third constraint's case (cost recorded off the initiative) is already covered by the existing cost-scenario row, so no row duplicates it. Self-evaluation against `define-good-up-front`: this step's definition of good is its own prompt — read the decomposition (confirmed absent), write constraints that ride by name on scenarios, flag a needed decision rather than deciding it, add Edges only for cases actually named — met: nothing was invented to fill the section, the one scenario near a decision was checked against the standing ADR before any flag was considered, and no flag was written. Accepted gap: the Contributors passage runs over the 70-word target (rule 9) — three principles' screening reasoning and three scenario-named constraints cannot be shortened further without losing which principle or scenario each answers to. Made by the lead-solutions-architect role. |
 | 3 | 2026-09-17 | update | Self-check: pass 1–6; fixed 7 (Contributors reasoning trimmed to bullets, moved to history); fail 8–9 (whole doc, Contributors, Edges, prior rows over word targets, unfixed without cutting owed facts or rewriting past rows). |
+| 4 | 2026-09-17 | state | `checked` → `assigned`: the scenario-assignment process's record step, by the lead-solutions-architect role. One assignment entry — context shopsystem-product (the lead shop), scenarios @hash:e996f2d086ab, @hash:afe74d3e9ff5, @hash:f90002450ad9, @hash:0e92f2731640. Pre-state read: verified no `basis/contexts/` tree and no `contracts/` tree exist on this branch, and init-implementation-process (v4) carries no Decomposition section; swept `features/` (feat-implementation-good v6, feat-process-runner v12, feat-run-measurement v13, feat-initiative-cost-rollup v11) for conflicts — none found. Implementation guidance written, one record for the one context: guidance/feat-implementation-process-shopsystem-product.md (v1, status written). Maker's evaluation against the implementation-guidance fitness set (v2) — scenario 1 (the architect's level) pass: every What-changes statement names a process-definition, a step's run-by, or an existing tool, none the lead shop's internals beyond that; scenario 2 (cited, never restated) pass: scenarios cited by hash, feat-implementation-good and the cost features cited by name and version, no scenario text reproduced; scenario 3 (actionable alone) pass: the shop can start the new process-definition and its two fixed-role steps with this record and the assigned scenarios alone; scenario 4 (reasons) pass: each What-not-to-do entry names its reason — `single-source-of-truth`, the initiative's no-go, or `contracts-between-contexts` binding nothing here; scenario 5 (one assignment) pass: frontmatter names the initiative, feature, context, and the four hashes, every statement scoped to them; scenario 6 (word target) pass: 486 words in the body, under the 600-word guidance-record target. Sent: none — no `assign_scenarios` message went out. The one context, shopsystem-product, is the lead shop itself, not a Bounded Context to receive a message; the branch primer bars dispatch and mailbox work while the shop stands frozen. This is the already-recorded process gap lead-ki66p (scenario-assignment defines no lead-shop-internal path), disclosed by the runner as the eleventh assignment handled this way — a later reader must not read this silence as a dispatch that happened. The lead shop's own scenarios stand assigned to itself and are taken up in its tree. Version bumped 3 → 4. |
