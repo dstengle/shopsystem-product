@@ -1,0 +1,1114 @@
+===== basis/guidelines/base-writing-style.md
+---
+type: quality-guideline
+id: base-writing-style
+owner: product-authority
+status: approved
+approved: 2026-08-19
+version: 2
+created: 2026-08-14
+updated: 2026-08-23
+---
+
+# Base writing style
+
+These rules apply to everything written for a human reader, regardless of
+document type. Document types add a format layer on top of this base; they
+never override it.
+
+## Goal
+
+The reader gets the point of any paragraph in one read, any section in 30
+seconds, and the whole document in two minutes. Write for the first read.
+
+## Lead with the point
+
+At every scale, state the conclusion first and the support after.
+
+- A document opens with what it found or decided, not how it got there.
+- A section opens with its main claim, then evidence.
+- A paragraph opens with its point, then elaboration.
+
+If a document type defines a structure, that structure is just this rule
+applied to that type. If no structure is defined, use this rule to invent
+one.
+
+## Detail placement
+
+Precision serves the point; it never precedes it. Formal specification
+language, methods, raw data, scoring tables, and citations go after the
+claim they support — or in an appendix. The body is for understanding.
+
+## Sentences
+
+- One idea per sentence.
+- Active voice, with a named actor: "Reviewers delete unlinked checks,"
+  not "Unlinked checks are subject to deletion."
+- Prefer the short common word: "use" not "utilize," "end" not
+  "terminate," "before" not "prior to."
+
+## Terminology
+
+- Never use a metaphor as a technical term. If a word describes a thing
+  by what it resembles instead of what it literally does, replace it with
+  the literal description. Test: could a competent reader from outside
+  the team work out the meaning from the words alone? If not, rewrite.
+- Banned words. Never use these, in any form:
+  - "load-bearing" → say "other work depends on it" or "critical to
+    operations"
+  - "surface" (as in context surface, config surface) → say "input,"
+    "source," or "channel"
+  - "seam" → say "boundary" or "integration point"
+  - "scar tissue" → describe the actual problem, e.g. "an unreviewed
+    workaround that was never removed"
+- Explain every insider reference — a past incident, an internal system,
+  a person — in one plain sentence, or cut it. Assume the reader knows
+  none of our history.
+
+## Style examples
+
+These examples exist only to show sentence style. The domain (a public
+library) is deliberately unrelated to our work. Copy the style; never
+copy the content or vocabulary into real documents.
+
+bad:
+
+> Unreturned inventory constitutes scar tissue on the circulation loop
+> and rapidly becomes load-bearing for downstream shelving throughput.
+
+good:
+
+> Overdue books pile up at the front desk, and staff spend their time
+> reshelving late returns instead of helping visitors.
+
+The bad sentence uses two metaphors as terms and never names an actor.
+The good sentence says who is affected and what actually happens, in
+plain words.
+
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+| 1 | 2026-08-14 | update | Authored (seed layer); earlier history, if any, in the repository history. |
+| 1 | 2026-08-19 | state | draft → approved. |
+| 2 | 2026-08-23 | update | Owner direction: decision-ledger references removed — changes stand on their own; history entries and text no longer cite numbered decisions. |
+===== basis/glossary.md
+---
+type: glossary
+id: glossary
+owner: product-authority
+status: approved
+approved: 2026-08-19
+version: 12
+created: 2026-08-19
+updated: 2026-08-26
+---
+
+# Glossary
+
+## How the list combines
+
+The defined-term list is this glossary combined with every schema element
+name. Per the `use-defined-terms` principle, a writer choosing between
+terms uses one of these when one fits.
+
+## Terms
+
+- **artifact type** — a named, schema-defined document type (e.g.
+  `decision-brief`); the term the schema registry uses. Not "kind".
+- **data type** — a named, schema-defined structure that is not a
+  human-readable document (e.g. `review`); passed between process steps.
+- **simple type** — a JSON Schema primitive (`string`, `integer`,
+  `boolean`, `array`, `object`), usable inline without registration.
+- **typedef** — the single source a type is generated from; templates and
+  schema fragments are its renderings (owned by shopsystem-knowledge).
+- **schema** — the machine-checkable shape of a type: fields, types,
+  enums, required sections.
+- **process definition** — the source of truth for a process: header
+  (purpose, outcomes, roles), data section, steps section.
+- **step** — one unit of a process: an agent step (carries a prompt) or a
+  runtime step (carries `set`, `run`, or `branches`; no prose).
+- **rendering** — a generated output of a definition (a skill, a
+  diagram, a template); never edited by hand, never the source of truth.
+- **guiding statement** — an optional header element of a process
+  definition that directs judgment across the whole process; compiled
+  into every rendering.
+- **fitness set** — judged (never executed) Given/When/Then scenarios
+  scoring an artifact type's quality.
+- **guideline** — prose quality rules for an artifact type, each with a
+  test, a criterion, and a yes/no decision.
+- **role** — a named capability contract and set of accountabilities,
+  assigned by process steps to whoever fills it; sequencing lives in
+  process definitions, not roles.
+- **principle** — a standing rule about how we work: name, statement,
+  rationale, implications (see the principles document's opening
+  definition).
+- **seed layer** — the hand-approved definitions the regress terminates
+  at: the principle set plus one typedef per definition document type.
+- **owner** — the role that approves changes to a definition; named in
+  every definition's frontmatter.
+- **definition chain** — the six linked definitions of good for one
+  artifact type; required before instances are authored or rewritten.
+- **keeper** — a corpus record whose action is keep-rewrite; rewritten
+  forward through its type's approved chain, never used as-is.
+- **rewrite-forward** — the default for keepers: re-author to the
+  approved standard; repair-in-place only for records already at the bar.
+- **rebaseline** — Phase 1 of the re-founding arc: the active tree comes
+  to hold only chain-conforming records; retired mass moves to the
+  archive.
+- **scope** (of a principle set) — the level the set governs and whose
+  context it loads into: working (every activity), architecture (the
+  designed system), or experience (the product's interactions).
+- **transcript** — the runtime log of turns; unscoped, not a governed
+  artifact, never loaded into context.
+- **conversation** — a scoped, bounded discussion attached to exactly one
+  anchor; every conversation belongs to a process.
+- **anchor** — the governed record a conversation attaches to: a session
+  record, a review record, or a work item; carries the conversation's
+  state across transcript boundaries.
+- **conversation type** — discovery (anchor: a session record), review
+  (anchor: a review record and its outcomes), or work (anchor: a work
+  item).
+- **session record** — the anchor record of a discovery conversation:
+  outcome, produced and revised lists, open threads, select quotes.
+- **review** — one bounded conversation in which the authority decides
+  on presented material. Replaces "sitting".
+- **review record** — the anchor record of a review: the material
+  presented and the outcomes applied; each decision traces in the
+  changed artifacts' Document History, never in a standing ledger.
+- **park** — the failsafe for work that cannot pass review within its
+  round cap: set aside with a filed finding.
+- **round cap** — the declared maximum review rounds before a loop's
+  failsafe exit fires.
+- **action** — the approved choice for one record: keep-rewrite, keep,
+  retire, or terminal, with its target.
+- **authority-call** — a row marker on a migration-plan row awaiting a
+  decision from the authority; not an action — the row has no effect and
+  is out of scope for any run until ruled.
+- **action table** — the table of records and their actions; approved row
+  by row or in blocks at a review. Drives any bulk record change.
+- **close-out** — the mechanical execution of the migration plan's
+  pre-decided retire and terminal actions: snapshot, delete, archive
+  move, a loud post-check, and the branch promotion; no review loop.
+  All stages run consecutively at cut-over.
+- **snapshot tag** — the annotated git tag (`pre-migration`) on `main`'s
+  pre-execution commit, preserving the full corpus for terminal-recovery;
+  after close-out a terminal record exists only there.
+- **migration plan** — the rebaseline's action table plus the order of
+  the per-type migration runs. Replaces "rebaseline bill".
+- **run** — one execution of a process, anchored to a work item; states:
+  running, held, done, cancelled.
+- **hold** — a run state: paused with its step and data preserved in its
+  anchor, by inactivity or by an ask; a held run is resumed or
+  cancelled, never dropped.
+- **checkpoint** — updating a conversation's anchor when a transcript
+  ends mid-conversation; a checkpoint is not a close.
+- **branched conversation** — a conversation run as a sub-process of
+  another run; its anchor records the parent (`branched-from`).
+- **Bounded Context** — a deliberately drawn region of the product with
+  one internal language, one model, and one set of contracts to other
+  regions; drawn by design, never discovered after the fact (Evans,
+  *Domain-Driven Design*).
+- **shop** — the entity that builds, operates, and evolves part of the
+  product. Two types: the lead shop (the system-level coordinator; owns
+  product-level artifacts and no Bounded Context) and the BC-shop (owns
+  and produces exactly one Bounded Context).
+- **activity** — a discrete unit of work performed inside a shop,
+  following a contract or process, with inputs, outcomes, and provenance
+  recorded. What an actor is stays unconstrained; the activity has the
+  same shape whoever performs it.
+- **contract** — a named, versioned statement of what one entity
+  promises another: the schemas exchanged, the meaning of each
+  operation, the error behavior, and the relationship kind. Offered as a
+  product contract (on a Bounded Context) or an operational contract (on
+  a shop); nothing outside a contract is promised.
+- **relationship kind** — the named pattern a contract declares for how
+  two Bounded Contexts relate, drawn from the context-mapping catalogue
+  (Evans, *Domain-Driven Design*): customer–supplier, conformist,
+  anti-corruption layer, open host service, published language, shared
+  kernel, or separate ways.
+- **vehicle** — the message type a request to a Bounded Context shop
+  travels in; chosen from the pre-state, never from the request's
+  wording.
+- **pre-state** — what a Bounded Context actually is before a change,
+  read from its contracts and its scenario register, never from its
+  internals.
+- **framing** — the PM role's recorded statement of what a request is
+  about: the originator, the problem taken to be worth solving, and the
+  outcome it serves; the exclusive decision of `lead-pm`.
+- **acceptance scenario** — a Gherkin scenario that states, as a
+  requirement, what counts as done for one behavior; co-produced by the
+  PO role and the owning Bounded Context shop; held in that shop's
+  scenario register.
+- **scenario register** — a Bounded Context shop's own list of the
+  acceptance scenarios it holds, with their hashes and states; read in
+  full across every context when a claim spans contexts.
+- **ask** — a question one activity puts to another role in place of
+  its output, carrying a default and a checkpoint; the run holds, the
+  role answers, the step resumes — never a wait in place (data type
+  `ask`; process-definition typedef §Run lifecycle).
+- **clarify** — an ask from a Bounded Context shop to the lead shop on
+  scope, vocabulary, structure, or contract; answered by the role whose
+  domain the question falls in.
+- **decomposition** — the solutions architect's record of which Bounded
+  Context owns which capability, and the relationship kind of each
+  contract between contexts.
+- **enabler work** — technical work that makes a feature possible;
+  recommended by the solutions architect, placed in the backlog by the
+  PO role.
+- **interaction type** — one way a person or an agent reaches the
+  product: command line (CLI), full-screen terminal (TUI), graphical or
+  web (GUI), API and SDK, conversational, voice, or a generated document
+  or notification; each honours its own conventions within one
+  experience. The experience guidelines cover conversational and voice
+  together as the `assistant` guideline.
+- **experience guidance corpus** — the product designer role's
+  principle set and guidelines for the experience: design principles,
+  vocabulary and voice, core-task parity across interaction types,
+  interaction patterns per type, and the accessibility target; the
+  role's exclusive domain.
+- **originator** — whoever expresses intent at the product's edge: a
+  person, a shop, or a system outside the product.
+- **generated interface** — an interface whose form the product composes
+  at run time from the person's context, within constraints the
+  experience guidance corpus states; a form, not an interaction type.
+- **assistant interaction** — an interaction in which the product acts on
+  an intent the person stated rather than on a command — conversational,
+  voice, or an assistant acting for the person (a closed set); the locus
+  of control is the product's, so the experience principles bound it.
+- **intent** — a desired outcome expressed by an originator at the
+  product's edge; enters the product through a contract and keeps its
+  provenance through every translation and delegation.
+
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+| 1 | 2026-08-19 | update | Seed term list authored. |
+| 1 | 2026-08-19 | state | draft → approved. |
+| 2 | 2026-08-22 | update | Conversation-model terms added; action extended to four values, authority-call and action-table amended, close-out and snapshot tag added. |
+| 3 | 2026-08-23 | update | Architecture terms added, riding the architecture-principle-set approval: Bounded Context, shop, activity, contract, relationship kind, intent. |
+| 3 | 2026-08-23 | state | The six architecture terms approved with the architecture principle set; pending markers removed. |
+| 4 | 2026-08-23 | update | Owner direction: ruling and experiment-index entries removed with the ledger practice; review and review-record entries rewritten to the outcomes model. |
+| 5 | 2026-08-23 | update | Anchor entry added — the term recurred as an unintroduced-term stumble across three screens. |
+| 6 | 2026-08-23 | update | vehicle and pre-state added — terms the lead-solutions-architect role turns on. |
+| 7 | 2026-08-25 | update | Owner direction: a near-synonym of "role" retired and banned. |
+| 8 | 2026-08-25 | update | framing, acceptance scenario, scenario register, clarify, decomposition, enabler work added — each arrived undefined in the PM and PO role screens. |
+| 9 | 2026-08-25 | update | interaction type and experience guidance corpus added with the lead-product-designer role. |
+| 10 | 2026-08-25 | update | ask added; clarify re-based as an ask; hold now names the ask as a cause. |
+| 10 | 2026-08-25 | update | originator added — used by the PM role and the ask type without a definition. |
+| 11 | 2026-08-26 | update | scope gains the experience level with the experience principle set. |
+| 11 | 2026-08-26 | update | generated interface and assistant interaction added with the experience principle set. |
+| 12 | 2026-08-26 | update | interaction type: the guidelines' `assistant` coverage of conversational and voice noted. |
+===== basis/roles/lead-po.md
+---
+name: lead-po
+description: The product-ownership role of the lead shop. Makes the requirements — briefs, product decision records, acceptance scenarios — from the PM's framing, orders the backlog, and answers scope and vocabulary questions from Bounded Context shops.
+tools: Read, Edit, Write, Grep, Glob
+maxTurns: 60
+type: role-definition
+id: lead-po
+owner: product-authority
+status: approved
+approved: 2026-08-25
+version: 5
+created: 2026-08-23
+updated: 2026-08-25
+---
+
+# Lead PO
+
+You hold the role that makes the requirements. From the
+[PM role](lead-pm.md)'s *framing* — its recorded statement of the problem a request is about
+and the outcome it serves (see the [glossary](../glossary.md)) — you
+author the artifacts that say what the product is supposed to do:
+briefs (a bounded statement of a problem and its scope for a Bounded
+Context shop), product decision records (the record of one
+product-level decision and its reasons), and acceptance scenarios (see
+the glossary). The brief and product decision record typedefs are
+pending on this branch; until they exist, the frozen corpus on `main`
+is the reference. You order
+the backlog. Scope and vocabulary questions from any Bounded Context
+shop resolve against your artifacts. The PM role checks what you make
+against the framing; you make, you do not check your own work.
+
+**Standard of judgment:** you own the commitment, you do not take
+orders — you decline scope that serves no framed outcome and record
+the reason. You say what, never how. You author with the shop that
+owns a behavior, never alone: it supplies the steps and edge cases.
+
+**Accountable for:**
+- Requirements artifacts the rest of the shop can act on — briefs,
+  product decision records, acceptance scenarios — each traceable to
+  the framing it serves.
+- Acceptance scenarios written in Gherkin: each tagged, identified by
+  a hash of its text so that a changed scenario is a new scenario,
+  testable against the running system, and co-produced with the
+  Bounded Context shop that owns the behavior.
+- The backlog: its content and order within the framing, structured
+  to mirror the [solutions architect](lead-solutions-architect.md)'s
+  decomposition.
+- Scope and vocabulary answers to clarify questions from Bounded
+  Context shops, grounded in the requirements artifacts.
+- The requirements picture readable from the artifacts alone, without
+  asking their author; new domain vocabulary added to the glossary.
+
+**Domain (exclusive):** backlog order — this role alone decides which
+requirement the shops take up next, within the framing.
+
+**Decision rights.**
+- *Decides:* backlog order (exclusive). The content of the artifacts
+  it submits is this role's authorship and the PM role's check; which
+  scenario a clarify resolves against is this role's answer, open to
+  the shop's evidence.
+- *Recommends:* scope changes to the PM role, with reasons; scenario
+  splits to the owning Bounded Context shop.
+- *Places or declines in the backlog, with reasons:* enabler work the
+  solutions architect recommends — an exercise of the exclusive
+  domain, not a recommendation.
+- *Escalates to the PM role:* scope conflicts; a scenario the
+  solutions architect reports as infeasible or as crossing contexts; a
+  framing the artifacts cannot be written from.
+- *Never decides:* whether a problem is worth solving (the PM's); the
+  pass or fail of its own output (the PM's check); how a behavior is
+  built (the shops' and the architect's); which context owns a
+  behavior (the architect's).
+
+**Admissible evidence:** the PM role's recorded framing; every
+Bounded Context's scenario register read in full, never one context's
+copy of another's; the solutions architect's decomposition, for where
+a scenario lands; the owning shop's steps for a scenario. Not
+authoritative: a stakeholder document transcribed into tickets; a
+scenario written without the owning shop; this role's own memory of
+what the PM meant.
+
+**Interfaces:**
+- The PM role: framed intent in; requirements artifacts, backlog
+  order, and scope questions out, for the check.
+- The solutions architect role: PM-checked scenarios out, for
+  assignment to the Bounded Context that owns each; enabler recommendations, non-functional constraints, and
+  decomposition changes in.
+- Bounded Context shops: scenarios co-produced — this role supplies
+  scope and wording, the shop supplies steps and edge cases, the
+  architect supplies context ownership and feasibility; clarify
+  questions on scope and vocabulary in, answers out.
+- Asks out, to the PM role: a question the framing cannot answer,
+  sent with a proposed default.
+
+**Knowledge and skills:** requirements authoring; Gherkin as an
+acceptance language, and the practice it assumes — scenarios written
+by the business, testing, and development perspectives together
+("three amigos"); backlog ordering by outcome; the product's domain
+language; the [working principle set](../principles.md).
+
+**Anti-rationalization:**
+- "The stakeholder's list is the requirement." → A list is input; the
+  framing decides what serves an outcome.
+- "I know the domain best, I'll write the scenarios myself." → The
+  owning shop writes the steps; a scenario without them is not
+  co-produced.
+- "It's obviously done." → Done is the PM role's check against the
+  framing, not this role's opinion of its own output.
+- "The architect said it can't be built, so drop it." → Infeasible
+  escalates to the PM role for re-framing; it is not a scope decision
+  here.
+- "I'll specify how, it's faster." → The how is the shops'; specifying
+  it removes their ownership and the architect's check.
+
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+| 1 | 2026-08-23 | update | Authored through the approved role-definition chain, with the frozen lead-shop chapter on `main` as keeper source — rewritten, never pasted. |
+| 1 | 2026-08-23 | review | Screened against the role-definition fitness set: clean — all five scenarios pass; three stumbles ("stably hashed" undefined, artifact locations unlinked, Bash/Grep/Glob breadth), none a fail. |
+| 2 | 2026-08-25 | update | Owner direction: a near-synonym of "role" retired and banned. |
+| 3 | 2026-08-25 | update | Re-authored to the six-section form from the research reports (`research:research/pm-po-roles-2026-08.md` item 8; `research:research/pm-po-one-role-2026-08.md` item 7) by owner decision: the role is the maker whose output the PM checks; the exclusive domain moves from "the wording of acceptance scenarios" (authorship the practice distributes to the three amigos) to backlog order; acceptance of its output is the PM's, not its own. |
+| 3 | 2026-08-25 | review | Screened against the role-definition fitness set: findings — three unlabeled decision claims beside the exclusive domain; framing, acceptance scenario, scenario register, clarify, decomposition, enabler work undefined; v1 stumbles (content hash, Bash breadth) carried; interfaces one sentence. |
+| 4 | 2026-08-25 | update | Repairs: backlog order the one exclusive decision, other decisions marked as authorship-for-check or answer-open-to-evidence; enabler placement moved under the exclusive domain; framing defined inline and in the glossary with the other recurring terms; hash rule stated; Bash dropped from tools; interfaces one per line; active voice. |
+| 4 | 2026-08-25 | review | Re-screened: findings — scenario 1's self-contained assertion failed on brief and product decision record undefined and the PM and architect roles unlinked; all other scenarios and rules pass. |
+| 5 | 2026-08-25 | update | Repairs: brief and product decision record defined inline with their typedefs marked pending on this branch; PM and solutions architect roles linked; exclusive domain in active voice; the checker named in the architect interface. |
+| 5 | 2026-08-25 | review | Re-screened (round 3): clean — all five scenarios pass, five rules hold; stumbles (the check's process unnamed; the `main` reference unlocated) left for the process work that will name the check. |
+| 5 | 2026-08-25 | state | draft → approved by the owner. |
+===== basis/processes/po-output-check.md
+---
+type: process-definition
+id: po-output-check-process
+owner: product-authority
+status: approved
+approved: 2026-08-26
+version: 3
+created: 2026-08-25
+updated: 2026-08-25
+produces: []
+carried-by: po-output-check-skill
+condition-language: cel
+hold-after: P7D
+ask-cap: P1D
+annotations:
+  claude-code:
+    activation: model-judged
+    promotion: experiment-local
+    use-when: "the PO role submits a brief, product decision record, acceptance scenarios, or a backlog order for the PM role's check against the framing"
+---
+
+# Process: PO output check
+
+**Purpose:** Check a piece of the PO role's output against the PM
+role's framing under criteria the definitions state, so that the PM
+role decides from a screen verdict — pass, fail with the criterion
+named, or a definition change — and never by reading every artifact.
+
+**Guiding statement:** The check is the criteria applied, not the
+checker's reading. A finding the criteria cannot name is a missing
+criterion, and the decision that follows is a definition change, not a
+verdict on the maker.
+
+**Outcomes:**
+- O1. The output is screened against a named criteria set and the
+  framing it claims to serve — witnessed by `screen`'s inputs and the
+  `screen-review` it returns.
+- O2. The PM role decides from the review and round log; the artifact
+  reaches the PM role only through the findings' quotes — witnessed by
+  `decide`'s inputs, which exclude the artifact.
+- O3. Every screen round is recorded and the loop exits on a clean
+  verdict, on findings no criterion names, or at the round cap —
+  witnessed by `log-round` and `route-screen`.
+- O4. A fail names the criterion missed; a definition change names the
+  gap, and the gap is filed in the named definition's Document History
+  — witnessed by the `check-decision` fields and `record`'s
+  `definition` and `gap_entry` outputs.
+- O5. A question the framing cannot answer leaves the run as an ask to
+  the PM role, with a default, and the run resumes — witnessed by
+  `revise`'s `asks` and the `ask` value.
+
+**Roles:** maker — [`../roles/lead-po.md`](../roles/lead-po.md)
+(submits and revises; never decides its own pass). screener —
+[`../roles/cold-reviewer.md`](../roles/cold-reviewer.md) (fresh
+context every round; judges against the criteria). the PM role —
+[`../roles/lead-pm.md`](../roles/lead-pm.md) (accountable for the
+decision; a human-held role that decides from the verdict; its
+assisting agent prepares the record and the gap entry).
+
+**Carried by:**
+[`../skills/po-output-check/SKILL.md`](../skills/po-output-check/SKILL.md)
+— generated from this definition by
+[`../tools/compile_process.py`](../tools/compile_process.py), never
+edited by hand.
+
+## Flow (compiled)
+
+Generated from the steps below by `tools/compile_process.py`; do not
+edit by hand.
+
+```mermaid
+flowchart TD
+  screen(["Screen against the criteria — agent: cold-reviewer<br/>in — artifact: string, framing: string, criteria_path: string<br/>out — review: screen-review"])
+  log_round["Record the round — runtime<br/>in — review: screen-review, round_log: screen-review[]<br/>sets — round_log: screen-review[]"]
+  route_screen{"Route on the screen<br/>in — review: screen-review, round: integer, round_cap: integer"}
+  revise(["Revise the output — agent: lead-po<br/>in — artifact: string, review: screen-review, framing: string, ask: ask<br/>out — artifact: string"])
+  advance_round["Advance the round — runtime<br/>in — round: integer<br/>sets — round: integer"]
+  decide[["Decide on the verdict — human: lead-pm<br/>in — review: screen-review, round_log: screen-review[], framing: string<br/>out — decision: check-decision"]]
+  record(["Record the decision — agent: lead-pm<br/>in — decision: check-decision, artifact: string, round_log: screen-review[]<br/>out — artifact: string, gap_entry: string, definition: string"])
+  __end(("end<br/>result — decision: check-decision"))
+  __start(("start")) --> screen
+  screen --> log_round
+  log_round --> route_screen
+  route_screen -->|success exit: clean| decide
+  route_screen -->|definition exit: every finding is uncovered — nothing the maker can repair| decide
+  route_screen -->|failsafe exit: round >= round_cap — decide with findings open| decide
+  route_screen -->|else| revise
+  revise --> advance_round
+  advance_round --> screen
+  decide --> record
+  record --> __end
+```
+
+
+## Data
+
+Each entry names a process-local value. Simple types use JSON Schema
+names inline; every structured shape is a `$ref` to a defined type with
+an explicit source. Conditions are CEL expressions over these names. A
+*criteria set* is the approved fitness set or guideline for the
+artifact's type. The framing is always a criterion, named `framing`;
+until a criteria set exists for a type, `criteria_path` names the
+framing itself and `framing` is the only named criterion. The artifact
+status values this process sets — `checked` on pass, `returned` on
+fail, `pending-definition` on definition change — are this process's
+until the artifact typedefs define their own.
+
+```yaml
+data:
+  artifact: {type: string, format: uri-reference}
+  framing: {type: string, format: uri-reference}
+  criteria_path: {type: string, format: uri-reference}
+  review: {$ref: screen-review, from: ../types/screen-review.md}
+  round: {type: integer, initial: 1}
+  round_cap: {type: integer, initial: 3}
+  round_log: {type: array, items: {$ref: screen-review}, initial: []}
+  ask: {$ref: ask, from: ../types/ask.md, initial: null}
+  decision: {$ref: check-decision, from: ../types/check-decision.md}
+  gap_entry: {type: string}
+  definition: {type: string, format: uri-reference}
+```
+
+## Steps
+
+```yaml
+start: screen
+parameters: [artifact, framing, criteria_path]
+result: decision
+steps:
+  - id: screen
+    name: Screen against the criteria
+    run-by: {role: cold-reviewer, execution: agent, fresh-context: true}
+    inputs: [artifact, framing, criteria_path]
+    outputs: [review]
+    prompt: |
+      Read the criteria set at criteria_path, the framing at framing,
+      and the artifact at artifact — nothing else. Judge the artifact
+      against every criterion and against the framing: does each part
+      of it trace to the framing, and does anything in it serve no
+      framed outcome? Report every finding with the criterion it fails
+      by name — "framing" for a part that does not trace to the framing
+      or serves no framed outcome — the quoted text, the change, and
+      whether you could decide it (confident) or not (wobbly); for a
+      wobbly finding quote the whole passage, since the PM role decides
+      from the review alone. A defect no criterion names is a finding
+      with criterion "uncovered". Verdict "clean"
+      only if there are no findings; otherwise "findings" with the top
+      three changes.
+    next: log-round
+    annotations:
+      fabro: {model: high-reasoning, node: separate-context-per-round}
+
+  - id: log-round
+    name: Record the round
+    run-by: {execution: runtime}
+    inputs: [review, round_log]
+    set:
+      round_log: round_log + [review]
+    next: route-screen
+
+  - id: route-screen
+    name: Route on the screen
+    run-by: {execution: runtime}
+    inputs: [review, round, round_cap]
+    branches:
+      - label: "success exit: clean"
+        when: review.verdict == "clean"
+        next: decide
+      - label: "definition exit: every finding is uncovered — nothing the maker can repair"
+        when: size(review.findings) > 0 && review.findings.all(f, f.criterion == "uncovered")
+        next: decide
+      - label: "failsafe exit: round >= round_cap — decide with findings open"
+        when: round >= round_cap
+        next: decide
+      - else: revise
+
+  - id: revise
+    name: Revise the output
+    run-by: {role: lead-po, execution: agent}
+    inputs: [artifact, review, framing, ask]
+    outputs: [artifact]
+    asks: [lead-pm]
+    prompt: |
+      Repair every finding whose criterion is named, "framing"
+      included; leave findings marked "uncovered" as they are — they
+      are the PM role's to decide. If a repair needs something the framing does not say —
+      the originator's intent, whether a thing is in scope, a decision
+      another role's domain holds — return an ask to lead-pm instead
+      of guessing: the question, its kind, the default you will apply
+      if unanswered, and a checkpoint holding the repairs made so far.
+      On the first pass ask is absent; if it carries an answer or
+      resolved defaulted, act on it and finish the repairs.
+    next: advance-round
+
+  - id: advance-round
+    name: Advance the round
+    run-by: {execution: runtime}
+    inputs: [round]
+    set:
+      round: round + 1
+    next: screen
+
+  - id: decide
+    name: Decide on the verdict
+    run-by: {role: lead-pm, execution: human}
+    inputs: [review, round_log, framing]
+    outputs: [decision]
+    prompt: |
+      From the final review and the round log, decide. "pass": the
+      screen is clean, or its only findings are uncovered and you judge
+      none of them needs a criterion — say so in the reasons. "fail": a
+      named criterion, "framing" included, is still missed at the round
+      cap — name it.
+      "definition-change": an uncovered finding should have been a
+      criterion, or a criterion the output met produced something that
+      does not serve the framing — name the definition and what it
+      lacks. Where both a missed named criterion and an open uncovered finding
+      stand at the cap, "fail" takes precedence and the reasons carry
+      the uncovered finding. Decide from the quotes in the review.
+      Record your reasons.
+    next: record
+
+  - id: record
+    name: Record the decision
+    run-by: {role: lead-pm, execution: agent}
+    inputs: [decision, artifact, round_log]
+    outputs: [artifact, gap_entry, definition]
+    prompt: |
+      Write into the artifact's Document History one review entry per
+      round with its verdict, then a state entry carrying the decision
+      and its reasons. Set the artifact's status: "checked" on pass,
+      "returned" on fail with the criterion named, "pending-definition"
+      on definition-change. On "definition-change", write a review
+      entry stating the gap into the Document History of the definition
+      the decision names; return that file's path as definition and the
+      entry's text as gap_entry. Otherwise return both empty. Return
+      the artifact.
+    next: end
+```
+
+## Derived checks
+
+| Outcome | Check | Kind | Where |
+|---|---|---|---|
+| O1 | screen reads only criteria, framing, artifact | judged | `screen.prompt` and inputs |
+| O2 | `artifact` absent from `decide.inputs` | mechanical | `decide.inputs` |
+| O3 | every round logged; three labeled exits | mechanical | `log-round`, `route-screen` |
+| O4 | `criterion` present on fail, `gap` on definition-change; `definition` and `gap_entry` non-empty on definition-change | judged | `check-decision`, `record` outputs |
+| O5 | `revise` carries `asks`; process carries `ask-cap`; `ask` listed in inputs | mechanical | `revise`, frontmatter |
+
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+| 1 | 2026-08-25 | update | Authored by owner decision as the check the lead-pm role runs on the lead-po role's output — the maker/checker split's named process. First process to carry `asks` and `ask-cap`. Criteria sets per artifact type (brief, product decision record, acceptance scenarios, backlog order) are a filed gap: until each exists, `criteria_path` names the nearest approved fitness set or the framing alone. |
+| 1 | 2026-08-25 | review | Screened against the process-definition chain: findings — an uncovered finding could never clear the screen; the `review` type lacked per-finding criterion, quote, and decidability; two prompts wrote to undeclared channels; `artifact_type` loaded and unread; one route-decision branch dead; status values and the gap's home undefined. |
+| 2 | 2026-08-25 | update | Reworked: a `screen-review` type carries findings with criterion, quote, and decidability; route-screen gains a definition exit when every finding is uncovered; decide routes straight to record; the artifact leaves the decider's inputs; `artifact_type` dropped; the gap is filed as a review entry in the named definition's history and returned as `gap_entry`; status values declared as this process's pending the typedefs. |
+| 2 | 2026-08-25 | review | Re-screened: findings — decide's prompt opened an undeclared artifact; a framing-trace failure had no criterion name and so was never repaired; record wrote a file outside its outputs; a vacuous all-uncovered branch on an empty list; ask without an initial. |
+| 3 | 2026-08-25 | update | Repairs: the PM role decides from the review alone, wobbly findings quote the whole passage; `framing` is a named criterion the maker repairs; record returns the written definition's path; the definition exit guarded on a non-empty list; `ask` initial null; status vocabulary moved to Data prose. The v1 entry's "nearest approved fitness set or the framing alone" is superseded by Data's rule. |
+| 3 | 2026-08-25 | review | Re-screened (round 3): clean — all six scenarios pass, six rules hold; both paths traced; stumbles polished in place (verdict precedence at the cap; the framing criterion named in the type). |
+| 3 | 2026-08-26 | state | draft → approved by the owner. |
+===== basis/fitness/brief.fitness.md
+---
+type: fitness-set
+id: brief-fitness
+owner: product-authority
+status: approved
+approved: 2026-08-26
+version: 3
+created: 2026-08-26
+updated: 2026-08-26
+target-type: brief
+judged: true
+executable: false
+judged-by: cold-reviewer
+---
+
+# Fitness set: brief
+
+A brief is the PO role's bounded statement of a problem and its scope
+for a Bounded Context shop (the typedef is pending on this branch; the
+frozen corpus on `main` is the reference). These scenarios are the
+criteria set the [PO output check](../processes/po-output-check.md)
+screens a brief against, alongside the PM role's framing, which is
+always the criterion named `framing`. They are evaluated by the
+`cold-reviewer` role, never executed — no step definitions exist or
+will exist. The judge's model and prompt version are recorded with each
+round verdict.
+The judge reads only the criteria set, the framing, and the artifact;
+every scenario therefore asks for what the artifact itself carries, and
+a fact it must carry — a term's definition, a reference, a reason — is
+what these scenarios make it carry. These scenarios stand in for the
+pending typedef and are its first draft; the typedef inherits them.
+
+## Scenarios
+
+Scenario 1: declined scope carries its reason
+  Given each statement the brief marks out of scope
+  When it is read
+  Then it carries the reason it is out of scope
+
+Scenario 2: the problem, not the solution
+  Given the brief's statement of what the shop is asked for
+  When it is parsed for design or implementation choices
+  Then it states the problem and the outcome and names no how — no
+  technology, structure, or interface form the shop would otherwise
+  choose; naming an interaction type the behavior must hold on is a
+  what, not a form
+
+Scenario 3: scope has an edge
+  Given the pieces of work the framing or the brief itself names as
+  neighbouring
+  When each is read against the scope
+  Then the brief says whether it is in or out, or names the rule that
+  decides
+
+Scenario 4: the shop can act from it alone
+  Given the brief without its author present
+  When the receiving shop reads it
+  Then every term is defined in the brief or the framing, every
+  referenced artifact is linked, and every question the framing or the brief
+  itself raises is either answered or listed as open
+
+Scenario 5: the first paragraph states the problem and the outcome
+  Given the brief alone
+  When the reader stops after the first paragraph
+  Then the problem and the outcome are already stated (this set's
+  proposal for the typedef, after the decision-brief form)
+
+## Compile mapping (each Then → one judge-rubric assertion)
+
+| Scenario Then | Judge-rubric assertion |
+|---|---|
+| 1 — declined scope reasoned | "For each out-of-scope mark: is a reason stated? Cite any without one." |
+| 2 — problem, not solution | "List every sentence that chooses a technology, structure, or interface form (an interaction type named is not a form). Empty list = pass." |
+| 3 — scope has an edge | "For each neighbouring piece of work the framing or brief names: does the brief say in or out, or name the deciding rule? Cite." |
+| 4 — actionable alone | "List undefined terms, unlinked references, and questions the framing or brief raises that are neither answered nor listed as open. Empty list = pass." |
+| 5 — first paragraph | "Does paragraph 1 state the problem and the outcome? Quote it, or answer no." |
+
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+| 1 | 2026-08-26 | update | Authored by owner direction as the criteria set the PO output check screens briefs against; the brief typedef is pending, so scenarios rest on the lead-po role's accountabilities and the framing. |
+| 1 | 2026-08-26 | review | Screened: findings — scenario 1 duplicated the process's `framing` criterion; scenario 4 cited the glossary the judge cannot read; scenario 5's title mismatched its Then; scenario 3 let the judge invent neighbours. |
+| 2 | 2026-08-26 | update | Repairs: scenario 1 reduced to the residual (declined scope reasoned); terms defined in the brief or framing; neighbours bound to those the framing or brief names; scenario 5 retitled and sourced; the judge's inputs and the typedef-draft status stated in the intro. |
+| 2 | 2026-08-26 | review | Re-screened: findings — scenario 5 cited lead-po for a rule it does not carry; scenario 4 let the judge pick the questions. |
+| 3 | 2026-08-26 | update | Repairs: scenario 5 attributed to this set's proposal after the decision-brief form; questions bound to those the framing or brief raises; scenario 1's Then widened to any out-of-scope reason. |
+| 3 | 2026-08-26 | review | Re-screened (round 3): clean — every Then decidable from the criteria set, the framing, and the artifact; attributions accurate. |
+| 3 | 2026-08-26 | state | draft → approved by the owner. |
+===== basis/fitness/product-decision-record.fitness.md
+---
+type: fitness-set
+id: product-decision-record-fitness
+owner: product-authority
+status: approved
+approved: 2026-08-26
+version: 3
+created: 2026-08-26
+updated: 2026-08-26
+target-type: product-decision-record
+judged: true
+executable: false
+judged-by: cold-reviewer
+---
+
+# Fitness set: product decision record
+
+A product decision record is the PO role's record of one product-level
+decision and its reasons (the typedef is pending on this branch; the
+frozen corpus on `main` is the reference). These scenarios are the
+criteria set the [PO output check](../processes/po-output-check.md)
+screens a record against, alongside the framing (criterion `framing`).
+Evaluated by the `cold-reviewer` role, never executed. The judge's
+model and prompt version are recorded with each round verdict.
+The judge reads only the criteria set, the framing, and the artifact;
+every scenario therefore asks for what the artifact itself carries, and
+a fact it must carry — a term's definition, a reference, a reason — is
+what these scenarios make it carry. These scenarios stand in for the
+pending typedef and are its first draft; the typedef inherits them.
+
+The record's parts: decision and consequences follow Nygard's
+architecture decision record form; considered alternatives follow
+MADR; decider (from the roles' decision rights) and reversibility are
+this set's proposal for the typedef — adopted and extended per
+`external-standards-first`; whether the named role held the
+right it exercised is the PM role's ruling at the decide step, not the
+judge's.
+
+## Scenarios
+
+Scenario 1: one decision
+  Given the record
+  When its decision statement is parsed
+  Then it states exactly one decision, as a sentence a reader can act
+  on
+
+Scenario 2: the alternatives were real
+  Given the record's alternatives
+  When each alternative is read
+  Then at least one alternative is stated that the deciding role could
+  have chosen, with the reason it was not
+
+Scenario 3: the decider and the right are named
+  Given the record's statement of who decided
+  When it is read
+  Then it names the role that decided and the decision right it
+  exercised, or the escalation that settled it
+
+Scenario 4: consequences are priced
+  Given the record's consequences
+  When each consequence is read
+  Then it names what changes, for whom, and what it costs or forecloses
+
+Scenario 5: reversibility is stated
+  Given the record
+  When a reader asks how hard the decision is to reverse
+  Then the record says so and, for a decision it calls hard to reverse,
+  names what would trigger revisiting it
+
+## Compile mapping (each Then → one judge-rubric assertion)
+
+| Scenario Then | Judge-rubric assertion |
+|---|---|
+| 1 — one decision | "Quote the decision sentence. Is it one decision, actionable? Any no = fail." |
+| 2 — real alternatives | "Is at least one alternative stated that the deciding role could have chosen, with the reason against it? Cite it or its absence." |
+| 3 — decider and right named | "Does the record name the deciding role and the right exercised, or the escalation? Cite the sentence or its absence." |
+| 4 — consequences priced | "For each consequence: what changes, for whom, at what cost? Cite any consequence missing one." |
+| 5 — reversibility | "Does the record state how hard the decision is to reverse and, if hard, what would trigger revisiting it? Cite the sentence or its absence." |
+
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+| 1 | 2026-08-26 | update | Authored by owner direction as the criteria set the PO output check screens product decision records against; the typedef is pending. Scenario 3 rests on the four approved roles' decision rights. |
+| 1 | 2026-08-26 | review | Screened: findings — scenario 3 misattributed scope to the PO role, restated the roles' decision rights in a second home, and asked the judge for the PM's domain ruling; the record's parts had no named source; scenario 2 named the wrong actor. |
+| 2 | 2026-08-26 | update | Repairs: scenario 3 is a presence check (role and right named, or escalation); the ADR form named as the source of the parts; the deciding role is the actor of alternatives; the framing clause dropped from scenario 1; intro states the judge's inputs. |
+| 2 | 2026-08-26 | review | Re-screened: findings — the ADR form was credited with parts it does not carry. |
+| 3 | 2026-08-26 | update | Repairs: decision and consequences credited to Nygard, alternatives to MADR, decider and reversibility marked as this set's proposal. |
+| 3 | 2026-08-26 | review | Re-screened (round 3): clean — every Then decidable from the criteria set, the framing, and the artifact; attributions accurate. |
+| 3 | 2026-08-26 | state | draft → approved by the owner. |
+===== basis/fitness/acceptance-scenarios.fitness.md
+---
+type: fitness-set
+id: acceptance-scenarios-fitness
+owner: product-authority
+status: approved
+approved: 2026-08-26
+version: 3
+created: 2026-08-26
+updated: 2026-08-26
+target-type: acceptance-scenarios
+judged: true
+executable: false
+judged-by: cold-reviewer
+---
+
+# Fitness set: acceptance scenarios
+
+An acceptance scenario is a Gherkin scenario that states, as a
+requirement, what counts as done for one behavior; a set of them is
+what the PO role submits for a behavior (the acceptance scenarios
+themselves are executable by the owning shop; this fitness set judges
+their quality and is never executed). These scenarios are the criteria
+set the [PO output check](../processes/po-output-check.md) screens a
+submitted set against, alongside the framing (criterion `framing`).
+Evaluated by the `cold-reviewer` role. The judge's model and prompt
+version are recorded with each round verdict.
+The judge reads only the criteria set, the framing, and the artifact;
+every scenario therefore asks for what the artifact itself carries, and
+a fact it must carry — a term's definition, a reference, a reason — is
+what these scenarios make it carry. These scenarios stand in for the
+pending acceptance-scenario typedef and are its first draft; the
+typedef inherits them (the co-production statement and the tag's
+content are what this set asks the typedef to carry).
+
+## Scenarios
+
+Scenario 1: each scenario is one observable behavior
+  Given a scenario in the set
+  When its Given/When/Then is read
+  Then the When is one action or event, the Then an outcome observable
+  in the running system, and no step names an implementation detail
+
+Scenario 2: co-produced with the owning shop
+  Given the set's statement of who contributed
+  When it is read
+  Then the owning Bounded Context shop is named as the source of the
+  steps and edge cases, and, where the behavior has an interaction, the
+  product designer role's usability acceptance criteria and the
+  accessibility criteria are present (the lead-product-designer role's
+  accountabilities; the experience principle `accessible-by-standard`)
+
+Scenario 3: identity fields are present
+  Given each scenario
+  When its header is read
+  Then it carries a tag naming the behavior and its Bounded Context and
+  a hash field (whether the hash matches the text is a mechanical
+  check to be filed as a lint, not this judge's)
+
+Scenario 4: the named edges are covered
+  Given the failure and boundary cases the framing or the set's stated
+  shop contribution names
+  When each is read against the set
+  Then it is a scenario in the set or is marked out of scope with a
+  reason
+
+Scenario 5: interaction types are named
+  Given a behavior a person or agent reaches through an interaction
+  When the set is read
+  Then it names the interaction types the behavior must hold on (the
+  experience principle `core-task-parity`)
+
+## Compile mapping (each Then → one judge-rubric assertion)
+
+| Scenario Then | Judge-rubric assertion |
+|---|---|
+| 1 — one observable behavior | "For each scenario: is the When one action, the Then observable in the running system, and no step implementation-specific? Cite any failing scenario." |
+| 2 — co-produced | "Is the owning shop named as the source of steps and edge cases? Where the behavior has an interaction, are usability and accessibility criteria present? Cite or name the absence." |
+| 3 — identity fields | "For each scenario: tag naming behavior and context present? hash field present? Cite any scenario without both." |
+| 4 — named edges covered | "For each failure or boundary case the framing or the set's stated shop contribution names: cite the scenario or the out-of-scope note. Any uncovered = fail." |
+| 5 — interaction types named | "Does the set name the interaction types the behavior must hold on? Cite the sentence or its absence." |
+
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+| 1 | 2026-08-26 | update | Authored by owner direction as the criteria set the PO output check screens acceptance-scenario sets against; rests on the lead-po role (co-production, hash, tag) and the experience principles (interaction types, usability criteria). |
+| 1 | 2026-08-26 | review | Screened: findings — "usability criteria" alone where the principles ask for accessibility criteria and the designer role supplies usability ones; an attribution record no definition carries; a hash comparison a reading judge cannot make; edge cases the judge would invent. |
+| 2 | 2026-08-26 | update | Repairs: usability and accessibility criteria both named with their sources; co-production stated as what the set must say; hash reduced to presence with the comparison filed as mechanical; edges bound to those the framing, brief, or shop names; typedef-draft status stated. |
+| 2 | 2026-08-26 | review | Re-screened: findings — scenario 4 read the brief, which the screen does not load; scenario 2's sources lived only in the history. |
+| 3 | 2026-08-26 | update | Repairs: edges bound to the framing and the set's own shop contribution; usability and accessibility criteria sourced in the Then; the hash lint marked to-be-filed. |
+| 3 | 2026-08-26 | review | Re-screened (round 3): clean — every Then decidable from the criteria set, the framing, and the artifact; attributions accurate. |
+| 3 | 2026-08-26 | state | draft → approved by the owner. |
+===== basis/fitness/backlog-order.fitness.md
+---
+type: fitness-set
+id: backlog-order-fitness
+owner: product-authority
+status: approved
+approved: 2026-08-26
+version: 3
+created: 2026-08-26
+updated: 2026-08-26
+target-type: backlog-order
+judged: true
+executable: false
+judged-by: cold-reviewer
+---
+
+# Fitness set: backlog order
+
+A backlog order is the PO role's ordered list of requirements within
+the PM role's framing — the PO role's exclusive decision — as submitted for
+the PM role's check. These scenarios are the criteria set the
+[PO output check](../processes/po-output-check.md) screens an order
+against, alongside the framing (criterion `framing`). Evaluated by the
+`cold-reviewer` role, never executed. The judge's model and prompt
+version are recorded with each round verdict.
+The judge reads only the criteria set, the framing, and the artifact;
+every scenario therefore asks for what the artifact itself carries, and
+a fact it must carry — a term's definition, a reference, a reason — is
+what these scenarios make it carry. These scenarios stand in for the
+pending backlog-order typedef — no definition yet treats the order as an
+artifact — and are its first draft; the typedef inherits them. Scenario 1 overlaps the
+process's `framing` criterion by design: the process passes one
+framing and an order spans many. What the
+judge cannot catch from the order alone — a recommendation omitted, a
+wrong context — is the solutions architect role's to raise through its
+interface with the PO role.
+
+## Scenarios
+
+Scenario 1: every item serves a framing
+  Given each item in the order
+  When its framing reference is read
+  Then it names the framing it serves, or is marked declined with a
+  reason
+
+Scenario 2: the order states the priority it follows
+  Given the order's statement of the roadmap priority it was made
+  against
+  When the order is compared with that statement
+  Then items serving a higher-priority framing precede items serving a
+  lower one, or the order states a reason for each exception
+
+Scenario 3: enabler work is placed or declined with reasons
+  Given the order's list of enabler recommendations received from the
+  solutions architect role
+  When the order is read
+  Then each recommendation appears in the order with its position
+  reasoned, or is declined with a reason
+
+Scenario 4: the order names each item's context
+  Given each item
+  When it is read
+  Then it names the Bounded Context that owns it, and an item crossing
+  contexts is marked as such with the escalation to the PM role named
+
+Scenario 5: the next item says whether it is ready
+  Given the first item not yet taken up
+  When it is read
+  Then the order marks it ready and links the brief or scenario set it
+  states is checked (passed the PO output check), or marks it not ready
+  and names what it waits on
+
+## Compile mapping (each Then → one judge-rubric assertion)
+
+| Scenario Then | Judge-rubric assertion |
+|---|---|
+| 1 — serves a framing | "For each item: framing named, or declined with a reason? Cite any item with neither." |
+| 2 — follows stated priority | "Compare the order with the priority it states; cite each inversion and whether a reason is stated. Any unreasoned inversion = fail." |
+| 3 — enablers placed or declined | "For each recommendation the order lists: placed with a reasoned position, or declined with a reason? Cite any that is neither." |
+| 4 — context named | "Does each item name its owning Bounded Context, with cross-context items marked and their escalation named? Cite any that does not." |
+| 5 — next item ready | "Is the first untaken item marked ready with the artifact it states is checked linked, or not ready with what it waits on? Cite." |
+
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+| 1 | 2026-08-26 | update | Authored by owner direction as the criteria set the PO output check screens a backlog order against; rests on the lead-po role's exclusive domain and interfaces (priority from the PM role, enablers and decomposition from the solutions architect). |
+| 1 | 2026-08-26 | review | Screened: findings — scenarios 2–5 rested on the priority, recommendations, decomposition, and other artifacts' status, none of which the screen loads; typedef-pending note missing; cross-context items lacked the escalation. |
+| 2 | 2026-08-26 | update | Repairs: every Given re-based on what the order itself states; what the judge then cannot catch named and routed to the architect's interface; scenario 1's overlap with `framing` justified inline; escalation named; typedef-draft status stated. |
+| 2 | 2026-08-26 | review | Re-screened: findings — scenario 5 read another artifact's status; the framing-overlap note sat inside a Then; "checked" unglossed; the intro misassigned the exclusive decision. |
+| 3 | 2026-08-26 | update | Repairs: scenario 5 judges what the order states; the overlap justification moved to the intro; checked glossed; the PO role named as the exclusive decider. |
+| 3 | 2026-08-26 | review | Re-screened (round 3): clean — every Then decidable from the criteria set, the framing, and the artifact; attributions accurate. |
+| 3 | 2026-08-26 | state | draft → approved by the owner. |
+===== basis/experience/core-tasks.md
+---
+type: experience-record
+id: experience-core-tasks
+record: core-tasks
+owner: product-authority
+status: draft
+version: 2
+created: 2026-08-26
+updated: 2026-08-26
+maintained-by: lead-product-designer
+---
+
+# Experience record: core-task list
+
+The tasks a person or an agent must be able to complete wherever the
+product is reached, and the options every interaction type offering a
+task must present. Read by the
+[common experience guideline](../guidelines/experience-common.md)
+rule 4, the [interaction fitness set](../fitness/interaction.fitness.md)
+scenario 4, and the
+[acceptance-scenarios fitness set](../fitness/acceptance-scenarios.fitness.md)
+scenario 5. An entry means: every interaction type must complete the
+task with every option named, except a type the removal column names
+with its reason. Every entry is a hypothesis seeded from what the basis
+processes have a person or agent do; user research is to confirm the
+tasks, and the product designer role settles the removals.
+
+## Entries
+
+| Task | What is accomplished | Interaction types it holds on | Removed from, with reason | Options every type must offer | Source | Status |
+|---|---|---|---|---|---|---|
+| start a run | a process begins against a work item with its parameters | every type | document: a document cannot start a run; it links to an interaction that can | choose the process; supply parameters; see the run's id | process-definition typedef §Run lifecycle | hypothesis |
+| hold, resume, or cancel a run | a run pauses with its state kept, continues, or ends with a reason | every type | document: as above | name the run; give a reason on cancel | process-definition typedef §Run lifecycle | hypothesis |
+| answer an ask | a question a run put to a role is answered or its default accepted | every type | none — a document (the notification) links to the interaction that answers | see the question, kind, and default; answer or accept the default | ask type | hypothesis |
+| submit output for a check | a PO artifact enters the PO output check | every type | document: as above | name the artifact and its framing | po-output-check process | hypothesis |
+| read a decision | the result of a check is read with its reasons | every type | none | see verdict, criterion or gap, reasons | check-decision type | hypothesis |
+| raise a clarify | a shop asks the lead shop a scope, vocabulary, structure, or contract question | every type | document: as above | state the question and its kind | glossary: clarify | hypothesis |
+| deliver work for reconciliation | a shop returns work against its assignment | every type | document: as above | name the assignment; attach the scenario register | reconcile-and-close process | hypothesis |
+
+## Checks
+
+[Common experience guideline](../guidelines/experience-common.md)
+rule 4; [interaction fitness set](../fitness/interaction.fitness.md)
+scenario 4;
+[acceptance-scenarios fitness set](../fitness/acceptance-scenarios.fitness.md)
+scenario 5.
+
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+| 1 | 2026-08-26 | update | Seeded from the basis processes. |
+| 1 | 2026-08-26 | review | Screened: findings — tasks removed from types with no reason, against core-task-parity; a document contradiction; every cell an unlabeled design assertion. |
+| 2 | 2026-08-26 | update | Repairs: every task holds on every type unless the removal column gives the reason; the document type's removals reasoned; every entry marked hypothesis. |

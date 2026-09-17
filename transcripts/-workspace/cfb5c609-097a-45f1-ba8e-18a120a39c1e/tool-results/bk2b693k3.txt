@@ -1,0 +1,885 @@
+=== intents/intent-001.md ===
+---
+type: intent-record
+id: intent-001
+derived-by: [cand-001]
+title: Interactive product-direction capability with disciplined artifacts
+status: recorded
+created: 2026-07-09
+updated: 2026-07-09
+authors: [dstengle, "Claude (acting lead-pm)"]
+description: Stakeholder intent for an interactive, direction-level product partner that terminates in durable artifacts without router accretion.
+stakeholder: dstengle
+session: sess-2026-07-09-a
+superseded-by:
+beads: []
+=== intents/intent-002.md ===
+---
+type: intent-record
+id: intent-002
+derived-by: [cand-002]
+title: Operator-configurable, release-independent LLM provider/model selection for fabro
+status: recorded
+created: 2026-07-14
+updated: 2026-07-14
+authors: [dstengle, "Claude (acting lead-pm)"]
+description: Stakeholder intent for making fabro's LLM provider/model choice an operator-controlled runtime dial instead of a release-gated default, proven via OpenRouter as the first additional provider.
+stakeholder: dstengle
+session: sess-2026-07-14-a
+superseded-by:
+beads: [lead-obfub, lead-txhou]
+=== intents/intent-003.md ===
+---
+type: intent-record
+id: intent-003
+title: Granular LLM spend observability for fabro, starting with a per-token spend-cap guardrail
+status: recorded
+created: 2026-07-14
+updated: 2026-07-14
+authors: [dstengle, "Claude (acting lead-pm)"]
+description: Stakeholder intent for incrementally-built, granular visibility into fabro's LLM token spend — triggered by the move to per-token billing (OpenRouter) but rooted in a longer-standing want for effectiveness observability.
+stakeholder: dstengle
+session: sess-2026-07-14-a
+superseded-by:
+beads: [lead-2ckf7]
+=== intents/intent-004.md ===
+---
+type: intent-record
+id: intent-004
+derived-by: [cand-003]
+title: Tier/provenance-aware retrieval and citation-validation discipline for roles and subagents
+status: recorded
+created: 2026-07-14
+updated: 2026-07-14
+authors: [dstengle, "Claude (acting lead-pm)"]
+description: Stakeholder intent for making role/subagent evidence-gathering provenance-aware (canonical vs. historical/spike material) and mechanically validating citations, instead of relying on written-only rules and the router's private memory.
+stakeholder: dstengle
+session: sess-2026-07-14-b
+superseded-by:
+beads: []
+=== intents/intent-005.md ===
+---
+type: intent-record
+id: intent-005
+title: Ordering mechanism for multiple simultaneously-live intent records
+status: recorded
+created: 2026-07-14
+updated: 2026-07-14
+authors: [dstengle, "Claude (acting lead-pm)"]
+description: Stakeholder intent for a tested, working mechanism to order more than one live intent record against each other, using the untested prioritizations/ artifact type.
+stakeholder: dstengle
+session: sess-2026-07-14-b
+superseded-by:
+beads: []
+=== intents/intent-006.md ===
+---
+type: intent-record
+id: intent-006
+derived-by: [cand-004]
+title: Legacy corpus (brief/PDR/ADR) migrates into the typed artifact system
+status: recorded
+created: 2026-07-16
+updated: 2026-07-16
+authors: [dstengle, "Claude (acting lead-pm)"]
+description: Stakeholder intent to close the appetite gap cand-001 deliberately deferred — migrate the legacy brief/PDR/ADR corpus into the typed YAML-frontmatter artifact system, since the resulting split-corpus inconsistency undermines the progressive-disclosure tooling the typed system exists to support.
+stakeholder: dstengle
+session: sess-2026-07-16-a
+superseded-by:
+beads: []
+=== intents/intent-007.md ===
+---
+type: intent-record
+id: intent-007
+derived-by: [brief-024, cand-005]
+title: The knowledge/schema system's full precondition chain must actually hold, not just its individual pieces
+status: recorded
+created: 2026-07-16
+updated: 2026-07-16
+authors: [dstengle, "Claude (acting lead-pm)"]
+description: Stakeholder intent to enumerate and close every precondition the knowledge/schema/progressive-disclosure system depends on to actually function, after investigation showed most of them silently unmet even though individual pieces (the CLI, the generator) work correctly in isolation.
+stakeholder: dstengle
+session: sess-2026-07-16-a
+superseded-by:
+beads: []
+=== intents/intent-008.md ===
+---
+type: intent-record
+id: intent-008
+derived-by: [cand-006]
+title: The artifact system needs an authoritative foundational statement — what artifacts are for, the kinds and how they compose, and the two-views requirement
+status: recorded
+created: 2026-07-25
+updated: 2026-07-25
+authors: [dstengle, "Claude (lead-pm)"]
+description: "The founding requirement of the artifact system — why artifacts exist, the eight kinds and how they compose, and the two-views/self-containment rule with its changelog exception — lives only in scattered predecessors (PDR-031, PDR-032) and a non-authoritative draft, so authoring keeps jumping the lifecycle and the current-system view has no anchor. Slice #1 of the artifact-system restructuring (lead-uhxoc) needs a foundational needs statement to be that anchor."
+stakeholder: dstengle
+session: sess-2026-07-25-a
+superseded-by:
+beads: [lead-uhxoc]
+=== intents/intent-009.md ===
+---
+type: intent-record
+id: intent-009
+derived-by: [cand-007]
+title: The artifact corpus needs programmatic access — navigate, render (with view filtering), and query the frontmatter graph
+status: recorded
+created: 2026-07-25
+updated: 2026-07-25
+authors: [dstengle, "Claude (lead-pm)"]
+description: "The two-views requirement is only real if a reader can obtain each view mechanically: navigate the materialized frontmatter graph, render a document filtered to the current-system view (accepted content sections, changelog dropped) or the full transformation view, and query the corpus by frontmatter. Today none of that exists as tooling. This folds the restructuring's slices #5 (navigation), #6 (rendering with section filtering), and #7 (query by frontmatter) into one programmatic-access capability sharing a single CLI."
+stakeholder: dstengle
+session: sess-2026-07-25-a
+superseded-by:
+beads: [lead-vy38p, lead-jk8j4, lead-81ulx]
+=== intents/intent-010.md ===
+---
+type: intent-record
+id: intent-010
+derived-by: [cand-008]
+title: Each artifact kind needs its own stated needs and schema — explode the bundled taxonomy into per-type docs on top of the base schema
+status: recorded
+created: 2026-07-25
+updated: 2026-07-25
+authors: [dstengle, "Claude (lead-pm)"]
+description: "The eight artifact kinds (adr, pdr, brief, intent-record, candidate, session-record, current-state, prioritization-record) have distinct purposes, required sections, status lifecycles, and edge participation, but today those per-type needs are bundled inside PDR-032's taxonomy and the generated typedefs rather than each being stated in its own doc. Slice #3 explodes the taxonomy into per-type needs (why each kind exists, what it distinctly requires) and per-type schema (its fields/sections on top of the base schema from slice #2), and resolves the current-state versioned-vs-singleton typedef conflict."
+stakeholder: dstengle
+session: sess-2026-07-25-a
+superseded-by:
+beads: [lead-4vvdo]
+=== intents/intent-011.md ===
+---
+type: intent-record
+id: intent-011
+derived-by: [cand-009]
+title: Each artifact kind needs a writing skill that guides authoring through its lifecycle, and the system must enforce that every kind has a valid one
+status: recorded
+created: 2026-07-25
+updated: 2026-07-25
+authors: [dstengle, "Claude (lead-pm)"]
+description: "The corpus validates artifacts but does not GUIDE their creation: an author can freehand a decision doc with no provenance, wrong status, or a jumped lifecycle (the withdrawn ADR-067/PDR-035-draft; a lead-pm ADR misstep on 2026-07-25). Each of the eight kinds needs a per-type writing skill that bundles its template and schema checks so authoring is guided to the typedef, and shop-templates must enforce that every kind has a writing skill whose content is valid. This is the authoring-guidance layer — the missing half of 'the document and role system is not up and running fully.'"
+stakeholder: dstengle
+session: sess-2026-07-25-a
+superseded-by:
+beads: [lead-2lxya]
+=== intents/intent-012.md ===
+---
+type: intent-record
+id: intent-012
+title: The shop must ground itself in the system's true current state reliably AND inspectably, so the product authority can trust it to run without being the safety net
+status: recorded
+created: 2026-07-27
+updated: 2026-07-27
+authors: [dstengle, "Claude (lead-pm)"]
+description: "The product authority is a mandatory participant in operating the shop — not by choice but because the agents cannot reliably or affordably build, nor visibly show, an accurate picture of what the system has decided. So work comes out wrong or inconsistent and he must catch it, and agents cannot even reach the relevant decisions without him feeding context cues. The optimization target is VERIFIABLE grounding: trust earned by inspecting that a decision stood on the true current state, not by a clean error record."
+stakeholder: dstengle
+session: sess-2026-07-27-a
+superseded-by:
+derived-by: [cand-010]
+beads: [lead-fb3vk]
+=== intents/intent-013.md ===
+---
+type: intent-record
+id: intent-013
+title: Re-found trust in the typed-artifact system by a phased freeze→shrink→enforce→standard arc, with content-quality doctrine captured iteratively from Phase 0
+status: recorded
+created: 2026-08-04
+updated: 2026-08-04
+authors: [dstengle, "Claude (lead-pm)"]
+derived-by: [pdr-039]
+description: "Records the product authority's direction after the 2026-08-03 trust break and the full-system assessment that grounded it: re-found the typed-artifact system in four phases — a scoped freeze with triage, a shrink of the governed core, enforcement that makes green meaningful, then automated carriers and corpus repair — under two amendments the authority set: the quality bar is defined at Phase 0 and applied manually to everything authored during re-founding, and doctrine is captured through an iterative review loop rather than authored one-shot. Automation of quality transfers enforcement off the authority only after the machinery has earned it."
+=== intents/intent-900.md ===
+---
+type: intent-record
+id: intent-900
+derived-by: [cand-900]
+title: 'Legacy: construct the shopsystem framework (pre-intent-record era)'
+status: recorded
+created: 2026-05-11
+authors: [dstengle, Claude (synthetic reconstruction 2026-07-17)]
+description: Reconstructed genesis intent grounding pre-intent-system framework-construction decisions.
+updated: 2026-07-17
+=== candidates/cand-001.md ===
+---
+type: candidate
+id: cand-001
+title: PM mode + artifact type system + coherence gate
+status: shaped
+created: 2026-07-09
+updated: 2026-07-09
+authors: ["Claude (acting lead-pm)", dstengle]
+description: Shaped candidate for a PM main-session mode, an 8-type artifact system, and a coherence gate.
+derives-from: [intent-001]
+session: sess-2026-07-09-a
+experiments: []
+brief:
+parked-until:
+beads: []
+=== candidates/cand-002.md ===
+---
+type: candidate
+id: cand-002
+title: Operator-configurable fabro LLM provider/model selection, proven via OpenRouter
+status: shaped
+created: 2026-07-14
+updated: 2026-07-14
+authors: ["Claude (acting lead-pm)", dstengle]
+description: Shaped candidate for a launch-time, operator-overridable fabro provider/model config surface, proven end-to-end with OpenRouter as a second provider alongside the existing Anthropic path.
+derives-from: [intent-002]
+session: sess-2026-07-14-a
+experiments: []
+brief:
+parked-until:
+beads: [lead-obfub, lead-txhou]
+=== candidates/cand-003.md ===
+---
+type: candidate
+id: cand-003
+title: Structured-corpus query tools as the primary retrieval interface for subagent evidence-gathering
+status: shaped
+created: 2026-07-15
+updated: 2026-07-15
+authors: [dstengle, "Claude (acting lead-pm)"]
+description: Shaped candidate for routing subagent retrieval against the scenarios corpus (and analogously the knowledge/decision-record corpus) through each corpus's canonical query tool rather than ad-hoc grep, since both are structured records (YAML frontmatter, @-tags) that support cheap, exact, complete queries.
+derives-from: [intent-004]
+session: sess-2026-07-15-a
+experiments: []
+brief:
+parked-until:
+beads: []
+=== candidates/cand-004.md ===
+---
+type: candidate
+id: cand-004
+title: Migrate the legacy brief/PDR/ADR corpus into the typed artifact system
+status: shaped
+created: 2026-07-16
+updated: 2026-07-16
+authors: [dstengle, "Claude (acting lead-pm)"]
+description: Shaped candidate closing the appetite gap cand-001 deliberately deferred — bring the ~90-file legacy brief/PDR/ADR corpus onto the same YAML-frontmatter typed schema PDR-032/ADR-059 already gave the newer six artifact types, so progressive-disclosure/retrieval tooling has one consistent corpus to index instead of two.
+derives-from: [intent-006]
+derived-by: [pdr-034]
+session: sess-2026-07-16-a
+experiments: []
+brief:
+parked-until: cand-005 phases 1-4 land (typedef correctness, release+repour, minimal enforcement, coherence gate)
+beads: []
+=== candidates/cand-005.md ===
+---
+type: candidate
+id: cand-005
+title: Close the knowledge/schema system's precondition chain, end to end
+status: committed
+created: 2026-07-16
+updated: 2026-07-16
+authors: [dstengle, "Claude (acting lead-pm)"]
+description: Shaped candidate sequencing every broken or unwired precondition the knowledge/schema/progressive-disclosure system depends on, in dependency order, so each phase is built on ground that actually holds rather than on parts that individually pass their own test while the system around them stays broken.
+derives-from: [intent-007]
+derived-by: [brief-024]
+session: sess-2026-07-16-a
+experiments: []
+brief:
+parked-until:
+beads: []
+=== candidates/cand-006.md ===
+---
+type: candidate
+id: cand-006
+title: A foundational artifact-system needs statement — the anchor the restructuring supersedes into
+status: committed
+created: 2026-07-25
+updated: 2026-07-25
+authors: [dstengle, "Claude (lead-pm)"]
+description: "Shape for slice #1 of the artifact-system restructuring: a foundational needs statement that names why artifacts exist, the eight kinds and how they compose, and the two-views/self-containment requirement with its changelog exception — requirement-only, no schema mechanics — and that formally supersedes PDR-031 and PDR-032's founding portion so the accepted set stays self-consistent."
+derives-from: [intent-008]
+derived-by: [pdr-035]
+session: sess-2026-07-25-a
+experiments: []
+brief:
+parked-until:
+beads: [lead-uhxoc]
+=== candidates/cand-007.md ===
+---
+type: candidate
+id: cand-007
+title: One read-only CLI over the frontmatter graph — navigate, render-with-view-filtering, query
+status: committed
+created: 2026-07-25
+updated: 2026-07-25
+authors: [dstengle, "Claude (lead-pm)"]
+description: "Shape for the folded tooling slice (#5/#6/#7): a single read-only CLI over the artifact frontmatter graph with three verbs — navigate edges from a document, render a document filtered to the current-system or transformation view, and query the corpus by frontmatter — with outputs in md/json/yaml. Makes the two-views requirement obtainable mechanically."
+derives-from: [intent-009]
+derived-by: [pdr-036]
+session: sess-2026-07-25-a
+experiments: []
+brief:
+parked-until:
+beads: [lead-vy38p, lead-jk8j4, lead-81ulx]
+=== candidates/cand-008.md ===
+---
+type: candidate
+id: cand-008
+title: Per-type needs and schema for the eight kinds — additive on the base schema, with the current-state conflict resolved
+status: committed
+created: 2026-07-25
+updated: 2026-07-25
+authors: [dstengle, "Claude (lead-pm)"]
+description: "Shape for slice #3: explode PDR-032's bundled taxonomy into per-type needs and per-type schema for the eight kinds (adr, pdr, brief, intent-record, candidate, session-record, current-state, prioritization-record). Each per-type schema is additive on slice #2's base schema (sections, status enum, edge participation only — never re-declaring base fields). Resolves the current-state versioned-vs-singleton typedef conflict."
+derives-from: [intent-010]
+derived-by: [pdr-037]
+session: sess-2026-07-25-a
+experiments: []
+brief:
+parked-until:
+beads: [lead-4vvdo]
+=== candidates/cand-009.md ===
+---
+type: candidate
+id: cand-009
+title: Per-type writing skills that bundle template + schema checks, with shop-templates enforcing every kind has a valid one
+status: committed
+created: 2026-07-25
+updated: 2026-07-25
+authors: [dstengle, "Claude (lead-pm)"]
+description: "Shape for slice #4: each of the eight kinds gets a writing skill that bundles its per-type template and schema checks (reusing shop-knowledge template/schema/validate, not a fork) so authoring is guided to the typedef and lifecycle; shop-templates enforces that every kind has a writing skill and that each skill's content is valid. The authoring-guidance layer that prevents lifecycle jumps at creation time."
+derives-from: [intent-011]
+derived-by: [pdr-038]
+session: sess-2026-07-25-a
+experiments: []
+brief:
+parked-until:
+beads: [lead-2lxya]
+=== candidates/cand-010.md ===
+---
+type: candidate
+id: cand-010
+title: Corpus entry-point finding as a composable, tag-based skill set — a question resolves to a reproducible, reviewable set of relevant artifacts
+status: shaped
+created: 2026-08-02
+updated: 2026-08-03
+authors: [dstengle, "Claude (lead-pm)"]
+description: "First bet under intent-012 (verifiable grounding). Attacks the FIND half of the proven decomposition — complete+correct selection of the relevant artifacts for a question — which the 5-round adversarial experiment proved discipline alone cannot close. Tags (schema-native per ADR-067, 0/153 populated today) become the reproducible selection surface, populated via an inference bootstrap and queried through thin atomic corpus-command skills combined by one find-entry-points composite; an inference completeness sweep flags relevant-but-untagged docs so reproducible tag-selection is not a silent-false-negative machine. Deliberately excludes the grounding-record-form skill, semantic search, the full atom library, and the graph-as-domain / bd-coupling decisions."
+derives-from: [intent-012]
+derived-by: [brief-025]
+session: sess-2026-08-02-b
+experiments: []
+brief: brief-025
+parked-until:
+beads: [lead-cx7w9]
+=== candidates/cand-900.md ===
+---
+type: candidate
+id: cand-900
+title: 'Legacy: framework-construction decisions (synthetic grounding)'
+status: committed
+created: 2026-05-11
+authors: [dstengle, Claude (synthetic reconstruction 2026-07-17)]
+description: Synthetic candidate grounding pre-intent-system framework decisions.
+derives-from: [intent-900]
+derived-by: [pdr-001, pdr-003, pdr-025, pdr-026, pdr-027, pdr-900]
+updated: 2026-07-17
+=== briefs/brief-001.md ===
+---
+type: brief
+id: brief-001
+title: Inter-shop messaging encapsulation
+status: draft
+created: 2026-05-12
+updated: 2026-07-17
+authors: [dstengle, Claude (lead-po)]
+description: Inter-shop messaging exists as a **bounded surface** that other parts of
+derives-from: [pdr-001]
+=== briefs/brief-002.md ===
+---
+type: brief
+id: brief-002
+title: Shop bootstrap CLI surface
+status: draft
+created: 2026-05-12
+updated: 2026-07-17
+authors: [dstengle, Claude (lead-po)]
+description: A shop is a **shape** the framework defines (§3 for lead, §4 for BC). That
+derives-from: [pdr-002, pdr-001]
+=== briefs/brief-003.md ===
+---
+type: brief
+id: brief-003
+title: Event-driven shop activation
+status: draft
+created: 2026-05-13
+updated: 2026-07-17
+authors: [dstengle, Claude (lead-po)]
+description: Today, every shop — lead and BC — communicates via `shop-msg` mailboxes
+derives-from: [pdr-001]
+=== briefs/brief-004.md ===
+---
+type: brief
+id: brief-004
+title: BC container isolation
+status: draft
+created: 2026-05-20
+updated: 2026-07-17
+authors: [dstengle, Claude (lead-po)]
+description: 'The stakeholder''s expressed desire, in PO''s own words:'
+derives-from: [pdr-004]
+=== briefs/brief-005.md ===
+---
+type: brief
+id: brief-005
+title: BC manifest
+status: draft
+created: 2026-05-20
+updated: 2026-07-17
+authors: [dstengle, Claude (lead-po)]
+description: '**What behavior would satisfy the stakeholder:**'
+derives-from: [pdr-006, pdr-004]
+=== briefs/brief-006.md ===
+---
+type: brief
+id: brief-006
+title: Messaging name registry and lead inbox
+status: draft
+created: 2026-05-20
+updated: 2026-07-17
+authors: [dstengle, Claude (lead-po)]
+description: '**What behavior would satisfy the stakeholder:**'
+derives-from: [pdr-007, pdr-006]
+=== briefs/brief-007.md ===
+---
+type: brief
+id: brief-007
+title: End-user adoption documentation
+status: ready
+created: 2026-05-22
+updated: 2026-07-17
+authors: [dstengle, Claude (lead-po)]
+description: '**What behavior would satisfy the stakeholder:**'
+derives-from: [adr-004, pdr-004, adr-045, adr-043, adr-038, adr-026, adr-028, adr-040, pdr-021, adr-041, adr-018, pdr-020, adr-046]
+=== briefs/brief-008.md ===
+---
+type: brief
+id: brief-008
+title: 'Single-container bootstrap orchestrator (slice 1: lead-only prove-out)'
+status: draft
+created: 2026-05-22
+updated: 2026-07-17
+authors: [dstengle, Claude (lead-po)]
+description: '**Slice 1: prove out launching and bootstrapping the lead shop in a'
+derives-from: []
+=== briefs/brief-009.md ===
+---
+type: brief
+id: brief-009
+title: Scenario-completion journal (BC-authoritative) and lead-side system implementation-state snapshot
+status: draft
+created: 2026-06-08
+updated: 2026-07-17
+authors: [dstengle (stakeholder, problem-framing-canvas), Claude (lead-po)]
+description: '**HMW:** make per-scenario completion a *durable, queryable fact* — an'
+derives-from: [adr-019, adr-018]
+=== briefs/brief-010.md ===
+---
+type: brief
+id: brief-010
+title: 'BC session-start beads-health: set up AND validate the work-tracker before work begins'
+status: draft
+created: 2026-06-11
+updated: 2026-07-17
+authors: [dstengle (stakeholder), Claude (lead-po)]
+description: The request arrives as a solution ("needs a skill for X"). Before converging on
+derives-from: [adr-018]
+=== briefs/brief-011.md ===
+---
+type: brief
+id: brief-011
+title: 'The end-to-end new-product bootstrap path: empty dir → a working second product'
+status: draft
+created: 2026-06-12
+updated: 2026-07-17
+authors: [dstengle (stakeholder), Claude (lead-po)]
+description: '*A developer standing up a second product from scratch can go from an empty'
+derives-from: [pdr-018, adr-038, adr-037, adr-026, adr-028, adr-018, adr-029]
+=== briefs/brief-012.md ===
+---
+type: brief
+id: brief-012
+title: 'Adopter bootstrap: from "Use this template" to a product on its own footing'
+status: draft
+created: 2026-06-18
+updated: 2026-07-17
+authors: [dstengle (stakeholder), Claude (lead-po)]
+description: The adopter-bootstrap journey finding (lead-y73x) names the problem precisely,
+derives-from: [adr-026]
+=== briefs/brief-013.md ===
+---
+type: brief
+id: brief-013
+title: 'A freshly bootstrapped shop comes up healthy: its credentials and connections are wired and checkable, not agent-rediscovered'
+status: draft
+created: 2026-06-29
+updated: 2026-07-17
+authors: [dstengle (stakeholder), Claude (lead-po)]
+description: On a freshly bootstrapped product the lead Claude shell comes up, but
+derives-from: [pdr-024, pdr-019]
+=== briefs/brief-014.md ===
+---
+type: brief
+id: brief-014
+title: Scenario-register visibility vehicle (`request_scenario_register`)
+status: draft
+created: 2026-06-30
+updated: 2026-07-17
+authors: [dstengle (stakeholder, authorized vehicle build), Claude (lead-po)]
+description: The lead can already ask a BC *which scenario hashes it has completed* via
+derives-from: [adr-018, pdr-029, adr-019]
+=== briefs/brief-015.md ===
+---
+type: brief
+id: brief-015
+title: The shopsystem system-version manifest (Bill of Materials)
+status: draft
+created: 2026-06-30
+updated: 2026-07-17
+authors: [David Stenglein (product authority), Claude (lead-po)]
+description: '**There is no single shopsystem system version today.** The product ships as a'
+derives-from: [adr-005, adr-018, adr-039, adr-021]
+=== briefs/brief-016.md ===
+---
+type: brief
+id: brief-016
+title: agent-vault rate limiting is disabled by default fleet-wide; an operator opts back in
+status: draft
+created: 2026-07-08
+updated: 2026-07-17
+authors: [David Stenglein (stakeholder / product authority), Claude (lead-po)]
+description: The agent-vault broker (the credential-injection proxy that substitutes real
+derives-from: [adr-018, adr-026, adr-028]
+candidate: cand-900
+=== briefs/brief-017.md ===
+---
+type: brief
+id: brief-017
+title: Operator-configurable fabro LLM provider/model selection, proven via OpenRouter
+status: draft
+created: 2026-07-14
+updated: 2026-07-17
+authors: [David Stenglein (product authority), Claude (lead-po)]
+description: 'fabro''s LLM provider/model choice is baked into release-gated artifacts today:'
+derives-from: [adr-057, adr-049, adr-028, adr-056]
+candidate: cand-002
+=== briefs/brief-018.md ===
+---
+type: brief
+id: brief-018
+title: 'Candidate typedef: add a `Verbatim anchors` section'
+status: draft
+created: 2026-07-14
+updated: 2026-07-17
+authors: [David Stenglein (product authority), Claude (lead-po)]
+description: The `candidate` artifact typedef is missing a `Verbatim anchors` section
+derives-from: [adr-059, adr-018, pdr-032, adr-056]
+candidate: cand-001
+=== briefs/brief-019.md ===
+---
+type: brief
+id: brief-019
+title: '`shop-knowledge` CLI exposes artifact-schema validation; the six PDR-033 PM skills consume it before closing'
+status: draft
+created: 2026-07-14
+updated: 2026-07-17
+authors: [David Stenglein (product authority), Claude (lead-po)]
+description: 'Two confirmed, empirical gaps compound into one failure mode:'
+derives-from: [pdr-033, adr-059, adr-056, pdr-032]
+candidate: cand-005
+=== briefs/brief-020.md ===
+---
+type: brief
+id: brief-020
+title: Fix fabro OpenRouter provider-registration shape (custom provider → native `openai` + `base_url` override)
+status: ready
+created: 2026-07-15
+updated: 2026-07-17
+authors: [David Stenglein (product authority), Claude (lead-po)]
+description: '`lead-ifye3.2` shipped a mapping table (`src/bc_launcher/fabro/llm_provider.py`)'
+derives-from: [adr-028]
+candidate: cand-002
+=== briefs/brief-021.md ===
+---
+type: brief
+id: brief-021
+title: 'Second correction to fabro OpenRouter integration: a local egress shim replaces direct sandboxed-node routing, and run-wide `--model`/`--provider` flags replace per-node-class placeholder inputs'
+status: ready
+created: 2026-07-15
+updated: 2026-07-17
+authors: [David Stenglein (product authority), Claude (lead-po)]
+description: Brief-020 corrected the provider-registration shape (native `openai` identity
+derives-from: [adr-058, adr-063, adr-049, adr-010, adr-064]
+candidate: cand-002
+=== briefs/brief-022.md ===
+---
+type: brief
+id: brief-022
+title: '`lead-po`/`lead-architect` corpus-wide scenario retrieval goes through the installed `scenarios` CLI''s own query commands, not ad-hoc grep'
+status: draft
+created: 2026-07-15
+updated: 2026-07-17
+authors: [David Stenglein (product authority), Claude (lead-po)]
+description: Subagent retrieval against `features/` (this shop's scenario corpus) is
+derives-from: [adr-056, adr-064, adr-018]
+candidate: cand-003
+=== briefs/brief-023.md ===
+---
+type: brief
+id: brief-023
+title: the coherence gate ships as a lead-installable CLI (cand-005 Phase 4, first slice)
+status: draft
+created: 2026-07-16
+updated: 2026-07-17
+authors: [David Stenglein (product authority), Claude (lead-po)]
+description: The task that produced this brief assumed the coherence gate has "no
+derives-from: [adr-047, adr-059, pdr-032, adr-018, pdr-033, pdr-034]
+candidate: cand-005
+=== briefs/brief-024.md ===
+---
+type: brief
+id: brief-024
+title: Migrate the ~119-file legacy artifact corpus forward into the modern typed-artifact system
+status: ready
+created: 2026-07-17
+updated: 2026-07-17
+authors: ["David Stenglein (product authority)", "Claude (lead-po)"]
+description: Executable migration spec for moving this repo's ~119 pre-modernization pdr/adr/brief files (bold-label statuses, no frontmatter, numeric-slug filenames) forward onto the modern typed-artifact system (PDR-032/ADR-059) so the knowledge coherence gate — correct as built — runs green over the real corpus. Folds in all 2026-07-17 product-authority decisions — uniform-plural directories, synthetic legacy grounding in place of a legacyRoot exemption, findings-plane exclusion, and unincorporated-decision wiring. This is cand-005's promoted Phase 5.
+derives-from: [cand-005, intent-007]
+candidate: cand-005
+=== briefs/brief-025.md ===
+---
+type: brief
+id: brief-025
+title: Prove tag-based corpus entry-point finding on a selection — composable tag-query and tagging skills, with full-corpus population gated on a measured discovery-probe re-run
+status: ready
+created: 2026-08-03
+updated: 2026-08-03
+authors: ["David Stenglein (product authority)", "Claude (lead-po)"]
+description: "Commitment brief for cand-010, the first bet under intent-012 (verifiable grounding). Takes the FIND half — complete + correct selection of the artifacts relevant to a question — and proves it on a SELECTION of documents before any corpus-scale tag population. Carries the product authority's evidence-first build sequence verbatim as the intended work-split: tag-query skill, tagging skill, tag a selection with human feedback, test, re-run the discovery probe and measure impact; full-corpus population is gated on that measurement. Re-verifies cand-010's empirical claims against the live 167-artifact corpus (0 populated tags confirmed and traced to its root cause on the write surface; one exit-code claim drifted) and flags one open Architect question — the tag write path — without answering it."
+derives-from: [cand-010]
+candidate: cand-010
+=== sessions/sess-2026-05-11-a.md ===
+---
+type: session-record
+id: sess-2026-05-11-a
+title: 'Legacy: framework-genesis session (reconstructed)'
+status: closed
+created: 2026-05-11
+authors: [dstengle, Claude (synthetic reconstruction 2026-07-17)]
+description: Reconstructed genesis session for synthetic legacy grounding.
+produced: [intent-900, cand-900, pdr-900]
+revised: []
+updated: 2026-07-17
+=== sessions/sess-2026-07-09-a.md ===
+---
+type: session-record
+id: sess-2026-07-09-a
+title: PM role, artifact type system, domain ownership, handoff packaging
+status: closed
+created: 2026-07-09
+updated: 2026-07-09
+authors: [dstengle, "Claude (acting lead-pm)"]
+description: PM shaping session that produced the intent, candidate, and two PDRs behind the artifact type system.
+mode: shaping
+produced: [intent-001, cand-001, pdr-032, pdr-033]
+revised: []
+beads: []
+=== sessions/sess-2026-07-14-a.md ===
+---
+type: session-record
+id: sess-2026-07-14-a
+title: fabro LLM provider selection + spend observability discovery
+status: closed
+created: 2026-07-14
+updated: 2026-07-14
+authors: [dstengle, "Claude (acting lead-pm)"]
+description: Multi-mode session (discovery -> shaping) that reframed "add OpenRouter to fabro" into two distinct capability problems and drove the blocking one to a shaped candidate.
+mode: discovery
+produced: [intent-002, intent-003, cand-002]
+revised: []
+beads: []
+=== sessions/sess-2026-07-14-b.md ===
+---
+type: session-record
+id: sess-2026-07-14-b
+title: PM system self-observations — candidate citation trail, retrieval/citation discipline, intent-ordering mechanism
+status: closed
+created: 2026-07-14
+updated: 2026-07-14
+authors: [dstengle, "Claude (acting lead-pm)"]
+description: Discovery session on gaps in the PM system itself, surfaced by the stakeholder's direct observations after this session's first real use of the system (sess-2026-07-14-a).
+mode: discovery
+produced: [intent-004, intent-005]
+revised: []
+beads: []
+=== sessions/sess-2026-07-15-a.md ===
+---
+type: session-record
+id: sess-2026-07-15-a
+title: Structured-corpus query tools as retrieval interface — shaping cand-003
+status: closed
+created: 2026-07-15
+updated: 2026-07-15
+authors: [dstengle, "Claude (acting lead-pm)"]
+description: Shaping session driving intent-004's open solution-space question toward a candidate, prompted by the product authority's proposal in response to the same day's own wrong-path-citation incidents.
+mode: shaping
+produced: [cand-003]
+revised: []
+beads: []
+=== sessions/sess-2026-07-16-a.md ===
+---
+type: session-record
+id: sess-2026-07-16-a
+title: Legacy corpus migration, then the full knowledge/schema precondition chain
+status: closed
+created: 2026-07-16
+updated: 2026-07-16
+authors: [dstengle, "Claude (acting lead-pm)"]
+description: Deciding session reopening cand-001/PDR-032's legacy-corpus-migration exclusion; converges on a PDR draft, then a direct ADR-048 spot-check widens into a full precondition-chain audit that reframes and sequences the PDR as a downstream phase.
+mode: deciding
+produced: [intent-006, cand-004, pdr-034, intent-007, cand-005]
+revised: [cand-005]
+beads: []
+=== sessions/sess-2026-07-19-a.md ===
+---
+type: session-record
+id: sess-2026-07-19-a
+title: cand-005 Phase-4 verified-landed; decision-doc coherence model drafted (ADR-067 + PDR-035)
+status: closed
+created: 2026-07-19
+updated: 2026-07-19
+authors: [dstengle, "Claude (lead-architect)", "Claude (lead-po)"]
+description: Reconciled cand-005 Phase 4 to verified-landed and drafted the decision-doc coherence model (no-amendment full-supersede copy-forward + lane discipline) as ADR-067, applied via the consolidated knowledge-governance PDR-035 — all proposed, awaiting product-authority ratification.
+produced: []
+revised: [current-state, cand-005]
+=== sessions/sess-2026-07-20-a.md ===
+---
+type: session-record
+id: sess-2026-07-20-a
+title: Artifact-system restructuring shaped and deferred; ADR-067/PDR-035 withdrawn; light frontmatter care
+status: closed
+created: 2026-07-20
+updated: 2026-07-20
+authors: [dstengle, "Claude (lead-pm)"]
+description: Reviewing the concision of ADR-059/067/PDR-035, the product authority sharpened decision-doc self-containment and expanded scope into a full artifact-system restructuring; decided to leverage the migration branch (light frontmatter care only) and defer the restructuring as a separate initiative — shaping captured, the two never-ratified drafts withdrawn.
+produced: []
+revised: [sess-2026-07-19-a]
+=== sessions/sess-2026-07-25-a.md ===
+---
+type: session-record
+id: sess-2026-07-25-a
+title: Drift diagnosis; cand-005 closed; migrate branch landed to main; all seven lead-uhxoc restructuring intents driven to proposed (autonomous)
+status: closed
+created: 2026-07-25
+updated: 2026-07-25
+authors: [dstengle, "Claude (lead-pm)"]
+description: "A session-start drift check exposed that the beads registry over-reports open work (consume≠close, no bead→commit edge) and that the ADR/role lifecycle isn't yet enforced at authoring time; both traced to the artifact-system restructuring (lead-uhxoc) being shaped-but-deferred atop an essentially-complete cand-005 foundation, on an unlanded branch. Mechanical closeout — cand-005 formally closed in Resolution, the migrate/legacy-corpus-modernization branch landed to main. Then, on an offline autonomous directive, drove all seven lead-uhxoc restructuring intents to proposed/authored, gate-green, committed — NOT self-ratified — leaving an acceptance queue for the product authority."
+produced: [intent-008, cand-006, pdr-035, intent-009, cand-007, pdr-036, intent-010, cand-008, pdr-037, intent-011, cand-009, pdr-038, adr-067, adr-068, adr-069, adr-070, adr-071]
+revised: [cand-005]
+=== sessions/sess-2026-07-27-a.md ===
+---
+type: session-record
+id: sess-2026-07-27-a
+title: Discovery — reframed the knowledge-tools/eliminate-grep ask to the underlying verifiable-grounding problem; produced intent-012
+status: closed
+created: 2026-07-27
+updated: 2026-07-27
+authors: [dstengle, "Claude (lead-pm)"]
+description: "Discovery-mode session. The product authority arrived with a solution-shaped ask (knowledge tools as the sole basis of understanding, eliminate grep, progressive disclosure, more skills) and explicitly asked the lead-pm to find the problem underneath rather than accept the solution. The dialogue reframed it to a trust/autonomy problem — the authority is a mandatory safety net because the agents cannot reliably or inspectably ground themselves — with verifiable grounding as the optimization target. Terminal artifact: intent-012."
+produced: [intent-012]
+revised: []
+=== sessions/sess-2026-08-02-a.md ===
+---
+type: session-record
+id: sess-2026-08-02-a
+title: Shaping the verifiable-grounding initiative — crystallized the grounding-record form and proved (via a 5-round adversarial experiment) that selection needs tools, not just discipline
+status: closed
+created: 2026-08-02
+updated: 2026-08-02
+authors: [dstengle, "Claude (lead-pm)"]
+description: "Shaping-mode session on intent-012 (epic lead-fb3vk). Iterated the grounding-record form with the product authority to its definitive spine — question → derived terms (the audit surface) → per-term interrogation → set → decision, with a hard link on every artifact — then ran a 5-round researcher/bullshit-detector workflow that proved the problem decomposes into a discipline half (traceable inclusion, solvable now) and a tool half (complete+correct selection, which prompt-hardening cannot close: 5/5 FAIL). Handed off for candidate shaping; no candidate produced yet."
+produced: []
+revised: [intent-012]
+=== sessions/sess-2026-08-02-b.md ===
+---
+type: session-record
+id: sess-2026-08-02-b
+title: Shaping the verifiable-grounding first bet to a shaped candidate — cand-010, corpus entry-point finding as a composable, tag-based skill set
+status: closed
+created: 2026-08-02
+updated: 2026-08-02
+authors: [dstengle, "Claude (lead-pm)"]
+description: "Shaping-mode session on intent-012 (epic lead-fb3vk), continuing sess-2026-08-02-a. Discovery and the proven spine were carried in as settled; this session resolved the open shaping forks with the product authority and drove ONE bounded candidate to shaped. The authority chose the FIND half as the first bet (not the record-form skill), tags as the reproducible spine (spine A, populated by inference — not semantic search), and a composition of atomic corpus-command skills + one find-entry-points composite (not a monolith). Graph-as-domain (lead-3gyuq) and bd-coupling (lead-d0jmz) stay deferred; the full skill library and semantic search are the named follow-on. Produced cand-010, validated, coherence gate green."
+produced: [cand-010]
+revised: [intent-012]
+=== sessions/sess-2026-08-03-a.md ===
+---
+type: session-record
+id: sess-2026-08-03-a
+title: Session 2026-08-03-a — cand-010 committed to brief-025 and ADR-072; then PM-mode entry on guarding superseded-artifact references
+status: closed
+created: 2026-08-03
+updated: 2026-08-03
+authors: [dstengle, "Claude (lead-pm)"]
+description: "Router session that carried cand-010 through to brief-025 and ADR-072, then entered lead-pm mode on the product authority's input and ended on a foundational finding. Guarding superseded-artifact references opened into the question of where NON-SCHEMA authoring doctrine can live at all; the Architect feasibility read then INVERTED the premise — there is no live typedef→generator channel into the eight writing skills, shop-templates carries its own per-kind fact table diverged for 7 of 8 kinds, and ADR-071's blocking enforcement passes over the divergence. Slice-1 request_bugfix dispatched. Session closes on the authority's strict-frontmatter directive and a hold. Mode: deciding — options framed for the authority, not decided here."
+produced: [brief-025, adr-072]
+revised: [cand-010]
+=== sessions/sess-2026-08-03-b.md ===
+---
+type: session-record
+id: sess-2026-08-03-b
+title: Session 2026-08-03-b — discovery on the system-quality trust challenge; step-back assessment of the typed-artifact system
+status: closed
+created: 2026-08-03
+updated: 2026-08-04
+authors: [dstengle, "Claude (lead-pm)"]
+description: "PM-mode discovery session on the product authority's trust challenge: repeated discoveries of incorrectly or incompletely implemented pieces of the typed-artifact system, writing skills too simplistic to produce well-thought-out artifacts, and consequent loss of trust in the decision corpus — exemplified by ADR-072's needed edits. Ran a 12-agent adversarially-verified full-system assessment (five ranked root causes), framed four re-founding strategies, and converged with the authority on a phased freeze→shrink→enforce→standard arc amended so content quality starts at Phase 0: the bar is defined early and applied manually, and doctrine is captured through an iterative review loop. Closed on intent-013 recording that direction."
+produced: [intent-013]
+revised: []
+=== sessions/sess-2026-08-04-a.md ===
+---
+type: session-record
+id: sess-2026-08-04-a
+title: Session 2026-08-04-a — doctrine-loop iteration 1 over adr-072, adr-067, adr-029; freeze parameters set
+status: open
+created: 2026-08-04
+updated: 2026-08-04
+authors: [dstengle, "Claude (lead-pm)"]
+description: "First iteration of the Phase-0 doctrine-capture loop under intent-013 (epic lead-jozud). Opens with the authority's freeze parameters recorded — brief-025 step 1 paused, per-session artifact cap of 3 — and runs the first review sitting over a three-artifact packet: contested adr-072 (route ruling and scope doctrine), adr-067 (open-fork disposition and acceptance doctrine), and adr-029 (exemplar contrast for positive rules). Closes on the first draft of the doctrine PDR distilled from the authority's verdicts."
+produced: [pdr-039]
+revised: [adr-072, adr-067]
+=== sessions/sess-2026-08-05-a.md ===
+---
+type: session-record
+id: sess-2026-08-05-a
+title: Session 2026-08-05-a — pdr-039 review verdict redirects the arc to a per-kind artifact-definition foundation before the rebaseline proceeds
+status: closed
+created: 2026-08-05
+updated: 2026-08-05
+authors: [dstengle, "Claude (lead-pm)"]
+description: "The product authority reviewed pdr-039 as background to the rebaseline bill and redirected: the doctrine is a principle set, not an exhaustive ruleset; its evidence base is ADRs only, while PDRs — the system's main decision driver — have a format the authority never validated; R8 over-generalizes a single observation; and non-decision kinds like brief are being judged through a decision lens. Direction set: no proceeding without strong per-kind definitions that make it simple and clear when an artifact is good enough. The bill sitting is deferred; the definition work merges with the kind/RACI investigation (lead-jozud.2); a definition-foundation evidence pack is commissioned."
+produced: []
+revised: [pdr-039]
+=== sessions/sess-2026-08-05-b.md ===
+---
+type: session-record
+id: sess-2026-08-05-b
+title: Session 2026-08-05-b — re-founding dialogue converges on a definition-first seed layer; definition-format research launched
+status: closed
+created: 2026-08-05
+updated: 2026-08-19
+authors: [dstengle, "Claude (lead-pm)"]
+description: "The resumed lead-pm dialogue (per the sess-2026-08-05-a mode correction) converged: the failure is upstream of checks — without a definition of good construction there can be no good checks; definitions are compiled into the generating context (role prompt = standing identity, one skill per activity) and checks/rubrics are derived projections; the authority's attention is spent by design at the definition layer (ratify the few definitions, spot-check the many artifacts; a spot-check failure obligates a definition-or-check fix). Starting point: the product process, aligned to well-known PM methods; BC code construction deferred (already oracle-bound by the scenario contract). Principle inventory amended and partially confirmed; bespoke-vs-adopt for definition formats sent to research before any seed-layer drafting."
+produced:
+  - drafts/definition-format-research.md
+  - drafts/definition-format-decision-brief.md
+  - .claude/skills/stakeholder-presentation/SKILL.md
+  - "basis/ on experiment/new-basis (principles, glossary, processes, types, artifacts, roles, guidelines, fitness, compiler, compiled skill)"
+
+revised:
+  - "basis/principles.md (R8: define-good-up-front reorientation; R9: use-defined-terms)"
+

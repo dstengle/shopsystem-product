@@ -1,0 +1,451 @@
+=================== basis/processes/interaction-conformance-check.md
+---
+type: process-definition
+id: interaction-conformance-check-process
+owner: product-authority
+status: draft
+version: 3
+created: 2026-08-26
+updated: 2026-08-26
+produces: []
+carried-by: interaction-conformance-check-skill
+condition-language: cel
+hold-after: P7D
+ask-cap: P1D
+annotations:
+  claude-code:
+    activation: model-judged
+    promotion: experiment-local
+    use-when: "a Bounded Context shop delivers an interaction of any type and it must be screened against the experience guidance corpus before it counts as done"
+---
+
+# Process: Interaction conformance check
+
+**Purpose:** Screen a delivered interaction — the recording a Bounded
+Context shop returns with its delivery — against the experience
+guidance corpus — the experience principles, the common and per-type
+guidelines, and the corpus records — so that the product designer role
+decides from a screen verdict whether it conforms, returns findings to
+the delivering shop, or changes the corpus; and so that a finding no
+corpus record can decide is recorded against the corpus, never against
+the delivery.
+
+**Guiding statement:** The corpus applied, not the designer's taste. A
+rule the corpus cannot decide because its record is absent is the
+corpus's defect: the gap is filed against the corpus and the delivery
+is not held for it.
+
+**Outcomes:**
+- O1. The interaction is screened against the corpus with the
+  interaction fitness set — witnessed by `screen`'s inputs and the
+  `screen-review` it returns.
+- O2. The product designer role decides from the review — witnessed by
+  `decide`'s inputs, which exclude the interaction.
+- O3. Findings the shop can repair are filed as a work item for the
+  solutions architect role, which carries them to the shop; a corpus
+  gap is filed against the record or guideline named — witnessed by
+  `file-findings`' `finding_item` and `record`'s `definition` and
+  `gap_entry` outputs.
+- O4. A question the corpus cannot answer leaves the run as an ask to
+  the PM or solutions architect role, with a default — witnessed by
+  `decide`'s `asks` and the `ask` value.
+
+**Roles:** screener —
+[`../roles/lead-product-designer.md`](../roles/lead-product-designer.md)
+in a fresh context each run, judging the interaction fitness set as
+its `judged-by` names. decider — the same role, deciding from the
+review alone; the check sits with this role, not with the delivering
+shop, which is the separation `define-good-up-front` asks for.
+recorder — the same role's assisting agent. the [PM role](../roles/lead-pm.md) and the
+[solutions architect role](../roles/lead-solutions-architect.md) —
+answer asks; the architect receives the findings work item and
+carries it to the shop.
+
+**Carried by:**
+[`../skills/interaction-conformance-check/SKILL.md`](../skills/interaction-conformance-check/SKILL.md)
+— generated from this definition by
+[`../tools/compile_process.py`](../tools/compile_process.py), never
+edited by hand.
+
+## Flow (compiled)
+
+Generated from the steps below by `tools/compile_process.py`; do not
+edit by hand.
+
+```mermaid
+flowchart TD
+  screen(["Screen against the corpus — agent: lead-product-designer<br/>in — corpus: string[], guideline_path: string, interaction: string, interaction_type: string, delivery: string<br/>out — review: screen-review"])
+  decide(["Decide on conformance — agent: lead-product-designer<br/>in — review: screen-review, ask: ask<br/>out — decision: check-decision"])
+  record(["Record and route — agent: lead-product-designer<br/>in — decision: check-decision, delivery: string, review: screen-review<br/>out — delivery: string, findings_out: string, gap_entry: string, definition: string"])
+  route_findings{"Route on the decision<br/>in — decision: check-decision"}
+  file_findings["File the findings work item — runtime<br/>in — findings_out: string, delivery: string, decision: check-decision<br/>out — finding_item: string"]
+  __end(("end<br/>result — decision: check-decision"))
+  __start(("start")) --> screen
+  screen --> decide
+  decide --> record
+  record --> route_findings
+  route_findings -->|fail — file the findings for the architect| file_findings
+  route_findings -->|else| __end
+  file_findings --> __end
+```
+
+
+## Data
+
+Each entry names a process-local value. Simple types use JSON Schema
+names inline; every structured shape is a `$ref` to a defined type with
+an explicit source. Conditions are CEL expressions over these names.
+The *delivery* is the record a Bounded Context shop returns with an
+interaction: it names the interaction, carries the accessibility
+result, and — as `interaction` — a recording of the interaction
+(transcript, screenshots, or session capture), never a running
+instance; the delivery record's typedef is pending, and the status
+values this process sets on it — `conforms`, `returned`,
+`pending-corpus` — are this process's until then. The corpus the
+screen reads is declared as `corpus` (its fixed paths) and
+`guideline_path` (the per-type guideline: `experience-cli` for `cli`
+and `tui`, `experience-api`, `experience-gui`, `experience-assistant`
+for `conversational` and `voice`, `experience-document`).
+
+```yaml
+data:
+  interaction: {type: string, format: uri-reference}
+  interaction_type: {type: string, enum: [cli, tui, gui, api, conversational, voice, document]}
+  delivery: {type: string, format: uri-reference}
+  guideline_path: {type: string, format: uri-reference}
+  corpus:
+    type: array
+    items: {type: string, format: uri-reference}
+    initial: [../experience-principles.md, ../guidelines/experience-common.md, ../fitness/interaction.fitness.md, ../experience/vocabulary.md, ../experience/core-tasks.md, ../experience/patterns.md, ../experience/tokens.md, ../experience/hard-to-reverse.md, ../experience/persona-voice.md, ../experience/variations.md]
+  review: {$ref: screen-review, from: ../types/screen-review.md}
+  ask: {$ref: ask, from: ../types/ask.md, initial: null}
+  decision: {$ref: check-decision, from: ../types/check-decision.md}
+  findings_out: {type: string}
+  finding_item: {type: string}
+  gap_entry: {type: string}
+  definition: {type: string, format: uri-reference}
+```
+
+## Steps
+
+```yaml
+start: screen
+parameters: [interaction, interaction_type, delivery, guideline_path]
+result: decision
+steps:
+  - id: screen
+    name: Screen against the corpus
+    run-by: {role: lead-product-designer, execution: agent, fresh-context: true}
+    inputs: [corpus, guideline_path, interaction, interaction_type, delivery]
+    outputs: [review]
+    prompt: |
+      Read every path in corpus and the per-type guideline at
+      guideline_path; then the delivery and the recording at
+      interaction — nothing else. Judge the six
+      fitness scenarios. Report every finding with the rule or scenario
+      it fails by name, the quoted or described evidence, the change,
+      and whether you could decide it (confident) or not (wobbly); for
+      a wobbly finding describe the whole passage or behavior, since
+      the decision is made from the review alone. Where a rule needs a
+      corpus record that is absent, that lacks the entry, or whose
+      entry is marked hypothesis, report the finding with the rule as
+      its criterion and, as its change, "record absent:", "record
+      empty:", or "entry is a hypothesis:" with the record's name — a
+      finding against the corpus, never against the delivery.
+      Verdict "clean" only if there are no findings; otherwise
+      "findings" with the top three changes.
+    next: decide
+    annotations:
+      fabro: {model: high-reasoning}
+
+  - id: decide
+    name: Decide on conformance
+    run-by: {role: lead-product-designer, execution: agent}
+    inputs: [review, ask]
+    outputs: [decision]
+    asks: [lead-pm, lead-solutions-architect]
+    prompt: |
+      From the review, decide. "pass": no findings, or only corpus
+      findings (record absent, record empty, entry is a hypothesis) —
+      the delivery conforms to every rule the corpus can decide; name
+      each corpus finding and, for an absent record, the guideline
+      whose rule needs it, in the reasons so the gap is filed. "fail": a named rule or scenario is not met — name
+      it as the criterion; "fail" takes precedence where both stand.
+      "definition-change": a rule the corpus should carry and does not
+      — name the guideline and what it lacks as the gap. A question a corpus record
+      could carry is a corpus finding, never an ask. An ask is for a
+      decision no record will carry — whether the product should offer
+      this interaction type at all (kind: reserved-decision, to
+      lead-pm), whether a contract change a repair needs is admissible
+      (kind: contract, to lead-solutions-architect). Return it with
+      the question, its kind,
+      the default you will apply, and a checkpoint of the review; on
+      the first pass ask is absent, and if it carries an answer or
+      resolved defaulted, act on it. Decide from the review alone.
+      Record your reasons.
+    next: record
+
+  - id: record
+    name: Record and route
+    run-by: {role: lead-product-designer, execution: agent}
+    inputs: [decision, delivery, review]
+    outputs: [delivery, findings_out, gap_entry, definition]
+    prompt: |
+      Write into the delivery's Document History a review entry with
+      the screen verdict, then a state entry carrying the decision and
+      its reasons. Set the delivery's status: "conforms" on pass,
+      "returned" on fail, "pending-corpus" on definition-change. On
+      "fail", write the findings the shop can repair — each with its
+      rule, evidence, and change — as findings_out; otherwise return it
+      empty. On "definition-change", or on "pass" whose reasons name
+      corpus findings, write a review entry stating the gap into the
+      Document History of the guideline or record named — for an
+      absent record, of the guideline whose rule needs it; return that
+      file's path as definition and the entry's text as gap_entry;
+      otherwise return both empty. Return the delivery.
+    next: route-findings
+
+  - id: route-findings
+    name: Route on the decision
+    run-by: {execution: runtime}
+    inputs: [decision]
+    branches:
+      - label: "fail — file the findings for the architect"
+        when: decision.verdict == "fail"
+        next: file-findings
+      - else: end
+
+  - id: file-findings
+    name: File the findings work item
+    run-by: {execution: runtime}
+    inputs: [findings_out, delivery, decision]
+    outputs: [finding_item]
+    run: |
+      bd create --type task --assign lead-solutions-architect \
+        --title "Interaction conformance findings on ${delivery}" \
+        --body "${findings_out}" --link ${delivery}
+    next: end
+```
+
+## Derived checks
+
+| Outcome | Check | Kind | Where |
+|---|---|---|---|
+| O1 | screen reads only `corpus`, `guideline_path`, the delivery, and the recording | judged | `screen.prompt` and inputs |
+| O2 | `interaction` absent from `decide.inputs` | mechanical | `decide.inputs` |
+| O3 | `finding_item` set on fail; `definition` and `gap_entry` non-empty on definition-change or a pass naming corpus findings | mechanical (`route-findings`), judged (`record`) | `file-findings`, `record` outputs |
+| O4 | `decide` carries `asks`; process carries `ask-cap`; `ask` listed in inputs | mechanical | `decide`, frontmatter |
+
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+| 1 | 2026-08-26 | update | Authored by owner direction as the process that runs the interaction fitness set at delivery — the designer-side twin of the PO output check, without a revise loop because the delivering shop revises under isolation and receives findings through reconciliation. The delivery record's typedef is pending. |
+| 1 | 2026-08-26 | review | Screened: findings — findings_out had no receiver; the screen loaded an undeclared corpus; decide was undecidable on a record-absent-only review and contradicted the guiding statement; the interaction input's form unstated; the two reused types not naming this producer; the enum not the glossary's; a stale annotation. |
+| 2 | 2026-08-26 | update | Repairs: findings filed as a work item for the architect (finding_item); corpus and guideline_path declared; record-absent → pass with the gap filed, fail taking precedence; interaction defined as a recording in the delivery; enum aligned to the glossary; ask kinds named; annotation removed; the types amended to name both producers. |
+| 2 | 2026-08-26 | review | Re-screened: findings — the record step filed a work item with tools the role lacks; one of three undecidable verdicts handled; an absent record has no history for its gap; the ask examples were corpus matters with a misnamed kind. |
+| 3 | 2026-08-26 | update | Repairs: a runtime file-findings step with `run`, branched on fail; all three corpus verdicts named in screen and decide; an absent record's gap filed on the guideline that needs it; the ask/gap rule stated with examples outside the corpus; interaction_type dropped from decide's inputs. |
+=================== basis/skills/interaction-conformance-check/SKILL.md
+---
+name: interaction-conformance-check
+description: "Screen a delivered interaction \u2014 the recording a Bounded Context\
+  \ shop returns with its delivery \u2014 against the experience guidance corpus \u2014\
+  \ the experience principles, the common and per-type guidelines, and the corpus\
+  \ records \u2014 so that the product designer role decides from a screen verdict\
+  \ whether it conforms, returns findings to the delivering shop, or changes the corpus;\
+  \ and so that a finding no corpus record can decide is recorded against the corpus,\
+  \ never against the delivery. Use when a Bounded Context shop delivers an interaction\
+  \ of any type and it must be screened against the experience guidance corpus before\
+  \ it counts as done."
+type: skill
+id: interaction-conformance-check-skill
+status: draft
+created: 2026-08-26
+updated: 2026-08-26
+generated: true
+generated-by: basis/tools/compile_process.py
+derived-from: interaction-conformance-check-process
+source: basis/processes/interaction-conformance-check.md
+source-digest: sha256:9939bc56d2a7
+activation: model-judged
+promotion: experiment-local
+---
+
+# Interaction conformance check (compiled from `interaction-conformance-check-process`)
+
+Screen a delivered interaction — the recording a Bounded Context shop returns with its delivery — against the experience guidance corpus — the experience principles, the common and per-type guidelines, and the corpus records — so that the product designer role decides from a screen verdict whether it conforms, returns findings to the delivering shop, or changes the corpus; and so that a finding no corpus record can decide is recorded against the corpus, never against the delivery.
+
+**The corpus applied, not the designer's taste. A rule the corpus cannot decide because its record is absent is the corpus's defect: the gap is filed against the corpus and the delivery is not held for it.**
+
+Result of a run: `decision` (check-decision).
+
+```mermaid
+flowchart TD
+  screen(["Screen against the corpus — agent: lead-product-designer<br/>in — corpus: string[], guideline_path: string, interaction: string, interaction_type: string, delivery: string<br/>out — review: screen-review"])
+  decide(["Decide on conformance — agent: lead-product-designer<br/>in — review: screen-review, ask: ask<br/>out — decision: check-decision"])
+  record(["Record and route — agent: lead-product-designer<br/>in — decision: check-decision, delivery: string, review: screen-review<br/>out — delivery: string, findings_out: string, gap_entry: string, definition: string"])
+  route_findings{"Route on the decision<br/>in — decision: check-decision"}
+  file_findings["File the findings work item — runtime<br/>in — findings_out: string, delivery: string, decision: check-decision<br/>out — finding_item: string"]
+  __end(("end<br/>result — decision: check-decision"))
+  __start(("start")) --> screen
+  screen --> decide
+  decide --> record
+  record --> route_findings
+  route_findings -->|fail — file the findings for the architect| file_findings
+  route_findings -->|else| __end
+  file_findings --> __end
+```
+
+## screen — Screen against the corpus
+
+Run by an agent in role `lead-product-designer` (fresh context every run). reads: corpus, guideline_path, interaction, interaction_type, delivery · writes: review.
+- then: `decide`
+
+Prompt:
+
+```text
+Read every path in corpus and the per-type guideline at
+guideline_path; then the delivery and the recording at
+interaction — nothing else. Judge the six
+fitness scenarios. Report every finding with the rule or scenario
+it fails by name, the quoted or described evidence, the change,
+and whether you could decide it (confident) or not (wobbly); for
+a wobbly finding describe the whole passage or behavior, since
+the decision is made from the review alone. Where a rule needs a
+corpus record that is absent, that lacks the entry, or whose
+entry is marked hypothesis, report the finding with the rule as
+its criterion and, as its change, "record absent:", "record
+empty:", or "entry is a hypothesis:" with the record's name — a
+finding against the corpus, never against the delivery.
+Verdict "clean" only if there are no findings; otherwise
+"findings" with the top three changes.
+```
+
+## decide — Decide on conformance
+
+Run by an agent in role `lead-product-designer`. reads: review, ask · writes: decision.
+- may ask: `lead-pm`, `lead-solutions-architect` — return an `ask` (with default and checkpoint) in place of outputs; at most one per run.
+- then: `record`
+
+Prompt:
+
+```text
+From the review, decide. "pass": no findings, or only corpus
+findings (record absent, record empty, entry is a hypothesis) —
+the delivery conforms to every rule the corpus can decide; name
+each corpus finding and, for an absent record, the guideline
+whose rule needs it, in the reasons so the gap is filed. "fail": a named rule or scenario is not met — name
+it as the criterion; "fail" takes precedence where both stand.
+"definition-change": a rule the corpus should carry and does not
+— name the guideline and what it lacks as the gap. A question a corpus record
+could carry is a corpus finding, never an ask. An ask is for a
+decision no record will carry — whether the product should offer
+this interaction type at all (kind: reserved-decision, to
+lead-pm), whether a contract change a repair needs is admissible
+(kind: contract, to lead-solutions-architect). Return it with
+the question, its kind,
+the default you will apply, and a checkpoint of the review; on
+the first pass ask is absent, and if it carries an answer or
+resolved defaulted, act on it. Decide from the review alone.
+Record your reasons.
+```
+
+## record — Record and route
+
+Run by an agent in role `lead-product-designer`. reads: decision, delivery, review · writes: delivery, findings_out, gap_entry, definition.
+- then: `route-findings`
+
+Prompt:
+
+```text
+Write into the delivery's Document History a review entry with
+the screen verdict, then a state entry carrying the decision and
+its reasons. Set the delivery's status: "conforms" on pass,
+"returned" on fail, "pending-corpus" on definition-change. On
+"fail", write the findings the shop can repair — each with its
+rule, evidence, and change — as findings_out; otherwise return it
+empty. On "definition-change", or on "pass" whose reasons name
+corpus findings, write a review entry stating the gap into the
+Document History of the guideline or record named — for an
+absent record, of the guideline whose rule needs it; return that
+file's path as definition and the entry's text as gap_entry;
+otherwise return both empty. Return the delivery.
+```
+
+## route-findings — Route on the decision
+
+Run by the runtime — no agent, no prose. reads: decision · writes: —.
+
+```yaml
+branches:
+- label: "fail \u2014 file the findings for the architect"
+  when: decision.verdict == "fail"
+  next: file-findings
+- else: end
+```
+
+## file-findings — File the findings work item
+
+Run by the runtime — no agent, no prose. reads: findings_out, delivery, decision · writes: finding_item.
+
+```yaml
+run: "bd create --type task --assign lead-solutions-architect \\\n  --title \"Interaction\
+  \ conformance findings on ${delivery}\" \\\n  --body \"${findings_out}\" --link\
+  \ ${delivery}\n"
+next: end
+```
+=================== /tmp/claude-1000/-home-vscode-rebaseline/635ec80b-b74c-4200-8974-a7a6743a1e99/scratchpad/screen-icc-2.md
+# Cold-read screen: interaction-conformance-check (process v2 + skill), round 2
+
+**Verdict: findings.** All six fitness scenarios and all six guideline rules pass; all seven round-1 changes were made. Four defects remain, each outside the scenarios' reach but inside the typedef, the reused types, or the guiding statement: `record` files a work item with tools the role does not hold; the screen prompt handles one of the experience-record typedef's three undecidable verdicts; an absent record has no Document History for the gap entry; and `decide`'s ask examples are corpus-record matters the guiding statement says are gaps, with one `kind` misnamed.
+
+## Round-1 changes confirmed
+
+| # | Round-1 change | Made? | Evidence |
+|---|---|---|---|
+| 1 | `findings_out` receiver | yes | `record`: "file them as a work item assigned to lead-solutions-architect, and return its id as finding_item"; Roles: "the architect receives the findings work item and carries it to the shop"; the reconcile-and-close claim is gone. See change 1 below on the mechanism. |
+| 2 | corpus declared; type → guideline mapping | yes | `corpus` array with `initial` (ten paths); `guideline_path` parameter; Data prose maps all seven enum values. Admissibility judged below. |
+| 3 | record-absent decidable | yes | `decide`: "pass": no findings, or only record-absent findings ... "fail" takes precedence where both stand"; `record`: "on "pass" whose reasons name absent records, write a review entry stating the gap". Agrees with the guiding statement. See changes 2 and 3 on the other verdicts and the gap's home. |
+| 4 | `interaction` form | yes | Data prose: "as `interaction` — a recording of the interaction (transcript, screenshots, or session capture), never a running instance". |
+| 5 | types name this producer | yes | screen-review v3: "and of ../processes/interaction-conformance-check.md ... a criterion the corpus cannot decide keeps its name and says "record absent:" in change"; check-decision v4: "or the product designer role's on a delivered interaction". |
+| 6 | enum = glossary | yes | `enum: [cli, tui, gui, api, conversational, voice, document]` — the glossary's seven and the experience-record typedef's closed token set, one for one. |
+| 7 | stumbles | yes | delivery introduced in Data prose; "seven experience records" replaced by paths; one architect id (`lead-solutions-architect`) throughout; "filled fresh"/"its own assist" rewritten; `node: separate-context-per-round` removed; ask kinds named (but see change 4). |
+
+## Required changes, most important first
+
+1. **`record` cannot file a work item with the role's tools.** Prompt: "file them as a work item assigned to lead-solutions-architect, and return its id as finding_item". The step is `run-by: {role: lead-product-designer, execution: agent}`; the role's frontmatter is `tools: Read, Edit, Write, Grep, Glob` — no command execution. The typedef gives the form for this: runtime steps carry "`run` (command templates with `${...}` interpolation from typed inputs; `atomic: true` binds the lines into one all-or-nothing act)", which is what round 1 described the sibling's `escalate` using ("bd create ... --assign lead-architect"). Returning the id as a declared output does make the write declared — the sibling's precedent ("record returns the written definition's path") — but the act itself is undefined here. Fix: split filing into a runtime step with `run` (inputs `findings_out`, output `finding_item`) branched on `decision.verdict == "fail"`, or grant the role the tool and name it. The O3 witness stands either way.
+
+2. **Only one of the three undecidable verdicts is handled.** The experience-record typedef: "a record that does not exist — "undecidable: record absent"; a record with no entry for what the rule needs — "undecidable: record empty"; an entry marked `hypothesis` — "undecidable: entry is a hypothesis". Each is a finding against the corpus, never a pass and never a finding against the delivery." The fitness set v3 repeats all three. The screen prompt: "Where a rule needs a corpus record that is absent or lacks the entry, report the finding with the rule as its criterion and "record absent:" and the record's name as its change" — absent and empty collapsed under one label, and a `hypothesis` entry not mentioned at all. A screener meeting a hypothesis entry reports it as a plain rule failure; `decide` then fails the delivery ("a named rule or scenario is not met") — the outcome the typedef forbids. Fix: the prompt names all three, each with its own label in `change` (the screen-review type's comment admits "record absent:"; extend it or use the typedef's three strings), and `decide`'s "only record-absent findings" becomes "only undecidable findings (record absent, record empty, entry is a hypothesis)".
+
+3. **An absent record has no Document History to receive the gap.** `record`: "write a review entry stating the gap into the Document History of the guideline or record named; return that file's path as definition". For "record absent" the named record is a file that does not exist. The sibling avoids this because its gap goes to "the definition the decision names", which exists. Fix: state where the gap for an absent record is filed — the guideline whose rule needs the record, or the experience-record typedef — and have `decide`'s reasons name that file. (Since the fitness set v3 says "The corpus records now exist", this case may be rare; the process must still be decidable as written.)
+
+4. **`decide`'s ask examples are corpus matters, and one `kind` is misnamed.** Prompt: "If deciding needs what the corpus does not say — whether an action is hard to reverse (kind: structure, to lead-solutions-architect), whether a capability is worth having on this type (kind: reserved-decision, to lead-pm) — return an ask". Both questions have a corpus record: `../experience/hard-to-reverse.md` ("a product action · why it is hard to reverse") and `../experience/core-tasks.md` ("types it is removed from, with the reason"). Under the guiding statement — "A rule the corpus cannot decide because its record is absent is the corpus's defect: the gap is filed against the corpus and the delivery is not held for it" — a missing entry is "record empty", a gap, not an ask; the prompt gives the same question two routes and the decider cannot choose. And the ask type glosses `structure` as "which Bounded Context owns something"; reversibility of an action is not that — it is "reserved-decision: a decision another role's domain holds" (the architect's). Fix: state the rule that separates an ask from a gap (an ask is for a question no corpus record is defined to hold; a missing entry is always a gap), replace the examples with questions outside the corpus, and correct the kind. If no such question exists for this process, drop `asks` and O4.
+
+## Data-section admissibility
+
+- `corpus: {type: array, items: {type: string, format: uri-reference}, initial: [...]}` — admissible. The typedef: "Simple types (JSON Schema primitives) inline; ... A value may declare `initial`"; the glossary lists `array` as a simple type. No `$ref`, so no `from:` needed. Reading it by an agent step is the same shape as `round_cap` in the sibling: a value with an initial, not a parameter.
+- Paths resolve relative to the process file by the corpus's own convention: `../experience-principles.md` and `../guidelines/experience-common.md` are the exact links the fitness set uses from `basis/fitness/`, so from `basis/processes/` they name the same files; `../fitness/interaction.fitness.md` names the fitness set; the seven `../experience/*.md` names match the experience-record typedef's `record` values one for one (vocabulary, core-tasks, patterns, tokens, hard-to-reverse, persona-voice, variations). File existence is not verifiable from this reading.
+- `guideline_path` mapping covers all seven enum values: `experience-cli` for `cli` and `tui`, `experience-api`, `experience-gui`, `experience-assistant` for `conversational` and `voice`, `experience-document` — consistent with the glossary v12 note ("cover conversational and voice together as the `assistant` guideline"). Stumble: the mapping gives guideline names, not paths, while `guideline_path` is a `uri-reference` the caller supplies; nothing checks the pair. A runtime `set` with a CEL expression from `interaction_type` would remove the parameter and the error.
+
+## Scenario and rule results
+
+| # | Result | Evidence |
+|---|---|---|
+| S1 renderings | pass | Skill: `generated: true`, `generated-by`, `derived-from`, `source`, `source-digest`; three steps, prompts verbatim (including the line break at "its kind,"), diagram identical, "may ask" rendered on `decide`; nothing added. |
+| S2 witnesses | pass | O1 → `screen` inputs and `review`; O2 → `decide.inputs` = `[review, interaction_type, ask]`, no `interaction`; O3 → `record` outputs `finding_item`, `definition`, `gap_entry`; O4 → `decide.asks` and `ask`. All exist. |
+| S3 loop exits | pass | No cycle; the ask hold-and-resume is bounded by the typedef ("one ask per step per run ... a second resolves defaulted"). |
+| S4 declared reads | pass | `screen` reads corpus, guideline_path, delivery, interaction — all declared; "the six fitness scenarios" are in `corpus`. `decide` reads review and ask. `record` reads decision, delivery, review; writes named by its outputs. Note: `interaction_type` in `decide.inputs` is read only as "this type" inside the ask example; if change 4 removes the example, the input goes with it (the sibling's history counted a loaded-and-unread value as a finding). |
+| S5 artifact result | pass | `result: decision`; purpose "decides from a screen verdict" — the sibling's approved shape. |
+| S6 prose placement | pass | No prose outside `prompt`; the guiding statement is a cross-step judgment. |
+| Rules 1–6 | pass | Same evidence as S2, S6, S3, S4, S5, S6. |
+
+## Stumbles (reading order) and terms
+
+- Purpose: "a delivered interaction ... the delivery" — the term arrives four sections before Data defines it; plain enough to survive, but a one-clause gloss in Purpose would end it.
+- Roles: "the PM role and the [solutions architect role]" — the PM role is unlinked where the architect is linked; the sibling links `lead-pm.md`.
+- `decide`: "on the first pass ask is absent" — "pass" here is a run-through, three lines after "pass" the verdict; the sibling has the same collision. "on the first run of this step" avoids it.
+- `decide`: "act on it" for a defaulted ask — the default is the asker's own; fine, but "apply the default" is the plainer verb.
+- screen-review v3 (outside the screen, read for confirmation): "since the PM role decides from the review alone" and "consumed by their routing, revision, and decision steps" — this process has no routing or revision step and its decider is the designer; `updated: 2026-08-25` while the v3 entry is dated 2026-08-26. check-decision v4 has the same stale `updated`.
+- interaction.fitness.md v3 (outside the screen): "The process that runs this screen at delivery is not yet defined ... the process is not yet filed as a work item" — now false; the fitness set should link this process once approved.
+- Undefined terms: none that block a decision. "work item", "Bounded Context shop", "experience guidance corpus", "interaction type", "ask" are glossary terms; "recording", "delivery", "pending-corpus" are defined in Data prose.
+- Banned words: none found in the process or the skill.

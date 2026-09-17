@@ -1,0 +1,714 @@
+     1	#!/usr/bin/env python3
+     2	"""Lint the basis corpus: structure, references, vocabulary.
+     3	
+     4	Experiment apparatus; the production linter is a BC deliverable
+     5	(shopsystem-knowledge owns the type system). Each check cites the clause
+     6	it projects, per the cite-or-delete rule.
+     7	
+     8	Checks:
+     9	  1. Front-matter parses and carries the identity base
+    10	     (definition typedef §Required frontmatter).
+    11	  2. `defines` values are unique across the registry
+    12	     (artifact-typedef + data-type typedefs: defines is what $ref resolves).
+    13	  3. Every distinct `$ref` in a process data block carries a `from:`
+    14	     source at least once — a relative link to the defining file, or a
+    15	     `pkg:<package>/<type>` reference to another package
+    16	     (process-definition typedef §Data). Local sources must exist and
+    17	     their `defines` must match.
+    18	  4. Relative markdown links resolve to existing files.
+    19	  5. Required headings per type are present
+    20	     (each type's typedef §Required sections).
+    21	  6. Banned vocabulary does not reappear
+    22	     (use-defined-terms: the losing term is removed everywhere).
+    23	  7. `version` present and `Document History` is the last section
+    24	     (definition typedef §Required frontmatter, §Required sections 3);
+    25	     generated renderings are exempt.
+    26	  8. No numbered-decision reference (review-record typedef §Commitment:
+    27	     decisions live as changes in the artifacts they affect).
+    28	  9. Each received request in `requests/` at the repository root — the
+    29	     directory may not exist yet — carries the frontmatter of a received
+    30	     ask: `type: request`, `id`, `status` in {recorded, routed, declined,
+    31	     done}, `version`, `date`, `reader`, `owner`, `originator`,
+    32	     `received-through`, `route` in {awaiting, discovery, small-change,
+    33	     declined}, `route-reason`; a `routed-to` link, when present,
+    34	     resolves before any `#` fragment — the request's own path is
+    35	     accepted, the small-change lane's result being the request's
+    36	     Result section by fragment (request typedef §Required
+    37	     frontmatter). Checks 1-8 walk
+    38	     basis/ as before; --derive-chain reads .claude/skills/ as before.
+    39	 10. Each decision brief in `briefs/` at the repository root — the
+    40	     directory may not exist yet; a brief is a file whose `type` is
+    41	     `decision-brief`, and the annexes beside it (a brief's linked full
+    42	     material, of no fixed frontmatter) are not briefs and are not
+    43	     walked — carries the decision-brief typedef's closed field set and
+    44	     nothing outside it: `type: decision-brief`, `id`, `status` in {draft, delivered,
+    45	     decided}, `version`, `date`, `reader`, `decisions-requested`,
+    46	     `annex`, and the optional `relates-to` — a list of one or more
+    47	     paths, each resolving from the repository root (decision-brief
+    48	     typedef §Required frontmatter). `--brief <path>` runs the same
+    49	     rules on that one file alone. Checks 1-9 as before.
+    50	 11. Every repository tool path a process definition under
+    51	     `basis/processes/` names — `basis/tools/<name>.py`, written in a
+    52	     step's `run:` template or held as the `initial:` value of a data
+    53	     value or parameter that a template interpolates (`${compiler}` and
+    54	     its kind) — exists in the repository; each that does not is
+    55	     reported naming the definition and the missing path
+    56	     (process-definition typedef §Commitment: a process is not approved
+    57	     while a step names a tool the repository lacks — the tool is a
+    58	     request, routed before the process runs, never built mid-process).
+    59	     `bd`, `python3`, and the sh utilities are the environment and are
+    60	     not checked. `--process <path>` runs the same check on the one
+    61	     process definition at that path, wherever it lives. Checks 1-10 as
+    62	     before.
+    63	 12. Each implementation guidance record in `guidance/` at the
+    64	     repository root — the directory may not exist yet: no records, no
+    65	     violations — carries the implementation-guidance typedef's
+    66	     required frontmatter: `type: implementation-guidance`, `id`,
+    67	     `status`, `version`, `initiative`, `feature`, `context`,
+    68	     `scenarios`, `owner`, `created`, `updated`; each missing key is
+    69	     reported by name (implementation-guidance typedef §Required
+    70	     frontmatter). Checks 1-11 as before.
+    71	
+    72	Modes:
+    73	  lint_basis.py                     # lint the whole basis tree
+    74	  lint_basis.py --brief PATH        # check one decision brief alone by
+    75	                                    # check 10's rules (exit 0 on pass)
+    76	  lint_basis.py --process PATH      # check one process definition alone
+    77	                                    # by check 11's rule (exit 0 on pass)
+    78	  lint_basis.py --derive-chain X    # print the derived definition chain
+    79	                                    # for artifact type X (definition-chain
+    80	                                    # is assembled from references, never
+    81	                                    # hand-written)
+    82	  lint_basis.py --describe          # answer the standard question: write
+    83	                                    # this tool's description — DESCRIPTION
+    84	                                    # below, an instance of the
+    85	                                    # tool-description data type — as JSON
+    86	                                    # to standard output and exit 0 before
+    87	                                    # any other action, other arguments
+    88	                                    # ignored (adr-2026-09-07-tool-answer
+    89	                                    # §2); the skill at the agent's load
+    90	                                    # point is produced from this answer
+    91	                                    # by compile_tool.py and from nothing
+    92	                                    # else
+    93	
+    94	Any other arguments are a usage failure: one line on standard error
+    95	beginning `usage:`, exit status 2. A --brief or --process path that does
+    96	not exist or cannot be read is an unreadable failure: one line on
+    97	standard error beginning `unreadable:`, exit status 2.
+    98	"""
+    99	import json
+   100	import pathlib
+   101	import re
+   102	import sys
+   103	
+   104	import yaml
+   105	
+   106	BASIS = pathlib.Path(__file__).resolve().parent.parent
+   107	
+   108	IDENTITY_BASE = ["type", "id", "status", "created", "updated"]
+   109	OWNER_EXEMPT = {"experiment-index", "skill", "principles-rendering", "review-record"}
+   110	REQUIRED_HEADINGS = {
+   111	    # artifact-typedef §Required sections 1-6
+   112	    "artifact-typedef": ["Identity and ancestry", "Required frontmatter",
+   113	                         "Required sections", "Commitment (Definition of Done)",
+   114	                         "Sources", "Derived review checklist"],
+   115	    # process-definition typedef §Required sections 5-8
+   116	    "process-definition": ["Flow (compiled)", "Data", "Steps", "Derived checks"],
+   117	    # data-type typedef §Required sections 1-2
+   118	    "data-type": ["Purpose", "Schema"],
+   119	    # fitness-set typedef §Required sections 1-2
+   120	    "fitness-set": ["Scenarios", "Compile mapping"],
+   121	    # glossary typedef §Required sections 1-2
+   122	    "glossary": ["How the list combines", "Terms"],
+   123	    # review-record typedef §Required sections 1-3
+   124	    "review-record": ["Material", "Outcomes", "State"],
+   125	}
+   126	# review-record typedef §Commitment: no live document cites a numbered
+   127	# decision (Rn) — decisions live as changes in the artifacts they affect.
+   128	DECISION_REF = re.compile(r"\bR\d{1,3}\b")
+   129	BANNED = ["ratif", "disposition", "rebaseline bill", "surface", "seat"]
+   130	PKG_RE = re.compile(r"^pkg:[a-z0-9-]+/[a-z0-9_-]+$")
+   131	
+   132	# 9. received requests (request typedef §Required frontmatter)
+   133	REQUESTS = BASIS.parent / "requests"
+   134	REQUEST_KEYS = ["type", "id", "status", "version", "date", "reader", "owner",
+   135	                "originator", "received-through", "route", "route-reason"]
+   136	REQUEST_STATUS = {"recorded", "routed", "declined", "done"}
+   137	REQUEST_ROUTE = {"awaiting", "discovery", "small-change", "declined"}
+   138	
+   139	# 10. decision briefs (decision-brief typedef §Required frontmatter)
+   140	BRIEFS = BASIS.parent / "briefs"
+   141	BRIEF_KEYS = ["type", "id", "status", "version", "date", "reader",
+   142	              "decisions-requested", "annex"]
+   143	BRIEF_OPTIONAL = {"relates-to"}
+   144	BRIEF_STATUS = {"draft", "delivered", "decided"}
+   145	
+   146	# 11. tools a process names (process-definition typedef §Commitment)
+   147	PROCESSES = BASIS / "processes"
+   148	TOOL_PATH = re.compile(r"basis/tools/[A-Za-z0-9_.-]+\.py")
+   149	
+   150	# 12. implementation guidance records (implementation-guidance typedef
+   151	#     §Required frontmatter)
+   152	GUIDANCE = BASIS.parent / "guidance"
+   153	GUIDANCE_KEYS = ["type", "id", "status", "version", "initiative", "feature",
+   154	                 "context", "scenarios", "owner", "created", "updated"]
+   155	
+   156	TOOL = "basis/tools/lint_basis.py"
+   157	USAGE_FAILURE = {
+   158	    "code": "usage",
+   159	    "exit_status": 2,
+   160	    "condition": "the arguments are not one of the four invocations this "
+   161	                 "tool states; one line on standard error beginning "
+   162	                 "`usage:` names them; nothing is checked",
+   163	    "next": "run the invocation the use states, as written",
+   164	}
+   165	CHECK_FAILURE = {
+   166	    "code": "check-failed",
+   167	    "exit_status": 1,
+   168	    "condition": "the check found violations: one line per violation on "
+   169	                 "standard output, `<path>[:<line>]: <what> (<clause>)`, "
+   170	                 "then the last line `FAIL: <n> violation(s)`",
+   171	    "next": "repair each named file at the named clause, then run the "
+   172	            "same invocation again until its last line reads "
+   173	            "`PASS: 0 violation(s)`",
+   174	}
+   175	UNREADABLE_FAILURE = {
+   176	    "code": "unreadable",
+   177	    "exit_status": 2,
+   178	    "condition": "no file exists at <path>, or it cannot be read; one line "
+   179	                 "on standard error beginning `unreadable:` names the path",
+   180	    "next": "give the path of an existing file, relative to the current "
+   181	            "directory or absolute, and run the invocation again",
+   182	}
+   183	PASS_TEXT = ("the last line `PASS: 0 violation(s)` on standard output, "
+   184	             "nothing before it; exit status 0")
+   185	# The answer to the standard question (adr-2026-09-07-tool-answer §2): an
+   186	# instance of the tool-description data type, basis/types/tool-description.md.
+   187	# This tool is its one home; the skill is produced from it, never edited.
+   188	DESCRIPTION = {
+   189	    "name": "lint-basis",
+   190	    "description": (
+   191	        "The lint over the lead shop's definition corpus: checks the basis "
+   192	        "tree and the request, brief, and guidance records at the repository "
+   193	        "root against their typedefs' rules, derives an artifact type's "
+   194	        "definition chain from the references its documents carry, and "
+   195	        "checks one decision brief or one process definition alone. Use it "
+   196	        "before reporting any change to the tree, after editing a "
+   197	        "definition, brief, request, or guidance record, when a process "
+   198	        "definition names a tool, and when an artifact type's chain is "
+   199	        "wanted; it changes no file."
+   200	    ),
+   201	    "uses": [
+   202	        {
+   203	            "name": "lint",
+   204	            "description": (
+   205	                "Runs checks 1-12 over every markdown file under basis/ and "
+   206	                "over requests/, briefs/, and guidance/ at the repository "
+   207	                "root: frontmatter identity, unique `defines`, `$ref` "
+   208	                "sources, resolvable links, required headings, banned "
+   209	                "vocabulary, version and Document History, no "
+   210	                "numbered-decision reference, request frontmatter, brief "
+   211	                "frontmatter, tools named by process definitions, and "
+   212	                "guidance frontmatter. Reads only; writes and changes "
+   213	                "nothing. The tree is found from the tool's own location, "
+   214	                "so the current directory does not matter."
+   215	            ),
+   216	            "invocation": f"python3 {TOOL}",
+   217	            "input_schema": {"type": "object", "properties": {},
+   218	                             "additionalProperties": False},
+   219	            "returns": {"form": "text", "text": PASS_TEXT},
+   220	            "failures": [CHECK_FAILURE, USAGE_FAILURE],
+   221	        },
+   222	        {
+   223	            "name": "check-brief",
+   224	            "description": (
+   225	                "Checks one decision brief alone by check 10's rules: the "
+   226	                "decision-brief typedef's closed frontmatter field set, its "
+   227	                "status vocabulary, and that every `relates-to` path "
+   228	                "resolves from the repository root. Reads only; the rest of "
+   229	                "the tree is not checked."
+   230	            ),
+   231	            "invocation": f"python3 {TOOL} --brief <path>",
+   232	            "input_schema": {
+   233	                "type": "object",
+   234	                "properties": {"path": {
+   235	                    "type": "string",
+   236	                    "description": "the path of the decision brief to check, "
+   237	                                   "relative to the current directory or "
+   238	                                   "absolute"}},
+   239	                "required": ["path"],
+   240	                "additionalProperties": False,
+   241	            },
+   242	            "returns": {"form": "text", "text": PASS_TEXT},
+   243	            "failures": [CHECK_FAILURE, UNREADABLE_FAILURE, USAGE_FAILURE],
+   244	        },
+   245	        {
+   246	            "name": "check-process",
+   247	            "description": (
+   248	                "Checks one process definition alone by check 11's rule: "
+   249	                "every repository tool path it names — `basis/tools/<name>.py` "
+   250	                "in a step's `run:` template or an `initial:` value — exists "
+   251	                "in the repository. Reads only; the rest of the tree is not "
+   252	                "checked."
+   253	            ),
+   254	            "invocation": f"python3 {TOOL} --process <path>",
+   255	            "input_schema": {
+   256	                "type": "object",
+   257	                "properties": {"path": {
+   258	                    "type": "string",
+   259	                    "description": "the path of the process definition to "
+   260	                                   "check, relative to the current directory "
+   261	                                   "or absolute"}},
+   262	                "required": ["path"],
+   263	                "additionalProperties": False,
+   264	            },
+   265	            "returns": {"form": "text", "text": PASS_TEXT},
+   266	            "failures": [CHECK_FAILURE, UNREADABLE_FAILURE, USAGE_FAILURE],
+   267	        },
+   268	        {
+   269	            "name": "derive-chain",
+   270	            "description": (
+   271	                "Derives the definition chain of one artifact type from the "
+   272	                "references the documents under basis/ and the skills at "
+   273	                ".claude/skills/ carry — the typedef by `defines`, the "
+   274	                "guideline and fitness set by `target-type`, the process by "
+   275	                "`produces`, its roles from the steps, the skill by "
+   276	                "`derived-from` — and prints it. Never hand-written. An "
+   277	                "artifact type no typedef defines yields a chain with every "
+   278	                "link empty and status draft: that is a result, not a "
+   279	                "failure. Reads only."
+   280	            ),
+   281	            "invocation": f"python3 {TOOL} --derive-chain <artifact_type>",
+   282	            "input_schema": {
+   283	                "type": "object",
+   284	                "properties": {"artifact_type": {
+   285	                    "type": "string",
+   286	                    "description": "the artifact type whose chain to derive: "
+   287	                                   "the `defines` value of its typedef, for "
+   288	                                   "example `feature`"}},
+   289	                "required": ["artifact_type"],
+   290	                "additionalProperties": False,
+   291	            },
+   292	            "returns": {
+   293	                "form": "yaml",
+   294	                "output_schema": {
+   295	                    "type": "object",
+   296	                    "description": "the definition-chain data type, "
+   297	                                   "basis/types/definition-chain.md: each "
+   298	                                   "link is the id of the document found, or "
+   299	                                   "empty when none is; status is approved "
+   300	                                   "only when every link is found and "
+   301	                                   "approved",
+   302	                    "properties": {
+   303	                        "artifact_type": {"type": "string"},
+   304	                        "typedef": {"type": "string"},
+   305	                        "guideline": {"type": "string"},
+   306	                        "fitness": {"type": "string"},
+   307	                        "process": {"type": "string"},
+   308	                        "roles": {"type": "array", "items": {"type": "string"}},
+   309	                        "skill": {"type": "string"},
+   310	                        "status": {"type": "string", "enum": ["draft", "approved"]},
+   311	                    },
+   312	                    "required": ["artifact_type", "typedef", "guideline",
+   313	                                 "fitness", "process", "roles", "skill",
+   314	                                 "status"],
+   315	                },
+   316	            },
+   317	            "failures": [USAGE_FAILURE],
+   318	        },
+   319	    ],
+   320	}
+   321	
+   322	
+   323	def front_matter(path):
+   324	    text = path.read_text()
+   325	    m = re.match(r"---\n(.*?)\n---\n", text, re.S)
+   326	    if not m:
+   327	        return None, text
+   328	    try:
+   329	        return yaml.safe_load(m.group(1)), text
+   330	    except yaml.YAMLError:
+   331	        return None, text
+   332	
+   333	
+   334	def yaml_blocks(text):
+   335	    out = {}
+   336	    for fence in re.findall(r"```yaml\n(.*?)```", text, re.S):
+   337	        block = yaml.safe_load(fence)
+   338	        if isinstance(block, dict):
+   339	            out.update(block)
+   340	    return out
+   341	
+   342	
+   343	def collect_refs(node):
+   344	    refs = set()
+   345	    if isinstance(node, dict):
+   346	        for k, v in node.items():
+   347	            if k == "$ref":
+   348	                refs.add(v)
+   349	            else:
+   350	                refs |= collect_refs(v)
+   351	    elif isinstance(node, list):
+   352	        for item in node:
+   353	            refs |= collect_refs(item)
+   354	    return refs
+   355	
+   356	
+   357	def registry():
+   358	    reg = {}
+   359	    for tree in ("artifacts", "types"):
+   360	        for path in (BASIS / tree).glob("*.md"):
+   361	            fm, _ = front_matter(path)
+   362	            if fm and fm.get("defines"):
+   363	                reg[fm["defines"]] = path
+   364	    return reg
+   365	
+   366	
+   367	def lint():
+   368	    errors = []
+   369	    reg = registry()
+   370	
+   371	    seen_defines = {}
+   372	    for path in sorted(BASIS.rglob("*.md")):
+   373	        rel = path.relative_to(BASIS)
+   374	        fm, text = front_matter(path)
+   375	
+   376	        # 1. identity base
+   377	        if fm is None:
+   378	            errors.append(f"{rel}: front-matter missing or unparseable (definition §Required frontmatter)")
+   379	            continue
+   380	        for field in IDENTITY_BASE:
+   381	            if field not in fm:
+   382	                errors.append(f"{rel}: front-matter lacks `{field}` (definition §Required frontmatter)")
+   383	        if fm.get("type") not in OWNER_EXEMPT and "owner" not in fm:
+   384	            errors.append(f"{rel}: front-matter lacks `owner` (definition §Required frontmatter)")
+   385	
+   386	        # 7. version + Document History (definition §Required frontmatter,
+   387	        #    §Required sections 3); generated renderings are exempt.
+   388	        if not fm.get("generated"):
+   389	            if "version" not in fm:
+   390	                errors.append(f"{rel}: front-matter lacks `version` (definition §Required frontmatter)")
+   391	            h2s = re.findall(r"^## (.+)$", text, re.M)
+   392	            if not h2s or h2s[-1].strip() != "Document History":
+   393	                errors.append(f"{rel}: `Document History` is not the last section (definition §Required sections 3)")
+   394	            if "verified-by" in fm:
+   395	                errors.append(f"{rel}: review-log frontmatter `verified-by` is ruled out (definition §Required sections 3)")
+   396	
+   397	        # 2. defines uniqueness
+   398	        if fm.get("defines"):
+   399	            if fm["defines"] in seen_defines:
+   400	                errors.append(f"{rel}: duplicate defines `{fm['defines']}` (also {seen_defines[fm['defines']]})")
+   401	            seen_defines[fm["defines"]] = rel
+   402	
+   403	        # 4. relative links resolve
+   404	        for target in re.findall(r"\]\(([^)#\s]+)\)", text):
+   405	            if target.startswith(("http://", "https://", "pkg:")):
+   406	                continue
+   407	            if not (path.parent / target).exists():
+   408	                errors.append(f"{rel}: broken link `{target}`")
+   409	
+   410	        # 5. required headings
+   411	        headings = re.findall(r"^#{1,3} (.+)$", text, re.M)
+   412	        for req in REQUIRED_HEADINGS.get(fm.get("type"), []):
+   413	            if not any(h.strip().startswith(req) for h in headings):
+   414	                errors.append(f"{rel}: missing required heading `{req}` ({fm.get('type')} typedef §Required sections)")
+   415	
+   416	        # 8. no numbered-decision references (review-record §Commitment)
+   417	        for i, line in enumerate(text.splitlines(), 1):
+   418	            if DECISION_REF.search(line):
+   419	                errors.append(f"{rel}:{i}: numbered-decision reference (decisions live as changes in the artifacts they affect)")
+   420	
+   421	        # 6. banned vocabulary
+   422	        if rel.name != "README.md" and rel.name != "base-writing-style.md":
+   423	            for i, line in enumerate(text.splitlines(), 1):
+   424	                if "Replaces" in line or line.lstrip().startswith(("approved:", "ratified:")):
+   425	                    continue
+   426	                for term in BANNED:
+   427	                    if term in line.lower():
+   428	                        errors.append(f"{rel}:{i}: banned term `{term}` (use-defined-terms; see glossary)")
+   429	
+   430	        # 3. $ref sources in process data blocks
+   431	        if fm.get("type") == "process-definition":
+   432	            spec = yaml_blocks(text)
+   433	            data = spec.get("data", {})
+   434	            refs = collect_refs(data)
+   435	            sourced = {}
+   436	            def walk(node):
+   437	                if isinstance(node, dict):
+   438	                    if "$ref" in node and node.get("from"):
+   439	                        sourced[node["$ref"]] = node["from"]
+   440	                    for v in node.values():
+   441	                        walk(v)
+   442	                elif isinstance(node, list):
+   443	                    for i in node:
+   444	                        walk(i)
+   445	            walk(data)
+   446	            for ref in sorted(refs):
+   447	                src = sourced.get(ref)
+   448	                if not src:
+   449	                    errors.append(f"{rel}: $ref `{ref}` has no `from:` source (process-definition §Data)")
+   450	                elif src.startswith("pkg:"):
+   451	                    if not PKG_RE.match(src):
+   452	                        errors.append(f"{rel}: `{src}` is not pkg:<package>/<type> (process-definition §Data)")
+   453	                else:
+   454	                    target = (path.parent / src).resolve()
+   455	                    if not target.exists():
+   456	                        errors.append(f"{rel}: from `{src}` does not exist")
+   457	                    else:
+   458	                        tfm, _ = front_matter(target)
+   459	                        if not tfm or tfm.get("defines") != ref:
+   460	                            errors.append(f"{rel}: from `{src}` does not define `{ref}`")
+   461	    errors += lint_requests()
+   462	    errors += lint_briefs()
+   463	    for path in sorted(PROCESSES.glob("*.md")):
+   464	        fm, _ = front_matter(path)
+   465	        if fm is not None and fm.get("type") == "process-definition":
+   466	            errors += lint_process_tools(path)
+   467	    errors += lint_guidance()
+   468	    return errors
+   469	
+   470	
+   471	def lint_requests():
+   472	    """9. Each received request in requests/ carries the frontmatter of a
+   473	    received ask (request typedef §Required frontmatter). The directory
+   474	    may not exist yet: no requests, no violations."""
+   475	    errors = []
+   476	    if not REQUESTS.is_dir():
+   477	        return errors
+   478	    clause = "(request typedef §Required frontmatter)"
+   479	    for path in sorted(REQUESTS.glob("*.md")):
+   480	        rel = path.relative_to(BASIS.parent)
+   481	        fm, _ = front_matter(path)
+   482	        if fm is None:
+   483	            errors.append(f"{rel}: front-matter missing or unparseable {clause}")
+   484	            continue
+   485	        for key in REQUEST_KEYS:
+   486	            if key not in fm:
+   487	                errors.append(f"{rel}: front-matter lacks `{key}` {clause}")
+   488	        if "type" in fm and fm["type"] != "request":
+   489	            errors.append(f"{rel}: `type` is `{fm['type']}`, not `request` {clause}")
+   490	        if "status" in fm and fm["status"] not in REQUEST_STATUS:
+   491	            errors.append(f"{rel}: `status` `{fm['status']}` not in {sorted(REQUEST_STATUS)} {clause}")
+   492	        if "route" in fm and fm["route"] not in REQUEST_ROUTE:
+   493	            errors.append(f"{rel}: `route` `{fm['route']}` not in {sorted(REQUEST_ROUTE)} {clause}")
+   494	        target = fm.get("routed-to")
+   495	        if target:
+   496	            if not isinstance(target, str):
+   497	                errors.append(f"{rel}: `routed-to` is not a link {clause}")
+   498	            else:
+   499	                # Resolve the part before any `#` fragment, as check 4 does
+   500	                # for markdown links; the small-change lane's result is the
+   501	                # request's own Result section by fragment, so the request's
+   502	                # own repository-root path is accepted.
+   503	                link = target.split("#", 1)[0]
+   504	                if not link.startswith(("http://", "https://", "pkg:")) \
+   505	                        and link != rel.as_posix() \
+   506	                        and not (path.parent / link).exists():
+   507	                    errors.append(f"{rel}: broken link `{target}` in `routed-to` {clause}")
+   508	    return errors
+   509	
+   510	
+   511	def lint_briefs():
+   512	    """10. Each decision brief in briefs/ carries the decision-brief
+   513	    typedef's closed field set and nothing outside it, and every
+   514	    relates-to path resolves from the repository root. The directory may
+   515	    not exist yet: no briefs, no violations. A brief is a file whose type
+   516	    is decision-brief; the annexes beside it — a brief's linked full
+   517	    material, of no fixed frontmatter — are not briefs and are not
+   518	    walked."""
+   519	    errors = []
+   520	    if not BRIEFS.is_dir():
+   521	        return errors
+   522	    for path in sorted(BRIEFS.glob("*.md")):
+   523	        fm, _ = front_matter(path)
+   524	        if fm is not None and fm.get("type") == "decision-brief":
+   525	            errors += lint_brief(path)
+   526	    return errors
+   527	
+   528	
+   529	def lint_brief(path):
+   530	    """Check one decision brief by check 10's rules (decision-brief
+   531	    typedef §Required frontmatter); the same rules for the tree walk
+   532	    and for --brief. Paths under relates-to resolve from the repository
+   533	    root, wherever the brief file lives."""
+   534	    errors = []
+   535	    clause = "(decision-brief typedef §Required frontmatter)"
+   536	    root = BASIS.parent
+   537	    full = path.resolve()
+   538	    rel = full.relative_to(root) if full.is_relative_to(root) else path
+   539	    fm, _ = front_matter(path)
+   540	    if fm is None:
+   541	        errors.append(f"{rel}: front-matter missing or unparseable {clause}")
+   542	        return errors
+   543	    for key in BRIEF_KEYS:
+   544	        if key not in fm:
+   545	            errors.append(f"{rel}: front-matter lacks `{key}` {clause}")
+   546	    for key in fm:
+   547	        if key not in BRIEF_KEYS and key not in BRIEF_OPTIONAL:
+   548	            errors.append(f"{rel}: unknown front-matter key `{key}` — the field set is closed {clause}")
+   549	    if "type" in fm and fm["type"] != "decision-brief":
+   550	        errors.append(f"{rel}: `type` is `{fm['type']}`, not `decision-brief` {clause}")
+   551	    if "status" in fm and fm["status"] not in BRIEF_STATUS:
+   552	        errors.append(f"{rel}: `status` `{fm['status']}` not in {sorted(BRIEF_STATUS)} {clause}")
+   553	    if "relates-to" in fm:
+   554	        targets = fm["relates-to"]
+   555	        if not isinstance(targets, list) or not targets:
+   556	            errors.append(f"{rel}: `relates-to` is not a list of one or more paths {clause}")
+   557	        else:
+   558	            for target in targets:
+   559	                if not isinstance(target, str) or not target:
+   560	                    errors.append(f"{rel}: `relates-to` entry `{target}` is not a path {clause}")
+   561	                elif not (root / target).is_file():
+   562	                    errors.append(f"{rel}: `relates-to` path `{target}` does not resolve from the repository root {clause}")
+   563	    return errors
+   564	
+   565	
+   566	def lint_process_tools(path):
+   567	    """11. Every repository tool path one process definition names exists
+   568	    (process-definition typedef §Commitment: a process is not approved
+   569	    while a step names a tool the repository lacks — the tool is a
+   570	    request, routed before the process runs, never built mid-process).
+   571	    A tool path is `basis/tools/<name>.py`, written in a step's `run:`
+   572	    template or held as the `initial:` value of a data value or
+   573	    parameter a template interpolates; it resolves from the repository
+   574	    root. `bd`, `python3`, and the sh utilities are the environment and
+   575	    are not checked. The same rule for the tree walk and for --process."""
+   576	    errors = []
+   577	    clause = "(process-definition typedef §Commitment)"
+   578	    root = BASIS.parent
+   579	    full = path.resolve()
+   580	    rel = full.relative_to(root) if full.is_relative_to(root) else path
+   581	    fm, text = front_matter(path)
+   582	    if fm is None:
+   583	        errors.append(f"{rel}: front-matter missing or unparseable {clause}")
+   584	        return errors
+   585	    spec = yaml_blocks(text)
+   586	    sites = []  # (where the path is named, text to scan)
+   587	    for block in ("data", "parameters"):
+   588	        values = spec.get(block)
+   589	        if isinstance(values, dict):
+   590	            for name, decl in values.items():
+   591	                if isinstance(decl, dict) and isinstance(decl.get("initial"), str):
+   592	                    sites.append((f"`{block}.{name}` initial", decl["initial"]))
+   593	    for step in spec.get("steps") or []:
+   594	        if isinstance(step, dict) and isinstance(step.get("run"), str):
+   595	            sites.append((f"step `{step.get('id', '?')}` run", step["run"]))
+   596	    seen = set()
+   597	    for where, scanned in sites:
+   598	        for tool in TOOL_PATH.findall(scanned):
+   599	            if (where, tool) in seen:
+   600	                continue
+   601	            seen.add((where, tool))
+   602	            if not (root / tool).is_file():
+   603	                errors.append(f"{rel}: {where} names `{tool}`, which does not exist in the repository {clause}")
+   604	    return errors
+   605	
+   606	
+   607	def lint_guidance():
+   608	    """12. Each implementation guidance record in guidance/ at the
+   609	    repository root carries the implementation-guidance typedef's
+   610	    required frontmatter (implementation-guidance typedef §Required
+   611	    frontmatter); each missing key is reported by name. The directory
+   612	    may not exist yet: no records, no violations."""
+   613	    errors = []
+   614	    if not GUIDANCE.is_dir():
+   615	        return errors
+   616	    clause = "(implementation-guidance typedef §Required frontmatter)"
+   617	    for path in sorted(GUIDANCE.glob("*.md")):
+   618	        rel = path.relative_to(BASIS.parent)
+   619	        fm, _ = front_matter(path)
+   620	        if fm is None:
+   621	            errors.append(f"{rel}: front-matter missing or unparseable {clause}")
+   622	            continue
+   623	        for key in GUIDANCE_KEYS:
+   624	            if key not in fm:
+   625	                errors.append(f"{rel}: front-matter lacks `{key}` {clause}")
+   626	        if "type" in fm and fm["type"] != "implementation-guidance":
+   627	            errors.append(f"{rel}: `type` is `{fm['type']}`, not `implementation-guidance` {clause}")
+   628	    return errors
+   629	
+   630	
+   631	def derive_chain(artifact_type):
+   632	    """definition-chain is derived from document references, never authored:
+   633	    typedef by `defines`, guideline and fitness by `target-type`, process by
+   634	    `produces`, roles from the process steps, skill by `derived-from`."""
+   635	    chain = {"artifact_type": artifact_type, "typedef": "", "guideline": "",
+   636	             "fitness": "", "process": "", "roles": [], "skill": "", "status": "draft"}
+   637	    docs = []
+   638	    process_id = None
+   639	    for path in sorted(BASIS.rglob("*.md")):
+   640	        fm, text = front_matter(path)
+   641	        if not fm:
+   642	            continue
+   643	        t = fm.get("type")
+   644	        if t == "artifact-typedef" and fm.get("defines") == artifact_type:
+   645	            chain["typedef"] = fm["id"]; docs.append(fm)
+   646	        elif t == "quality-guideline" and fm.get("target-type") == artifact_type:
+   647	            chain["guideline"] = fm["id"]; docs.append(fm)
+   648	        elif t == "fitness-set" and fm.get("target-type") == artifact_type:
+   649	            chain["fitness"] = fm["id"]; docs.append(fm)
+   650	        elif t == "process-definition" and artifact_type in (fm.get("produces") or []):
+   651	            chain["process"] = fm["id"]; process_id = fm["id"]; docs.append(fm)
+   652	            spec = yaml_blocks(text)
+   653	            roles = {s["run-by"]["role"] for s in spec.get("steps", [])
+   654	                     if s.get("run-by", {}).get("role")}
+   655	            chain["roles"] = sorted(roles)
+   656	    if process_id:
+   657	        for path in (BASIS.parent / ".claude" / "skills").rglob("SKILL.md"):
+   658	            fm, _ = front_matter(path)
+   659	            if fm and fm.get("derived-from") == process_id:
+   660	                chain["skill"] = fm["id"]; docs.append(fm)
+   661	    if docs and all(d.get("status") == "approved" for d in docs) and \
+   662	       all(chain[k] for k in ("typedef", "guideline", "fitness", "process", "skill")):
+   663	        chain["status"] = "approved"
+   664	    return chain
+   665	
+   666	
+   667	USAGE = ("python3 basis/tools/lint_basis.py | --brief <path> | "
+   668	         "--process <path> | --derive-chain <artifact_type> | --describe")
+   669	
+   670	
+   671	def fail(code, message):
+   672	    """A failure the answer names: its code beside the message, one line on
+   673	    standard error, the exit status the answer states for that code."""
+   674	    print(f"{code}: {message}", file=sys.stderr)
+   675	    sys.exit({"usage": 2, "unreadable": 2}[code])
+   676	
+   677	
+   678	def readable(arg):
+   679	    path = pathlib.Path(arg)
+   680	    if not path.is_file():
+   681	        fail("unreadable", f"{arg}: no such file")
+   682	    try:
+   683	        path.read_bytes()
+   684	    except OSError as exc:
+   685	        fail("unreadable", f"{arg}: cannot be read: {exc}")
+   686	    return path
+   687	
+   688	
+   689	def main():
+   690	    args = sys.argv[1:]
+   691	    # The standard question, answered before any other action; the other
+   692	    # arguments are ignored (adr-2026-09-07-tool-answer §2).
+   693	    if "--describe" in args:
+   694	        sys.stdout.write(json.dumps(DESCRIPTION, indent=2) + "\n")
+   695	        sys.exit(0)
+   696	    if len(args) == 2 and args[0] == "--derive-chain":
+   697	        print(yaml.safe_dump(derive_chain(args[1]), sort_keys=False).rstrip())
+   698	        return
+   699	    if len(args) == 2 and args[0] == "--brief":
+   700	        errors = lint_brief(readable(args[1]))
+   701	    elif len(args) == 2 and args[0] == "--process":
+   702	        errors = lint_process_tools(readable(args[1]))
+   703	    elif not args:
+   704	        errors = lint()
+   705	    else:
+   706	        fail("usage", USAGE)
+   707	    for e in errors:
+   708	        print(e)
+   709	    print(f"{'FAIL' if errors else 'PASS'}: {len(errors)} violation(s)")
+   710	    sys.exit(1 if errors else 0)
+   711	
+   712	
+   713	if __name__ == "__main__":
+   714	    main()

@@ -1,0 +1,618 @@
+===== basis/guidelines/base-writing-style.md
+     1	---
+     2	type: quality-guideline
+     3	id: base-writing-style
+     4	owner: product-authority
+     5	status: approved
+     6	approved: 2026-08-19
+     7	version: 2
+     8	created: 2026-08-14
+     9	updated: 2026-08-23
+    10	---
+    11	
+    12	# Base writing style
+    13	
+    14	These rules apply to everything written for a human reader, regardless of
+    15	document type. Document types add a format layer on top of this base; they
+    16	never override it.
+    17	
+    18	## Goal
+    19	
+    20	The reader gets the point of any paragraph in one read, any section in 30
+    21	seconds, and the whole document in two minutes. Write for the first read.
+    22	
+    23	## Lead with the point
+    24	
+    25	At every scale, state the conclusion first and the support after.
+    26	
+    27	- A document opens with what it found or decided, not how it got there.
+    28	- A section opens with its main claim, then evidence.
+    29	- A paragraph opens with its point, then elaboration.
+    30	
+    31	If a document type defines a structure, that structure is just this rule
+    32	applied to that type. If no structure is defined, use this rule to invent
+    33	one.
+    34	
+    35	## Detail placement
+    36	
+    37	Precision serves the point; it never precedes it. Formal specification
+    38	language, methods, raw data, scoring tables, and citations go after the
+    39	claim they support — or in an appendix. The body is for understanding.
+    40	
+    41	## Sentences
+    42	
+    43	- One idea per sentence.
+    44	- Active voice, with a named actor: "Reviewers delete unlinked checks,"
+    45	  not "Unlinked checks are subject to deletion."
+    46	- Prefer the short common word: "use" not "utilize," "end" not
+    47	  "terminate," "before" not "prior to."
+    48	
+    49	## Terminology
+    50	
+    51	- Never use a metaphor as a technical term. If a word describes a thing
+    52	  by what it resembles instead of what it literally does, replace it with
+    53	  the literal description. Test: could a competent reader from outside
+    54	  the team work out the meaning from the words alone? If not, rewrite.
+    55	- Banned words. Never use these, in any form:
+    56	  - "load-bearing" → say "other work depends on it" or "critical to
+    57	    operations"
+    58	  - "surface" (as in context surface, config surface) → say "input,"
+    59	    "source," or "channel"
+    60	  - "seam" → say "boundary" or "integration point"
+    61	  - "scar tissue" → describe the actual problem, e.g. "an unreviewed
+    62	    workaround that was never removed"
+    63	- Explain every insider reference — a past incident, an internal system,
+    64	  a person — in one plain sentence, or cut it. Assume the reader knows
+    65	  none of our history.
+    66	
+    67	## Style examples
+    68	
+    69	These examples exist only to show sentence style. The domain (a public
+    70	library) is deliberately unrelated to our work. Copy the style; never
+    71	copy the content or vocabulary into real documents.
+    72	
+    73	bad:
+    74	
+    75	> Unreturned inventory constitutes scar tissue on the circulation loop
+    76	> and rapidly becomes load-bearing for downstream shelving throughput.
+    77	
+    78	good:
+    79	
+    80	> Overdue books pile up at the front desk, and staff spend their time
+    81	> reshelving late returns instead of helping visitors.
+    82	
+    83	The bad sentence uses two metaphors as terms and never names an actor.
+    84	The good sentence says who is affected and what actually happens, in
+    85	plain words.
+    86	
+    87	## Document History
+    88	
+    89	| Version | Date | Kind | Entry |
+    90	|---|---|---|---|
+    91	| 1 | 2026-08-14 | update | Authored (seed layer); earlier history, if any, in the repository history. |
+    92	| 1 | 2026-08-19 | state | draft → approved. |
+    93	| 2 | 2026-08-23 | update | Owner direction: decision-ledger references removed — changes stand on their own; history entries and text no longer cite numbered decisions. |
+===== basis/glossary.md
+     1	---
+     2	type: glossary
+     3	id: glossary
+     4	owner: product-authority
+     5	status: approved
+     6	approved: 2026-08-19
+     7	version: 10
+     8	created: 2026-08-19
+     9	updated: 2026-08-25
+    10	---
+    11	
+    12	# Glossary
+    13	
+    14	## How the list combines
+    15	
+    16	The defined-term list is this glossary combined with every schema element
+    17	name. Per the `use-defined-terms` principle, a writer choosing between
+    18	terms uses one of these when one fits.
+    19	
+    20	## Terms
+    21	
+    22	- **artifact type** — a named, schema-defined document type (e.g.
+    23	  `decision-brief`); the term the schema registry uses. Not "kind".
+    24	- **data type** — a named, schema-defined structure that is not a
+    25	  human-readable document (e.g. `review`); passed between process steps.
+    26	- **simple type** — a JSON Schema primitive (`string`, `integer`,
+    27	  `boolean`, `array`, `object`), usable inline without registration.
+    28	- **typedef** — the single source a type is generated from; templates and
+    29	  schema fragments are its renderings (owned by shopsystem-knowledge).
+    30	- **schema** — the machine-checkable shape of a type: fields, types,
+    31	  enums, required sections.
+    32	- **process definition** — the source of truth for a process: header
+    33	  (purpose, outcomes, roles), data section, steps section.
+    34	- **step** — one unit of a process: an agent step (carries a prompt) or a
+    35	  runtime step (carries `set`, `run`, or `branches`; no prose).
+    36	- **rendering** — a generated output of a definition (a skill, a
+    37	  diagram, a template); never edited by hand, never the source of truth.
+    38	- **guiding statement** — an optional header element of a process
+    39	  definition that directs judgment across the whole process; compiled
+    40	  into every rendering.
+    41	- **fitness set** — judged (never executed) Given/When/Then scenarios
+    42	  scoring an artifact type's quality.
+    43	- **guideline** — prose quality rules for an artifact type, each with a
+    44	  test, a criterion, and a yes/no decision.
+    45	- **role** — a named capability contract and set of accountabilities,
+    46	  assigned by process steps to whoever fills it; sequencing lives in
+    47	  process definitions, not roles.
+    48	- **principle** — a standing rule about how we work: name, statement,
+    49	  rationale, implications (see the principles document's opening
+    50	  definition).
+    51	- **seed layer** — the hand-approved definitions the regress terminates
+    52	  at: the principle set plus one typedef per definition document type.
+    53	- **owner** — the role that approves changes to a definition; named in
+    54	  every definition's frontmatter.
+    55	- **definition chain** — the six linked definitions of good for one
+    56	  artifact type; required before instances are authored or rewritten.
+    57	- **keeper** — a corpus record whose action is keep-rewrite; rewritten
+    58	  forward through its type's approved chain, never used as-is.
+    59	- **rewrite-forward** — the default for keepers: re-author to the
+    60	  approved standard; repair-in-place only for records already at the bar.
+    61	- **rebaseline** — Phase 1 of the re-founding arc: the active tree comes
+    62	  to hold only chain-conforming records; retired mass moves to the
+    63	  archive.
+    64	- **scope** (of a principle set) — the level the set governs and whose
+    65	  context it loads into: working (every activity) or architecture (the
+    66	  designed system).
+    67	- **transcript** — the runtime log of turns; unscoped, not a governed
+    68	  artifact, never loaded into context.
+    69	- **conversation** — a scoped, bounded discussion attached to exactly one
+    70	  anchor; every conversation belongs to a process.
+    71	- **anchor** — the governed record a conversation attaches to: a session
+    72	  record, a review record, or a work item; carries the conversation's
+    73	  state across transcript boundaries.
+    74	- **conversation type** — discovery (anchor: a session record), review
+    75	  (anchor: a review record and its outcomes), or work (anchor: a work
+    76	  item).
+    77	- **session record** — the anchor record of a discovery conversation:
+    78	  outcome, produced and revised lists, open threads, select quotes.
+    79	- **review** — one bounded conversation in which the authority decides
+    80	  on presented material. Replaces "sitting".
+    81	- **review record** — the anchor record of a review: the material
+    82	  presented and the outcomes applied; each decision traces in the
+    83	  changed artifacts' Document History, never in a standing ledger.
+    84	- **park** — the failsafe for work that cannot pass review within its
+    85	  round cap: set aside with a filed finding.
+    86	- **round cap** — the declared maximum review rounds before a loop's
+    87	  failsafe exit fires.
+    88	- **action** — the approved choice for one record: keep-rewrite, keep,
+    89	  retire, or terminal, with its target.
+    90	- **authority-call** — a row marker on a migration-plan row awaiting a
+    91	  decision from the authority; not an action — the row has no effect and
+    92	  is out of scope for any run until ruled.
+    93	- **action table** — the table of records and their actions; approved row
+    94	  by row or in blocks at a review. Drives any bulk record change.
+    95	- **close-out** — the mechanical execution of the migration plan's
+    96	  pre-decided retire and terminal actions: snapshot, delete, archive
+    97	  move, a loud post-check, and the branch promotion; no review loop.
+    98	  All stages run consecutively at cut-over.
+    99	- **snapshot tag** — the annotated git tag (`pre-migration`) on `main`'s
+   100	  pre-execution commit, preserving the full corpus for terminal-recovery;
+   101	  after close-out a terminal record exists only there.
+   102	- **migration plan** — the rebaseline's action table plus the order of
+   103	  the per-type migration runs. Replaces "rebaseline bill".
+   104	- **run** — one execution of a process, anchored to a work item; states:
+   105	  running, held, done, cancelled.
+   106	- **hold** — a run state: paused with its step and data preserved in its
+   107	  anchor, by inactivity or by an ask; a held run is resumed or
+   108	  cancelled, never dropped.
+   109	- **checkpoint** — updating a conversation's anchor when a transcript
+   110	  ends mid-conversation; a checkpoint is not a close.
+   111	- **branched conversation** — a conversation run as a sub-process of
+   112	  another run; its anchor records the parent (`branched-from`).
+   113	- **Bounded Context** — a deliberately drawn region of the product with
+   114	  one internal language, one model, and one set of contracts to other
+   115	  regions; drawn by design, never discovered after the fact (Evans,
+   116	  *Domain-Driven Design*).
+   117	- **shop** — the entity that builds, operates, and evolves part of the
+   118	  product. Two types: the lead shop (the system-level coordinator; owns
+   119	  product-level artifacts and no Bounded Context) and the BC-shop (owns
+   120	  and produces exactly one Bounded Context).
+   121	- **activity** — a discrete unit of work performed inside a shop,
+   122	  following a contract or process, with inputs, outcomes, and provenance
+   123	  recorded. What an actor is stays unconstrained; the activity has the
+   124	  same shape whoever performs it.
+   125	- **contract** — a named, versioned statement of what one entity
+   126	  promises another: the schemas exchanged, the meaning of each
+   127	  operation, the error behavior, and the relationship kind. Offered as a
+   128	  product contract (on a Bounded Context) or an operational contract (on
+   129	  a shop); nothing outside a contract is promised.
+   130	- **relationship kind** — the named pattern a contract declares for how
+   131	  two Bounded Contexts relate, drawn from the context-mapping catalogue
+   132	  (Evans, *Domain-Driven Design*): customer–supplier, conformist,
+   133	  anti-corruption layer, open host service, published language, shared
+   134	  kernel, or separate ways.
+   135	- **vehicle** — the message type a request to a Bounded Context shop
+   136	  travels in; chosen from the pre-state, never from the request's
+   137	  wording.
+   138	- **pre-state** — what a Bounded Context actually is before a change,
+   139	  read from its contracts and its scenario register, never from its
+   140	  internals.
+   141	- **framing** — the PM role's recorded statement of what a request is
+   142	  about: the originator, the problem taken to be worth solving, and the
+   143	  outcome it serves; the exclusive decision of `lead-pm`.
+   144	- **acceptance scenario** — a Gherkin scenario that states, as a
+   145	  requirement, what counts as done for one behavior; co-produced by the
+   146	  PO role and the owning Bounded Context shop; held in that shop's
+   147	  scenario register.
+   148	- **scenario register** — a Bounded Context shop's own list of the
+   149	  acceptance scenarios it holds, with their hashes and states; read in
+   150	  full across every context when a claim spans contexts.
+   151	- **ask** — a question one activity puts to another role in place of
+   152	  its output, carrying a default and a checkpoint; the run holds, the
+   153	  role answers, the step resumes — never a wait in place (data type
+   154	  `ask`; process-definition typedef §Run lifecycle).
+   155	- **clarify** — an ask from a Bounded Context shop to the lead shop on
+   156	  scope, vocabulary, structure, or contract; answered by the role whose
+   157	  domain the question falls in.
+   158	- **decomposition** — the solutions architect's record of which Bounded
+   159	  Context owns which capability, and the relationship kind of each
+   160	  contract between contexts.
+   161	- **enabler work** — technical work that makes a feature possible;
+   162	  recommended by the solutions architect, placed in the backlog by the
+   163	  PO role.
+   164	- **interaction type** — one way a person or an agent reaches the
+   165	  product: command line (CLI), full-screen terminal (TUI), graphical or
+   166	  web (GUI), API and SDK, conversational, voice, or a generated document
+   167	  or notification; each honours its own conventions within one
+   168	  experience.
+   169	- **experience guidance corpus** — the product designer role's
+   170	  principle set and guidelines for the experience: design principles,
+   171	  vocabulary and voice, core-task parity across interaction types,
+   172	  interaction patterns per type, and the accessibility target; the
+   173	  role's exclusive domain.
+   174	- **intent** — a desired outcome expressed by an originator at the
+   175	  product's edge; enters the product through a contract and keeps its
+   176	  provenance through every translation and delegation.
+   177	
+   178	## Document History
+   179	
+   180	| Version | Date | Kind | Entry |
+   181	|---|---|---|---|
+   182	| 1 | 2026-08-19 | update | Seed term list authored. |
+   183	| 1 | 2026-08-19 | state | draft → approved. |
+   184	| 2 | 2026-08-22 | update | Conversation-model terms added; action extended to four values, authority-call and action-table amended, close-out and snapshot tag added. |
+   185	| 3 | 2026-08-23 | update | Architecture terms added, riding the architecture-principle-set approval: Bounded Context, shop, activity, contract, relationship kind, intent. |
+   186	| 3 | 2026-08-23 | state | The six architecture terms approved with the architecture principle set; pending markers removed. |
+   187	| 4 | 2026-08-23 | update | Owner direction: ruling and experiment-index entries removed with the ledger practice; review and review-record entries rewritten to the outcomes model. |
+   188	| 5 | 2026-08-23 | update | Anchor entry added — the term recurred as an unintroduced-term stumble across three screens. |
+   189	| 6 | 2026-08-23 | update | vehicle and pre-state added — terms the lead-solutions-architect role turns on. |
+   190	| 7 | 2026-08-25 | update | Owner direction: a near-synonym of "role" retired and banned. |
+   191	| 8 | 2026-08-25 | update | framing, acceptance scenario, scenario register, clarify, decomposition, enabler work added — each arrived undefined in the PM and PO role screens. |
+   192	| 9 | 2026-08-25 | update | interaction type and experience guidance corpus added with the lead-product-designer role. |
+   193	| 10 | 2026-08-25 | update | ask added; clarify re-based as an ask; hold now names the ask as a cause. |
+===== basis/artifacts/process-definition.md
+     1	---
+     2	type: artifact-typedef
+     3	id: process-definition-typedef
+     4	defines: process-definition
+     5	owner: product-authority
+     6	status: approved
+     7	approved: 2026-08-22
+     8	version: 4
+     9	created: 2026-08-19
+    10	updated: 2026-08-25
+    11	ancestry: [definition, process-definition]
+    12	---
+    13	
+    14	# Artifact type: process-definition
+    15	
+    16	## Identity and ancestry
+    17	
+    18	- **Type:** `process-definition` — the single source of truth for a
+    19	  process: what it is for, what a run produces, and every step in a form
+    20	  a runtime can construct a workflow from. Skills, flow
+    21	  diagrams, and fabro graphs (fabro is the fleet's workflow-orchestrator
+    22	  runtime) are its renderings.
+    23	- **Produced by:** seed drafting or governed evolution. **Consumed by:**
+    24	  the compiler (renderings), agents (via the rendered skill), reviewers
+    25	  (conformance and loop-exit review), fabro (via annotations).
+    26	
+    27	## Required frontmatter
+    28	
+    29	`type: process-definition`, `id`, `owner`, `status`, `created`,
+    30	`updated`; `produces` (artifact
+    31	types a run creates; the generic root `definition` covers runs creating
+    32	definition documents; empty when the run's value is state change);
+    33	`condition-language: cel`; optional: `carried-by` (the rendered skill's
+    34	id), `condition-functions` (declared extensions, name and signature),
+    35	`annotations` (process-level rendering metadata, keyed by rendering
+    36	target); `hold-after` (ISO 8601 duration — the inactivity window after
+    37	which the runtime holds a run; required for any process that carries a
+    38	conversation); `ask-cap` (ISO 8601 duration — how long an ask may stand
+    39	unanswered before its default applies; required for any process whose
+    40	steps carry `asks`).
+    41	
+    42	## Required sections
+    43	
+    44	1. **Purpose** — one short paragraph.
+    45	2. **Guiding statement** (optional) — directs judgment across the whole
+    46	   process; the compiler copies it into every rendering.
+    47	3. **Outcomes** — each names the step or check that witnesses it.
+    48	4. **Roles** — roles and their accountability; role files carry identity,
+    49	   never sequencing.
+    50	5. **Flow (compiled)** — the diagram generated from the steps; never
+    51	   edited by hand.
+    52	6. **Data** — process-local value names. Simple types (JSON Schema
+    53	   primitives) inline; every structured shape is a `$ref` to a defined
+    54	   type with an explicit source: `from:` is a relative link to the
+    55	   defining file, or `pkg:<package>/<type>` when the type lives in
+    56	   another package and is fetched through that package's contract tool
+    57	   (e.g. `shop-knowledge schema session-record`). Every distinct `$ref`
+    58	   carries `from:` at least once; the linter verifies local sources
+    59	   define the referenced type. No structured shape is ever defined here.
+    60	   A value may declare `initial` — its value at run start.
+    61	7. **Steps** — the executable part (shape below).
+    62	8. **Derived checks** — a table: outcome, check, kind, where; every row
+    63	   cites its clause or is deleted.
+    64	
+    65	Header elements 1–4 are bolded labels before the first heading; 5–8 are
+    66	markdown headings in order (a section is a heading, per the
+    67	artifact-typedef rule).
+    68	
+    69	## The steps section
+    70	
+    71	Top-level keys: `start` (first step id); optional `parameters` (data
+    72	values supplied at instantiation rather than produced by any step);
+    73	optional `result` (the data value a run returns — the artifact, not a
+    74	status record; omit only when the outcomes pin the run's value). `end`
+    75	is the reserved terminator id for `next`. Each step:
+    76	
+    77	- `id`, `name`; `run-by` — `{role, execution: agent}`,
+    78	  `{role, execution: human}` (a role a person holds, e.g. an authority review), or `{execution: runtime}`; `fresh-context: true` where a role
+    79	  must not carry memory between runs.
+    80	- `inputs` / `outputs` — lists of declared data names; the typed contract
+    81	  is the isolation mechanism (a step reads only what it lists).
+    82	- Agent and human steps carry `prompt` — **the only prose allowed in a
+    83	  step** (for a human step it is the review's ask).
+    84	- Runtime steps carry `set` (CEL assignments to data values or their
+    85	  fields), `run` (command templates
+    86	  with `${...}` interpolation from typed inputs; `atomic: true` binds the
+    87	  lines into one all-or-nothing act), or `branches`.
+    88	- `checks` — CEL expressions over declared data.
+    89	- Routing: `next`, or `branches` of `{label, when (CEL), next}` rows plus
+    90	  one `else`. **Every loop declares its exits as labeled branch rows** —
+    91	  a reached-state success exit, a round or budget cap, or both.
+    92	- `asks` — optional list of role ids the step may put an ask to (the
+    93	  [`ask`](../types/ask.md) data type). An agent or human step listed
+    94	  with `asks` may return an ask in place of its outputs; a step without
+    95	  `asks` may not ask. Every ask names a `default` and a `checkpoint`; the
+    96	  step's prompt states what kind of information it may ask for — never
+    97	  a judgment the step's role owes. Steps that frame or plan ask early;
+    98	  an ask from a producing step wastes the work not in its checkpoint.
+    99	- `annotations` — per-step rendering metadata keyed by target (e.g.
+   100	  `fabro: {model, max_attempts}`); the definition itself ignores them.
+   101	- `run-by: {execution: sub-process, process: <process-id>, from: <source>}`
+   102	  runs another process definition as one step: the step's inputs map to
+   103	  the child's parameters and its outputs receive the child's result. A
+   104	  conversation invoked this way is a branched conversation: the child's
+   105	  anchor records the parent run.
+   106	
+   107	## Run lifecycle
+   108	
+   109	A run is one execution of a process, anchored to a work item in the
+   110	registry. Run states: `running`, `held`, `done`, `cancelled`.
+   111	
+   112	- **Hold** pauses a run: the current step and every data value persist in
+   113	  the run's anchor, and the work item records the state. A held run is
+   114	  resumed at its recorded step or cancelled with a reason — never
+   115	  silently dropped.
+   116	- The `hold-after` window makes parking automatic: a run with no activity
+   117	  inside the window is held by the runtime. Unfinished work parks itself
+   118	  with a named resume point; nothing dangles in the lead repo.
+   119	- **Ask** holds a run the same way, with the ask recorded on the anchor
+   120	  and routed to whoever fills the role it names — a person or an agent;
+   121	  the answer is written to the ask and the run resumes at the asking
+   122	  step with the ask in its inputs, in a fresh context loaded from the
+   123	  step's declared inputs and the checkpoint. There is no synchronous
+   124	  form: no step waits in place for an answer. An unanswered ask resolves
+   125	  to its `default` at the process's `ask-cap` (an ISO 8601 duration,
+   126	  required for any process whose steps carry `asks`), and the run
+   127	  resumes on the default with the ask marked `defaulted`. An ask that
+   128	  recurs across runs is a gap in a definition; the answering role files
+   129	  the definition change, and the ask stops.
+   130	- **Cancel** closes the run's work item with a reason and files the
+   131	  resulting actions the outcomes demand.
+   132	
+   133	## Rendering contract
+   134	
+   135	The compiler generates: the in-document flow diagram (typed inputs and
+   136	outputs on every node; the result on the end node) and the skill —
+   137	front-matter (`generated: true`, `generated-by`, `derived-from`,
+   138	`source`, `source-digest`) and body (purpose, guiding statement, result,
+   139	diagram, one section per step with the prompt verbatim). Conformance
+   140	check: re-run the compiler and diff.
+   141	
+   142	## Commitment (Definition of Done)
+   143	
+   144	A process definition is done when it compiles — every `$ref` resolves,
+   145	the diagram and renderings generate, `result` (if declared) names a data
+   146	value — and every loop declares its exit. **Consequence on failure:** it
+   147	cannot be dispatched, carried by a skill, or cited by a check.
+   148	
+   149	## Sources
+   150	
+   151	ISO/IEC/IEEE 24774 (name/purpose/outcomes header); GitHub Actions (step
+   152	records with typed inputs/outputs); CNCF Serverless Workflow
+   153	(data-condition transitions); CEL — Common Expression Language
+   154	(mechanically translatable conditions); Essence-style state exits plus a
+   155	round cap (the dual-exit rule).
+   156	
+   157	## Derived review checklist
+   158	
+   159	- Compiles clean: refs resolve, diagram and renderings regenerate
+   160	  byte-stable. *(Commitment)*
+   161	- No prose inside step records outside `prompt` fields; section
+   162	  introduction prose is body text, not step content. *(§The steps section)*
+   163	- Every loop has labeled success and/or cap exits. *(§The steps section)*
+   164	- Every step with `asks` belongs to a process with `ask-cap`; every ask
+   165	  names a default and a checkpoint. *(§The steps section, §Run lifecycle)*
+   166	- Outcomes each name a witness. *(§Required sections 3)*
+   167	- `result`, if absent, is justified by outcomes that pin the run's value.
+   168	  *(§The steps section)*
+   169	
+   170	## Document History
+   171	
+   172	| Version | Date | Kind | Entry |
+   173	|---|---|---|---|
+   174	| 1 | 2026-08-19 | update | Authored (seed layer); earlier history, if any, in the repository history. |
+   175	| 1 | 2026-08-22 | state | draft → approved. |
+   176	| 2 | 2026-08-23 | update | Owner direction: decision-ledger references removed — changes stand on their own; history entries and text no longer cite numbered decisions. |
+   177	| 3 | 2026-08-25 | update | Owner direction: a near-synonym of "role" retired and banned. |
+   178	| 4 | 2026-08-25 | update | Owner decision: the ask mechanism defined, held-and-resumed only — a step may carry `asks` (role ids) and return an `ask` data value in place of its outputs; the run holds, the role answers, the step resumes in a fresh context from its inputs and the ask's checkpoint; `ask-cap` bounds an unanswered ask with its default; a recurring ask is a definition gap. No synchronous form. |
+===== basis/types/ask.md
+     1	---
+     2	type: data-type
+     3	id: ask
+     4	defines: ask
+     5	owner: product-authority
+     6	status: draft
+     7	version: 1
+     8	created: 2026-08-25
+     9	updated: 2026-08-25
+    10	---
+    11	
+    12	# Data type: ask
+    13	
+    14	## Purpose
+    15	
+    16	A question one activity puts to another role, returned by an agent or
+    17	human step in place of its output. Produced by any step whose process
+    18	lists it under `asks`; consumed by the runtime, which holds the run,
+    19	routes the ask to the named role, and re-enters the step with the
+    20	`answer` filled — the held-and-resumed form defined in the
+    21	[process-definition typedef](../artifacts/process-definition.md) (§The
+    22	steps section, §Run lifecycle). An ask is for information the asker
+    23	cannot have — a pre-state, an intent the originator did not state, a
+    24	decision reserved to another role — never for a judgment the asking
+    25	role owes; the `kind` field names which. The `checkpoint` carries the
+    26	asker's partial output so the resume repeats no work. A `clarify` is an
+    27	ask from a Bounded Context shop to the lead shop; it conforms to this
+    28	shape.
+    29	
+    30	## Schema
+    31	
+    32	```yaml
+    33	schema:
+    34	  type: object
+    35	  fields:
+    36	    to: {type: string}                      # the role asked; must appear in the step's `asks` list
+    37	    kind: {type: string, enum: [pre-state, intent, reserved-decision, term, contract]}
+    38	    question: {type: string}
+    39	    default: {type: string}                 # what the asker will do if unanswered at the cap
+    40	    checkpoint: {type: string}              # the asker's partial output, enough to resume from
+    41	    answer: {type: string, optional: true}  # filled by the answering role
+    42	    answered_by: {type: string, optional: true}
+    43	    resolution:
+    44	      type: string
+    45	      enum: [answered, defaulted, cancelled]
+    46	      optional: true
+    47	```
+    48	
+    49	## Document History
+    50	
+    51	| Version | Date | Kind | Entry |
+    52	|---|---|---|---|
+    53	| 1 | 2026-08-25 | update | Authored by owner decision: the ask mechanism is held-and-resumed only — a step returns an ask instead of an output, the run holds, the role answers, the step resumes with the answer; asks carry a default and a checkpoint; clarify becomes a specialization. |
+===== basis/types/review.md
+     1	---
+     2	type: data-type
+     3	id: review
+     4	defines: review
+     5	owner: product-authority
+     6	status: approved
+     7	approved: 2026-08-19
+     8	version: 2
+     9	created: 2026-08-19
+    10	updated: 2026-08-23
+    11	---
+    12	
+    13	# Data type: review
+    14	
+    15	## Purpose
+    16	
+    17	One cold-read round's verdict and findings. Produced by the `cold-read`
+    18	step of
+    19	[`../processes/stakeholder-presentation.md`](../processes/stakeholder-presentation.md);
+    20	consumed by its routing and revision steps and appended to the round log.
+    21	The judge output scored against
+    22	[`../fitness/decision-brief.fitness.md`](../fitness/decision-brief.fitness.md)
+    23	conforms to this same shape.
+    24	
+    25	## Schema
+    26	
+    27	```yaml
+    28	schema:
+    29	  type: object
+    30	  fields:
+    31	    verdict: {type: string, enum: [clean, tradeoffs-accepted, findings]}
+    32	    stumbles: {type: array, items: {type: string}}
+    33	    unintroduced_terms: {type: array, items: {type: string}}
+    34	    ask_decidability:
+    35	      type: array
+    36	      items: {type: string, enum: [confident, wobbly, cannot-decide]}
+    37	    top_changes: {type: array, items: {type: string}, maxItems: 3}
+    38	```
+    39	
+    40	## Document History
+    41	
+    42	| Version | Date | Kind | Entry |
+    43	|---|---|---|---|
+    44	| 1 | 2026-08-19 | update | Authored (seed layer); earlier history, if any, in the repository history. |
+    45	| 1 | 2026-08-19 | state | draft → approved. |
+    46	| 2 | 2026-08-23 | update | Owner direction: decision-ledger references removed — changes stand on their own; history entries and text no longer cite numbered decisions. |
+===== .claude/shop/principles.md
+     1	---
+     2	type: principles-rendering
+     3	id: principles-rendering
+     4	status: approved
+     5	generated: true
+     6	generated-by: basis/tools/compile_principles.py
+     7	derived-from: principles
+     8	source: basis/principles.md
+     9	source-digest: sha256:db2146e7321d
+    10	scope: working
+    11	---
+    12	
+    13	# Working principles (compiled into every session)
+    14	
+    15	These statements govern every activity in this shop. The full set —
+    16	rationales, implications, fitness screen — is the source document
+    17	named in the front-matter; on conflict the source wins.
+    18	
+    19	- **Define what good looks like up front** (`define-good-up-front`):
+    20	  - Every activity MUST operate from a stated definition of what good looks like.
+    21	  - That definition MUST drive both the performance of the activity and its check.
+    22	  - The check MUST sit with a different role holding a different accountability.
+    23	- **Govern the generating context** (`governed-context`):
+    24	  - Everything loaded into an agent's generating context — prompts, skills, memories, primers — MUST trace to an approved definition or a governed record.
+    25	  - An unsanctioned context channel MUST NOT be created or retained.
+    26	- **Every activity belongs to a process** (`no-orphan-activities`):
+    27	  - Every activity in the system MUST be part of a defined process with stated expected outcomes, expected outputs, and possible resulting actions.
+    28	  - Every long-running loop MUST declare its exit — a reached-state success exit, a round or budget cap, or both.
+    29	- **Use defined terms** (`use-defined-terms`):
+    30	  - Important terms MUST be defined in the system, in the glossary or as a schema element.
+    31	  - A term is important when a reader must know it to perform or check the work.
+    32	  - When more than one term could carry a statement, the writer MUST use a defined term if one is available.
+    33	- **Use external standards first** (`external-standards-first`):
+    34	  - A definition MUST adopt an established external form where one fits.
+    35	  - Bespoke structure MUST be justified by a recorded gap in the form it rejects.
+    36	- **Single source of truth** (`single-source-of-truth`):
+    37	  - Every fact, rule, or definition MUST have exactly one authoritative home.
+    38	  - Every other appearance MUST be a reference or a generated rendering.
+    39	- **Feedback loops have consumers** (`feedback-loops-with-consumers`):
+    40	  - Every feedback channel MUST name its consumer and the resulting action.
+    41	  - The effectiveness of processes, tools, and prompts MUST be measured.
+    42	  - The definitions of processes, tools, and prompts MUST be updated from what is measured.
+    43	- **Delivery is verified in the running system** (`delivery-verified`):
+    44	  - Work MUST be counted done only when its effect is demonstrated in the running system.
+    45	  - Artifacts existing, checks passing, or reviews approving MUST NOT count as done on their own.
+    46	- **Load the least context** (`least-context`):
+    47	  - An activity MUST load the minimum context necessary to accomplish its task.
+    48	  - The activity's process MUST name what loads into context and the source each input comes from.
+    49	  - Context from an unapproved source MUST NOT be loaded.

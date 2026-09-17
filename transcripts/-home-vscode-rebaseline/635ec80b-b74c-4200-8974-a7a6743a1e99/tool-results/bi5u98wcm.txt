@@ -1,0 +1,269 @@
+# SQ2 notes — the case FOR two distinct PM and PO roles, and reported consequences of split vs combined
+
+Gathered 2026-08-25. Every quote is verbatim from a page opened in this session unless marked otherwise. Access status per source: opened in full / abstract only / could not be opened. Nothing below is from memory.
+
+Summary of what the sources actually show (details and quotes follow):
+
+- The strongest *principled* case for two roles comes from SAFe (scale: "a single person cannot handle product and market strategy while also being dedicated to agile teams"), Pichler's scaling essay (strategic/tactical split "works well if a tight integration ... is not required"), Pragmatic Institute (PM owns pricing, ROI, portfolio; PO is a subset; distributed teams need a local PO) and Product Focus (survey: 35% of PMs also do the PO role at ~40% of their time; "get someone else to do the Product Owner role – someone who takes direction from you").
+- The strongest *empirical* evidence of consequences of splitting is Remta & Buchalcevová (SAFe case study + activity mapping): when PM and PO are split SAFe-style, "the PO's accountability for product leadership fades away" and "real Product Ownership lies in the hands of the Product Manager." Perri reports the same from training SAFe teams: "I have never seen this work well ... No one is doing validation work."
+- The academic scaling literature (Bass & Haxby; Sverrisdottir et al.; Paasivaara et al.) shows that at scale the single PO is tailored into a *product owner team* or split business/technical, i.e. splitting is a reported practice, but these papers describe activities and do not report outcome comparisons of split vs combined.
+- Scrum.org (Dave West) and LeSS are the counterweight: one decision-maker; the PO "should be performed by a business person, and for many organizations that means a product manager."
+- No source found offers controlled or quantitative evidence comparing outcomes of split vs combined roles. Verwijs (2020) explicitly: "There is unfortunately a lack of quantitative research in this field."
+
+---
+
+## 1. Roman Pichler — "Product Manager vs. Product Owner"
+URL: https://www.romanpichler.com/blog/product-manager-vs-product-owner/
+Status: opened in full (via WebFetch; article published 2017-03-14, last updated 2023-01-13).
+Position: one product-management role; PO is an agile PM. Argues against SAFe's two-tier arrangement.
+
+Quotes:
+- "the product owner role originated in Scrum, where it is responsible for 'maximising the value of the product'"
+- "Scrum as a simple framework focused on helping teams develop complex products. It is not a product management framework."
+- "the Scrum product owner as an agile product manager. I would hence not agree with the notion that the product manager role is only outward-facing."
+- "the SAFe product owner owns only the tactical product decisions and hence has partial ownership" while "the SAFe product manager...makes the strategic product decisions."
+- "Having two product owner roles with different levels of authority and responsibility creates confusion and gives rise to misunderstandings."
+- "the product owner is a product management role. People playing the role should therefore acquire the relevant product management skills."
+- "I recommend using either the term product manager or product owner in your company and qualifying it...This reduces confusion and helps unite people."
+
+Note: WebFetch returned the passages with some ellipses; the wording within each quoted fragment is verbatim.
+
+## 2. Roman Pichler — "Scaling the Product Owner Role"
+URL: https://www.romanpichler.com/blog/scaling-the-product-owner/
+Status: opened in full (WebFetch; published 2016-06-28).
+Position: the strongest *conditional* case for a strategic/tactical split, with named risks.
+
+Quotes:
+- "In theory, the product owner is one person. But in practice, managing a larger, complex product is usually a shared effort."
+- "Young products tend to require a significant amount of experimentation and rework...Having a single product owner in place supports this."
+- "Once the product is becoming more successful and start growing...a single person can usually no longer manage the product."
+- "The initial product owner should be in charge of the overall product, take care of the product strategy and roadmap...still be involved in managing the product backlog."
+- "Feature and component owners manage their assets: they capture new ideas and requirements, test them using feedback and data."
+- "The strategic role is sometimes called product manager and the tactical one is referred to as product owner."
+- "Splitting product responsibilities along the strategic-tactical dimension works well if a tight integration...is not required."
+- "If you use this scaling option at an earlier life cycle stage, then you face the risk of strategic decisions not effectively guiding tactical ones."
+- "Tactical insights...not informing the strategic decisions, particularly when several people take on tactical duties."
+- "You should not rely on one scaling technique. Instead, consider the life cycle stage of your product."
+
+Consequence claims (Pichler): the strategic/tactical split risks (a) strategy not guiding tactics, (b) tactical learning not feeding strategy; it is fit for mature products where tight integration is not required, and unfit for young products that need experimentation.
+
+## 3. Scrum.org / Dave West — "Product Owner vs. Product Manager"
+URL: https://www.scrum.org/resources/product-owner-vs-product-manager
+Status: opened in full (page is JS-rendered; WebFetch and curl returned empty; retrieved via r.jina.ai reader proxy; dated December 22, 2016, by Dave West).
+Position: counterpoint — one decision-maker; PO should be the product manager.
+
+Quotes:
+- "As a Product Owner and the CEO of Scrum.org I was invited to speak at ProductTank NYC earlier this year about the conflict between the roles Product Owner and Product Manager. And how organizations need to consolidate on one overall decision maker for the product, and that person should be engaged with the delivery teams as a representative of the business / customer."
+- "Scrum is very clear, there can only be one Product Owner. By having a single individual responsible for the product, that doesn't mean they do all of the work, the Product Owner role removes a lot of inefficiencies that exist with group ownership."
+- "The Product Owner however is not all knowing, if you find that person who knows all, hire them as it is very rare. That is why they will rely on people like business analysts, product managers, etc. to help them with understanding the product direction and what needs to be delivered."
+- "The best Scrum Teams have a Product Owner that is available and empowered to make decisions without having to ask for permission. That means that the Product Owner role should be performed by a business person, and for many organizations that means a product manager."
+- "Yes, this means more work for the product manager, who is often already drowning in a sea of external and internal requests, but if that person wants the right product delivered they MUST directly support the delivery team. This requires leadership, not doing all of the tasks that are required to build a great product, but instead empower and work with others in both the business and Scrum Development Team to do the work."
+
+Note: "Who is the Product Owner Anyway?" (https://www.scrum.org/resources/who-product-owner-anyway, 2017-04-18, West & van Lanen webinar) opened via the same proxy; it is a webinar abstract only, with one relevant line: "for many organizations there is some 'confusion' with existing roles of business analyst, product manager or even project manager." No Verwijs or Wolpers article titled "PO is/isn't a PM" was found on Scrum.org; see items 9 and 10 for what they do say.
+
+## 4. SAFe — Product Owner page
+URL: https://framework.scaledagile.com/product-owner
+Status: partially opened — login-walled; only the summary section is visible (WebFetch reports "The full article content beyond the summary section requires authentication").
+Position: two roles by design; PO is team-level, "part of the larger Product Management function".
+
+Quotes (from the visible summary):
+- "The Product Owner (PO) is the Agile team member primarily responsible for maximizing the value delivered by the team"
+- "The PO is the 'voice of the customer' on the AgileTeam, representing the needs of end-users and the business."
+- "Together with Product Management, they ensure that product strategy and implementation remain connected across teams."
+- "Each PO acts as a bridge between an Agile Team and its customers."
+- "They are part of the larger Product Management function and maintain alignment with the Solution Vision"
+
+## 5. SAFe — Product Management page
+URL: https://framework.scaledagile.com/product-management
+Status: partially opened — login-walled; summary only.
+
+Quotes (from the visible summary):
+- "Product Management is the function responsible for defining desirable, viable, feasible, and sustainable solutions that meet customer needs"
+- "They manage and prioritize the ART backlog, collaborate with cross-functional teams"
+- "Product Managers usually fulfill this function."
+- "More than one Product Manager may be needed for a single ART, which happens often when an ART contains multiple products or complex systems"
+
+Note: the visible portion does not state the PM/PO split rationale; that rationale is quoted secondhand through Remta & Buchalcevová (item 11), who cite SAFe's own text: "SAFe implies that a single person cannot handle product and market strategy while also being dedicated to agile teams."
+
+## 6. Pragmatic Institute — "Product Owner vs Product Manager: What's the difference?"
+URL: https://www.pragmaticinstitute.com/resources/articles/product/product-owner-vs-product-manager-whats-the-difference/
+Status: opened in full (WebFetch; no author/date on page). (The URL .../product-manager-vs-product-owner/ is 404.)
+Position: two roles in larger organisations; one person in small ones; hybrid when constrained.
+
+Quotes:
+- "The lines between the roles are blurred in some organizations and nonexistent in others, as one role carries the responsibilities of both."
+- "The Product Manager focuses on the overall strategy behind a product and the Product Owner handles the tactical, day-to-day management of the product development process."
+- "Product Managers establish the 'why' behind the product. Product Owners establish the 'how' it gets done."
+- "In larger organizations or companies developing complex products, both roles are necessary to manage the product's lifecycle effectively."
+- "Startups or smaller teams with more straightforward products may have a single person fill both roles."
+- "The decision depends on many factors, like the company's size, structure, and the product's complexity and development process."
+
+## 7. Pragmatic Institute — "The Strategic Role of Product Management (When Development Goes Agile)"
+URL: https://www.pragmaticinstitute.com/resources/articles/product/the-strategic-role-of-product-management-when-development-goes-agile/
+Status: opened in full (WebFetch; no author/date extracted).
+Position: PO is a subset of PM; a separate PO is warranted only by distribution; co-located teams need none.
+
+Quotes:
+- "Product owner and product manager are not the same. In fact, a product owner's responsibilities are just a small subset of product management."
+- "As you can see, the role of product management includes the responsibilities of product owner—plus much more."
+- "Real revenue is driven by pricing and packaging. Product managers typically own pricing; product owners rarely do."
+- "The point of integration for these teams, though, is a single product manager. When the executives demand 'one throat to choke,' it's the product manager who is responsible for overall success."
+- "Good product managers look across the product line for ways to make the overall collection more valuable. Hermetically-sealed product teams tend toward local optimization."
+- "One agile product manager can handle all of the demands from a product team that sits together...When everyone sits together, there's no need for a product owner."
+- "When Development is split across time zones and continents, one product manager can't possibly provide the face-to-face daily input and leadership that agile development demands...Having someone in each office responsible for keeping the team clear on user stories/backlogs seems essential."
+- "It is common for product owners to report to the development organization, but product managers are increasingly reporting into their own department—separate from Development and from Marketing."
+
+## 8. Product Focus (Ian Lunn) — "A Product Owner is not a Product Manager" (survey data)
+URL: https://www.productfocus.com/a-product-owner-is-not-a-product-manager/
+Status: opened in full (WebFetch; no date on page).
+Position: two roles; PM owns the product; delegate PO to someone who takes direction from the PM. Only survey figures found in this sweep.
+
+Quotes:
+- "A Product Owner is a role defined by the Scrum Agile methodology...The focus is on optimizing development and working with the Development team."
+- "So if anyone owns the product within the business it's the Product Manager. It's not the person managing the requirements – the Scrum 'Product Owner'."
+- "According to our annual survey, 35% of Product Managers also do the Product Owner role."
+- "It seems to average out at just under 2 days a week. That's 40% of a Product Managers' time attending meetings with Development and working on requirements."
+- "It is another role to take on and means you've got less time for everything else."
+- "Our preference is to try and get someone else to do the Product Owner role – someone who takes direction from you. Maybe a Business Analyst or Manager working in Development."
+
+Caveat: survey year, sample and method are not stated on the page; the underlying survey report was not opened.
+
+## 9. Stefan Wolpers — "The Scrum Product Owner in 58 Theses"
+URL: https://age-of-product.com/scrum-product-owner-theses/
+Status: opened in full (WebFetch; dated 2020-12-06).
+Position: overlap but not identical; POs must "act like" product managers.
+
+Quotes:
+- Thesis 22: "The Product Owner role depends on the size of an organization, the industry it is operating in, its culture, and the lifecycle stage of that organization's product(s). Lastly, there is an overlap with the product manager role. (Spoiler alert: they aren't identical.)"
+- Thesis 43: "The role requires that Product Owners act like product managers."
+- Thesis 47: "Acting like a product manager includes working on the product vision, strategy and market research, business models, lifecycle management, and product portfolio and roadmap planning."
+
+## 10. Christiaan Verwijs — "In-Depth: What Makes A Good Product Owner?" (research review)
+URL: https://medium.com/the-liberators/what-makes-a-good-product-owner-5920dff2051 (also on Scrum.org as /resources/blog/what-makes-good-product-owner)
+Status: opened in full (Medium blocked WebFetch with 403; retrieved via r.jina.ai proxy; 2020).
+Relevance: secondary summary of the empirical PO literature; documents the theory–practice gap and the absence of quantitative evidence.
+
+Quotes:
+- "Sverrisdottir, Ingason & Jonasson (2014) interviewed Product Owners from different organizations. They found that there are often multiple Product Owners for the same product, even though the Scrum Guide prescribes against this."
+- "Sverrisdottir, Ingason & Jonasson (2014) also found no standard for how much time Product Owners spend with teams. This ranged between 5% and 70% of the available time."
+- On Bass et al. (2018): "It is no surprise that the researchers conclude that 'Product Owners perform a wide range of challenging activities which require experience and high-status in order to be able to exert influence'. So a clear product mandate to decide over the product or its budget is critical to their success."
+- "Most of the Product Owners interviewed by Bass were seemed more focused on managing the present than exploring the future of their product."
+- "The studies we discussed in this post are almost exclusively based on case studies where researchers interviewed a handful of Product Owners."
+- "There is unfortunately a lack of quantitative research in this field. I have been unable to find studies that use large samples of Product Owners to draw firmer conclusions across cases."
+
+## 11. Remta & Buchalcevová — "Product Owner's Journey to SAFe — Role Changes in Scaled Agile Framework" (2021)
+DOI: 10.3390/info12030107 — URL: https://www.mdpi.com/2078-2489/12/3/107/htm
+Status: opened in full (MDPI returned 403 to WebFetch; full HTML retrieved via r.jina.ai proxy). Information 12(3):107, 2021. Method: literature review of PO activities mapped to SAFe role descriptions.
+Relevance: the most direct evidence on what the PM/PO split does to the PO role.
+
+Quotes:
+- "The Product Owner is positioned on the team level. SAFe implies that a single person cannot handle product and market strategy while also being dedicated to agile teams. It was confirmed in [17] that, on a large scale, the scope of activities goes beyond the capacities of one person acting as Product Owner."
+- "The concept of a single Product backlog is replaced with the Program backlog, owned by the Product Manager (PM), and the Team backlog, owned by the Product Owner. ... Therefore, the Product Owner in SAFe no longer has full authority over the product. The Product Owner can affect the Product Manager's decisions, but the PM is the person driving the product and the product's true owner."
+- "The decisions about product priorities and requirements for development are set by the Product Manager. This Product Manager activity contradicts the Product Owner's prime Scrum definition [46] as the sole person responsible for managing the Product backlog."
+- "The mapping showed that the evolution and the Product Owner's role journey to SAFe led to the removal of the Product Owner's real product ownership. In SAFe, the real Product Ownership lies in the hands of the Product Manager."
+- "The Product Owner seems only to be responsible for driving and overseeing the execution of requirements defined in the Product Manager's features."
+- "SAFe clearly distinguishes between the Product Manager and Product Owner and distributes the activities among the roles. In fact, the Product Manager has real product ownership, while the Product Owner is responsible for driving and overseeing the implementation of the requirements. We can, therefore, conclude that, in the large environments for which SAFe is designed, it is impossible to cover all required activities by one role using the hierarchical structures with a top-down approach in SAFe."
+- Mapping table row (PA3, release plans): "The Product Manager defines releases, program increments, and business objectives. The PO, as the extended product management, can impact the plan, but has no authority or ownership of the releases."
+- Mapping table row (BA1): "The Product Manager is the person with Product backlog content authority and is accountable for the prioritization. The Product Owner (PO) has the content authority for the team's backlog and prioritizes requirements to be developed by the agile team."
+
+## 12. Remta, Doležel & Buchalcevová — "Exploring the Product Owner Role Within SAFe Implementation in a Multinational Enterprise" (2020)
+DOI: 10.1007/978-3-030-58858-8_10 — URL: https://link.springer.com/chapter/10.1007/978-3-030-58858-8_10
+Status: opened in full (Springer HTML via r.jina.ai proxy). XP 2020 workshops; single case, three semi-structured interviews.
+
+Quotes:
+- Abstract: "Performing of the Product Owner role has been identified as crucial in project success in large-scale environments. Staffing the right Product Owner is one of the challenges of adopting SAFe."
+- Abstract: "We found out that many activities identified for Product Owners in previous research are not carried out by Product Owners in this particular SAFe implementation."
+- "PO's decisions about priorities and requirements for development are strongly influenced by PM, who, in reality, drives and develops business and product plans. This PM activity contradicts the prime Scrum definition of PO as the sole person responsible for managing the Product Backlog [5]. Therefore, the PO's accountability for product leadership fades away."
+- Interviewee: "As PO I just discuss what customer want, reflect this to the management, and then the decisions will come from the management, not the product owner." [PO A]
+- Conclusion: "The PO role in the examined SAFe implementation deviates from the previous understanding of the role outside the context of SAFe, as the range of PO activities is narrowed. We attribute it to the top-down approach criticized by practitioners and confirmed during our single-case study. We identified PM as the person accountable for, and steering, the product."
+
+Limitation stated by authors: single case, three interviews, "initial results".
+
+## 13. Bass & Haxby — "Tailoring Product Ownership in Large-Scale Agile" (2018)
+DOI: 10.48550/arXiv.1812.06524 — URL: https://arxiv.org/abs/1812.06524 (PDF opened and text-extracted). Published version: IEEE Software 2019. 93 practitioners, 21 organisations, 8 years.
+Relevance: at scale the single PO becomes a *team* of activity-holders; this is a report of practice, not a comparison of outcomes.
+
+Quotes:
+- Abstract: "In large-scale agile projects, product owners undertake a range of challenging and varied activities beyond those conventionally associated with that role."
+- "We found that the leaders of large-scale agile projects create product owner teams. Product owner team members undertake sponsor, intermediary and release plan master activities to manage scale. They undertake communicator and traveller activities to manage distance and technical architect, governor and risk assessor activities to manage governance."
+- "In this context, our research has identified product owner role tailoring in which the role is no longer performed by a single individual but by a product owner team."
+- "To achieve this, product owners in our study perform more networking and expectation setting than a single individual can cope with."
+- "While a CEO, CIO or CTO may 'own' the project, they are unlikely to have time to attend to project detail. They have a large organization to run, after all. ... Product sponsors surround themselves with a product owner team and delegate to a named product owner (see intermediary, below). However, we found that product sponsors maintain focus on the project vision by reviewing important demonstrations"
+- "An intermediary interfaces with the product sponsors and coordinates or negotiates with key project stakeholders. ... Nevertheless, the purpose of the intermediary is to be more accessible and available to other project stakeholders than product sponsors."
+- "The product sponsor, intermediary, technical architect and other product owner team members form a product owner team. ... We argue it is helpful to make building the product owner team explicit."
+- Related earlier work cited in the paper: J. M. Bass, "How product owner teams scale agile methods to large distributed enterprises," Empirical Software Engineering (not opened).
+
+Note for the frame's "third shape": the sponsor/intermediary pattern here is exactly "one accountability (sponsor, delegates and reviews demos), a separate execution position (intermediary, more available)".
+
+## 14. Sverrisdottir, Ingason & Jonasson — "The Role of the Product Owner in Scrum — comparison between Theory and Practices" (2014)
+DOI: 10.1016/j.sbspro.2014.03.030 — Procedia – Social and Behavioral Sciences 119:257–267.
+Status: abstract only (ScienceDirect and CyberLeninka returned 403/captcha; abstract retrieved from the Semantic Scholar API).
+
+Quotes (abstract):
+- "The understanding of the role and responsibility of the product owner is quite different between organizations but seldom in perfect conformance with the official Scrum method."
+- "Cases were reported where there are two product owners for the same product. One is then responsible for business aspect but the other is responsible for technical aspects of the product."
+
+## 15. Paasivaara, Heikkilä & Lassenius — "Experiences in Scaling the Product Owner Role in Large-Scale Globally Distributed Scrum" (ICGSE 2012, pp. 174–178)
+DOI: 10.1109/ICGSE.2012.41 — https://research.aalto.fi/en/publications/experiences-in-scaling-the-product-owner-role-in-large-scale-glob
+Status: could not be opened (Aalto portal has metadata only, no abstract; ResearchGate 403; IEEE not attempted). Recorded as unopened; not quoted. The related "Scaling Scrum in a Large Globally Distributed Organization: A Case Study" (Semantic Scholar page) also returned empty.
+
+## 16. Unger-Windeler, Klünder, Reuscher & Schneider — "Are Product Owners communicators?" (2021) and Unger-Windeler & Klünder PROFES 2018
+DOI: 10.1002/smr.2311 (Wiley, 403 — could not be opened); arXiv:1809.00830 (not opened in this sweep).
+Status: could not be opened. Only secondhand via Verwijs (item 10): "Product Owners spend around 65% of their time in meetings and Scrum events, and during that time they interact with 15 different roles". Not a PM/PO split source.
+
+## 17. LeSS — "Product Owner" (less.works) — counterpoint
+URL: https://less.works/less/framework/product-owner
+Status: opened in full (WebFetch).
+Position: one PO for the whole product; explicit warning against a PO that is a proxy or "fake".
+
+Quotes:
+- "Maintaining one Product Owner with one Product Backlog supports whole-product focus."
+- "In contrast with other scaled Scrum approaches, it's possible in LeSS to effectively scale the Product Owner role with just one person because there are fewer roles and positions, and less complexity."
+- "She acts as a connector, not an intermediary."
+- "a Product Owner must have the independent authority to choose and change content, release dates, priorities, vision, etc."
+- "The fake PO is not only not the best Product Owner but also she can cause damage trying to fill a role for which she is not qualified."
+
+## 18. Melissa Perri — "Product Manager vs. Product Owner" (2017-06-29) — reported consequences of the SAFe split
+URL: https://melissaperri.com/blog/2017/06/29/product-manager-vs-product-owner
+Status: opened in full (via r.jina.ai proxy).
+Position: PO is a role within the PM job; the SAFe split is "one of the weakest points in the entire framework".
+
+Quotes:
+- "Product Owner is a role you play on a Scrum team. Product Manager is the job."
+- "In SAFe, Product Managers are the managers of Product Owners and are responsible for external facing interactions and work. ... The Product Owners are internal facing, define the components of the solution, and work with developers to ship it."
+- "I've trained dozens of teams who are using SAFe and I have never seen this work well. The Product Owners are disconnected from their users and incapable of creating effective solutions for them that really solve their problems, because they do not understand the problems well. The Product Managers are essentially waterfalling down the requirements to them and the teams are not allowed to prove if these are the right things to build or not. No one is doing validation work."
+- "I have listened to many arguments that Product Owners do not have time to do both roles. In the current context, that's true. The Product Owners I speak with spend 40 hours a week writing user stories. At that point, you have to ask yourself, are those user stories even valuable?"
+- "If you give a Product Manager a large scrum team's backlog to keep filling while you are in discovery mode, they will keep that backlog filled. But, they will also be torn between keeping work flowing to the developers and trying to do the work to validate direction. As a result, neither gets done well."
+- "With a good strategy framework in place and ruthless prioritization around a few key goals, one person can effectively talk to customers, understand their problems, and help to define the solutions with the team. Even the CEO of Scrum.org agrees this can be the case, albeit, it seems, begrudgingly."
+
+Note the last quote: Perri reads Dave West (item 3) as agreeing with the one-person position.
+
+## 19. Mike Cottmeyer / LeadingAgile — "Product Owner vs Product Manager" (2009-02)
+URL: https://www.leadingagile.com/2009/02/product-owner-vs-product-manager/ (site now liminalarc.co)
+Status: opened in full (via r.jina.ai proxy).
+Position: the Scrum PO is an *abstraction* of many traditional roles, of which PM is one; the abstraction breaks down at scale.
+
+Quotes:
+- "Most teams start with the assumption that the Product Owner role should be filled by the Product Manager. I think that is a reasonable starting point"
+- "When you look at all the things an agile Product Owner is doing for the team you see pretty quickly that the role of Product Owner is really much, much more than that of a traditional Product Manager."
+- "it is my premise that in Scrum, the Product Owner either has the responsibility for, or is an abstraction of, every other role not previously accounted for in discussing the ScrumMaster and the Team. The Product Owner is the Project Manager, the Business Analyst, the System Designer, the User Experience Architect, and every other Business Group... all rolled into one."
+- "I know there are many teams out there with Project Managers and UI Designers and Analysts that probably think they are doing Scrum just fine. ... I bet they are assuming additional coordination and communication costs to make it happen."
+- Reply in comments (Cottmeyer): "that view of product management doesn't scale past a single product with a single team."
+
+---
+
+## Conflicts and gaps
+
+1. Ownership location. SAFe (as described by Remta & Buchalcevová) and Product Focus put real product ownership with the PM and make the PO a delegate; Scrum.org (West) and LeSS put it with the single PO and say that person should *be* the product manager. Pichler agrees with West/LeSS on principle but allows a strategic/tactical split for mature products. Pragmatic Institute allows either, keyed to organisation size and distribution.
+2. Consequence claims disagree on direction: Pragmatic/Product Focus/SAFe argue the split protects strategy time and gives distributed teams local ownership; Perri, Pichler (scaling essay), and Remta & Buchalcevová report the split disconnects the PO from customers, breaks the strategy-to-tactics feedback loop, and hollows out PO accountability ("fades away").
+3. Evidence quality: no quantitative or controlled comparison of split vs combined roles was found. Product Focus's "35% / ~40% of time" is the only survey figure, with method unstated. Academic sources are case studies (Remta: 3 interviews; Bass & Haxby: 93 interviews but descriptive of activities, not outcomes; Sverrisdottir: small Icelandic interview set, abstract only). Verwijs states the gap explicitly.
+4. Terminology: Bass & Haxby's "product owner team" and Sverrisdottir's "two product owners (business/technical)" are splits *within* product ownership, not PM-vs-PO splits; they support "one accountability, several execution positions" more than "two roles".
+
+## Unopened / unreachable in this sweep
+- Scrum.org "Product Manager - Product Owner" (https://www.scrum.org/resources/product-manager-product-owner) — empty via WebFetch/curl; not retried via proxy.
+- Paasivaara et al. 2012 (DOI 10.1109/ICGSE.2012.41) — metadata only.
+- Unger-Windeler et al. 2021 (DOI 10.1002/smr.2311) and 2018 (arXiv:1809.00830) — 403 / not opened.
+- "Clarifying the Role of Product Owners: A Comprehensive Taxonomy" (DOI 10.1007/978-3-031-92826-0_4, 2025) — Springer page failed to load.
+- "The Product Owner and its Impact on Success and Challenges in Agile Scrum Projects: An Interview Study" (ScienceDirect S1877050924015254) — captcha.
+- Bass, "How product owner teams scale agile methods to large distributed enterprises," Empirical Software Engineering — cited in item 13, not opened.
+- Pragmatic Institute "Cage Fight: Product Owner vs. Product Manager" webinar and podcast — not opened.

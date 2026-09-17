@@ -1,0 +1,494 @@
+=== .claude/skills/bring-up-bc/SKILL.md (100 lines) ===
+---
+name: bring-up-bc
+description: Launch an already-scaffolded Bounded Context as a running, online container and verify it reaches the online state
+---
+
+# Bringing Up a BC
+
+## Overview
+
+This skill is the **launch leg** of standing up a Bounded Context. It assumes
+the BC repository already exists (scaffolded and pushed to a remote) and is
+registered in the fleet manifest. Its job is to launch that BC as a running
+=== .claude/skills/company-research/SKILL.md (77 lines) ===
+---
+name: company-research
+description: Build a cited, bounded intelligence brief on a competitor, peer product, or alternative framework — strategy, product philosophy, recent moves — to ground a brief/PDR in external reality instead of intuition. Use for the consumer-product competitive/market input to problem discovery, or to study a competing framework.
+---
+
+# Company / Alternative Research (adapted, EXPERIMENTAL)
+
+**Discipline 1 — Problem discovery & selection, consumer-fork market input**
+(and a worked instance of the *deep-research-as-method* the determination
+named). Adapted, with permission, from
+`deanpeters/Product-Manager-Skills/skills/company-research`, by
+[Dean Peters](https://www.linkedin.com/in/deanpeters/) — direct-grant terms
+=== .claude/skills/create-bc/SKILL.md (144 lines) ===
+---
+name: create-bc
+description: Create a new Bounded Context from scratch — scaffold, remote, manifest registration, and brokered launch — as the lead shop
+---
+
+# Creating a BC From Scratch
+
+## Overview
+
+This skill is the lead shop's procedure for standing up a **brand-new** Bounded
+Context: scaffold the repository, create and push its remote, register it in the
+fleet manifest, and launch it onto the shop network with credentials brokered
+=== .claude/skills/derisk-measurement-advisor/SKILL.md (65 lines) ===
+---
+name: derisk-measurement-advisor
+description: Scan a shaping candidate for risk across 10 dimensions — 4 internal (Desirability, Usability, Feasibility, Viability) and 6 external (PESTEL) — and triage each into act-now or track, so the candidate's rabbit-holes and risks name what to test before committing. Reach for it when a bet feels roadmap-ready and you want a structured "what could go wrong, internally and externally?"
+---
+
+# De-Risk Measurement Advisor (PM technique skill — adapted, EXPERIMENTAL)
+
+**Serves:** shaping · **Emits into:** candidate (`candidates/cand-NNN.md`)
+
+A *technique skill* (PDR-033): a lens invoked INSIDE the `shaping` PM session; its output lands in the candidate (problem / appetite / solution-sketch / rabbit-holes / no-gos / evidence). No terminal artifact of its own.
+
+*Adapted, with permission, from [`deanpeters/Product-Manager-Skills/skills/derisk-measurement-advisor`](https://github.com/deanpeters/Product-Manager-Skills/tree/main/skills/derisk-measurement-advisor) by [Dean Peters](https://www.linkedin.com/in/deanpeters/) — fetched live 2026-07-10, direct-grant terms per [ADR-066](../../adr/066-direct-grant-from-dean-peters-authorizes-mit-ingestion-of-deanpeters-derived-pm-skills-attribution-required.md). Adaptation rules + experimental status: [`../README.md`](../README.md).*
+=== .claude/skills/discovery-dialogue/SKILL.md (88 lines) ===
+---
+name: discovery-dialogue
+description: Run the open, interactive discovery conversation that turns a directional or ambiguous prompt into a written, grounded intent record
+---
+
+# Discovery Dialogue
+
+## Overview
+
+This is the **discovery** mode of the lead-pm main session. You run it when the
+product authority arrives with something directional, exploratory, ambiguous, or
+multi-option — an itch, a frustration, a "could we…", a half-formed goal — and
+=== .claude/skills/discovery-interview-prep/SKILL.md (60 lines) ===
+---
+name: discovery-interview-prep
+description: Design a customer discovery interview plan — research goal, target segment, access constraints, and a bias-resistant question set — so a discovery-dialogue turn produces real learning instead of confirmation. Use when the intent record rests on an assumed job that needs to be heard from a real user.
+---
+
+# Discovery Interview Prep (PM technique skill — adapted, EXPERIMENTAL)
+
+**Serves:** discovery-dialogue · **Emits into:** intent record (`intent/intent-NNN.md`)
+
+A *technique skill* (PDR-033): a lens invoked INSIDE the `discovery-dialogue` PM session; its output lands in the intent record. It has no terminal artifact of its own.
+
+*Adapted, with permission, from [`deanpeters/Product-Manager-Skills/skills/discovery-interview-prep`](https://github.com/deanpeters/Product-Manager-Skills/tree/main/skills/discovery-interview-prep) by [Dean Peters](https://www.linkedin.com/in/deanpeters/) — fetched live 2026-07-10, direct-grant terms per [ADR-066](../../adr/066-direct-grant-from-dean-peters-authorizes-mit-ingestion-of-deanpeters-derived-pm-skills-attribution-required.md). Adaptation rules + experimental status: [`../README.md`](../README.md).*
+=== .claude/skills/discovery-process/SKILL.md (60 lines) ===
+---
+name: discovery-process
+description: The end-to-end discovery arc — frame, plan, research, synthesize, validate, decide — used to sequence a multi-turn discovery-dialogue and know which technique skill comes next. Use when a discovery is large enough to need staging rather than a single lens.
+---
+
+# Discovery Process (PM technique skill — adapted, EXPERIMENTAL)
+
+**Serves:** discovery-dialogue · **Emits into:** intent record (`intent/intent-NNN.md`)
+
+A *technique skill* (PDR-033): a lens invoked INSIDE the `discovery-dialogue` PM session; its output lands in the intent record. It has no terminal artifact of its own.
+
+*Adapted, with permission, from [`deanpeters/Product-Manager-Skills/skills/discovery-process`](https://github.com/deanpeters/Product-Manager-Skills/tree/main/skills/discovery-process) by [Dean Peters](https://www.linkedin.com/in/deanpeters/) — fetched live 2026-07-10, direct-grant terms per [ADR-066](../../adr/066-direct-grant-from-dean-peters-authorizes-mit-ingestion-of-deanpeters-derived-pm-skills-attribution-required.md). Adaptation rules + experimental status: [`../README.md`](../README.md).*
+=== .claude/skills/eol-message/SKILL.md (60 lines) ===
+---
+name: eol-message
+description: Empathetic end-of-life announcement for a retiring product or capability — acknowledges disruption, explains the change as progress, and gives a concrete migration path. Reach for it inside a product-narrative session, and specifically when a brief flips to status:retired.
+---
+
+# End-of-Life Message (PM technique skill — adapted, EXPERIMENTAL)
+
+**Serves:** product-narrative · **Emits into:** README / site / current-state; ALSO used when RETIRING a capability (a brief flips to `status: retired`)
+
+A *technique skill* (PDR-033): a lens invoked INSIDE the `product-narrative` PM session; its text lands in the README / site / current-state. It is a narrative lens, NOT a standalone announcement artifact.
+
+*Adapted, with permission, from [`deanpeters/Product-Manager-Skills/skills/eol-message`](https://github.com/deanpeters/Product-Manager-Skills/tree/main/skills/eol-message) by [Dean Peters](https://www.linkedin.com/in/deanpeters/) — fetched live 2026-07-10, direct-grant terms per [ADR-066](../../adr/066-direct-grant-from-dean-peters-authorizes-mit-ingestion-of-deanpeters-derived-pm-skills-attribution-required.md). Adaptation rules + experimental status: [`../README.md`](../README.md).*
+=== .claude/skills/incoming-request-advisor/SKILL.md (63 lines) ===
+---
+name: incoming-request-advisor
+description: Decode an incoming request before responding — separate the literal ask from the job-behind-it, read the sender's power and stake, and surface hidden assumptions — so a request is classified by its real outcome, not its surface wording. Use at PM-mode entry, at the router's classification boundary, to decide whether a request needs a discovery-dialogue at all.
+---
+
+# Incoming Request Advisor (PM technique skill — adapted, EXPERIMENTAL)
+
+**Serves:** discovery-dialogue (at its ENTRY boundary) · **Emits into:** intent record (`intent/intent-NNN.md`)
+
+A *technique skill* (PDR-033): a lens invoked INSIDE the `discovery-dialogue` PM session; its output lands in the intent record. It has no terminal artifact of its own.
+
+*Adapted, with permission, from [`deanpeters/Product-Manager-Skills/skills/incoming-request-advisor`](https://github.com/deanpeters/Product-Manager-Skills/tree/main/skills/incoming-request-advisor) by [Dean Peters](https://www.linkedin.com/in/deanpeters/) — fetched live 2026-07-10, direct-grant terms per [ADR-066](../../adr/066-direct-grant-from-dean-peters-authorizes-mit-ingestion-of-deanpeters-derived-pm-skills-attribution-required.md). Adaptation rules + experimental status: [`../README.md`](../README.md).*
+=== .claude/skills/jobs-to-be-done/SKILL.md (61 lines) ===
+---
+name: jobs-to-be-done
+description: Uncover the stable job a user is hiring the product to do — functional, social, emotional — plus their pains and gains, so intent anchors on a validated job instead of a feature request. Use during the discovery-dialogue when a request smells solution-shaped ("add X").
+---
+
+# Jobs-to-be-Done (PM technique skill — adapted, EXPERIMENTAL)
+
+**Serves:** discovery-dialogue · **Emits into:** intent record (`intent/intent-NNN.md`)
+
+A *technique skill* (PDR-033): a lens invoked INSIDE the `discovery-dialogue` PM session; its output lands in the intent record. It has no terminal artifact of its own.
+
+*Adapted, with permission, from [`deanpeters/Product-Manager-Skills/skills/jobs-to-be-done`](https://github.com/deanpeters/Product-Manager-Skills/tree/main/skills/jobs-to-be-done) by [Dean Peters](https://www.linkedin.com/in/deanpeters/) — fetched live 2026-07-10, direct-grant terms per [ADR-066](../../adr/066-direct-grant-from-dean-peters-authorizes-mit-ingestion-of-deanpeters-derived-pm-skills-attribution-required.md). Adaptation rules + experimental status: [`../README.md`](../README.md).*
+=== .claude/skills/opportunity-solution-tree/SKILL.md (60 lines) ===
+---
+name: opportunity-solution-tree
+description: Move from a target outcome down through opportunities (problems) to candidate solutions to a chosen bet, so shaping commits the candidate to the right problem before it converges on a sketch. Reach for it when a request arrives outcome-shaped or solution-shaped and you need to keep "what are we moving?" upstream of "what do we build?"
+---
+
+# Opportunity Solution Tree (PM technique skill — adapted, EXPERIMENTAL)
+
+**Serves:** shaping · **Emits into:** candidate (`candidates/cand-NNN.md`)
+
+A *technique skill* (PDR-033): a lens invoked INSIDE the `shaping` PM session; its output lands in the candidate (problem / appetite / solution-sketch / rabbit-holes / no-gos / evidence). No terminal artifact of its own.
+
+*Adapted, with permission, from [`deanpeters/Product-Manager-Skills/skills/opportunity-solution-tree`](https://github.com/deanpeters/Product-Manager-Skills/tree/main/skills/opportunity-solution-tree) by [Dean Peters](https://www.linkedin.com/in/deanpeters/) — fetched live 2026-07-10, direct-grant terms per [ADR-066](../../adr/066-direct-grant-from-dean-peters-authorizes-mit-ingestion-of-deanpeters-derived-pm-skills-attribution-required.md). Adaptation rules + experimental status: [`../README.md`](../README.md).*
+=== .claude/skills/option-tradeoff/SKILL.md (80 lines) ===
+---
+name: option-tradeoff
+description: Frame two or more shaped options against each other, surface the tradeoffs, and run the deciding conversation with the product authority
+---
+
+# Option Tradeoff
+
+## Overview
+
+This is the **deciding** mode of the lead-pm main session. You run it when there
+is more than one credible shaped direction and the product authority has to
+choose — or when a single candidate has forked into competing shapes that need to
+=== .claude/skills/pol-probe-advisor/SKILL.md (54 lines) ===
+---
+name: pol-probe-advisor
+description: Select the right Proof-of-Life probe flavor for a given hypothesis by working backward from the harshest truth, not from tooling comfort. Reach for it inside shaping when you know an assumption needs testing but aren't sure whether it's a feasibility check, a task test, a narrative, a simulation, or a vibe-coded probe.
+---
+
+# PoL Probe Advisor (PM technique skill — adapted, EXPERIMENTAL)
+
+**Serves:** shaping · **Emits into:** candidate (`candidates/cand-NNN.md`)
+
+A *technique skill* (PDR-033): a lens invoked INSIDE the `shaping` PM session; its output lands in the candidate (problem / appetite / solution-sketch / rabbit-holes / no-gos / evidence). No terminal artifact of its own.
+
+*Adapted, with permission, from [`deanpeters/Product-Manager-Skills/skills/pol-probe-advisor`](https://github.com/deanpeters/Product-Manager-Skills/tree/main/skills/pol-probe-advisor) by [Dean Peters](https://www.linkedin.com/in/deanpeters/) — fetched live 2026-07-10, direct-grant terms per [ADR-066](../../adr/066-direct-grant-from-dean-peters-authorizes-mit-ingestion-of-deanpeters-derived-pm-skills-attribution-required.md). Adaptation rules + experimental status: [`../README.md`](../README.md).*
+=== .claude/skills/pol-probe/SKILL.md (52 lines) ===
+---
+name: pol-probe
+description: Design a Proof-of-Life probe — a lightweight, disposable experiment that tests one falsifiable hypothesis before expensive work — and land it in the candidate's evidence/experiments line. Reach for it when a shape rests on an assumption cheap enough to test in hours or days and honest enough to kill the bet if it fails.
+---
+
+# PoL Probe (PM technique skill — adapted, EXPERIMENTAL)
+
+**Serves:** shaping · **Emits into:** candidate (`candidates/cand-NNN.md`)
+
+A *technique skill* (PDR-033): a lens invoked INSIDE the `shaping` PM session; its output lands in the candidate (problem / appetite / solution-sketch / rabbit-holes / no-gos / evidence). No terminal artifact of its own.
+
+*Adapted, with permission, from [`deanpeters/Product-Manager-Skills/skills/pol-probe`](https://github.com/deanpeters/Product-Manager-Skills/tree/main/skills/pol-probe) by [Dean Peters](https://www.linkedin.com/in/deanpeters/) — fetched live 2026-07-10, direct-grant terms per [ADR-066](../../adr/066-direct-grant-from-dean-peters-authorizes-mit-ingestion-of-deanpeters-derived-pm-skills-attribution-required.md). Adaptation rules + experimental status: [`../README.md`](../README.md).*
+=== .claude/skills/press-release/SKILL.md (60 lines) ===
+---
+name: press-release
+description: Amazon-style "working backwards" PR/FAQ framing — draft the customer-facing announcement before building, as a forcing function for clarity and customer-centricity. Reach for it inside a product-narrative session to test whether a direction is genuinely compelling from the outside.
+---
+
+# Press Release / Working Backwards (PM technique skill — adapted, EXPERIMENTAL)
+
+**Serves:** product-narrative · **Emits into:** README / site / current-state
+
+A *technique skill* (PDR-033): a lens invoked INSIDE the `product-narrative` PM session; its text lands in the README / site / current-state. It is a narrative lens, NOT a standalone PR artifact.
+
+*Adapted, with permission, from [`deanpeters/Product-Manager-Skills/skills/press-release`](https://github.com/deanpeters/Product-Manager-Skills/tree/main/skills/press-release) by [Dean Peters](https://www.linkedin.com/in/deanpeters/) — fetched live 2026-07-10, direct-grant terms per [ADR-066](../../adr/066-direct-grant-from-dean-peters-authorizes-mit-ingestion-of-deanpeters-derived-pm-skills-attribution-required.md). Adaptation rules + experimental status: [`../README.md`](../README.md).*
+=== .claude/skills/prioritization-advisor/SKILL.md (61 lines) ===
+---
+name: prioritization-advisor
+description: Select the prioritization method that fits the current context — MoSCoW, RICE, ICE, weighted scoring, Kano, Value/Effort, Cost of Delay — instead of defaulting to one dogmatically. Reach for it inside a prioritization session before scoring anything, to pick the right lens for the stage, data, and decision at hand.
+---
+
+# Prioritization Advisor (PM technique skill — adapted, EXPERIMENTAL)
+
+**Serves:** prioritization · **Emits into:** prioritization record (`prioritizations/prio-YYYY-MM-DD.md`)
+
+A *technique skill* (PDR-033): a lens invoked INSIDE the `prioritization` PM session; its output lands in the prioritization record. No terminal artifact of its own.
+
+*Adapted, with permission, from [`deanpeters/Product-Manager-Skills/skills/prioritization-advisor`](https://github.com/deanpeters/Product-Manager-Skills/tree/main/skills/prioritization-advisor) by [Dean Peters](https://www.linkedin.com/in/deanpeters/) — fetched live 2026-07-10, direct-grant terms per [ADR-066](../../adr/066-direct-grant-from-dean-peters-authorizes-mit-ingestion-of-deanpeters-derived-pm-skills-attribution-required.md). Adaptation rules + experimental status: [`../README.md`](../README.md).*
+=== .claude/skills/prioritization/SKILL.md (80 lines) ===
+---
+name: prioritization
+description: Order the candidates and commitments into a defensible sequence, capturing the ordering and its rationale as a prioritization record
+---
+
+# Prioritization
+
+## Overview
+
+This is the **sequencing** mode of the lead-pm main session. Once there are more
+shaped candidates and committed problems than can be worked at once, someone has
+to say what goes first. That ordering is the lead-pm's: your sequence is what the
+=== .claude/skills/problem-framing-canvas/SKILL.md (57 lines) ===
+---
+name: problem-framing-canvas
+description: Reframe a messy or solution-shaped request into a clear, bias-checked problem statement and a "How Might We" question before committing intent. Use inside the discovery-dialogue when you suspect you're about to solve the wrong problem.
+---
+
+# Problem Framing Canvas (PM technique skill — adapted, EXPERIMENTAL)
+
+**Serves:** discovery-dialogue · **Emits into:** intent record (`intent/intent-NNN.md`)
+
+A *technique skill* (PDR-033): a lens invoked INSIDE the `discovery-dialogue` PM session; its output lands in the intent record. It has no terminal artifact of its own.
+
+*Adapted, with permission, from [`deanpeters/Product-Manager-Skills/skills/problem-framing-canvas`](https://github.com/deanpeters/Product-Manager-Skills/tree/main/skills/problem-framing-canvas) (MITRE Innovation Toolkit) by [Dean Peters](https://www.linkedin.com/in/deanpeters/) — fetched live 2026-07-10, direct-grant terms per [ADR-066](../../adr/066-direct-grant-from-dean-peters-authorizes-mit-ingestion-of-deanpeters-derived-pm-skills-attribution-required.md). Adaptation rules + experimental status: [`../README.md`](../README.md).*
+=== .claude/skills/problem-space-mapping/SKILL.md (66 lines) ===
+---
+name: problem-space-mapping
+description: Continuously maintain the map of the product's problem space so every candidate and intent has a place to hang, producing problem-space map revisions
+---
+
+# Problem-Space Mapping
+
+## Overview
+
+This is the **mapping** mode of the lead-pm main session, and unlike the others
+it runs *continuously* rather than as a one-off session. Its job is to keep the
+**problem-space map** — the living picture of the problems the product exists to
+=== .claude/skills/problem-statement/SKILL.md (55 lines) ===
+---
+name: problem-statement
+description: Turn a request or a raw job into a crisp, user-centered problem statement using the "I am / trying to / but / because / which makes me feel" frame, so intent names a person and a barrier, not a solution. Use inside the discovery-dialogue to fix the problem before any solutioning.
+---
+
+# Problem Statement (PM technique skill — adapted, EXPERIMENTAL)
+
+**Serves:** discovery-dialogue · **Emits into:** intent record (`intent/intent-NNN.md`)
+
+A *technique skill* (PDR-033): a lens invoked INSIDE the `discovery-dialogue` PM session; its output lands in the intent record. It has no terminal artifact of its own.
+
+*Adapted, with permission, from [`deanpeters/Product-Manager-Skills/skills/problem-statement`](https://github.com/deanpeters/Product-Manager-Skills/tree/main/skills/problem-statement) by [Dean Peters](https://www.linkedin.com/in/deanpeters/) — fetched live 2026-07-10, direct-grant terms per [ADR-066](../../adr/066-direct-grant-from-dean-peters-authorizes-mit-ingestion-of-deanpeters-derived-pm-skills-attribution-required.md). Adaptation rules + experimental status: [`../README.md`](../README.md).*
+=== .claude/skills/product-narrative/SKILL.md (81 lines) ===
+---
+name: product-narrative
+description: Render the product's current state outward as an honest, grounded narrative, producing a README, site, or current-state revision that traces to real capability
+---
+
+# Product Narrative
+
+## Overview
+
+This is the **communicating** mode of the lead-pm main session. It renders the
+product outward — the README, the site, and the current-state narrative — so that
+what the product *is* is told honestly and legibly. Product communication is in
+=== .claude/skills/recommendation-canvas/SKILL.md (60 lines) ===
+---
+name: recommendation-canvas
+description: Structured evaluation of a candidate option — outcomes, hypotheses, assumptions, risks, value, metrics — treating each option as a bet to validate, not a commitment. Reach for it inside an option-tradeoff session to turn a raw option list into a defensible pick with rationale.
+---
+
+# Recommendation Canvas (PM technique skill — adapted, EXPERIMENTAL)
+
+**Serves:** option-tradeoff · **Emits into:** PDR draft (`pdr/pdr-NNN.md`)
+
+A *technique skill* (PDR-033): a lens invoked INSIDE the `option-tradeoff` PM session; its output lands in the PDR's Options-considered + Decision. No terminal artifact of its own.
+
+*Adapted, with permission, from [`deanpeters/Product-Manager-Skills/skills/recommendation-canvas`](https://github.com/deanpeters/Product-Manager-Skills/tree/main/skills/recommendation-canvas) by [Dean Peters](https://www.linkedin.com/in/deanpeters/) — fetched live 2026-07-10, direct-grant terms per [ADR-066](../../adr/066-direct-grant-from-dean-peters-authorizes-mit-ingestion-of-deanpeters-derived-pm-skills-attribution-required.md). Adaptation rules + experimental status: [`../README.md`](../README.md).*
+=== .claude/skills/reconcile-and-close/SKILL.md (65 lines) ===
+---
+name: reconcile-and-close
+description: Reconcile a completed BC dispatch by consuming its work_done outbox row and closing the corresponding bead as one atomic reconcile-and-close action via the reconcile-and-close executable wrapper
+---
+
+# Reconcile and Close
+
+## Overview
+
+When a BC finishes a dispatch it emits a `work_done` message into its outbox.
+The lead's reconciliation step for that dispatch is two operations that must
+land together:
+=== .claude/skills/shaping/SKILL.md (84 lines) ===
+---
+name: shaping
+description: Take a validated intent and drive a single candidate to shaped — bounded, de-risked, and ready for a commitment decision
+---
+
+# Shaping
+
+## Overview
+
+This is the **shaping** mode of the lead-pm main session. Shaping takes a
+validated problem — usually captured as an intent record from discovery — and
+works it into a concrete but still-malleable **candidate**: a shape for a
+=== .claude/skills/stakeholder-engagement-advisor/SKILL.md (58 lines) ===
+---
+name: stakeholder-engagement-advisor
+description: Plan engagement for one specific stakeholder — diagnose their profile and power/impact position, then tailor message, medium, cadence, and a named next action, planning both sides of the relationship. Use inside the discovery-dialogue when the intent hinges on a critical or resistant stakeholder whose input you must actually secure.
+---
+
+# Stakeholder Engagement Advisor (PM technique skill — adapted, EXPERIMENTAL)
+
+**Serves:** discovery-dialogue · **Emits into:** intent record (`intent/intent-NNN.md`)
+
+A *technique skill* (PDR-033): a lens invoked INSIDE the `discovery-dialogue` PM session; its output lands in the intent record. It has no terminal artifact of its own.
+
+*Adapted, with permission, from [`deanpeters/Product-Manager-Skills/skills/stakeholder-engagement-advisor`](https://github.com/deanpeters/Product-Manager-Skills/tree/main/skills/stakeholder-engagement-advisor) (MITRE Innovation Toolkit) by [Dean Peters](https://www.linkedin.com/in/deanpeters/) — fetched live 2026-07-10, direct-grant terms per [ADR-066](../../adr/066-direct-grant-from-dean-peters-authorizes-mit-ingestion-of-deanpeters-derived-pm-skills-attribution-required.md). Adaptation rules + experimental status: [`../README.md`](../README.md).*
+=== .claude/skills/stakeholder-identification/SKILL.md (55 lines) ===
+---
+name: stakeholder-identification
+description: Enumerate every stakeholder in a problem before engaging anyone — allies, audiences, influencers — with an equity lens that surfaces the marginalized voices a five-minute memory list misses. Use inside the discovery-dialogue to be sure the intent isn't framed for only the loudest party.
+---
+
+# Stakeholder Identification (PM technique skill — adapted, EXPERIMENTAL)
+
+**Serves:** discovery-dialogue · **Emits into:** intent record (`intent/intent-NNN.md`)
+
+A *technique skill* (PDR-033): a lens invoked INSIDE the `discovery-dialogue` PM session; its output lands in the intent record. It has no terminal artifact of its own.
+
+*Adapted, with permission, from [`deanpeters/Product-Manager-Skills/skills/stakeholder-identification`](https://github.com/deanpeters/Product-Manager-Skills/tree/main/skills/stakeholder-identification) by [Dean Peters](https://www.linkedin.com/in/deanpeters/) — fetched live 2026-07-10, direct-grant terms per [ADR-066](../../adr/066-direct-grant-from-dean-peters-authorizes-mit-ingestion-of-deanpeters-derived-pm-skills-attribution-required.md). Adaptation rules + experimental status: [`../README.md`](../README.md).*
+=== .claude/skills/stakeholder-mapping/SKILL.md (55 lines) ===
+---
+name: stakeholder-mapping
+description: Prioritize an identified stakeholder set with two complementary 2x2 grids — Power×Interest for engagement strategy and Impact×Power to surface who bears consequences but lacks voice — then compare them to find the blind spots. Use inside the discovery-dialogue after identification to decide whose voice the intent must elevate.
+---
+
+# Stakeholder Mapping (PM technique skill — adapted, EXPERIMENTAL)
+
+**Serves:** discovery-dialogue · **Emits into:** intent record (`intent/intent-NNN.md`)
+
+A *technique skill* (PDR-033): a lens invoked INSIDE the `discovery-dialogue` PM session; its output lands in the intent record. It has no terminal artifact of its own.
+
+*Adapted, with permission, from [`deanpeters/Product-Manager-Skills/skills/stakeholder-mapping`](https://github.com/deanpeters/Product-Manager-Skills/tree/main/skills/stakeholder-mapping) (MITRE Innovation Toolkit) by [Dean Peters](https://www.linkedin.com/in/deanpeters/) — fetched live 2026-07-10, direct-grant terms per [ADR-066](../../adr/066-direct-grant-from-dean-peters-authorizes-mit-ingestion-of-deanpeters-derived-pm-skills-attribution-required.md). Adaptation rules + experimental status: [`../README.md`](../README.md).*
+=== .claude/skills/stakeholder-presentation/SKILL.md (176 lines) ===
+---
+name: stakeholder-presentation
+description: Turn source material into a presentation the product authority can decide
+  from in one short reading, verified by an independent cold read before delivery.
+  Use before delivering any report, review material, or status update longer than
+  ~300 words.
+type: skill
+id: stakeholder-presentation-skill
+status: approved
+created: 2026-08-10
+updated: 2026-08-19
+generated: true
+=== .claude/skills/work-splitting/SKILL.md (79 lines) ===
+---
+name: work-splitting
+description: Split an Epic or an oversized requirement into thin, vertical slices — each pinning one coherent behavior — using proven split patterns, so scenarios stay single-behavior and work stays right-sized. Use when decomposing an Epic into scenarios, when a scenario carries multiple When/Then, or when an assigned unit is too big to build and review cleanly.
+---
+
+# Work / scenario splitting (adapted, EXPERIMENTAL)
+
+**Discipline 4 — Specification as the contract (right-sizing).** Adapted,
+with permission, from
+`deanpeters/Product-Manager-Skills/skills/user-story-splitting` (Lawrence &
+Green, *Humanizing Work Guide to Splitting User Stories*), by
+[Dean Peters](https://www.linkedin.com/in/deanpeters/) — direct-grant terms
+=== .claude/skills/workshop-facilitation/SKILL.md (61 lines) ===
+---
+name: workshop-facilitation
+description: The canonical divergence/convergence facilitation pattern for running an interactive PM session over a set of options — one question at a time, visible progress, recommendations only at decision points. Reach for it inside an option-tradeoff session to structure how the dialogue is conducted.
+---
+
+# Workshop Facilitation (PM technique skill — adapted, EXPERIMENTAL)
+
+**Serves:** option-tradeoff · **Emits into:** PDR draft (`pdr/pdr-NNN.md`)
+
+A *technique skill* (PDR-033): a lens invoked INSIDE the `option-tradeoff` PM session; its output lands in the PDR draft. No terminal artifact of its own.
+
+*Adapted, with permission, from [`deanpeters/Product-Manager-Skills/skills/workshop-facilitation`](https://github.com/deanpeters/Product-Manager-Skills/tree/main/skills/workshop-facilitation) by [Dean Peters](https://www.linkedin.com/in/deanpeters/) — fetched live 2026-07-10, direct-grant terms per [ADR-066](../../adr/066-direct-grant-from-dean-peters-authorizes-mit-ingestion-of-deanpeters-derived-pm-skills-attribution-required.md). Adaptation rules + experimental status: [`../README.md`](../README.md).*
+=== .claude/skills/write-adr/SKILL.md (32 lines) ===
+---
+name: write-adr
+description: Use when the author is authoring or creating a adr artifact — a generated guide that drives the adr to a validated document against the live shop-knowledge template and schema for the adr kind.
+---
+
+<!-- GENERATED write-adr writing skill — this file is generated and read-only.
+     It is regenerated on every shop-templates pour from ONE common structure plus
+     the adr typedef facts, so a hand-edit is caught by the writing-skill drift
+     check that guards the generated writing skills. DO NOT EDIT: edit the common
+     structure or the adr typedef and re-pour. -->
+
+# Write a adr (architecture decision record)
+=== .claude/skills/write-brief/SKILL.md (32 lines) ===
+---
+name: write-brief
+description: Use when the author is authoring or creating a brief artifact — a generated guide that drives the brief to a validated document against the live shop-knowledge template and schema for the brief kind.
+---
+
+<!-- GENERATED write-brief writing skill — this file is generated and read-only.
+     It is regenerated on every shop-templates pour from ONE common structure plus
+     the brief typedef facts, so a hand-edit is caught by the writing-skill drift
+     check that guards the generated writing skills. DO NOT EDIT: edit the common
+     structure or the brief typedef and re-pour. -->
+
+# Write a brief (commitment brief)
+=== .claude/skills/write-candidate/SKILL.md (32 lines) ===
+---
+name: write-candidate
+description: Use when the author is authoring or creating a candidate artifact — a generated guide that drives the candidate to a validated document against the live shop-knowledge template and schema for the candidate kind.
+---
+
+<!-- GENERATED write-candidate writing skill — this file is generated and read-only.
+     It is regenerated on every shop-templates pour from ONE common structure plus
+     the candidate typedef facts, so a hand-edit is caught by the writing-skill drift
+     check that guards the generated writing skills. DO NOT EDIT: edit the common
+     structure or the candidate typedef and re-pour. -->
+
+# Write a candidate (solution candidate)
+=== .claude/skills/write-current-state/SKILL.md (32 lines) ===
+---
+name: write-current-state
+description: Use when the author is authoring or creating a current-state artifact — a generated guide that drives the current-state to a validated document against the live shop-knowledge template and schema for the current-state kind.
+---
+
+<!-- GENERATED write-current-state writing skill — this file is generated and read-only.
+     It is regenerated on every shop-templates pour from ONE common structure plus
+     the current-state typedef facts, so a hand-edit is caught by the writing-skill drift
+     check that guards the generated writing skills. DO NOT EDIT: edit the common
+     structure or the current-state typedef and re-pour. -->
+
+# Write a current-state (current-state narrative)
+=== .claude/skills/write-intent-record/SKILL.md (32 lines) ===
+---
+name: write-intent-record
+description: Use when the author is authoring or creating a intent-record artifact — a generated guide that drives the intent-record to a validated document against the live shop-knowledge template and schema for the intent-record kind.
+---
+
+<!-- GENERATED write-intent-record writing skill — this file is generated and read-only.
+     It is regenerated on every shop-templates pour from ONE common structure plus
+     the intent-record typedef facts, so a hand-edit is caught by the writing-skill drift
+     check that guards the generated writing skills. DO NOT EDIT: edit the common
+     structure or the intent-record typedef and re-pour. -->
+
+# Write a intent-record (intent record)
+=== .claude/skills/write-pdr/SKILL.md (32 lines) ===
+---
+name: write-pdr
+description: Use when the author is authoring or creating a pdr artifact — a generated guide that drives the pdr to a validated document against the live shop-knowledge template and schema for the pdr kind.
+---
+
+<!-- GENERATED write-pdr writing skill — this file is generated and read-only.
+     It is regenerated on every shop-templates pour from ONE common structure plus
+     the pdr typedef facts, so a hand-edit is caught by the writing-skill drift
+     check that guards the generated writing skills. DO NOT EDIT: edit the common
+     structure or the pdr typedef and re-pour. -->
+
+# Write a pdr (product decision record)
+=== .claude/skills/write-prioritization-record/SKILL.md (32 lines) ===
+---
+name: write-prioritization-record
+description: Use when the author is authoring or creating a prioritization-record artifact — a generated guide that drives the prioritization-record to a validated document against the live shop-knowledge template and schema for the prioritization-record kind.
+---
+
+<!-- GENERATED write-prioritization-record writing skill — this file is generated and read-only.
+     It is regenerated on every shop-templates pour from ONE common structure plus
+     the prioritization-record typedef facts, so a hand-edit is caught by the writing-skill drift
+     check that guards the generated writing skills. DO NOT EDIT: edit the common
+     structure or the prioritization-record typedef and re-pour. -->
+
+# Write a prioritization-record (prioritization record)
+=== .claude/skills/write-session-record/SKILL.md (32 lines) ===
+---
+name: write-session-record
+description: Use when the author is authoring or creating a session-record artifact — a generated guide that drives the session-record to a validated document against the live shop-knowledge template and schema for the session-record kind.
+---
+
+<!-- GENERATED write-session-record writing skill — this file is generated and read-only.
+     It is regenerated on every shop-templates pour from ONE common structure plus
+     the session-record typedef facts, so a hand-edit is caught by the writing-skill drift
+     check that guards the generated writing skills. DO NOT EDIT: edit the common
+     structure or the session-record typedef and re-pour. -->
+
+# Write a session-record (session record)

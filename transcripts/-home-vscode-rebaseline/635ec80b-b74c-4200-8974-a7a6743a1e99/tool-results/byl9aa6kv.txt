@@ -1,0 +1,423 @@
+=================== basis/fitness/brief.fitness.md
+---
+type: fitness-set
+id: brief-fitness
+owner: product-authority
+status: draft
+version: 2
+created: 2026-08-26
+updated: 2026-08-26
+target-type: brief
+judged: true
+executable: false
+judged-by: cold-reviewer
+---
+
+# Fitness set: brief
+
+A brief is the PO role's bounded statement of a problem and its scope
+for a Bounded Context shop (the typedef is pending on this branch; the
+frozen corpus on `main` is the reference). These scenarios are the
+criteria set the [PO output check](../processes/po-output-check.md)
+screens a brief against, alongside the PM role's framing, which is
+always the criterion named `framing`. They are evaluated by the
+`cold-reviewer` role, never executed — no step definitions exist or
+will exist. The judge's model and prompt version are recorded with each
+round verdict.
+The judge reads only the criteria set, the framing, and the artifact;
+every scenario therefore asks for what the artifact itself carries, and
+a fact it must carry — a term's definition, a reference, a reason — is
+what these scenarios make it carry. These scenarios stand in for the
+pending typedef and are its first draft; the typedef inherits them.
+A "competent reader" is the cold-reviewer role as its definition
+describes it.
+
+## Scenarios
+
+Scenario 1: declined scope carries its reason
+  Given each statement the brief marks out of scope
+  When it is read
+  Then it carries the reason it serves no framed outcome
+
+Scenario 2: the problem, not the solution
+  Given the brief's statement of what the shop is asked for
+  When it is parsed for design or implementation choices
+  Then it states the problem and the outcome and names no how — no
+  technology, structure, or interface form the shop would otherwise
+  choose; naming an interaction type the behavior must hold on is a
+  what, not a form
+
+Scenario 3: scope has an edge
+  Given the pieces of work the framing or the brief itself names as
+  neighbouring
+  When each is read against the scope
+  Then the brief says whether it is in or out, or names the rule that
+  decides
+
+Scenario 4: the shop can act from it alone
+  Given the brief without its author present
+  When the receiving shop reads it
+  Then every term is defined in the brief or the framing, every
+  referenced artifact is linked, and every question the shop must
+  resolve before starting is either answered or listed as open
+
+Scenario 5: the first paragraph states the problem and the outcome
+  Given the brief alone
+  When the reader stops after the first paragraph
+  Then the problem and the outcome are already stated (the lead-po
+  role: the requirements picture readable from the artifacts alone)
+
+## Compile mapping (each Then → one judge-rubric assertion)
+
+| Scenario Then | Judge-rubric assertion |
+|---|---|
+| 1 — declined scope reasoned | "For each out-of-scope mark: is a reason stated? Cite any without one." |
+| 2 — problem, not solution | "List every sentence that chooses a technology, structure, or interface form (an interaction type named is not a form). Empty list = pass." |
+| 3 — scope has an edge | "For each neighbouring piece of work the framing or brief names: does the brief say in or out, or name the deciding rule? Cite." |
+| 4 — actionable alone | "List undefined terms, unlinked references, and questions neither answered nor listed as open. Empty list = pass." |
+| 5 — first paragraph | "Does paragraph 1 state the problem and the outcome? Quote it, or answer no." |
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+| 1 | 2026-08-26 | update | Authored by owner direction as the criteria set the PO output check screens briefs against; the brief typedef is pending, so scenarios rest on the lead-po role's accountabilities and the framing. |
+| 1 | 2026-08-26 | review | Screened: findings — scenario 1 duplicated the process's `framing` criterion; scenario 4 cited the glossary the judge cannot read; scenario 5's title mismatched its Then; scenario 3 let the judge invent neighbours. |
+| 2 | 2026-08-26 | update | Repairs: scenario 1 reduced to the residual (declined scope reasoned); terms defined in the brief or framing; neighbours bound to those the framing or brief names; scenario 5 retitled and sourced; the judge's inputs and the typedef-draft status stated in the intro. |
+=================== basis/fitness/product-decision-record.fitness.md
+---
+type: fitness-set
+id: product-decision-record-fitness
+owner: product-authority
+status: draft
+version: 2
+created: 2026-08-26
+updated: 2026-08-26
+target-type: product-decision-record
+judged: true
+executable: false
+judged-by: cold-reviewer
+---
+
+# Fitness set: product decision record
+
+A product decision record is the PO role's record of one product-level
+decision and its reasons (the typedef is pending on this branch; the
+frozen corpus on `main` is the reference). These scenarios are the
+criteria set the [PO output check](../processes/po-output-check.md)
+screens a record against, alongside the framing (criterion `framing`).
+Evaluated by the `cold-reviewer` role, never executed. The judge's
+model and prompt version are recorded with each round verdict.
+The judge reads only the criteria set, the framing, and the artifact;
+every scenario therefore asks for what the artifact itself carries, and
+a fact it must carry — a term's definition, a reference, a reason — is
+what these scenarios make it carry. These scenarios stand in for the
+pending typedef and are its first draft; the typedef inherits them.
+A "competent reader" is the cold-reviewer role as its definition
+describes it.
+The record's parts — decision, alternatives, consequences, decider,
+reversibility — follow the architecture decision record form (Nygard),
+adopted per `external-standards-first`; whether the named role held the
+right it exercised is the PM role's ruling at the decide step, not the
+judge's.
+
+## Scenarios
+
+Scenario 1: one decision
+  Given the record
+  When its decision statement is parsed
+  Then it states exactly one decision, as a sentence a reader can act
+  on
+
+Scenario 2: the alternatives were real
+  Given the record's alternatives
+  When each alternative is read
+  Then at least one alternative is stated that the deciding role could
+  have chosen, with the reason it was not
+
+Scenario 3: the decider and the right are named
+  Given the record's statement of who decided
+  When it is read
+  Then it names the role that decided and the decision right it
+  exercised, or the escalation that settled it
+
+Scenario 4: consequences are priced
+  Given the record's consequences
+  When each consequence is read
+  Then it names what changes, for whom, and what it costs or forecloses
+
+Scenario 5: reversibility is stated
+  Given the record
+  When a reader asks how hard the decision is to reverse
+  Then the record says so and, for a decision it calls hard to reverse,
+  names what would trigger revisiting it
+
+## Compile mapping (each Then → one judge-rubric assertion)
+
+| Scenario Then | Judge-rubric assertion |
+|---|---|
+| 1 — one decision | "Quote the decision sentence. Is it one decision, actionable? Any no = fail." |
+| 2 — real alternatives | "Is at least one alternative stated that the deciding role could have chosen, with the reason against it? Cite it or its absence." |
+| 3 — decider and right named | "Does the record name the deciding role and the right exercised, or the escalation? Cite the sentence or its absence." |
+| 4 — consequences priced | "For each consequence: what changes, for whom, at what cost? Cite any consequence missing one." |
+| 5 — reversibility | "Does the record state how hard the decision is to reverse and, if hard, what would trigger revisiting it? Cite the sentence or its absence." |
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+| 1 | 2026-08-26 | update | Authored by owner direction as the criteria set the PO output check screens product decision records against; the typedef is pending. Scenario 3 rests on the four approved roles' decision rights. |
+| 1 | 2026-08-26 | review | Screened: findings — scenario 3 misattributed scope to the PO role, restated the roles' decision rights in a second home, and asked the judge for the PM's domain ruling; the record's parts had no named source; scenario 2 named the wrong actor. |
+| 2 | 2026-08-26 | update | Repairs: scenario 3 is a presence check (role and right named, or escalation); the ADR form named as the source of the parts; the deciding role is the actor of alternatives; the framing clause dropped from scenario 1; intro states the judge's inputs. |
+=================== basis/fitness/acceptance-scenarios.fitness.md
+---
+type: fitness-set
+id: acceptance-scenarios-fitness
+owner: product-authority
+status: draft
+version: 2
+created: 2026-08-26
+updated: 2026-08-26
+target-type: acceptance-scenarios
+judged: true
+executable: false
+judged-by: cold-reviewer
+---
+
+# Fitness set: acceptance scenarios
+
+An acceptance scenario is a Gherkin scenario that states, as a
+requirement, what counts as done for one behavior; a set of them is
+what the PO role submits for a behavior (the acceptance scenarios
+themselves are executable by the owning shop; this fitness set judges
+their quality and is never executed). These scenarios are the criteria
+set the [PO output check](../processes/po-output-check.md) screens a
+submitted set against, alongside the framing (criterion `framing`).
+Evaluated by the `cold-reviewer` role. The judge's model and prompt
+version are recorded with each round verdict.
+The judge reads only the criteria set, the framing, and the artifact;
+every scenario therefore asks for what the artifact itself carries, and
+a fact it must carry — a term's definition, a reference, a reason — is
+what these scenarios make it carry. These scenarios stand in for the
+pending acceptance-scenario typedef and are its first draft; the
+typedef inherits them (the co-production statement and the tag's
+content are what this set asks the typedef to carry).
+A "competent reader" is the cold-reviewer role as its definition
+describes it.
+
+## Scenarios
+
+Scenario 1: each scenario is one observable behavior
+  Given a scenario in the set
+  When its Given/When/Then is read
+  Then the When is one action or event, the Then an outcome observable
+  in the running system, and no step names an implementation detail
+
+Scenario 2: co-produced with the owning shop
+  Given the set's statement of who contributed
+  When it is read
+  Then the owning Bounded Context shop is named as the source of the
+  steps and edge cases, and, where the behavior has an interaction, the
+  product designer role's usability and accessibility criteria are
+  present
+
+Scenario 3: identity fields are present
+  Given each scenario
+  When its header is read
+  Then it carries a tag naming the behavior and its Bounded Context and
+  a hash field (whether the hash matches the text is a mechanical
+  check, a filed work item, not this judge's)
+
+Scenario 4: the named edges are covered
+  Given the failure and boundary cases the framing, the brief, or the
+  owning shop's contribution names
+  When each is read against the set
+  Then it is a scenario in the set or is marked out of scope with a
+  reason
+
+Scenario 5: interaction types are named
+  Given a behavior a person or agent reaches through an interaction
+  When the set is read
+  Then it names the interaction types the behavior must hold on (the
+  experience principle `core-task-parity`)
+
+## Compile mapping (each Then → one judge-rubric assertion)
+
+| Scenario Then | Judge-rubric assertion |
+|---|---|
+| 1 — one observable behavior | "For each scenario: is the When one action, the Then observable in the running system, and no step implementation-specific? Cite any failing scenario." |
+| 2 — co-produced | "Is the owning shop named as the source of steps and edge cases? Where the behavior has an interaction, are usability and accessibility criteria present? Cite or name the absence." |
+| 3 — identity fields | "For each scenario: tag naming behavior and context present? hash field present? Cite any scenario without both." |
+| 4 — named edges covered | "For each failure or boundary case the framing, brief, or shop contribution names: cite the scenario or the out-of-scope note. Any uncovered = fail." |
+| 5 — interaction types named | "Does the set name the interaction types the behavior must hold on? Cite the sentence or its absence." |
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+| 1 | 2026-08-26 | update | Authored by owner direction as the criteria set the PO output check screens acceptance-scenario sets against; rests on the lead-po role (co-production, hash, tag) and the experience principles (interaction types, usability criteria). |
+| 1 | 2026-08-26 | review | Screened: findings — "usability criteria" alone where the principles ask for accessibility criteria and the designer role supplies usability ones; an attribution record no definition carries; a hash comparison a reading judge cannot make; edge cases the judge would invent. |
+| 2 | 2026-08-26 | update | Repairs: usability and accessibility criteria both named with their sources; co-production stated as what the set must say; hash reduced to presence with the comparison filed as mechanical; edges bound to those the framing, brief, or shop names; typedef-draft status stated. |
+=================== basis/fitness/backlog-order.fitness.md
+---
+type: fitness-set
+id: backlog-order-fitness
+owner: product-authority
+status: draft
+version: 2
+created: 2026-08-26
+updated: 2026-08-26
+target-type: backlog-order
+judged: true
+executable: false
+judged-by: cold-reviewer
+---
+
+# Fitness set: backlog order
+
+A backlog order is the PO role's ordered list of requirements within
+the PM role's framing — the role's exclusive decision — as submitted for
+the PM role's check. These scenarios are the criteria set the
+[PO output check](../processes/po-output-check.md) screens an order
+against, alongside the framing (criterion `framing`). Evaluated by the
+`cold-reviewer` role, never executed. The judge's model and prompt
+version are recorded with each round verdict.
+The judge reads only the criteria set, the framing, and the artifact;
+every scenario therefore asks for what the artifact itself carries, and
+a fact it must carry — a term's definition, a reference, a reason — is
+what these scenarios make it carry. These scenarios stand in for the
+pending backlog-order typedef — no definition yet treats the order as an
+artifact — and are its first draft; the typedef inherits them. What the
+judge cannot catch from the order alone — a recommendation omitted, a
+wrong context — is the solutions architect role's to raise through its
+interface with the PO role.
+A "competent reader" is the cold-reviewer role as its definition
+describes it.
+
+## Scenarios
+
+Scenario 1: every item serves a framing
+  Given each item in the order
+  When its framing reference is read
+  Then it names the framing it serves, or is marked declined with a
+  reason (the process passes one framing; an order spans many, so this
+  scenario is not the `framing` criterion)
+
+Scenario 2: the order states the priority it follows
+  Given the order's statement of the roadmap priority it was made
+  against
+  When the order is compared with that statement
+  Then items serving a higher-priority framing precede items serving a
+  lower one, or the order states a reason for each exception
+
+Scenario 3: enabler work is placed or declined with reasons
+  Given the order's list of enabler recommendations received from the
+  solutions architect role
+  When the order is read
+  Then each recommendation appears in the order with its position
+  reasoned, or is declined with a reason
+
+Scenario 4: the order names each item's context
+  Given each item
+  When it is read
+  Then it names the Bounded Context that owns it, and an item crossing
+  contexts is marked as such with the escalation to the PM role named
+
+Scenario 5: the next item says whether it is ready
+  Given the first item not yet taken up
+  When it is read
+  Then the order marks it ready and links its checked brief or scenario
+  set, or marks it not ready and names what it waits on
+
+## Compile mapping (each Then → one judge-rubric assertion)
+
+| Scenario Then | Judge-rubric assertion |
+|---|---|
+| 1 — serves a framing | "For each item: framing named, or declined with a reason? Cite any item with neither." |
+| 2 — follows stated priority | "Compare the order with the priority it states; cite each inversion and whether a reason is stated. Any unreasoned inversion = fail." |
+| 3 — enablers placed or declined | "For each recommendation the order lists: placed with a reasoned position, or declined with a reason? Cite any that is neither." |
+| 4 — context named | "Does each item name its owning Bounded Context, with cross-context items marked and their escalation named? Cite any that does not." |
+| 5 — next item ready | "Is the first untaken item marked ready with its checked artifact linked, or not ready with what it waits on? Cite." |
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+| 1 | 2026-08-26 | update | Authored by owner direction as the criteria set the PO output check screens a backlog order against; rests on the lead-po role's exclusive domain and interfaces (priority from the PM role, enablers and decomposition from the solutions architect). |
+| 1 | 2026-08-26 | review | Screened: findings — scenarios 2–5 rested on the priority, recommendations, decomposition, and other artifacts' status, none of which the screen loads; typedef-pending note missing; cross-context items lacked the escalation. |
+| 2 | 2026-08-26 | update | Repairs: every Given re-based on what the order itself states; what the judge then cannot catch named and routed to the architect's interface; scenario 1's overlap with `framing` justified inline; escalation named; typedef-draft status stated. |
+=================== ROUND 1
+# Cold-read screen: four PO-output fitness sets (v1)
+
+Judge: cold-reviewer (claude-fable-5, fresh context). Criteria: fitness-set typedef v2; po-output-check v3 (Data prose and screen prompt); lead-po v5, lead-pm v7, experience-principles v2, glossary v11 for grounding. Read only the files named.
+
+## Mechanical checks (all four)
+
+- Frontmatter guardrails: `type: fitness-set`, `id`, `target-type`, `judged: true`, `executable: false`, `judged-by: cold-reviewer`, `owner`, `status`, `created`, `updated` present in all four. Pass.
+- Path: all under `basis/fitness/`, none under `features/`. Pass.
+- Compile mapping one for one: five scenarios, five rows, each Then mapped, in all four. Pass. (Brief scenario 4 folds three conjuncts into one row; the exemplar splits an `And` into its own row — a style stumble, not a fail.)
+- Banned words "seat" / "surface": none in any file. Pass.
+- Rests on established evaluation practice: every row is a cite-or-answer-no rubric assertion in the exemplar's form. Pass on form; where the judge cannot obtain the cited fact (below) the row is a rubric the judge cannot score, which is the typedef's "falsifiable" test failing in practice.
+
+## Systemic finding, stated once (applies to every file)
+
+The screen step loads three things: "Read the criteria set at criteria_path, the framing at framing, and the artifact at artifact — nothing else." Several scenarios put in their Given something the judge is not given: the glossary (brief 4), the role definitions (PDR 3), the roadmap priority, the architect's enabler recommendations, the decomposition, and other artifacts' `checked` status (backlog 2, 3, 4, 5). A Then the judge cannot obtain the facts for is not falsifiable *by this judge under this process*, whatever its wording. Two repairs are possible and the owner must pick one: (a) the artifact carries the fact inline (the order states the priority it was made against and the recommendations it received; the record names the decision right it exercised), so the judge reads it from the artifact; or (b) po-output-check's `screen` gains inputs. The sets as written silently assume (b) without the process saying so. The exemplar (decision-brief scenario 3, "in the glossary") has the same flaw; that it was approved does not make it decidable.
+
+---
+
+## basis/fitness/brief.fitness.md — verdict: findings
+
+1. **Scenario 1 duplicates the `framing` criterion.** "Then it serves the framed outcome, or is marked out of scope with a reason." The process prompt already asks, of every part, whether it traces to the framing or serves no framed outcome, and names that finding `framing`. A judge will report one defect under two criterion names, and the PM's "fail: name the criterion" gets two answers. The only residual is the out-of-scope marking (grounded: lead-po "you decline scope that serves no framed outcome and record the reason"). Required: recast to the residual only — "a statement the brief excludes carries the reason it is excluded" — or delete the scenario and say the framing criterion covers it.
+2. **Scenario 4 cites a source the judge does not have.** "every term is the glossary's or defined in the brief" — the judge reads criteria, framing, artifact, nothing else. Required: either "every term is defined in the brief or in the framing" or fix the process (systemic finding). "every referenced artifact is linked" and "no question the shop must ask before starting is left open — or the open questions are listed" are grounded (lead-po: "readable from the artifacts alone, without asking their author") and decidable.
+3. **Scenario 5's title does not match its Then.** Title "readable in one sitting"; Then "the problem and the outcome are already stated" after "the first paragraph". Those are different tests. Also no definition on this branch says a brief leads with problem and outcome — it is borrowed from the decision-brief exemplar. Required: retitle "the first paragraph states the problem", and name the source (the `main` brief form or lead-po's "the rest of the shop can act on") or drop it.
+4. **Scenario 3 is judge-invented.** "When a competent reader imagines a neighbouring piece of work" — any brief can fail if the judge picks an odd neighbour; the rubric row confirms the judge picks ("Name a neighbouring piece of work"). Grounded in principle (a brief is "a bounded statement ... and its scope"), but bound the pick: "a neighbouring piece of work the framing names or the brief itself mentions". Wobbly as written.
+5. **Scenario 2 wobble.** "names no how — no technology, structure, or interface form". Grounded ("You say what, never how"). But the experience principles require the PO to name interaction types (core-task-parity implication); a judge may read "reachable from the command line" as an "interface form". Add: "naming an interaction type is a what, not a form."
+6. Honesty on `target-type`: the intro says "the typedef is pending on this branch; the frozen corpus on `main` is the reference". Honest, and the history says the scenarios "rest on the lead-po role's accountabilities and the framing". Does not block use — po-output-check's Data already anticipates no criteria set at all — but see the cross-file note on the chain order.
+
+Stumbles in reading order: "competent reader" (undefined judge standard, recurs across files); "Bounded Context shop" in the intro before it is linked (glossary term, fine for a reader who knows the corpus, not for the judge who reads only this file).
+
+## basis/fitness/product-decision-record.fitness.md — verdict: findings
+
+1. **Scenario 3 misstates the PO's decision rights.** "scope and backlog order the PO's". lead-po: *Decides:* backlog order (exclusive); *Recommends:* scope changes to the PM role; *Escalates to the PM role:* scope conflicts. lead-pm: *Recommends:* scope changes to the PO; *Resolves:* domain conflicts. Scope is not the PO's decision. A judge applying this row would pass a record that the role definitions say is out of domain. Required: fix, and — single-source-of-truth — do not restate the four roles' decision rights here as a second home. The rubric row says "per the role definitions", which the judge cannot read (systemic finding); the honest form is: "Then the record names who decided and the decision right it exercised, or the escalation that settled it" — a presence check the judge can score, leaving whether the right was really theirs to the PM (lead-pm *Resolves:* "a conflict between this role's framing and another role's domain"). As written the scenario asks the judge for a domain ruling that is the PM's.
+2. **Sections no definition carries.** "Given the record's alternatives section", "Given the record's consequences section", "Given the record's statement of who decided", and scenario 5's reversibility. The only definition on this branch is "the record of one product-level decision and its reasons". These are the ADR form (Nygard) — a good external standard, and `external-standards-first` supports adopting it — but the set must say so: name the form the sections come from (or the `main` PDR form), or the maker has no definition to produce them from. Required: one sentence in the intro naming the source of the sections.
+3. **Scenario 2 wrong actor.** "an alternative ... that a competent shop could have chosen" — a product-level decision is the PM's or PO's, not a shop's (lead-po: shops decide "how a behavior is built"). Change to "that the deciding role could have chosen". Wobbly as written.
+4. **Scenario 1 partial duplication of `framing`.** "and names the framing it serves" — tracing is the `framing` criterion. Keep "exactly one decision, as a sentence a reader can act on" (grounded, falsifiable); drop the framing clause or keep it only as "names the framing" (a presence check the framing criterion does not make).
+5. Scenarios 4 and 5 are falsifiable as written (each consequence: what changes, for whom, at what cost — cite any missing one; reversibility stated or absent). "hard-to-reverse" also appears in the experience principles in a different sense (actions the corpus classes); no conflict, but a reader of both stumbles.
+6. Honesty on `target-type`: says the typedef is pending, and the history says scenario 3 "rests on the four approved roles' decision rights" — which it then misquotes (finding 1). Not blocking; correct the rest.
+
+## basis/fitness/acceptance-scenarios.fitness.md — verdict: findings
+
+1. **Scenario 2 misquotes the experience principles.** "the product designer role's usability criteria appear where the behavior has an interaction". The principles' implication for the PO is: "The PO role's acceptance scenarios for an interaction include its accessibility criteria" (accessible-by-standard). Usability is claimed by observed use, not written as criteria (evidence-not-opinion). Required: replace "usability criteria" with "accessibility criteria" and cite the principle; the history line "the experience principles (interaction types, usability criteria)" needs the same fix.
+2. **Scenario 2 invents a record.** "Given the set's record of who contributed ... the owning Bounded Context shop's contribution — steps and edge cases — is present and attributed". Co-production is grounded (lead-po, twice), but no definition says a scenario set carries an attribution record, and without one the judge cannot tell whose steps they are. Required: say the record is assumed pending the typedef, or drop "attributed" and keep a check the text can bear (steps and edge cases present). Wobbly as written.
+3. **Scenario 3 is not judge-falsifiable.** "Then the hash is of the scenario text ... and a changed text carries a new hash" — the cold-reviewer has Read only; it cannot compute a hash, and it sees one version, so it cannot observe a change. This is a mechanical check, not a judged one; the typedef's own checklist distinguishes them. Required: move the hash verification to a mechanical check (process or lint) and leave the judge only "each scenario carries a tag and a hash". "the tag names the behavior and its Bounded Context" — lead-po says "each tagged" and nothing about tag content; name the source or mark it as this set's proposal.
+4. **Scenario 4 is judge-invented and crosses the shop's contribution.** "When a competent reader lists its failure and boundary cases / Then each is a scenario in the set or is named as out of scope". Edge cases are what the owning shop supplies (lead-po: "it supplies the steps and edge cases"); a judge's own list overrides that. Bound it: "the failure and boundary cases the framing or the brief names". Wobbly as written.
+5. Scenario 1 is clean: grounded (lead-po "testable against the running system", "say what, never how"; `delivery-verified`), falsifiable, mapped. Scenario 5 is grounded verbatim in core-task-parity ("name the interaction types it must hold on"); "the core-task list rule" is an unintroduced phrase — say "the core-task list of the experience guidance corpus (core-task-parity)".
+6. Honesty on `target-type`: the intro correctly distinguishes the executable acceptance scenarios from this judged set — the most important sentence in the four files, given the typedef's segregation rule. It does *not* say the typedef is pending, unlike brief and PDR; the glossary defines the single term, not the artifact type. Add the pending note for consistency. No framing-criterion duplication in this set — good.
+
+## basis/fitness/backlog-order.fitness.md — verdict: findings
+
+1. **Scenarios 2, 3, 4, 5 each rest on an input the judge does not have.** "Given the PM role's recorded roadmap priority"; "Given each enabler recommendation from the solutions architect role"; "Given the solutions architect's decomposition"; "its brief or scenarios exist and are checked". None of these is the criteria set, the framing, or the artifact. Grounding is sound in every case (lead-po: order "within the framing", "mirror the solutions architect's decomposition", "Places or declines ... enabler work"; lead-pm: "Roadmap priority ... recorded with reasons"; `checked` is po-output-check's own status), so these are the right criteria with the wrong Given. Required (per the systemic finding, option a): the order states the priority it was made against, lists the enabler recommendations received, and marks each item's context and readiness — then every Given becomes "Given the order's statement of ...", and the judge checks internal consistency. What the judge then cannot catch (an omitted recommendation, a wrong context) is the PM's, from evidence the process would need to add. Say that limitation in the intro.
+2. **Scenario 1 versus the `framing` criterion.** "Then it names the framing it serves and the outcome that framing states, or is marked declined with a reason" — overlaps the `framing` criterion, but here the overlap earns its place: the process passes one `framing`, and an order spans many; the per-item naming is what lets the judge trace at all. Keep it, and say why in one sentence, or the next reviewer will file it as duplication. Note for the process owner: po-output-check's single `framing` input fits a brief and a record, not an order.
+3. **Scenario 4 is weaker than the role.** "items crossing contexts are marked as such" — lead-po escalates "a scenario the solutions architect reports as ... crossing contexts" to the PM. Required: "marked as such with the escalation named" or the set licenses what the role forbids.
+4. **Scenario 2 edges the PM's decide step.** Whether the order "follows priority" with each exception reasoned is a screenable presence check; whether an exception's *reason is good* is the PM's (lead-pm decides the check; PO decides order "open to another role's evidence"). The rubric row "Any unreasoned inversion = fail" stays on the right side; the scenario title "follows priority, and says so" invites the judge over the line. Keep the row's wording in the Then: "or states a reason for each exception" — it does, so this is a stumble, not a fail.
+5. Honesty on `target-type`: "backlog order" is defined nowhere as an artifact — lead-po says "The backlog: its content and order"; this set is the first document to treat the order as a submitted artifact. The intro does not say the typedef is pending. Required: say it, as the brief and PDR sets do.
+6. Scenario 5 also asks the judge to read other artifacts' status (finding 1) and, once repaired to an inline readiness mark, is falsifiable.
+
+Stumbles: "a shop reads it" (which shop is unstated until scenario 4); "checked" is process vocabulary the judge meets before it is explained.
+
+---
+
+## Cross-file
+
+- **Framing duplication.** Brief 1 (full duplicate — delete or reduce), PDR 1 (partial — one clause), backlog 1 (overlap that earns its place because the process passes one framing and an order spans many — keep and justify). Acceptance-scenarios has none. The process's rule is that the framing is always the criterion `framing`; a set should carry the framing trace only where it adds a check the process prompt cannot make.
+- **Givens the screen cannot supply** is the one finding that recurs in three files (brief 4; PDR 3; backlog 2–5). It is a process/typedef gap, not four authoring errors; under po-output-check it would be "uncovered" and go to the PM as a definition change. Recommend one decision, applied to all four: artifacts carry the facts inline, or `screen` gains inputs.
+- **Invented structure.** PDR (alternatives, consequences, who-decided, reversibility), acceptance-scenarios (attribution record, tag content), backlog-order (readiness mark, priority reference). Each is reasonable and most have an external form (ADR; Gherkin tags); none names its source. The sets are, in effect, the first draft of the pending typedefs. Say so in each intro and record it in each history, so the typedef, when authored, inherits these rather than contradicting them.
+- **Honesty on pending typedefs.** Brief and PDR say the typedef is pending; acceptance-scenarios and backlog-order do not. Does it block use? Not under po-output-check (its Data prose anticipates a type with no criteria set at all, so a set with no typedef is strictly better than the fallback). It does cut across the glossary's "definition chain — required before instances are authored" and the fitness-set typedef's "Produced by: the author of the target type's quality definition", which presume the typedef and guideline exist first. That inversion is the owner's to waive; the sets should state it, not hide it.
+- **Judge-invented lists** recur: brief 3 (neighbouring work), brief 4 (questions the shop must ask), acceptance 4 (edge cases). Bound each to what the framing or the artifact itself names; otherwise "fails" depends on the judge's imagination and the maker cannot repair to a moving target.
+- **Terms.** "competent reader / competent shop" (four uses, undefined standard); "checked" (backlog); "core-task list rule" (acceptance); "hard-to-reverse" (PDR, second sense next to the experience principles). Nothing stumbled that a defined term could not replace.
+- **Cleanest file:** acceptance-scenarios (two clean scenarios, honest about execution). **Most work:** backlog-order (four Givens to re-base) and PDR (one factual error against the role definitions).
+
+## Verdicts
+
+| File | Verdict | Top change |
+|---|---|---|
+| brief.fitness.md | findings | Scenario 1 duplicates `framing`; scenario 4 cites the glossary the judge cannot read; scenario 5 title/Then mismatch |
+| product-decision-record.fitness.md | findings | Scenario 3 misattributes scope to the PO and asks the judge for the PM's domain ruling; sections' source unnamed |
+| acceptance-scenarios.fitness.md | findings | Scenario 2 "usability criteria" should be "accessibility criteria"; scenario 3 hash check is mechanical, not judged |
+| backlog-order.fitness.md | findings | Scenarios 2–5 rest on inputs the screen does not load; typedef-pending note missing |

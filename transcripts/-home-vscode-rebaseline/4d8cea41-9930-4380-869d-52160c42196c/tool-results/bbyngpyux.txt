@@ -1,0 +1,245 @@
+.claude/skills/feature-authoring
+.claude/skills/po-output-check
+---
+basis/processes/feature-authoring.md
+basis/processes/po-output-check.md
+---
+init-artifact-tools.md
+init-plain-voice.md
+init-process-runner.md
+init-request-routing.md
+init-role-decisions.md
+init-roles-availability.md
+init-run-efficiency.md
+init-run-measurement.md
+init-skills-availability.md
+init-tool-skills.md
+init-typedef-rendering.md
+---
+---
+type: initiative
+id: init-run-measurement
+name: Run measurement
+status: planned
+version: 5
+owner: lead-pm
+created: 2026-09-07
+updated: 2026-09-08
+request: ../requests/req-2026-09-07-run-efficiency.md
+parent: init-run-efficiency
+---
+
+# Initiative: Run measurement
+
+## Framing
+
+Originator (product authority, 2026-09-07; the discovery on req-2026-09-07-run-efficiency): "This should be completely mechanical data gathering that can even be executed for each run to support optional analysis."
+
+Problem: the cost of a run is known only when someone reads the transcripts by hand, as was done once for init-tool-skills. Outcome: every session close records, without a model, cost metrics for each agent run — step, role, minutes, context tokens, output tokens where the harness gives them, tool uses — beside the session record, so any run can be analysed on request.
+
+## For whom
+
+The authority, who reads the cost; the run-efficiency parent, whose measure this feeds. Measure: sessions whose close records the cost rows. Now: 0. Target: every session. Interaction types: none — cost recording is incorporated into the session handoff step.
+
+## Appetite
+
+Bounded to 2 hours per initiative; 50K context tokens. No-gos: 
+- no analysis in the step itself — rows only (analysis belongs in a separate orchestration step, not here)
+- no measure that needs a model to compute (this step records data mechanically; model-based analysis is out of scope)
+
+
+## Feasibility and usability
+
+Feasible, mechanically, for a run the router already moves: the
+process-runner delivery already reads the harness's own usage report
+per segment and per launched role (feat-process-runner v9), and a
+run's context is recorded on its anchor at the run's end
+(feat-process-runner, the context-at-end scenario) — the source this
+initiative reads, not a new one. Minutes and tool uses are computable
+from the same anchor and transcript without a model. Decision the bet
+depends on: the rows live in a new artifact kept beside the session
+record, never inside the `pkg:shopsystem-knowledge` session-record
+schema this shop does not own, written by a runtime step, a field left
+blank rather than estimated when the harness does not give it. Not yet
+feasible for a session no process definition moved through the router
+— most sessions today — where no anchor carries the per-step values to
+read; the "every session" target is bounded by the sibling
+init-process-runner's own rollout. Full offer: history v2. (architect,
+2026-09-08)
+
+Usability: none due — no interaction type is named (§2: "Interaction
+types: none — a runtime step of session handoff"), a reading the
+parent init-run-efficiency's own §2 states the same way. The runtime
+step writes rows the authority reads directly; no task on the
+core-task list names reading a run's cost, and the appetite's own
+no-go — "no analysis in the step itself — rows only" — keeps the one
+activity that could become an interaction (presenting the rows "on
+request") out of this bet. Full offer: history v3. (designer,
+2026-09-08)
+
+## Decomposition
+
+None: no Bounded Context is touched — the new artifact, the runtime
+step, and any tooling change sit in the lead shop's own tree; no
+contract exists on this branch. Cross-context flow: none.
+
+## Features
+
+None yet.
+
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+| 1 | 2026-09-07 | update | Framed by the lead-pm at the discovery-conversation frame step (sess-2026-09-07-b) from the authority's words in req-2026-09-07-run-efficiency, section 1. |
+| 2 | 2026-09-08 | update | Feasibility and decomposition attached by the lead-solutions-architect role at initiative-check's attach-architecture step. The full offer, in the role-offer type's parts. *role* — lead-solutions-architect. *verdict* — feasible as framed, for a run the router moves; bounded elsewhere. Reasons: the outcome asks for mechanical data gathering only — no model, rows and nothing else, exactly the no-gos. Two of the four fields are already within reach through work this shop has already done: a run's context is recorded on its anchor at the run's end (feat-process-runner v9, the scenario "the run's context is recorded on the anchor at its end"), and the delivered router already reads the harness's own usage report at finer grain than that scenario requires — per resumed segment and per launched role, both on haiku and on fable (feat-process-runner's Document History v9: "the lane run 40 turns, cache-read 1.69M on haiku... the launched roles 1.15M on fable"). Minutes and tool uses need no model either: a runtime step reads timestamps and tool-invocation counts off the same anchor and transcript the router already reads, deterministically. Output tokens are the one field the framing itself already qualifies ("where the harness gives them"): the cost analysis that opened this whole initiative had to estimate them from characters, "the transcripts carry only a streaming stub" (req-2026-09-07-run-efficiency, §Evidence) — so a row that leaves this field blank is not a shortfall, it is the scoped answer. Not feasible without qualification: a session that no approved process definition moved through the router — most sessions run today, including the one that opened this check — carries no anchor with per-step values to read, so nothing mechanical exists yet to key a row on; "every session" is reachable only as the sibling init-process-runner's rollout reaches every session's work, and that initiative's own measure is not yet met (4.6M router context for one small change, feat-process-runner v9). *decisions* — D1, decision: "The one row per agent run is written to a new artifact kept beside the session record — never as an amendment to the session-record schema, which this shop does not own (`pkg:shopsystem-knowledge/session-record`, fetched through that package's own contract tool). The row is written by a runtime step, never an agent step: it reads the run's anchor, where the run passed through the router, and the harness's own usage report; a field the harness does not expose for a given run (most often output tokens) is left blank, never estimated and never computed by a model. The step's home is session-handoff-process's `collect` step, the process that already produces the session record this artifact sits beside; whether reconcile-and-close's own close and a review conversation's anchor need the same step is a separate question, not decided here." Under this role's guardrail right, the same right adr-2026-09-07-coordinator-role stands on; reversible — the artifact and the step are removed without changing what either process's typedef promises elsewhere; record: adr-2026-09-08-run-cost-artifact. D2, decision: "The initiative's own words scope the target to the session-record anchor — 'beside the session record' — not to a review record or a work item; a row for those two anchors, if wanted, is a separate request against reconcile-and-close and the review conversation's own anchor, not folded into this bet's appetite." Under this role's decomposition right (which activity carries which capability); record: adr-2026-09-08-run-cost-initiative-scope. *risks* — R1: output tokens and tool-use counts are confirmed available only by hand, from a full transcript read (the cost analysis this initiative answers did exactly that); if the harness's own usage report does not carry a per-tool-use count the way it carries per-turn cache-read tokens, that field is blank on every row until a transcript-parsing tool is built — enabler work, not this attach step's to commit. R2: most sessions today are not router-moved (this very check is one), so the "every session" target is coupled to a sibling initiative's rollout the authority has already bet on but not yet met; a bet here that assumes full coverage on day one overstates what ships. R3: two close processes exist (session-handoff, reconcile-and-close) and review conversations have no anchor process defined yet (this branch's own primer names the reconcile-side amendments as open); a step added to session-handoff alone leaves work and review conversations uncounted, which D2 scopes out rather than hides. R4: the new artifact must reference the session record's own frontmatter (id, created, authors) rather than restate it, or the two records drift apart under `single-source-of-truth`; the maker's discipline at build, flagged here so the build is checked against it. *unknowns* — U1: whether "minutes" means wall-clock, agent-minutes, or both; the cost analysis this initiative answers tracked both as distinct columns. Default: wall-clock only, read off the anchor's own timestamps, since agent-minutes needs summing turns the anchor does not yet keep separately. U2: the new artifact's exact name and location. Default: one file per session record, named to pair with it, in `sessions/`, the maker's choice at build. U3: whether "one row per agent run" counts a runtime step (no agent, no minutes of its own). Default: no — a row per agent or human step and per top-level router/lead-pm turn only. U4: whether review and work conversations are in the target's "every session." Default: no, per D2 — the framing's own words name the session record alone. *evidence* — this initiative (v1); the parent init-run-efficiency (v1) and its measure; req-2026-09-07-run-efficiency (v3), its cost table and the four places it names the cost sits, read in full; sess-2026-09-07-b, the session that framed this initiative and the sibling bet; basis/processes/session-handoff.md (v3) and basis/processes/reconcile-and-close.md (v4), both naming the router and producing, respectively, the session record and a work item's close; basis/glossary.md's `anchor`, `session record`, and `conversation type` entries — three conversation types, three anchors, one of which (review) names no process yet; feat-process-runner (v9) in full, its context-at-end scenario and its delivery history rows v7–v9, the harness's usage-report evidence at segment and role grain; adr-2026-09-07-coordinator-role (v3, checked), the guardrail this offer's right matches; basis/contexts/ — absent, confirming no Bounded Context exists on this branch. The feature repository swept in full — seven other features (feat-request-routing, feat-role-decisions, feat-roles-availability, feat-skills-availability, feat-tool-skills, feat-tool-skills-rest, feat-typedef-rendering) read for conflict: none names a session record, a cost row, or a close step; no conflict. Principles screen: `knowable-shape` — no first-class entity added, the new artifact is a lead-shop-held record, not a Bounded Context or a shop; `contracts-between-contexts` — not touched, no Bounded Context in scope; `actor-neutral-discipline` — the row records the same fields for a run whoever or whatever model tier moved it; `local-comprehension` — the artifact sits at the coordinating level beside the record it measures, readable without opening a Bounded Context; `bidirectional-conformance` — D1 and D2 are recorded here before any step is added to session-handoff-process, so the amendment is a design change first, not drift; `intent-provenance` — traces to req-2026-09-07-run-efficiency and sess-2026-09-07-b, both already recorded. Maker's evaluation against the role-offer type and the initiative typedef's §4–5: the four list parts each carry entries, no `none`; the verdict carries reasons; §4 rendered short with the designer's part left "not yet"; §5 attached with the flow "none"; `record: none` twice, each with its reason stated inline since this is the first pass; the offer names no Bounded Context's internals — basis/contexts/ does not exist on this branch. |
+| 3 | 2026-09-08 | update | Usability offer attached by the lead-product-designer role at initiative-check's attach-usability step. The full offer, in the role-offer type's parts. *role* — lead-product-designer. *verdict* — none due — no interaction type is named. Reasons: §2 states "Interaction types: none — a runtime step of session handoff," and the sibling parent init-run-efficiency states the same for its own measure ("Interaction types: none," init-run-efficiency §2); the outcome is a step of session-handoff-process's collect step (per the architect's D1, this initiative's Document History v2) writing rows the authority reads directly — no command line, terminal, graphical surface, API, conversational, voice, or generated-document interaction stands between the row and the reader. No entry on the core-task list (basis/experience/core-tasks.md v4 — start a run; hold, resume, or cancel a run; answer an ask; submit output for a check; read a decision; raise a clarify; deliver work for reconciliation) names reading a run's cost, and the appetite's own no-go — "no analysis in the step itself — rows only" — keeps the one activity that could become an interaction (reading, filtering, or presenting the rows "on request," the outcome's own words) out of this bet. Nothing in this role's domain — the vocabulary, the per-type patterns, core-task parity, the accessibility target (basis/experience-principles.md's `accessible-by-standard` and `core-task-parity`) — attaches to a step with no interaction surface. *decisions* — none: no interaction type is named, so no usability decision the bet depends on falls in this role's domain. *risks* — none: the initiative's own measure (sessions whose close records the cost rows) is met or missed by the runtime step alone, independent of any interface this role would screen. *unknowns* — U1: whether a person opening the new artifact directly to read it — the authority's stated use, "who reads the cost" — counts as a "generated document" interaction type under the glossary's definition (basis/glossary.md, `interaction type`), bringing the corpus's document guidelines and the `accessible-by-standard` target into scope. Default: no — the artifact is raw mechanical data, rows only per the appetite's no-go against analysis in this step, not a designed presentation; the question reopens only if a future feature designs a presentation of it for the authority or another reader, matching this initiative's and its parent's own "Interaction types: none." *evidence* — this initiative (v2, read in full, including the architect's attachment); the parent init-run-efficiency (v1), its own "Interaction types: none" and its sub-initiative list; basis/experience-principles.md (v2) in full, `core-task-parity`, `agent-is-a-user`, `accessible-by-standard`, and `evidence-not-opinion`; basis/experience/core-tasks.md (v4), its seven entries, none naming a run's cost; basis/glossary.md's `interaction type`, `generated interface`, and `assistant interaction` entries; basis/processes/initiative-check.md (v10), the `attach-usability` step's scope — "where an interaction type is named" — and the pre-bet route's note that a `none` in this role's offer is routed by hand, not through ADR authoring; basis/artifacts/initiative.md (v12) §2's rule that an interaction type is drawn from the core-task list or "none" with the reason, and §4's rule conditioning this role's render on §2 naming a type. Maker's evaluation against the role-offer type and the initiative typedef's §4: the four list parts each carry an entry or a reasoned `none`, none omitted; the verdict carries reasons; §4 rendered short, this role's part stated as "none due" rather than left "not yet"; the offer names no Bounded Context's internals — basis/contexts/ does not exist on this branch, consistent with the architect's same finding. |
+| 3 | 2026-09-08 | review | Initiative-check's one screen, run through the router on anchor lead-fresb (judge: claude-sonnet-5; cold-reviewer role compiled from basis/roles/cold-reviewer.md — no prompt version number present in the compiled header, so none is recorded): verdict findings. Two confident, both scenario 3 — the Appetite stated no bound ("To be set at the bet."); neither no-go carried its reason. One wobbly, scenario 4 — "row" three times and "runtime step" twice across §1–3, readable as a structure rather than a what; the judge's change: reword toward outcome language or get an owner ruling. Top three as the judge ranked them: the bound (closing the scenario 3 gap and scenario 7's "what is spent"), the no-go reasons, the row/runtime-step wording. No uncovered finding. The screen ran on the text as attached (v3). |
+| 4 | 2026-09-08 | update | The one revise, by the lead-pm at the initiative-check revise step (anchor lead-fresb, 01:04), in its own sections only: Appetite bounded — 2 hours per initiative; 50K context tokens; each no-go given its reason (analysis belongs in a separate orchestration step; this step records mechanically, model-based analysis out of scope); Framing's "one row per agent run" restated as "cost metrics for each agent run" and For whom's "a runtime step of session handoff" as "cost recording is incorporated into the session handoff step" — outcome language in place of structure. "Rows only" stands inside the first no-go, an exclusion naming what it excludes — the PM role's reading filed on the initiative fitness set's Document History 2026-09-04, the owner's ruling still open. The roles' attachments in §4–5 untouched: the designer's §4 quotes §2's former wording ("a runtime step of session handoff"), now stale against the revised §2 — disclosed here, that role's text to bring current, substance unchanged. Word count outside the history: 485. Every named finding repaired; the wobbly one repaired rather than held. |
+| 5 | 2026-09-08 | state | `proposed` → `planned`: the authority's bet — "bet", 2026-09-08 — taken at the initiative-check decide step after the one screen and the one revise; the lead-pm recording it. Reasons, as given: every named finding repaired in the one revise; the two decisions the offer depends on recorded and checked before the bet — [adr-2026-09-08-run-cost-artifact](../decisions/adr-2026-09-08-run-cost-artifact.md) (D1, the artifact beside the session record, written by a runtime step, a field left blank rather than estimated) and [adr-2026-09-08-run-cost-initiative-scope](../decisions/adr-2026-09-08-run-cost-initiative-scope.md) (D2, the session-record anchor alone). The appetite as the lead-pm restates it at the bet: one working session; the bound the screen judged and the features stay within is §3's as written — 2 hours per initiative, 50K context tokens. What is spent is bounded by the architect's R2 as recorded: the "every session" target reaches only as far as the sibling init-process-runner's rollout, so the measure is read against router-moved sessions until then. The product decision record for the go is the PO role's to make and the PO output check screens it; linked here once made. |
+---backlog---
+---
+type: backlog-order
+id: order-2026-09-08
+status: checked
+version: 3
+date: 2026-09-08
+priority: ../roadmap.md
+owner: lead-po
+created: 2026-09-08
+updated: 2026-09-08
+---
+
+# Backlog order — 2026-09-08
+
+This order supersedes [order-2026-09-07-b](order-2026-09-07-b.md),
+placed against the priority's current text, v10 of 2026-09-08
+([roadmap.md](../roadmap.md)). That order's one item —
+init-process-runner's feature-to-be — is taken up:
+[feat-process-runner](../features/feat-process-runner.md) is assigned
+and the initiative records it delivered 2026-09-08 (initiative v9),
+against a measure of about 4.6M router context for one small change,
+not yet under 1M. The authority's bet of 2026-09-08 on
+init-run-measurement adds a planned initiative to place.
+
+## 1. Priority followed
+
+The order is placed against the PM role's recorded roadmap priority,
+v10 of 2026-09-08 ([roadmap.md](../roadmap.md)):
+
+1. **init-run-efficiency** — proposed, a parent; its four
+   sub-initiatives bet on alone, in this order: 1.1
+   **init-process-runner** — recorded delivered in the priority; 1.2
+   **init-run-measurement** — recorded planned in the priority; 1.3
+   init-artifact-tools; 1.4 init-plain-voice.
+2. **init-tool-skills** — active; both features delivered 2026-09-07.
+3. **init-role-decisions** — active; delivered 2026-09-06.
+4. **init-typedef-rendering** — active; measure met 2026-09-05; the
+   batch of 21 not started.
+5. **init-request-routing** — active; measure met 2026-09-04.
+6. **init-roles-availability** — active; measure met 2026-09-03.
+7. **init-skills-availability** — active; its one feature assigned.
+8. **More comprehensive rendering work** — not yet framed.
+
+The order follows this priority with no exceptions: its one item
+serves item 1.2, the highest entry with a feature-to-be as of this
+order — the authority's bet of 2026-09-08 (initiative v5) takes
+init-run-measurement from proposed to planned, matching the priority
+document's own text, which already reads it planned as of v10; the
+bet is admissible evidence this order acts on, consistent with the
+priority's order. Each other priority entry has its reason for having
+no item here:
+
+| Priority entry | Reason for no item |
+|---|---|
+| 1. init-run-efficiency (parent) | Proposed; its features are its sub-initiatives'; no bet on the parent itself. |
+| 1.1 init-process-runner | Delivered 2026-09-08 (feat-process-runner, checked v9, assigned; the initiative's Features section records it delivered) — its feature-to-be was placed and taken up under order-2026-09-07-b; the priority document's own text (v10) already reads it delivered, matching; nothing left to place. |
+| 1.3, 1.4 | Proposed; the priority bets each alone, in order, and neither is bet on yet — a bet not taken frames no features-to-be. |
+| 2. init-tool-skills | Both features assigned and delivered; the initiative's Features section names no other. |
+| 3. init-role-decisions | One feature, [feat-role-decisions](../features/feat-role-decisions.md), checked. |
+| 4. init-typedef-rendering | One feature, [feat-typedef-rendering](../features/feat-typedef-rendering.md), checked; measure met. The batch of 21 is a bet the authority has not taken. |
+| 5. init-request-routing | One feature, [feat-request-routing](../features/feat-request-routing.md), assigned; measure met. |
+| 6. init-roles-availability | One feature, [feat-roles-availability](../features/feat-roles-availability.md), checked; measure met. |
+| 7. init-skills-availability | One feature, [feat-skills-availability](../features/feat-skills-availability.md), checked. |
+| 8. Rendering work | No initiative framed; nothing to place. |
+
+The four routed requests the priority notes are not items: none has
+an initiative, and a request is the PM role's to answer first. The
+migration-review discovery the priority opens beside item 1.1 is a
+discovery, not a requirement.
+
+## 2. Enabler recommendations received
+
+One candidate from the solutions architect role's attachment to
+init-run-measurement (initiative Document History v2, Risks R1); the
+initiative's other three risks (R2–R4) are scope and build-discipline
+notes carried inside the item below, not build recommendations to
+place or decline.
+
+- **A transcript-parsing tool, for output-token and tool-use counts
+  the harness's usage report might not carry per tool-use the way it
+  carries per-turn cache-read tokens.** Declined as an item: its
+  trigger — the harness's own usage report proving not to carry a
+  per-tool-use count — has not fired; the architect's own words mark
+  it "enabler work, not this attach step's to commit." Until then, a
+  row with that field blank is the scoped answer the initiative's
+  framing itself allows ("output tokens... where the harness gives
+  them"). It enters a superseding order if the trigger fires.
+
+No other recommendation is recorded against this initiative: D1 and
+D2 (the artifact's home and the initiative's scope to the
+session-record anchor) are decisions the offer depends on, already
+checked as [adr-2026-09-08-run-cost-artifact](../decisions/adr-2026-09-08-run-cost-artifact.md)
+and [adr-2026-09-08-run-cost-initiative-scope](../decisions/adr-2026-09-08-run-cost-initiative-scope.md);
+they ground item 1 below and are not separate items to place.
+
+## 3. The order
+
+**Item 1 — init-run-measurement: run-cost rows recorded at
+session-handoff's close, beside the session record (feature-to-be).**
+
+- **Framing served:** the planned initiative
+  [init-run-measurement](../initiatives/init-run-measurement.md)
+  (planned, v5; a sub-initiative of init-run-efficiency; the
+  authority's bet of 2026-09-08). Problem: the cost of a run is known
+  only when someone reads the transcripts by hand. Outcome: every
+  session close records, without a model, cost metrics for each agent
+  run — step, role, minutes, context tokens, output tokens where the
+  harness gives them, tool uses — beside the session record, so any
+  run can be analysed on request. Measure: sessions whose close
+  records the cost rows, now 0, target every session — reached only
+  as far as the sibling init-process-runner's own rollout of the
+  router carries it, per the architect's R2 as the bet restates it.
+  Appetite: 2 hours, 50K context tokens, one working session; no
+  analysis in the step itself, rows only; no measure that needs a
+  model. The two decisions the bet depends on stand checked:
+  [adr-2026-09-08-run-cost-artifact](../decisions/adr-2026-09-08-run-cost-artifact.md)
+  (the row's home, a new artifact beside the session record, written
+  only by a runtime step) and
+  [adr-2026-09-08-run-cost-initiative-scope](../decisions/adr-2026-09-08-run-cost-initiative-scope.md)
+  (the session-record anchor alone; reconcile-and-close and a review
+  conversation's anchor are separate, later work).
+- **Owning context:** none — lead-shop-internal. The ruling followed
+  is the initiative's Decomposition section, the solutions architect
+  role's attached ruling, screened and bet on: no Bounded Context is
+  touched — the new artifact, the runtime step, and any tooling change
+  sit in the lead shop's own tree; no contract exists on this branch;
+  cross-context flow none. Not a cross-context item; no escalation
+  applies.
+- **Readiness (first untaken item):** **not ready.** No feature exists
+  — the initiative's Features section reads "None yet." It waits on
+  the feature's authoring in the feature-authoring process and its
+  pass through the PO output check.
+
+No other items. Nothing else was declined: the only planned initiative
+is placed, every active initiative's features are taken up, and no
+other requirement has reached this role.
+
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+| 1 | 2026-09-08 | update | Authored by the lead-po role at the backlog-ordering place step: supersedes order-2026-09-07-b; init-process-runner's item recorded delivered; init-run-measurement's one feature-to-be placed as item 1 against roadmap priority v9, no exceptions — the priority document's own text lags the authority's bet by one step, disclosed rather than treated as a deviation; the transcript-parsing-tool candidate declined with reason, trigger not fired; the two checked ADRs the bet depends on named as grounding item 1, not placed as separate items; owning context none per the initiative's Decomposition ruling; item 1 not ready, waiting on feature authoring and its check. Maker's self-check against the backlog-order fitness set, read from the order alone: scenario 1 (item names its framing; the transcript-parsing candidate declined with reason) — pass; scenario 2 (priority stated in §1, no inversion, each entry without an item reasoned, including 1.1's now-delivered state) — pass; scenario 3 (the one recommendation placed or declined with reason; D1/D2 disclosed as grounding decisions, not recommendations left unaddressed) — pass; scenario 4 (no Bounded Context owns item 1, the decomposition ruling named; not cross-context) — pass; scenario 5 (item 1 marked not ready with its wait named) — pass. |
+| 1 | 2026-09-08 | review | PO output check, the one screen: verdict findings — three, all on `framing`, all confident. (1) The stated basis was roadmap v9 while the framing linked in the front matter stands at v10, whose Priority already reads init-process-runner delivered and init-run-measurement planned; cite the current version or pin an explicit snapshot. (2) The "one step behind the priority document" language was false against v10; drop it. (3) Row 1.1's "still reads it planned, stale against delivery" was false against v10; correct the row. Per-scenario: 1 clean; 2 clean on mechanics, the framing finding noted apart; 3, 4, 5 clean; uncovered none. Screening judge: model claude-sonnet-5; prompt basis/roles/cold-reviewer.md as compiled into the reviewing session's system prompt (the role file carries no explicit prompt-version field). |
+| 2 | 2026-09-08 | update | Repaired by the lead-po role on the cold-reviewer's screen (three findings, criterion "framing", all confident). Finding 1: the order's stated basis was v9 of 2026-09-07 while roadmap.md's front matter already stood at v10 (updated 2026-09-08); every citation of the priority's version and date, and 1.1/1.2's recorded states in the opening list, corrected to v10 (1.1 delivered, 1.2 planned). Finding 2: the claimed one-step lag between the bet and the priority text was false against v10, which already reads init-run-measurement planned; the lag language dropped and replaced with a statement that the framing already reflects the bet. Finding 3: row 1.1's claim that the priority document "still reads it planned, stale against that delivery" was false against v10, which already reads it delivered; the row corrected to state the match, with the staleness claim removed. No repair required a fact, an intent, or a scope call the framing did not supply; no ask issued. |
+| 3 | 2026-09-08 | state | `draft` → `checked`: the PM role's pass after the one screen and the one revise. Reasons: the three findings were the priority's version (the roadmap moved to v10 as the PO placed); all three repaired in the one revise against v10; no uncovered finding. |

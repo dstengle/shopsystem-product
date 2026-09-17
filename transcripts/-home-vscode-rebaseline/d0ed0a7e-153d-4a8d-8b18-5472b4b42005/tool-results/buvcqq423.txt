@@ -1,0 +1,232 @@
+== adr-authoring.md start: author result: artifact
+   - author | Author and self-check the record | agent lead-solutions-architect | in: ['subject', 'principles', 'criteria_path', 'ask'] | out: ['artifact'] | -> record
+   - record | Record the evaluation | agent lead-solutions-architect | in: ['artifact'] | out: ['artifact'] | -> end
+== backlog-ordering.md start: place result: artifact
+   - place | Place the initiative in the order | agent lead-po | in: ['initiative', 'order', 'priority', 'recommendations'] | out: ['artifact'] | -> prepare
+   - prepare | Name the framing for the check | runtime None | in: ['priority'] | out: None | -> check
+   - check | Check the order | sub-process po-output-check-process | in: ['artifact', 'framing', 'criteria_path'] | out: ['decision'] | -> end
+== corpus-close-out.md start: derive-run-type result: report
+   - derive-run-type | Derive the execution type from the stage | runtime None | in: ['stage'] | out: None | -> select-rows
+   - select-rows | Select the actioned rows in scope | runtime None | in: ['actions', 'stage', 'run_type'] | out: None | -> route-stage
+   - route-stage | Route on the stage | runtime None | in: ['stage'] | out: None | -> branches:pre-run stage: snapshot, then delete terminal->snapshot-tag|else->None
+   - snapshot-tag | Tag the pre-migration snapshot | runtime None | in: [] | out: None | -> delete-terminal
+   - delete-terminal | Delete the terminal trees | runtime None | in: ['terminal_paths'] | out: None | -> post-check
+   - archive-retire | Move the execution's retired rows to the archive | runtime None | in: ['run_type', 'retire_ids'] | out: None | -> route-final
+   - route-final | Route on the final stage | runtime None | in: ['final'] | out: None | -> branches:final stage: regenerate scenario refs->regen-scenario-refs|else->None
+   - regen-scenario-refs | Regenerate the scenario refs | runtime None | in: [] | out: None | -> post-check
+   - post-check | Verify every actioned row landed | runtime None | in: ['stage', 'retire_ids', 'terminal_ids'] | out: ['report'] | -> route-promote
+   - route-promote | Route on promotion | runtime None | in: ['final'] | out: None | -> branches:final stage: promote the migration branch to main->promote-branch|else->None
+   - promote-branch | Promote the migration branch to main | runtime None | in: ['branch'] | out: None | -> end
+== definition-chain-migration.md start: build-chain result: chain
+   - build-chain | Build the definition chain | agent lead-pm | in: ['artifact_type', 'keepers', 'actions'] | out: ['authored'] | -> derive-chain
+   - derive-chain | Derive the chain from references | runtime None | in: ['artifact_type', 'authored'] | out: ['chain'] | -> exemplar-rewrite
+   - exemplar-rewrite | Prove the chain on one keeper | agent lead-pm | in: ['chain', 'keepers', 'actions'] | out: ['exemplar'] | -> authority-review
+   - authority-review | Authority reviews chain and exemplar | human product-authority | in: ['chain', 'exemplar'] | out: ['review'] | -> route-review
+   - route-review | Route on the verdict | runtime None | in: ['review', 'round'] | out: None | -> branches:success exit: clean or tradeoffs accepted->approve-chain|failsafe exit: round >= 3->park|else->None
+   - revise-chain | Revise the chain | agent lead-pm | in: ['chain', 'review'] | out: ['chain'] | -> advance-round
+   - advance-round | Advance the round counter | runtime None | in: ['round'] | out: None | -> authority-review
+   - approve-chain | Approve the chain's documents | human product-authority | in: ['chain'] | out: [] | -> rederive-chain
+   - rederive-chain | Re-derive the approved chain | runtime None | in: ['artifact_type'] | out: ['chain'] | -> rewrite-keepers
+   - rewrite-keepers | Rewrite every keeper through the chain | agent lead-pm | in: ['chain', 'keepers', 'exemplar', 'actions'] | out: ['rewritten', 'demoted'] | -> queue-demoted
+   - queue-demoted | Queue demotions for the cut-over close-out | runtime None | in: ['artifact_type', 'demoted'] | out: None | -> end
+   - park | Park the type with a finding | runtime None | in: ['artifact_type', 'review'] | out: None | -> end
+== discovery-conversation.md start: open result: initiative
+   - open | Open the work item | runtime None | in: ['topic', 'form', 'request'] | out: [] | -> observe
+   - observe | Authority explores | human product-authority | in: ['topic'] | out: ['statement', 'classification'] | -> route
+   - route | Route on the input | runtime None | in: ['classification'] | out: None | -> branches:success exit: converge or close — hand off->handoff|cancel exit: authority cancels->cancel-out|else->None
+   - engage | Engage as interlocutor | agent lead-pm | in: ['statement', 'classification', 'form', 'initiative_draft', 'request'] | out: ['reply', 'initiative_draft'] | -> observe
+   - handoff | Close onto the session record | sub-process session-handoff-process | in: [] | out: ['session_record'] | -> route-frame
+   - route-frame | Route on what the close carried | runtime None | in: ['classification'] | out: None | -> branches:converged — frame the initiative->frame|else->None
+   - frame | Record the initiative | agent lead-pm | in: ['session_record', 'initiative_draft', 'request'] | out: ['initiative', 'request'] | -> close-out
+   - close-out | Close the work item | runtime None | in: ['session_record'] | out: None | -> end
+   - cancel-out | Cancel the conversation | runtime None | in: ['statement'] | out: None | -> end
+== feature-authoring.md start: draft result: artifact
+   - draft | Draft the feature | agent lead-po | in: ['initiative', 'repository'] | out: ['artifact', 'initiative'] | -> add-usability
+   - add-usability | Add the designer's criteria | agent lead-product-designer | in: ['artifact', 'initiative', 'experience_principles', 'core_tasks'] | out: ['artifact'] | -> add-constraints
+   - add-constraints | Add the architect's constraints | agent lead-solutions-architect | in: ['artifact', 'decomposition'] | out: ['artifact'] | -> self-check
+   - self-check | Self-check against the fitness set | agent lead-po | in: ['artifact', 'criteria_path', 'initiative'] | out: ['artifact', 'initiative'] | -> end
+== implementation.md start: make result: None
+   - make | Build the assigned scenarios | agent implementation-maker | in: ['guidance', 'feature', 'check_finding', 'round'] | out: ['changed'] | -> check
+   - check | Check the build against Implementation principles | agent implementation-checker | in: ['guidance', 'feature', 'changed'] | out: ['check_verdict', 'check_finding'] | -> route-check
+   - route-check | Route on the check | runtime None | in: ['check_verdict', 'round', 'round_cap'] | out: None | -> branches:success exit: every assigned scenario holds — record the verdict->record|failsafe exit: round >= round_cap — record the verdict as failed at the cap->record|else->None
+   - advance-round | Advance the round | runtime None | in: ['round'] | out: None | -> make
+   - record | Record the checking role's verdict | agent implementation-maker | in: ['changed', 'check_verdict', 'check_finding', 'round', 'round_cap'] | out: ['changed'] | -> end
+== initiative-check.md start: attach-architecture result: initiative
+   - attach-architecture | Attach feasibility and decomposition | agent lead-solutions-architect | in: ['initiative', 'contracts', 'repository'] | out: ['initiative', 'feasibility_offer'] | -> attach-usability
+   - attach-usability | Attach usability evidence | agent lead-product-designer | in: ['initiative', 'experience_principles', 'core_tasks'] | out: ['initiative', 'usability_offer'] | -> route-decisions
+   - route-decisions | Route each unrecorded decision to its record | runtime None | in: ['feasibility_offer', 'record', 'initiative'] | out: None | -> branches:success exit: no entry reads none->screen|else->None
+   - author-decision-record | Author the decision's record | sub-process adr-authoring-process | in: ['subject', 'principles', 'adr_criteria'] | out: ['record'] | -> route-decisions
+   - screen | Screen against the fitness set | agent cold-reviewer | in: ['initiative', 'criteria_path'] | out: ['review', 'judge_stamp'] | -> log-round
+   - log-round | Record the round | runtime None | in: ['review', 'round_log', 'judge_stamp', 'judge_log'] | out: None | -> route-screen
+   - route-screen | Route on the screen | runtime None | in: ['review'] | out: None | -> branches:success exit: clean->decide|definition exit: every finding is uncovered — nothing a repair can reach->decide|else->None
+   - revise | Revise the initiative | agent lead-pm | in: ['initiative', 'review', 'ask'] | out: ['initiative'] | -> decide
+   - decide | Take the bet | human product-authority | in: ['review', 'round_log', 'initiative'] | out: ['bet', 'reasons'] | -> record
+   - record | Record the bet | agent lead-pm | in: ['initiative', 'bet', 'reasons', 'round_log', 'judge_log'] | out: ['initiative'] | -> end
+== interaction-conformance-check.md start: screen result: decision
+   - screen | Screen against the corpus | agent lead-product-designer | in: ['corpus', 'guideline_path', 'interaction', 'interaction_type', 'delivery'] | out: ['review'] | -> decide
+   - decide | Decide on conformance | agent lead-product-designer | in: ['review', 'ask'] | out: ['decision'] | -> record
+   - record | Record and route | agent lead-product-designer | in: ['decision', 'delivery', 'review'] | out: ['delivery', 'findings_out', 'gap_entry', 'definition'] | -> route-findings
+   - route-findings | Route on the decision | runtime None | in: ['decision'] | out: None | -> branches:fail — file the findings for the architect->file-findings|else->None
+   - file-findings | File the findings work item | runtime None | in: ['findings_out', 'delivery'] | out: ['finding_item'] | -> end
+== po-output-check.md start: screen result: decision
+   - screen | Screen against the criteria | agent cold-reviewer | in: ['artifact', 'framing', 'criteria_path'] | out: ['review', 'judge_stamp'] | -> log-round
+   - log-round | Record the round | runtime None | in: ['review', 'round_log', 'judge_stamp', 'judge_log'] | out: None | -> route-screen
+   - route-screen | Route on the screen | runtime None | in: ['review'] | out: None | -> branches:success exit: clean->decide|definition exit: every finding is uncovered — nothing the maker can repair->decide|else->None
+   - revise | Revise the output | agent lead-po | in: ['artifact', 'review', 'framing', 'ask'] | out: ['artifact'] | -> decide
+   - decide | Decide on the verdict | human lead-pm | in: ['review', 'round_log', 'artifact', 'framing'] | out: ['decision'] | -> record
+   - record | Record the decision | agent lead-pm | in: ['decision', 'artifact', 'round_log', 'judge_log', 'framing'] | out: ['artifact', 'gap_entry', 'definition', 'initiative'] | -> end
+== principle-set-authoring.md start: draft result: set
+   - draft | Draft the set | agent lead-pm | in: ['sources', 'scope', 'guideline_paths', 'glossary'] | out: ['set', 'glossary'] | -> screen-read
+   - screen-read | Screen read | agent cold-reviewer | in: ['set', 'fitness_path'] | out: ['review'] | -> log-round
+   - log-round | Record the round | runtime None | in: ['review', 'round_log'] | out: None | -> route-verdict
+   - route-verdict | Route on the verdict | runtime None | in: ['review'] | out: None | -> branches:success exit: clean or tradeoffs accepted->authority-approve|else->None
+   - revise | Revise | agent lead-pm | in: ['set', 'review', 'guideline_paths'] | out: ['set'] | -> authority-approve
+   - authority-approve | Owner decides on the screened draft | human product-authority | in: ['set', 'round_log'] | out: ['set', 'review'] | -> route-approval
+   - route-approval | Route on the owner's decision | runtime None | in: ['review'] | out: None | -> branches:success exit: owner approves->end|else->None
+   - park | Park the draft with a finding | runtime None | in: ['scope', 'review'] | out: None | -> end
+== product-flow.md start: discover result: initiative
+   - discover | Discover and bet the problem | sub-process discovery-conversation-process | in: ['topic', 'form'] | out: ['initiative'] | -> route-discover
+   - route-discover | Route on the discovery | runtime None | in: ['initiative'] | out: None | -> branches:a document stands — read its status->read-status|else->None
+   - read-status | Read the initiative's status | runtime None | in: ['initiative'] | out: ['initiative_status'] | -> route-status
+   - route-status | Route on the bet | runtime None | in: ['initiative_status'] | out: None | -> branches:planned — author its features->author|else->None
+   - author | Author and self-check one feature | sub-process feature-authoring-process | in: ['initiative', 'repository', 'decomposition', 'experience_principles', 'core_tasks', 'feature_criteria'] | out: ['feature'] | -> read-feature
+   - read-feature | Read the feature's status | runtime None | in: ['feature'] | out: ['feature_status'] | -> route-checked
+   - route-checked | Route on the self-check | runtime None | in: ['feature_status'] | out: None | -> branches:checked — route its constraints->find-decision|else->None
+   - find-decision | Find a flagged decision | runtime None | in: ['feature'] | out: ['decision_text'] | -> route-decision
+   - route-decision | Route on the flag | runtime None | in: ['decision_text'] | out: None | -> branches:found — record it->compose-subject|else->None
+   - compose-subject | Compose the decision's subject | runtime None | in: ['decision_text', 'feature'] | out: None | -> author-decision-record
+   - author-decision-record | Author the decision's record | sub-process adr-authoring-process | in: ['subject', 'principles', 'adr_criteria'] | out: ['adr_record'] | -> resolve-decision
+   - resolve-decision | Mark the flag recorded | runtime None | in: ['feature', 'adr_record'] | out: None | -> assign
+   - assign | Assign the feature's scenarios | sub-process scenario-assignment-process | in: ['feature', 'decomposition', 'contracts', 'repository'] | out: ['feature'] | -> build
+   - build | Read the feature's status after dispatch | runtime None | in: ['feature'] | out: ['feature_status'] | -> route-build
+   - route-build | Route on the dispatch | runtime None | in: ['feature_status'] | out: None | -> branches:assigned — dispatched to the shop's build->verify|returned — back through the PO role's judgment->more-features|else->None
+   - verify | Verify the shop's delivery | sub-process reconcile-and-close-process | in: ['response', 'work_item', 'register'] | out: ['verification'] | -> more-features
+   - more-features | Judge whether the initiative needs another feature | agent lead-po | in: ['initiative', 'feature', 'feature_status'] | out: ['more'] | -> advance-feature
+   - advance-feature | Advance the feature count | runtime None | in: ['feature_count'] | out: None | -> route-more
+   - route-more | Route on the PO role's judgment | runtime None | in: ['more', 'feature_count', 'feature_cap'] | out: None | -> branches:success exit: the initiative's features are done->end|failsafe exit: feature_count >= feature_cap->end|else->None
+== reconcile-and-close.md start: verify result: None
+   - verify | Verify the demonstration | agent router | in: ['response', 'work_item', 'register'] | out: ['verification'] | -> route
+   - route | Route on the verdict | runtime None | in: ['verification'] | out: None | -> branches:reconcile->consume-close|else->None
+   - consume-close | Consume and close | runtime None | in: ['response', 'work_item', 'verification'] | out: None | -> file-tail
+   - escalate | File the discrepancy | runtime None | in: ['work_item', 'verification'] | out: ['discrepancy_item'] | -> end
+   - file-tail | File the tail | agent router | in: ['verification', 'work_item'] | out: ['filed'] | -> end
+== request-intake.md start: enter result: request
+   - enter | Enter on the words or on a recorded request | runtime None | in: ['request'] | out: None | -> branches:a recorded request awaits its route — route it->decide-route|else->None
+   - recognize | Read the words and say the reading | agent lead-pm | in: ['statement', 'originator', 'arose_in'] | out: ['reading', 'words'] | -> route-reading
+   - route-reading | Route on the reading | runtime None | in: ['reading'] | out: None | -> branches:no-request exit: the words make no ask — nothing recorded->end|else->None
+   - confirm | Originator confirms the reading | human originator | in: ['reading', 'words'] | out: ['confirmation'] | -> route-confirm
+   - route-confirm | Route on the confirmation | runtime None | in: ['confirmation'] | out: None | -> branches:success exit: the originator confirms — record the request->record|no-request exit: the originator's no leaves no request->end|else->None
+   - record | Record the request | agent lead-pm | in: ['words', 'originator', 'arose_in'] | out: ['request'] | -> decide-route
+   - decide-route | Decide and say the route | agent lead-pm | in: ['request', 'objection', 'reason', 'ask'] | out: ['route', 'reason', 'form', 'topic'] | -> route-decided
+   - route-decided | Route on whether a route was decided | runtime None | in: ['route'] | out: None | -> branches:held exit: the decline awaits the authority's ruling — the request stays recorded, its route awaiting->end|else->None
+   - observe | Originator answers the route | human originator | in: ['request'] | out: ['answer', 'objection'] | -> route-answer
+   - route-answer | Route on the originator's answer | runtime None | in: ['answer', 'round', 'round_cap'] | out: None | -> branches:success exit: accepted — land the answer and act on the route->land|failsafe exit: round >= round_cap — the route stands, the objection recorded->land|objected — decide again with the objection->advance-round|held exit — hold-after caps the wait->observe|else->None
+   - advance-round | Advance the round | runtime None | in: ['round'] | out: None | -> decide-route
+   - land | Land the answer and anchor the route | agent lead-pm | in: ['request', 'answer', 'objection', 'route', 'reason'] | out: ['request', 'work_item'] | -> dispatch
+   - dispatch | Dispatch to the route's destination | runtime None | in: ['route'] | out: None | -> branches:discovery — open the conversation on the request->open-discovery|small-change — the lane takes the request->open-lane|else->None
+   - open-discovery | Open the discovery conversation on the request | sub-process discovery-conversation-process | in: ['topic', 'form', 'request'] | out: ['initiative'] | -> land-outcome
+   - land-outcome | Land what the discovery returned | agent lead-pm | in: ['request', 'initiative'] | out: ['request'] | -> end
+   - open-lane | Hand the request to the small-change lane | sub-process small-change-process | in: ['request'] | out: ['change'] | -> read-route
+   - read-route | Read the route the lane left | runtime None | in: ['request'] | out: ['route'] | -> read-reason
+   - read-reason | Read the reason the lane left | runtime None | in: ['request'] | out: ['reason'] | -> route-after-lane
+   - route-after-lane | Route on what the lane left | runtime None | in: ['route', 'round', 'round_cap'] | out: None | -> branches:success exit: done — record where the route led->land-result|at the cap — the lane's route stands; the originator answers it->observe|not simple — decide again from the request->clear-objection|failed exit — returned to awaiting->end|else->None
+   - clear-objection | Clear the objection for a re-decision | runtime None | in: ['objection'] | out: None | -> advance-round
+   - land-result | Record where the route led | agent lead-pm | in: ['request', 'change'] | out: ['request'] | -> end
+   - decline | Settle the declined record | agent lead-pm | in: ['request', 'reason'] | out: ['request'] | -> end
+== research-inquiry.md start: frame result: report
+   - frame | Frame the inquiry | agent researcher | in: ['question', 'consumer', 'scope', 'sources_policy', 'confidence_scheme'] | out: ['frame', 'report_id'] | -> plan
+   - plan | Plan the search | agent researcher | in: ['frame'] | out: ['plan'] | -> gather
+   - gather | Gather in parallel | agent researcher | in: ['plan', 'frame'] | out: ['notes'] | -> extract
+   - extract | Extract grounded evidence | agent researcher | in: ['notes', 'frame'] | out: ['evidence'] | -> synthesize
+   - synthesize | Synthesize the findings | agent researcher | in: ['evidence', 'frame', 'confidence_scheme', 'report_typedef_path'] | out: ['draft'] | -> verify
+   - verify | Verify independently | agent researcher | in: ['draft', 'evidence'] | out: ['review'] | -> route-verify
+   - route-verify | Route on verification | runtime None | in: ['review', 'verify_round', 'round_cap'] | out: None | -> branches:success exit: findings survive verification->report|failsafe exit: verify_round >= round_cap — report with residuals disclosed->report|else->None
+   - revise | Revise the draft | agent researcher | in: ['draft', 'review', 'evidence'] | out: ['draft'] | -> advance-round
+   - advance-round | Advance the verification round | runtime None | in: ['verify_round'] | out: None | -> verify
+   - report | Write the report | agent researcher | in: ['draft', 'review', 'frame', 'report_id', 'report_typedef_path', 'verify_round', 'round_cap'] | out: ['report', 'report_path'] | -> cold-read
+   - cold-read | Cold read for the consumer | agent cold-reviewer | in: ['report', 'frame'] | out: ['review'] | -> route-read
+   - route-read | Route on the cold read | runtime None | in: ['review', 'read_round', 'round_cap'] | out: None | -> branches:success exit: consumer can act on it->deliver|failsafe exit: read_round >= round_cap — deliver with residuals disclosed->deliver|else->None
+   - revise-report | Revise the report for its reader | agent researcher | in: ['report', 'review', 'read_round'] | out: ['report'] | -> advance-round-read
+   - advance-round-read | Advance the cold-read round | runtime None | in: ['read_round'] | out: None | -> cold-read
+   - deliver | Deliver the report | agent lead-pm | in: ['report', 'report_path', 'consumer', 'verify_round', 'read_round', 'round_cap', 'index_path'] | out: ['report'] | -> end
+== review-conversation.md start: open result: record
+   - open | Open the record and its work item | runtime None | in: ['material'] | out: ['record'] | -> observe
+   - observe | Authority observes and decides | human product-authority | in: ['record', 'material'] | out: ['observation', 'classification'] | -> route
+   - route | Route on the input | runtime None | in: ['classification'] | out: None | -> branches:success exit: authority closes->close-record|cancel exit: authority cancels->cancel-record|else->None
+   - apply | Apply and record | agent lead-pm | in: ['observation', 'classification', 'record'] | out: ['applied', 'record'] | -> observe
+   - close-record | Close the record | runtime None | in: ['record'] | out: None | -> end
+   - cancel-record | Cancel the record | runtime None | in: ['record', 'observation'] | out: None | -> end
+== review-sweep.md start: sweep result: requests_filed
+   - sweep | Sweep the artifacts against their definitions | agent cold-reviewer | in: ['artifacts', 'style_guide'] | out: ['findings'] | -> file
+   - file | File one request per class | agent lead-pm | in: ['findings'] | out: ['requests_filed'] | -> end
+== role-rendering.md start: enumerate result: None
+   - enumerate | Enumerate the approved definitions | runtime None | in: ['definitions'] | out: ['approved'] | -> check
+   - check | Check the load point against a fresh render | runtime None | in: ['approved', 'load_point', 'compiler', 'definitions'] | out: ['findings'] | -> filter
+   - filter | Filter the findings to the rows still open | runtime None | in: ['findings', 'escalations'] | out: ['open'] | -> route
+   - route | Route on the open rows | runtime None | in: ['open', 'escalations', 'round', 'round_cap'] | out: None | -> branches:success exit: check clean, nothing escalated — every approved role available->end|success exit: no row open — escalations filed through report->report|failsafe exit: round >= round_cap — report with rows open->report|else->None
+   - reconcile | Reconcile the open rows | agent lead-solutions-architect | in: ['open', 'approved', 'load_point', 'compiler', 'escalations'] | out: ['escalations'] | -> advance-round
+   - advance-round | Advance the round | runtime None | in: ['round'] | out: None | -> check
+   - report | Report the rows left open | agent lead-solutions-architect | in: ['open', 'approved', 'escalations', 'self'] | out: ['escalations'] | -> end
+== scenario-assignment.md start: assign result: feature
+   - assign | Tag each scenario with its owning context | agent lead-solutions-architect | in: ['feature', 'decomposition', 'contracts', 'repository', 'ask'] | out: ['feature', 'unowned', 'assignment', 'guidance'] | -> route
+   - route | Route on ownership | runtime None | in: ['unowned'] | out: None | -> branches:success exit: every scenario owned->dispatch|else->None
+   - return | Return the feature with the unowned scenarios named | agent lead-solutions-architect | in: ['feature', 'unowned'] | out: ['feature'] | -> end
+   - dispatch | Send each shop its scenarios | runtime None | in: ['feature', 'assignment'] | out: ['sent'] | -> record
+   - record | Record the assignment | agent lead-solutions-architect | in: ['feature', 'assignment', 'guidance', 'sent'] | out: ['feature'] | -> end
+== session-handoff.md start: collect result: session_record
+   - collect | Write the session record | agent router | in: [] | out: ['session_record', 'corrections'] | -> write-cost-rows
+   - write-cost-rows | Write the cost rows | runtime None | in: ['session_record', 'run_anchor'] | out: ['cost_artifact'] | -> validate
+   - validate | Validate the record | runtime None | in: ['session_record'] | out: ['validation'] | -> route-validation
+   - route-validation | Route on validation | runtime None | in: ['validation', 'round'] | out: None | -> branches:success exit: record validates->land|failsafe exit: round >= 3->file-defect|else->None
+   - repair | Repair the record | agent router | in: ['session_record', 'validation'] | out: ['session_record'] | -> advance-round
+   - advance-round | Advance the round counter | runtime None | in: ['round'] | out: None | -> validate
+   - file-defect | File the validation defect | runtime None | in: ['session_record', 'validation'] | out: None | -> land
+   - land | Land the handoff | runtime None | in: ['session_record'] | out: None | -> end
+== skill-rendering.md start: enumerate result: None
+   - enumerate | Enumerate the approved definitions | runtime None | in: ['definitions'] | out: ['approved'] | -> check
+   - check | Check the load point against a fresh render | runtime None | in: ['approved', 'load_point', 'retired_home', 'compiler', 'definitions', 'tools', 'tool_compiler', 'descriptions'] | out: ['findings'] | -> route
+   - route | Route on the findings | runtime None | in: ['findings', 'escalations', 'round', 'round_cap'] | out: None | -> branches:success exit: check clean, nothing escalated — every approved process available->end|success exit: check clean — escalations filed through report->report|failsafe exit: round >= round_cap — report with findings open->report|else->None
+   - reconcile | Reconcile the findings | agent lead-solutions-architect | in: ['findings', 'approved', 'load_point', 'retired_home', 'compiler', 'tool_compiler', 'descriptions', 'escalations'] | out: ['escalations'] | -> advance-round
+   - advance-round | Advance the round | runtime None | in: ['round'] | out: None | -> check
+   - report | Report the findings left open | agent lead-solutions-architect | in: ['findings', 'approved', 'escalations'] | out: ['escalations'] | -> end
+== small-change.md start: name-result result: change
+   - name-result | Name the request's Result section as the execution's result | runtime None | in: ['request'] | out: None | -> read-id
+   - read-id | Read the request's id | runtime None | in: ['request'] | out: ['request_id'] | -> read-anchor
+   - read-anchor | Read the work item the request names | runtime None | in: ['request'] | out: ['work_item'] | -> define
+   - define | Define the change | agent lead-po | in: ['request', 'glossary'] | out: ['request', 'not_simple', 'reason', 'observation', 'paths'] | -> route-definition
+   - route-definition | Route on the definition | runtime None | in: ['not_simple'] | out: None | -> branches:not-simple exit: the change is not simple — routed to discovery, no change made->reroute|else->None
+   - make | Make the change | agent lead-solutions-architect | in: ['request', 'paths', 'check_finding', 'evidence', 'round'] | out: ['request', 'changed'] | -> check
+   - check | Check the change against the definition | agent lead-pm | in: ['request', 'paths', 'changed', 'round'] | out: ['request', 'check_verdict', 'check_finding'] | -> route-check
+   - route-check | Route on the check | runtime None | in: ['check_verdict', 'round', 'round_cap'] | out: None | -> branches:success exit: check passed — verify->verify|failsafe exit: round >= round_cap — failed, returned to routing->hand-back|else->None
+   - verify | Run the verifying observation | runtime None | in: ['observation'] | out: ['evidence'] | -> route-verify
+   - route-verify | Route on the verification | runtime None | in: ['evidence', 'round', 'round_cap'] | out: None | -> branches:success exit: the observation exited 0 — the effect is demonstrated->record|failsafe exit: round >= round_cap — failed, returned to routing->hand-back|else->None
+   - advance-round | Advance the round | runtime None | in: ['round'] | out: None | -> make
+   - record | Record the verified result | agent lead-pm | in: ['request', 'evidence'] | out: ['request'] | -> close-done
+   - close-done | Close the work item as done | runtime None | in: ['work_item', 'request_id'] | out: None | -> end
+   - reroute | Route the request to discovery | agent lead-pm | in: ['request', 'reason'] | out: ['request'] | -> close-not-simple
+   - close-not-simple | Close the work item as not simple | runtime None | in: ['work_item', 'request_id'] | out: None | -> end
+   - hand-back | Return the request to routing | agent lead-pm | in: ['request', 'check_verdict', 'check_finding', 'evidence', 'round'] | out: ['request'] | -> close-failed
+   - close-failed | Close the work item as failed | runtime None | in: ['work_item', 'request_id'] | out: None | -> end
+== stakeholder-presentation.md start: frame result: brief
+   - frame | Frame | agent lead-pm | in: ['request'] | out: ['frame'] | -> compose
+   - compose | Compose | agent lead-pm | in: ['request', 'frame'] | out: ['brief', 'annex'] | -> cold-read
+   - cold-read | Cold read | agent cold-reviewer | in: ['brief'] | out: ['review'] | -> log-round
+   - log-round | Record the round | runtime None | in: ['review', 'round_log'] | out: None | -> route-verdict
+   - route-verdict | Route on the verdict | runtime None | in: ['review'] | out: None | -> branches:success exit: clean or tradeoffs accepted->deliver|else->None
+   - revise | Revise | agent lead-pm | in: ['brief', 'review'] | out: ['brief'] | -> deliver
+   - deliver | Deliver | agent lead-pm | in: ['brief', 'annex', 'review', 'round_log'] | out: ['brief'] | -> end
+== typedef-rendering.md start: enumerate result: None
+   - enumerate | Enumerate the qualifying typedefs | runtime None | in: ['definitions'] | out: ['approved'] | -> check
+   - check | Check the load points against a fresh render | runtime None | in: ['approved', 'compiler', 'guidelines', 'fitness'] | out: ['findings'] | -> filter
+   - filter | Filter the findings to the rows still open | runtime None | in: ['findings', 'escalations'] | out: ['open'] | -> route
+   - route | Route on the open rows | runtime None | in: ['open', 'escalations', 'round', 'round_cap'] | out: None | -> branches:success exit: check clean, nothing escalated — every qualifying typedef's two texts current->end|success exit: no row open — escalations filed through report->report|failsafe exit: round >= round_cap — report with rows open->report|else->None
+   - reconcile | Reconcile the open rows | agent lead-solutions-architect | in: ['open', 'approved', 'guidelines', 'fitness', 'compiler', 'escalations'] | out: ['escalations'] | -> advance-round
+   - advance-round | Advance the round | runtime None | in: ['round'] | out: None | -> check
+   - report | Report the rows left open | agent lead-solutions-architect | in: ['open', 'approved', 'escalations', 'self'] | out: ['escalations'] | -> end
+== work-conversation.md start: attach result: work_item
+   - attach | Attach to the work item | runtime None | in: ['work_item'] | out: [] | -> observe
+   - observe | Authority directs | human product-authority | in: ['work_item'] | out: ['message', 'classification'] | -> route
+   - route | Route on the input | runtime None | in: ['classification'] | out: None | -> branches:success exit: authority closes->close-out|cancel exit: authority cancels->cancel-out|else->None
+   - act | Act and land the exchange | agent lead-pm | in: ['message', 'classification', 'work_item'] | out: ['applied'] | -> observe
+   - close-out | Land the close summary | runtime None | in: ['work_item', 'applied'] | out: None | -> end
+   - cancel-out | Land the cancel | runtime None | in: ['work_item', 'message'] | out: None | -> end

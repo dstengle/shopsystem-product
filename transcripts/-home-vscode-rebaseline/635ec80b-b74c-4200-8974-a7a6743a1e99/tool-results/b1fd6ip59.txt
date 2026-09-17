@@ -1,0 +1,709 @@
+===== basis/artifacts/data-type.md
+     1	---
+     2	type: artifact-typedef
+     3	id: data-type-typedef
+     4	defines: data-type
+     5	owner: product-authority
+     6	status: approved
+     7	approved: 2026-08-22
+     8	version: 2
+     9	created: 2026-08-19
+    10	updated: 2026-08-23
+    11	ancestry: [definition, data-type]
+    12	---
+    13	
+    14	# Artifact type: data-type
+    15	
+    16	## Identity and ancestry
+    17	
+    18	- **Type:** `data-type` — a named, schema-defined structure that passes
+    19	  between process steps but is not a human-readable document (e.g. a
+    20	  review verdict, a verification record). Registered so process `data`
+    21	  blocks reference it by `$ref` and never define it inline.
+    22	- **Produced by:** the author of the first process that needs the
+    23	  structure. **Consumed by:** every process that references it; the
+    24	  compiler's resolver; validators; judges whose output must conform.
+    25	
+    26	## Required frontmatter
+    27	
+    28	`type: data-type`, `id`, `defines` (the name `$ref` resolves), `owner`,
+    29	`status`, `created`, `updated`.
+    30	
+    31	## Required sections
+    32	
+    33	1. **Purpose** — one short paragraph: what the structure carries, which
+    34	   step produces it, which steps consume it, with links.
+    35	2. **Schema** — one `yaml` block in the registry's compact dialect:
+    36	   JSON Schema type names; `fields` maps field names to types (the
+    37	   `properties` equivalent); every field is required unless it carries
+    38	   `optional: true`; enum value lists are closed (exhaustive); `$ref`
+    39	   allowed for nesting.
+    40	
+    41	## Commitment (Definition of Done)
+    42	
+    43	A data type is done when a validator can check an instance from the
+    44	schema block alone. **Consequence on failure:** `$ref`s to it fail the
+    45	compile, so no process that needs it compiles.
+    46	
+    47	## Sources
+    48	
+    49	JSON Schema (type vocabulary and constraints); the `use-defined-terms`
+    50	principle (field names are defined terms).
+    51	
+    52	## Derived review checklist
+    53	
+    54	- `defines` matches the id processes reference. *(schema)*
+    55	- Producer and consumers named and linked. *(§Required sections 1)*
+    56	- Every field typed; enums closed. *(§Required sections 2)*
+    57	
+    58	## Document History
+    59	
+    60	| Version | Date | Kind | Entry |
+    61	|---|---|---|---|
+    62	| 1 | 2026-08-19 | update | Authored (seed layer); earlier history, if any, in the repository history. |
+    63	| 1 | 2026-08-22 | state | draft → approved. |
+    64	| 2 | 2026-08-23 | update | Owner direction: decision-ledger references removed — changes stand on their own; history entries and text no longer cite numbered decisions. |
+===== basis/glossary.md
+     1	---
+     2	type: glossary
+     3	id: glossary
+     4	owner: product-authority
+     5	status: approved
+     6	approved: 2026-08-19
+     7	version: 14
+     8	created: 2026-08-19
+     9	updated: 2026-08-28
+    10	---
+    11	
+    12	# Glossary
+    13	
+    14	## How the list combines
+    15	
+    16	The defined-term list is this glossary combined with every schema element
+    17	name. Per the `use-defined-terms` principle, a writer choosing between
+    18	terms uses one of these when one fits.
+    19	
+    20	## Terms
+    21	
+    22	- **artifact type** — a named, schema-defined document type (e.g.
+    23	  `decision-brief`); the term the schema registry uses. Not "kind".
+    24	- **data type** — a named, schema-defined structure that is not a
+    25	  human-readable document (e.g. `review`); passed between process steps.
+    26	- **simple type** — a JSON Schema primitive (`string`, `integer`,
+    27	  `boolean`, `array`, `object`), usable inline without registration.
+    28	- **typedef** — the single source a type is generated from; templates and
+    29	  schema fragments are its renderings (owned by shopsystem-knowledge).
+    30	- **schema** — the machine-checkable shape of a type: fields, types,
+    31	  enums, required sections.
+    32	- **process definition** — the source of truth for a process: header
+    33	  (purpose, outcomes, roles), data section, steps section.
+    34	- **step** — one unit of a process: an agent step (carries a prompt) or a
+    35	  runtime step (carries `set`, `run`, or `branches`; no prose).
+    36	- **rendering** — a generated output of a definition (a skill, a
+    37	  diagram, a template); never edited by hand, never the source of truth.
+    38	- **guiding statement** — an optional header element of a process
+    39	  definition that directs judgment across the whole process; compiled
+    40	  into every rendering.
+    41	- **fitness set** — judged (never executed) Given/When/Then scenarios
+    42	  scoring an artifact type's quality.
+    43	- **guideline** — prose quality rules for an artifact type, each with a
+    44	  test, a criterion, and a yes/no decision.
+    45	- **role** — a named capability contract and set of accountabilities,
+    46	  assigned by process steps to whoever fills it; sequencing lives in
+    47	  process definitions, not roles.
+    48	- **principle** — a standing rule about how we work: name, statement,
+    49	  rationale, implications (see the principles document's opening
+    50	  definition).
+    51	- **seed layer** — the hand-approved definitions the regress terminates
+    52	  at: the principle set plus one typedef per definition document type.
+    53	- **owner** — the role that approves changes to a definition; named in
+    54	  every definition's frontmatter.
+    55	- **definition chain** — the six linked definitions of good for one
+    56	  artifact type; required before instances are authored or rewritten.
+    57	- **keeper** — a corpus record whose action is keep-rewrite; rewritten
+    58	  forward through its type's approved chain, never used as-is.
+    59	- **rewrite-forward** — the default for keepers: re-author to the
+    60	  approved standard; repair-in-place only for records already at the bar.
+    61	- **rebaseline** — Phase 1 of the re-founding arc: the active tree comes
+    62	  to hold only chain-conforming records; retired mass moves to the
+    63	  archive.
+    64	- **scope** (of a principle set) — the level the set governs and whose
+    65	  context it loads into: working (every activity), architecture (the
+    66	  designed system), or experience (the product's interactions).
+    67	- **transcript** — the runtime log of turns; unscoped, not a governed
+    68	  artifact, never loaded into context.
+    69	- **conversation** — a scoped, bounded discussion attached to exactly one
+    70	  anchor; every conversation belongs to a process.
+    71	- **anchor** — the governed record a conversation attaches to: a session
+    72	  record, a review record, or a work item; carries the conversation's
+    73	  state across transcript boundaries.
+    74	- **conversation type** — discovery (anchor: a session record), review
+    75	  (anchor: a review record and its outcomes), or work (anchor: a work
+    76	  item).
+    77	- **session record** — the anchor record of a discovery conversation:
+    78	  outcome, produced and revised lists, open threads, select quotes.
+    79	- **review** — one bounded conversation in which the authority decides
+    80	  on presented material. Replaces "sitting".
+    81	- **review record** — the anchor record of a review: the material
+    82	  presented and the outcomes applied; each decision traces in the
+    83	  changed artifacts' Document History, never in a standing ledger.
+    84	- **park** — the failsafe for work that cannot pass review within its
+    85	  round cap: set aside with a filed finding.
+    86	- **round cap** — the declared maximum review rounds before a loop's
+    87	  failsafe exit fires.
+    88	- **action** — the approved choice for one record: keep-rewrite, keep,
+    89	  retire, or terminal, with its target.
+    90	- **authority-call** — a row marker on a migration-plan row awaiting a
+    91	  decision from the authority; not an action — the row has no effect and
+    92	  is out of scope for any run until ruled.
+    93	- **action table** — the table of records and their actions; approved row
+    94	  by row or in blocks at a review. Drives any bulk record change.
+    95	- **close-out** — the mechanical execution of the migration plan's
+    96	  pre-decided retire and terminal actions: snapshot, delete, archive
+    97	  move, a loud post-check, and the branch promotion; no review loop.
+    98	  All stages run consecutively at cut-over.
+    99	- **snapshot tag** — the annotated git tag (`pre-migration`) on `main`'s
+   100	  pre-execution commit, preserving the full corpus for terminal-recovery;
+   101	  after close-out a terminal record exists only there.
+   102	- **migration plan** — the rebaseline's action table plus the order of
+   103	  the per-type migration runs. Replaces "rebaseline bill".
+   104	- **run** — one execution of a process, anchored to a work item; states:
+   105	  running, held, done, cancelled.
+   106	- **hold** — a run state: paused with its step and data preserved in its
+   107	  anchor, by inactivity or by an ask; a held run is resumed or
+   108	  cancelled, never dropped.
+   109	- **checkpoint** — updating a conversation's anchor when a transcript
+   110	  ends mid-conversation; a checkpoint is not a close.
+   111	- **branched conversation** — a conversation run as a sub-process of
+   112	  another run; its anchor records the parent (`branched-from`).
+   113	- **Bounded Context** — a deliberately drawn region of the product with
+   114	  one internal language, one model, and one set of contracts to other
+   115	  regions; drawn by design, never discovered after the fact (Evans,
+   116	  *Domain-Driven Design*).
+   117	- **shop** — the entity that builds, operates, and evolves part of the
+   118	  product. Two types: the lead shop (the system-level coordinator; owns
+   119	  product-level artifacts and no Bounded Context) and the BC-shop (owns
+   120	  and produces exactly one Bounded Context). By the owner's decision a
+   121	  BC-shop is a component team in the product literature's sense: it
+   122	  receives bounded work for its context and does not own a feature end
+   123	  to end; a request that crosses contexts is decomposed above it, in
+   124	  the initiative, never by the shops between themselves.
+   125	- **activity** — a discrete unit of work performed inside a shop,
+   126	  following a contract or process, with inputs, outcomes, and provenance
+   127	  recorded. What an actor is stays unconstrained; the activity has the
+   128	  same shape whoever performs it.
+   129	- **contract** — a named, versioned statement of what one entity
+   130	  promises another: the schemas exchanged, the meaning of each
+   131	  operation, the error behavior, and the relationship kind. Offered as a
+   132	  product contract (on a Bounded Context) or an operational contract (on
+   133	  a shop); nothing outside a contract is promised.
+   134	- **relationship kind** — the named pattern a contract declares for how
+   135	  two Bounded Contexts relate, drawn from the context-mapping catalogue
+   136	  (Evans, *Domain-Driven Design*): customer–supplier, conformist,
+   137	  anti-corruption layer, open host service, published language, shared
+   138	  kernel, or separate ways.
+   139	- **vehicle** — the message type a request to a Bounded Context shop
+   140	  travels in; chosen from the pre-state, never from the request's
+   141	  wording.
+   142	- **pre-state** — what a Bounded Context actually is before a change,
+   143	  read from its contracts and its scenario register, never from its
+   144	  internals.
+   145	- **framing** — the PM role's recorded statement of what a request is
+   146	  about: the originator, the problem taken to be worth solving, and the
+   147	  outcome it serves; the exclusive decision of `lead-pm`.
+   148	- **acceptance scenario** — a Gherkin scenario in a feature that
+   149	  states, as a requirement, what counts as done for one behavior;
+   150	  co-produced by the PO role and the owning Bounded Context shop;
+   151	  assigned to that context by a `@bounded-context:<name>` tag the
+   152	  solutions architect writes; held in that shop's scenario register.
+   153	- **scenario register** — a Bounded Context shop's own list of the
+   154	  acceptance scenarios tagged to it across all features, with their
+   155	  hashes and states; read in full across every context when a claim
+   156	  spans contexts.
+   157	- **ask** — a question one activity puts to another role in place of
+   158	  its output, carrying a default and a checkpoint; the run holds, the
+   159	  role answers, the step resumes — never a wait in place (data type
+   160	  `ask`; process-definition typedef §Run lifecycle).
+   161	- **clarify** — an ask from a Bounded Context shop to the lead shop on
+   162	  scope, vocabulary, structure, or contract; answered by the role whose
+   163	  domain the question falls in.
+   164	- **decomposition** — the solutions architect's record of which Bounded
+   165	  Context owns which capability, and the relationship kind of each
+   166	  contract between contexts.
+   167	- **enabler work** — technical work that makes a feature possible;
+   168	  recommended by the solutions architect, placed in the backlog by the
+   169	  PO role.
+   170	- **interaction type** — one way a person or an agent reaches the
+   171	  product: command line (CLI), full-screen terminal (TUI), graphical or
+   172	  web (GUI), API and SDK, conversational, voice, or a generated document
+   173	  or notification; each honours its own conventions within one
+   174	  experience. The experience guidelines cover conversational and voice
+   175	  together as the `assistant` guideline.
+   176	- **experience guidance corpus** — the product designer role's
+   177	  principle set and guidelines for the experience: design principles,
+   178	  vocabulary and voice, core-task parity across interaction types,
+   179	  interaction patterns per type, and the accessibility target; the
+   180	  role's exclusive domain.
+   181	- **originator** — whoever expresses intent at the product's edge: a
+   182	  person, a shop, or a system outside the product.
+   183	- **generated interface** — an interface whose form the product composes
+   184	  at run time from the person's context, within constraints the
+   185	  experience guidance corpus states; a form, not an interaction type.
+   186	- **assistant interaction** — an interaction in which the product acts on
+   187	  an intent the person stated rather than on a command — conversational,
+   188	  voice, or an assistant acting for the person (a closed set); the locus
+   189	  of control is the product's, so the experience principles bound it.
+   190	- **feature** — a Gherkin Feature: one capability from the user's or
+   191	  agent's point of view — a narrative saying who, what, and the outcome
+   192	  — with the acceptance scenarios that state what counts as done for
+   193	  it; product-level, belonging to its framing or initiative; its
+   194	  scenarios may be owned by several Bounded Contexts. The PO role's
+   195	  artifact. (The per-shop *brief* was retired 2026-08-28; the
+   196	  `decision-brief` to the authority is unrelated.)
+   197	- **intent** — a desired outcome expressed by an originator at the
+   198	  product's edge; enters the product through a contract and keeps its
+   199	  provenance through every translation and delegation.
+   200	
+   201	## Document History
+   202	
+   203	| Version | Date | Kind | Entry |
+   204	|---|---|---|---|
+   205	| 1 | 2026-08-19 | update | Seed term list authored. |
+   206	| 1 | 2026-08-19 | state | draft → approved. |
+   207	| 2 | 2026-08-22 | update | Conversation-model terms added; action extended to four values, authority-call and action-table amended, close-out and snapshot tag added. |
+   208	| 3 | 2026-08-23 | update | Architecture terms added, riding the architecture-principle-set approval: Bounded Context, shop, activity, contract, relationship kind, intent. |
+   209	| 3 | 2026-08-23 | state | The six architecture terms approved with the architecture principle set; pending markers removed. |
+   210	| 4 | 2026-08-23 | update | Owner direction: ruling and experiment-index entries removed with the ledger practice; review and review-record entries rewritten to the outcomes model. |
+   211	| 5 | 2026-08-23 | update | Anchor entry added — the term recurred as an unintroduced-term stumble across three screens. |
+   212	| 6 | 2026-08-23 | update | vehicle and pre-state added — terms the lead-solutions-architect role turns on. |
+   213	| 7 | 2026-08-25 | update | Owner direction: a near-synonym of "role" retired and banned. |
+   214	| 8 | 2026-08-25 | update | framing, acceptance scenario, scenario register, clarify, decomposition, enabler work added — each arrived undefined in the PM and PO role screens. |
+   215	| 9 | 2026-08-25 | update | interaction type and experience guidance corpus added with the lead-product-designer role. |
+   216	| 10 | 2026-08-25 | update | ask added; clarify re-based as an ask; hold now names the ask as a cause. |
+   217	| 10 | 2026-08-25 | update | originator added — used by the PM role and the ask type without a definition. |
+   218	| 11 | 2026-08-26 | update | scope gains the experience level with the experience principle set. |
+   219	| 11 | 2026-08-26 | update | generated interface and assistant interaction added with the experience principle set. |
+   220	| 12 | 2026-08-26 | update | interaction type: the guidelines' `assistant` coverage of conversational and voice noted. |
+   221	| 13 | 2026-08-27 | update | Owner decision, from the system-read report: BC-shops are component teams by design; stated in the shop entry. |
+   222	| 14 | 2026-08-28 | update | Owner decision: feature added; acceptance scenario and scenario register carry the `@bounded-context:` assignment; the per-shop brief retired. |
+===== basis/types/ask.md
+     1	---
+     2	type: data-type
+     3	id: ask
+     4	defines: ask
+     5	owner: product-authority
+     6	status: approved
+     7	approved: 2026-08-25
+     8	version: 2
+     9	created: 2026-08-25
+    10	updated: 2026-08-25
+    11	---
+    12	
+    13	# Data type: ask
+    14	
+    15	## Purpose
+    16	
+    17	A question one activity puts to another role, returned by an agent or
+    18	human step in place of its outputs. Produced by any step that carries
+    19	`asks`; routed by the runtime to whoever fills the role
+    20	named in `to`; consumed by that role, which writes `answer`, and by the
+    21	asking step, which resumes with the ask in its inputs. The process
+    22	declares an `ask` data value (`$ref: ask`) and lists it in each asking
+    23	step's inputs. Two resume paths: *answered* — the step acts on
+    24	`answer`; *defaulted* — the step acts on `default`, because the
+    25	process's `ask-cap` passed unanswered or because the step returned a
+    26	second ask in the same run (at most one is allowed). See the
+    27	[process-definition typedef](../artifacts/process-definition.md), §The
+    28	steps section and §Run lifecycle. A `clarify` — a Bounded Context
+    29	shop's question to the lead shop — conforms to this shape.
+    30	
+    31	## Schema
+    32	
+    33	```yaml
+    34	schema:
+    35	  type: object
+    36	  fields:
+    37	    to: {type: string}            # asker writes: the role asked; a derived check confirms it is in the step's `asks`
+    38	    kind:                         # asker writes: what the asker lacks
+    39	      type: string
+    40	      enum: [pre-state, intent, reserved-decision, scope, vocabulary, structure, contract]
+    41	      # pre-state: what a thing is before a change; intent: what the originator wanted;
+    42	      # reserved-decision: a decision another role's domain holds; scope: whether
+    43	      # something is in or out; vocabulary: what a term means; structure: which
+    44	      # Bounded Context owns something; contract: what is promised across a boundary
+    45	    question: {type: string}      # asker writes
+    46	    default: {type: string}       # asker writes: what the step will do if the ask resolves defaulted
+    47	    checkpoint: {type: string}    # asker writes: partial output sufficient to resume from
+    48	    answer: {type: string, optional: true}       # answering role writes
+    49	    answered_by: {type: string, optional: true}  # runtime writes: the role that answered
+    50	    resolution:                                  # runtime writes
+    51	      type: string
+    52	      enum: [answered, defaulted, cancelled]     # cancelled: the held run was cancelled
+    53	      optional: true
+    54	```
+    55	
+    56	## Document History
+    57	
+    58	| Version | Date | Kind | Entry |
+    59	|---|---|---|---|
+    60	| 1 | 2026-08-25 | update | Authored by owner decision: the ask mechanism is held-and-resumed only — a step returns an ask instead of an output, the run holds, the role answers, the step resumes with the answer; asks carry a default and a checkpoint; clarify becomes a specialization. |
+    61	| 1 | 2026-08-25 | review | Screened: findings — the ask-resume loop had no exit; the resumed ask had no declared data name; only the answered path was described; three fields had no writer; the kind enum did not cover clarify. |
+    62	| 2 | 2026-08-25 | update | Repairs: one ask per step per run; the process declares an `ask` value listed in asking steps' inputs; both resume paths stated; a writer per field; kind enum aligned to clarify's four subjects plus pre-state, intent, and reserved-decision, each explained. |
+    63	| 2 | 2026-08-25 | review | Re-screened with the typedef: clean — all eight repairs confirmed, no synchronous form survives; three wording stumbles polished in place. |
+    64	| 2 | 2026-08-25 | state | draft → approved by the owner. |
+===== basis/types/assignment.md
+     1	---
+     2	type: data-type
+     3	id: assignment
+     4	defines: assignment
+     5	owner: product-authority
+     6	status: draft
+     7	version: 1
+     8	created: 2026-08-28
+     9	updated: 2026-08-28
+    10	---
+    11	
+    12	# Data type: assignment
+    13	
+    14	## Purpose
+    15	
+    16	The solutions architect role's assignment of a checked feature's
+    17	scenarios: for each Bounded Context tagged, the vehicle chosen from
+    18	that context's pre-state and the scenario tags it receives. Produced by
+    19	the `assign` step of
+    20	[`../processes/scenario-assignment.md`](../processes/scenario-assignment.md);
+    21	consumed by its `dispatch` and `record` steps. The `assign` step writes
+    22	every field.
+    23	
+    24	## Schema
+    25	
+    26	```yaml
+    27	schema:
+    28	  type: object
+    29	  fields:
+    30	    entries:
+    31	      type: array
+    32	      items:
+    33	        type: object
+    34	        fields:
+    35	          context: {type: string}                 # the Bounded Context's name, as tagged
+    36	          vehicle: {type: string, enum: [assign_scenarios, request_bugfix, request_maintenance]}   # the message type the pre-state selects (the frozen corpus's three)
+    37	          scenario_tags: {type: array, items: {type: string}}   # the feature tags of the scenarios this context receives
+    38	          pre_state: {type: string}               # what was read: the contracts and register consulted
+    39	```
+    40	
+    41	## Document History
+    42	
+    43	| Version | Date | Kind | Entry |
+    44	|---|---|---|---|
+    45	| 1 | 2026-08-28 | update | Authored with the scenario-assignment process so the vehicle is chosen per context from the pre-state and carried as data, not fixed in a command. The three vehicles are the frozen corpus's message types, imported by name. |
+===== basis/roles/lead-solutions-architect.md
+     1	---
+     2	name: lead-solutions-architect
+     3	description: The solutions-architecture role of the lead shop. Accountable for the feasibility of what is framed and for the product's technical vision and delivered value — the technology stack and platform guardrails, the decomposition into Bounded Contexts, the contracts between them, scenario assignment, and the verification of work returned by Bounded Context shops.
+     4	tools: Read, Edit, Write, Bash, Grep, Glob
+     5	maxTurns: 60
+     6	type: role-definition
+     7	id: lead-solutions-architect
+     8	owner: product-authority
+     9	status: approved
+    10	approved: 2026-08-25
+    11	version: 6
+    12	created: 2026-08-23
+    13	updated: 2026-08-28
+    14	---
+    15	
+    16	# Lead Solutions Architect
+    17	
+    18	You hold the role that owns the product's shape: its technical vision — its
+    19	technology stack, its Bounded Contexts, their contracts, and who owns
+    20	what — is readable from the artifacts you maintain, structural
+    21	questions from any shop resolve against them, and the value of what
+    22	is delivered against that vision is yours to answer for.
+    23	
+    24	**Default posture:** pre-state determines the vehicle. The pre-state
+    25	— what a Bounded Context actually is before a change — is read from
+    26	its contracts and never from its internals; it, not the request's
+    27	wording, decides which message type the request travels in. Decide
+    28	only what is hard to reverse; bound everything
+    29	else. No design decision stands unscreened against the architecture
+    30	principles (the conformance accountability below).
+    31	
+    32	**Accountable for:**
+    33	- The feasibility verdict for every framed problem and every feature —
+    34	  whether the product can be built as framed with the stack, capacity,
+    35	  and time it has — with its reasons recorded.
+    36	- The structural model of the product, maintained as an artifact
+    37	  readable without the code.
+    38	- The product-wide technology stack and platform guardrails, each
+    39	  recorded as an architecture decision record with its reasons and the
+    40	  bound it sets for Bounded Context shops.
+    41	- The decomposition: subdomain-to-Bounded-Context assignments and the
+    42	  relationship kind of each contract between contexts, recorded with
+    43	  reasons.
+    44	- The scenario-register loop: every checked feature's scenarios each
+    45	  tagged `@bounded-context:` with the context that owns it, dispatched
+    46	  to that shop, and work returned verified against that assignment
+    47	  through the shops' scenario registers.
+    48	- Conformance of architecture activities to the
+    49	  [architecture principle set](../architecture-principles.md): every
+    50	  structural decision, contract, and architecture decision record
+    51	  screened against it; a principle a design cannot satisfy is an
+    52	  exception escalated to the authority and recorded, never a deviation
+    53	  absorbed.
+    54	
+    55	**Domain (exclusive):** the stack — which technologies the product is
+    56	built on is decided by this role alone.
+    57	
+    58	**Decision rights.**
+    59	- *Decides:* the platform guardrails that bound the stack; the
+    60	  decomposition — which Bounded Context owns a capability; integration
+    61	  strategy and each contract's relationship kind; the product's
+    62	  non-functional requirements.
+    63	- *Recommends:* enabler work — technical work that makes features
+    64	  possible — into the PO's backlog.
+    65	- *Escalates to the authority:* a design that cannot satisfy an
+    66	  architecture principle — the role never grants itself an exception;
+    67	  contract-breaking changes; cross-context conflicts; any stack
+    68	  decision that commits the product
+    69	  to a vendor or a recurring cost above the threshold the authority
+    70	  sets when it approves this role — until set, every such commitment
+    71	  escalates.
+    72	- *Bounds, never approves:* Bounded Context shops choose within the
+    73	  guardrails; a choice outside them is raised as a contract question,
+    74	  not vetoed.
+    75	
+    76	**Admissible evidence:** a Bounded Context's contracts; a sweep of
+    77	every context's scenario register, never one context's copy;
+    78	architecture decision records in source control; published package
+    79	data — the upstream registry's own metadata for a package. Not
+    80	authoritative: a local copy of published data, spike
+    81	findings, forward-looking prose, and code reachable only by entering
+    82	a Bounded Context.
+    83	
+    84	**Interfaces:** the PM role — framed intent arrives, feasibility and
+    85	shape return; the PO role — accepted scenarios arrive for assignment,
+    86	enabler recommendations return, and the backlog is structured to
+    87	mirror the decomposition; Bounded Context shops — messages of a
+    88	defined type out, clarify questions and returned work in; the
+    89	authority — escalations. Clarify questions on structure, stack,
+    90	contracts, and decomposition are answered by this role.
+    91	
+    92	**Knowledge and skills:** the
+    93	[architecture principle set](../architecture-principles.md) — the
+    94	standard every design decision is checked against — and the
+    95	[working principle set](../principles.md) every activity runs under;
+    96	solution architecture at SFIA's top level —
+    97	setting policy, balancing functional, service-quality, cost, and
+    98	operational requirements, coordinating a target architecture across
+    99	many efforts — with consultancy, specialist advice, and
+   100	emerging-technology monitoring; domain-driven design and context
+   101	mapping; contract design between Bounded Contexts; technology
+   102	selection and trade-off analysis; architecture-decision-record
+   103	authoring; the shop's
+   104	[reconcile-and-close](../processes/reconcile-and-close.md) process.
+   105	
+   106	**Anti-rationalization:**
+   107	- "I can read the pre-state from the code." → Only the contract
+   108	  counts; reading a context's internals is the defect isolation
+   109	  exists to prevent.
+   110	- "It is just a tightening." → Net-new behavior dressed as a
+   111	  tightening is a vehicle error.
+   112	- "No conflicting scenario exists." → A claim of no conflict rests on
+   113	  a sweep of every context's register; one context's copy proves
+   114	  nothing.
+   115	- "The teams will pick a sensible stack." → Without a published
+   116	  guardrail there is no bound to pick within.
+   117	- "The pattern matches the last message sent." → The last message is
+   118	  not the pre-state; verify this one.
+   119	- "That principle does not apply here." → The principle's screen
+   120	  decides, not the role; see the conformance accountability.
+   121	
+   122	## Document History
+   123	
+   124	| Version | Date | Kind | Entry |
+   125	|---|---|---|---|
+   126	| 1 | 2026-08-23 | update | Authored through the approved role-definition chain from the research report on the solutions architect role (`research:research/solutions-architect-role-2026-08.md`, proposal item 7), by owner direction that stack ownership sits with this role. Supersedes `lead-architect` (v2), whose file is removed; its accountabilities are carried here. Written in the six-section role form the pending typedef amendment proposes. |
+   127	| 1 | 2026-08-23 | review | Screened against the role-definition fitness set: findings — the exclusive domain bundled two decisions; three named skills do not exist; a precedence phrasing; undefined shop terms; a Competencies section duplicating Knowledge and skills. |
+   128	| 2 | 2026-08-23 | update | Repairs: the stack is the one exclusive decision, the decomposition a decision right; the three unauthored skills (vehicle choice, pre-state verification, register-sweep completeness) removed from the file and filed here as a gap; sweep claim phrased as a standard of evidence; vehicle and pre-state defined in the glossary, tooling terms replaced with plain descriptions; Competencies folded into Knowledge and skills. |
+   129	| 2 | 2026-08-23 | review | Re-screened after repairs: clean — all five scenarios pass; two stumbles (an evidence class decidable only by contrast; a rhetorical sentence in the posture), polished in place without a version bump. |
+   130	| 3 | 2026-08-23 | update | Owner direction: conformance to the architecture principles made explicit — an accountability (every structural decision, contract, and ADR screened against the set; deviations escalated as exceptions), the principle sets named as loaded inputs, an escalation right, and an anti-rationalization stop; clarify answers moved to Interfaces to keep six accountabilities. |
+   131	| 3 | 2026-08-23 | review | Re-screened after the amendment: findings — the posture's conformance sentence was precedence phrasing; the rule had three homes; the threshold's approver ambiguous. Repaired in place: posture restated as a standard pointing at the accountability; anti-rationalization stop points there too; threshold wording clarified. |
+   132	| 3 | 2026-08-23 | review | Final re-screen: clean — all five scenarios pass; two stumbles (a dense posture sentence, a dense escalation bullet), the first polished in place. |
+   133	| 3 | 2026-08-25 | state | draft → approved by the owner. The role supersedes lead-architect; the stack is its exclusive domain. |
+   134	| 4 | 2026-08-25 | update | Owner direction: a near-synonym of "role" retired and banned. |
+   135	| 5 | 2026-08-27 | update | Owner direction, from the system-read report: feasibility named as an accountability — it was assigned to this role only by the PM and designer roles' text. Seven accountabilities now; the typedef's 4–6 is exceeded by one, filed for the typedef's six-section amendment. |
+   136	| 5 | 2026-08-27 | review | Screened: findings — the feasibility bullet carried sequencing ("before the PM role bets"); seven accountabilities against the typedef's 4–6; the description omitted feasibility; initiative, brief, dispatch undefined. Repaired in place: sequencing removed (the consuming process orders it); scenario assignment and reconciliation merged as the one register loop, six bullets; description aligned; terms replaced with defined ones. |
+   137	| 5 | 2026-08-27 | state | The feasibility amendment approved by the owner's direction. |
+   138	| 6 | 2026-08-28 | update | Owner decision: acceptance-scenarios re-formed as feature (product-level, scenarios assigned per Bounded Context by tag); the brief retired — shops receive their assigned scenarios. |
+===== basis/processes/reconcile-and-close.md
+     1	---
+     2	type: process-definition
+     3	id: reconcile-and-close-process
+     4	produces: []
+     5	owner: product-authority
+     6	status: approved
+     7	approved: 2026-08-19
+     8	version: 3
+     9	created: 2026-08-10
+    10	updated: 2026-08-23
+    11	condition-language: cel
+    12	---
+    13	
+    14	# Process: Reconcile and close
+    15	
+    16	**Purpose:** Convert a BC's completed dispatch into reconciled shop state:
+    17	the response consumed, the work item closed with a traceable reason, the
+    18	scenario contract confirmed, and follow-ups filed.
+    19	
+    20	**Outcomes:**
+    21	- O1. The BC's `work_done` response is consumed (no longer pending) —
+    22	  witnessed by the atomic `consume-close` step.
+    23	- O2. The originating work item is closed with a reason that cites the
+    24	  demonstration evidence — witnessed by the same step's `run` template,
+    25	  which takes the reason from `verification.evidence`.
+    26	- O3. The scenario register and pinned hashes are confirmed consistent
+    27	  with what was dispatched — witnessed by the check on `verify`.
+    28	- O4. Every defect or follow-up the response reports exists as a filed
+    29	  work item — witnessed by the check on `file-tail`.
+    30	
+    31	**Roles:** router (Accountable — executes); lead-solutions-architect (Consulted —
+    32	receives escalated register discrepancies).
+    33	
+    34	**Carried by:** the existing `reconcile-and-close` skill + executable
+    35	wrapper (already an atomic consume+close — this definition is what that
+    36	carrier is conformance-checked against).
+    37	
+    38	## Flow (compiled)
+    39	
+    40	Generated from the steps below by `tools/compile_process.py`; do not
+    41	edit by hand.
+    42	
+    43	```mermaid
+    44	flowchart TD
+    45	  verify(["Verify the demonstration — agent: router<br/>in — response: work-done-response, work_item: work-item, register: scenario-register<br/>out — verification: verification"])
+    46	  route{"Route on the verdict<br/>in — verification: verification"}
+    47	  consume_close["Consume and close — runtime<br/>in — response: work-done-response, work_item: work-item, verification: verification"]
+    48	  escalate["File the discrepancy — runtime<br/>in — work_item: work-item, verification: verification<br/>out — discrepancy_item: string"]
+    49	  file_tail(["File the tail — agent: router<br/>in — verification: verification, work_item: work-item<br/>out — filed: string[]"])
+    50	  __end(("end"))
+    51	  __start(("start")) --> verify
+    52	  verify --> route
+    53	  route -->|reconcile| consume_close
+    54	  route -->|else| escalate
+    55	  consume_close --> file_tail
+    56	  escalate --> __end
+    57	  file_tail --> __end
+    58	```
+    59	
+    60	
+    61	## Data
+    62	
+    63	Each entry names a process-local value. Simple types use JSON Schema
+    64	names inline; every structured shape is a `$ref` to a defined type with
+    65	an explicit source — `from:` links the defining file, or names the owning
+    66	package as `pkg:<package>/<type>` (fetched through that package's
+    67	contract tool). Conditions are CEL
+    68	expressions over these names.
+    69	
+    70	```yaml
+    71	data:
+    72	  response: {$ref: work-done-response, from: pkg:shopsystem-messaging/work-done-response}
+    73	  work_item: {$ref: work-item, from: pkg:beads/work-item}
+    74	  register: {$ref: scenario-register, from: pkg:shopsystem-knowledge/scenario-register}
+    75	  verification: {$ref: verification, from: ../types/verification.md}
+    76	  discrepancy_item: {type: string}
+    77	  filed: {type: array, items: {type: string}}
+    78	```
+    79	
+    80	## Steps
+    81	
+    82	```yaml
+    83	start: verify
+    84	steps:
+    85	  - id: verify
+    86	    name: Verify the demonstration
+    87	    run-by: {role: router, execution: agent}
+    88	    inputs: [response, work_item, register]
+    89	    outputs: [verification]
+    90	    checks:
+    91	      - size(verification.scenario_status) == size(work_item.scenarios)
+    92	    prompt: |
+    93	      Read the response. Check the demonstration against every dispatched
+    94	      scenario and record a status for each: done, blocked, or explicitly
+    95	      deferred. Silence on a scenario is a discrepancy, not a pass.
+    96	      Compare the pinned hashes in the response to the register. Verdict
+    97	      "reconcile" only if every scenario has a status and the hashes
+    98	      match; otherwise verdict "discrepancy", with the evidence stating
+    99	      exactly what differs.
+   100	    next: route
+   101	    annotations:
+   102	      fabro: {model: mid-tier}
+   103	
+   104	  - id: route
+   105	    name: Route on the verdict
+   106	    run-by: {execution: runtime}
+   107	    inputs: [verification]
+   108	    branches:
+   109	      - label: "reconcile"
+   110	        when: verification.verdict == "reconcile"
+   111	        next: consume-close
+   112	      - else: escalate
+   113	
+   114	  - id: consume-close
+   115	    name: Consume and close
+   116	    run-by: {execution: runtime}
+   117	    atomic: true
+   118	    inputs: [response, work_item, verification]
+   119	    run: |
+   120	      shop-msg consume outbox --bc ${response.bc} --work-id ${response.work_id}
+   121	      bd close ${work_item.id} --reason "${verification.evidence}"
+   122	    next: file-tail
+   123	
+   124	  - id: escalate
+   125	    name: File the discrepancy
+   126	    run-by: {execution: runtime}
+   127	    inputs: [work_item, verification]
+   128	    outputs: [discrepancy_item]
+   129	    run: |
+   130	      bd create --type task --assign lead-solutions-architect \
+   131	        --title "Register discrepancy on ${work_item.id}" \
+   132	        --body "${verification.evidence}" --link ${work_item.id}
+   133	    next: end
+   134	
+   135	  - id: file-tail
+   136	    name: File the tail
+   137	    run-by: {role: router, execution: agent}
+   138	    inputs: [verification, work_item]
+   139	    outputs: [filed]
+   140	    checks:
+   141	      - size(filed) == size(verification.reported_items)
+   142	    prompt: |
+   143	      File a follow-up work item for every entry in the reported items —
+   144	      each defect, observation, and deferred scenario — and link each new
+   145	      item to the closed work item.
+   146	    next: end
+   147	```
+   148	
+   149	The `atomic: true` flag on `consume-close` binds its `run` lines into one
+   150	all-or-nothing act: a consumed-but-open or closed-but-pending split state
+   151	is the known failure this process exists to prevent, so a runtime that
+   152	cannot guarantee the pair rolls back the half it completed.
+   153	
+   154	## Derived checks
+   155	
+   156	| Outcome | Check | Kind | Where |
+   157	|---|---|---|---|
+   158	| O1+O2 | no consumed-but-open or closed-but-pending state after run | mechanical | `consume-close.atomic` |
+   159	| O2 | close reason cites demonstration evidence | mechanical presence + judged | `consume-close.run` |
+   160	| O3 | every dispatched scenario has a recorded status | mechanical | `verify.checks` |
+   161	| O4 | reported-vs-filed count match | mechanical | `file-tail.checks` |
+   162	
+   163	## Document History
+   164	
+   165	| Version | Date | Kind | Entry |
+   166	|---|---|---|---|
+   167	| 1 | 2026-08-10 | update | Authored (seed layer); earlier history, if any, in the repository history. |
+   168	| 1 | 2026-08-19 | state | draft → approved. |
+   169	| 2 | 2026-08-23 | update | Owner direction: decision-ledger references removed — changes stand on their own; history entries and text no longer cite numbered decisions. |
+   170	| 3 | 2026-08-26 | update | The superseded role id lead-architect replaced by lead-solutions-architect (2 occurrences), found by the interaction-conformance-check screen. |

@@ -1,0 +1,575 @@
+     1	#!/usr/bin/env python3
+     2	"""Compile a role definition into its loadable form, and check a load point.
+     3	
+     4	Experiment apparatus, sibling of compile_process.py: this script exists to
+     5	prove the role-definition format carries enough data to compile. The
+     6	production compiler is a BC deliverable and does not live in the lead repo.
+     7	
+     8	The loadable form of a role definition is a Claude Code subagent file at
+     9	the agent's load point, `.claude/agents/<name>.md`:
+    10	  - front-matter carrying only the runtime keys the harness honors
+    11	    (name, description, tools, maxTurns, and model / permissionMode /
+    12	    skills / memory / disallowedTools / color when the definition carries
+    13	    them), plus `source` (the definition's repository path) and
+    14	    `source-digest` (sha256 of the definition's text, 12 hex digits);
+    15	    the shop's identity keys (type, id, owner, status, approved, version,
+    16	    created, updated) are stripped;
+    17	  - a generated-file notice, then the definition's body with its
+    18	    `## Document History` section stripped and every relative markdown
+    19	    link resolved so it is correct from the load point, closing with the
+    20	    banned line — "Do not use these words: " and the lint's BANNED list,
+    21	    loaded from lint_basis.py beside this script.
+    22	
+    23	Only a definition with `status: approved` compiles; any other is refused.
+    24	The rendering is a function of the definition and the declared load point
+    25	only — where the file is written does not change its content — so a render
+    26	into a scratch directory is byte-equal to the one that would stand at the
+    27	load point, and the check compares bytes.
+    28	
+    29	Usage:
+    30	  compile_role.py <role.md>                        # validate; print the target name
+    31	  compile_role.py <role.md> --agent <out.md>       # render the subagent file
+    32	  compile_role.py --check [<dir>] [<role.md>...]   # check a load point (default:
+    33	                                                   # the declared load point) against
+    34	                                                   # the given approved definitions, or
+    35	                                                   # against every approved one under
+    36	                                                   # --roles when none is given
+    37	  compile_role.py --check [<dir>] --findings       # the same, ok rows suppressed
+    38	  compile_role.py --describe                       # answer the standard question
+    39	                                                   # (DESCRIPTION below) as JSON on
+    40	                                                   # standard output, exit 0, before
+    41	                                                   # any other action
+    42	Options:
+    43	  --load-point <dir>   the declared load point links resolve for
+    44	                       (default .claude/agents; repo-root-relative)
+    45	  --roles <dir>        the role definitions directory (default basis/roles)
+    46	
+    47	Check rows, one per line, kind first (the finding kinds of skill-rendering):
+    48	  ok <name> <definition>          byte-equal to a fresh render
+    49	  missing <name> <definition>     approved definition, nothing at the load point
+    50	  diverged <name> <definition>    stands there but differs from a fresh render
+    51	  will-not-compile <definition> <reason>
+    52	                                  a given or approved definition that does
+    53	                                  not render (a given one that does not stand
+    54	                                  approved is refused here); also a listed
+    55	                                  path that cannot be read or parsed —
+    56	                                  missing, no front-matter, malformed — and
+    57	                                  any unexpected failure while checking a
+    58	                                  path, reported with that path as subject
+    59	A row is one line: a newline in a path or reason is written as `\\n`.
+    60	In check mode no failure escapes as a traceback: whatever cannot be
+    61	checked is a row, and the exit is nonzero whenever any finding row exists.
+    62	Exit 0 when every row is ok; 1 on any finding, refusal, or compile error;
+    63	2 on a usage error. Outside check mode a failure is one line on standard
+    64	error beginning with its code from the tool-description data type's
+    65	closed set — `unreadable`, `unparseable`, `check-failed`, `unwritable`,
+    66	`usage` — never a traceback.
+    67	"""
+    68	import hashlib
+    69	import json
+    70	import os
+    71	import pathlib
+    72	import posixpath
+    73	import re
+    74	import sys
+    75	
+    76	import yaml
+    77	
+    78	TOOL = "basis/tools/compile_role.py"
+    79	EXIT = {"usage": 2, "unreadable": 2, "unparseable": 1, "check-failed": 1,
+    80	        "unwritable": 1}
+    81	
+    82	
+    83	def fail(code: str, message: str) -> None:
+    84	    """A failure the answer names: its code beside the message, one line on
+    85	    standard error, the exit status the answer states for that code."""
+    86	    print(f"{code}: {' '.join(str(message).split())}", file=sys.stderr)
+    87	    sys.exit(EXIT[code])
+    88	
+    89	
+    90	DEFINITION_INPUT = {
+    91	    "type": "string",
+    92	    "description": "the path of the role definition, for example "
+    93	                   "basis/roles/lead-pm.md; it must stand approved",
+    94	}
+    95	LOAD_POINT_INPUT = {
+    96	    "type": "string",
+    97	    "description": "the load point the rendering's links resolve for, "
+    98	                   "repository-root-relative",
+    99	    "default": ".claude/agents",
+   100	}
+   101	ROLES_INPUT = {
+   102	    "type": "string",
+   103	    "description": "the directory of the role definitions, "
+   104	                   "repository-root-relative",
+   105	    "default": "basis/roles",
+   106	}
+   107	UNREADABLE_FAILURE = {
+   108	    "code": "unreadable", "exit_status": 2,
+   109	    "condition": "no file exists at <definition>, or it cannot be read; one "
+   110	                 "line on standard error beginning `unreadable:` names the "
+   111	                 "path; nothing is written",
+   112	    "next": "give the path of an existing role definition and run the "
+   113	            "invocation again",
+   114	}
+   115	UNPARSEABLE_FAILURE = {
+   116	    "code": "unparseable", "exit_status": 1,
+   117	    "condition": "the definition has no front-matter, or its front-matter "
+   118	                 "does not parse or is not a mapping; one line on standard "
+   119	                 "error beginning `unparseable:` names the path and the "
+   120	                 "defect; nothing is written",
+   121	    "next": "repair the definition's front-matter and run the invocation "
+   122	            "again",
+   123	}
+   124	RENDER_FAILURE = {
+   125	    "code": "check-failed", "exit_status": 1,
+   126	    "condition": "the definition does not render: its `type` is not "
+   127	                 "role-definition, its `status` is not approved (refused), "
+   128	                 "it lacks `name`, `description`, `tools`, or `maxTurns`, "
+   129	                 "carries a front-matter key that is neither a runtime key "
+   130	                 "the harness honors nor an identity key, or its `name` is "
+   131	                 "not a subagent name; one line on standard error beginning "
+   132	                 "`check-failed:` names the path and the defect; nothing is "
+   133	                 "written",
+   134	    "next": "repair the definition at the named defect (the "
+   135	            "role-definition typedef states the keys) and run the "
+   136	            "invocation again",
+   137	}
+   138	UNWRITABLE_FAILURE = {
+   139	    "code": "unwritable", "exit_status": 1,
+   140	    "condition": "<out> could not be written; one line on standard error "
+   141	                 "beginning `unwritable:` names the path and the reason",
+   142	    "next": "give a writable <out> path and run the invocation again",
+   143	}
+   144	USAGE_FAILURE = {
+   145	    "code": "usage", "exit_status": 2,
+   146	    "condition": "the arguments are not one of the three invocations this "
+   147	                 "tool states — no definition or more than one outside "
+   148	                 "check mode, `--agent` together with `--check`, "
+   149	                 "`--findings` without `--check`, an option without its "
+   150	                 "value, or an unknown option; the usage sheet on standard "
+   151	                 "error; nothing is checked or written",
+   152	    "next": "run the invocation the use states, as written",
+   153	}
+   154	# The answer to the standard question (adr-2026-09-07-tool-answer §2): an
+   155	# instance of the tool-description data type, basis/types/tool-description.md.
+   156	# This tool is its one home; the skill is produced from it, never edited.
+   157	DESCRIPTION = {
+   158	    "name": "compile-role",
+   159	    "description": (
+   160	        "Compiles an approved role definition into its loadable form — the "
+   161	        "subagent file at the agent's load point, `.claude/agents/<name>.md`: "
+   162	        "the runtime keys the harness honors, `source` and `source-digest`, "
+   163	        "and the definition's body with its Document History stripped, its "
+   164	        "links resolved for the load point, and the banned-words line from "
+   165	        "the lint appended — and checks a load point against a fresh render "
+   166	        "of each approved definition. Use it after a role definition "
+   167	        "changes, to place its rendering, and to confirm every approved "
+   168	        "role is available."
+   169	    ),
+   170	    "uses": [
+   171	        {
+   172	            "name": "validate",
+   173	            "description": (
+   174	                "Renders the definition to memory and prints the subagent "
+   175	                "name and the path the rendering would take; writes "
+   176	                "nothing. Exit 0 means the definition compiles."
+   177	            ),
+   178	            "invocation": f"python3 {TOOL} <definition> [--load-point <load_point>] [--roles <roles>]",
+   179	            "input_schema": {
+   180	                "type": "object",
+   181	                "properties": {"definition": DEFINITION_INPUT,
+   182	                               "load_point": LOAD_POINT_INPUT,
+   183	                               "roles": ROLES_INPUT},
+   184	                "required": ["definition"],
+   185	                "additionalProperties": False,
+   186	            },
+   187	            "returns": {
+   188	                "form": "text",
+   189	                "text": "one line on standard output, `<definition>: compiles "
+   190	                        "as \`<name>\` for <load_point>/<name>.md (digest "
+   191	                        "<12 hex>)`; exit status 0",
+   192	            },
+   193	            "failures": [UNREADABLE_FAILURE, UNPARSEABLE_FAILURE, RENDER_FAILURE,
+   194	                         USAGE_FAILURE],
+   195	        },
+   196	        {
+   197	            "name": "render",
+   198	            "description": (
+   199	                "Renders the definition and writes the subagent file to "
+   200	                "<out>, creating directories, overwriting what stands there "
+   201	                "— a hand edit included. The content is a function of the "
+   202	                "definition and the declared load point alone, so a render "
+   203	                "into a scratch path is byte-equal to the one that would "
+   204	                "stand at the load point."
+   205	            ),
+   206	            "invocation": f"python3 {TOOL} <definition> --agent <out> [--load-point <load_point>] [--roles <roles>]",
+   207	            "input_schema": {
+   208	                "type": "object",
+   209	                "properties": {
+   210	                    "definition": DEFINITION_INPUT,
+   211	                    "out": {"type": "string",
+   212	                            "description": "the path the subagent file is "
+   213	                                           "written to: <load_point>/<name>.md "
+   214	                                           "to place it, or a scratch path"},
+   215	                    "load_point": LOAD_POINT_INPUT,
+   216	                    "roles": ROLES_INPUT,
+   217	                },
+   218	                "required": ["definition", "out"],
+   219	                "additionalProperties": False,
+   220	            },
+   221	            "returns": {
+   222	                "form": "text",
+   223	                "text": "one line on standard output, `<out>: generated from "
+   224	                        "<name> (digest <12 hex>)`; exit status 0; the file "
+   225	                        "written at <out>",
+   226	            },
+   227	            "failures": [UNREADABLE_FAILURE, UNPARSEABLE_FAILURE, RENDER_FAILURE,
+   228	                         UNWRITABLE_FAILURE, USAGE_FAILURE],
+   229	        },
+   230	        {
+   231	            "name": "check",
+   232	            "description": (
+   233	                "Checks a load point against a fresh render of each given "
+   234	                "definition — or, when none is given, of every approved "
+   235	                "definition under <roles> — and scans every file at the "
+   236	                "load point for one that is no rendering of an approved "
+   237	                "definition. Prints one row per line, kind first: `ok "
+   238	                "<name> <definition>`, `missing <name> <definition>`, "
+   239	                "`diverged <name> <definition>`, `will-not-compile "
+   240	                "<definition> <reason>`, `stale <source> <file>`, "
+   241	                "`unrecognized <file>`. Writes nothing; no failure escapes "
+   242	                "as a traceback — whatever cannot be checked is a row."
+   243	            ),
+   244	            "invocation": f"python3 {TOOL} --check [<dir>] [--roles <roles>] [--findings] [<definition>...]",
+   245	            "input_schema": {
+   246	                "type": "object",
+   247	                "properties": {
+   248	                    "dir": {"type": "string",
+   249	                            "description": "the load point directory to check",
+   250	                            "default": ".claude/agents"},
+   251	                    "roles": ROLES_INPUT,
+   252	                    "findings": {"type": "boolean",
+   253	                                 "description": "suppress the `ok` rows so "
+   254	                                                "only findings are printed",
+   255	                                 "default": False},
+   256	                    "definition": {"type": "array",
+   257	                                   "items": {"type": "string"},
+   258	                                   "description": "the definitions to check "
+   259	                                                  "against, each a path; a "
+   260	                                                  "given definition that "
+   261	                                                  "does not stand approved "
+   262	                                                  "is a will-not-compile row",
+   263	                                   "default": []},
+   264	                },
+   265	                "required": [],
+   266	                "additionalProperties": False,
+   267	            },
+   268	            "returns": {
+   269	                "form": "text",
+   270	                "text": "the rows on standard output, one per line, kind "
+   271	                        "first, every row `ok` (none printed with "
+   272	                        "`--findings`); exit status 0",
+   273	            },
+   274	            "failures": [
+   275	                {"code": "check-failed", "exit_status": 1,
+   276	                 "condition": "at least one row is a finding — `missing`, "
+   277	                              "`diverged`, `will-not-compile`, `stale`, or "
+   278	                              "`unrecognized` — or no definition was checked; "
+   279	                              "the rows on standard output name each finding "
+   280	                              "by kind, name, and path",
+   281	                 "next": "act on each row by kind through the role-rendering "
+   282	                         "process: re-render a missing or diverged one with "
+   283	                         "the `render` use, remove a stale one, escalate an "
+   284	                         "unrecognized or will-not-compile one; then run the "
+   285	                         "same invocation again until every row is `ok`"},
+   286	                USAGE_FAILURE,
+   287	            ],
+   288	        },
+   289	    ],
+   290	}
+   291	
+   292	# The banned vocabulary has one home: the lint beside this compiler. It is
+   293	# read from there, never copied, so a change to the lint's list changes every
+   294	# rendering at the next re-render with no change here.
+   295	sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+   296	from lint_basis import BANNED  # noqa: E402
+   297	
+   298	BANNED_LINE = "Do not use these words: " + ", ".join(BANNED)
+   299	GENERATED_BY = "basis/tools/compile_role.py"
+   300	DEFAULT_LOAD_POINT = ".claude/agents"
+   301	DEFAULT_ROLES = "basis/roles"
+   302	
+   303	# Runtime keys the harness honors, in rendering order (Claude Code
+   304	# subagent front-matter). A key outside this list and IDENTITY_KEYS is a
+   305	# compile error: a new key is a decision, never a silent pass-through.
+   306	HARNESS_KEYS = [
+   307	    "name", "description", "tools", "disallowedTools", "model",
+   308	    "permissionMode", "maxTurns", "skills", "memory", "color",
+   309	]
+   310	IDENTITY_KEYS = {"type", "id", "owner", "status", "approved", "version",
+   311	                 "created", "updated"}
+   312	REQUIRED_KEYS = ["name", "description", "tools", "maxTurns"]
+   313	FM_RE = re.compile(r"---\n(.*?)\n---\n", re.S)
+   314	LINK_RE = re.compile(r"\]\(([^)\s]+)\)")
+   315	HISTORY_HEADING = "## Document History"
+   316	
+   317	
+   318	class CompileError(Exception):
+   319	    """The definition does not render (a will-not-compile finding)."""
+   320	
+   321	
+   322	class Refused(Exception):
+   323	    """The definition does not stand approved."""
+   324	
+   325	
+   326	def split(path: pathlib.Path):
+   327	    try:
+   328	        text = path.read_text()
+   329	    except (OSError, UnicodeDecodeError) as exc:
+   330	        raise CompileError(f"{path}: cannot be read: {exc}")
+   331	    m = FM_RE.match(text)
+   332	    if not m:
+   333	        raise CompileError(f"{path}: no front-matter")
+   334	    try:
+   335	        front = yaml.safe_load(m.group(1))
+   336	    except yaml.YAMLError as exc:
+   337	        raise CompileError(f"{path}: front-matter does not parse: {exc}")
+   338	    if not isinstance(front, dict):
+   339	        raise CompileError(f"{path}: front-matter is not a mapping")
+   340	    return text, front, text[m.end():]
+   341	
+   342	
+   343	def strip_history(body: str) -> str:
+   344	    """Drop the Document History section (to the next `## ` heading or EOF)."""
+   345	    pattern = re.compile(r"^" + re.escape(HISTORY_HEADING) + r"\s*$.*?(?=^## |\Z)",
+   346	                         re.S | re.M)
+   347	    return pattern.sub("", body, count=1)
+   348	
+   349	
+   350	def resolve_links(body: str, source_dir: str, load_point: str) -> str:
+   351	    """Rewrite relative links so they resolve from the load point."""
+   352	    def one(m):
+   353	        target = m.group(1)
+   354	        if target.startswith(("http://", "https://", "pkg:", "mailto:", "/", "#")):
+   355	            return m.group(0)
+   356	        path, sep, anchor = target.partition("#")
+   357	        moved = posixpath.relpath(posixpath.normpath(posixpath.join(source_dir, path)),
+   358	                                  posixpath.normpath(load_point))
+   359	        return f"]({moved}{sep}{anchor})"
+   360	    return LINK_RE.sub(one, body)
+   361	
+   362	
+   363	def repo_relative(path: str) -> str:
+   364	    """A repo-root-relative posix path (the run's working directory is the root)."""
+   365	    rel = os.path.relpath(os.path.abspath(path), os.getcwd())
+   366	    return posixpath.normpath(rel.replace(os.sep, "/"))
+   367	
+   368	
+   369	def shown_path(path: pathlib.Path) -> str:
+   370	    """Repo-relative when under the root; as given when outside it (a scratch dir)."""
+   371	    rel = repo_relative(str(path))
+   372	    return str(path) if rel.startswith("..") else rel
+   373	
+   374	
+   375	def render(source: pathlib.Path, roles_dir: str, load_point: str):
+   376	    """Return (name, rendered text) for an approved role definition."""
+   377	    text, front, body = split(source)
+   378	    if front.get("type") != "role-definition":
+   379	        raise CompileError(f"{source}: type is `{front.get('type')}`, not role-definition")
+   380	    if front.get("status") != "approved":
+   381	        raise Refused(f"{source}: refused — status is `{front.get('status')}`; "
+   382	                      "only an approved role definition compiles")
+   383	    for key in REQUIRED_KEYS:
+   384	        if not front.get(key):
+   385	            raise CompileError(f"{source}: front-matter lacks `{key}` "
+   386	                               "(role-definition typedef §Required frontmatter)")
+   387	    unknown = sorted(set(front) - set(HARNESS_KEYS) - IDENTITY_KEYS)
+   388	    if unknown:
+   389	        raise CompileError(f"{source}: front-matter key(s) {unknown} are neither "
+   390	                           "runtime keys the harness honors nor identity keys")
+   391	    name = str(front["name"])
+   392	    if not re.match(r"^[a-z0-9][a-z0-9-]*$", name):
+   393	        raise CompileError(f"{source}: name `{name}` is not a subagent name")
+   394	    source_rel = posixpath.join(repo_relative(roles_dir), source.name)
+   395	    digest = hashlib.sha256(text.encode()).hexdigest()[:12]
+   396	    fm = {key: front[key] for key in HARNESS_KEYS if key in front}
+   397	    fm["source"] = source_rel
+   398	    fm["source-digest"] = f"sha256:{digest}"
+   399	    front_text = yaml.safe_dump(fm, sort_keys=False, allow_unicode=True,
+   400	                                width=1_000_000).rstrip()
+   401	    notice = (f"<!-- Generated from `{source_rel}` by `{GENERATED_BY}`; do not edit by\n"
+   402	              f"hand — edit the role definition and re-render. -->")
+   403	    body = resolve_links(strip_history(body), repo_relative(roles_dir), load_point)
+   404	    body = body.strip("\n") + "\n\n" + BANNED_LINE
+   405	    return name, f"---\n{front_text}\n---\n\n{notice}\n\n{body}\n"
+   406	
+   407	
+   408	def row(text: str) -> str:
+   409	    """One finding row is one line: a newline in a path or reason is written
+   410	    as the two characters `\\n`, so a row list stays one row per line."""
+   411	    return text.replace("\r", "\\r").replace("\n", "\\n")
+   412	
+   413	
+   414	def failure(subject: str, exc: BaseException) -> str:
+   415	    """The will-not-compile row for a path that could not be checked."""
+   416	    reason = str(exc) if isinstance(exc, (CompileError, Refused)) \
+   417	        else f"{type(exc).__name__}: {exc}"
+   418	    return row(f"will-not-compile {subject} {reason}")
+   419	
+   420	
+   421	def check_definition(definition: pathlib.Path, shown_def: str, given: bool,
+   422	                     load_dir: pathlib.Path, roles_dir: str, load_point: str,
+   423	                     fresh: dict):
+   424	    """The row for one listed definition, or None for one an unlisted sweep
+   425	    skips (not a role definition, or not approved)."""
+   426	    _, front, _ = split(definition)
+   427	    if not given and (front.get("type") != "role-definition"
+   428	                      or front.get("status") != "approved"):
+   429	        return None
+   430	    name, text = render(definition, roles_dir, load_point)
+   431	    fresh[posixpath.join(repo_relative(roles_dir), definition.name)] = name
+   432	    target = load_dir / f"{name}.md"
+   433	    if not target.is_file():
+   434	        return f"missing {name} {shown_def}"
+   435	    if target.read_text() != text:
+   436	        return f"diverged {name} {shown_def}"
+   437	    return f"ok {name} {shown_def}"
+   438	
+   439	
+   440	def check_rendering(path: pathlib.Path, shown: str, roles_prefix: str, fresh: dict):
+   441	    """The row for one file at the load point, or None when it is current."""
+   442	    try:
+   443	        _, front, _ = split(path)
+   444	        source = front.get("source")
+   445	    except CompileError:
+   446	        source = None
+   447	    if not isinstance(source, str) or not source.startswith(roles_prefix):
+   448	        return f"unrecognized {shown}"
+   449	    if source not in fresh:
+   450	        return f"stale {source} {shown}"
+   451	    if path.name != f"{fresh[source]}.md":
+   452	        return f"unrecognized {shown}"
+   453	    return None
+   454	
+   455	
+   456	def check(load_dir: pathlib.Path, roles_dir: str, load_point: str,
+   457	          definitions: list = None) -> list:
+   458	    """Rows for a load point. `definitions` is the set to check against — the
+   459	    process's enumerated approved list; when None, every approved definition
+   460	    under roles_dir. A given definition that does not stand approved is a
+   461	    will-not-compile row (the compiler refuses it), never silently admitted.
+   462	    A listed path that cannot be read or parsed, and any other failure while
+   463	    checking a path, is a will-not-compile row with that path as subject —
+   464	    the check continues; nothing escapes it as a traceback."""
+   465	    rows, fresh = [], {}
+   466	    given = definitions is not None
+   467	    if not given:
+   468	        definitions = sorted(pathlib.Path(roles_dir).glob("*.md"))
+   469	    for definition in (pathlib.Path(d) for d in definitions):
+   470	        shown_def = shown_path(definition)
+   471	        try:
+   472	            found = check_definition(definition, shown_def, given,
+   473	                                     load_dir, roles_dir, load_point, fresh)
+   474	        except Exception as exc:  # noqa: BLE001 — every failure is a row
+   475	            rows.append(failure(shown_def, exc))
+   476	            continue
+   477	        if found is not None:
+   478	            rows.append(row(found))
+   479	    roles_prefix = repo_relative(roles_dir) + "/"
+   480	    for path in sorted(load_dir.glob("*.md")) if load_dir.is_dir() else []:
+   481	        shown = shown_path(path)
+   482	        try:
+   483	            found = check_rendering(path, shown, roles_prefix, fresh)
+   484	        except Exception as exc:  # noqa: BLE001
+   485	            rows.append(failure(shown, exc))
+   486	            continue
+   487	        if found is not None:
+   488	            rows.append(row(found))
+   489	    return rows
+   490	
+   491	
+   492	def usage(code: int = 2) -> None:
+   493	    sys.stderr.write(__doc__.split("Usage:", 1)[1].split("Check rows", 1)[0])
+   494	    sys.exit(code)
+   495	
+   496	
+   497	def main() -> None:
+   498	    args = sys.argv[1:]
+   499	    # The standard question, answered before any other action; the other
+   500	    # arguments are ignored (adr-2026-09-07-tool-answer §2).
+   501	    if "--describe" in args:
+   502	        sys.stdout.write(json.dumps(DESCRIPTION, indent=2) + "\n")
+   503	        sys.exit(0)
+   504	    load_point, roles_dir, agent_out, check_dir = DEFAULT_LOAD_POINT, DEFAULT_ROLES, None, None
+   505	    findings_only, positional = False, []
+   506	    i = 0
+   507	    while i < len(args):
+   508	        arg = args[i]
+   509	        if arg in ("--load-point", "--roles", "--agent") and i + 1 >= len(args):
+   510	            usage()
+   511	        if arg == "--load-point":
+   512	            load_point = args[i + 1]; i += 2
+   513	        elif arg == "--roles":
+   514	            roles_dir = args[i + 1]; i += 2
+   515	        elif arg == "--agent":
+   516	            agent_out = pathlib.Path(args[i + 1]); i += 2
+   517	        elif arg == "--findings":
+   518	            findings_only = True; i += 1
+   519	        elif arg == "--check":
+   520	            check_dir = load_point
+   521	            if i + 1 < len(args) and not args[i + 1].startswith("--"):
+   522	                check_dir = args[i + 1]; i += 1
+   523	            i += 1
+   524	        elif arg.startswith("--"):
+   525	            usage()
+   526	        else:
+   527	            positional.append(arg); i += 1
+   528	    if check_dir is not None:
+   529	        if agent_out:
+   530	            usage()
+   531	        try:
+   532	            rows = check(pathlib.Path(check_dir), roles_dir, load_point,
+   533	                         positional or None)
+   534	        except Exception as exc:  # noqa: BLE001 — the path in hand is the load point
+   535	            rows = [failure(check_dir, exc)]
+   536	        clean = bool(rows) and all(r.startswith("ok ") for r in rows)
+   537	        if findings_only:
+   538	            rows = [r for r in rows if not r.startswith("ok ")]
+   539	        if rows:
+   540	            print("\n".join(rows))
+   541	        sys.exit(0 if clean else 1)
+   542	    if findings_only:
+   543	        usage()
+   544	    if len(positional) != 1:
+   545	        usage()
+   546	    source = pathlib.Path(positional[0])
+   547	    if roles_dir == DEFAULT_ROLES and repo_relative(str(source.parent)) != DEFAULT_ROLES:
+   548	        roles_dir = str(source.parent)
+   549	    if not source.is_file():
+   550	        fail("unreadable", f"{source}: no such file")
+   551	    try:
+   552	        name, text = render(source, roles_dir, load_point)
+   553	    except (CompileError, Refused) as exc:
+   554	        reason = str(exc)
+   555	        if "cannot be read" in reason:
+   556	            fail("unreadable", reason)
+   557	        if "front-matter" in reason and "lacks" not in reason and "key(s)" not in reason:
+   558	            fail("unparseable", reason)
+   559	        fail("check-failed", reason)
+   560	    except Exception as exc:  # noqa: BLE001 — never a traceback
+   561	        fail("check-failed", f"{source}: does not render: {type(exc).__name__}: {exc}")
+   562	    digest = text.split("source-digest: sha256:", 1)[1].split("\n", 1)[0]
+   563	    if agent_out is None:
+   564	        print(f"{source}: compiles as `{name}` for {load_point}/{name}.md (digest {digest})")
+   565	        return
+   566	    try:
+   567	        agent_out.parent.mkdir(parents=True, exist_ok=True)
+   568	        agent_out.write_text(text)
+   569	    except OSError as exc:
+   570	        fail("unwritable", f"{agent_out}: cannot be written: {exc}")
+   571	    print(f"{agent_out}: generated from {name} (digest {digest})")
+   572	
+   573	
+   574	if __name__ == "__main__":
+   575	    main()

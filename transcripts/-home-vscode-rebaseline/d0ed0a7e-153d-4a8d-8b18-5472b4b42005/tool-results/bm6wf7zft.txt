@@ -1,0 +1,400 @@
+=== lead-kmrd4 [task/open/P2] Review conversation: new-basis experiment (R1-R18 issued; open)
+created 2026-08-22 updated 2026-08-22 closed 
+The anchor work item for the running review conversation over experiment/new-basis. Rulings R1-R18 recorded in the experiment index; from R19 the ledger is basis/records/review-new-basis.md. Run state tracks this conversation's hold/resume/close per the process-definition run lifecycle.
+COMMENTS:
+
+
+=== lead-df2pj [task/open/P2] BACKLOG (adr-024 D2 follow-up): land the deferred revised sc06 scenario body
+created 2026-08-22 updated 2026-08-22 closed 
+### deferred-revised-sc06-body-5174e405a19358fa-per-adr-024
+Deferred revised sc06 body (5174e405a19358fa) per ADR-024 D2 / lead-8z1o:
+Scenario: the system-wide outstanding view counts a canonical scenario absent from every BC journal and the lead snapshot as outstanding
+  Given a canonical scenario authored under this repo's features with block-only canonical hash "h6"
+  And no BC journal records "h6" as completed and the lead snapshot does not record "h6" as completed
+  When the system-wide outstanding view is computed over all canonical scenarios under features
+  Then the outstanding view lists the scenario with block-only canonical hash "h6" as outstanding
+  And the scenario with hash "h6" is counted in the outstanding denominator on its absence from every BC journal and the lead snapshot alone, independent of whether any work_done ever landed for it
+
+Filed per the memory action table rev 4 (authority ruling 2026-08-22): the verbatim body rides in this work item, not the archive. adr-024 D2 cites hash 5174e405a19358fa.
+COMMENTS:
+
+
+=== lead-30yfi [task/open/P2] Chain input: agent-vault/broker operations process — authority safety rule (broker recreate operator-only)
+created 2026-08-22 updated 2026-08-22 closed 
+Route-to-chain per memory action table rev 4. Archive: branch archive/memory-2026-08, key operational-hazard-david-2026-07-08-never-recreate. Consume at the agent-vault operations chain's build-chain autopsy; authority decides there whether the rule survives into the definition.
+COMMENTS:
+
+
+=== lead-3huxf [task/open/P2] Chain input: reconcile/delivery-verification chain — scout-relaunch verification rules (2 memories)
+created 2026-08-22 updated 2026-08-22 closed 
+Route-to-chain per memory action table rev 4. Archive: branch archive/memory-2026-08, keys fabro-fixes-stranded-by-delivery-path (cited by name in adr-063), shopsystem-effectiveness-the-fabro-engage-was-never-validate. Core already covered by the delivery-verified principle; specifics become derived checks if the chain review keeps them.
+COMMENTS:
+
+
+=== lead-4u908 [task/open/P2] Chain input: bc-launcher liveness process + scenarios — silent agent-exit model (3 memories)
+created 2026-08-22 updated 2026-08-22 closed 
+Route-to-chain per memory action table rev 4. Archive: branch archive/memory-2026-08, keys silent-agent-exit-failure-mode-a, confirmed-correcting-my-earlier-ret, bc-container-start-agent-also-false. Consume at the bc-launcher chain's build-chain autopsy.
+COMMENTS:
+
+
+=== lead-3ftw1 [task/open/P2] Chain input: dispatch process chain — pre-dispatch discipline (3 memories)
+created 2026-08-22 updated 2026-08-22 closed 
+Route-to-chain per memory action table rev 4. Archive: branch archive/memory-2026-08, keys duplicate-dispatch-check-closed-beads, router-pre-dispatch-gap-lead-qi0q-2026-06 (cited by name in adr-045), router-architect-effectiveness-the-17e9342e-re-pin-ruling. Consume at the dispatch chain's build-chain autopsy.
+COMMENTS:
+
+
+=== lead-fsbtj [task/open/P2] Chain input: router monitor-handling process — verify BC substrate on Monitor events
+created 2026-08-22 updated 2026-08-22 closed 
+Route-to-chain per memory action table rev 4. Archive: branch archive/memory-2026-08, key router-effectiveness-i-missed-a-real-2nd-blocked.
+COMMENTS:
+
+
+=== lead-5w2hg [task/open/P2] Chain input: scenario/feature typedef chain — cross-BC scenario ownership model
+created 2026-08-22 updated 2026-08-22 closed 
+Route-to-chain per memory action table rev 4. Archive: branch archive/memory-2026-08, key resume-2026-07-04-lead-architect-handoff-before (the lead-vede ownership model: @bc owner on the scenario; cross-BC scenario owned by one integration-point BC).
+COMMENTS:
+
+
+=== lead-kmrd4.2 [bug/open/P2] [finding] stakeholder-presentation activation gap: model-judged activation failed twice (rev 2 delivery + session-start delivery); authority-facing delivery needs a process-level gate and 'verified' claims need a round-log witness
+created 2026-08-22 updated 2026-08-22 closed 
+The stakeholder-presentation process (basis/processes/stakeholder-presentation.md, approved 2026-08-19) was bypassed at both deliveries of the migration plan: rev 2 was delivered as the raw 393-line source with 'cold-read verified' asserted but no decision-brief, no annex, no round log (commit c872505 contains only the plan); the session-start re-presentation also skipped it. Root cause: activation is model-judged — advisory, nothing gates delivery. Fix direction: the review-conversation / delivery path must name stakeholder-presentation as a required sub-process for authority-facing material over budget, and any 'verified' claim must cite its round-log record (delivery-verified). Surfaced by the authority 2026-08-22 during R24 remediation; see review record R24/R25.
+COMMENTS:
+
+
+=== lead-b7cn6 [task/open/P2] Decide the as-built shop-shell framework-image behavior fresh (carries retired adr-046's unimplemented intent)
+created 2026-08-22 updated 2026-08-22 closed 
+R30 (2026-08-22, brief-028 ask 6b): adr-046 ruled the framework image in bin/shop-shell becomes a parameterized, env-overridable variable sourced from the ADR-043 ops-coordinates artifact, overriding ADR-028's product-neutral-image exemption. Never implemented: bin/shop-shell:136 still bakes the literal --image ghcr.io/dstengle/shopsystem-bc-lead:latest and comments (lines 37-39, 123) describe the exemption as in force. adr-046 retires at cut-over; this item ensures the live behavior gets its governing decision fresh in the operations chain during the migration. Verified against the live script 2026-08-22.
+COMMENTS:
+
+
+=== lead-msm4m [task/open/P3] System-BOM intent, carried verbatim (from retired adr-047 + pdr-030 + brief-015 + 6 system-manifest pins)
+created 2026-08-22 updated 2026-08-22 closed 
+R30 (2026-08-22, brief-028 ask 6c): the system-BOM bundle retires unrealized. Intent carried verbatim: the shop system maintains ONE machine-readable system bill of materials (system-manifest.yaml) enumerating every component of the running system — BCs, images, packages, tools, versions — as a single source of truth, with a contract tool to read it; consumers (doctor, release pipelines, fleet audits) resolve component identity from it rather than from scattered literals. Pinned by 6 scenarios in features/system-manifest/ (retiring with the bundle; hashes re-mint if the intent is taken up). Full originals preserved on the archive branch at cut-over (archive/migration-2026-08) and on the pre-migration snapshot tag.
+COMMENTS:
+
+
+=== lead-kmrd4.5 [bug/open/P2] [finding] F8: migration dispatch wrapper is ungoverned generating context — router connective prose traces to no approved definition
+created 2026-08-23 updated 2026-08-23 closed 
+Surfaced by the authority 2026-08-23 probing the authoring-prompt composition. The Phase 0 build-chain prompt = approved step prompt (governed) + run parameters (governed via action table) + curated feed list (derived but router-assembled) + router connective prose (ungoverned). Fix direction: Phase 1 process definitions include a dispatch-context contract — the process names the wrapper's allowed content; the wrapper becomes a compiled projection, not freehand. Principle: governed-context.
+COMMENTS:
+
+
+=== lead-kmrd4.6 [bug/open/P2] [finding] F9: subagents dispatched from the main-session inherit main's CLAUDE.md surface (old-model primer), not the rebaseline branch surface
+created 2026-08-23 updated 2026-08-23 closed 
+Surfaced by the authority 2026-08-23. The Phase 0 agent's file reads were curated-feed-clean, but its inherited system context carried main's lead-primer (old model). Principles rendering identical (digest 1e00df3daee9) so damage bounded. Fix direction: run migration authoring sessions against the rebaseline worktree's own .claude surface, or strip the inherited primer at dispatch. Principles: governed-context, least-context.
+COMMENTS:
+
+
+=== lead-kmrd4.7 [bug/open/P3] [finding] principle-set chain run — F1: chain-review material has no defined artifact type — every future chain review produces undefined-format material until the type exists
+created 2026-08-23 updated 2026-08-23 closed 
+Define a review-material artifact type by the run that next needs it (R29 pattern). Source: principle-set chain run, basis/records/principle-set-chain-review-material.md.
+COMMENTS:
+
+
+=== lead-kmrd4.8 [bug/open/P3] [finding] principle-set chain run — F2: no scope-routing rule for cross-scope keepers — the next scope-mismatched keeper stalls its run
+created 2026-08-23 updated 2026-08-23 closed 
+Phase 0 hit this with 01-principles.md (architecture vs working scope); ask 2 of brief-029 resolves the instance, the rule is unwritten. Define at next occurrence.
+COMMENTS:
+
+
+=== lead-kmrd4.10 [bug/closed/P3] [finding] principle-set chain run — F4: principle-set typedef Produced-by line and cold-reviewer competencies create dual authority with the new authoring process
+created 2026-08-23 updated 2026-08-23 closed 2026-08-23T19:44:08Z
+Brief-029 ask 4 default (silence): friction stands, filed. Exact before/after wordings in brief-029 ask 4; apply on the authority's ask-1/ask-4 approval.
+COMMENTS:
+
+
+=== lead-kmrd4.9 [bug/open/P3] [finding] principle-set chain run — F3: no rule for judge-role reuse vs new seat definition — each run re-decides ad hoc
+created 2026-08-23 updated 2026-08-23 closed 
+Phase 0 chose reuse (cold-reviewer). Codify in the role-definition guideline when Phase 1 builds the meta-chains.
+COMMENTS:
+
+
+=== lead-kmrd4.11 [bug/open/P3] [finding] principle-set chain run — F5: derivation-link direction between peer-scope sibling instances of one type is undefined — provenance edge between working and architecture principle sets unrecordable
+created 2026-08-23 updated 2026-08-23 closed 
+Define when the architecture set is authored (brief-029 ask 2).
+COMMENTS:
+
+
+=== lead-kmrd4.12 [bug/open/P3] [finding] principle-set chain run — F7: chain-run agent seats carry no work-item id — finding items cannot be filed from the seat; router files at reconciliation
+created 2026-08-23 updated 2026-08-23 closed 
+Fix direction: dispatch-context contract (rides lead-kmrd4.5/F8) includes the work-item id.
+COMMENTS:
+
+
+=== lead-v0vaj [task/open/P2] Product cycle: path from initiative to assigned work lacks iterative experimentation and feedback loops; initiative sizing
+created 2026-09-02 updated 2026-09-02 closed 
+Raised by the product authority during discovery lead-50ecj (2026-09-02), filed verbatim to return to later:
+
+"I see an issue in the product cycle regarding the path from initiative to assigned work. Initiatives are large things, too large to be safely specified and implemented in one shot. The current process doesn't allow for iterative experimentation and implementation with feedback loops. ... I don't know if phases can work for this and even then, they aren't defined anywhere.
+
+One possibility is to simply scope initiatives to be reasonably sized and achievable with a reasonable amount of work. There could be higher and lower level initiatives to be able to break down the complexity and manage smaller parts that may or may not work out."
+
+Context: surfaced while shaping the progressive-disclosure initiative, whose scope resisted one-shot specification. Candidate directions named: (a) size initiatives to be individually achievable; (b) an initiative hierarchy (higher/lower level) so smaller parts can fail independently; (c) define phases somewhere, if phases are the mechanism at all. Touches the initiative typedef, initiative-check, and product-flow.
+COMMENTS:
+
+
+=== lead-jwsl1 [task/open/P2] Restart progressive-disclosure / knowledge-access discovery once the decision system is fleshed out
+created 2026-09-02 updated 2026-09-02 closed 
+Parked by the product authority on 2026-09-02, closing discovery lead-50ecj without convergence: "We do not actually have a fully fleshed out decision system, so this initiative is actually premature at this point."
+
+Resume anchor: sessions/sess-2026-09-02-a.md on the rebaseline branch — carries the shaped problem statement, the authority's positions (quoted), the candidate measure, the appetite items ruled too broad for one initiative, and the scope-cut options that were on the table at close.
+
+Next ready action when unparked: open a discovery-conversation in review-of-evidence form over sess-2026-09-02-a, confirm or revise the recorded positions, then converge on the cut-down scope. Related: lead-x7bp (the standing PD epic), lead-iixm (disclosure-conformance scenario sets), lead-v0vaj (initiative sizing / iterative path — the process concern this discovery surfaced).
+COMMENTS:
+
+
+=== lead-jacwu [task/closed/P2] Discovery: skills availability — rendering and placement as a process
+created 2026-09-02 updated 2026-09-02 closed 2026-09-02T13:36:30Z
+Discovery conversation (brainstorm form) opened 2026-09-02 in-session. Topic: approved process definitions are not available to executing agents as loadable skills; rendering is an orphan tool run. Authority's constraint: very constrained, limited to making sure skills are available to the agent; the making-available must itself be a defined process. Import (brief-030's 38-skill plan) stays out. Guidelines stay out (they belong to the artifact process; separately observed unimplemented).
+COMMENTS:
+
+
+=== lead-mfcyp [task/open/P2] ADR artifact and processes
+created 2026-09-02 updated 2026-09-02 closed 
+Authority direction 2026-09-02, verbatim: 'Add to backlog for next: ADR artifact and processes.' An ADR artifact typedef plus its producing processes. Recorded from the skills-availability discovery session.
+COMMENTS:
+
+
+=== lead-m2o7h [task/open/P2] Guidelines delivery into authoring contexts is unimplemented
+created 2026-09-02 updated 2026-09-02 closed 
+Observed in the skills-availability discovery (sess-2026-09-02-b), authority verbatim: 'Guidlines are part of the artifact process and this is stated in the glossary but it looks unimplemented in practice.' A drift instance against governed-context/least-context, distinct from the skills-availability initiative (an explicit no-go there). Target: the artifact/authoring processes' context-load lists and whatever renders guidelines into them.
+COMMENTS:
+
+
+=== lead-36apr [task/open/P2] Define 'loadable form' in the glossary
+created 2026-09-02 updated 2026-09-02 closed 
+From the feature check of feat-skills-availability (PM pass with reasons, 2026-09-02): the scenarios' matching target 'the loadable form of its approved definition' is the framing's capability language; the mapping it names is what the skill-rendering process defines. Give the term a glossary home when that process definition is authored — likely alongside or within the existing 'rendering' entry.
+COMMENTS:
+
+
+=== lead-ki66p [task/open/P2] scenario-assignment lacks a lead-shop-internal path
+created 2026-09-02 updated 2026-09-02 closed 
+Found at first use (feat-skills-availability, 2026-09-02): every scenario is lead-shop-owned per the initiative's decomposition (no Bounded Context touched), but the process's assign step tags by Bounded Context, its dispatch step sends one assign_scenarios per context, and its O1 admits only owned-by-a-BC or unowned. Third lead-shop-internal fit gap of the day (after backlog-order fitness scenario 4, amended v7, and the initiative-check owning-context wobble). The run of record handled it disclosed: tagged by the owning shop, nothing dispatched (freeze; no BC to receive), recorded in the feature's history. Target: scenario-assignment process definition — define the lead-shop-internal path (tag value, no-dispatch branch, record wording).
+COMMENTS:
+
+
+=== lead-dyz0o [task/open/P2] Consistency-maintenance process
+created 2026-09-02 updated 2026-09-02 closed 
+Authority direction 2026-09-02, verbatim: 'put in a backlog entry for consitency maintenance process.' A defined process that keeps the corpus consistent as it changes — the class of drift this session kept finding by hand: stale cross-references after a definition moves or renames (the Carried-by sweep), prose sections out of step with amended frontmatter, quotes of amended framings in downstream artifacts, lead-shop-internal fit gaps (lead-ki66p pattern), terms used before defined (lead-36apr). skill-rendering covers the skills channel; this covers the rest. Candidate shape: lint-extension (mechanical) + a scheduled or triggered reconciliation pass with an owner escalation path. To be framed as an initiative through discovery when prioritized.
+COMMENTS:
+
+
+=== lead-sx9xj [task/open/P2] More comprehensive rendering work later: fold the sibling rendering processes (skill, role) into one once two exemplars stand; bring the principles rendering (compile_principles.py → .claude/shop/principles.md) under a defined process — authority's words 2026-09-03: 'sibling process for now, more comprehensive work later'
+created 2026-09-03 updated 2026-09-03 closed 
+
+COMMENTS:
+
+
+=== lead-xmuft [task/closed/P2] Rendering processes: a failed runtime check step reads as a clean check — skill-rendering and role-rendering route empty findings to the success exit whether the compiler ran or crashed (observed 2026-09-03: zsh did not word-split ${approved}, the compiler crashed, no rows, run exited clean). Fix candidates: the runtime treats a nonzero run exit as a failed step; or the compiler emits a row for a listed path it cannot read. Owner's decision on both definitions.
+created 2026-09-03 updated 2026-09-04 closed 2026-09-04T00:19:20Z
+
+COMMENTS:
+
+
+=== lead-ghaiq [task/open/P2] Rendering processes: a run-record row written into a process definition makes its rendered skill diverge until the next skill-rendering run — observed 2026-09-03 on role-rendering; decide whether run records belong in the definition's history or elsewhere (feeds lead-sx9xj)
+created 2026-09-03 updated 2026-09-03 closed 
+
+COMMENTS:
+
+
+=== lead-4bm7q [task/open/P2] Discovery-conversation process: reinforce problem-vs-solution in the framing — the lead-pm must catch solution words (tool names, forms) in the authority's statements during discovery and recommend a restatement before the frame step, so the initiative screen's scenario 4 never meets them; authority's ruling 2026-09-04 on brief-034 ask 3: 'my wording should change', no exemption to the criterion
+created 2026-09-04 updated 2026-09-04 closed 
+
+COMMENTS:
+
+
+=== lead-spnnl [task/open/P2] A simpler process for simpler, straightforward changes — small definition amendments and repairs should not need the full initiative→feature flow; authority's direction 2026-09-04 (brief-034)
+created 2026-09-04 updated 2026-09-04 closed 
+
+COMMENTS:
+
+
+=== lead-m6m2b [task/open/P2] Initiatives need a tech-debt budget and a mechanism for system improvements that are not debt — the initiative typedef's appetite has no allowance and no defined path exists to extend an initiative; authority's direction 2026-09-04 (brief-034 ask 4): a direct risk to the initiative is handled within the same run
+created 2026-09-04 updated 2026-09-04 closed 
+
+COMMENTS:
+
+
+=== lead-8hcu8 [task/closed/P2] initiative-check gap: the bet step does not ask whether the bet rests on a design decision that needs its own record — init-roles-availability's rulings (render rather than place; sibling process) reached delivery with no ADR, the solution stated only inside the process definition and the architect's feasibility note; authority's direction 2026-09-04: author the ADR after the fact and backlog this gap
+created 2026-09-04 updated 2026-09-06 closed 2026-09-06T19:06:51Z
+
+COMMENTS:
+
+
+=== lead-4kymc [task/open/P2] The lead shop's operational contract has no artifact on this branch — intent-provenance requires intent to enter through a contract, and every initiative's Framing says 'through the operational contract' without an artifact to name; surfaced by the adr-2026-09-03-role-rendering screen (round 3). Define the artifact (typedef or record) and name the one the lead shop offers.
+created 2026-09-04 updated 2026-09-04 closed 
+
+COMMENTS:
+
+
+=== lead-1d0eo [task/open/P2] Configuration lane: instance-local role/process overlays and operational settings (BC runtime back-end, LLM connection management) need a governed home the compilers merge at render time — no new types now; authority's direction 2026-09-04 (discovery lead-1kp6m)
+created 2026-09-04 updated 2026-09-04 closed 
+
+COMMENTS:
+
+
+=== lead-izfpk [task/open/P2] Grooming orders all open work, not just planned initiatives: backlog-ordering broadens (or a grooming process with cadence and exit) — authority's direction 2026-09-04 (discovery lead-1kp6m)
+created 2026-09-04 updated 2026-09-04 closed 
+
+COMMENTS:
+
+
+=== lead-vx02q [task/open/P2] Drain the work-register pileup (217 open items, 201 at one priority): each becomes a durable request or is dropped; the register holds work in motion only — authority's direction 2026-09-04 (discovery lead-1kp6m)
+created 2026-09-04 updated 2026-09-04 closed 
+
+COMMENTS:
+
+
+=== lead-ghulb [task/open/P2] Initiative typedef: the originator's raw words live on the request and are referenced, the Framing is refined with the authority — 'should be linked, but referenced. The framing should go through refinement with the human' (2026-09-04, discovery lead-1kp6m); target basis/artifacts/initiative.md, beside lead-4bm7q
+created 2026-09-04 updated 2026-09-04 closed 
+
+COMMENTS:
+
+
+=== lead-g5tu9 [task/open/P2] session-handoff land step: git push and bd dolt push need credentials this environment supplies only through 'agent-vault run <command>' — the step's run line fails on auth as written; authority's direction 2026-09-04; target basis/processes/session-handoff.md
+created 2026-09-04 updated 2026-09-04 closed 
+
+COMMENTS:
+
+
+=== lead-2ivie [task/open/P2] request-intake: an objection by the product-authority as originator is a ruling, not an objection subject to the round cap — the process does not yet distinguish the authority from any other originator at route-answer's failsafe; found by brief-035's cold read round 2; target basis/processes/request-intake.md
+created 2026-09-04 updated 2026-09-04 closed 
+
+COMMENTS:
+
+
+=== lead-j30gv [task/open/P2] Journal messages offline: messages are ephemeral and database-only; journal them into an offline place that does not enter the main context, so implementation guidance and other message-borne records survive as history — authority's direction 2026-09-06; a larger effort
+created 2026-09-06 updated 2026-09-06 closed 
+
+COMMENTS:
+
+
+=== lead-1qzt0 [task/open/P2] skill-rendering check step: its run script word-splits ${approved} only under bash — under zsh every definition is reported 'missing … no-skill-id'; found by the implementer of feat-role-decisions 2026-09-06; target basis/processes/skill-rendering.md (state the shell, or quote the loop so it holds under both)
+created 2026-09-06 updated 2026-09-06 closed 
+
+COMMENTS:
+
+
+=== lead-o5nic [task/open/P2] ADR: Sub-process of initiative-check on init-run-measurement
+created 2026-09-08 updated 2026-09-08 closed 
+Sub-process: adr-authoring for recording architect decisions from init-run-measurement feasibility assessment
+COMMENTS:
+start
+parent-anchor: lead-fresb
+parent-step: author-decision-record
+process: adr-authoring-process
+rendering: basis/processes/adr-authoring.md
+parameters:
+  subject: Decision: The one row per agent run is written to a new artifact kept beside the session record -- never as an amendment to the session-record schema, which this shop does not own (pkg:shopsystem-knowledge/session-record). The row is written by a runtime step, never an agent step: it reads the run's anchor, where the run passed through the router, and the harness's own usage report; a field the harness does not expose for a given run (most often output tokens) is left blank, never estimated and never computed by a model. The step's home is session-handoff-process's collect step, the process that already produces the session record this artifact sits beside; whether reconcile-and-close's own close and a review conversation's anchor need the same step is a separate question, not decided here. Decided by: lead-solutions-architect, under a right it holds, or by the authority under escalation where no listed right covers it. Trigger: the bet on the initiative at initiatives/init-run-measurement.md. Evidence: the offer as rendered into that initiative's Document History.
+  principles: basis/architecture-principles.md
+  criteria_path: basis/fitness/adr.fitness.md
+model: claude-haiku-4-5-20251001
+first-step: author
+---
+step author
+artifact: decisions/adr-2026-09-08-run-cost-artifact.md
+---
+step screen
+review: {"verdict": "findings", "findings": [{"criterion": "principles", "quoted_text": "The session_record data value is typed $ref: session-record, from: pkg:shopsystem-knowledge/session-record — a package this shop does not own. ... single-source-of-truth: the session-record schema is owned by pkg:shopsystem-knowledge, fetched through that package's own contract tool, not by this shop; a fact this shop does not own gets no second home written into it. ... contracts-between-contexts — no Bounded Context is touched; nothing here reaches across a contract.", "change": "Name what pkg:shopsystem-knowledge is in the Bounded Context/shop taxonomy, or narrow the claim from 'no Bounded Context is touched' to 'this decision adds no new touch beyond the existing reference'.", "confidence": "wobbly"}, {"criterion": "scenario 1 (one decision)", "quoted_text": "by a new runtime step (never an agent step) added at session-handoff-process's collect step, the step that already produces the session record the artifact sits beside ... a new runtime step is added at (or immediately beside) collect, reading the run's anchor and the harness's usage report and writing the row.", "change": "State one placement for the new step (inside collect vs. a distinct adjacent step) consistently in the Decision and the Consequences sections.", "confidence": "wobbly"}, {"criterion": "scenario 2 (evidence)", "quoted_text": "the delivered router already reads the harness's own usage report per resu
+---
+step log-round
+round_log: [{"verdict": "findings", "findings": [{"criterion": "principles", "quoted_text": "The session_record data value is typed $ref: session-record, from: pkg:shopsystem-knowledge/session-record — a package this shop does not own. ... single-source-of-truth: the session-record schema is owned by pkg:shopsystem-knowledge, fetched through that package's own contract tool, not by this shop; a fact this shop does not own gets no second home written into it. ... contracts-between-contexts — no Bounded Context is touched; nothing here reaches across a contract.", "change": "Name what pkg:shopsystem-knowledge is in the Bounded Context/shop taxonomy, or narrow the claim from 'no Bounded Context is touched' to 'this decision adds no new touch beyond the existing reference'.", "confidence": "wobbly"}, {"criterion": "scenario 1 (one decision)", "quoted_text": "by a new runtime step (never an agent step) added at session-handoff-process's collect step, the step that already produces the session record the artifact sits beside ... a new runtime step is added at (or immediately beside) collect, reading the run's anchor and the harness's usage report and writing the row.", "change": "State one placement for the new step (inside collect vs. a distinct adjacent step) consistently in the Decision and the Consequences sections.", "confidence": "wobbly"}, {"criterion": "scenario 2 (evidence)", "quoted_text": "the delivered router already reads the harness's own usage report p
+---
+branch route-screen
+read review.verdict == "findings" (not clean)
+read review.findings: [principles, scenario 1, scenario 2] (not all uncovered)
+took else -> revise
+reason: Named findings (non-uncovered criteria) require revision by the maker before PM decision
+---
+step revise
+artifact: decisions/adr-2026-09-08-run-cost-artifact.md
+note: All three wobbly findings repaired. Record now screens clean against ADR fitness set and architecture principle set. Version bumped to 2.
+---
+held decide
+cause: human step requiring lead-pm role decision
+awaits: lead-pm to decide on the ADR verdict (pass, fail with criterion named, or definition change)
+inputs:
+  - review: screen-review from round 1 (three wobbly findings, all repaired by revise)
+  - round_log: [the one review from the cold-reviewer screen]
+  - artifact: decisions/adr-2026-09-08-run-cost-artifact.md (v2, repaired)
+question: From the revised record and the screening review — which carried three wobbly findings now repaired — take the go/no-go on the decision record: "pass" (checked) if the record is sound, "fail" with the criterion named if it fails a fitness scenario, or "pending-definition" if the gap requires a definition change to the architecture principle set or the ADR fitness set.
+default: pass (the record re-screens clean after revise)
+---
+answer decide — decision: pass. Reasons: the one decision (a run's cost row in a new lead-shop artifact beside the session record, written by a runtime step after collect, the harness's report the only source, blank never estimated) holds each criterion; the three wobbly findings are repaired in the revise; the record stays at 2,544 words, long but within the criteria. Given by: lead-pm.
+---
+step decide
+decision: {"verdict": "pass", "reasons": "the one decision (a run's cost row in a new lead-shop artifact beside the session record, written by a runtime step after collect, the harness's report the only source, blank never estimated) holds each criterion; the three wobbly findings are repaired in the revise; the record stays at 2,544 words, long but within the criteria."}
+---
+step record
+artifact: decisions/adr-2026-09-08-run-cost-artifact.md
+gap_entry: 
+definition: 
+---
+end
+state: done
+result: decisions/adr-2026-09-08-run-cost-artifact.md
+
+=== lead-ml7u0 [task/open/P2] ADR: Sub-process of initiative-check (D2) on init-run-measurement
+created 2026-09-08 updated 2026-09-08 closed 
+Sub-process: adr-authoring for recording the second architect decision from init-run-measurement's check
+COMMENTS:
+start
+parent-anchor: lead-fresb
+parent-step: author-decision-record
+process: adr-authoring-process
+rendering: basis/processes/adr-authoring.md
+parameters:
+subject: Decision: The initiative's own words scope the target to the session-record anchor — 'beside the session record' — not to a review record or a work item; a row for those two anchors, if wanted, is a separate request against reconcile-and-close and the review conversation's own anchor, not folded into this bet's appetite. Decided by: lead-solutions-architect, under a right it holds, or by the authority under escalation where no listed right covers it. Trigger: the bet on the initiative at initiatives/init-run-measurement.md. Evidence: the offer as rendered into that initiative's Document History.
+principles: basis/architecture-principles.md
+criteria_path: basis/fitness/adr.fitness.md
+model: claude-haiku-4-5-20251001
+first-step: author
+---
+checking existence
+---
+step author
+artifact: /home/vscode/rebaseline/decisions/adr-2026-09-08-run-cost-initiative-scope.md
+---
+step screen
+review: [{"verdict":"findings","top_three":["principles: actor-neutral-discipline's screen paragraph tests activity/role differentiation ('separate actor with a separate activity'), not actor-kind (human/agent/service) neutrality within one activity, so the stated 'conforms' verdict for that principle is not clearly demonstrated","scenario 1: the Decision section's second sentence adds a claim about what is NOT decided (reconcile-and-close, review-conversation) beside the one decision the scenario requires as a single actionable sentence","scenario 5: 'Reversible at low cost' is asserted, then the same passage describes a post-ship reversal as producing a scope mismatch with what shipped, without saying whether that mismatch is itself low-cost"]},{"criterion":"1","decidability":"wobbly","quote":"Run-cost measurement in this initiative is scoped to session-handoff's session-record anchor; reconcile-and-close and review-conversation rows are separate decisions","passage":"## 2. Decision\n\nThe run-cost row collection that init-run-measurement frames and bets on is scoped to the session-record anchor closed by `session-handoff-process`. Reconcile-and-close's close step and the review conversation's anchor, once its process is defined, are separate close activities with separate close anchors; run-cost rows for either are separate decisions, not decided here and not folded into this initiative's appetite.","change":"Move the second sentence (what is not decided) to Co
+---
+step log-round
+round_log: [[{"verdict":"findings","top_three":["principles: actor-neutral-discipline's screen paragraph tests activity/role differentiation ('separate actor with a separate activity'), not actor-kind (human/agent/service) neutrality within one activity, so the stated 'conforms' verdict for that principle is not clearly demonstrated","scenario 1: the Decision section's second sentence adds a claim about what is NOT decided (reconcile-and-close, review-conversation) beside the one decision the scenario requires as a single actionable sentence","scenario 5: 'Reversible at low cost' is asserted, then the same passage describes a post-ship reversal as producing a scope mismatch with what shipped, without saying whether that mismatch is itself low-cost"]},{"criterion":"1","decidability":"wobbly","quote":"Run-cost measurement in this initiative is scoped to session-handoff's session-record anchor; reconcile-and-close and review-conversation rows are separate decisions","passage":"## 2. Decision\n\nThe run-cost row collection that init-run-measurement frames and bets on is scoped to the session-record anchor closed by `session-handoff-process`. Reconcile-and-close's close step and the review conversation's anchor, once its process is defined, are separate close activities with separate close anchors; run-cost rows for either are separate decisions, not decided here and not folded into this initiative's appetite.","change":"Move the second sentence (what is not decided
+---
+branch route-screen
+read review.verdict = findings; took else -> revise
+---
+step revise
+ask: {"to":"lead-pm","kind":"clarification","question":"In the Reversibility section, you state 'reversible at low cost' but also note that post-ship reversal would create scope mismatch with what was shipped. Does this low-cost reversibility apply pre-ship only, or should I understand 'low cost' differently for post-ship scenarios?","default":"Pre-ship only; post-ship reversal incurs scope-mismatch costs and is expensive.","checkpoint":"Findings 1 and 2 repaired. Finding 1: simplified the Decision section to state only the positive scope, removing the negative-scope clause that belongs in Context or Consequences. Finding 2: rewrote the actor-neutral-discipline screen to test whether the row-collection rule applies regardless of actor kind (human/agent/service), not whether different activities get different rules."}
+---
+held revise
+ask to lead-pm for clarification on reversibility scope (pre-ship vs post-ship reversal costs)
+---
+answer revise — the ask's default stands: reversible at low cost before the step ships; after it ships, reversal costs the scope mismatch. Given by: lead-pm.
+---
+step revise
+artifact: /home/vscode/rebaseline/decisions/adr-2026-09-08-run-cost-initiative-scope.md
+---
+held decide
+human step: lead-pm to decide on the verdict from the review and revised record
+---
+answer decide — decision: pass. Reasons: one decision, the measurement's scope bound to the session-record anchor session-handoff closes; the two findings repaired in the revise; the ask answered on its default. Given by: lead-pm.
+---
+end
+state: done
+result: decision: pass
+---
+record — the revise redone by the architect role on sonnet (record v2), the earlier repair by a bare agent superseded; decide: pass; the record checked (v3). Given by: lead-pm.
+
+=== lead-721cn [task/open/P2] Primer routes deliveries >300 words through the retired stakeholder-presentation process
+created 2026-09-09 updated 2026-09-09 closed 
+Target: .claude/shop/primer.md. The primer states that deliveries to the authority longer than ~300 words go through the stakeholder-presentation process, 'no exceptions'. basis/processes/stakeholder-presentation.md is status: retired (v7, updated 2026-09-08), and its Carried-by entry says the rendering is removed from the load point. Found at sess-2026-09-09-c while delivering a discovery conversation's exchanges. The primer must name what stands, or drop the rule.
+COMMENTS:
+
+
+=== lead-e66j6 [task/open/P2] discovery-conversation orders handoff before frame, so the initiative escapes the handoff commit
+created 2026-09-09 updated 2026-09-09 closed 
+Target: basis/processes/discovery-conversation.md. The flow is route -> handoff (session-handoff-process, whose land step commits and pushes) -> route-frame -> frame (writes the initiative) -> close-out. The initiative the bet takes is therefore written after the session's own commit-and-push and lands only if the runner commits again. Found at sess-2026-09-09-c on the first converged discovery run through the full flow.
+COMMENTS:
+
+

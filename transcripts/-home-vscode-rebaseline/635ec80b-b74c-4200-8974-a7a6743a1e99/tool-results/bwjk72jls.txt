@@ -1,0 +1,1036 @@
+===== basis/guidelines/base-writing-style.md
+---
+type: quality-guideline
+id: base-writing-style
+owner: product-authority
+status: approved
+approved: 2026-08-19
+version: 2
+created: 2026-08-14
+updated: 2026-08-23
+---
+
+# Base writing style
+
+These rules apply to everything written for a human reader, regardless of
+document type. Document types add a format layer on top of this base; they
+never override it.
+
+## Goal
+
+The reader gets the point of any paragraph in one read, any section in 30
+seconds, and the whole document in two minutes. Write for the first read.
+
+## Lead with the point
+
+At every scale, state the conclusion first and the support after.
+
+- A document opens with what it found or decided, not how it got there.
+- A section opens with its main claim, then evidence.
+- A paragraph opens with its point, then elaboration.
+
+If a document type defines a structure, that structure is just this rule
+applied to that type. If no structure is defined, use this rule to invent
+one.
+
+## Detail placement
+
+Precision serves the point; it never precedes it. Formal specification
+language, methods, raw data, scoring tables, and citations go after the
+claim they support — or in an appendix. The body is for understanding.
+
+## Sentences
+
+- One idea per sentence.
+- Active voice, with a named actor: "Reviewers delete unlinked checks,"
+  not "Unlinked checks are subject to deletion."
+- Prefer the short common word: "use" not "utilize," "end" not
+  "terminate," "before" not "prior to."
+
+## Terminology
+
+- Never use a metaphor as a technical term. If a word describes a thing
+  by what it resembles instead of what it literally does, replace it with
+  the literal description. Test: could a competent reader from outside
+  the team work out the meaning from the words alone? If not, rewrite.
+- Banned words. Never use these, in any form:
+  - "load-bearing" → say "other work depends on it" or "critical to
+    operations"
+  - "surface" (as in context surface, config surface) → say "input,"
+    "source," or "channel"
+  - "seam" → say "boundary" or "integration point"
+  - "scar tissue" → describe the actual problem, e.g. "an unreviewed
+    workaround that was never removed"
+- Explain every insider reference — a past incident, an internal system,
+  a person — in one plain sentence, or cut it. Assume the reader knows
+  none of our history.
+
+## Style examples
+
+These examples exist only to show sentence style. The domain (a public
+library) is deliberately unrelated to our work. Copy the style; never
+copy the content or vocabulary into real documents.
+
+bad:
+
+> Unreturned inventory constitutes scar tissue on the circulation loop
+> and rapidly becomes load-bearing for downstream shelving throughput.
+
+good:
+
+> Overdue books pile up at the front desk, and staff spend their time
+> reshelving late returns instead of helping visitors.
+
+The bad sentence uses two metaphors as terms and never names an actor.
+The good sentence says who is affected and what actually happens, in
+plain words.
+
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+| 1 | 2026-08-14 | update | Authored (seed layer); earlier history, if any, in the repository history. |
+| 1 | 2026-08-19 | state | draft → approved. |
+| 2 | 2026-08-23 | update | Owner direction: decision-ledger references removed — changes stand on their own; history entries and text no longer cite numbered decisions. |
+===== basis/glossary.md
+---
+type: glossary
+id: glossary
+owner: product-authority
+status: approved
+approved: 2026-08-19
+version: 11
+created: 2026-08-19
+updated: 2026-08-26
+---
+
+# Glossary
+
+## How the list combines
+
+The defined-term list is this glossary combined with every schema element
+name. Per the `use-defined-terms` principle, a writer choosing between
+terms uses one of these when one fits.
+
+## Terms
+
+- **artifact type** — a named, schema-defined document type (e.g.
+  `decision-brief`); the term the schema registry uses. Not "kind".
+- **data type** — a named, schema-defined structure that is not a
+  human-readable document (e.g. `review`); passed between process steps.
+- **simple type** — a JSON Schema primitive (`string`, `integer`,
+  `boolean`, `array`, `object`), usable inline without registration.
+- **typedef** — the single source a type is generated from; templates and
+  schema fragments are its renderings (owned by shopsystem-knowledge).
+- **schema** — the machine-checkable shape of a type: fields, types,
+  enums, required sections.
+- **process definition** — the source of truth for a process: header
+  (purpose, outcomes, roles), data section, steps section.
+- **step** — one unit of a process: an agent step (carries a prompt) or a
+  runtime step (carries `set`, `run`, or `branches`; no prose).
+- **rendering** — a generated output of a definition (a skill, a
+  diagram, a template); never edited by hand, never the source of truth.
+- **guiding statement** — an optional header element of a process
+  definition that directs judgment across the whole process; compiled
+  into every rendering.
+- **fitness set** — judged (never executed) Given/When/Then scenarios
+  scoring an artifact type's quality.
+- **guideline** — prose quality rules for an artifact type, each with a
+  test, a criterion, and a yes/no decision.
+- **role** — a named capability contract and set of accountabilities,
+  assigned by process steps to whoever fills it; sequencing lives in
+  process definitions, not roles.
+- **principle** — a standing rule about how we work: name, statement,
+  rationale, implications (see the principles document's opening
+  definition).
+- **seed layer** — the hand-approved definitions the regress terminates
+  at: the principle set plus one typedef per definition document type.
+- **owner** — the role that approves changes to a definition; named in
+  every definition's frontmatter.
+- **definition chain** — the six linked definitions of good for one
+  artifact type; required before instances are authored or rewritten.
+- **keeper** — a corpus record whose action is keep-rewrite; rewritten
+  forward through its type's approved chain, never used as-is.
+- **rewrite-forward** — the default for keepers: re-author to the
+  approved standard; repair-in-place only for records already at the bar.
+- **rebaseline** — Phase 1 of the re-founding arc: the active tree comes
+  to hold only chain-conforming records; retired mass moves to the
+  archive.
+- **scope** (of a principle set) — the level the set governs and whose
+  context it loads into: working (every activity), architecture (the
+  designed system), or experience (the product's interactions).
+- **transcript** — the runtime log of turns; unscoped, not a governed
+  artifact, never loaded into context.
+- **conversation** — a scoped, bounded discussion attached to exactly one
+  anchor; every conversation belongs to a process.
+- **anchor** — the governed record a conversation attaches to: a session
+  record, a review record, or a work item; carries the conversation's
+  state across transcript boundaries.
+- **conversation type** — discovery (anchor: a session record), review
+  (anchor: a review record and its outcomes), or work (anchor: a work
+  item).
+- **session record** — the anchor record of a discovery conversation:
+  outcome, produced and revised lists, open threads, select quotes.
+- **review** — one bounded conversation in which the authority decides
+  on presented material. Replaces "sitting".
+- **review record** — the anchor record of a review: the material
+  presented and the outcomes applied; each decision traces in the
+  changed artifacts' Document History, never in a standing ledger.
+- **park** — the failsafe for work that cannot pass review within its
+  round cap: set aside with a filed finding.
+- **round cap** — the declared maximum review rounds before a loop's
+  failsafe exit fires.
+- **action** — the approved choice for one record: keep-rewrite, keep,
+  retire, or terminal, with its target.
+- **authority-call** — a row marker on a migration-plan row awaiting a
+  decision from the authority; not an action — the row has no effect and
+  is out of scope for any run until ruled.
+- **action table** — the table of records and their actions; approved row
+  by row or in blocks at a review. Drives any bulk record change.
+- **close-out** — the mechanical execution of the migration plan's
+  pre-decided retire and terminal actions: snapshot, delete, archive
+  move, a loud post-check, and the branch promotion; no review loop.
+  All stages run consecutively at cut-over.
+- **snapshot tag** — the annotated git tag (`pre-migration`) on `main`'s
+  pre-execution commit, preserving the full corpus for terminal-recovery;
+  after close-out a terminal record exists only there.
+- **migration plan** — the rebaseline's action table plus the order of
+  the per-type migration runs. Replaces "rebaseline bill".
+- **run** — one execution of a process, anchored to a work item; states:
+  running, held, done, cancelled.
+- **hold** — a run state: paused with its step and data preserved in its
+  anchor, by inactivity or by an ask; a held run is resumed or
+  cancelled, never dropped.
+- **checkpoint** — updating a conversation's anchor when a transcript
+  ends mid-conversation; a checkpoint is not a close.
+- **branched conversation** — a conversation run as a sub-process of
+  another run; its anchor records the parent (`branched-from`).
+- **Bounded Context** — a deliberately drawn region of the product with
+  one internal language, one model, and one set of contracts to other
+  regions; drawn by design, never discovered after the fact (Evans,
+  *Domain-Driven Design*).
+- **shop** — the entity that builds, operates, and evolves part of the
+  product. Two types: the lead shop (the system-level coordinator; owns
+  product-level artifacts and no Bounded Context) and the BC-shop (owns
+  and produces exactly one Bounded Context).
+- **activity** — a discrete unit of work performed inside a shop,
+  following a contract or process, with inputs, outcomes, and provenance
+  recorded. What an actor is stays unconstrained; the activity has the
+  same shape whoever performs it.
+- **contract** — a named, versioned statement of what one entity
+  promises another: the schemas exchanged, the meaning of each
+  operation, the error behavior, and the relationship kind. Offered as a
+  product contract (on a Bounded Context) or an operational contract (on
+  a shop); nothing outside a contract is promised.
+- **relationship kind** — the named pattern a contract declares for how
+  two Bounded Contexts relate, drawn from the context-mapping catalogue
+  (Evans, *Domain-Driven Design*): customer–supplier, conformist,
+  anti-corruption layer, open host service, published language, shared
+  kernel, or separate ways.
+- **vehicle** — the message type a request to a Bounded Context shop
+  travels in; chosen from the pre-state, never from the request's
+  wording.
+- **pre-state** — what a Bounded Context actually is before a change,
+  read from its contracts and its scenario register, never from its
+  internals.
+- **framing** — the PM role's recorded statement of what a request is
+  about: the originator, the problem taken to be worth solving, and the
+  outcome it serves; the exclusive decision of `lead-pm`.
+- **acceptance scenario** — a Gherkin scenario that states, as a
+  requirement, what counts as done for one behavior; co-produced by the
+  PO role and the owning Bounded Context shop; held in that shop's
+  scenario register.
+- **scenario register** — a Bounded Context shop's own list of the
+  acceptance scenarios it holds, with their hashes and states; read in
+  full across every context when a claim spans contexts.
+- **ask** — a question one activity puts to another role in place of
+  its output, carrying a default and a checkpoint; the run holds, the
+  role answers, the step resumes — never a wait in place (data type
+  `ask`; process-definition typedef §Run lifecycle).
+- **clarify** — an ask from a Bounded Context shop to the lead shop on
+  scope, vocabulary, structure, or contract; answered by the role whose
+  domain the question falls in.
+- **decomposition** — the solutions architect's record of which Bounded
+  Context owns which capability, and the relationship kind of each
+  contract between contexts.
+- **enabler work** — technical work that makes a feature possible;
+  recommended by the solutions architect, placed in the backlog by the
+  PO role.
+- **interaction type** — one way a person or an agent reaches the
+  product: command line (CLI), full-screen terminal (TUI), graphical or
+  web (GUI), API and SDK, conversational, voice, or a generated document
+  or notification; each honours its own conventions within one
+  experience.
+- **experience guidance corpus** — the product designer role's
+  principle set and guidelines for the experience: design principles,
+  vocabulary and voice, core-task parity across interaction types,
+  interaction patterns per type, and the accessibility target; the
+  role's exclusive domain.
+- **originator** — whoever expresses intent at the product's edge: a
+  person, a shop, or a system outside the product.
+- **generated interface** — an interface whose form the product composes
+  at run time from the person's context, within constraints the
+  experience guidance corpus states; a form, not an interaction type.
+- **assistant interaction** — an interaction in which the product acts on
+  an intent the person stated rather than on a command — conversational,
+  voice, or an assistant acting for the person (a closed set); the locus
+  of control is the product's, so the experience principles bound it.
+- **intent** — a desired outcome expressed by an originator at the
+  product's edge; enters the product through a contract and keeps its
+  provenance through every translation and delegation.
+
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+| 1 | 2026-08-19 | update | Seed term list authored. |
+| 1 | 2026-08-19 | state | draft → approved. |
+| 2 | 2026-08-22 | update | Conversation-model terms added; action extended to four values, authority-call and action-table amended, close-out and snapshot tag added. |
+| 3 | 2026-08-23 | update | Architecture terms added, riding the architecture-principle-set approval: Bounded Context, shop, activity, contract, relationship kind, intent. |
+| 3 | 2026-08-23 | state | The six architecture terms approved with the architecture principle set; pending markers removed. |
+| 4 | 2026-08-23 | update | Owner direction: ruling and experiment-index entries removed with the ledger practice; review and review-record entries rewritten to the outcomes model. |
+| 5 | 2026-08-23 | update | Anchor entry added — the term recurred as an unintroduced-term stumble across three screens. |
+| 6 | 2026-08-23 | update | vehicle and pre-state added — terms the lead-solutions-architect role turns on. |
+| 7 | 2026-08-25 | update | Owner direction: a near-synonym of "role" retired and banned. |
+| 8 | 2026-08-25 | update | framing, acceptance scenario, scenario register, clarify, decomposition, enabler work added — each arrived undefined in the PM and PO role screens. |
+| 9 | 2026-08-25 | update | interaction type and experience guidance corpus added with the lead-product-designer role. |
+| 10 | 2026-08-25 | update | ask added; clarify re-based as an ask; hold now names the ask as a cause. |
+| 10 | 2026-08-25 | update | originator added — used by the PM role and the ask type without a definition. |
+| 11 | 2026-08-26 | update | scope gains the experience level with the experience principle set. |
+| 11 | 2026-08-26 | update | generated interface and assistant interaction added with the experience principle set. |
+===== basis/architecture-principles.md
+---
+type: principle-set
+id: architecture-principles
+scope: architecture
+owner: product-authority
+status: approved
+approved: 2026-08-23
+version: 6
+created: 2026-08-23
+updated: 2026-08-23
+derives-from:
+  local-comprehension: least-context
+---
+
+# Architecture principles
+
+## What this set governs
+
+This is the architecture-scope principle set: the standing rules for how
+the product is designed — its regions, their boundaries, and the entities
+that build and evolve them. It is a peer of the working-scope set,
+[Founding principles](principles.md), which governs how every activity is
+performed; this set governs what the designed system must look like.
+Backticked slugs cite principles; a slug not defined in this document is
+defined in the working set. The terms Bounded Context, shop, activity,
+contract, relationship kind, and intent are defined in the
+[glossary](glossary.md). Two distinctions those terms carry are used
+throughout. A shop is either the lead shop — the system-level
+coordinator, owning the product-level artifacts and no Bounded
+Context — or a BC-shop, owning exactly one. A contract is offered
+either as a product contract, on a Bounded Context, or as an
+operational contract, on a shop.
+
+Where a principle here applies a working-scope principle at the
+architecture level, this document declares the lineage in its
+frontmatter — `derives-from` maps the principle in this set to the
+working-scope principle it applies — instead of restating the rule as a
+second authority.
+
+## What a good principle looks like
+
+This section restates the shared definition from the
+[principle-set typedef](artifacts/principle-set.md) so this document can
+be read alone; the restatement is a rendering, not a second authority.
+
+A principle is a standing rule, in four parts: a name, a statement, a
+rationale, and implications.
+
+- The **statement** is the rule. It carries the only normative keywords
+  (MUST, SHOULD, MAY — interpreted per BCP 14 when, and only when, they
+  appear in capitals) and is testable: shown a piece of work, you can
+  answer yes or no. A statement carrying more than one obligation
+  presents one obligation per bullet.
+- The **rationale** says why the rule earns its place: the failure it
+  prevents, shown as a generic example; well-known external references
+  may support it, the product's own history never appears. Rationales
+  stay prose.
+- The **implications** are the price tag: one implication per bullet,
+  the concrete change each named actor absorbs to honor the rule. They
+  add no obligations — every implication must be derivable from the
+  statement, or it is a misfiled rule.
+
+A principle is good when its statement is testable (TOGAF, The Open
+Group Architecture Framework: understandable, complete, consistent), it
+rejects work we would otherwise do (Jared Spool, "Creating Great Design
+Principles"), it directs without prescribing method (Richard Rumelt,
+*Good Strategy Bad Strategy*), it is not a claim every shop would make
+(Patrick Lencioni, "Make Your Values Mean Something", Harvard Business
+Review, 2002), and it implies at least one practice and one check. The fitness screen at the
+end of this document applies these tests to the principles above it.
+
+---
+
+## Every first-class entity has a knowable shape (`knowable-shape`)
+
+**Statement.**
+
+- The product MUST have exactly two kinds of first-class entity: the
+  Bounded Context and the shop.
+- Each Bounded Context MUST be contained and produced by exactly one
+  BC-shop; the lead shop MUST NOT contain one.
+- Every first-class entity MUST carry a description, maintained as an
+  artifact, from which an outside reader can name what the entity is
+  for, what it accepts and produces, what it guarantees, and the
+  contracts it offers.
+- The description MUST suffice without reading the entity's internal
+  code or configuration and without asking its maintainers.
+
+**Rationale.** When an entity's shape lives only in its internals, every
+consumer, coordinator, and reviewer pays to rediscover it, and each
+rediscovery reaches a different answer: nobody can say what a service
+guarantees without opening its source, the answer holds only until the
+next commit, and no description can be trusted without re-inspecting
+the thing it describes. Parnas made the design case in 1972: a module
+is known by what its interface states, not by what its implementation
+happens to do. Without `knowable-shape`,
+`contracts-between-contexts` is speculative — no one can write a
+contract for an entity whose shape no one can state.
+
+**Implications.**
+
+- Whoever creates a Bounded Context or a shop writes its description at
+  creation; an entity without a description is not yet created,
+  whatever code exists.
+- Maintainers keep the description authoritative: when an outside
+  reader must open internals to answer a question the description
+  claims to cover, the description is the defect and its maintainer
+  repairs it.
+- Architects reason from descriptions; opening an entity's internals is
+  audit work — checking that a description is true — not the normal way
+  to learn what the entity is.
+
+## Contracts are the only channel between Bounded Contexts (`contracts-between-contexts`)
+
+**Statement.**
+
+- Anything one Bounded Context expects of another MUST pass through a
+  named, versioned contract stating the schemas exchanged, the meaning
+  of each operation, the error behavior, and the relationship kind.
+- A Bounded Context MUST NOT rely on anything its counterpart's
+  contract does not state.
+- Bounded Contexts MUST NOT share state or coordinate outside their
+  contracts.
+
+**Rationale.** Unstated expectations cannot be reviewed, versioned, or
+deliberately kept — they are discovered when they break. Hyrum's law
+(Winters, Manshreck, and Wright, *Software Engineering at Google*)
+records the observed endpoint: with enough consumers, every observable
+behavior of a system will be depended on by somebody, whatever the
+contract says — the only defense is making the contract the sole thing a
+consumer is entitled to. Evans (*Domain-Driven Design*, 2003) draws
+context boundaries for the same reason: models stay coherent only when
+what crosses between them is explicit. Without this rule,
+`local-comprehension` collapses — a consumer must read a counterpart's
+internals to learn what is safe to use.
+
+**Implications.**
+
+- Contract authors put every promise in the contract document —
+  schemas, semantics, errors, relationship kind; a promise made
+  anywhere else is not owed.
+- Reviewers of a consuming context treat reliance on unstated behavior
+  as that context's defect, and treat the underlying need as a
+  contract-change request, not a license to work around the contract.
+- Integrators who need a channel the contract lacks amend the contract
+  first or do not integrate.
+
+## Discipline attaches to activities, not actors (`actor-neutral-discipline`)
+
+**Statement.**
+
+- Rules, authority, and required records MUST attach to the activity
+  and the role performing it, never to the kind of actor filling the
+  role.
+- An activity MUST NOT record less, skip checks, or gain authority
+  because a particular kind of actor — human, agent, or service —
+  performs it.
+
+**Rationale.** Rules forked by actor kind create bypasses: whichever
+fork is weakest becomes the route around the discipline, and social
+routes — "just ask the team next door" — are exactly the moves agents
+scale beyond anyone's review. Role-based access control (Ferraiolo and
+Kuhn, 1992; the NIST RBAC model) grounds the mechanism: grant to roles,
+and the actor mix can change without regranting authority. The working
+set's `no-orphan-activities` already places every activity in a process;
+this rule keeps those processes actor-neutral, which is what keeps
+`contracts-between-contexts` binding on whoever shows up — an actor that
+could renegotiate the rules by kind could talk its way around a
+contract.
+
+**Implications.**
+
+- Process authors demand the same inputs, checks, and records from a
+  step whoever performs it; "it was just an automation" excuses no
+  missing record.
+- Reviewers strike rule text that splits one activity by actor kind —
+  "humans may, agents must" — the rule attaches to the activity or it
+  goes.
+- Whoever grants authority grants it to a role within a process; a
+  standing grant to an individual actor is a defect whoever holds it.
+
+## Comprehension is local at every level (`local-comprehension`)
+
+**Statement.**
+
+- A participant MUST NOT need to read beyond the level they are
+  working at.
+- The design MUST designate, for each level, the description artifacts
+  sufficient for that level's work. The levels, and their designated
+  artifacts, are (a closed set):
+  - working inside a shop — that shop's own records and code;
+  - consuming a Bounded Context — that context's contracts;
+  - working across Bounded Contexts — the contracts and the
+    system-level map of the contexts and their relationships;
+  - coordinating the system — the product-level descriptions the lead
+    shop owns.
+- Work at a level MUST be performable from its designated artifacts
+  alone.
+- A task that can be done only by reading below its level MUST be
+  treated as a design defect — a missing or incomplete description or
+  contract — not as the reader's burden.
+
+**Rationale.** The cost of working on one part of the product has to
+stay proportional to that part, or growth taxes every participant; for
+agents the tax is literal — context loaded is context paid for. The
+familiar endpoint of the failure: a corpus with no designated reading
+levels grows until a one-line change is one nobody dares make without
+reading the whole system first, and every newcomer must read far beyond
+the task at hand before starting it. This rule applies the
+working set's `least-context` to the designed system — the lineage is
+declared in this document's frontmatter: `least-context` caps what an
+activity loads, and a design obeying this rule is what makes that cap
+reachable, because the artifacts an activity needs exist at its own
+level.
+
+**Implications.**
+
+- Designers ship each level's designated artifacts as part of the
+  design; a level whose work demands undesignated reading is unfinished
+  design.
+- Whoever hits a task that requires reading below its level files the
+  defect against the design and does not normalize the deep read into
+  practice.
+- Reviewers of a design check the reading bound: the artifacts a task
+  needs stay proportional to the task's level, not to the product's
+  size.
+
+## Design is authoritative, conformance runs both ways (`bidirectional-conformance`)
+
+**Statement.**
+
+- The design — descriptions, contracts, recorded decisions — MUST be
+  the authoritative statement of what the product is and does, and code
+  MUST conform to it.
+- Conformance MUST be checked in both directions: forward — every
+  design element MUST have code implementing it (did we build what we
+  said?) — and reverse — every code element MUST be called for by the
+  design (did we build only what we said?).
+- A design change MUST itself be a recorded activity.
+- Retirement and refactoring MUST be gated on both conformance checks.
+
+**Rationale.** When code is the authority, descriptions decay into
+folklore and `knowable-shape` drifts false — the description stops
+matching the entity it claims to describe. Forward checking alone
+misses half the failure: features removed on paper live on as unowned
+code, and undecided behavior accumulates until the design describes a
+product that no longer exists. Murphy, Notkin, and Sullivan's reflexion
+models (1995) demonstrated the two-directional comparison this
+statement requires — computing both what the design promises that the
+code lacks, and what the code contains that the design never called
+for. The working set holds the two flanking rules at working scope:
+`single-source-of-truth` gives every fact one authoritative home, and
+`delivery-verified` demands the forward direction be demonstrated in
+the running system; this rule adds the reverse direction and gates
+retirement and refactoring on the pair.
+
+**Implications.**
+
+- Whoever changes behavior records the design change — before the code
+  change or in the same recorded activity; silent drift is reverted,
+  never adopted after the fact.
+- Whoever retires a feature removes it from the design first; the
+  reverse check then names the code that may be deleted, and nothing
+  else is.
+- Refactorers demonstrate both checks unchanged — no behavior lost
+  forward, none gained in reverse.
+- Reviewers reject code no design element calls for, however good it
+  is.
+
+## Intent enters through contracts and keeps its provenance (`intent-provenance`)
+
+**Statement.**
+
+- Intent — a desired outcome expressed by an originator at the
+  product's edge — MUST enter the product through a contract: a product
+  contract on a Bounded Context or an operational contract on a shop.
+- The shop that receives intent MAY translate it, and MAY delegate it
+  to other shops, only ever through those shops' contracts.
+- Every receipt, translation, and delegation MUST be recorded, so that
+  any activity can be traced back to the originating expression without
+  ambiguity.
+
+**Rationale.** Intent that loses its origin cannot be re-decided: when
+priorities shift, no one can tell which work still serves a live desire
+and which serves a decision nobody remembers making — "why did we build
+this?" becomes answerable only by whoever happened to be present.
+IEEE 29148 (requirements engineering) standardizes exactly the chain
+this statement demands: each requirement traceable to its source and to
+what implements it. Routing intent through contracts keeps
+`contracts-between-contexts` whole at the product's edge — a backlog
+living outside the product's contracts is an out-of-band channel like
+any other, aimed at the builders instead of the contexts. And the trace
+is what gives `bidirectional-conformance` its meaning: conformance can
+verify that code matches design, but only provenance can verify that
+either matches what anyone asked for.
+
+**Implications.**
+
+- Whoever accepts intent records it at the contract where it entered
+  before working on it.
+- Whoever translates or delegates intent records each translation
+  against the original, at every step.
+- Reviewers may demand the originator chain for any activity; a trace
+  that dead-ends is a recording defect to repair, not a question to
+  drop.
+
+---
+
+## Fitness screen (the intro's tests; sources: TOGAF, Spool, Rumelt, Lencioni)
+
+| Screen | knowable-shape | contracts-between-contexts | actor-neutral-discipline | local-comprehension | bidirectional-conformance | intent-provenance |
+|---|---|---|---|---|---|---|
+| Statement testable (TOGAF: understandable, complete, consistent) | pass | pass | pass | pass | pass | pass |
+| Helps you say no (Spool) | yes: rejects entities knowable only by reading internals or asking maintainers | yes: rejects unstated cross-context reliance and out-of-band coordination | yes: rejects per-actor-kind rulebooks and recordless automation | yes: rejects designs that make below-level reading a prerequisite | yes: rejects silent drift and paper-only retirement | yes: rejects untraceable work and backlogs outside the product's contracts |
+| Not fluff, not a goal-in-disguise (Rumelt) | pass — directs without prescribing method | pass | pass | pass | pass | pass |
+| Not permission-to-play (Lencioni) | pass — most products are known by their code, not their descriptions | pass — most systems tolerate out-of-band coupling | pass — most shops rule humans and automations differently | pass — most systems require reading internals to work safely | pass — reverse conformance is rarely checked anywhere | pass — most backlogs live outside the product's audit trail |
+| Implies ≥1 practice and ≥1 check (this document's intro) | description-at-creation practice; description-completeness audit | contract-first integration; unstated-reliance review | same-records-per-step authoring; actor-kind rule-text review | designated artifacts per level; below-level-read defect filing | design-change-first practice; two-direction conformance check | record-at-entry practice; originator-chain audit |
+| Normative keywords used in statements only; capitals elsewhere only as the opening's mentions (mechanical) | pass | pass | pass | pass | pass | pass |
+| Implications derivable and actor-named, one per bullet (judged) | pass | pass | pass | pass | pass | pass |
+
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+| 1 | 2026-08-23 | update | Drafted through the approved chain, scope architecture, covering deltas D1–D7 and D9 chartered by the owner. |
+| 1 | 2026-08-23 | review | Cold-read round 1: clean — all scenarios and the mechanical check; 7 stumbles, none a fail. |
+| 2 | 2026-08-23 | update | Rationales scrubbed to generic examples per the operational-history rule. |
+| 2 | 2026-08-23 | review | Cold-read round 2: clean under the amended fitness set; 6 stumbles, none a fail. |
+| 3 | 2026-08-23 | update | Statements de-fused per authority findings: local-comprehension level ladder enumerated; intent-provenance expanded with intent defined inline; conformance direction questions restored; opening introduces the shop and contract taxonomies. |
+| 3 | 2026-08-23 | review | Cold-read round 3: clean; 6 polish-level stumbles, none a fail. |
+| 4 | 2026-08-23 | update | Re-formed to bullet form — one obligation or implication per bullet. |
+| 4 | 2026-08-23 | review | Cold-read round 4: clean under the tightened scenarios 2 and 4; 6 polish-level stumbles, none a fail. |
+| 4 | 2026-08-23 | state | draft → approved by the owner's ruling ; Phase 0 exit condition met. |
+| 5 | 2026-08-23 | update | Owner direction: decision-ledger references removed — changes stand on their own; history entries and text no longer cite numbered decisions. |
+| 6 | 2026-08-23 | update | Close-out polish: the opening's test sources named in full (Spool, Rumelt, Lencioni works cited; TOGAF expanded) — the standing cold-read stumble retired. |
+===== basis/types/ask.md
+---
+type: data-type
+id: ask
+defines: ask
+owner: product-authority
+status: approved
+approved: 2026-08-25
+version: 2
+created: 2026-08-25
+updated: 2026-08-25
+---
+
+# Data type: ask
+
+## Purpose
+
+A question one activity puts to another role, returned by an agent or
+human step in place of its outputs. Produced by any step that carries
+`asks`; routed by the runtime to whoever fills the role
+named in `to`; consumed by that role, which writes `answer`, and by the
+asking step, which resumes with the ask in its inputs. The process
+declares an `ask` data value (`$ref: ask`) and lists it in each asking
+step's inputs. Two resume paths: *answered* — the step acts on
+`answer`; *defaulted* — the step acts on `default`, because the
+process's `ask-cap` passed unanswered or because the step returned a
+second ask in the same run (at most one is allowed). See the
+[process-definition typedef](../artifacts/process-definition.md), §The
+steps section and §Run lifecycle. A `clarify` — a Bounded Context
+shop's question to the lead shop — conforms to this shape.
+
+## Schema
+
+```yaml
+schema:
+  type: object
+  fields:
+    to: {type: string}            # asker writes: the role asked; a derived check confirms it is in the step's `asks`
+    kind:                         # asker writes: what the asker lacks
+      type: string
+      enum: [pre-state, intent, reserved-decision, scope, vocabulary, structure, contract]
+      # pre-state: what a thing is before a change; intent: what the originator wanted;
+      # reserved-decision: a decision another role's domain holds; scope: whether
+      # something is in or out; vocabulary: what a term means; structure: which
+      # Bounded Context owns something; contract: what is promised across a boundary
+    question: {type: string}      # asker writes
+    default: {type: string}       # asker writes: what the step will do if the ask resolves defaulted
+    checkpoint: {type: string}    # asker writes: partial output sufficient to resume from
+    answer: {type: string, optional: true}       # answering role writes
+    answered_by: {type: string, optional: true}  # runtime writes: the role that answered
+    resolution:                                  # runtime writes
+      type: string
+      enum: [answered, defaulted, cancelled]     # cancelled: the held run was cancelled
+      optional: true
+```
+
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+| 1 | 2026-08-25 | update | Authored by owner decision: the ask mechanism is held-and-resumed only — a step returns an ask instead of an output, the run holds, the role answers, the step resumes with the answer; asks carry a default and a checkpoint; clarify becomes a specialization. |
+| 1 | 2026-08-25 | review | Screened: findings — the ask-resume loop had no exit; the resumed ask had no declared data name; only the answered path was described; three fields had no writer; the kind enum did not cover clarify. |
+| 2 | 2026-08-25 | update | Repairs: one ask per step per run; the process declares an `ask` value listed in asking steps' inputs; both resume paths stated; a writer per field; kind enum aligned to clarify's four subjects plus pre-state, intent, and reserved-decision, each explained. |
+| 2 | 2026-08-25 | review | Re-screened with the typedef: clean — all eight repairs confirmed, no synchronous form survives; three wording stumbles polished in place. |
+| 2 | 2026-08-25 | state | draft → approved by the owner. |
+===== basis/types/screen-review.md
+---
+type: data-type
+id: screen-review
+defines: screen-review
+owner: product-authority
+status: approved
+approved: 2026-08-26
+version: 2
+created: 2026-08-25
+updated: 2026-08-25
+---
+
+# Data type: screen-review
+
+## Purpose
+
+One screen round's verdict and findings against a named criteria set.
+Produced by the `screen` step of
+[`../processes/po-output-check.md`](../processes/po-output-check.md);
+consumed by its routing, `revise`, and `decide` steps and appended to
+the round log. Each finding names the criterion it fails — or
+`uncovered`, for a defect no criterion names — carries the quoted text,
+and states whether the screener could decide it (`confident`) or not
+(`wobbly`) — a wobbly finding quotes the whole passage, since the PM
+role decides from the review alone. `change` is the repair the screener
+proposes for that finding; `top_changes` the three the screener would
+make first. The `screen` step writes every field.
+
+## Schema
+
+```yaml
+schema:
+  type: object
+  fields:
+    verdict: {type: string, enum: [clean, findings]}
+    findings:
+      type: array
+      items:
+        type: object
+        fields:
+          criterion: {type: string}          # the criterion's name — "framing" is always one — or the literal "uncovered"
+          quote: {type: string}
+          change: {type: string}
+          decidability: {type: string, enum: [confident, wobbly]}
+    top_changes: {type: array, items: {type: string}, maxItems: 3}
+```
+
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+| 1 | 2026-08-25 | update | Authored with the po-output-check process: the `review` type carries no per-finding criterion, quote, or decidability, which the check's routing and decision read. |
+| 2 | 2026-08-25 | update | Screen repairs: the artifact is not opened by the decider; change and top_changes explained; writer stated. |
+| 2 | 2026-08-26 | state | draft → approved by the owner. |
+===== basis/types/check-decision.md
+---
+type: data-type
+id: check-decision
+defines: check-decision
+owner: product-authority
+status: approved
+approved: 2026-08-26
+version: 3
+created: 2026-08-25
+updated: 2026-08-25
+---
+
+# Data type: check-decision
+
+## Purpose
+
+The PM role's decision on a piece of the PO role's output, taken from
+a screen verdict. Produced by the `decide` step of
+[`../processes/po-output-check.md`](../processes/po-output-check.md);
+consumed by its `record` step and written into the
+checked artifact's Document History. `pass` accepts the output against
+the framing; `fail` names the criterion the output missed;
+`definition-change` says the criteria themselves were insufficient and
+names the gap to file. The `decide` step writes every field; that
+`criterion` accompanies `fail` and `gap` accompanies
+`definition-change` is a judged check on the decision, not a schema
+constraint.
+
+## Schema
+
+```yaml
+schema:
+  type: object
+  fields:
+    verdict: {type: string, enum: [pass, fail, definition-change]}
+    criterion: {type: string, optional: true}   # required when verdict is fail: the criterion missed, by name
+    gap: {type: string, optional: true}         # required when verdict is definition-change: the definition and what it lacks
+    reasons: {type: string}
+```
+
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+| 1 | 2026-08-25 | update | Authored with the po-output-check process by owner decision: the PM role decides from a screen verdict, never from reading every artifact. |
+| 1 | 2026-08-25 | review | Screened with the process: the conditional fields are judged, not mechanical; a line-broken token. |
+| 2 | 2026-08-25 | update | Writer and the judged nature of the conditional fields stated; token repaired. |
+| 3 | 2026-08-25 | update | Consumer corrected: the record step only. |
+| 3 | 2026-08-26 | state | draft → approved by the owner. |
+===== basis/fitness/interaction.fitness.md
+---
+type: fitness-set
+id: interaction-fitness
+owner: product-authority
+status: approved
+approved: 2026-08-26
+version: 2
+created: 2026-08-26
+updated: 2026-08-26
+target-type: interaction
+judged: true
+executable: false
+judged-by: lead-product-designer
+---
+
+# Fitness set: interaction
+
+These scenarios are the conformance screen the product designer role
+runs on a delivered interaction of any interaction type against the
+experience guidance corpus — the [experience principles](../experience-principles.md),
+the [common experience guideline](../guidelines/experience-common.md),
+and the per-type guideline for the interaction's type. They are judged
+by the `lead-product-designer` role, never executed. The judge's model
+and prompt version (or the person's name) are recorded with each
+verdict. The process that runs this screen at delivery is not yet
+defined; until it is, the product designer role runs it on request from
+the [PO output check](../processes/po-output-check.md) or a Bounded
+Context shop; the process is not yet filed as a work item. Where a
+scenario judges against a corpus record that does not yet exist — the
+vocabulary, the variations record, the core-task list, the interaction
+patterns — the verdict is "undecidable: record absent", recorded as a
+finding against the corpus, never a pass.
+
+## Scenarios
+
+Scenario 1: one vocabulary, recorded mappings
+  Given every noun and verb the interaction shows or accepts
+  When each is compared with the corpus vocabulary
+  Then it is the vocabulary's word or a platform mapping the vocabulary
+  records
+
+Scenario 2: the platform's idiom
+  Given the platform guideline the corpus names for the interaction
+  type
+  When the interaction's form is compared with it
+  Then each departure is a variation the corpus records with a reason
+
+Scenario 3: errors guide recovery
+  Given each error the interaction can show
+  When it is read
+  Then it says what happened in the vocabulary and what to do next,
+  and any internal identifier stands alongside, not in place
+
+Scenario 4: core tasks and options hold
+  Given the corpus's core-task list and the options other interaction
+  types offer for those tasks
+  When the interaction is walked
+  Then every core task completes and every option offered elsewhere for
+  the task is present
+
+Scenario 5: accessible before delivery
+  Given the accessibility target the corpus names for the interaction
+  type
+  When the delivery's attached accessibility result is read
+  Then it exists, meets the target, and for a non-web type carries the
+  WCAG2ICT applicability record
+
+Scenario 6: the per-type rules hold
+  Given the per-type experience guideline for the interaction's type
+  When each of its rules' tests is run
+  Then each rule's criterion is met
+
+## Compile mapping (each Then → one judge-rubric assertion)
+
+| Scenario Then | Judge-rubric assertion |
+|---|---|
+| 1 — vocabulary | "List every term that is neither the vocabulary's nor a recorded platform mapping. Empty list = pass." |
+| 2 — platform idiom | "List every departure from the named platform guideline without a recorded variation. Empty list = pass." |
+| 3 — errors | "For each error: what happened, in the vocabulary? what next? identifier alongside only? Cite any error failing one." |
+| 4 — core tasks and options | "For each core task: does it complete? For each option offered elsewhere: present? Cite any missing." |
+| 5 — accessibility | "Is the accessibility result attached, at target, with the WCAG2ICT record for a non-web type? Cite the result or its absence." |
+| 6 — per-type rules | "For each rule of the type's guideline: run its test; cite each criterion not met, or the record it needs that is absent." |
+
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+| 1 | 2026-08-26 | update | Authored with the experience guidelines so that their derived checks name a check that exists: scenarios 1–5 carry the common guideline's rules, scenario 6 defers to the per-type guideline. The process that runs this screen at delivery is a filed gap owned by the product designer role. |
+| 1 | 2026-08-26 | review | Screened: the PO output check unlinked; the process gap 'filed' nowhere; scenario 6 carried a variation escape with no meaning for a per-type rule; no verdict for an absent corpus record. |
+| 2 | 2026-08-26 | update | process linked and marked not yet filed; escape removed from scenario 6; the absent-record verdict defined. |
+| 2 | 2026-08-26 | review | Final screen (round 3): clean — every rule decidable with a named scenario and derivation; two line edits and three optional stumbles polished in place. |
+| 2 | 2026-08-26 | state | draft → approved by the owner. |
+===== basis/roles/lead-product-designer.md
+---
+name: lead-product-designer
+description: The product-design role of the lead shop. Owns the experience guidance corpus and conformance to it; answers for usability across every interaction type — command line, terminal, graphical, API and SDK, conversational, voice, documents — so that the product is one experience wherever it is reached.
+tools: Read, Edit, Write, Grep, Glob
+maxTurns: 60
+type: role-definition
+id: lead-product-designer
+owner: product-authority
+status: approved
+approved: 2026-08-25
+version: 2
+created: 2026-08-25
+updated: 2026-08-25
+---
+
+# Lead Product Designer
+
+You hold the role that owns the product's experience: whether people
+and agents can use what the product offers, through whichever
+*interaction type* they reach it by — command line (CLI), full-screen
+terminal (TUI), graphical or web (GUI), API and SDK, conversational,
+voice, or a generated document or notification. The product is one
+experience; you are the role that makes it so. The four product risks
+are value, usability, feasibility, and viability; usability is yours.
+
+**Standard of judgment:** consistent, not uniform — the same
+vocabulary, the same core tasks, and the same rules everywhere, with
+each interaction type honouring its own conventions. Evidence from
+people using the product, never opinion. An interface an agent uses
+is an interface you design.
+
+**Accountable for:**
+- The experience guidance corpus, a principle set with guidelines in
+  the definition-chain form: design principles as decision rules; one
+  vocabulary and voice; the rule that every interaction type supports
+  the same core tasks — the tasks a person must be able to complete
+  wherever the product is reached; interaction patterns per interaction type; the
+  accessibility target (WCAG 2.2 AA, with its non-web application for
+  terminal and document interfaces).
+- Conformance: every delivered interaction screened against the
+  corpus, a finding recorded for each departure and its resolution.
+- The information architecture and task flows of every interaction
+  type, readable from artifacts without asking their author.
+- Usability evidence on every candidate (a framed problem or a design
+  solution under consideration): what users were observed
+  doing, in a user test, a tested prototype, or measured task
+  completion, recorded with the framing it bears on.
+- Usability acceptance criteria supplied to the PO role for each
+  behavior, and the scenarios a usability test invalidates named.
+- Agent-facing ergonomics: the naming, predictability, and structure
+  of tool definitions, CLIs, and API contracts screened as interfaces,
+  with findings to the solutions architect.
+
+**Domain (exclusive):** the experience guidance corpus — this role
+alone decides what it says; conformance is that corpus applied to a
+delivered interaction.
+
+**Decision rights.**
+- *Decides:* the corpus and conformance (exclusive); and, as the
+  accountable role, the information architecture and task flows of
+  each interaction type; which interaction type a capability is
+  offered through first — an experience question; the capability's
+  worth is the PM role's decision, not this one's; what user research runs and how
+  usability is evaluated — each recorded with reasons and open to
+  another role's evidence.
+- *Recommends:* to the [PM role](lead-pm.md), observed user needs and
+  usability findings that bear on value; to the [PO role](lead-po.md),
+  usability acceptance criteria and the scenarios a test invalidates;
+  to the [solutions architect](lead-solutions-architect.md), the
+  ergonomics of contracts, CLIs, and agent tool definitions.
+- *Escalates to the PM role:* a value judgment and a usability finding
+  that cannot both stand; an experience rule the
+  [architecture principle set](../architecture-principles.md) cannot
+  accommodate.
+- *Never decides:* what problem is worth solving (the PM's); acceptance
+  of the PO's output (the PM's check); the stack and the contracts
+  themselves (the solutions architect's); how a Bounded Context builds
+  a behavior (the BC-shop's).
+
+**Admissible evidence:** user tests and trials; prototypes tested with
+users; expert review against the corpus; context-of-use analysis;
+measured task completion; the accessibility standard's success
+criteria. Not authoritative: a stakeholder's preference; a wireframe
+supplied by another role as a requirement; this role's own taste
+unrecorded; "it looks fine" from anyone.
+
+**Interfaces:**
+- The PM role: framed problems and outcomes in; usability evidence,
+  prototypes, and opportunities — user needs observed that no framed
+  problem yet serves — out.
+- The PO role: scenarios in for usability criteria; criteria and test
+  results out.
+- The solutions architect role: contracts, CLIs, and tool definitions
+  in for ergonomic review; feasibility and non-functional constraints
+  in; findings out.
+- Bounded Context shops: the corpus and its patterns out; conformance
+  findings out; clarify questions on the experience in, answers out.
+- Asks out, to the PM role: an ask is a question the corpus and the
+  framing cannot answer, sent with a proposed default.
+
+**Knowledge and skills:** user experience analysis, design,
+evaluation, and research at the level that sets the approach and
+advises across the product (SFIA 9 UNAN, HCEV, USEV, URCH, level 5);
+human-centred design as the ISO 9241-210 activities — context of use,
+user requirements, design solutions, evaluation; the accessibility
+standard WCAG 2.2 and its non-web guidance WCAG2ICT; command-line
+interface conventions (the Command Line Interface Guidelines at
+clig.dev; the Heroku CLI style guide); Microsoft's 18 Guidelines for
+Human-AI Interaction for any agent-facing interaction; Grice's
+cooperative principle for conversational interfaces; the
+[architecture principle set](../architecture-principles.md) as it
+bears on interfaces and the [working principle set](../principles.md)
+every activity runs under.
+
+**Anti-rationalization:**
+- "It's a CLI, developers don't need design." → The command-line
+  guidelines exist because they do; a CLI is an interaction type like
+  any other.
+- "We'll make it consistent later." → Every departure from the corpus
+  is recorded; deferring consistency is itself a departure.
+- "The PM already sketched it." → A sketch from another role is input,
+  not a requirement; the evidence is what users do with it.
+- "An agent doesn't care about ergonomics." → An agent is a user; a
+  tool definition it misreads is a usability failure.
+- "It looks fine to me." → This role's own preference is not
+  admissible evidence.
+
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+| 1 | 2026-08-25 | update | Authored through the approved role-definition chain from the research report on the product designer role (on the `research` branch: `research/product-designer-role-2026-08.md`, proposal item 7) by owner decision: the experience guidance corpus takes the existing chain form (a principle set plus guidelines), usability accountability is single and sits here, and the role is named product designer. Written in the six-section role form. The corpus itself is not yet authored — a filed gap this role owns. |
+| 1 | 2026-08-25 | review | Screened against the role-definition fitness set: findings — three sequencing sentences (scenario 2 fail); candidate undefined; the exclusive domain phrased as two decisions. |
+| 2 | 2026-08-25 | update | Repairs: sequencing removed from an anti-rationalization stop, a decision right, and an escalation; candidate, core task, opportunity, and ask defined inline; the exclusive domain phrased as one decision with conformance as its application. |
+| 2 | 2026-08-25 | review | Re-screened: clean — all five scenarios pass, five rules hold; two stumbles (a dash-colon aside; a residual timing word) polished in place. |
+| 2 | 2026-08-25 | state | draft → approved by the owner. |

@@ -1,0 +1,508 @@
+     1	---
+     2	type: research-report
+     3	id: system-read-2026-08
+     4	status: draft
+     5	version: 5
+     6	date: 2026-08-27
+     7	question: "Can we get a cold read of the entire system from a product leadership persona? Can this just be done as research? I'd like to get feedback on what we are building from a holistic perspective."
+     8	requested-by: product-authority
+     9	created: 2026-08-27
+    10	updated: 2026-08-27
+    11	---
+    12	
+    13	# Research report: a cold read of the whole system against the product operating model
+    14	
+    15	## Executive summary
+    16	
+    17	*How to read the labels.* **High** — the claim is read directly from
+    18	quoted basis text and judged against a standard the shop's own research
+    19	reports carry; **medium** — an inference across several documents, or a
+    20	judgment of fit; **low** — a prediction about how the system will
+    21	behave in use, which no run has yet shown. Confidence is about the
+    22	evidence; where a finding predicts, likelihood is stated in its own
+    23	phrase.
+    24	
+    25	*How it was read.* Three readers in fresh contexts read the corpus
+    26	with different lenses — the product operating model, end-to-end
+    27	coherence, and a product leader's first hour — against a stated
+    28	standard, not a persona: the shop's research-prompting report found
+    29	expert personas do not improve accuracy, so each reader was given the
+    30	product operating model as the five research reports document it
+    31	(Cagan, Torres, Perri, Shape Up, Amazon, Team Topologies, DDD) and the
+    32	shop's nine working principles.
+    33	
+    34	*Vocabulary.* The *basis* is the definition corpus on `rebaseline`;
+    35	a *hop* is one hand-off in a feature's path from request to shipped
+    36	change, and its *carrier* is the process or step defined to perform
+    37	it; a *making hop* produces an artifact (a framing, a brief), as
+    38	against a checking or carrying hop; the three readers are named by
+    39	lens — R1 the operating-model reader, R2 the coherence reader, R3 the
+    40	cold-arrival reader; "product-process report" is
+    41	`research/product-process-2026-08.md`, and citations of the form
+    42	"report F6" name that report's finding, not this one's; *framing* is the PM role's recorded statement of a request's
+    43	problem and outcome; the *initiative* is the product-level artifact
+    44	the product-process report proposes; a *BC-shop* owns one Bounded
+    45	Context; the *router* is a role name `reconcile-and-close` uses.
+    46	
+    47	1. **The verdict, in the coherence reader's words: "a well-built
+    48	   checking apparatus around an empty making pipeline."** Tracing one
+    49	   feature through the defined chain, four of ten hops have a defined
+    50	   carrier — two checks (the PO output check, the conformance check),
+    51	   one carrying hop (`reconcile-and-close`), and the discovery
+    52	   conversation, which produces a session record (a conversation's
+    53	   anchor, not a chain artifact) but not the framing the next hop
+    54	   needs. No hop that makes a chain artifact has a carrier. No process produces a framing, authors a
+    55	   brief or scenario set, assigns checked work to a shop, dispatches
+    56	   it, answers an ask, writes a changelog, or measures an outcome.
+    57	   By the corpus's own rule — a definition chain "required before
+    58	   instances are authored" — no PO artifact may yet be authored: the
+    59	   four types have typedefs and fitness sets but no guideline,
+    60	   authoring process, or skill. *(High.)*
+    61	2. **The product is never named.** No document on a newcomer's path
+    62	   says what the product does or for whom; the cold-arrival reader
+    63	   inferred "a system for running AI-agent shops" from the core-task
+    64	   list at minute 55. The architecture principles make the design "the
+    65	   authoritative statement of what the product is and does," and the
+    66	   architect is accountable for a structural model "readable without
+    67	   the code" — neither artifact exists. No customer or user appears in
+    68	   any discovery process; the only discovery is the authority in
+    69	   dialogue with an agent. *(High.)*
+    70	3. **The framing — the pivot every check runs against — is the one
+    71	   artifact no role checks and no typedef defines.** It is
+    72	   `lead-pm`'s exclusive decision ("no role overrides this one's
+    73	   framing"), the criterion always named in the PO output check, and a
+    74	   required frontmatter link in two of the four PO typedefs (brief,
+    75	   acceptance scenarios) — with no typedef,
+    76	   status, measure, or history. The role the authority holds in person
+    77	   is the only role whose output is exempt from `define-good-up-front`.
+    78	   *(High.)*
+    79	4. **Three of the four product risks have a named owner; feasibility is
+    80	   owned only by reference** — the architect's six accountabilities
+    81	   never name it. Viability is the PM's with no evidence source: the
+    82	   admissible-evidence list carries nothing on cost or capacity, and the
+    83	   one cost signal (the architect's vendor threshold) escalates to the
+    84	   authority, not the PM role. *(High for the text; medium for the
+    85	   consequence.)*
+    86	5. **Nothing measures an outcome after shipping, so `delivery-verified`
+    87	   stops at the demonstration and the product is outside
+    88	   `feedback-loops-with-consumers`.** The PM's evidence list names
+    89	   "measured outcomes of shipped work"; no process produces one;
+    90	   `reconcile-and-close` ends at "follow-ups filed." The principles
+    91	   measure the shop's machinery and never the product. *(High; the
+    92	   operating-model reader's gloss, "the build trap encoded as a
+    93	   principle set," is its judgment.)*
+    94	6. **The shop is Shape Up-style bounded delegation to component
+    95	   teams, and no document says so.** BC-shops receive a problem slice
+    96	   plus a co-produced Gherkin set and are done when every scenario has
+    97	   a status — bounded scope, fixed done, not an empowered team choosing
+    98	   how to reach an outcome. Coherent as a design; unnamed, so a reader
+    99	   applies Cagan's empowered-team expectations to the wrong unit;
+   100	   for a request that crosses contexts, the product-process
+   101	   report's F6 (Fowler/Narayan) gives the cross-team answer: "solution champions" and initiatives "parceled
+   102	   out to pre-existing product-mode teams". The
+   103	   appetite Shape Up pairs with bounded work is absent from the brief.
+   104	   *(Medium — fit judgment.)*
+   105	7. **Three principle conflicts the design carries.**
+   106	   `least-context` ("nothing ambient") against `CLAUDE.md` loading the
+   107	   principles and primer into every session; `single-source-of-truth`
+   108	   against the primer as a second, stale statement of state and against
+   109	   inline restatements of framing, ask, and the four risks that the
+   110	   cold-reviewer's "unintroduced term" standard has been pushing into
+   111	   role files; and `define-good-up-front` against one person holding
+   112	   `product-authority` and `lead-pm`. The basis names that same-person
+   113	   holding but never says the cold-reviewer screen is therefore the
+   114	   check of record; only the product-process report does. State it in
+   115	   the basis, or the maker/checker split has no home. *(High for the first two; medium for the third.)*
+   116	8. **Under-defined where the product is, over-defined where it is
+   117	   not.** No product description, context map, decomposition or ADR
+   118	   typedef, operational contract for the lead shop (the contract
+   119	   `intent-provenance` says intent enters the product through), roadmap, changelog,
+   120	   answering step for asks, or `router` role — yet three conversation
+   121	   processes with seven-day holds, a 300-line close-out process
+   122	   blocking on a tool that "is a spec, not a build," a chain-migration
+   123	   process, and three review rounds per definition before any instance
+   124	   exists. The migration plan's own Phase 2 rule: "Any definition not
+   125	   needed for it is not foundation work." The cold-arrival reader's
+   126	   count: ~2,000 lines on how documents are checked, zero describing a
+   127	   user, a problem, or an outcome. *(High for the inventory; medium for
+   128	   the judgment.)*
+   129	9. **No cadence.** The only time constants are `hold-after: P7D` and
+   130	   `ask-cap: P1D`; nothing schedules when problems are chosen, bets
+   131	   placed, priorities re-read, or users seen. Every loop is
+   132	   event-driven from the authority's next message. *(High for the
+   133	   observation; low for the prediction that follows — that for one
+   134	   person this is the same as no prioritization process — which is
+   135	   likely, in use.)*
+   136	10. **The ask mechanism's defaults are decisions in disguise for a
+   137	    one-person shop.** An ask on scope or intent that goes unanswered
+   138	    for a day resolves to the asker's default — so the reserved decision is
+   139	    taken by the asking role, the very role the ask exists to keep it
+   140	    from; "at most one ask per
+   141	    run" presses the asker to guess on the second question; and no
+   142	    process defines the answering step for `lead-pm` or the architect.
+   143	    Hold-and-resume fits asynchronous fleets; the authority works in
+   144	    the interactive position. *(Medium for the reading of the
+   145	    definitions; low for the prediction that defaults will silently
+   146	    become scope decisions in use — likely, on the one-day cap.)*
+   147	11. **What a product leader would copy — the reasons to keep the
+   148	    apparatus.** The PM decides from a fresh-context screen verdict,
+   149	    never from the artifact, so the backlog-administrator failure is
+   150	    designed out; the "definition-change" exit routes an unnamed defect
+   151	    to the standard, not the maker — the one feedback loop with a
+   152	    named consumer; every loop declares its exit; decisions live only
+   153	    as Document History in the changed artifact; the decision-brief
+   154	    discipline (answer first, asks with defaults, a budget, an
+   155	    independent cold read) is "the best-designed decision path in the
+   156	    corpus"; the lead-pm anti-rationalization list is "the sharpest
+   157	    writing in the corpus"; provenance end to end; usability owned.
+   158	    *(High that they are present; medium that they are rare.)*
+   159	12. **The product-process proposal, re-read by these lenses.** It
+   160	    fills the artifact gaps (strategy, initiative, roadmap, changelog)
+   161	    but as written moves the writing of the problem, its measure,
+   162	    appetite, and no-gos to the role whose exclusive domain is backlog
+   163	    order — the hollowed-out PO of the PM/PO research inverted into a
+   164	    hollowed-out PM — and still leaves the framing unscreened and the
+   165	    outcome unmeasured. The principle-compatible form: the PM makes
+   166	    the initiative (absorbing the framing), the cold reviewer screens
+   167	    it against a fitness set, the authority bets in a review — the
+   168	    pattern the proposal already uses for the strategy. *(Medium.)*
+   169	13. **The judgment — the smallest set of changes that makes one
+   170	    feature traceable end to end, and what to defer.** Five changes and
+   171	    two repairs, not the dozen the proposal lists: (a) an `initiative` typedef with a status, one outcome
+   172	    measure, an appetite, and the framing absorbed as its first section
+   173	    — made by `lead-pm`, screened by the cold reviewer, bet by the
+   174	    authority; (b) one PO authoring process that ends at the PO output
+   175	    check, its skill the compiled rendering — which leaves each PO type
+   176	    still without a guideline, so accepting (b) means the authority
+   177	    accepts the chain rule unmet for the four PO types during Phase 2's
+   178	    first run, recorded in their Document History — a yes/no of its
+   179	    own; (c) an
+   180	    assignment step the architect runs, carrying checked scenarios to
+   181	    a shop; (d) a changelog-and-measure step in `reconcile-and-close`
+   182	    that closes the initiative's outcome; (e) the first paragraph the
+   183	    primer lacks — what the product is, for whom, what phase we are in
+   184	    — before Phase 2 starts, since every reader stumbled on its absence
+   185	    first. Plus two one-line repairs: a `router` role, and feasibility
+   186	    named in the architect's accountabilities. Defer until a run needs
+   187	    them: the three conversation processes' hold machinery, close-out,
+   188	    chain-migration, and further review rounds on definitions with no
+   189	    instance.
+   190	14. **Two decisions only the authority can take.** Whether BC-shops are
+   191	    component teams by design (name it) or should become
+   192	    stream-aligned for some flows (Fowler/Narayan's cross-team
+   193	    initiatives with "solution champions"; LeSS's feature teams); and whether the framing gets its check inside the initiative (13(a)
+   194	    absorbs it, and the cold reviewer screens the whole) or on its own
+   195	    — answered by 13(a) if taken; live only if 13(a) is declined, in
+   196	    which case: a fitness set and a screen for the framing, or accept it
+   197	    as the one unchecked artifact, stated as such.
+   198	
+   199	## Method
+   200	
+   201	Three readers in fresh contexts, each given the frame's standard and
+   202	one lens: R1 the product operating model (four risks, problems vs
+   203	features, vision→strategy→discovery→delivery); R2 coherence — one
+   204	imagined feature ("export a report as CSV from the CLI and the GUI",
+   205	crossing two contexts) traced hop by hop through every defined process
+   206	and artifact, with principle conflicts and orphan activities recorded;
+   207	R3 cold arrival — the primer and README first, then only what they
+   208	link, sixteen documents in one hour, ending at one concrete decision
+   209	("approve a brief"). Each returned quoted basis text with path and
+   210	heading. Sources: the basis on `rebaseline` at commit `08fe8a3`, the
+   211	five research reports the frame named — a sixth, the
+   212	solutions-architect report, was not opened (the product-process report
+   213	read from
+   214	`origin/research`, since the local `research` ref lags the remote —
+   215	noted by one reader), and `main:drafts/migration-plan.md`. No web
+   216	source was opened; standards are cited through the reports that carry
+   217	them. An independent verification pass reopened the basis files
+   218	behind every quote.
+   219	
+   220	## Findings
+   221	
+   222	### F1 — The making pipeline is undefined *(high)*
+   223	
+   224	- R2's trace of ten hops: "Of ten hops, four have a defined carrier.
+   225	  Two of those four are the check steps; the making steps between them
+   226	  are undefined."
+   227	- No framing producer: `discovery-conversation` produces only
+   228	  `session_record` (`$ref: session-record, from:
+   229	  pkg:shopsystem-knowledge/session-record`); grep of `basis/processes/`
+   230	  for "framing" outside `po-output-check` returns nothing;
+   231	  `po-output-check` takes `framing: {type: string, format:
+   232	  uri-reference}`.
+   233	- `no-orphan-activities`: "Every activity in the system MUST be part of
+   234	  a defined process"; `lead-po` is "the role that makes the
+   235	  requirements" and no process has a brief, scenario set, or order among
+   236	  its outputs; `po-output-check` begins with `parameters: [artifact,
+   237	  framing, criteria_path]` — the artifact already exists.
+   238	- The chain rule: "definition chain — the six linked definitions of
+   239	  good for one artifact type; required before instances are authored"
+   240	  (glossary); the four PO types hold typedef and fitness set only.
+   241	- Assignment: the architect is accountable for "Scenario assignment:
+   242	  every accepted scenario mapped to the Bounded Context that owns it";
+   243	  no process defines assignment, message composition, or dispatch; the
+   244	  BC side arrives as foreign types (`pkg:shopsystem-messaging`,
+   245	  `pkg:shopsystem-knowledge`, `pkg:beads`) on a branch whose primer
+   246	  says "Nothing exists here except through an explicit import step."
+   247	- `reconcile-and-close` runs steps as `run-by: {role: router,
+   248	  execution: agent}`; `basis/roles/` holds no `router.md`; "Carried by:
+   249	  the existing `reconcile-and-close` skill + executable wrapper" —
+   250	  `basis/skills/reconcile-and-close/` exists and is empty; the discrepancy branch files a
+   251	  task and ends, with no consuming process.
+   252	- Asks: "Answering is an activity of the answering role… those steps
+   253	  are defined in the processes that answer, not here"
+   254	  (process-definition typedef); no process defines an answering step
+   255	  for `lead-pm` or `lead-solutions-architect`.
+   256	
+   257	### F2 — The product is unnamed; discovery has no customer *(high)*
+   258	
+   259	- R3: "No document on the newcomer's path states what the product does
+   260	  or for whom"; the primer opens "This is the `rebaseline` branch: the
+   261	  greenfield tree of the shopsystem-product migration"; the README
+   262	  opens "The `basis/` tree is the shop's definition corpus"; the
+   263	  product's substance appears only in `basis/experience/core-tasks.md`
+   264	  ("start a run", "answer an ask", "raise a clarify").
+   265	- `architecture-principles.md` §bidirectional-conformance: "The design
+   266	  — descriptions, contracts, recorded decisions — MUST be the
+   267	  authoritative statement of what the product is and does";
+   268	  `lead-solutions-architect.md`: "The structural model of the product,
+   269	  maintained as an artifact readable without the code" — no such
+   270	  artifact in the tree.
+   271	- `discovery-conversation.md` §Roles: "product-authority… lead-pm — held
+   272	  by the same person; its agent steps assist"; the migration plan's
+   273	  Phase 2: "the PM interviews the authority about the
+   274	  progressive-disclosure feature"; `lead-product-designer.md` may
+   275	  decide "what user research runs" — no process runs any.
+   276	- R1: the architect and designer are absent from the discovery process
+   277	  though both roles' interfaces and the PM/PO research place feasibility
+   278	  and usability "in discovery rather than after it"; `lead-pm`'s
+   279	  anti-rationalization "'It's infeasible, so the framing is wrong.' →
+   280	  Infeasible returns the problem for re-framing" confirms a post-hoc
+   281	  loop.
+   282	
+   283	### F3 — The framing is unchecked and untyped *(high)*
+   284	
+   285	- `glossary.md`: "framing — the PM role's recorded statement of what a
+   286	  request is about"; `lead-pm.md`: "the framing of intent… is decided
+   287	  by this role alone"; "no role overrides this one's framing."
+   288	- `po-output-check.md` §Data: "The framing is always a criterion, named
+   289	  `framing`; until a criteria set exists for a type, `criteria_path`
+   290	  names the framing itself."
+   291	- `brief.md` §Required frontmatter: "`framing` (link to the framing it
+   292	  serves)" — R3: "a link to an artifact type that has no typedef";
+   293	  `ls basis/artifacts | grep -i fram` returns nothing.
+   294	- `principles.md` §define-good-up-front: "The check MUST sit with a
+   295	  different role holding a different accountability."
+   296	- Product-process report, item 1: the framing "carries no status,
+   297	  measure, or history."
+   298	
+   299	### F4 — Risk ownership: feasibility by reference, viability without evidence *(high / medium)*
+   300	
+   301	- `lead-pm.md` §Knowledge and skills: "value and viability here;
+   302	  feasibility with the solutions architect; usability with the product
+   303	  designer"; `lead-product-designer.md`: "usability is yours."
+   304	- `lead-solutions-architect.md` §Accountable for lists the structural
+   305	  model, stack and guardrails, decomposition, scenario assignment,
+   306	  reconciliation, conformance; "feasibility" appears only in
+   307	  §Interfaces: "feasibility and shape return."
+   308	- `lead-pm.md` §Admissible evidence: "the originator's own words,
+   309	  recorded; discovery-conversation anchors; measured outcomes of
+   310	  shipped work; a screen verdict" — nothing on cost or capacity;
+   311	  `lead-solutions-architect.md` §Escalates: "any stack decision that
+   312	  commits the product to a vendor or a recurring cost above the
+   313	  threshold the authority sets."
+   314	
+   315	### F5 — No outcome is measured after shipping *(high)*
+   316	
+   317	- `lead-pm.md` §Admissible evidence: "measured outcomes of shipped
+   318	  work"; `reconcile-and-close.md` §Purpose: "the response consumed, the
+   319	  work item closed with a traceable reason, the scenario contract
+   320	  confirmed, and follow-ups filed" — the flow ends at `file-tail`.
+   321	- `principles.md` §delivery-verified: "Work MUST be counted done only
+   322	  when its effect is demonstrated in the running system";
+   323	  §feedback-loops-with-consumers: "The effectiveness of processes,
+   324	  tools, and prompts MUST be measured" — the product is not in the
+   325	  list; "Owners of judged checks grade a sample of verdicts on a
+   326	  standing calibration schedule" — no calibration process exists.
+   327	- A grep for "changelog|metric|measur" over `basis/` finds no hit that
+   328	  names a measure of a shipped outcome; the nearest are lead-pm's
+   329	  evidence list, the designer's "measured task completion", and the
+   330	  experience record's "measured use".
+   331	- `bidirectional-conformance` requires "every code element MUST be
+   332	  called for by the design"; no reverse-direction instrument exists.
+   333	- Ordering: `reconcile-and-close` and `interaction-conformance-check`
+   334	  are unordered peers; a work item can close before the conformance
+   335	  check runs.
+   336	
+   337	### F6 — Bounded delegation to component teams, unnamed *(medium)*
+   338	
+   339	- `acceptance-scenarios.md`: "the set the PO role submits and the owning
+   340	  Bounded Context shop executes"; `reconcile-and-close.md` O3: "The
+   341	  scenario register and pinned hashes are confirmed consistent with
+   342	  what was dispatched"; `verify` prompt: "Silence on a scenario is a
+   343	  discrepancy, not a pass."
+   344	- `architecture-principles.md` §knowable-shape: "Each Bounded Context
+   345	  MUST be contained and produced by exactly one" shop; `glossary.md`:
+   346	  "the lead shop (the system-level coordinator; owns product-level
+   347	  artifacts and no Bounded Context) and the BC-shop (owns and produces
+   348	  exactly one Bounded Context)."
+   349	- Product-process report item 6: LeSS is the contrast, with
+   350	  context-owning teams as "component teams"; item 7: "nothing counts
+   351	  how often a request crosses contexts"; F6 (Fowler/Narayan):
+   352	  "Initiatives don't get their own team. They are parceled out to
+   353	  pre-existing product-mode teams."
+   354	- `brief.md` §Required sections — Scope, What the shop needs; no
+   355	  appetite; product-process item 8(b) puts the appetite on the
+   356	  initiative only.
+   357	
+   358	### F7 — Principle conflicts the design carries *(high / medium)*
+   359	
+   360	- `principles.md` §least-context implication: "Whoever runs a session
+   361	  loads a conversation's anchor and its definition chain, nothing
+   362	  ambient"; `CLAUDE.md` imports `.claude/shop/principles.md` and
+   363	  `.claude/shop/primer.md` into every session.
+   364	- The primer's §Current state names Phase 1 open items; `basis/` shows
+   365	  them done — a second statement of state.
+   366	- `principles.md` §single-source-of-truth remedy: "Writers link or
+   367	  `$ref` instead of restating"; `lead-pm.md` restates framing and ask
+   368	  inline; `lead-product-designer.md` restates the four risks;
+   369	  `lead-po.md` says "until they exist, the frozen corpus on `main` is
+   370	  the reference" while `basis/artifacts/brief.md` exists; R2: the
+   371	  cold-reviewer's "unintroduced term is a defect" standard "is pushing
+   372	  text toward restatement and against the principle."
+   373	- `po-output-check.md`: `decide` is `lead-pm`; the framing is
+   374	  `lead-pm`'s; the fitness set is `product-authority`'s;
+   375	  definition-change routes to the same person; the different role in
+   376	  the loop is `cold-reviewer`; product-process item 8(a): "the cold
+   377	  reviewer's screen is the check of record, since the authority holds
+   378	  `lead-pm` in person, an accepted arrangement."
+   379	- `interaction-conformance-check.md`: "screener — lead-product-designer
+   380	  in a fresh context… Decider — the same role"; the corpus screened is
+   381	  that role's exclusive domain; R2: "the same role with amnesia."
+   382	
+   383	### F8 — Over- and under-definition *(high / medium)*
+   384	
+   385	- Missing typedefs and processes: product description, context map,
+   386	  decomposition, ADR, the lead shop's operational contract
+   387	  (`intent-provenance` requires intent to "enter the product through a
+   388	  contract"), roadmap, changelog, answering steps, `router`.
+   389	- Present: `discovery-`, `review-`, `work-conversation`, each
+   390	  `hold-after: P7D` with classification enums, plus `session-handoff`,
+   391	  all with `bd` runtime steps; `corpus-close-out` (~300 lines) on
+   392	  `archive-move`, "a spec, not a build… The steps that call it block
+   393	  until the tool exists"; `definition-chain-migration` requiring six
+   394	  links per type; `brief.md` v1→v3 in one day.
+   395	- `main:drafts/migration-plan.md` §Phase 2: "Any definition not needed
+   396	  for it is not foundation work — it gets built later, by the run that
+   397	  needs it."
+   398	- R3: "Nine working principles, an architecture set, an experience set,
+   399	  six roles, twelve processes, nineteen typedefs, nine fitness sets and
+   400	  eleven guidelines exist before the first feature" — the verifier
+   401	  counts twenty typedefs; the other counts hold.
+   402	- R3 on undefined tools and terms: `bd`, CEL, SCQA, BLUF,
+   403	  `pkg:shopsystem-knowledge`, "work item", "meta-chain" pass through
+   404	  undefined; the glossary's "definition chain — the six linked definitions" never
+   405	  enumerates the six, which live in `basis/types/definition-chain.md`,
+   406	  linked from nothing on the newcomer's path; the glossary interleaves ~12 migration-mechanics
+   407	  terms with the product-model terms.
+   408	
+   409	### F9 — Cadence and the ask mechanism *(medium)*
+   410	
+   411	- Time constants: `hold-after: P7D` in seven processes; `ask-cap: P1D`
+   412	  in two; every conversation loop returns to an `observe` step run by
+   413	  `product-authority`.
+   414	- `process-definition.md` §Run lifecycle: "An unanswered ask resolves
+   415	  to its `default` at the process's `ask-cap`… and the run resumes on
+   416	  the default"; "A step returns at most one ask per run — the loop's
+   417	  exit — and a second resolves `defaulted` at once";
+   418	  `po-output-check.md` `revise`: asks may concern "the originator's
+   419	  intent, whether a thing is in scope."
+   420	- PM/PO one-role report: "`lead-pm` runs in the authority's own turn."
+   421	
+   422	### F10 — What is unusually strong *(high that present; medium that rare)*
+   423	
+   424	- `po-output-check.md` O2: "the artifact reaches the PM role only
+   425	  through the findings' quotes — witnessed by `decide`'s inputs, which
+   426	  exclude the artifact"; guiding statement: "A finding the criteria
+   427	  cannot name is a missing criterion, and the decision that follows is
+   428	  a definition change, not a verdict on the maker."
+   429	- `process-definition.md`: "Every loop declares its exits as labeled
+   430	  branch rows."
+   431	- `review-record.md`: decisions trace "in the changed artifacts'
+   432	  Document History, never in a standing ledger."
+   433	- `decision-brief.md`: "≤ ~400 words", answer first, asks with
+   434	  defaults, independent cold read; R3: "the best-designed decision path
+   435	  in the corpus."
+   436	- `lead-pm.md` §Anti-rationalization: "'The PO knows what I meant.' →
+   437	  A framing is recorded or it does not exist" — R3: "the sharpest
+   438	  writing in the corpus."
+   439	- `architecture-principles.md` §intent-provenance: "any activity can be
+   440	  traced back to the originating expression without ambiguity."
+   441	- `lead-product-designer.md`: usability owned — the fourth risk most
+   442	  startups leave unowned.
+   443	
+   444	## Alternatives considered
+   445	
+   446	- **Judge the system as a delivery apparatus only.** All three readers
+   447	  rejected it: the shop's own principles (`delivery-verified`,
+   448	  `feedback-loops-with-consumers`) and its cited standard make outcome
+   449	  and product the test. Rejected.
+   450	- **Treat the product-process proposal as sufficient.** It fills the
+   451	  artifact gaps but inherits the unchecked framing and unmeasured
+   452	  outcome, and moves the problem statement to the PO. Partially
+   453	  adopted (item 13 keeps its initiative, re-homed).
+   454	- **Build all dozen changes the proposal lists.** R2's trace shows
+   455	  four definitions make one feature traceable, plus the primer
+   456	  paragraph and two repairs; the Phase 2 rule defers the rest.
+   457	  Rejected in favour of the five and two.
+   458	- **Read with a persona.** Rejected on the research-prompting report's
+   459	  finding; each reader was given a standard instead.
+   460	
+   461	## Limitations
+   462	
+   463	- The system is judged as a design; no feature has run through it.
+   464	  Predictions carry their likelihood in their own phrase (items 9, 10).
+   465	- The readers did not open the BC-shop side (`main`'s frozen shops,
+   466	  the `pkg:` packages); findings about dispatch and reconciliation are
+   467	  from the lead shop's definitions alone.
+   468	- The local `research` ref lags `origin/research`; one reader noted
+   469	  the product-process report was read from the remote.
+   470	- Counts (documents, lines, rounds) are the readers' at commit
+   471	  `08fe8a3`.
+   472	- What would change the judgment: a first feature run through the
+   473	  chain in Phase 2 showing the making hops are supplied by the
+   474	  authority's own turn cheaply enough that defining them is not worth
+   475	  the definition cost; or an authority decision that the framing is
+   476	  accepted unchecked by design.
+   477	
+   478	## Sources
+   479	
+   480	The basis on `rebaseline` at `08fe8a3`: `.claude/shop/primer.md`;
+   481	`basis/README.md`; `basis/principles.md`;
+   482	`basis/architecture-principles.md`; `basis/experience-principles.md`;
+   483	`basis/glossary.md`; `basis/roles/*` (six); `basis/processes/*`
+   484	(twelve); `basis/artifacts/*` (request, brief,
+   485	product-decision-record, acceptance-scenarios, backlog-order,
+   486	definition, process-definition, review-record, research-index,
+   487	experience-record, decision-brief, fitness-set); `basis/types/*` (ask,
+   488	check-decision, verification); `basis/fitness/brief.fitness.md`;
+   489	`basis/experience/core-tasks.md`; `basis/tools/lint_basis.py`;
+   490	`CLAUDE.md`. `main:drafts/migration-plan.md`. Research reports:
+   491	`research/product-process-2026-08.md` (at `de72efa`, `origin/research`),
+   492	`pm-po-one-role-2026-08.md`, `pm-po-roles-2026-08.md`,
+   493	`product-designer-role-2026-08.md`, `research-prompting-2026-08.md`.
+   494	No web source opened.
+   495	
+   496	## Document History
+   497	
+   498	| Version | Date | Kind | Entry |
+   499	|---|---|---|---|
+   500	| 1 | 2026-08-27 | update | Draft synthesized from three lens readers' notes. |
+   501	| 1 | 2026-08-27 | review | Verification round 1: findings — one retraction (a Fowler "checkout" quote no report carries); a hop count stated two ways; counts (typedefs, hold-after, PO typedefs with a framing link, readers noting the branch lag, reports) corrected; report item numbers; a label mixing confidence and likelihood. |
+   502	| 2 | 2026-08-27 | update | Round-1 repairs applied. |
+   503	| 2 | 2026-08-27 | review | Verification round 2: clean — all sixteen repairs confirmed at source; five further quotes exact; labels conform. |
+   504	| 3 | 2026-08-27 | update | Finalized as the report; cold read opened. |
+   505	| 3 | 2026-08-27 | review | Cold read round 1: findings — 13(b)'s effect on the chain rule undecidable; item 9's label folded a prediction into medium; item 7's third clause unparseable; carrier, making hop, reader names, and report citations unintroduced. |
+   506	| 4 | 2026-08-27 | update | Repairs: 13(b) states the chain rule's treatment and the count is five changes and two repairs; item 9 split high/low; item 7 in two sentences with the ask explicit; vocabulary block extended; report citations disambiguated. |
+   507	| 4 | 2026-08-27 | review | Cold read round 2: findings — 13(b) asked acceptance of a chain-rule consequence it did not name; 14's second decision depended on 13(a) unstated; item 10's low half named no prediction; item 1's closing clause; a stale count in Alternatives. |
+   508	| 5 | 2026-08-27 | update | Repairs: 13(b)'s consequence stated as its own yes/no; (e) placed before the deferrals; 14's dependency on 13(a) stated; item 10's prediction named with its likelihood; item 1's clause rewritten; Alternatives reconciled; method split from the label key. |

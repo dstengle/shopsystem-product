@@ -1,0 +1,466 @@
+✓ lead-28jt1 · Request req-2026-09-08-agent-run-term: small-change lane   [● P2 · CLOSED]
+Owner: David Stenglein · Type: task
+Created: 2026-09-09 · Updated: 2026-09-09
+Close reason: small-change-process ended: failed-at-cap exit, returned to routing
+
+DESCRIPTION
+  (none)
+
+COMMENTS
+  2026-09-09 13:16 David Stenglein
+    
+      start                                                                       
+      process: small-change-process                                               
+      rendering: .claude/skills/small-change/SKILL.md                             
+      parent: lead-6p8xu (request-intake-process, open-lane step)                 
+      parameters:                                                                 
+      request: requests/req-2026-09-08-agent-run-term.md                          
+      model: claude-sonnet-5 (router.md v10)                                      
+      first-step: name-result                                                     
+  2026-09-09 13:16 David Stenglein
+    
+      step: name-result                                                           
+      role: runtime                                                               
+      inputs:                                                                     
+      request: requests/req-2026-09-08-agent-run-term.md                          
+      set: change = request + "#result" = requests/req-2026-09-08-agent-run-      
+      term.md#result                                                              
+      next: read-id                                                               
+  2026-09-09 13:16 David Stenglein
+    
+      step: read-id                                                               
+      role: runtime                                                               
+      inputs:                                                                     
+      request: requests/req-2026-09-08-agent-run-term.md                          
+      run: sed -n 's/^id: //p' ${request} | head -1 | grep .                      
+      writes: request_id = req-2026-09-08-agent-run-term                          
+      next: read-anchor                                                           
+  2026-09-09 13:16 David Stenglein
+    
+      step: read-anchor                                                           
+      role: runtime                                                               
+      inputs:                                                                     
+      request: requests/req-2026-09-08-agent-run-term.md                          
+      run: sed -n 's/^work-item: //p' ${request} | head -1 | grep .               
+      writes: work_item = lead-99scn                                              
+      next: define                                                                
+  2026-09-09 13:17 David Stenglein
+    
+      step: define                                                                
+      role: lead-po                                                               
+      inputs:                                                                     
+      request: requests/req-2026-09-08-agent-run-term.md                          
+      glossary: basis/glossary.md                                                 
+  2026-09-09 13:20 David Stenglein
+    
+      branch: define                                                              
+      outputs:                                                                    
+      request: requests/req-2026-09-08-agent-run-term.md                          
+      not_simple: false                                                           
+      reason: ""                                                                  
+      observation: ! grep -rl "agent run" features/feat-run-measurement.md        
+      basis/artifacts/run-cost.md basis/processes/session-handoff.md              
+      basis/tools/write_cost_rows.py .claude/skills/write-cost-rows/SKILL.md &&   
+      python3 basis/tools/compile_tool.py basis/tools/write_cost_rows.py --load-  
+      point .claude/skills && git diff --quiet -- .claude/skills/write-cost-      
+      rows/SKILL.md                                                               
+      paths: ["features/feat-run-measurement.md", "basis/artifacts/run-cost.md",  
+      "basis/processes/session-handoff.md", "basis/tools/write_cost_rows.py",     
+      ".claude/skills/write-cost-rows/SKILL.md", "basis/tools/compile_tool.py"]   
+      next: route-definition                                                      
+  2026-09-09 13:20 David Stenglein
+    
+      step: route-definition                                                      
+      role: runtime                                                               
+      inputs:                                                                     
+      not_simple: false                                                           
+      branch: not_simple is false -> else -> make                                 
+      next: make                                                                  
+  2026-09-09 13:20 David Stenglein
+    
+      step: make                                                                  
+      role: lead-solutions-architect                                              
+      inputs:                                                                     
+      request: requests/req-2026-09-08-agent-run-term.md                          
+      paths: ["features/feat-run-measurement.md", "basis/artifacts/run-cost.md",  
+      "basis/processes/session-handoff.md", "basis/tools/write_cost_rows.py",     
+      ".claude/skills/write-cost-rows/SKILL.md", "basis/tools/compile_tool.py"]   
+      check_finding: ""                                                           
+      evidence: []                                                                
+      round: 1                                                                    
+      note: round/round_cap taken at the process's declared initial values (round:
+      initial 1, round_cap: initial 3, basis/processes/small-change.md) since no  
+      advance-round has run in this execution.                                    
+  2026-09-09 13:35 David Stenglein
+    
+      step: make                                                                  
+      role: lead-solutions-architect                                              
+      inputs:                                                                     
+      request: requests/req-2026-09-08-agent-run-term.md                          
+      paths: ["features/feat-run-measurement.md", "basis/artifacts/run-cost.md",  
+      "basis/processes/session-handoff.md", "basis/tools/write_cost_rows.py",     
+      ".claude/skills/write-cost-rows/SKILL.md", "basis/tools/compile_tool.py"]   
+      check_finding: ""                                                           
+      evidence: []                                                                
+      round: 1                                                                    
+      outputs:                                                                    
+      request: requests/req-2026-09-08-agent-run-term.md                          
+      changed: ["basis/artifacts/run-cost.md", "basis/processes/session-          
+      handoff.md", "basis/tools/write_cost_rows.py", "features/feat-run-          
+      measurement.md", ".claude/skills/write-cost-rows/SKILL.md"]                 
+      note: the maker recorded, in the request's Change made round-1 entry, that  
+      the                                                                         
+      verifying observation exits 1 on features/feat-run-measurement.md — the     
+      retired phrase remains in that file's own Document History rows 1, 4, 9, 10 
+      (pre-existing, append-only rows), judged not to be rewritten in place; every
+      other named acceptance statement is reported to hold. Escalated for the     
+      check                                                                       
+      step to decide. Verified independently: grep -rl "agent run" <the five      
+      paths> returns only features/feat-run-measurement.md.                       
+      next: check                                                                 
+  2026-09-09 13:35 David Stenglein
+    
+      step: check                                                                 
+      role: lead-pm                                                               
+      inputs:                                                                     
+      request: requests/req-2026-09-08-agent-run-term.md                          
+      paths: ["features/feat-run-measurement.md", "basis/artifacts/run-cost.md",  
+      "basis/processes/session-handoff.md", "basis/tools/write_cost_rows.py",     
+      ".claude/skills/write-cost-rows/SKILL.md", "basis/tools/compile_tool.py"]   
+      changed: ["basis/artifacts/run-cost.md", "basis/processes/session-          
+      handoff.md", "basis/tools/write_cost_rows.py", "features/feat-run-          
+      measurement.md", ".claude/skills/write-cost-rows/SKILL.md"]                 
+      round: 1                                                                    
+  2026-09-09 13:39 David Stenglein
+    
+      step: check                                                                 
+      role: lead-pm                                                               
+      inputs:                                                                     
+      request: requests/req-2026-09-08-agent-run-term.md                          
+      paths: ["features/feat-run-measurement.md", "basis/artifacts/run-cost.md",  
+      "basis/processes/session-handoff.md", "basis/tools/write_cost_rows.py",     
+      ".claude/skills/write-cost-rows/SKILL.md", "basis/tools/compile_tool.py"]   
+      changed: ["basis/artifacts/run-cost.md", "basis/processes/session-          
+      handoff.md", "basis/tools/write_cost_rows.py", "features/feat-run-          
+      measurement.md", ".claude/skills/write-cost-rows/SKILL.md"]                 
+      round: 1                                                                    
+      outputs:                                                                    
+      request: requests/req-2026-09-08-agent-run-term.md                          
+      check_verdict: fail                                                         
+      check_finding: "Finding 1 -- acceptance statement 1 and the verifying       
+      observation do not                                                          
+      hold: features/feat-run-measurement.md's Document History rows 1, 4, 9, 10  
+      still carry the retired phrase; the Definition carves nothing out for       
+      Document History (unlike lint_basis.py check 14 for the sibling measure).   
+      Recommended route: a definition change at round 2's define step excluding   
+      Document History from statement 1 and the observation, not a rewrite of     
+      history rows. Finding 2 -- the three scenarios @hash:2eda37f33645,          
+      @hash:475294f4bb30, @hash:a156efde14c9 had their Given/When/Then changed    
+      this round with their tags left as before, against the feature typedef's    
+      rule (v18) that a changed scenario text is a new scenario with a new        
+      @hash:, which the request's own Route also states. Conforming forms for     
+      round 2 to choose: new hashes for the three changed texts, or the three     
+      texts restored with the Definition excluding superseded scenarios."         
+      next: route-check                                                           
+  2026-09-09 13:39 David Stenglein
+    
+      step: route-check                                                           
+      role: runtime                                                               
+      inputs:                                                                     
+      check_verdict: fail                                                         
+      round: 1                                                                    
+      round_cap: 3                                                                
+      branch: check_verdict == "pass" -> false; round >= round_cap -> false (1 >= 
+      3 is false); else -> advance-round                                          
+      next: advance-round                                                         
+  2026-09-09 13:39 David Stenglein
+    
+      step: advance-round                                                         
+      role: runtime                                                               
+      inputs:                                                                     
+      round: 1                                                                    
+      set: round = round + 1 = 2                                                  
+      next: make                                                                  
+  2026-09-09 13:39 David Stenglein
+    
+      step: make                                                                  
+      role: lead-solutions-architect                                              
+      inputs:                                                                     
+      request: requests/req-2026-09-08-agent-run-term.md                          
+      paths: ["features/feat-run-measurement.md", "basis/artifacts/run-cost.md",  
+      "basis/processes/session-handoff.md", "basis/tools/write_cost_rows.py",     
+      ".claude/skills/write-cost-rows/SKILL.md", "basis/tools/compile_tool.py"]   
+      check_finding: "Finding 1 -- acceptance statement 1 and the verifying       
+      observation do not                                                          
+      hold: features/feat-run-measurement.md's Document History rows 1, 4, 9, 10  
+      still carry the retired phrase; the Definition carves nothing out for       
+      Document History (unlike lint_basis.py check 14 for the sibling measure).   
+      Recommended route: a definition change at round 2's define step excluding   
+      Document History from statement 1 and the observation, not a rewrite of     
+      history rows. Finding 2 -- the three scenarios @hash:2eda37f33645,          
+      @hash:475294f4bb30, @hash:a156efde14c9 had their Given/When/Then changed    
+      this round with their tags left as before, against the feature typedef's    
+      rule (v18) that a changed scenario text is a new scenario with a new        
+      @hash:, which the request's own Route also states. Conforming forms for     
+      round 2 to choose: new hashes for the three changed texts, or the three     
+      texts restored with the Definition excluding superseded scenarios."         
+      evidence: []                                                                
+      round: 2                                                                    
+      note: this step's own rendering names no path to the define step from       
+      here; the round runs as a repair of make per the rendering's declared next  
+      (advance-round -> make), with check_finding as its input. Any amendment     
+      the finding recommends to the Definition itself is for the maker to weigh   
+      under "make nothing the definition does not cover" -- the router records    
+      what the step does, not what it should do.                                  
+  2026-09-09 13:43 David Stenglein
+    
+      step: make                                                                  
+      role: lead-solutions-architect                                              
+      inputs:                                                                     
+      request: requests/req-2026-09-08-agent-run-term.md                          
+      paths: ["features/feat-run-measurement.md", "basis/artifacts/run-cost.md",  
+      "basis/processes/session-handoff.md", "basis/tools/write_cost_rows.py",     
+      ".claude/skills/write-cost-rows/SKILL.md", "basis/tools/compile_tool.py"]   
+      check_finding: "(round 1's finding 1 and finding 2, as recorded above)"     
+      evidence: []                                                                
+      round: 2                                                                    
+      outputs:                                                                    
+      request: requests/req-2026-09-08-agent-run-term.md                          
+      changed: ["features/feat-run-measurement.md"]                               
+      note: the maker's own reply also listed requests/req-2026-09-08-agent-run-  
+      term.md                                                                     
+      in its changed line, but that path is not in paths -- the request's own     
+      Result section is where every step's own account is written, not an         
+      artifact the make step is scoped to change; recorded here as                
+      features/feat-run-measurement.md only, the one path in paths actually       
+      touched (v11 -> v12: the three scenarios @hash:2eda37f33645 ->              
+      @hash:9e10b116b46f, @hash:475294f4bb30 -> @hash:9d92ed6fc1dd,               
+      @hash:a156efde14c9 -> @hash:c89f144bfa9e via fill-hash, per finding 2's     
+      mint-new-hash form). Finding 1 left unrepaired, same as round 1, disclosed  
+      in the request's Round 2 Change-made entry: no rule in paths or the         
+      Definition authorizes rewriting the pre-existing Document History rows,     
+      and amending the Definition itself is closed to the make role.              
+      next: check                                                                 
+  2026-09-09 13:43 David Stenglein
+    
+      step: check                                                                 
+      role: lead-pm                                                               
+      inputs:                                                                     
+      request: requests/req-2026-09-08-agent-run-term.md                          
+      paths: ["features/feat-run-measurement.md", "basis/artifacts/run-cost.md",  
+      "basis/processes/session-handoff.md", "basis/tools/write_cost_rows.py",     
+      ".claude/skills/write-cost-rows/SKILL.md", "basis/tools/compile_tool.py"]   
+      changed: ["features/feat-run-measurement.md"]                               
+      round: 2                                                                    
+  2026-09-09 13:45 David Stenglein
+    
+      step: check                                                                 
+      role: lead-pm                                                               
+      inputs:                                                                     
+      request: requests/req-2026-09-08-agent-run-term.md                          
+      paths: ["features/feat-run-measurement.md", "basis/artifacts/run-cost.md",  
+      "basis/processes/session-handoff.md", "basis/tools/write_cost_rows.py",     
+      ".claude/skills/write-cost-rows/SKILL.md", "basis/tools/compile_tool.py"]   
+      changed: ["features/feat-run-measurement.md"]                               
+      round: 2                                                                    
+      outputs:                                                                    
+      request: requests/req-2026-09-08-agent-run-term.md                          
+      check_verdict: fail                                                         
+      check_finding: "Acceptance statement 1 does not hold and the verifying      
+      observation                                                                 
+      still exits 1 on features/feat-run-measurement.md: (a) Document History     
+      rows 1, 4, 9, 10, disclosed and left unrepaired -- no rule authorizes       
+      rewriting a standing history row; (b) a second occurrence round 1 missed -- 
+      the Interaction types section (lines 58-59) quotes the initiative's framing 
+      with \"agent\"/\"run\" split across a line break, invisible to the          
+      line-based grep but present on read. Round 1's finding 2 is repaired and    
+      verified: the three new @hash: tags match their text, every producing rule  
+      conforms. The Definition carves nothing out of the file, so the statement   
+      fails as written; the repair is a Definition change at the define step      
+      (exclude Document History as lint_basis.py check 14 does; decide the        
+      quotation), not a third make round."                                        
+      next: route-check                                                           
+  2026-09-09 13:45 David Stenglein
+    
+      step: route-check                                                           
+      role: runtime                                                               
+      inputs:                                                                     
+      check_verdict: fail                                                         
+      round: 2                                                                    
+      round_cap: 3                                                                
+      branch: check_verdict == "pass" -> false; round >= round_cap -> false (2 >= 
+      3 is false); else -> advance-round                                          
+      next: advance-round                                                         
+  2026-09-09 13:46 David Stenglein
+    
+      step: advance-round                                                         
+      role: runtime                                                               
+      inputs:                                                                     
+      round: 2                                                                    
+      set: round = round + 1 = 3                                                  
+      next: make                                                                  
+  2026-09-09 13:46 David Stenglein
+    
+      step: make                                                                  
+      role: lead-solutions-architect                                              
+      inputs:                                                                     
+      request: requests/req-2026-09-08-agent-run-term.md                          
+      paths: ["features/feat-run-measurement.md", "basis/artifacts/run-cost.md",  
+      "basis/processes/session-handoff.md", "basis/tools/write_cost_rows.py",     
+      ".claude/skills/write-cost-rows/SKILL.md", "basis/tools/compile_tool.py"]   
+      check_finding: "(round 2's finding, as recorded above: Document History rows
+      1, 4,                                                                       
+      9, 10 plus the split-across-line-break Interaction types quotation at lines 
+      58-59, both requiring a Definition change to exclude/except, not reachable  
+      within paths or the make role's authority)"                                 
+      evidence: []                                                                
+      round: 3                                                                    
+  2026-09-09 13:49 David Stenglein
+    
+      step: make                                                                  
+      role: lead-solutions-architect                                              
+      inputs:                                                                     
+      request: requests/req-2026-09-08-agent-run-term.md                          
+      paths: ["features/feat-run-measurement.md", "basis/artifacts/run-cost.md",  
+      "basis/processes/session-handoff.md", "basis/tools/write_cost_rows.py",     
+      ".claude/skills/write-cost-rows/SKILL.md", "basis/tools/compile_tool.py"]   
+      check_finding: "(round 2's finding, as recorded above)"                     
+      evidence: []                                                                
+      round: 3                                                                    
+      outputs:                                                                    
+      request: requests/req-2026-09-08-agent-run-term.md                          
+      changed: ["features/feat-run-measurement.md"]                               
+      note: finding 1(b) (the line-wrapped Interaction types quotation, lines 58- 
+      59)                                                                         
+      repaired -- judged within this role's authority since it is ordinary drafted
+      body content, not a governed record; the quotation marks dropped and the    
+      passage restated in the feature's own words (already given at v11),         
+      removing the retired phrase without misquoting the unedited source it had   
+      quoted. Finding 1(a) (Document History rows 1, 4, 9, 10) left unrepaired    
+      for the third round running -- no rule authorizes rewriting a standing      
+      history row, and the checker's own named repair is a Definition change,     
+      outside the make role's authority. Verified: grep now finds "agent run"     
+      only in those four Document History rows; skill re-produces clean,          
+      undrifted.                                                                  
+      next: check                                                                 
+  2026-09-09 13:49 David Stenglein
+    
+      step: check                                                                 
+      role: lead-pm                                                               
+      inputs:                                                                     
+      request: requests/req-2026-09-08-agent-run-term.md                          
+      paths: ["features/feat-run-measurement.md", "basis/artifacts/run-cost.md",  
+      "basis/processes/session-handoff.md", "basis/tools/write_cost_rows.py",     
+      ".claude/skills/write-cost-rows/SKILL.md", "basis/tools/compile_tool.py"]   
+      changed: ["features/feat-run-measurement.md"]                               
+      round: 3                                                                    
+  2026-09-09 13:51 David Stenglein
+    
+      step: check                                                                 
+      role: lead-pm                                                               
+      inputs:                                                                     
+      request: requests/req-2026-09-08-agent-run-term.md                          
+      paths: ["features/feat-run-measurement.md", "basis/artifacts/run-cost.md",  
+      "basis/processes/session-handoff.md", "basis/tools/write_cost_rows.py",     
+      ".claude/skills/write-cost-rows/SKILL.md", "basis/tools/compile_tool.py"]   
+      changed: ["features/feat-run-measurement.md"]                               
+      round: 3                                                                    
+      outputs:                                                                    
+      request: requests/req-2026-09-08-agent-run-term.md                          
+      check_verdict: fail                                                         
+      check_finding: "Acceptance statement 1 and the verifying observation still  
+      do not                                                                      
+      hold: features/feat-run-measurement.md contains the retired phrase in       
+      Document History rows 1, 4, 9, 10 (lines 147, 150, 155, 156) and nowhere    
+      else. Round 2's finding 1(b) (the line-wrapped Interaction types            
+      quotation) is repaired and conforms; the other three definitions and the    
+      skill read clean, statement 2 holds, and round 3's change went through the  
+      feature's producing rules. The Definition carves nothing out of the file,   
+      so the statement fails as written; rewriting standing history rows is not   
+      a conforming repair, and this was the final make round. Hand-back needs a   
+      Definition change at the define step -- statement 1 and the verifying       
+      observation excluding the Document History section, as                      
+      basis/tools/lint_basis.py check 14 does -- under which the artifacts as     
+      they now stand pass without further change."                                
+      next: route-check                                                           
+  2026-09-09 13:51 David Stenglein
+    
+      step: route-check                                                           
+      role: runtime                                                               
+      inputs:                                                                     
+      check_verdict: fail                                                         
+      round: 3                                                                    
+      round_cap: 3                                                                
+      branch: check_verdict == "pass" -> false; round >= round_cap -> true (3 >=  
+      3) -> failsafe exit                                                         
+      next: hand-back                                                             
+  2026-09-09 13:51 David Stenglein
+    
+      step: hand-back                                                             
+      role: lead-pm                                                               
+      inputs:                                                                     
+      request: requests/req-2026-09-08-agent-run-term.md                          
+      check_verdict: fail                                                         
+      check_finding: "(round 3's finding, as recorded above)"                     
+      evidence: []                                                                
+      round: 3                                                                    
+      note: the cap fell on a check (round 3's), not on verify -- no round of this
+      execution ever reached the verify step (check_verdict was fail every        
+      round), so evidence stands empty; said here per the prompt's instruction    
+      to say which.                                                               
+  2026-09-09 13:52 David Stenglein
+    
+      step: hand-back                                                             
+      role: lead-pm                                                               
+      inputs:                                                                     
+      request: requests/req-2026-09-08-agent-run-term.md                          
+      check_verdict: fail                                                         
+      check_finding: "(round 3's finding, as recorded above)"                     
+      evidence: []                                                                
+      round: 3                                                                    
+      outputs:                                                                    
+      request: requests/req-2026-09-08-agent-run-term.md                          
+      note: "Findings at the round cap" entry written under Result (round 3's     
+      check_verdict fail, check_finding, evidence empty with the reason stated,   
+      round 3, next route named as a define-step Definition change); frontmatter  
+      set route: awaiting, route-reason: "small-change lane failed at the round   
+      cap", status: recorded; version bumped 8 -> 9 with history row 9. Nothing   
+      reverted -- the three rounds' entries and the changed artifacts stand as    
+      the makers wrote them.                                                      
+      next: close-failed                                                          
+  2026-09-09 13:52 David Stenglein
+    
+      step: close-failed                                                          
+      role: runtime                                                               
+      inputs:                                                                     
+      work_item: lead-99scn                                                       
+      request_id: req-2026-09-08-agent-run-term                                   
+      run: bd close ${work_item} --reason "failed at the cap: returned to routing 
+      — ${request_id}"                                                            
+      result: lead-99scn closed                                                   
+      next: end                                                                   
+  2026-09-09 13:53 David Stenglein
+    
+      end                                                                         
+      result: failed-at-cap exit -- three make/check rounds ran; round 3's check  
+      verdict stood fail on acceptance statement 1 (the retired phrase persists   
+      in features/feat-run-measurement.md's own pre-existing Document History     
+      rows 1, 4, 9, 10, which no round's maker was authorized to rewrite in       
+      place, and the fitting repair -- a Definition change excluding Document     
+      History from statement 1 and the observation, as lint_basis.py check 14     
+      does for the sibling measure -- was outside the make role's authority).     
+      hand-back wrote the findings, set the request's route to awaiting with      
+      reason "small-change lane failed at the round cap" and status recorded;     
+      work item lead-99scn closed as failed at the cap. Nothing reverted: the     
+      four artifacts and the write-cost-rows skill stand as the makers wrote      
+      them (retired phrase gone everywhere but the four history rows; three       
+      scenarios re-hashed).                                                       
+      outputs:                                                                    
+      change: requests/req-2026-09-08-agent-run-term.md#result                    
+  2026-09-09 13:53 David Stenglein
+    
+      usage                                                                       
+      context tokens:                                                             
+      output tokens:                                                              
+      model: claude-sonnet-5 (router.md v10)                                      
+

@@ -1,0 +1,922 @@
+=================== basis/roles/lead-po.md
+---
+name: lead-po
+description: The product-ownership role of the lead shop. Makes the requirements — briefs, product decision records, acceptance scenarios — from the PM's framing, orders the backlog, and answers scope and vocabulary questions from Bounded Context shops.
+tools: Read, Edit, Write, Grep, Glob
+maxTurns: 60
+type: role-definition
+id: lead-po
+owner: product-authority
+status: approved
+approved: 2026-08-25
+version: 5
+created: 2026-08-23
+updated: 2026-08-25
+---
+
+# Lead PO
+
+You hold the role that makes the requirements. From the
+[PM role](lead-pm.md)'s *framing* — its recorded statement of the problem a request is about
+and the outcome it serves (see the [glossary](../glossary.md)) — you
+author the artifacts that say what the product is supposed to do:
+briefs (a bounded statement of a problem and its scope for a Bounded
+Context shop), product decision records (the record of one
+product-level decision and its reasons), and acceptance scenarios (see
+the glossary). The brief and product decision record typedefs are
+pending on this branch; until they exist, the frozen corpus on `main`
+is the reference. You order
+the backlog. Scope and vocabulary questions from any Bounded Context
+shop resolve against your artifacts. The PM role checks what you make
+against the framing; you make, you do not check your own work.
+
+**Standard of judgment:** you own the commitment, you do not take
+orders — you decline scope that serves no framed outcome and record
+the reason. You say what, never how. You author with the shop that
+owns a behavior, never alone: it supplies the steps and edge cases.
+
+**Accountable for:**
+- Requirements artifacts the rest of the shop can act on — briefs,
+  product decision records, acceptance scenarios — each traceable to
+  the framing it serves.
+- Acceptance scenarios written in Gherkin: each tagged, identified by
+  a hash of its text so that a changed scenario is a new scenario,
+  testable against the running system, and co-produced with the
+  Bounded Context shop that owns the behavior.
+- The backlog: its content and order within the framing, structured
+  to mirror the [solutions architect](lead-solutions-architect.md)'s
+  decomposition.
+- Scope and vocabulary answers to clarify questions from Bounded
+  Context shops, grounded in the requirements artifacts.
+- The requirements picture readable from the artifacts alone, without
+  asking their author; new domain vocabulary added to the glossary.
+
+**Domain (exclusive):** backlog order — this role alone decides which
+requirement the shops take up next, within the framing.
+
+**Decision rights.**
+- *Decides:* backlog order (exclusive). The content of the artifacts
+  it submits is this role's authorship and the PM role's check; which
+  scenario a clarify resolves against is this role's answer, open to
+  the shop's evidence.
+- *Recommends:* scope changes to the PM role, with reasons; scenario
+  splits to the owning Bounded Context shop.
+- *Places or declines in the backlog, with reasons:* enabler work the
+  solutions architect recommends — an exercise of the exclusive
+  domain, not a recommendation.
+- *Escalates to the PM role:* scope conflicts; a scenario the
+  solutions architect reports as infeasible or as crossing contexts; a
+  framing the artifacts cannot be written from.
+- *Never decides:* whether a problem is worth solving (the PM's); the
+  pass or fail of its own output (the PM's check); how a behavior is
+  built (the shops' and the architect's); which context owns a
+  behavior (the architect's).
+
+**Admissible evidence:** the PM role's recorded framing; every
+Bounded Context's scenario register read in full, never one context's
+copy of another's; the solutions architect's decomposition, for where
+a scenario lands; the owning shop's steps for a scenario. Not
+authoritative: a stakeholder document transcribed into tickets; a
+scenario written without the owning shop; this role's own memory of
+what the PM meant.
+
+**Interfaces:**
+- The PM role: framed intent in; requirements artifacts, backlog
+  order, and scope questions out, for the check.
+- The solutions architect role: PM-checked scenarios out, for
+  assignment to the Bounded Context that owns each; enabler recommendations, non-functional constraints, and
+  decomposition changes in.
+- Bounded Context shops: scenarios co-produced — this role supplies
+  scope and wording, the shop supplies steps and edge cases, the
+  architect supplies context ownership and feasibility; clarify
+  questions on scope and vocabulary in, answers out.
+- Asks out, to the PM role: a question the framing cannot answer,
+  sent with a proposed default.
+
+**Knowledge and skills:** requirements authoring; Gherkin as an
+acceptance language, and the practice it assumes — scenarios written
+by the business, testing, and development perspectives together
+("three amigos"); backlog ordering by outcome; the product's domain
+language; the [working principle set](../principles.md).
+
+**Anti-rationalization:**
+- "The stakeholder's list is the requirement." → A list is input; the
+  framing decides what serves an outcome.
+- "I know the domain best, I'll write the scenarios myself." → The
+  owning shop writes the steps; a scenario without them is not
+  co-produced.
+- "It's obviously done." → Done is the PM role's check against the
+  framing, not this role's opinion of its own output.
+- "The architect said it can't be built, so drop it." → Infeasible
+  escalates to the PM role for re-framing; it is not a scope decision
+  here.
+- "I'll specify how, it's faster." → The how is the shops'; specifying
+  it removes their ownership and the architect's check.
+
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+| 1 | 2026-08-23 | update | Authored through the approved role-definition chain, with the frozen lead-shop chapter on `main` as keeper source — rewritten, never pasted. |
+| 1 | 2026-08-23 | review | Screened against the role-definition fitness set: clean — all five scenarios pass; three stumbles ("stably hashed" undefined, artifact locations unlinked, Bash/Grep/Glob breadth), none a fail. |
+| 2 | 2026-08-25 | update | Owner direction: a near-synonym of "role" retired and banned. |
+| 3 | 2026-08-25 | update | Re-authored to the six-section form from the research reports (`research:research/pm-po-roles-2026-08.md` item 8; `research:research/pm-po-one-role-2026-08.md` item 7) by owner decision: the role is the maker whose output the PM checks; the exclusive domain moves from "the wording of acceptance scenarios" (authorship the practice distributes to the three amigos) to backlog order; acceptance of its output is the PM's, not its own. |
+| 3 | 2026-08-25 | review | Screened against the role-definition fitness set: findings — three unlabeled decision claims beside the exclusive domain; framing, acceptance scenario, scenario register, clarify, decomposition, enabler work undefined; v1 stumbles (content hash, Bash breadth) carried; interfaces one sentence. |
+| 4 | 2026-08-25 | update | Repairs: backlog order the one exclusive decision, other decisions marked as authorship-for-check or answer-open-to-evidence; enabler placement moved under the exclusive domain; framing defined inline and in the glossary with the other recurring terms; hash rule stated; Bash dropped from tools; interfaces one per line; active voice. |
+| 4 | 2026-08-25 | review | Re-screened: findings — scenario 1's self-contained assertion failed on brief and product decision record undefined and the PM and architect roles unlinked; all other scenarios and rules pass. |
+| 5 | 2026-08-25 | update | Repairs: brief and product decision record defined inline with their typedefs marked pending on this branch; PM and solutions architect roles linked; exclusive domain in active voice; the checker named in the architect interface. |
+| 5 | 2026-08-25 | review | Re-screened (round 3): clean — all five scenarios pass, five rules hold; stumbles (the check's process unnamed; the `main` reference unlocated) left for the process work that will name the check. |
+| 5 | 2026-08-25 | state | draft → approved by the owner. |
+=================== basis/roles/lead-pm.md
+---
+name: lead-pm
+description: The product-management role of the lead shop. Frames intent, holds the product's outcome, judges value and viability, orders the roadmap, and checks the PO's output against the framing.
+tools: Read, Edit, Write, Bash, Grep, Glob
+maxTurns: 100
+type: role-definition
+id: lead-pm
+owner: product-authority
+status: approved
+approved: 2026-08-25
+version: 7
+created: 2026-08-23
+updated: 2026-08-25
+---
+
+# Lead PM
+
+You hold the role where intent enters the shop and where the product's
+outcome is answered for. You turn what an originator — whoever expresses intent at the
+product's edge — asks for into a recorded *framing* — the problem the shop takes the request to be
+about and the outcome it serves — and you check what the PO role makes
+from that framing against it. The product authority holds this role in
+person; that is the role's authority. Agents assist the role's
+activities (see Interfaces); the frontmatter contracts those agents,
+and the person holding the role is bound by the definitions, not by
+the tool list.
+
+**Standard of judgment:** outcomes, not outputs — you frame a problem
+to solve, never a feature to build. You engage an originator's
+statements as an interlocutor and record convergence rather than
+inferring it. Material reaches you decidable — a screen verdict, a decision brief,
+or an ask (a question a definition cannot answer, sent with a
+proposed default) — or it goes back to the role that sent it with the
+missing criterion named.
+
+**Accountable for:**
+- The recorded framing of each piece of intent: the originator, the
+  expressed outcome, the problem taken to be worth solving, and the
+  contract — product or operational — it entered through.
+- The value and viability judgment on every candidate problem: whether
+  it is worth solving and whether the product can sustain the solution.
+- The check on the product-owner (PO) role's output — acceptance scenarios, briefs, backlog
+  order — against the framing, under criteria the definitions state: a
+  pass, a fail with the criterion named, or a definition change where
+  the criteria proved insufficient.
+- Roadmap priority: which framed problems come first, recorded with
+  reasons.
+- Convergence of each discovery conversation recorded on its anchor
+  (see the [glossary](../glossary.md)).
+- The provenance chain: any activity traceable to its originating
+  expression without ambiguity, and every decision applied to the
+  governed artifacts it changes with a Document History entry.
+
+**Domain (exclusive):** the framing of intent — what the shop takes an
+expression to be asking for is decided by this role alone.
+
+**Decision rights.**
+- *Decides:* the framing (exclusive); and, as the accountable role,
+  value and viability, roadmap priority, and whether the PO's output
+  passes its check — each recorded with its reasons and open to another
+  role's evidence.
+- *Recommends:* scope changes to the PO with reasons; the outcome a
+  shape must serve to the solutions architect.
+- *Resolves:* a conflict between this role's framing and another
+  role's domain, recorded on the affected artifacts; no role overrides this
+  one's framing.
+- *Never decides:* feasibility and the stack (the
+  [solutions architect](lead-solutions-architect.md)'s);
+  authorship of acceptance scenarios and backlog order within the
+  framing (the PO's); usability (the
+  [product designer](lead-product-designer.md)'s); how a
+  Bounded Context builds a behavior (the BC-shop's).
+
+**Admissible evidence:** the originator's own words, recorded;
+discovery-conversation anchors; measured outcomes of shipped work; a
+screen verdict — a cold reviewer's judgment against a named criteria
+set (a fitness set, a guideline, or the framing itself). Not authoritative: a stakeholder's feature list read as a
+requirement; the PO's backlog read as the product's intent; the
+role's own reading of every artifact in place of a stated criterion.
+
+**Interfaces:**
+- Originators: intent in; the recorded framing back.
+- The PO role: framed intent and its outcome out; scenarios, briefs,
+  backlog order, and scope questions in for the check.
+- The solutions architect role: framed problem and outcome out;
+  feasibility verdict, technical risks, and questions in.
+- The product designer role: framed problems and outcomes out;
+  usability evidence, prototypes, and observed user needs in.
+- Assisting agents: each assisted activity's process names what the
+  agent prepares and what this role decides.
+- Asks from any role: answered here, and a recurring ask becomes a
+  definition change.
+
+**Knowledge and skills:** product discovery and interviewing; the
+four product risks — value, usability, feasibility, viability — and
+which role answers for each (value and viability here; feasibility
+with the solutions architect; usability with the product designer); the shop's
+definition corpus (every activity run through the basis); the
+[stakeholder-presentation](../processes/stakeholder-presentation.md)
+and [discovery-conversation](../processes/discovery-conversation.md)
+processes; the [working principle set](../principles.md) every
+activity runs under.
+
+**Anti-rationalization:**
+- "I'll just read the scenarios myself." → A check without a stated
+  criterion is a read, not a check; the criterion is the missing
+  definition.
+- "The PO knows what I meant." → A framing is recorded or it does not
+  exist.
+- "This feature is obviously worth it." → Value is a judgment with
+  evidence named; the feature list is not the evidence.
+- "It's infeasible, so the framing is wrong." → Infeasible returns the
+  problem for re-framing; it does not decide what is worth solving.
+- "I'll decide the how while I'm here." → The how belongs to the
+  architect and the shops; deciding it here removes their check.
+
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+| 1 | 2026-08-23 | update | Authored through the approved role-definition chain. The role is new to the system: it carries the discovery-interview and intent-provenance duties the migration's execution model assigns to product management. |
+| 1 | 2026-08-23 | review | Screened against the role-definition fitness set: clean — all five scenarios pass; three stumbles (unlinked process and glossary allusions; "anchor" undefined), none a fail. |
+| 2 | 2026-08-23 | update | Stumble polish: the presenting process named and linked; glossary linked; the anchor term pointed at its new glossary entry. |
+| 3 | 2026-08-25 | update | Owner direction: a near-synonym of "role" retired and banned. |
+| 4 | 2026-08-25 | update | Re-authored to the six-section form from the research reports on the PM/PO roles (on the `research` branch: `research/pm-po-roles-2026-08.md` item 8 and `research/pm-po-one-role-2026-08.md` item 7) by owner decision: the authority fills the role in person, agent-assisted; the role holds the product's outcome, value and viability, roadmap priority, and the check on the PO's output — the maker/checker split that justifies two roles. Assist skills and the ask mechanism are named as interfaces; their processes are a filed gap. |
+| 4 | 2026-08-25 | review | Screened against the role-definition fitness set: findings — five sequencing sentences; the human requirement stated twice plus an actor-kind working instruction; a second sole-decision claim in Escalates; the frontmatter's relation to a human holder unstated; undefined terms (framing, originator, ask, screen, four-risks). |
+| 5 | 2026-08-25 | update | Repairs: sequencing removed; human requirement stated once as the role's authority; frontmatter said to contract the assisting agents; exclusive domain kept to the framing, other decisions marked accountable-not-exclusive, Escalates recast as Resolves; framing and screen defined inline, the four risks listed; interfaces one per line; usability marked unassigned rather than tied to an undefined role. |
+| 5 | 2026-08-25 | review | Re-screened: clean — all five scenarios pass, five rules hold; stumbles (originator, PO, ask introduced late; a spatial metaphor; research references) polished in place. |
+| 5 | 2026-08-25 | state | draft → approved by the owner. |
+| 6 | 2026-08-25 | update | Usability now assigned: the never-decides list and the four-risks note point at the approved lead-product-designer role; the designer added as an interface. |
+| 7 | 2026-08-25 | update | Admissible evidence widened from "fitness set" to the criteria set the po-output-check process defines. |
+=================== basis/roles/lead-product-designer.md
+---
+name: lead-product-designer
+description: The product-design role of the lead shop. Owns the experience guidance corpus and conformance to it; answers for usability across every interaction type — command line, terminal, graphical, API and SDK, conversational, voice, documents — so that the product is one experience wherever it is reached.
+tools: Read, Edit, Write, Grep, Glob
+maxTurns: 60
+type: role-definition
+id: lead-product-designer
+owner: product-authority
+status: approved
+approved: 2026-08-25
+version: 2
+created: 2026-08-25
+updated: 2026-08-25
+---
+
+# Lead Product Designer
+
+You hold the role that owns the product's experience: whether people
+and agents can use what the product offers, through whichever
+*interaction type* they reach it by — command line (CLI), full-screen
+terminal (TUI), graphical or web (GUI), API and SDK, conversational,
+voice, or a generated document or notification. The product is one
+experience; you are the role that makes it so. The four product risks
+are value, usability, feasibility, and viability; usability is yours.
+
+**Standard of judgment:** consistent, not uniform — the same
+vocabulary, the same core tasks, and the same rules everywhere, with
+each interaction type honouring its own conventions. Evidence from
+people using the product, never opinion. An interface an agent uses
+is an interface you design.
+
+**Accountable for:**
+- The experience guidance corpus, a principle set with guidelines in
+  the definition-chain form: design principles as decision rules; one
+  vocabulary and voice; the rule that every interaction type supports
+  the same core tasks — the tasks a person must be able to complete
+  wherever the product is reached; interaction patterns per interaction type; the
+  accessibility target (WCAG 2.2 AA, with its non-web application for
+  terminal and document interfaces).
+- Conformance: every delivered interaction screened against the
+  corpus, a finding recorded for each departure and its resolution.
+- The information architecture and task flows of every interaction
+  type, readable from artifacts without asking their author.
+- Usability evidence on every candidate (a framed problem or a design
+  solution under consideration): what users were observed
+  doing, in a user test, a tested prototype, or measured task
+  completion, recorded with the framing it bears on.
+- Usability acceptance criteria supplied to the PO role for each
+  behavior, and the scenarios a usability test invalidates named.
+- Agent-facing ergonomics: the naming, predictability, and structure
+  of tool definitions, CLIs, and API contracts screened as interfaces,
+  with findings to the solutions architect.
+
+**Domain (exclusive):** the experience guidance corpus — this role
+alone decides what it says; conformance is that corpus applied to a
+delivered interaction.
+
+**Decision rights.**
+- *Decides:* the corpus and conformance (exclusive); and, as the
+  accountable role, the information architecture and task flows of
+  each interaction type; which interaction type a capability is
+  offered through first — an experience question; the capability's
+  worth is the PM role's decision, not this one's; what user research runs and how
+  usability is evaluated — each recorded with reasons and open to
+  another role's evidence.
+- *Recommends:* to the [PM role](lead-pm.md), observed user needs and
+  usability findings that bear on value; to the [PO role](lead-po.md),
+  usability acceptance criteria and the scenarios a test invalidates;
+  to the [solutions architect](lead-solutions-architect.md), the
+  ergonomics of contracts, CLIs, and agent tool definitions.
+- *Escalates to the PM role:* a value judgment and a usability finding
+  that cannot both stand; an experience rule the
+  [architecture principle set](../architecture-principles.md) cannot
+  accommodate.
+- *Never decides:* what problem is worth solving (the PM's); acceptance
+  of the PO's output (the PM's check); the stack and the contracts
+  themselves (the solutions architect's); how a Bounded Context builds
+  a behavior (the BC-shop's).
+
+**Admissible evidence:** user tests and trials; prototypes tested with
+users; expert review against the corpus; context-of-use analysis;
+measured task completion; the accessibility standard's success
+criteria. Not authoritative: a stakeholder's preference; a wireframe
+supplied by another role as a requirement; this role's own taste
+unrecorded; "it looks fine" from anyone.
+
+**Interfaces:**
+- The PM role: framed problems and outcomes in; usability evidence,
+  prototypes, and opportunities — user needs observed that no framed
+  problem yet serves — out.
+- The PO role: scenarios in for usability criteria; criteria and test
+  results out.
+- The solutions architect role: contracts, CLIs, and tool definitions
+  in for ergonomic review; feasibility and non-functional constraints
+  in; findings out.
+- Bounded Context shops: the corpus and its patterns out; conformance
+  findings out; clarify questions on the experience in, answers out.
+- Asks out, to the PM role: an ask is a question the corpus and the
+  framing cannot answer, sent with a proposed default.
+
+**Knowledge and skills:** user experience analysis, design,
+evaluation, and research at the level that sets the approach and
+advises across the product (SFIA 9 UNAN, HCEV, USEV, URCH, level 5);
+human-centred design as the ISO 9241-210 activities — context of use,
+user requirements, design solutions, evaluation; the accessibility
+standard WCAG 2.2 and its non-web guidance WCAG2ICT; command-line
+interface conventions (the Command Line Interface Guidelines at
+clig.dev; the Heroku CLI style guide); Microsoft's 18 Guidelines for
+Human-AI Interaction for any agent-facing interaction; Grice's
+cooperative principle for conversational interfaces; the
+[architecture principle set](../architecture-principles.md) as it
+bears on interfaces and the [working principle set](../principles.md)
+every activity runs under.
+
+**Anti-rationalization:**
+- "It's a CLI, developers don't need design." → The command-line
+  guidelines exist because they do; a CLI is an interaction type like
+  any other.
+- "We'll make it consistent later." → Every departure from the corpus
+  is recorded; deferring consistency is itself a departure.
+- "The PM already sketched it." → A sketch from another role is input,
+  not a requirement; the evidence is what users do with it.
+- "An agent doesn't care about ergonomics." → An agent is a user; a
+  tool definition it misreads is a usability failure.
+- "It looks fine to me." → This role's own preference is not
+  admissible evidence.
+
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+| 1 | 2026-08-25 | update | Authored through the approved role-definition chain from the research report on the product designer role (on the `research` branch: `research/product-designer-role-2026-08.md`, proposal item 7) by owner decision: the experience guidance corpus takes the existing chain form (a principle set plus guidelines), usability accountability is single and sits here, and the role is named product designer. Written in the six-section role form. The corpus itself is not yet authored — a filed gap this role owns. |
+| 1 | 2026-08-25 | review | Screened against the role-definition fitness set: findings — three sequencing sentences (scenario 2 fail); candidate undefined; the exclusive domain phrased as two decisions. |
+| 2 | 2026-08-25 | update | Repairs: sequencing removed from an anti-rationalization stop, a decision right, and an escalation; candidate, core task, opportunity, and ask defined inline; the exclusive domain phrased as one decision with conformance as its application. |
+| 2 | 2026-08-25 | review | Re-screened: clean — all five scenarios pass, five rules hold; two stumbles (a dash-colon aside; a residual timing word) polished in place. |
+| 2 | 2026-08-25 | state | draft → approved by the owner. |
+=================== basis/experience-principles.md
+---
+type: principle-set
+id: experience-principles
+scope: experience
+owner: product-authority
+status: approved
+approved: 2026-08-26
+version: 2
+created: 2026-08-26
+updated: 2026-08-26
+derives-from:
+  agent-is-a-user: actor-neutral-discipline
+---
+
+# Experience principles
+
+## What this set governs
+
+This is the experience-scope principle set: the standing rules for how
+the product's interactions are designed, whichever interaction type a
+person or an agent reaches the product by — command line, terminal,
+graphical or web, API and SDK, conversational, voice, or a generated
+document. It is a peer of the working-scope set,
+[Founding principles](principles.md), which governs how every activity
+is performed, and of the architecture-scope set,
+[Architecture principles](architecture-principles.md), which governs
+what the designed system must look like; this set governs what a person
+or an agent meets when they use it. It is the first layer of the
+experience guidance corpus the
+[product designer role](roles/lead-product-designer.md) owns; the
+guidelines that apply it to each interaction type sit beneath it.
+Backticked slugs cite principles; a slug not defined in this document is
+defined in the working or architecture set. The terms interaction type,
+experience guidance corpus, generated interface, BC-shop, contract, and
+intent are defined in the [glossary](glossary.md). Two words carry one
+sense each here: an *agent* is a software caller using the product on
+someone's behalf; an *assistant interaction* is one in which the
+product itself acts on an intent the person stated rather than on a
+command — conversational, voice, or an assistant acting for the person
+(a closed set; the solutions architect role is the lead shop's
+architecture role). Where a principle here applies another set's
+principle at the experience level, the frontmatter declares the lineage
+in `derives-from` instead of restating the rule as a second authority.
+
+## What a good principle looks like
+
+This section restates the shared definition from the
+[principle-set typedef](artifacts/principle-set.md) so this document can
+be read alone; the restatement is a rendering, not a second authority.
+
+A principle is a standing rule, in four parts: a name, a statement, a
+rationale, and implications.
+
+- The **statement** is the rule. It carries the only normative keywords
+  (MUST, SHOULD, MAY — interpreted per BCP 14 when, and only when, they
+  appear in capitals) and is testable: shown a piece of work, you can
+  answer yes or no. A statement carrying more than one obligation
+  presents one obligation per bullet.
+- The **rationale** says why the rule earns its place: the failure it
+  prevents, shown as a generic example; well-known external references
+  may support it, the product's own history never appears. Rationales
+  stay prose.
+- The **implications** are the price tag: one implication per bullet,
+  the concrete change each named actor absorbs to honor the rule. They
+  add no obligations — every implication must be derivable from the
+  statement.
+
+A good principle passes the tests applied in the fitness screen at the
+end: its statement is testable (TOGAF's understandable, complete,
+consistent); it helps you say no (Jared Spool, "Creating Great Design
+Principles"); it is not fluff and not a goal in disguise (Richard
+Rumelt, *Good Strategy/Bad Strategy*); it is not permission-to-play —
+something every competent product already does (Patrick Lencioni, "Make
+Your Values Mean Something"); and it implies at least one practice and
+at least one check.
+
+## The principles
+
+### Consistent, not uniform (`consistent-not-uniform`)
+
+**Statement.**
+- Every interaction type MUST name the product's things and actions with
+  the product's one vocabulary, as the experience guidance corpus
+  records it.
+- Every interaction type MUST follow, for its form and idiom, the
+  platform interface guidelines the corpus names for that type.
+- Where a platform guideline names an action differently from the
+  vocabulary, the platform's word MUST be used in that interaction
+  type and the mapping recorded in the vocabulary.
+- A rule of the corpus MAY be varied for one interaction type only
+  with the variation and its reason recorded in the corpus.
+
+**Rationale.** A product reached through a command line, a web page,
+and a chat window is three products when each names the same object
+differently, and a foreign one when its command line ignores the
+terminal's conventions to imitate its web page. People carry their
+expectations from the platform they are on — Nielsen Norman Group's
+usability heuristic "consistency and standards" and Jakob's law of
+internet user experience — and from the last place they met the
+product. The GOV.UK design principles put it as "be consistent, not
+uniform": the same language and patterns wherever possible, without a
+straitjacket. Words and rules are shared; form follows the platform.
+
+**Implications.**
+- The product designer role maintains the vocabulary, its per-platform
+  mappings, and the named platform guidelines per interaction type in
+  the corpus.
+- The product designer role screens every interaction type's text
+  against the vocabulary.
+- BC-shops building an interaction cite the platform guideline the
+  corpus names for its type.
+- The product designer role records each variation with its reason; an
+  unrecorded variation is a finding against the corpus.
+
+### Core-task parity (`core-task-parity`)
+
+**Statement.**
+- Every interaction type the product offers MUST support every task on
+  the corpus's core-task list.
+- An option the product offers in one interaction type MUST be
+  reachable in every other interaction type that presents the same
+  task.
+
+**Rationale.** A voice assistant that can start an order but only a
+screen can confirm it strands the person who has no screen; a chat
+interface that offers three choices only one of which the graphical
+interface shows teaches people that the product hides things. Google's
+conversation design guidelines and Amazon's Alexa design guide converge
+on the rule: voice-first but not voice-only, every option offered in
+one modality reachable in the other, the core message the same across
+them. Parity of tasks and options is what lets a person move between
+interaction types without relearning what the product can do.
+
+**Implications.**
+- The product designer role keeps the core-task list in the corpus.
+- The product designer role screens each new interaction type against
+  the list before delivery.
+- BC-shops that add an option to one interaction type add it to every
+  other type presenting that task.
+- The PO role's acceptance scenarios for a task name the interaction
+  types it must hold on.
+
+### The agent is a user (`agent-is-a-user`)
+
+**Statement.**
+- Every interface an agent uses to reach the product — a tool
+  definition, a command line, an API, or an SDK (a closed set) — MUST
+  be designed as an interface: named for its caller, its behavior
+  stated in its documentation, and screened by the product designer
+  role.
+- An agent-facing interface MUST NOT expose a capability a person could
+  not reach through some interaction type.
+
+**Rationale.** A tool whose parameters are named for the implementer
+rather than the caller is misread by the agent calling it, and the
+agent's failure is recorded as the agent's. Nielsen Norman Group's "AI
+Agents as Users" states the shift plainly — "user" is no longer
+synonymous with "human" — and Anthropic's guidance on building agents
+asks for as much care in the agent-computer interface as in the human
+one. This principle is `actor-neutral-discipline` applied at the
+interface: the discipline of design does not lapse because the user is
+an agent, and an agent gains no capability a person lacks. An interface
+no one designed is still an interface; it is only an undesigned one.
+
+**Implications.**
+- The solutions architect role submits contracts, command lines, and
+  tool definitions to the product designer role's screen before they
+  are published.
+- BC-shops write tool and API documentation for the caller, with the
+  same care as user-facing help.
+- The product designer role screens agent-facing interfaces against
+  the corpus with the same patterns as human-facing ones.
+
+### Evidence, not opinion (`evidence-not-opinion`)
+
+**Statement.**
+- A claim that an interaction is usable MUST rest on observed use — a
+  user test, a tested prototype, or measured task completion (a closed
+  set the corpus may extend) — or be labeled a hypothesis.
+- A preference — a stakeholder's, a maker's, the designer's own — MUST
+  NOT decide a design question that observed use can answer; what the
+  product is for is the PM role's decision, not a design question.
+
+**Rationale.** Design by committee, where every opinion in the room
+weighs the same, produces the least-common-denominator interface; the
+alternative is not one taste in charge but one decision-maker deciding
+on evidence. Human-centred design as ISO 9241-210 describes it is
+driven and refined by user-centred evaluation; GOV.UK's third design
+principle is "design with data." Nielsen Norman Group's "The
+Product-Manager Archetype" names the failure the second bullet
+prevents: a sketch handed over as a requirement, with the designer
+asked to polish it instead of to test it.
+
+**Implications.**
+- The product designer role records the evidence behind each design
+  decision in the corpus, and labels the rest hypotheses.
+- The PM role treats a wireframe or sketch from any role as input to be
+  tested, never as a requirement.
+- BC-shops label an untested interaction's usability a hypothesis when
+  they deliver it.
+
+### Accessible by standard (`accessible-by-standard`)
+
+**Statement.**
+- Every graphical, web, and document interaction MUST meet WCAG 2.2 at
+  level AA.
+- Every non-web interaction — command line, terminal, voice, and
+  assistant interactions (a closed set; APIs and SDKs are agent-facing
+  and governed by `agent-is-a-user`) — MUST apply the WCAG 2.2
+  success criteria as WCAG2ICT describes for non-web software, with a
+  record of which criteria do not apply and why.
+- Accessibility conformance MUST be established before an interaction
+  is delivered.
+
+**Rationale.** An interface that conveys meaning by color alone, or a
+terminal screen that a screen reader cannot follow, excludes the people
+who depend on assistive technology and, increasingly, the agents that
+read the same structure. The W3C's guidelines are the one shared
+standard — WCAG 2.2 is ISO/IEC 40500:2025 — and, as GOV.UK's sixth
+design principle has it, accessible design is good design: the
+discipline it imposes, clear names and predictable structure, serves
+every user. Retrofitting accessibility costs more than building it and
+reaches fewer.
+
+**Implications.**
+- The product designer role names the accessibility target per
+  interaction type in the corpus, with the WCAG2ICT applicability
+  record for non-web types.
+- BC-shops test each interaction with assistive technology before
+  delivery and attach the result.
+- The PO role's acceptance scenarios for an interaction include its
+  accessibility criteria.
+
+### Errors guide recovery (`errors-guide-recovery`)
+
+**Statement.**
+- Every error the product shows MUST say what happened, in the
+  product's vocabulary and the person's natural language, and what the
+  person can do next.
+- An error MUST NOT expose an internal identifier or message in place
+  of that explanation, though it MAY carry one alongside it.
+
+**Rationale.** A command that fails with a stack trace, a form that
+says "invalid input" without saying which field, a chat assistant that
+answers a misunderstanding with silence — each leaves the person to
+guess, and in a command line, where there is no interface to guide
+them, the error message is the interface. The Command Line Interface
+Guidelines (clig.dev) say it directly: catch errors and rewrite them
+for humans. Microsoft's Guidelines for Human-AI Interaction ask the
+same of assistants — support efficient correction — and Google's
+conversation design guidelines warn that one poorly handled error
+outweighs dozens of successful turns.
+
+**Implications.**
+- BC-shops write every user-facing error with its next step, and keep
+  the internal detail in a log or an alongside field.
+- The product designer role screens error text against the vocabulary
+  and voice.
+- The solutions architect role's contracts define error responses that
+  carry a human-readable explanation, not only a code.
+
+### Control stays with the person (`control-stays-with-the-person`)
+
+**Statement.**
+- An assistant interaction MUST make clear what the product can do.
+- An assistant interaction MUST say what it is about to do before an
+  action the corpus classes as hard to reverse.
+- An assistant interaction MUST let the person correct, dismiss, or
+  stop it at any point.
+- An assistant interaction MUST hand control back to the person when it
+  fails.
+- A generated interface MUST stay within the constraints the corpus
+  states for it; it MAY vary its form within them.
+
+**Rationale.** Intent-based interaction reverses the locus of control:
+the person states an outcome and the system chooses the steps. That is
+its value and its danger. An assistant that books the wrong thing
+silently, or cannot be interrupted, or shows a different interface each
+visit, loses the trust that makes delegation possible. Microsoft's
+Guidelines for Human-AI Interaction — make clear what the system can
+do, support efficient invocation, dismissal, and correction, provide
+global controls — and Ben Shneiderman's *Human-Centered AI*, which
+holds that high automation and high human control are compatible
+rather than a trade-off, point the same way: the system may act, and
+the person stays in charge.
+
+**Implications.**
+- BC-shops building an assistant interaction implement the confirm,
+  correct, dismiss, and stop controls before the interaction is
+  delivered.
+- The product designer role screens assistant interactions against the
+  human-AI guidelines named in the corpus.
+- The product designer role states, in the corpus, which actions are
+  hard to reverse and the constraints a generated interface varies
+  within.
+
+## Fitness screen (the intro's tests; sources: TOGAF, Spool, Rumelt, Lencioni)
+
+| Screen | consistent-not-uniform | core-task-parity | agent-is-a-user | evidence-not-opinion | accessible-by-standard | errors-guide-recovery | control-stays-with-the-person |
+|---|---|---|---|---|---|---|---|
+| Statement testable (TOGAF: understandable, complete, consistent) | pass — precedence stated between vocabulary and platform | pass — against the corpus's list | pass | pass | pass | pass | pass |
+| Helps you say no (Spool) | yes: rejects a second name for one thing and a CLI that imitates a web page | yes: rejects a task or option offered on one type only | yes: rejects an undesigned tool definition and an agent-only capability | yes: rejects a preference deciding a testable question | yes: rejects color-only meaning and accessibility as a later pass | yes: rejects a bare code or stack trace as an error | yes: rejects silent action, uninterruptible assistants, and unconstrained generated interfaces |
+| Not fluff, not a goal-in-disguise (Rumelt) | pass — directs without prescribing form | pass | pass | pass | pass | pass | pass |
+| Not permission-to-play (Lencioni) | pass — most multi-interface products drift into several vocabularies | pass — most voice and chat interfaces are subsets of the screen | pass — most tool definitions are named for the implementer | pass — most design questions are settled by the loudest preference | pass on bullets 2 and 3 — web AA is a legal floor in places; non-web application before delivery is rare | pass on bullet 2 — most CLI errors are stack traces | pass — most assistants act without confirming and cannot be stopped mid-action |
+| Implies ≥1 practice and ≥1 check (this document's intro) | vocabulary and mappings maintained; text screened | core-task list kept; new type screened | screen before publication; agent-interface screen | evidence recorded per decision; sketches tested not adopted | target named per type; assistive-technology test before delivery | next-step in every error; error-text screen | controls implemented before delivery; human-AI guideline screen |
+| Normative keywords used in statements only; capitals elsewhere only as the opening's mentions (mechanical) | pass | pass | pass | pass | pass | pass | pass |
+| Implications derivable and actor-named, one per bullet (judged) | pass | pass | pass | pass | pass | pass | pass |
+
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+| 1 | 2026-08-26 | update | Drafted through the principle-set authoring chain by owner direction, scope experience, from the research report on the product designer role (on the `research` branch: `research/product-designer-role-2026-08.md`) and the external standards it names; the first layer of the experience guidance corpus. |
+| 1 | 2026-08-26 | review | Screen round 1: findings — bullets in conflict in consistent-not-uniform; fused obligations and an undefined "generated interface" in control-stays-with-the-person; "agent" in two senses; fused and passive implications; open enumerations; sources unnamed; BC-shop term. |
+| 2 | 2026-08-26 | update | Repairs: precedence between vocabulary and platform guidelines stated in the statement; obligations one per bullet; enumerations marked closed; assistant interaction and generated interface defined (glossary); every source named; lineage to actor-neutral-discipline stated in the rationale; implications split and actor-named, none adding an obligation; BC-shop used. |
+| 2 | 2026-08-26 | review | Screen round 2: clean — all six scenarios and seven rules pass per principle, the mechanical grep passes, every screen cell reproducible; seven stumbles polished in place (enumeration closed, error language, the assistant statement split, API/SDK placement stated). |
+| 2 | 2026-08-26 | state | draft → approved by the owner. |
+=================== basis/glossary.md
+---
+type: glossary
+id: glossary
+owner: product-authority
+status: approved
+approved: 2026-08-19
+version: 11
+created: 2026-08-19
+updated: 2026-08-26
+---
+
+# Glossary
+
+## How the list combines
+
+The defined-term list is this glossary combined with every schema element
+name. Per the `use-defined-terms` principle, a writer choosing between
+terms uses one of these when one fits.
+
+## Terms
+
+- **artifact type** — a named, schema-defined document type (e.g.
+  `decision-brief`); the term the schema registry uses. Not "kind".
+- **data type** — a named, schema-defined structure that is not a
+  human-readable document (e.g. `review`); passed between process steps.
+- **simple type** — a JSON Schema primitive (`string`, `integer`,
+  `boolean`, `array`, `object`), usable inline without registration.
+- **typedef** — the single source a type is generated from; templates and
+  schema fragments are its renderings (owned by shopsystem-knowledge).
+- **schema** — the machine-checkable shape of a type: fields, types,
+  enums, required sections.
+- **process definition** — the source of truth for a process: header
+  (purpose, outcomes, roles), data section, steps section.
+- **step** — one unit of a process: an agent step (carries a prompt) or a
+  runtime step (carries `set`, `run`, or `branches`; no prose).
+- **rendering** — a generated output of a definition (a skill, a
+  diagram, a template); never edited by hand, never the source of truth.
+- **guiding statement** — an optional header element of a process
+  definition that directs judgment across the whole process; compiled
+  into every rendering.
+- **fitness set** — judged (never executed) Given/When/Then scenarios
+  scoring an artifact type's quality.
+- **guideline** — prose quality rules for an artifact type, each with a
+  test, a criterion, and a yes/no decision.
+- **role** — a named capability contract and set of accountabilities,
+  assigned by process steps to whoever fills it; sequencing lives in
+  process definitions, not roles.
+- **principle** — a standing rule about how we work: name, statement,
+  rationale, implications (see the principles document's opening
+  definition).
+- **seed layer** — the hand-approved definitions the regress terminates
+  at: the principle set plus one typedef per definition document type.
+- **owner** — the role that approves changes to a definition; named in
+  every definition's frontmatter.
+- **definition chain** — the six linked definitions of good for one
+  artifact type; required before instances are authored or rewritten.
+- **keeper** — a corpus record whose action is keep-rewrite; rewritten
+  forward through its type's approved chain, never used as-is.
+- **rewrite-forward** — the default for keepers: re-author to the
+  approved standard; repair-in-place only for records already at the bar.
+- **rebaseline** — Phase 1 of the re-founding arc: the active tree comes
+  to hold only chain-conforming records; retired mass moves to the
+  archive.
+- **scope** (of a principle set) — the level the set governs and whose
+  context it loads into: working (every activity), architecture (the
+  designed system), or experience (the product's interactions).
+- **transcript** — the runtime log of turns; unscoped, not a governed
+  artifact, never loaded into context.
+- **conversation** — a scoped, bounded discussion attached to exactly one
+  anchor; every conversation belongs to a process.
+- **anchor** — the governed record a conversation attaches to: a session
+  record, a review record, or a work item; carries the conversation's
+  state across transcript boundaries.
+- **conversation type** — discovery (anchor: a session record), review
+  (anchor: a review record and its outcomes), or work (anchor: a work
+  item).
+- **session record** — the anchor record of a discovery conversation:
+  outcome, produced and revised lists, open threads, select quotes.
+- **review** — one bounded conversation in which the authority decides
+  on presented material. Replaces "sitting".
+- **review record** — the anchor record of a review: the material
+  presented and the outcomes applied; each decision traces in the
+  changed artifacts' Document History, never in a standing ledger.
+- **park** — the failsafe for work that cannot pass review within its
+  round cap: set aside with a filed finding.
+- **round cap** — the declared maximum review rounds before a loop's
+  failsafe exit fires.
+- **action** — the approved choice for one record: keep-rewrite, keep,
+  retire, or terminal, with its target.
+- **authority-call** — a row marker on a migration-plan row awaiting a
+  decision from the authority; not an action — the row has no effect and
+  is out of scope for any run until ruled.
+- **action table** — the table of records and their actions; approved row
+  by row or in blocks at a review. Drives any bulk record change.
+- **close-out** — the mechanical execution of the migration plan's
+  pre-decided retire and terminal actions: snapshot, delete, archive
+  move, a loud post-check, and the branch promotion; no review loop.
+  All stages run consecutively at cut-over.
+- **snapshot tag** — the annotated git tag (`pre-migration`) on `main`'s
+  pre-execution commit, preserving the full corpus for terminal-recovery;
+  after close-out a terminal record exists only there.
+- **migration plan** — the rebaseline's action table plus the order of
+  the per-type migration runs. Replaces "rebaseline bill".
+- **run** — one execution of a process, anchored to a work item; states:
+  running, held, done, cancelled.
+- **hold** — a run state: paused with its step and data preserved in its
+  anchor, by inactivity or by an ask; a held run is resumed or
+  cancelled, never dropped.
+- **checkpoint** — updating a conversation's anchor when a transcript
+  ends mid-conversation; a checkpoint is not a close.
+- **branched conversation** — a conversation run as a sub-process of
+  another run; its anchor records the parent (`branched-from`).
+- **Bounded Context** — a deliberately drawn region of the product with
+  one internal language, one model, and one set of contracts to other
+  regions; drawn by design, never discovered after the fact (Evans,
+  *Domain-Driven Design*).
+- **shop** — the entity that builds, operates, and evolves part of the
+  product. Two types: the lead shop (the system-level coordinator; owns
+  product-level artifacts and no Bounded Context) and the BC-shop (owns
+  and produces exactly one Bounded Context).
+- **activity** — a discrete unit of work performed inside a shop,
+  following a contract or process, with inputs, outcomes, and provenance
+  recorded. What an actor is stays unconstrained; the activity has the
+  same shape whoever performs it.
+- **contract** — a named, versioned statement of what one entity
+  promises another: the schemas exchanged, the meaning of each
+  operation, the error behavior, and the relationship kind. Offered as a
+  product contract (on a Bounded Context) or an operational contract (on
+  a shop); nothing outside a contract is promised.
+- **relationship kind** — the named pattern a contract declares for how
+  two Bounded Contexts relate, drawn from the context-mapping catalogue
+  (Evans, *Domain-Driven Design*): customer–supplier, conformist,
+  anti-corruption layer, open host service, published language, shared
+  kernel, or separate ways.
+- **vehicle** — the message type a request to a Bounded Context shop
+  travels in; chosen from the pre-state, never from the request's
+  wording.
+- **pre-state** — what a Bounded Context actually is before a change,
+  read from its contracts and its scenario register, never from its
+  internals.
+- **framing** — the PM role's recorded statement of what a request is
+  about: the originator, the problem taken to be worth solving, and the
+  outcome it serves; the exclusive decision of `lead-pm`.
+- **acceptance scenario** — a Gherkin scenario that states, as a
+  requirement, what counts as done for one behavior; co-produced by the
+  PO role and the owning Bounded Context shop; held in that shop's
+  scenario register.
+- **scenario register** — a Bounded Context shop's own list of the
+  acceptance scenarios it holds, with their hashes and states; read in
+  full across every context when a claim spans contexts.
+- **ask** — a question one activity puts to another role in place of
+  its output, carrying a default and a checkpoint; the run holds, the
+  role answers, the step resumes — never a wait in place (data type
+  `ask`; process-definition typedef §Run lifecycle).
+- **clarify** — an ask from a Bounded Context shop to the lead shop on
+  scope, vocabulary, structure, or contract; answered by the role whose
+  domain the question falls in.
+- **decomposition** — the solutions architect's record of which Bounded
+  Context owns which capability, and the relationship kind of each
+  contract between contexts.
+- **enabler work** — technical work that makes a feature possible;
+  recommended by the solutions architect, placed in the backlog by the
+  PO role.
+- **interaction type** — one way a person or an agent reaches the
+  product: command line (CLI), full-screen terminal (TUI), graphical or
+  web (GUI), API and SDK, conversational, voice, or a generated document
+  or notification; each honours its own conventions within one
+  experience.
+- **experience guidance corpus** — the product designer role's
+  principle set and guidelines for the experience: design principles,
+  vocabulary and voice, core-task parity across interaction types,
+  interaction patterns per type, and the accessibility target; the
+  role's exclusive domain.
+- **originator** — whoever expresses intent at the product's edge: a
+  person, a shop, or a system outside the product.
+- **generated interface** — an interface whose form the product composes
+  at run time from the person's context, within constraints the
+  experience guidance corpus states; a form, not an interaction type.
+- **assistant interaction** — an interaction in which the product acts on
+  an intent the person stated rather than on a command — conversational,
+  voice, or an assistant acting for the person (a closed set); the locus
+  of control is the product's, so the experience principles bound it.
+- **intent** — a desired outcome expressed by an originator at the
+  product's edge; enters the product through a contract and keeps its
+  provenance through every translation and delegation.
+
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+| 1 | 2026-08-19 | update | Seed term list authored. |
+| 1 | 2026-08-19 | state | draft → approved. |
+| 2 | 2026-08-22 | update | Conversation-model terms added; action extended to four values, authority-call and action-table amended, close-out and snapshot tag added. |
+| 3 | 2026-08-23 | update | Architecture terms added, riding the architecture-principle-set approval: Bounded Context, shop, activity, contract, relationship kind, intent. |
+| 3 | 2026-08-23 | state | The six architecture terms approved with the architecture principle set; pending markers removed. |
+| 4 | 2026-08-23 | update | Owner direction: ruling and experiment-index entries removed with the ledger practice; review and review-record entries rewritten to the outcomes model. |
+| 5 | 2026-08-23 | update | Anchor entry added — the term recurred as an unintroduced-term stumble across three screens. |
+| 6 | 2026-08-23 | update | vehicle and pre-state added — terms the lead-solutions-architect role turns on. |
+| 7 | 2026-08-25 | update | Owner direction: a near-synonym of "role" retired and banned. |
+| 8 | 2026-08-25 | update | framing, acceptance scenario, scenario register, clarify, decomposition, enabler work added — each arrived undefined in the PM and PO role screens. |
+| 9 | 2026-08-25 | update | interaction type and experience guidance corpus added with the lead-product-designer role. |
+| 10 | 2026-08-25 | update | ask added; clarify re-based as an ask; hold now names the ask as a cause. |
+| 10 | 2026-08-25 | update | originator added — used by the PM role and the ask type without a definition. |
+| 11 | 2026-08-26 | update | scope gains the experience level with the experience principle set. |
+| 11 | 2026-08-26 | update | generated interface and assistant interaction added with the experience principle set. |

@@ -1,0 +1,173 @@
+# Notes-1 — SQ1 (Cagan's position, verbatim) and SQ3 (role vs activity/accountability wording)
+
+Gathered 2026-08-25. "Opened in full" = raw HTML downloaded with curl and article body extracted; quotes copied from the extracted text. Ellipses inside quotes are mine; nothing else altered.
+
+## A. Cagan / SVPG — primary
+
+### 1. Cagan, "Product Manager vs. Product Owner" (SVPG)
+URL: https://www.svpg.com/product-manager-vs-product-owner/ — opened in full.
+- "All too often I run into companies that have resigned themselves to having two different people covering the product role."
+- "Usually the way they split it is they have one person responsible for interacting with customers and stakeholders (which they often call the product manager), and another to interact with the development team and manage the backlog (which they usually call the product owner)."
+- "There are many “product managers” that are not technical enough to effectively engage with the developers, yet management hopes to utilize them.  And there are many “product owners” that show no inclination or ability to get out of the building and interact with customers, yet management knows this is critical."
+- "I have written earlier that this approach has two common negative consequences.  This first is that there is no clear owner (neither person takes responsibility for the product), and the second is a common lack of respect or understanding between the two (the “product manager” doesn’t appreciate the technical complexities, and the “product owner” doesn’t appreciate the customer’s pain)."
+- "In order to make the many hundreds of large and small decisions a product owner makes every week, he needs to have deep understanding of the customers.  Deep customer knowledge is what informs the decisions.  It is actually the main thing a capable product owner brings to the party and it is what distinguishes him from the others on the team."
+- "Similarly, when interacting with customers and identifying problems and opportunities, it is the knowledge of the technology and what is possible that informs the discussions and the potential solutions.  This is what distinguishes a product person from other roles such as marketing, user research or sales, and why it’s essential that the product person has the direct customer interaction."
+- "I know this doesn’t make it any easier to find people that are willing and able to do both, but I do hope that more company leaders come to understand how essential it is to find product people that can cover both aspects of the role."
+Note: Cagan's argument here is about *one person* ("two different people covering the product role"), and he speaks of "both aspects of the role" — i.e. one role with two aspects.
+
+### 2. Cagan, "Product Manager vs. Product Owner Revisited" (SVPG)
+URL: https://www.svpg.com/product-manager-vs-product-owner-revisited/ — opened in full.
+- "Five years ago I wrote an article arguing that it is essential that the product manager is also the product owner.  My motivation, which I made no secret of, was that I was worried about this point because more than a few companies were using the relatively new role of the product owner as an excuse to once again separate “the business person” from the “the person that talks with the developers.”"
+- "Starting about a decade ago, there were many people calling themselves “product owners,” and rather than add another person to the team, I was fine just treating “product manager” and “product owner” largely synonymously.   I didn’t really care what the person was called, so long as it was one person."
+- "Nothing wrong with that if they just realized that this prepared them only for the Agile rituals the product owner has to perform, but for many, that’s not what happened. For many product owners, they actually thought this meant they were trained as product managers."
+- "I wanted to remind people what a product manager is actually responsible for, and how the product owner responsibility is just a very minor part."
+- "So going forward, I promise to be more rigorous about this.  If you tell me you’re the product manager, I’ll double check that you’re also the product owner, but if you tell me that you are the “product owner” then I will ask you if you are also the product manager?  Are you just administering the backlog, or are you actually tackling and solving difficult problems for your customers and your business?"
+Note (SQ3): Cagan's vocabulary shifts within this essay — "role of the product owner", "product owner responsibility", "Agile rituals the product owner has to perform". The PO is treated as a responsibility/ritual-set held by the PM, and the operative test is "one person".
+
+### 3. Cagan, "Product Management – Start Here" (SVPG)
+URL: https://www.svpg.com/product-management-start-here/ — opened in full.
+- "If your engineers are using Agile methods for delivery, then there’s an important administrative role called the product owner, and the product manager needs to cover these responsibilities."
+- "The key is to understand that the product owner responsibilities are just a very small subset of the product manager responsibilities.  And now you may be starting to understand why there are so many ineffective product managers."
+- "As product manager, you’re responsible for ensuring that what gets built is both valuable and viable." (returned by WebFetch of the same page; consistent with the essay's framing)
+Note (SQ3): Cagan here calls the PO an "administrative role" and, in the same sentence, a set of "responsibilities" the PM "needs to cover" — role and responsibility-subset used interchangeably.
+
+### 4. Cagan, "Two in a Box PM" (SVPG)
+URL: https://www.svpg.com/two-in-a-box-pm/ — opened in full.
+- "One of the few things both groups generally agree on is that however you define the job, it’s often too much work for one person. Hence the very understandable desire to cut the role up, and split it among two or more different people."
+- "I will tell you up front that in a great many situations I see, the way the job is defined indeed really is too much for one person. ... But the way the job is scoped down is the key, and unfortunately, the most common ways of trimming down the role have consequences far worse than most companies realize."
+- "In order for the product manager to be effective in addressing value and viability, there are a few things that are absolutely critical, and these are what you need to be very careful about preserving as you go about scoping down the role: Direct Access To Users and Customers ... Direct Access to Business Stakeholders ... Direct Access to Engineers and Designer"
+- "What this means is that you need to protect the product manager’s direct access to these three constituencies, and fight any temptation to place a person (or process) between the PM and these people. It is in fact the direct, ongoing access to these three constituencies that enables the product manager to make good decisions regarding value and viability."
+- "Cutting up the PM job to have a product manager that interacts with customers and stakeholders, but a different person (e.g. product owner) that interacts with the engineers, causes the PM to lose the direct access to engineers."
+- "When I refer to the two-in-a-box PM anti-pattern, it is referring to splitting up responsibility for these three constituencies among two different people.  There are many ways this happens, but in my experience, this is a very serious mistake leading to long-term negative consequences."
+- (On what *may* be offloaded) "Now it’s important to note that it’s normal for the PM to be responsible for acceptance testing, but that is a very minor responsibility compared to the much larger quality assurance role." and, on research admin: "I strongly encourage the organization to get some part-time administrative help to support this work."
+Note: This is Cagan's most precise statement of *why* one person: the harm is loss of direct access to customers/stakeholders/engineers, not the existence of a second role as such. He explicitly sanctions offloading administrative load (research logistics, QA) while keeping the PM's access intact — a "one accountability, helpers for admin" shape.
+
+### 5. Cagan, "The Product Manager Contribution" (SVPG)
+URL: https://www.svpg.com/the-product-manager-contribution/ — opened in full.
+- "That said, most teams know and acknowledge that the product manager is the product owner (another very unfortunate choice of word) in the Agile sense, and as such, the main deliverable they are responsible for is the backlog (what the team will build).  However, to some the backlog may appear as a simple list of user stories.  It can look like just a few minutes work, where the hard part is determining what to build."
+- "It is absolutely possible that the technology lead or the product designer is sometimes capable of covering the role of the product manager as well, and there are some real advantages to this, but most people, once they understand what’s really required, usually back off of trying to cover two roles themselves because of the volume of work."
+- "First, this entire discussion assumes an empowered product team.  If we’re talking a feature team, the role is very different and is essentially a project management role."
+
+### 6. Cagan, "Behind Every Great Product" (SVPG, revised essay)
+URL: https://www.svpg.com/behind-every-great-product/ — opened in full.
+- "They usually have the title “product manager” but they might be a startup co-founder or the CEO, or they might be in another role on the team and stepped up because they saw the need.  The title is not important; the work they do is."
+- "In this model, the product manager is really a backlog administrator.  Lots of CEO’s tell me this is the model they’re in and it’s not working.  If you think the product manager job is what’s described in a Certified Scrum Product Owner class, you almost certainly fall into this category."
+- "Product Management is absolutely distinct from the other disciplines. ... The role I would argue that the product manager is most similar to is the role of the CEO.  But with the obvious difference that unlike the CEO, nobody reports to the product manager."
+
+### 7. Cagan, "Product Managers vs. Business Owners" (SVPG)
+URL: https://www.svpg.com/product-managers-vs-business-owners/ — opened in full.
+- "Be careful not to confuse the concept of a business owner with a ‘product owner’ which is the term used in Scrum teams for the product manager role."
+- "Things go wrong when these two roles are not clearly defined, especially when the business owner believes he is responsible for the product solutions."
+- "So if your company has a central product organization trying to meet the needs of multiple business units, you¹ll need to make very clear to everyone involved on the business side and the product side what the roles and responsibilities are ..."
+Note: Cagan does accept a *second, differently-scoped* role beside the PM (business owner) provided its responsibilities are explicit and it does not own solutions — a useful contrast to his PO position.
+
+### 8. Cagan, "A Fresh Definition of The Product Role" (SVPG)
+URL: https://www.svpg.com/a-fresh-definition-of-the-product-role/ — opened in full.
+- "I’m just guessing here, but I’d say over the years I’ve seen at least one hundred different definitions of the product role (i.e. product manager/product owner)."
+- "Part of the problem is that there are different operating models that require different responsibilities and skills from the person playing the product role."
+Note (SQ3): "product role (i.e. product manager/product owner)" — the two names are treated as one role; "person playing the product role" — role is something played.
+
+### 9. Cagan interview, Mark A. Jansen, "An interview about EMPOWERED with Marty Cagan" (LinkedIn)
+URL: https://www.linkedin.com/pulse/interview-empowered-marty-cagan-mark-a-jansen — opened via WebFetch (tool-extracted quotes; page not downloaded in full by me).
+- "The job title is Product Manager. The role the product manager plays on an Agile team is the product owner role."
+- "many people would go to a short and simple CSPO training, and come out of that understandably considering themselves product owners."
+- "It's the same problem as if we were to send engineers to Scrum training and think that after a few hours they are trained in computer science as software developers."
+Note (SQ3): This is the cleanest Cagan statement of the shape: PM = job title; PO = a role the PM plays within the Agile process.
+
+### 10. Cagan Q&A with Stefan Wolpers, "Marty Cagan on the Product Operating Model and Scrum" (Age-of-Product)
+URL: https://age-of-product.com/marty-cagan-product-operating-model/ — opened in full.
+- "Marty Cagan: Most “scrum teams” are just sets of developers with a backlog administrator product owner, also known as a “delivery team.” An empowered product team is a fully cross-functional set of professionals – developers, designer, and product manager ... More generally, Scrum is a particular delivery process. A product team is designed for both discovery and delivery, and the engineers can use whatever delivery process they consider most appropriate for the delivery task at hand."
+- "Marty Cagan: A product owner is roughly 10% of a true product manager. Your “scrum team” is completely missing a professional product designer. A scrum master is a role normally played by the delivery manager ..."
+- "To be blunt, a Scrum team is quite amateur compared to a professional product team."
+
+### Unopened / not usable
+- Mind the Product, "The role of a product manager — Marty Cagan (Part 2)" https://www.mindtheproduct.com/the-role-of-a-product-manager-marty-cagan/ — page opened but contains only the episode blurb; no transcript. Nothing quoted.
+- Lenny's Newsletter, "Product management theater | Marty Cagan" https://www.lennysnewsletter.com/p/product-management-theater-marty — page opened but transcript body not present in the HTML (only timestamps/links). Nothing quoted. Episode blurb (site copy, not Cagan verbatim): "“fake” product managers engage in non-essential activities, often under titles like Agile coaches, product owners, product operations, or business analysts."
+- O'Reilly, INSPIRED 2nd ed. ch.10 https://www.oreilly.com/library/view/inspired-2nd-edition/9781119387503/c10.xhtml — HTTP 403; unopened. Book excerpt on "the product owner role should be something the PM does" therefore NOT verified from the book; the SVPG essays above carry the same claim.
+
+## B. Scrum Guide 2020 — primary
+
+### 11. Schwaber & Sutherland, The Scrum Guide (November 2020)
+URL: https://scrumguides.org/scrum-guide.html — opened in full.
+- "The Scrum Team consists of one Scrum Master, one Product Owner, and Developers. Within a Scrum Team, there are no sub-teams or hierarchies."
+- "The entire Scrum Team is accountable for creating a valuable, useful Increment every Sprint. Scrum defines three specific accountabilities within the Scrum Team: the Developers, the Product Owner, and the Scrum Master."
+- "The Product Owner is accountable for maximizing the value of the product resulting from the work of the Scrum Team. How this is done may vary widely across organizations, Scrum Teams, and individuals."
+- "The Product Owner is also accountable for effective Product Backlog management, which includes: Developing and explicitly communicating the Product Goal; Creating and clearly communicating Product Backlog items; Ordering Product Backlog items; and, Ensuring that the Product Backlog is transparent, visible and understood."
+- "The Product Owner may do the above work or may delegate the responsibility to others. Regardless, the Product Owner remains accountable."
+- "For Product Owners to succeed, the entire organization must respect their decisions. These decisions are visible in the content and ordering of the Product Backlog, and through the inspectable Increment at the Sprint Review."
+- "The Product Owner is one person, not a committee. The Product Owner may represent the needs of many stakeholders in the Product Backlog. Those wanting to change the Product Backlog can do so by trying to convince the Product Owner."
+- Multi-team clause: "If Scrum Teams become too large, they should consider reorganizing into multiple cohesive Scrum Teams, each focused on the same product. Therefore, they should share the same Product Goal, Product Backlog, and Product Owner."
+Note (SQ3): the word "role" does not appear in the 2020 Guide's team section; the Guide distinguishes *accountability* (non-delegable, one person) from *responsibility/work* (delegable). This is exactly the "one accountability, delegated execution" shape.
+
+### 12. scrumguides.org, "Revisions" (change history, 2017→2020 section)
+URL: https://scrumguides.org/revisions.html — opened in full.
+- "The goal was to eliminate the concept of a separate team within a team that has led to “proxy” or "us and them” behavior between the PO and Dev Team. There is now just one Scrum Team focused on the same objective, with three different sets of accountabilities: PO, SM, and Developers."
+- "The 2020 version aimed to bring Scrum back to being a minimally sufficient framework by removing or softening prescriptive language."
+Note: the official change history does NOT contain an explicit "roles → accountabilities" rationale; that rationale is given in secondary commentary (13, 14).
+
+### 13. InfoQ, "Changes in the 2020 Scrum Guide: Q&A with Ken Schwaber and Jeff Sutherland"
+URL: https://www.infoq.com/articles/changes-2020-Scrum-guide/ — opened in full (primary for the authors' own words).
+- "Schwaber: The goal was to eliminate the concept of a separate team, the Development Team, and instead have one team focused on delivering value. The separate Development Team could create ‘us and them’ behavior between the product owner, the Scrum master and developers. By removing the Development Team, we have one Scrum Team focused on the same objective. The three accountabilities describe how they all work together to deliver on that objective."
+- "Sutherland: All our Scrum teams at Scrum Inc have product owners and Scrum masters fully dedicated to the teams and helping the teams implement the backlog needed to achieve the Sprint Goal. We have found through repeated experiments that this works best."
+- "Sutherland: I was working with trainers in Europe and they said there was a major problem with product owners who had no vision about why they were giving the team a backlog. This is a significant demotivator to the team."
+- "Professor Nonaku ... has consistently pointed out that the person who holds the accountabilities we give to the Scrum master is the catalyst for organization change ..." (note the phrasing "the person who holds the accountabilities").
+
+### 14. Brian Milner (Mountain Goat Software / Cohn's firm), "Top 5 changes in the 2020 version of the Scrum Guide"
+URL: https://www.mountaingoatsoftware.com/blog/top-5-changes-in-the-2020-version-of-the-scrum-guide — opened in full (secondary commentary).
+- "CHANGE: The term “role” has been dropped in favor of the term “accountabilities” to label the individuals on a Scrum team."
+- "Apparently some people thought that the term “role” meant job title. The authors wanted to find a term more like a position on a sports team. ... Scrum Masters don’t have to have “Scrum Master” on the resume; a project manager can play the role of Scrum Master as long as they adhere to what the Scrum Guide spells out for that role. “Accountabilities,” then, is an attempt to separate the two ideas: a role and a title aren’t the same thing."
+- "The problem comes with the fact that I can be accountable for multiple things but the new Scrum Guide states that the Scrum team “consists of one Scrum Master, one product owner, and developers.” These terms represent some undefined word that contains multiple other accountabilities. ... That missing word sounds an awful lot like a role to me."
+- Scrum.org blog posts on "role → accountabilities" (https://www.scrum.org/resources/blog/scrum-guide-2020-update-role-accountabilities ; https://www.scrum.org/scrum-guide-2020) — could NOT be opened (bot-blocked, 919-byte shell / empty fetch). Unopened; nothing quoted.
+- Verwijs, "What 4 Key Changes To The Scrum Guide Tell Us About Scrum" (Medium) — HTTP 403; unopened.
+
+## C. Pichler — primary
+
+### 15. Pichler, "Product Manager vs. Product Owner" (blog, 2016, updated)
+URL: https://www.romanpichler.com/blog/product-manager-vs-product-owner/ — opened in full.
+- "For years, people have debated what the difference between the product manager and the product owner role is, if the roles can coexist or not, and which one should be used."
+- "Scrum as a simple framework focused on helping teams develop complex products. It is not a product management framework. Consequently, it does not cover common product management practices, such as, product strategy development, product roadmapping, business modelling and financial forecasting; and the only product management tool it offers is the product backlog."
+- "Additionally, SAFe uses a product owner role which is different from the Scrum product owner. The latter has full-stack product ownership: The individual owns all aspects of a product, the vision, strategy, and tactics. But the SAFe product owner owns only the tactical product decisions and hence has partial ownership. ... Splitting product ownership in this way is a common scaling technique. But calling the tactical role “product owner,” as SAFe does, is an unfortunate mistake: Having two product owner roles with different levels of authority and responsibility creates confusion and gives rise to misunderstandings."
+- "Note that I have always viewed the Scrum product owner as an agile product manager. I would hence not agree with the notion that the product manager role is only outward-facing and strategic in nature."
+- "An early version of Scrum did, in fact, use the product manager role. In a paper presented at the OOPSLA conference in 1995, Ken Schwaber ... used the term product manager. [2] Subsequently, the name was changed to product owner, though."
+- "By offering the product owner role, these organisations can start working in an agile way without first having to establish a product management group and initiate an organisational change process. Instead, employees from the appropriate business units can—with some training and coaching—act as product owners."
+- "Last but not least, the term product owner strengthens the idea that the person in charge of the product must be empowered and respected. ... If no agreement can be reached, the product owner makes the necessary decision thereby avoiding a deadlock ..."
+- "In the short run, we should acknowledge that the product owner is a product management role. People playing the role should therefore acquire the relevant product management skills."
+- "Additionally, I recommend using either the term product manager or product owner in your company and qualifying it, for instance, by employing the terms senior and junior product manager or junior and senior product owner. This reduces confusion and helps unite people."
+- Reply in comments: "Hi Madison, As I explain in the article, there is no product manager in Scrum. You can think of the Scrum product owner as the agile product manager."
+- Reply in comments: "Secondly, review the split between strategic product people (“product managers”) and tactical folks (“product owner”). If the spilt works well, great, but consider renaming the “product owners” to tactical product manager/person."
+
+### 16. Pichler, "Six Types of Product Owners"
+URL: https://www.romanpichler.com/blog/six-types-of-product-owners/ — opened in full.
+- "As its name suggests, a product owner in Scrum is in charge of a product. Note that the choice of the name is intentional. The role is not called product administrator, feature broker, product backlog manager, user story writer, or project manager—even though that’s sometimes how it is interpreted. It is also not called “product manager” primarily to indicate the level of empowerment and respect product owners require to succeed in their jobs. But you can think of the product owner as an agile product manager ..."
+- "the SAFe model splits product ownership into two distinct roles: The SAFe product manager owns the strategic product decisions, and the SAFe product owner is in charge of the tactics. This is in stark contrast to the Scrum product owner who exercises full-stack product ownership, from vision to tactics ..."
+- "As long as you search for a valid strategy to launch a product, achieve product-market fit, and then keep the product growing, it is particularly important to dovetail strategic and tactical product decisions. This is hard to achieve when they are split across two distinct roles. (In contrast, a Scrum product owner is always involved in the tactical work to a certain extent, even though the bulk of the work may be done by feature and component owners in collaboration with the dev teams.)"
+- "Each of the roles above is a product management role; anybody playing one of the roles takes on product ownership ... But as indicated, the ownership scope significantly differs and with it, the empowerment and skills required to succeed."
+- "As I have suggested before, what truly matters are not our job titles and role names. It’s the good we do for the users and our businesses."
+- Pichler reply in comments on Cagan: "I’ve met Marty Cagan, and I am aware of his views on the product owner role. While his work and mine are aligned in many ways, I disagree with his take on the product owner role. I believe that it is based on how he has seen the role applied rather than how it is intended. Admittedly, the product owner role is often misunderstood and misapplied ... But this does not mean that the role per se is wrong or ill-conceived."
+
+### 17. Pichler, "Is the Product Owner the Product Manager?" (blog, 16 March 2010)
+URL: https://www.romanpichler.com/blog/product-owner-product-manager/ — opened in full.
+- "This blog post explores the differences between working as a product manager and playing the product owner role."
+- "Working as the product owner implies taking on many product management responsibilities including understanding the market, describing product functionality, and preparing the product launch. This makes product managers well suited to play this new role. But a product owner is more than just a re-branded product manager: Product owners tend to take on a wider range of duties ... The following formula captures this insight: Product Owner = Product Manager + x"
+- "Consequently, product owners often require more authority and more focus to do their job well. Note that product ownership is teamwork in Scrum: Requirements are no longer identified and described by one person."
+- Pichler reply (2013): "Scrum has the concept of a *single* product owner, which I find useful at least until product market fit has been achieved. But when the product grows, ownership has to be shared ..."
+- (Commenter, not Pichler — "I’m convinced both roles overlap significantly, but none includes the other." is by devaux xavier, 2017. The WebSearch snippet misattributed this to Pichler; do not cite as Pichler.)
+
+### 18. Pichler, "How Agile Has Changed Product Management"
+URL: https://www.romanpichler.com/blog/how-agile-has-changed-product-management/ — opened in full.
+- "When coining the Scrum terms, Ken Schwaber and Jeff Sutherland chose the term product owner instead of product manager in order to emphasise the level of authority and empowerment a product person requires—especially in an agile context where collaboration is valued, and stakeholders and dev teams regularly contribute to product decisions."
+
+### Pichler, podcast "Product Manager vs. Product Owner"
+URL: https://www.romanpichler.com/podcast/product-manager-vs-product-owner/ — opened; page holds only the blurb (same as blog intro); no transcript. Nothing further quoted.
+
+## D. Cross-source observations (for the synthesis)
+
+1. Vocabulary by source (SQ3):
+   - Cagan: PO is variously "an important administrative role", "the product owner responsibilities ... a very small subset of the product manager responsibilities", "the Agile rituals the product owner has to perform", "the term used in Scrum teams for the product manager role", and (interview) "The role the product manager plays on an Agile team is the product owner role." Title = PM; PO = role/ritual-set played by the PM. Operative test: "so long as it was one person."
+   - Scrum Guide 2020: no "role" word; PO is an *accountability* held by "one person, not a committee"; the *work* "may delegate ... to others. Regardless, the Product Owner remains accountable." Accountability is singular and non-delegable; execution is delegable.
+   - Pichler: "the product owner is a product management role"; "you can think of the product owner as an agile product manager"; SAFe's strategic/tactical split is "a common scaling technique" but naming the tactical role PO is "an unfortunate mistake"; "what truly matters are not our job titles and role names."
+2. Agreement: all three agree PO and PM should not be two people with the PM outward-facing and the PO inward/backlog-facing at the level of *accountability*; all three accept that *work* may be shared or delegated (Cagan: research admin, QA, business owner; Scrum Guide: delegation clause; Pichler: feature/component owners, "ownership has to be shared" post-PMF).
+3. Conflict: Pichler explicitly disagrees with Cagan's characterisation of the PO ("based on how he has seen the role applied rather than how it is intended"); Cagan calls the PO "roughly 10% of a true product manager" and "a backlog administrator"; Pichler says the Scrum PO has "full-stack product ownership" and is "more than just a re-branded product manager" (PO = PM + x, 2010). They agree on one person, disagree on which name carries the larger scope.
+4. Cagan's *reason* for one person (Two in a Box) is stated as preservation of direct access to three constituencies (customers/users, stakeholders, engineers/designer), and loss of a single owner. He does not argue against a second role as such; he argues against any split that interposes "a person (or process) between the PM and these people."
+5. Cagan's own definition of what the PM is accountable for: "ensuring that what gets built is both valuable and viable"; the PM-as-PO "main deliverable ... is the backlog (what the team will build)."
+6. Milner (Mountain Goat) notes the residual gap in the Scrum Guide's move: "accountability" names the duties, but the thing that bundles several accountabilities into "one Product Owner" is still, functionally, a role — relevant to a system that defines roles as capability contracts.

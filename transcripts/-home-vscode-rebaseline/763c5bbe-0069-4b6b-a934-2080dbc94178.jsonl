@@ -1,0 +1,6 @@
+{"type":"mode","mode":"normal","sessionId":"763c5bbe-0069-4b6b-a934-2080dbc94178"}
+{"type":"permission-mode","permissionMode":"bypassPermissions","sessionId":"763c5bbe-0069-4b6b-a934-2080dbc94178"}
+{"type":"bridge-session","sessionId":"763c5bbe-0069-4b6b-a934-2080dbc94178","bridgeSessionId":"cse_01Nao8GcHuPKJH745ARupbrg","lastSequenceNum":0,"ownerAccountUuid":"2909ef62-a048-44e9-94af-832ae6715f27","ownerOrganizationUuid":"c842a9a4-65c6-4926-9bdf-fc9d3a58a9ab"}
+{"parentUuid":null,"isSidechain":false,"type":"system","subtype":"informational","content":"Remote Control disconnected — Transport closed: server rejected connection (code 403) — run /remote-control to reconnect","isMeta":false,"timestamp":"2026-08-24T13:47:52.603Z","uuid":"96bbdb5d-5162-48e6-b753-d9c6561aa6b7","level":"warning","userType":"external","entrypoint":"cli","cwd":"/home/vscode/rebaseline","sessionId":"763c5bbe-0069-4b6b-a934-2080dbc94178","version":"2.1.241","gitBranch":"rebaseline"}
+{"type":"bridge-session","sessionId":"763c5bbe-0069-4b6b-a934-2080dbc94178","bridgeSessionId":"cse_01Nao8GcHuPKJH745ARupbrg","lastSequenceNum":0,"ownerAccountUuid":"2909ef62-a048-44e9-94af-832ae6715f27","ownerOrganizationUuid":"c842a9a4-65c6-4926-9bdf-fc9d3a58a9ab"}
+{"type":"last-prompt","leafUuid":"96bbdb5d-5162-48e6-b753-d9c6561aa6b7","sessionId":"763c5bbe-0069-4b6b-a934-2080dbc94178"}

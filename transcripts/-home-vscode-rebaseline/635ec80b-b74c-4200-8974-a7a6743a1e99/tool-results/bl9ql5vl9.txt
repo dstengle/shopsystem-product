@@ -1,0 +1,221 @@
+===== www_svpg_com_a-fresh-definition-of-the-product-role_.html
+A Fresh Definition of The Product Role
+I’m just guessing here, but I’d say over the years I’ve seen at least one hundred different definitions of the product role (i.e. product manager/product owner).  I’m pretty sure that anyone reading this would have seen at least several.
+Part of the problem is that there are different operating models that require different responsibilities and skills from the person playing the product role.
+And part of the problem is that people seem to want a short catch phrase or pithy description that captures what’s important.  I don’t think a simple phrase can capture the nuances of any complex role, but I will say that what the person chooses to emphasize can be very telling.
+Asking a product person how they define their role can serve as a form of Rorschach test. 
+I’ve asked that question during interviews for literally decades.  I don’t view this as a right or wrong question, but the candidate’s answer reveals so much about the product model they’ve worked in, why they think the role exists, and what that role contributes to a product team.
+I’ve personally argued for a few different definitions over the years, each version trying to emphasize something I consider essential and distinct from the other roles on a product team.
+But sometimes we can be too close to a topic, and it can be hard to see the forest for the trees.
+Just recently I read an article that was not even attempting to define the product role, and barely even mentioned the term “product,” yet it provided one of the best descriptions of the responsibilities and skills of a product manager in the AI era that I have ever seen.
+The author is the technology industry analyst Benedict Evans.  I’ve mentioned Ben’s writing in the past as he’s one of my favorite analysts.  He’s not a product person per se, but he is product adjacent, and he does know the broader tech industry exceptionally well.
+The article is called “Most People Aren’t Tool Builders”, but it’s behind his paywall so unless you’re a subscriber you probably won’t be able to read it.  However, he just recently discussed this article in a podcast that’s available outside the paywall.  It’s twenty minutes very well spent, and I’d strongly encourage you to listen to this.
+Ben’s article and podcast are trying to explain why it is that just because customers may now have access to the tools and technology to create their own solutions (whether that’s vibe-coding an application, or automating their workflows with agents, or anything else), they are very unlikely to even try, and for those that do, they are unlikely to succeed.
+In the process of explaining his argument, Ben contrasts the skills and mindset of typical users and customers, with the skills and mindset of someone that’s strong at creating new tools or solutions.
+I’ll address Ben’s main point at the end of this article, but I was struck by how good his description of the strong product role was.  I wanted to share Ben’s implicit definition of the product role, and help map the language he is using to the terms my readers will recognize.
+Ben describes three distinct skills of effective product people:
+First, lots of people recognize pain, and maybe have ideas for addressing that pain, but not everyone is able to see the more general problem to be solved behind that pain or idea.  I have been doing this for so long (several decades) that it’s second nature for me, and it’s easy to forget that not everyone is able to spot these opportunities.
+Second, once a problem worth solving has been recognized, you need to have the skills to discover an effective solution to that problem.  In Ben’s words, “People that are really good at using the tool are not the same people as those that are really good at creating the tool” (emphasis mine).  He sums up this point well with an example:  “You have to know a lot about sales to make good sales software, but being good at sales does not make you good at making sales software.”
+Third, beyond discovering a strong solution that meets the needs of your customer, you also need to have the depth and breadth of understanding of your company to discover a solution that also works for your business.  Realize that most solutions will touch people across your company – sales, marketing, finance, compliance, legal and more.  The solution may depend on regulated data, or may need to integrate with legacy systems, or may need to be incorporated into many different workflows across the business.
+To map these points to concepts product people will recognize, Ben’s first point is referring to problem discovery, his second point is addressing the value risk in solution discovery, and his third point is addressing the viability risk of solution discovery.
+None of these three skills is necessarily exclusive to product people, but I think it’s fair to say that it’s pretty rare to find these skills in most people.
+Reading Ben’s words also made me realize that I had yet again made the mistake of assuming more people thought like product people. 
+About a year ago I published one of our most popular articles, The Era of the Product Creator in which I celebrated the arrival of these new tools that make the product creation process – discovery and delivery – so much better.  I said that I was excited to see many more people become strong product creators.  
+That’s been maybe a little bit true, but not anywhere near what I had hoped for.
+Ben is arguing that the issue isn’t the tools, it’s how the product person thinks and how well they understand the craft of product.
+There are of course many different ways to frame the responsibilities of a strong product person, but whether you choose to use his framing or not, the essential skills remain.  
+These skills are what your product team is depending on you for.
+Back to the original point of Ben’s article, I’m not the only one making the mistake of confusing ourselves with our customers.
+So many product people today are thinking that their customers are going to use AI technologies the way that they are.  But as Ben explains: “Most people and companies aren’t tool builders.”
+He goes on to say: “AI makes it easy for anyone to build tools to automate their work… except most people and most companies aren’t tool-builders, don’t think like that, and can’t and won’t do that. This is why software companies and consultants exist – AI changes the thresholds but not the problem.”
+“But the core of this is that giving everyone a new way to make tools doesn’t mean that everyone will make tools. Writing the code isn’t the hard part, and making the tool isn’t the hard part – the hard part is knowing that it should exist, and knowing how it should exist, and that’s a different person.”
+Ben’s article serves as a great reminder of why the product role is so essential, and is likely to remain essential.
+
+===== www_svpg_com_product-management-start-here_.html
+Product Management – Start Here
+There has never been more interest in becoming a product manager.  There has also never been so many strong and helpful voices that can help these aspiring product managers (at the end of this article I’ll share several of my favorites).
+However, there has also never been so much noise and nonsense written about product management.
+Imagine being an aspiring product manager, new to the industry, but unfortunately without a capable manager or coach to guide you, and you see literally thousands of articles, podcasts, videos and classes on the topic.  
+But you have to jump in somewhere, and it’s very likely that soon you are completely confused and frustrated by the conflicting and contradictory messages.
+I spend far too much time trying to get people to unlearn what they think they know about product management, so that they can have a chance to learn how strong product managers do their job.
+I’m not sure this is a solvable problem as it’s really a consequence of both the good and the bad of the Internet.  
+However, for those aspiring product managers that manage to find their way to my writing, I do want to try to give these people a reasonable foundation, so that they can get started in (what I consider at least) the right direction.
+What follows is a specific set of topics, in an intentional order, linking to a curated set of articles.
+How should I think about the product manager job?
+The article Behind Every Great Product describes the stories of six product managers that were behind six iconic products, and the hope is that you can start to get a sense of the traits and characteristics of strong product managers.
+The article The Foundation of Product describes the critical role of the product team you would be a part of.
+Where do great products come from?
+Great products solve real problems for our users and customers, in ways that our customers love, yet work for our business.  They are enabled by new technologies that make these solutions just now possible.  Learn the backstory behind several successful and innovative products in Customer Inspired; Technology Enabled.
+What really is a product?
+This question sounds easy but there are many layers to this.  Everything starts by understanding the role of the customer, the technology, and your business.  Please read What Is a Product?
+What do I need to worry about to ensure a successful product?
+There are four big risks in every technology product effort.  You need to understand and be concerned with all four, but two of them are the explicit responsibility of the product manager.
+I’m confused.  None of this is anything like what was described in my Certified Scrum Product Owner (CSPO) class.
+If your engineers are using Agile methods for delivery, then there’s an important administrative role called the product owner, and the product manager needs to cover these responsibilities.
+The key is to understand that the product owner responsibilities are just a very small subset of the product manager responsibilities.  And now you may be starting to understand why there are so many ineffective product managers.
+So what specifically am I responsible for?
+As product manager, you’re responsible for ensuring that what gets built is both valuable and viable.  And to be clear, this is what makes the job hard.  You’ll have no chance unless you do your homework and prepare.  You can learn the product manager contribution here.
+My manager thinks that it’s not my job to worry about value and viability.  He says the stakeholders and the executives decide what we’ll build, and we are there to “serve the business”  by designing and building the features they need.  What am I missing?
+Unfortunately, it sounds like you may have ended up in a company that hasn’t yet transformed to true, empowered product teams, and you’re still working with feature teams or worse, delivery teams.
+If your company is using a process like SAFe, and you want to be a true product manager, I’m sorry to say this but you’ll likely have to move to a company that knows the difference and why it matters.
+If your company is using feature teams, then it’s worth trying to help the company transform.  You should read carefully the differences between these three types of teams.
+You may have the product manager title, but if you’re spending most of your day doing project management, it’s very likely you’re on a feature team or delivery team.
+However, assuming you are working in a modern tech-powered product company, and you’ve been asked to serve in the role of product manager on a true empowered product team, we can get into the heart of the role.
+What is product discovery and why is it important?
+If you’re on a feature team and you’re given a roadmap of features to build, then there’s really no need or room for product discovery.  There’s a little design, and then it’s all about coding.
+However, if you’re on an empowered product team, then rather than being given features to build, you’ve been given problems to solve, and product discovery is how we discover a solution that works – a solution that’s valuable, usable, feasible and viable.
+There are many techniques you’ll need to learn to understand how product managers collaborate with designers and engineers to discover a solution worth building, but for now, it’s important to understand that feature teams deliver output, but product teams deliver outcomes.  And yes, outcomes are much harder.
+What about wireframes, prototyping and user research?
+These are all important, but they are the responsibility of your product designer, not you.  
+There are two reasons for this.  First, while learning to use the tools of design is easy, learning to be a good designer is anything but easy.  Second, if you spend your time doing the designer role, then who is going to do the product management role?  They are both full-time jobs when done with competence.
+If it seems to you that there’s significant overlap between the two roles (a very common confusion), then you probably either don’t yet understand what a professional product designer does, or you don’t yet understand what a true product manager does, or both.
+How do I get up to speed for this job, or as you say, “do my homework?”
+Start by doing a skills and knowledge self-assessment (or better yet, get your manager to help you with this).  The idea of this assessment is to quickly identify your weaknesses – if you think you don’t have any, you should probably think again, because people aren’t born with these skills.
+Once you know the areas you need to develop, you can create a plan for yourself (or again, better to get your manager to help you).
+To set your expectations, it usually takes about three months of real work for a new product manager to get to a basic level of competence.  And that’s if you have a strong foundation and an experienced manager coaching you at least weekly.
+What’s the most important thing for me to understand if I want my product team to be great?
+First, you absolutely need to do your homework as I described above.  Your team is depending on you.  Beyond that, develop a true understanding and appreciation for the role of design and especially the role of engineering in technology-powered products.
+I’m in.  How can I learn more?
+I am biased of course, but I wrote a book for this purpose, called INSPIRED: How To Create Tech Products Customers Love which is all about how strong product teams solve hard problems.  And if your manager doesn’t have the time or experience to coach you, I’d strongly suggest some serious training.
+Surely there must be other important voices that I can learn from?
+Absolutely there are, and I’ll share some of my favorites below.  But I have no desire to serve as some sort of gatekeeper to good content.  I want you to be able to determine for yourself whether a given author has something to say that can help you or not.  
+In my experience, if you can develop a solid foundation of the principles of strong product management, then you’ll usually be able to determine fairly quickly the potential value of a given piece of content.
+With those caveats, these are some of my favorite thinkers about product, and I’ve benefited from each of their writings:
+Teresa Torres 
+Holly Hester Reilly 
+Melisa Perri 
+Felipe Castro 
+Jeff Patton
+Shreyas Doshi
+There are others as well, including some very smart people I know that are working on publishing their thoughts for the first time, so this list will grow.
+I hope this series of articles have helped you make sense of the product management role on an empowered product team, and I encourage you to continue learning and developing.
+
+===== www_svpg_com_product-manager-role_.html
+Product Management
+      				August 10, 2026
+      				Marty Cagan
+                      			A Fresh Definition of The Product Role
+I’m just guessing here, but I’d say over the years I’ve seen at least one hundred different definitions of the product role (i.e. product manager/product owner).  I’m pretty sure that anyone reading this would have seen at least several. Part of the problem is that there are different operating models that require different responsibilities and...
+
+===== www_svpg_com_product-manager-vs-product-owner-revisited_.html
+Product Manager vs. Product Owner Revisited
+UPDATE: There is a new article that expands on this important topic: Two in a Box PM
+Five years ago I wrote an article arguing that it is essential that the product manager is also the product owner.  My motivation, which I made no secret of, was that I was worried about this point because more than a few companies were using the relatively new role of the product owner as an excuse to once again separate “the business person” from the “the person that talks with the developers.”
+This causes serious problems, which I covered in the article so I won’t repeat here, and I absolutely still believe it’s critical to be a single person rather than two, but I realize now that I also made a serious mistake in my strategy for how I encouraged this.
+Starting about a decade ago, there were many people calling themselves “product owners,” and rather than add another person to the team, I was fine just treating “product manager” and “product owner” largely synonymously.   I didn’t really care what the person was called, so long as it was one person.
+Today I realize that was a significant mistake.
+What happened was that many people would go to a short and simple CSPO training, and come out of that understandably considering themselves product owners. Nothing wrong with that if they just realized that this prepared them only for the Agile rituals the product owner has to perform, but for many, that’s not what happened. For many product owners, they actually thought this meant they were trained as product managers.
+The result of this is that countless people with just product owner training – but the product manager title or responsibilities – to put it bluntly, have absolutely no clue what they’re doing.  They don’t actually understand the full scope of their responsibilities, and they don’t know how to go about succeeding in their job.
+I see this directly with many of the product managers I meet, but mostly I hear it indirectly from the countless CEO’s, developers and designers that are frustrated or confused as the skill level has in many cases fallen.
+This was one of the motivations for my recent “Behind Every Great Product” article. I wanted to remind people what a product manager is actually responsible for, and how the product owner responsibility is just a very minor part.  Please read this if you haven’t yet because I consider it one of the most important articles I’ve ever published.
+By all means product managers should get trained on their role in whatever development process their team is using.  Just as it’s important to get trained on using whatever analytics tools their team is using.  Or whatever software management system their team is using.
+But just as learning Scrum or Kanban doesn’t teach a developer how to actually craft scalable software, it doesn’t teach a product manager how to actually lead a product.
+So going forward, I promise to be more rigorous about this.  If you tell me you’re the product manager, I’ll double check that you’re also the product owner, but if you tell me that you are the “product owner” then I will ask you if you are also the product manager?  Are you just administering the backlog, or are you actually tackling and solving difficult problems for your customers and your business?
+
+===== www_svpg_com_product-manager-vs-product-owner_.html
+Product Manager vs. Product Owner
+UPDATE: There is a new article that expands on this important topic: Two in a Box PM
+All too often I run into companies that have resigned themselves to having two different people covering the product role.
+Usually the way they split it is they have one person responsible for interacting with customers and stakeholders (which they often call the product manager), and another to interact with the development team and manage the backlog (which they usually call the product owner).
+The reasoning is typically because they don’t have someone with either the skills or the time required to commit to covering both.
+There are many “product managers” that are not technical enough to effectively engage with the developers, yet management hopes to utilize them.  And there are many “product owners” that show no inclination or ability to get out of the building and interact with customers, yet management knows this is critical.
+As appealing as this strategy may sound, I want to use this article to try to explain why this approach typically yields very weak product and little innovation.
+I have written earlier that this approach has two common negative consequences.  This first is that there is no clear owner (neither person takes responsibility for the product), and the second is a common lack of respect or understanding between the two (the “product manager” doesn’t appreciate the technical complexities, and the “product owner” doesn’t appreciate the customer’s pain).
+However, this approach has an even more fundamental issue as well:
+In order to make the many hundreds of large and small decisions a product owner makes every week, he needs to have deep understanding of the customers.  Deep customer knowledge is what informs the decisions.  It is actually the main thing a capable product owner brings to the party and it is what distinguishes him from the others on the team.
+Similarly, when interacting with customers and identifying problems and opportunities, it is the knowledge of the technology and what is possible that informs the discussions and the potential solutions.  This is what distinguishes a product person from other roles such as marketing, user research or sales, and why it’s essential that the product person has the direct customer interaction.
+It is precisely this combination of deep customer understanding with the ability to apply technology to solve customer problems that enables a strong product person.
+I know this doesn’t make it any easier to find people that are willing and able to do both, but I do hope that more company leaders come to understand how essential it is to find product people that can cover both aspects of the role.
+
+===== www_svpg_com_product-managers-vs-business-owners_.html
+Product Managers vs. Business Owners
+In some companies, mostly larger companies with multiple business units, there is an additional role in the product mix.
+This role typically comes about when you have a matrix organization where a common product organization is responsible for serving the needs of multiple business units. Common examples include business units by geography (e.g. US, International), by device (e.g. mobile, PC), or by function (e.g. search, advertising).
+There really has never been a good title for these business owners. Sometimes they’re called business managers, business development managers, or product line managers, and sometimes they borrow the title ‘product manager’ or ‘product marketing’ which can cause another layer of confusion.
+Be careful not to confuse the concept of a business owner with a ‘product owner’ which is the term used in Scrum teams for the product manager role.
+In large part, the role of the business owner is a reaction to the matrix, and for the understandable desire of general managers that are accountable for revenue to have people on their staff (i.e. that they can directly control) that are driving the business forward.
+Many product managers resist this model because they can feel disempowered (when the real product decisions get made by the business owners), or because of the complicated stakeholder management that comes along with trying to serve the often conflicting needs of a range of business units.
+I have seen, and actually worked in, two major organizations with this model, and I can tell you that it can go either way. It can be a very effective model, or it can be a major obstacle to creating good products. Everything depends on how the role of the business owner is defined relative to the role of the product manager.
+When this model goes wrong, the product manager is relegated to essentially gathering and documenting the requirements of the business owner. Those who have been reading these articles know that this is not the job of the product manager, and in fact represents the absence of product management.
+However, when this model is done well you can truly drive the business forward very aggressively by the combination of business and product.
+The business owner has five key responsibilities:
+1. Opportunity Assessments. The business owner defines the business need. For those using the opportunity assessment that I advocate, the opportunity assessment defines the contract between the business owner and the product manager. This opportunity assessment defines the problem to be solved and the measures of success; it does not define the product solution that will address this need.
+2. Revenue Model. The business owner drives the revenue model including identifying the key revenue levers, and establishing pricing and promotions.
+3. Stakeholder Management. The business owner plays a major role in stakeholder management, working closely with legal, marketing, sales, business development, and execs. This is a big help to the product manager.
+4. Partner Management. The business owner manages the relationships with key partners (advertisers, vendors, channels). There is a significant business development aspect to the business owner role, and this also frees the product manager further.
+5. Business Analytics Tracking. The business owner closely tracks the business metrics and analytics, and works with the product manager to identify and resolve issues.
+Each of these five areas are important, and in the absence of a business owner, the product manager must spend time to cover, taking away from the product manager’s primary responsibility (sometimes other roles such as product marketing and business development can help cover some of this as well).
+What the business owner is not responsible for is product discovery. That is the job of the product manager. The product manager is the person responsible for discovering innovative product solutions that deliver the necessary value, are usable by the target audience, and can be delivered with the available resources in the required timeframe. Product discovery is a big enough job that there’s plenty of room for help from a good business owner to cover these other areas.
+Things go wrong when these two roles are not clearly defined, especially when the business owner believes he is responsible for the product solutions. Whenever I find a business owner handing mockups to the product manager I know that there¹s a deep problem here, and either the business owner ought to move over to product management, or the product manager is not up to the job, or the roles are not clearly defined.
+I said earlier that essentially the business owner role is a reaction to the matrix. If a general manager is truly empowered and accountable for the success of his or her business, and if the matrix organization is not able to deliver at the pace and quality the business feels it needs, then desperate business owners get creative about how they get product done. The first thing they do is essentially staff their own product management organization (but they are usually careful not to call it product management). The second thing that often happens is that the business unit will contract with third-party developers or outsourced engineering so that they can get what they need built more rapidly.
+While this is totally understandable and a direct consequence of strong, empowered business unit leaders, at this point the organization is in serious trouble. The team will soon have a mix of software from different sources, largely incompatible and not integrated, very difficult to maintain and support, the users and customers will suffer, and everyone will be frustrated.
+So if your company has a central product organization trying to meet the needs of multiple business units, you¹ll need to make very clear to everyone involved on the business side and the product side what the roles and responsibilities are, and management will need to monitor this closely to make sure that the roles are respected and that people are in the right positions based on their skills.
+
+===== www_svpg_com_the-product-manager-contribution_.html
+The Product Manager Contribution
+Recently I was asked by a very smart CTO: “I understand the need for a great product designer, but if we have a strong designer, and that person is paired with a strong technology lead, do we really still need a product manager?”
+For many teams, the contribution of the product manager is not at all clear.  Either because they simply don’t see the contribution because it’s not happening, or because they don’t understand the significance of what is being done.
+In this article I’d like to spell out very clearly what the product manager needs to contribute if they are to carry their weight on a product team.
+But first I need to provide a few caveats:
+First, this entire discussion assumes an empowered product team.  If we’re talking a feature team, the role is very different and is essentially a project management role.  So this article is talking about the contribution of the product manager on an empowered product team.
+Second, It is absolutely possible that the technology lead or the product designer is sometimes capable of covering the role of the product manager as well, and there are some real advantages to this, but most people, once they understand what’s really required, usually back off of trying to cover two roles themselves because of the volume of work.
+Third, in an early stage startup, the product manager role is most appropriately played by the CEO or one of the founders.
+Finally, just to be very clear, an empowered product team is a flat structure, and this means the product manager is not the boss of anyone.  Each person on the team usually reports to a functional manager there to help them get better at their job – engineering, design, or product management.  But despite the unfortunate word “manager” in the title, the product manager is an individual contributor.
+That said, most teams know and acknowledge that the product manager is the product owner (another very unfortunate choice of word) in the Agile sense, and as such, the main deliverable they are responsible for is the backlog (what the team will build).  However, to some the backlog may appear as a simple list of user stories.  It can look like just a few minutes work, where the hard part is determining what to build.
+Sadly, in many teams, they are right.  The backlog is generated by someone that is ill-equipped to succeed.  The result is that it doesn’t matter if there is a strong product designer or strong engineers if the work on the backlog is not what’s necessary to succeed.
+So how is it that the product manager can make the many choices necessary to come up with a product worth building?
+First, remember the four big risks in product, and that the product manager is explicitly responsible for ensuring both value and viability.
+In order to solve for value and viability, the competent product manager must skilled in the following four critical areas:
+1. Deep Knowledge of the Users and Customers
+The foundation of product is deep knowledge of the actual users and customers – qualitative and quantitative knowledge.  The product manager needs to be the acknowledged expert on the customer.  This is what informs the many decisions that must be made.  Without this deep customer knowledge, the product manager is just guessing.  This means both quantitative learning (to understand what they are actually doing), and qualitative learning (to understand why our users and customers behave the way they do).
+2. Deep Knowledge of the Data
+The product manager needs to be expert on how the product is being used (from the user analytics tools), and also sales (from the sales analytics tools), and how this is changing over time (typically from the data warehousing tools).  The product manager may have a data analyst or data scientist to assist, but this knowledge is not something that can be delegated.
+3. Deep Knowledge of the Business
+The third critical contribution is a deep understanding of your business.  This means understanding your go-to-market strategy, the needs of your various stakeholders (how your business works); your business model (how you make money); the dynamics of the ecosystem you operate in; and certainly the economics of your product.  This includes how the product is marketed, how it is sold, how it generates revenue, what are the various costs, the privacy and security considerations, and ethical considerations.
+4. Deep Knowledge of the Industry
+The fourth critical contribution is deep knowledge of the industry you are competing in.  This not only includes competitors, but also key trends in terms of technology, customer behaviors and expectations.  Your industry is constantly moving, and we must create products for where the market will be tomorrow, not where it used to be yesterday.
+These are the four critical contributions that you absolutely need to bring to the team.  This knowledge won’t come from the product designer, and it won’t come from the engineers, but the designer and engineers need this knowledge represented on the team if they are to make intelligent and informed decisions.
+If you are a designer or a technology lead, and you’ve been asked to cover the product manager role as well, then this is what you would be signing up for.
+One final note.  In certain companies, there is so much in terms of domain knowledge, the product manager may be supplemented with what are called “domain experts” or “subject matter experts.”  Examples of this would be companies building tax software, or creating things like medical devices.  In these cases, you can’t expect the product managers to have the necessary level of depth in the domain in addition to everything else.  But these cases are fairly rare.  The normal case is that the product manager needs to have the necessary domain expertise.
+
+===== www_svpg_com_two-in-a-box-pm_.html
+Two in a Box PM
+In my earlier article on the six different models of Product Ops I have found in practice, I mentioned that there were two overarching issues behind the most damaging models, and I promised to discuss each further.
+In my last article I talked about the tendency to think you can scale with process rather than with people, and in this article I’d like to talk about the tendency to want to split the product management job in two, referred to as the “two in a box” PM model.
+One of the things that makes this problem difficult to discuss is that so many people in the product world can’t even agree on what the real role of the product manager is.  
+This is endlessly frustrating to me, but I’ve come to understand that the root of this confusion is that as an industry we use the same title – product manager – for two very different situations: feature teams vs product teams. 
+One of the few things both groups generally agree on is that however you define the job, it’s often too much work for one person.
+Hence the very understandable desire to cut the role up, and split it among two or more different people.
+I will tell you up front that in a great many situations I see, the way the job is defined indeed really is too much for one person.  And when I say “too much,” I don’t just mean stress level and work hours, I also mean not having the time to focus on the activities truly critical for success.
+But the way the job is scoped down is the key, and unfortunately, the most common ways of trimming down the role have consequences far worse than most companies realize.
+Let’s begin this discussion by first saying that what I’m talking about here in this article is the PM role on an empowered product team.  In fact, much of what I say below doesn’t even apply to the PM role in a feature team, although many of the remedies do apply.
+The job of a product manager of an empowered product team is to be responsible and accountable for addressing value and viability risk.  The designer covers usability risk, and the tech lead covers feasibility risk.  Together, they create a product.
+In order for the product manager to be effective in addressing value and viability, there are a few things that are absolutely critical, and these are what you need to be very careful about preserving as you go about scoping down the role:
+Direct Access To Users and Customers
+This should be obvious but without direct, unencumbered access to users and customers, the product manager has little hope of any kind of success in solving for value.  The users and customers provide not only inspiration for unaddressed problems but also the means to rapidly test our proposed solutions.  A little less obvious is the need for direct access to the data about these users and customers, such as how our users interact with our product.  I don’t mean direct access to raw data – but definitely direct access to the data tools, and to data analysts that can help interpret confusing or ambiguous data.
+Direct Access to Business Stakeholders
+Solving for viability is about solving for business constraints, and it’s essential that the product manager has direct access to the experts across your business that are responsible for these constraints – in marketing, sales, services, finance, legal, compliance, manufacturing, subject matter experts, and more.  The product manager must establish relationships with these people where the stakeholder believes that the product manager understands the relevant constraints and will ensure they are addressed in any proposed solution.
+Direct Access to Engineers and Designer
+Finally, value and viability depend on usability and feasibility, and the engineers work daily with the enabling technology, and the designer is directly responsible for the user experience, so discovering a solution that is valuable, usable, feasible and viable is predicated on deep, ongoing collaboration with engineering and design.  When you understand why engineers are so consistently the source of true innovation, you understand that if you lose this direct access, you quickly lose your chance at innovation.
+What this means is that you need to protect the product manager’s direct access to these three constituencies, and fight any temptation to place a person (or process) between the PM and these people.
+It is in fact the direct, ongoing access to these three constituencies that enables the product manager to make good decisions regarding value and viability.
+This is leading to another discussion on the very nature of technology-powered products and innovation, but that’s a more philosophical topic, so I’ll be going deeper on that point in an upcoming article, but for now, the point I wanted to make is to please do not slice up the PM role such that direct access to any of these three is lost.
+Because this is such an important point, I want to be explicit:
+Cutting up the PM job to have a product manager that interacts with customers and stakeholders, but a different person (e.g. product owner) that interacts with the engineers, causes the PM to lose the direct access to engineers.
+Similarly, cutting up the PM role to have a different person (e.g. one of the definitions of a product ops manager) interacting with one class of stakeholders – sales, services, support, operations – loses the ability for the PM to have direct access to these critical sources of input.
+When I refer to the two-in-a-box PM anti-pattern, it is referring to splitting up responsibility for these three constituencies among two different people.  There are many ways this happens, but in my experience, this is a very serious mistake leading to long-term negative consequences.
+Hopefully at this point, even on an intuitive level, you can see how if you want your product managers to be responsible for value and viability, you understand why this direct ongoing access to customers, stakeholders, and engineers would be key.
+So, you might be thinking, what’s left to cut?
+A remarkable amount, it turns out.  
+Now don’t misunderstand me – all the responsibilities I’m about to describe below are ones I have seen PM’s be responsible for numerous times, but that doesn’t mean that it’s common that a PM has all of these additional responsibilities.  Fortunately, I don’t recall ever seeing a situation that bad.  But it’s not unusual to find more than one, and realize that each of these can represent a very significant load.
+Project Management
+The most common additional burden on a product manager is project/program/delivery management.  I’ve written many times about this issue.  The good news is that this can be remedied relatively easily and quickly, although ironically sometimes the PM is reluctant to let go of these responsibilities, so coaching may be required.
+Product Design
+In some companies, while they may have designers, if they are graphic/visual designers rather than product designers, there’s a pretty big gap left uncovered – service design, interaction design, and often user research as well.  This may be tougher to fix because finding product designers is generally harder than finding delivery managers (that’s just an observation on market supply, not a judgment).
+User Research Administration
+It’s increasingly common for product teams and especially product managers to take an active role in user research.  That’s a good thing because of the principle of shared learning in product discovery.  However, in many cases, while the product designer plays the key role in user research (they’ve usually been trained on doing that well), the product manager often picks up the research administrative load.  This includes recruiting, screening, and scheduling users and customers.  It’s not that this is cognitively hard, but it is time consuming.  When I find this situation, I strongly encourage the organization to get some part-time administrative help to support this work.  It’s a low-cost and high-leverage fix.
+Quality Assurance
+This one never ceases to amaze me when I find it, but in a surprising number of companies, the engineers pride themselves on not having QA or test automation engineers.  They think test-driven development and a nice suite of unit level regression tests is all they need to do.  But in practice, the PM’s end up having to play the QA role, which is normally a very time consuming job, and a big responsibility if the company cares at all about their customers.  Now it’s important to note that it’s normal for the PM to be responsible for acceptance testing, but that is a very minor responsibility compared to the much larger quality assurance role.  When I find this I tell the CTO they need to either have their engineers step up and ensure they are delivering working software, or they need to hire QA engineers.
+Customer Service
+Every product manager has some level of customer service responsibilities, if nothing else helping the customer service people diagnose issues and problematic use cases.  
+

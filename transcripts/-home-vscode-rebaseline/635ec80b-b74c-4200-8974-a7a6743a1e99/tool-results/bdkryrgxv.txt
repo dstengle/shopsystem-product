@@ -1,0 +1,1216 @@
+
+#### FILE basis/processes/discovery-conversation.md
+---
+type: process-definition
+id: discovery-conversation-process
+owner: product-authority
+status: approved
+approved: 2026-08-22
+version: 4
+created: 2026-08-22
+updated: 2026-08-26
+produces: [session-record]
+condition-language: cel
+hold-after: P7D
+---
+
+# Process: Discovery conversation
+
+**Purpose:** Conduct a bounded discovery dialogue: the authority explores
+direction with the lead-pm as interlocutor, nothing is operationalized
+before convergence, and the session record anchors the conversation and
+carries what it produced.
+
+**Guiding statement:** Engage the authority's statements as an
+interlocutor; record and launch only after convergence.
+
+**Outcomes:**
+- O1. No work is launched and no definition is written before the
+  authority converges — witnessed by the `route` branches: the handoff
+  is reachable only from the authority's own classification.
+- O2. The conversation closes onto a validated session record carrying
+  its produced and revised lists — witnessed by the `handoff`
+  sub-process, whose child validates the record before landing it.
+- O3. Only the authority converges, closes, or cancels — witnessed by
+  the `route` branches.
+- O4. An inactive conversation holds instead of dangling — witnessed by
+  `hold-after` and the run lifecycle.
+
+**Roles:** product-authority (human-held role — explores, converges, and owns
+the exclusive right to close or cancel). lead-pm — held by the same
+person; its agent steps assist: `engage` prepares the reflection —
+probes, names tensions, offers options with a recommendation, keeps the
+draft record's quotes and state current — and the authority decides
+what converges. The agent operationalizes nothing.
+
+## Flow (compiled)
+
+Generated from the steps below by `tools/compile_process.py`; do not
+edit by hand.
+
+```mermaid
+flowchart TD
+  open["Open the work item — runtime<br/>in — topic: string"]
+  observe[["Authority explores — human: product-authority<br/>in — topic: string<br/>out — statement: string, classification: string"]]
+  route{"Route on the input<br/>in — classification: string"}
+  engage(["Engage as interlocutor — agent: lead-pm<br/>in — statement: string, classification: string<br/>out — reply: string"])
+  handoff{{"Close onto the session record — sub-process: session-handoff-process<br/>out — session_record: session-record"}}
+  close_out["Close the work item — runtime<br/>in — session_record: session-record"]
+  cancel_out["Cancel the conversation — runtime<br/>in — statement: string"]
+  __end(("end<br/>result — session_record: session-record"))
+  __start(("start")) --> open
+  open --> observe
+  observe --> route
+  route -->|success exit: converge or close — hand off| handoff
+  route -->|cancel exit: authority cancels| cancel_out
+  route -->|else| engage
+  engage --> observe
+  handoff --> close_out
+  close_out --> __end
+  cancel_out --> __end
+```
+
+
+## Data
+
+Each entry names a process-local value. Simple types use JSON Schema
+names inline; every structured shape is a `$ref` to a defined type with
+an explicit source.
+
+```yaml
+data:
+  topic: {type: string}
+  session_record: {$ref: session-record, from: pkg:shopsystem-knowledge/session-record}
+  statement: {type: string}
+  classification: {type: string, enum: [direction, question, converge, close, cancel]}
+  reply: {type: string}
+```
+
+## Steps
+
+```yaml
+start: open
+parameters: [topic]
+result: session_record
+steps:
+  - id: open
+    name: Open the work item
+    run-by: {execution: runtime}
+    inputs: [topic]
+    outputs: []
+    run: |
+      bd create --title "Discovery conversation: ${topic}"
+    next: observe
+
+  - id: observe
+    name: Authority explores
+    run-by: {role: product-authority, execution: human}
+    inputs: [topic]
+    outputs: [statement, classification]
+    prompt: |
+      Think out loud. Your message is one of: a direction or exploration
+      to engage, a question, a convergence (the direction is settled —
+      record and route it), a close, or a cancel. Silence holds the
+      conversation after the declared window; the draft record carries
+      the resume point.
+    next: route
+
+  - id: route
+    name: Route on the input
+    run-by: {execution: runtime}
+    inputs: [classification]
+    branches:
+      - label: "success exit: converge or close — hand off"
+        when: classification in ["converge", "close"]
+        next: handoff
+      - label: "cancel exit: authority cancels"
+        when: classification == "cancel"
+        next: cancel-out
+      - else: engage
+
+  - id: engage
+    name: Engage as interlocutor
+    run-by: {role: lead-pm, execution: agent}
+    inputs: [statement, classification]
+    outputs: [reply]
+    checks:
+      - reply != ""
+    prompt: |
+      Engage the statement as an interlocutor: probe it, reflect it back,
+      name tensions with what is already decided, and offer options with
+      a recommendation when a decision is near. Do not operationalize —
+      no launching work, no writing definitions, no dispatches — before
+      the authority converges. Capture select quotes into the draft
+      session record as the dialogue moves.
+    next: observe
+
+  - id: handoff
+    name: Close onto the session record
+    run-by: {execution: sub-process, process: session-handoff-process, from: session-handoff.md}
+    inputs: []
+    outputs: [session_record]
+    next: close-out
+
+  - id: close-out
+    name: Close the work item
+    run-by: {execution: runtime}
+    inputs: [session_record]
+    run: |
+      bd close --reason "Discovery closed onto ${session_record.id}"
+    next: end
+
+  - id: cancel-out
+    name: Cancel the conversation
+    run-by: {execution: runtime}
+    inputs: [statement]
+    run: |
+      bd close --reason "Discovery cancelled: ${statement}"
+    next: end
+```
+
+A close without convergence still routes through the handoff: a
+discovery that produced nothing durable is recorded as exactly that,
+never released silently.
+
+## Derived checks
+
+| Outcome | Check | Kind | Where |
+|---|---|---|---|
+| O1 | `handoff` reachable only via the authority's classification | mechanical | `route.branches` |
+| O2 | the child process validates the record before landing | mechanical | `handoff` sub-process (session-handoff O1) |
+| O3 | close and cancel reachable only from the authority's input | mechanical | `route.branches` |
+| O4 | inactivity holds the run | mechanical | `hold-after` + run lifecycle |
+
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+
+#### FILE basis/processes/po-output-check.md
+---
+type: process-definition
+id: po-output-check-process
+owner: product-authority
+status: approved
+approved: 2026-08-26
+version: 3
+created: 2026-08-25
+updated: 2026-08-25
+produces: []
+carried-by: po-output-check-skill
+condition-language: cel
+hold-after: P7D
+ask-cap: P1D
+annotations:
+  claude-code:
+    activation: model-judged
+    promotion: experiment-local
+    use-when: "the PO role submits a brief, product decision record, acceptance scenarios, or a backlog order for the PM role's check against the framing"
+---
+
+# Process: PO output check
+
+**Purpose:** Check a piece of the PO role's output against the PM
+role's framing under criteria the definitions state, so that the PM
+role decides from a screen verdict — pass, fail with the criterion
+named, or a definition change — and never by reading every artifact.
+
+**Guiding statement:** The check is the criteria applied, not the
+checker's reading. A finding the criteria cannot name is a missing
+criterion, and the decision that follows is a definition change, not a
+verdict on the maker.
+
+**Outcomes:**
+- O1. The output is screened against a named criteria set and the
+  framing it claims to serve — witnessed by `screen`'s inputs and the
+  `screen-review` it returns.
+- O2. The PM role decides from the review and round log; the artifact
+  reaches the PM role only through the findings' quotes — witnessed by
+  `decide`'s inputs, which exclude the artifact.
+- O3. Every screen round is recorded and the loop exits on a clean
+  verdict, on findings no criterion names, or at the round cap —
+  witnessed by `log-round` and `route-screen`.
+- O4. A fail names the criterion missed; a definition change names the
+  gap, and the gap is filed in the named definition's Document History
+  — witnessed by the `check-decision` fields and `record`'s
+  `definition` and `gap_entry` outputs.
+- O5. A question the framing cannot answer leaves the run as an ask to
+  the PM role, with a default, and the run resumes — witnessed by
+  `revise`'s `asks` and the `ask` value.
+
+**Roles:** maker — [`../roles/lead-po.md`](../roles/lead-po.md)
+(submits and revises; never decides its own pass). screener —
+[`../roles/cold-reviewer.md`](../roles/cold-reviewer.md) (fresh
+context every round; judges against the criteria). the PM role —
+[`../roles/lead-pm.md`](../roles/lead-pm.md) (accountable for the
+decision; a human-held role that decides from the verdict; its
+assisting agent prepares the record and the gap entry).
+
+**Carried by:**
+[`../skills/po-output-check/SKILL.md`](../skills/po-output-check/SKILL.md)
+— generated from this definition by
+[`../tools/compile_process.py`](../tools/compile_process.py), never
+edited by hand.
+
+## Flow (compiled)
+
+Generated from the steps below by `tools/compile_process.py`; do not
+edit by hand.
+
+```mermaid
+flowchart TD
+  screen(["Screen against the criteria — agent: cold-reviewer<br/>in — artifact: string, framing: string, criteria_path: string<br/>out — review: screen-review"])
+  log_round["Record the round — runtime<br/>in — review: screen-review, round_log: screen-review[]<br/>sets — round_log: screen-review[]"]
+  route_screen{"Route on the screen<br/>in — review: screen-review, round: integer, round_cap: integer"}
+  revise(["Revise the output — agent: lead-po<br/>in — artifact: string, review: screen-review, framing: string, ask: ask<br/>out — artifact: string"])
+  advance_round["Advance the round — runtime<br/>in — round: integer<br/>sets — round: integer"]
+  decide[["Decide on the verdict — human: lead-pm<br/>in — review: screen-review, round_log: screen-review[], framing: string<br/>out — decision: check-decision"]]
+  record(["Record the decision — agent: lead-pm<br/>in — decision: check-decision, artifact: string, round_log: screen-review[]<br/>out — artifact: string, gap_entry: string, definition: string"])
+  __end(("end<br/>result — decision: check-decision"))
+  __start(("start")) --> screen
+  screen --> log_round
+  log_round --> route_screen
+  route_screen -->|success exit: clean| decide
+  route_screen -->|definition exit: every finding is uncovered — nothing the maker can repair| decide
+  route_screen -->|failsafe exit: round >= round_cap — decide with findings open| decide
+  route_screen -->|else| revise
+  revise --> advance_round
+  advance_round --> screen
+  decide --> record
+  record --> __end
+```
+
+
+## Data
+
+Each entry names a process-local value. Simple types use JSON Schema
+names inline; every structured shape is a `$ref` to a defined type with
+an explicit source. Conditions are CEL expressions over these names. A
+*criteria set* is the approved fitness set or guideline for the
+artifact's type. The framing is always a criterion, named `framing`;
+until a criteria set exists for a type, `criteria_path` names the
+framing itself and `framing` is the only named criterion. The artifact
+status values this process sets — `checked` on pass, `returned` on
+fail, `pending-definition` on definition change — are this process's
+until the artifact typedefs define their own.
+
+```yaml
+data:
+  artifact: {type: string, format: uri-reference}
+  framing: {type: string, format: uri-reference}
+  criteria_path: {type: string, format: uri-reference}
+  review: {$ref: screen-review, from: ../types/screen-review.md}
+  round: {type: integer, initial: 1}
+  round_cap: {type: integer, initial: 3}
+  round_log: {type: array, items: {$ref: screen-review}, initial: []}
+  ask: {$ref: ask, from: ../types/ask.md, initial: null}
+  decision: {$ref: check-decision, from: ../types/check-decision.md}
+  gap_entry: {type: string}
+  definition: {type: string, format: uri-reference}
+```
+
+## Steps
+
+```yaml
+start: screen
+parameters: [artifact, framing, criteria_path]
+result: decision
+steps:
+  - id: screen
+    name: Screen against the criteria
+    run-by: {role: cold-reviewer, execution: agent, fresh-context: true}
+    inputs: [artifact, framing, criteria_path]
+    outputs: [review]
+    prompt: |
+      Read the criteria set at criteria_path, the framing at framing,
+      and the artifact at artifact — nothing else. Judge the artifact
+      against every criterion and against the framing: does each part
+      of it trace to the framing, and does anything in it serve no
+      framed outcome? Report every finding with the criterion it fails
+      by name — "framing" for a part that does not trace to the framing
+      or serves no framed outcome — the quoted text, the change, and
+      whether you could decide it (confident) or not (wobbly); for a
+      wobbly finding quote the whole passage, since the PM role decides
+      from the review alone. A defect no criterion names is a finding
+      with criterion "uncovered". Verdict "clean"
+      only if there are no findings; otherwise "findings" with the top
+      three changes.
+    next: log-round
+    annotations:
+      fabro: {model: high-reasoning, node: separate-context-per-round}
+
+  - id: log-round
+    name: Record the round
+    run-by: {execution: runtime}
+    inputs: [review, round_log]
+    set:
+      round_log: round_log + [review]
+    next: route-screen
+
+  - id: route-screen
+    name: Route on the screen
+    run-by: {execution: runtime}
+    inputs: [review, round, round_cap]
+    branches:
+      - label: "success exit: clean"
+        when: review.verdict == "clean"
+        next: decide
+      - label: "definition exit: every finding is uncovered — nothing the maker can repair"
+        when: size(review.findings) > 0 && review.findings.all(f, f.criterion == "uncovered")
+        next: decide
+      - label: "failsafe exit: round >= round_cap — decide with findings open"
+        when: round >= round_cap
+        next: decide
+      - else: revise
+
+  - id: revise
+    name: Revise the output
+    run-by: {role: lead-po, execution: agent}
+    inputs: [artifact, review, framing, ask]
+    outputs: [artifact]
+    asks: [lead-pm]
+    prompt: |
+      Repair every finding whose criterion is named, "framing"
+      included; leave findings marked "uncovered" as they are — they
+      are the PM role's to decide. If a repair needs something the framing does not say —
+      the originator's intent, whether a thing is in scope, a decision
+      another role's domain holds — return an ask to lead-pm instead
+      of guessing: the question, its kind, the default you will apply
+      if unanswered, and a checkpoint holding the repairs made so far.
+      On the first pass ask is absent; if it carries an answer or
+      resolved defaulted, act on it and finish the repairs.
+    next: advance-round
+
+  - id: advance-round
+    name: Advance the round
+    run-by: {execution: runtime}
+    inputs: [round]
+    set:
+      round: round + 1
+    next: screen
+
+  - id: decide
+    name: Decide on the verdict
+    run-by: {role: lead-pm, execution: human}
+    inputs: [review, round_log, framing]
+    outputs: [decision]
+    prompt: |
+      From the final review and the round log, decide. "pass": the
+      screen is clean, or its only findings are uncovered and you judge
+      none of them needs a criterion — say so in the reasons. "fail": a
+      named criterion, "framing" included, is still missed at the round
+      cap — name it.
+      "definition-change": an uncovered finding should have been a
+      criterion, or a criterion the output met produced something that
+      does not serve the framing — name the definition and what it
+      lacks. Where both a missed named criterion and an open uncovered finding
+      stand at the cap, "fail" takes precedence and the reasons carry
+      the uncovered finding. Decide from the quotes in the review.
+      Record your reasons.
+    next: record
+
+  - id: record
+    name: Record the decision
+    run-by: {role: lead-pm, execution: agent}
+    inputs: [decision, artifact, round_log]
+    outputs: [artifact, gap_entry, definition]
+    prompt: |
+      Write into the artifact's Document History one review entry per
+      round with its verdict, then a state entry carrying the decision
+      and its reasons. Set the artifact's status: "checked" on pass,
+      "returned" on fail with the criterion named, "pending-definition"
+      on definition-change. On "definition-change", write a review
+      entry stating the gap into the Document History of the definition
+      the decision names; return that file's path as definition and the
+      entry's text as gap_entry. Otherwise return both empty. Return
+      the artifact.
+    next: end
+```
+
+## Derived checks
+
+| Outcome | Check | Kind | Where |
+|---|---|---|---|
+| O1 | screen reads only criteria, framing, artifact | judged | `screen.prompt` and inputs |
+| O2 | `artifact` absent from `decide.inputs` | mechanical | `decide.inputs` |
+| O3 | every round logged; three labeled exits | mechanical | `log-round`, `route-screen` |
+| O4 | `criterion` present on fail, `gap` on definition-change; `definition` and `gap_entry` non-empty on definition-change | judged | `check-decision`, `record` outputs |
+| O5 | `revise` carries `asks`; process carries `ask-cap`; `ask` listed in inputs | mechanical | `revise`, frontmatter |
+
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+
+#### FILE basis/processes/reconcile-and-close.md
+---
+type: process-definition
+id: reconcile-and-close-process
+produces: []
+owner: product-authority
+status: approved
+approved: 2026-08-19
+version: 3
+created: 2026-08-10
+updated: 2026-08-23
+condition-language: cel
+---
+
+# Process: Reconcile and close
+
+**Purpose:** Convert a BC's completed dispatch into reconciled shop state:
+the response consumed, the work item closed with a traceable reason, the
+scenario contract confirmed, and follow-ups filed.
+
+**Outcomes:**
+- O1. The BC's `work_done` response is consumed (no longer pending) —
+  witnessed by the atomic `consume-close` step.
+- O2. The originating work item is closed with a reason that cites the
+  demonstration evidence — witnessed by the same step's `run` template,
+  which takes the reason from `verification.evidence`.
+- O3. The scenario register and pinned hashes are confirmed consistent
+  with what was dispatched — witnessed by the check on `verify`.
+- O4. Every defect or follow-up the response reports exists as a filed
+  work item — witnessed by the check on `file-tail`.
+
+**Roles:** router (Accountable — executes); lead-solutions-architect (Consulted —
+receives escalated register discrepancies).
+
+**Carried by:** the existing `reconcile-and-close` skill + executable
+wrapper (already an atomic consume+close — this definition is what that
+carrier is conformance-checked against).
+
+## Flow (compiled)
+
+Generated from the steps below by `tools/compile_process.py`; do not
+edit by hand.
+
+```mermaid
+flowchart TD
+  verify(["Verify the demonstration — agent: router<br/>in — response: work-done-response, work_item: work-item, register: scenario-register<br/>out — verification: verification"])
+  route{"Route on the verdict<br/>in — verification: verification"}
+  consume_close["Consume and close — runtime<br/>in — response: work-done-response, work_item: work-item, verification: verification"]
+  escalate["File the discrepancy — runtime<br/>in — work_item: work-item, verification: verification<br/>out — discrepancy_item: string"]
+  file_tail(["File the tail — agent: router<br/>in — verification: verification, work_item: work-item<br/>out — filed: string[]"])
+  __end(("end"))
+  __start(("start")) --> verify
+  verify --> route
+  route -->|reconcile| consume_close
+  route -->|else| escalate
+  consume_close --> file_tail
+  escalate --> __end
+  file_tail --> __end
+```
+
+
+## Data
+
+Each entry names a process-local value. Simple types use JSON Schema
+names inline; every structured shape is a `$ref` to a defined type with
+an explicit source — `from:` links the defining file, or names the owning
+package as `pkg:<package>/<type>` (fetched through that package's
+contract tool). Conditions are CEL
+expressions over these names.
+
+```yaml
+data:
+  response: {$ref: work-done-response, from: pkg:shopsystem-messaging/work-done-response}
+  work_item: {$ref: work-item, from: pkg:beads/work-item}
+  register: {$ref: scenario-register, from: pkg:shopsystem-knowledge/scenario-register}
+  verification: {$ref: verification, from: ../types/verification.md}
+  discrepancy_item: {type: string}
+  filed: {type: array, items: {type: string}}
+```
+
+## Steps
+
+```yaml
+start: verify
+steps:
+  - id: verify
+    name: Verify the demonstration
+    run-by: {role: router, execution: agent}
+    inputs: [response, work_item, register]
+    outputs: [verification]
+    checks:
+      - size(verification.scenario_status) == size(work_item.scenarios)
+    prompt: |
+      Read the response. Check the demonstration against every dispatched
+      scenario and record a status for each: done, blocked, or explicitly
+      deferred. Silence on a scenario is a discrepancy, not a pass.
+      Compare the pinned hashes in the response to the register. Verdict
+      "reconcile" only if every scenario has a status and the hashes
+      match; otherwise verdict "discrepancy", with the evidence stating
+      exactly what differs.
+    next: route
+    annotations:
+      fabro: {model: mid-tier}
+
+  - id: route
+    name: Route on the verdict
+    run-by: {execution: runtime}
+    inputs: [verification]
+    branches:
+      - label: "reconcile"
+        when: verification.verdict == "reconcile"
+        next: consume-close
+      - else: escalate
+
+  - id: consume-close
+    name: Consume and close
+    run-by: {execution: runtime}
+    atomic: true
+    inputs: [response, work_item, verification]
+    run: |
+      shop-msg consume outbox --bc ${response.bc} --work-id ${response.work_id}
+      bd close ${work_item.id} --reason "${verification.evidence}"
+    next: file-tail
+
+  - id: escalate
+    name: File the discrepancy
+    run-by: {execution: runtime}
+    inputs: [work_item, verification]
+    outputs: [discrepancy_item]
+    run: |
+      bd create --type task --assign lead-solutions-architect \
+        --title "Register discrepancy on ${work_item.id}" \
+        --body "${verification.evidence}" --link ${work_item.id}
+    next: end
+
+  - id: file-tail
+    name: File the tail
+    run-by: {role: router, execution: agent}
+    inputs: [verification, work_item]
+    outputs: [filed]
+    checks:
+      - size(filed) == size(verification.reported_items)
+    prompt: |
+      File a follow-up work item for every entry in the reported items —
+      each defect, observation, and deferred scenario — and link each new
+      item to the closed work item.
+    next: end
+```
+
+The `atomic: true` flag on `consume-close` binds its `run` lines into one
+all-or-nothing act: a consumed-but-open or closed-but-pending split state
+is the known failure this process exists to prevent, so a runtime that
+cannot guarantee the pair rolls back the half it completed.
+
+## Derived checks
+
+| Outcome | Check | Kind | Where |
+|---|---|---|---|
+| O1+O2 | no consumed-but-open or closed-but-pending state after run | mechanical | `consume-close.atomic` |
+| O2 | close reason cites demonstration evidence | mechanical presence + judged | `consume-close.run` |
+| O3 | every dispatched scenario has a recorded status | mechanical | `verify.checks` |
+| O4 | reported-vs-filed count match | mechanical | `file-tail.checks` |
+
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+
+#### FILE basis/processes/review-conversation.md
+---
+type: process-definition
+id: review-conversation-process
+owner: product-authority
+status: approved
+approved: 2026-08-22
+version: 4
+created: 2026-08-22
+updated: 2026-08-26
+produces: [review-record]
+condition-language: cel
+hold-after: P7D
+---
+
+# Process: Review conversation
+
+**Purpose:** Conduct a bounded review: the authority examines material
+and issues decisions; each decision is applied as changes to the
+affected artifacts before the next exchange; the conversation ends only
+when the authority closes or cancels it, and parks itself on
+inactivity.
+
+**Guiding statement:** Everything binding lands in the governed
+artifacts it changes; nothing binding lives only in the transcript or
+the record.
+
+**Outcomes:**
+- O1. Every decision is applied to the affected artifacts, with their
+  Document History updated, before the next observation is taken —
+  witnessed by the check on `apply`.
+- O2. The record's State section always names the next ready action or
+  the outcome — witnessed by the `apply` prompt and the close steps.
+- O3. Only the authority closes or cancels the conversation — witnessed
+  by the `route` branches, which act only on the authority's classified
+  input.
+- O4. An inactive conversation holds instead of dangling — witnessed by
+  `hold-after` and the run lifecycle it invokes.
+
+**Roles:** product-authority (human-held role — observes, decides, and owns
+the exclusive right to close or cancel). lead-pm — held by the
+authority; its agent step assists: `apply` lands the decisions the
+authority has taken as changes to the affected artifacts and keeps the
+record current; it takes no decision of its own.
+
+**Scope note:** other processes invoke this one as a sub-process step
+(`execution: sub-process`) — e.g. the migration process's
+authority-review is this conversation with the chain and exemplar as
+material. A conversation started that way is a branched conversation:
+its record carries `branched-from`.
+
+## Flow (compiled)
+
+Generated from the steps below by `tools/compile_process.py`; do not
+edit by hand.
+
+```mermaid
+flowchart TD
+  open["Open the record and its work item — runtime<br/>in — material: string<br/>out — record: review-record"]
+  observe[["Authority observes and decides — human: product-authority<br/>in — record: review-record, material: string<br/>out — observation: string, classification: string"]]
+  route{"Route on the input<br/>in — classification: string"}
+  apply(["Apply and record — agent: lead-pm<br/>in — observation: string, classification: string, record: review-record<br/>out — applied: string, record: review-record"])
+  close_record["Close the record — runtime<br/>in — record: review-record"]
+  cancel_record["Cancel the record — runtime<br/>in — record: review-record, observation: string"]
+  __end(("end<br/>result — record: review-record"))
+  __start(("start")) --> open
+  open --> observe
+  observe --> route
+  route -->|success exit: authority closes| close_record
+  route -->|cancel exit: authority cancels| cancel_record
+  route -->|else| apply
+  apply --> observe
+  close_record --> __end
+  cancel_record --> __end
+```
+
+
+## Data
+
+Each entry names a process-local value. Simple types use JSON Schema
+names inline; every structured shape is a `$ref` to a defined type with
+an explicit source.
+
+```yaml
+data:
+  material: {type: string}
+  record: {$ref: review-record, from: ../artifacts/review-record.md}
+  observation: {type: string}
+  classification: {type: string, enum: [decision, question, close, cancel]}
+  applied: {type: string}
+```
+
+## Steps
+
+```yaml
+start: open
+parameters: [material]
+result: record
+steps:
+  - id: open
+    name: Open the record and its work item
+    run-by: {execution: runtime}
+    inputs: [material]
+    outputs: [record]
+    run: |
+      bd create --title "Review conversation: ${material}"
+    next: observe
+
+  - id: observe
+    name: Authority observes and decides
+    run-by: {role: product-authority, execution: human}
+    inputs: [record, material]
+    outputs: [observation, classification]
+    prompt: |
+      The material and the record's current state are in front of you.
+      Your message is one of: a decision to apply, a question to answer,
+      a close (the review is complete), or a cancel (the review is
+      abandoned). Silence holds the conversation after the declared
+      window — nothing is lost; the record carries the resume point.
+    next: route
+
+  - id: route
+    name: Route on the input
+    run-by: {execution: runtime}
+    inputs: [classification]
+    branches:
+      - label: "success exit: authority closes"
+        when: classification == "close"
+        next: close-record
+      - label: "cancel exit: authority cancels"
+        when: classification == "cancel"
+        next: cancel-record
+      - else: apply
+
+  - id: apply
+    name: Apply and record
+    run-by: {role: lead-pm, execution: agent}
+    inputs: [observation, classification, record]
+    outputs: [applied, record]
+    checks:
+      - applied != ""
+    prompt: |
+      Apply the observation. A decision lands as the changes it demands
+      in the affected artifacts — each with a Document History entry —
+      and the record's Outcomes section links where it landed. A
+      question gets an answer grounded in the corpus; a decision the
+      answer would imply is offered to the authority as the next
+      observation, never applied here. Update the record's
+      State to name the next ready action. Nothing binding stays only in
+      the transcript or the record.
+    next: observe
+
+  - id: close-record
+    name: Close the record
+    run-by: {execution: runtime}
+    inputs: [record]
+    run: |
+      bd close ${record.work_item} --reason "Review closed: ${record.id}"
+    next: end
+
+  - id: cancel-record
+    name: Cancel the record
+    run-by: {execution: runtime}
+    inputs: [record, observation]
+    run: |
+      bd close ${record.work_item} --reason "Review cancelled: ${observation}"
+    next: end
+```
+
+The observe–apply loop's success exit is the authority's close; the
+cancel branch is its second exit; `hold-after: P7D` is the failsafe — an
+inactive run holds with its resume point in the record's State section,
+per the run lifecycle.
+
+## Derived checks
+
+| Outcome | Check | Kind | Where |
+|---|---|---|---|
+| O1 | `applied` non-empty before the loop returns to `observe` | mechanical | `apply.checks` |
+| O2 | State section never empty (resume point or outcome) | mechanical presence + judged | review-record checklist |
+| O3 | close and cancel reachable only from the authority's classification | mechanical | `route.branches` |
+| O4 | inactivity holds the run | mechanical | `hold-after` + run lifecycle |
+
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+
+#### FILE basis/processes/work-conversation.md
+---
+type: process-definition
+id: work-conversation-process
+owner: product-authority
+status: approved
+approved: 2026-08-22
+version: 4
+created: 2026-08-22
+updated: 2026-08-26
+produces: []
+condition-language: cel
+hold-after: P7D
+---
+
+# Process: Work conversation
+
+**Purpose:** Conduct a bounded operational discussion scoped to one work
+item: every exchange lands on the item, so the discussion is containable,
+findable, and survives the transcript.
+
+**Guiding statement:** The work item carries the discussion; a
+conversation that cannot name its work item does not start.
+
+**Outcomes:**
+- O1. Every applied exchange lands as a comment on the work item —
+  witnessed by the check and `run` on `act`.
+- O2. The conversation is scoped to exactly one work item, named at the
+  start — witnessed by `parameters`.
+- O3. Only the authority closes or cancels the conversation — witnessed
+  by the `route` branches.
+- O4. An inactive conversation holds instead of dangling — witnessed by
+  `hold-after` and the run lifecycle.
+
+**Roles:** product-authority (human-held role — directs, asks, and owns the
+exclusive right to close or cancel). lead-pm — held by the
+authority; its agent step assists: `act` performs the action inside the scope
+the authority set, lands the exchange on the item, and files
+out-of-scope work as its own item for the authority; the authority
+directs and decides the item's scope.
+
+**Scope note:** closing the conversation does not close the work item —
+work may continue outside conversation. The close lands a summary
+comment; the item's own life follows its own process.
+
+## Flow (compiled)
+
+Generated from the steps below by `tools/compile_process.py`; do not
+edit by hand.
+
+```mermaid
+flowchart TD
+  attach["Attach to the work item — runtime<br/>in — work_item: work-item"]
+  observe[["Authority directs — human: product-authority<br/>in — work_item: work-item<br/>out — message: string, classification: string"]]
+  route{"Route on the input<br/>in — classification: string"}
+  act(["Act and land the exchange — agent: lead-pm<br/>in — message: string, classification: string, work_item: work-item<br/>out — applied: string"])
+  close_out["Land the close summary — runtime<br/>in — work_item: work-item, applied: string"]
+  cancel_out["Land the cancel — runtime<br/>in — work_item: work-item, message: string"]
+  __end(("end<br/>result — work_item: work-item"))
+  __start(("start")) --> attach
+  attach --> observe
+  observe --> route
+  route -->|success exit: authority closes| close_out
+  route -->|cancel exit: authority cancels| cancel_out
+  route -->|else| act
+  act --> observe
+  close_out --> __end
+  cancel_out --> __end
+```
+
+
+## Data
+
+Each entry names a process-local value. Simple types use JSON Schema
+names inline; every structured shape is a `$ref` to a defined type with
+an explicit source.
+
+```yaml
+data:
+  work_item: {$ref: work-item, from: pkg:beads/work-item}
+  message: {type: string}
+  classification: {type: string, enum: [instruction, question, close, cancel]}
+  applied: {type: string}
+```
+
+## Steps
+
+```yaml
+start: attach
+parameters: [work_item]
+result: work_item
+steps:
+  - id: attach
+    name: Attach to the work item
+    run-by: {execution: runtime}
+    inputs: [work_item]
+    outputs: []
+    run: |
+      bd comment ${work_item.id} "Work conversation opened"
+    next: observe
+
+  - id: observe
+    name: Authority directs
+    run-by: {role: product-authority, execution: human}
+    inputs: [work_item]
+    outputs: [message, classification]
+    prompt: |
+      The work item and its history are in front of you. Your message is
+      one of: an instruction to act on, a question, a close (a summary
+      lands on the item; the item's own life continues), or a cancel.
+      Silence holds the conversation after the declared window; the work
+      item carries the resume point.
+    next: route
+
+  - id: route
+    name: Route on the input
+    run-by: {execution: runtime}
+    inputs: [classification]
+    branches:
+      - label: "success exit: authority closes"
+        when: classification == "close"
+        next: close-out
+      - label: "cancel exit: authority cancels"
+        when: classification == "cancel"
+        next: cancel-out
+      - else: act
+
+  - id: act
+    name: Act and land the exchange
+    run-by: {role: lead-pm, execution: agent}
+    inputs: [message, classification, work_item]
+    outputs: [applied]
+    checks:
+      - applied != ""
+    prompt: |
+      Act on the message within the work item's scope; answer questions
+      from the item's history and the corpus. Land the exchange as a
+      comment on the work item — what was asked, what was done, with
+      links. Work that outgrows the item's scope is not absorbed: file it
+      as its own item and say so. Nothing binding stays only in the
+      transcript.
+    next: observe
+
+  - id: close-out
+    name: Land the close summary
+    run-by: {execution: runtime}
+    inputs: [work_item, applied]
+    run: |
+      bd comment ${work_item.id} "Work conversation closed: ${applied}"
+    next: end
+
+  - id: cancel-out
+    name: Land the cancel
+    run-by: {execution: runtime}
+    inputs: [work_item, message]
+    run: |
+      bd comment ${work_item.id} "Work conversation cancelled: ${message}"
+    next: end
+```
+
+## Derived checks
+
+| Outcome | Check | Kind | Where |
+|---|---|---|---|
+| O1 | `applied` non-empty; the exchange comment names it | mechanical + judged | `act.checks`, `act.prompt` |
+| O2 | `work_item` is a run parameter — no item, no run | mechanical | `parameters` |
+| O3 | close and cancel reachable only from the authority's input | mechanical | `route.branches` |
+| O4 | inactivity holds the run | mechanical | `hold-after` + run lifecycle |
+
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+
+#### FILE basis/processes/interaction-conformance-check.md
+---
+type: process-definition
+id: interaction-conformance-check-process
+owner: product-authority
+status: draft
+version: 3
+created: 2026-08-26
+updated: 2026-08-26
+produces: []
+carried-by: interaction-conformance-check-skill
+condition-language: cel
+hold-after: P7D
+ask-cap: P1D
+annotations:
+  claude-code:
+    activation: model-judged
+    promotion: experiment-local
+    use-when: "a Bounded Context shop delivers an interaction of any type and it must be screened against the experience guidance corpus before it counts as done"
+---
+
+# Process: Interaction conformance check
+
+**Purpose:** Screen a delivered interaction — the recording a Bounded
+Context shop returns with its delivery — against the experience
+guidance corpus — the experience principles, the common and per-type
+guidelines, and the corpus records — so that the product designer role
+decides from a screen verdict whether it conforms, returns findings to
+the delivering shop, or changes the corpus; and so that a finding no
+corpus record can decide is recorded against the corpus, never against
+the delivery.
+
+**Guiding statement:** The corpus applied, not the designer's taste. A
+rule the corpus cannot decide because its record is absent is the
+corpus's defect: the gap is filed against the corpus and the delivery
+is not held for it.
+
+**Outcomes:**
+- O1. The interaction is screened against the corpus with the
+  interaction fitness set — witnessed by `screen`'s inputs and the
+  `screen-review` it returns.
+- O2. The product designer role decides from the review — witnessed by
+  `decide`'s inputs, which exclude the interaction.
+- O3. Findings the shop can repair are filed as a work item for the
+  solutions architect role, which carries them to the shop; a corpus
+  gap is filed against the record or guideline named — witnessed by
+  `file-findings`' `finding_item` and `record`'s `definition` and
+  `gap_entry` outputs.
+- O4. A question the corpus cannot answer leaves the run as an ask to
+  the PM or solutions architect role, with a default — witnessed by
+  `decide`'s `asks` and the `ask` value.
+
+**Roles:** screener —
+[`../roles/lead-product-designer.md`](../roles/lead-product-designer.md)
+in a fresh context each run, judging the interaction fitness set as
+its `judged-by` names. Decider — the same role, deciding from the
+review alone; the check sits with this role, not with the delivering
+shop, which is the separation `define-good-up-front` asks for.
+Recorder — the same role's assisting agent. The [PM role](../roles/lead-pm.md) and the
+[solutions architect role](../roles/lead-solutions-architect.md) —
+answer asks; the architect receives the findings work item and
+carries it to the shop.
+
+**Carried by:**
+[`../skills/interaction-conformance-check/SKILL.md`](../skills/interaction-conformance-check/SKILL.md)
+— generated from this definition by
+[`../tools/compile_process.py`](../tools/compile_process.py), never
+edited by hand.
+
+## Flow (compiled)
+
+Generated from the steps below by `tools/compile_process.py`; do not
+edit by hand.
+
+```mermaid
+flowchart TD
+  screen(["Screen against the corpus — agent: lead-product-designer<br/>in — corpus: string[], guideline_path: string, interaction: string, interaction_type: string, delivery: string<br/>out — review: screen-review"])
+  decide(["Decide on conformance — agent: lead-product-designer<br/>in — review: screen-review, ask: ask<br/>out — decision: check-decision"])
+  record(["Record and route — agent: lead-product-designer<br/>in — decision: check-decision, delivery: string, review: screen-review<br/>out — delivery: string, findings_out: string, gap_entry: string, definition: string"])
+  route_findings{"Route on the decision<br/>in — decision: check-decision"}
+  file_findings["File the findings work item — runtime<br/>in — findings_out: string, delivery: string<br/>out — finding_item: string"]
+  __end(("end<br/>result — decision: check-decision"))
+  __start(("start")) --> screen
+  screen --> decide
+  decide --> record
+  record --> route_findings
+  route_findings -->|fail — file the findings for the architect| file_findings
+  route_findings -->|else| __end
+  file_findings --> __end
+```
+
+
+## Data
+
+Each entry names a process-local value. Simple types use JSON Schema
+names inline; every structured shape is a `$ref` to a defined type with
+an explicit source. Conditions are CEL expressions over these names.
+The *delivery* is the record a Bounded Context shop returns with an
+interaction: it names the interaction, carries the accessibility
+result, and — as `interaction` — a recording of the interaction
+(transcript, screenshots, or session capture), never a running
+instance; the delivery record's typedef is pending, and the status
+values this process sets on it — `conforms`, `returned`,
+`pending-corpus` — are this process's until then. The corpus the
+screen reads is declared as `corpus` (its fixed paths) and
+`guideline_path` (the per-type guideline: `experience-cli` for `cli`
+and `tui`, `experience-api`, `experience-gui`, `experience-assistant`
+for `conversational` and `voice`, `experience-document`).
+
+```yaml
+data:
+  interaction: {type: string, format: uri-reference}
+  interaction_type: {type: string, enum: [cli, tui, gui, api, conversational, voice, document]}
+  delivery: {type: string, format: uri-reference}
+  guideline_path: {type: string, format: uri-reference}
+  corpus:
+    type: array
+    items: {type: string, format: uri-reference}
+    initial: [../experience-principles.md, ../guidelines/experience-common.md, ../fitness/interaction.fitness.md, ../experience/vocabulary.md, ../experience/core-tasks.md, ../experience/patterns.md, ../experience/tokens.md, ../experience/hard-to-reverse.md, ../experience/persona-voice.md, ../experience/variations.md]
+  review: {$ref: screen-review, from: ../types/screen-review.md}
+  ask: {$ref: ask, from: ../types/ask.md, initial: null}
+  decision: {$ref: check-decision, from: ../types/check-decision.md}
+  findings_out: {type: string}
+  finding_item: {type: string}
+  gap_entry: {type: string}
+  definition: {type: string, format: uri-reference}
+```
+
+## Steps
+
+```yaml
+start: screen
+parameters: [interaction, interaction_type, delivery, guideline_path]
+result: decision
+steps:
+  - id: screen
+    name: Screen against the corpus
+    run-by: {role: lead-product-designer, execution: agent, fresh-context: true}
+    inputs: [corpus, guideline_path, interaction, interaction_type, delivery]
+    outputs: [review]
+    prompt: |
+      Read every path in corpus and the per-type guideline at
+      guideline_path, which is the guideline for interaction_type;
+      then the delivery and the recording at interaction — nothing
+      else. Judge the six
+      fitness scenarios. Report every finding with the rule or scenario
+      it fails by name, the quoted or described evidence, the change,
+      and whether you could decide it (confident) or not (wobbly); for
+      a wobbly finding describe the whole passage or behavior, since
+      the decision is made from the review alone. Where a rule needs a
+      corpus record that is absent, that lacks the entry, or whose
+      entry is marked hypothesis, report the finding with the rule as
+      its criterion and, as its change, "record absent:", "record
+      empty:", or "entry is a hypothesis:" with the record's name — a
+      finding against the corpus, never against the delivery.
+      Verdict "clean" only if there are no findings; otherwise
+      "findings" with the top three changes.
+    next: decide
+    annotations:
+      fabro: {model: high-reasoning}
+
+  - id: decide
+    name: Decide on conformance
+    run-by: {role: lead-product-designer, execution: agent}
+    inputs: [review, ask]
+    outputs: [decision]
+    asks: [lead-pm, lead-solutions-architect]
+    prompt: |
+      From the review, decide. "pass": no findings, or only corpus
+      findings (record absent, record empty, entry is a hypothesis) —
+      the delivery conforms to every rule the corpus can decide; name
+      each corpus finding and, for an absent record, the guideline
+      whose rule needs it, in the reasons so the gap is filed. "fail": a named rule or scenario is not met — name
+      it as the criterion; "fail" takes precedence where both stand.
+      "definition-change": a rule the corpus should carry and does not
+      — name the guideline and what it lacks as the gap. A question a corpus record
+      could carry is a corpus finding, never an ask. An ask is for a
+      decision no record will carry — whether the product should offer
+      the interaction at all (kind: reserved-decision, to lead-pm), whether a contract change a repair needs is admissible
+      (kind: contract, to lead-solutions-architect). Return it with
+      the question, its kind,
+      the default you will apply, and a checkpoint of the review; on
+      the first pass ask is absent, and if it carries an answer or
+      resolved defaulted, act on it. Decide from the review alone.
+      Record your reasons.
+    next: record
+
+  - id: record
+    name: Record and route
+    run-by: {role: lead-product-designer, execution: agent}
+    inputs: [decision, delivery, review]
+    outputs: [delivery, findings_out, gap_entry, definition]
+    prompt: |
+      Write into the delivery's Document History a review entry with
+      the screen verdict, then a state entry carrying the decision and
+      its reasons. Set the delivery's status: "conforms" on pass,
+      "returned" on fail, "pending-corpus" on definition-change. On
+      "fail", write the findings the shop can repair — each with its
+      rule, evidence, and change — as findings_out; otherwise return it
+      empty. On "definition-change", or on "pass" whose reasons name
+      corpus findings, write a review entry stating the gap into the
+      Document History of the guideline or record named — for an
+      absent record, of the guideline whose rule needs it; return that
+      file's path as definition and the entry's text as gap_entry;
+      otherwise return both empty. Return the delivery.
+    next: route-findings
+
+  - id: route-findings
+    name: Route on the decision
+    run-by: {execution: runtime}
+    inputs: [decision]
+    branches:
+      - label: "fail — file the findings for the architect"
+        when: decision.verdict == "fail"
+        next: file-findings
+      - else: end
+
+  - id: file-findings
+    name: File the findings work item
+    run-by: {execution: runtime}
+    inputs: [findings_out, delivery]
+    outputs: [finding_item]
+    run: |
+      bd create --type task --assign lead-solutions-architect \
+        --title "Interaction conformance findings on ${delivery}" \
+        --body "${findings_out}" --link ${delivery}
+    next: end
+```
+
+## Derived checks
+
+| Outcome | Check | Kind | Where |
+|---|---|---|---|
+| O1 | screen reads only `corpus`, `guideline_path`, the delivery, and the recording | judged | `screen.prompt` and inputs |
+| O2 | `interaction` absent from `decide.inputs` | mechanical | `decide.inputs` |
+| O3 | `finding_item` set on fail; `definition` and `gap_entry` non-empty on definition-change or a pass naming corpus findings | mechanical (`route-findings`), judged (`record`) | `file-findings`, `record` outputs |
+| O4 | `decide` carries `asks`; process carries `ask-cap`; `ask` listed in inputs | mechanical | `decide`, frontmatter |
+
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|

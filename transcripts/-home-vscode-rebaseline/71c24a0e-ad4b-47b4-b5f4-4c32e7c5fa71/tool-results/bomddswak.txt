@@ -1,0 +1,744 @@
+===== requests/req-2026-09-06-implementation-guidance.md
+---
+type: request
+id: req-2026-09-06-implementation-guidance
+status: done
+version: 5
+date: 2026-09-06
+reader: lead-pm
+owner: lead-pm
+created: 2026-09-06
+updated: 2026-09-06
+originator: product-authority
+received-through: operational-contract
+arose-in: init-role-decisions
+route: small-change
+route-reason: "one new artifact type within the lead shop's own definitions — its typedef carrying its writing rules and fitness scenarios so its texts render — and one step of the scenario-assignment process producing it; demonstrable in one session; no appetite worth a bet"
+routed-to: requests/req-2026-09-06-implementation-guidance.md#result
+work-item: lead-i9mde
+---
+
+# Request: an implementation guidance artifact
+
+## 1. What is requested
+
+The product authority, 2026-09-06, in the review of init-role-decisions
+with the lead-pm: "The guidance is important as an artifact but should
+only be part of a historical record. Technical implementation will
+change over time while the contract represented by features and
+scenarios will not unless explicit changes are made. … For now create
+an implementation guidance artifact that references the initiative and
+can be added to the message contract later." And on its content and
+timing, earlier in the same review: "This is the architect providing
+guidance to the implementer within the initiative." "The implementation
+guidance is related to whatever technical changes the implementer will
+need to do to the product." "The architect's guidance will be much
+more useful if it is created with the scenarios in mind." "What is
+important is guidance per bounded context."
+
+## 2. From whom
+
+Reader: the lead-pm role. Originator: the product authority. Received
+through the lead shop's operational contract, which has no artifact
+yet (lead-4kymc). The ask arose in the review of init-role-decisions,
+proposed and not yet bet.
+
+## 3. Route
+
+Route said by the lead-pm role, 2026-09-06: **the small-change lane**.
+Why: one new artifact type within the lead shop's own definitions,
+whose typedef carries its writing rules and fitness scenarios so that
+its guideline and fitness set render from it, and one step of the
+scenario-assignment process producing one per Bounded Context for the
+scenarios assigned — demonstrable in one session, spending no
+appetite worth a bet. Topic: "an implementation guidance artifact, per
+Bounded Context, referencing the initiative, a historical record
+(req-2026-09-06-implementation-guidance)".
+
+Originator's answer: **accepted** — "For now create an implementation
+guidance artifact", 2026-09-06, the direction and the acceptance in
+one. Landed by the lead-pm; work item lead-i9mde opened for the lane; it
+points here and carries nothing of what was asked. Bounds from the
+same review: the guidance is bounded to what the architect may see of
+a context — its contracts, the guardrails, the cross-context flow —
+never a context's internals, except where the lead shop builds its
+own definitions; it references the contracts and the scenarios and
+does not restate them; it is a historical record, not the contract;
+the message contract is not changed now (journaling messages offline
+is the backlog item lead-j30gv).
+
+## 4. Result
+
+### Definition
+
+req-2026-09-06-implementation-guidance — defined by the lead-po role,
+2026-09-06, at the small-change process's define step. Judged against
+the glossary's entry for simple change: the change stays within the
+lead shop's own definitions (one typedef, one process step, the
+glossary, the lint, and the texts rendered from them), touches no
+Bounded Context's artifacts, and its effect is demonstrable in one
+session by the observation below — a simple change. Bounds carried
+from section 3: what the architect may see of a context, never its
+internals; references, never restatement; a historical record, not
+the contract; the message contract untouched.
+
+**What will be different when the change is done.**
+
+1. *The type exists and qualifies for typedef-rendering.*
+   Given the typedef at `basis/artifacts/implementation-guidance.md`,
+   When a reader opens it,
+   Then it defines the artifact type `implementation-guidance` and
+   carries, as sections of its own, the writing rules and the fitness
+   scenarios from which the typedef-rendering process produces the
+   type's guideline and fitness set — so that the type qualifies for
+   that process and no writing rule or fitness scenario for it lives
+   anywhere else.
+
+2. *Identity: who produces it, for whom, who consumes it.*
+   Given the typedef,
+   When a reader looks for who makes an instance and who reads it,
+   Then it states: produced by the lead-solutions-architect role at
+   the scenario-assignment process's assign step, one per Bounded
+   Context that receives scenarios in that assignment; consumed by
+   the shop implementing those scenarios, and by the
+   reconcile-and-close process, which records whether the guidance
+   held.
+
+3. *Required frontmatter.*
+   Given the typedef,
+   When a reader lists the frontmatter an instance must carry,
+   Then the required keys are exactly: `type`, `id`, `status`,
+   `version`, `initiative` (a link to the initiative), `feature` (a
+   link to the feature), `context` (the Bounded Context the guidance
+   is for), `scenarios` (the hashes assigned to that context that the
+   guidance covers), `owner`, `created`, `updated`.
+
+4. *Required sections.*
+   Given the typedef,
+   When a reader lists the sections an instance must carry,
+   Then they are: what the assigned scenarios change in that context
+   at the level the architect may see — its contracts, the guardrails
+   that apply, where the cross-context flow touches it — and, for the
+   lead shop building its own definitions, the definitions and tools
+   to change; the references to the contracts and to the scenarios,
+   which the instance cites and never restates; and what not to do.
+
+5. *Rules.*
+   Given the typedef,
+   When a reader looks for what an instance binds,
+   Then it states that an instance is a historical record: it binds
+   nothing after the assignment it was written for, because technical
+   implementation changes over time while the scenario contract does
+   not; that an instance is never sent in a message now — the message
+   contract is unchanged by this type, and the designer's guidance is
+   a later part; and that an instance's commitment is met when the
+   implementing shop can act on it with the assigned scenarios alone.
+
+6. *The assign step produces it; the record step names it.*
+   Given `basis/processes/scenario-assignment.md`,
+   When a reader follows the assign step,
+   Then its outputs include one implementation-guidance record per
+   Bounded Context tagged in that assignment, each at
+   `guidance/<feature>-<context>.md` — `guidance/` being a directory
+   at the repository root that the lint walks — and the record step
+   names those records among what it records; the assign step's
+   authorship of them sits with the lead-solutions-architect role,
+   the step's existing role; nothing else in the process changes.
+
+7. *The glossary carries the term.*
+   Given `basis/glossary.md`,
+   When a reader looks up **implementation guidance**,
+   Then an entry defines it consistently with statements 2, 4 and 5 —
+   per Bounded Context, from the architect at assignment, referencing
+   the contracts and scenarios, a historical record that is not the
+   contract.
+
+8. *The lint knows the type.*
+   Given `basis/tools/lint_basis.py`,
+   When the lint runs from the repository root,
+   Then it walks `guidance/` when that directory exists, and a record
+   there missing any required key of statement 3 fails the lint with
+   the missing key named — the check being one function beside the
+   lint's other per-type checks; and the corpus as it stands passes.
+
+9. *The corpus index and the produced texts are current.*
+   Given `basis/README.md`, `basis/guidelines/implementation-guidance.md`
+   and `basis/fitness/implementation-guidance.fitness.md`,
+   When a reader opens them,
+   Then the README lists the new typedef and its two produced texts;
+   and the guideline and fitness set are what
+   `basis/tools/compile_typedef.py` renders from the typedef, so that
+   the typedef-rendering check reports nothing for the type.
+
+10. *The skill is the process.*
+    Given `.claude/skills/scenario-assignment/SKILL.md`,
+    When it is compared with a fresh render of the amended process
+    definition by `basis/tools/compile_process.py`,
+    Then it is identical, and the definition's diagram is the one the
+    tool regenerates.
+
+**Artifacts the change touches (paths).**
+
+- `basis/artifacts/implementation-guidance.md` — new typedef.
+- `basis/processes/scenario-assignment.md` — the assign step's
+  outputs and the record step; version bumped, history row citing
+  this request.
+- `basis/glossary.md` — the term; version bumped, history row citing
+  this request.
+- `basis/tools/lint_basis.py` — the `guidance/` walk and the required
+  keys; changed together with the typedef that names them.
+- `basis/README.md` — the index entries; version bumped, history row
+  citing this request.
+- `basis/guidelines/implementation-guidance.md` — rendering; source
+  `basis/artifacts/implementation-guidance.md`; tool
+  `basis/tools/compile_typedef.py` (read, not changed): `python3
+  basis/tools/compile_typedef.py basis/artifacts/implementation-guidance.md`.
+- `basis/fitness/implementation-guidance.fitness.md` — rendering;
+  same source and tool as the guideline, produced by the same
+  invocation.
+- `.claude/skills/scenario-assignment/SKILL.md` — rendering; source
+  `basis/processes/scenario-assignment.md`; tool
+  `basis/tools/compile_process.py` (read, not changed): `python3
+  basis/tools/compile_process.py basis/processes/scenario-assignment.md
+  --skill .claude/skills/scenario-assignment/SKILL.md`.
+
+Nothing else is touched: no guidance record is written (the shop is
+frozen and no assignment runs), no message contract changes, no
+Bounded Context artifact changes.
+
+**Maker.** lead-solutions-architect — the role the make step runs by.
+
+**Verifying observation.** One command, run from the repository root;
+exit 0 shows the effect and its output is the evidence. It shows the
+lint passing over the corpus as it stands, the typedef-rendering check
+printing nothing for the new type (both produced texts current), the
+scenario-assignment definition's diagram current and its skill equal
+to a fresh render, the glossary carrying the term, and the lint
+rejecting a probe guidance record that lacks the required keys (the
+probe is removed again by the command).
+
+```
+( python3 basis/tools/lint_basis.py && o=$(python3 basis/tools/compile_typedef.py basis/artifacts/implementation-guidance.md --check) && [ -z "$o" ] && echo "implementation-guidance: guideline and fitness set current" && s=$(mktemp -d) && mkdir -p "$s/defs" && ln -s "$PWD/basis/types" "$s/types" && ln -s "$PWD/basis/artifacts" "$s/artifacts" && cp basis/processes/scenario-assignment.md "$s/defs/scenario-assignment.md" && python3 basis/tools/compile_process.py "$s/defs/scenario-assignment.md" --skill "$s/scenario-assignment/SKILL.md" >/dev/null && diff -q "$s/defs/scenario-assignment.md" basis/processes/scenario-assignment.md && diff -q "$s/scenario-assignment/SKILL.md" .claude/skills/scenario-assignment/SKILL.md && echo "scenario-assignment: diagram current, skill equals fresh render" && grep -q '^- \*\*implementation guidance\*\*' basis/glossary.md && echo "glossary: implementation guidance defined" && mkdir -p guidance && printf -- '---\ntype: implementation-guidance\nid: ig-probe\n---\n' > guidance/ig-probe.md && { python3 basis/tools/lint_basis.py >/dev/null 2>&1; r=$?; }; rm -f guidance/ig-probe.md; rmdir guidance 2>/dev/null; [ "${r:-0}" -ne 0 ] && echo "lint: a guidance record missing required keys is rejected" )
+```
+
+**Maker's evaluation before the check.** The lead-po evaluated this
+definition against the define step's own statement of good: every
+statement is Given/When/Then decidable against a named artifact; each
+says what and not how; every path is listed, renderings with their
+source and tool; the maker role is the make step's; the observation is
+one command from the repository root whose exit 0 is the effect. One
+read beyond the step's named inputs is disclosed: the argument
+handling of `compile_typedef.py` and `compile_process.py` and the
+observation of a prior done request, taken to write the command
+exactly rather than guess it.
+
+### Change made
+
+**Round 1 — maker: lead-solutions-architect**, 2026-09-06, at the
+small-change process's make step. Every path the Definition lists,
+made through its own producing rules; nothing outside them touched.
+
+- `basis/artifacts/implementation-guidance.md` — new typedef, absent →
+  v1: identity (produced by the lead-solutions-architect role at the
+  scenario-assignment process's assign step, one per Bounded Context;
+  consumed by the implementing shop and the reconcile-and-close
+  process), required frontmatter (the eleven keys of statement 3, the
+  field set closed; `status` written | held | not-held), required
+  sections (What changes, References, What not to do), rules (a
+  historical record binding nothing after its assignment; never sent
+  in a message; the architect's level, never internals; instances at
+  `guidance/<feature>-<context>.md`), commitment (the shop can act on
+  it with the assigned scenarios alone), sources, Writing rules and
+  Fitness scenarios (five rules, five scenarios, the compile
+  mapping; judge `cold-reviewer` as the sibling decision-record types
+  name), derived review checklist; `status: approved`,
+  `approved: 2026-09-06`, on the authority's direction of 2026-09-06
+  this request records, the history row saying so.
+- `basis/guidelines/implementation-guidance.md` — rendering, absent →
+  produced (digest of typedef v1); and
+  `basis/fitness/implementation-guidance.fitness.md` — rendering,
+  absent → produced; both by
+  `python3 basis/tools/compile_typedef.py basis/artifacts/implementation-guidance.md`;
+  `--check` reports nothing.
+- `basis/processes/scenario-assignment.md` — v11 → v12: the `guidance`
+  data value (array of paths) added; the assign step outputs it and,
+  once every scenario is owned, writes one implementation guidance
+  record per context tagged at `guidance/<feature>-<context>.md`; the
+  record step reads `guidance` and names each record in the state
+  entry; `produces: [implementation-guidance]`, per the
+  process-definition typedef's clause that `produces` lists the
+  artifact types a run creates; history row citing this request.
+  Outcomes, roles, the route, return, and dispatch steps, and the
+  derived checks unchanged.
+- `.claude/skills/scenario-assignment/SKILL.md` — rendering, digest
+  ecd9f2c7b899 → f3662182a662, by
+  `python3 basis/tools/compile_process.py basis/processes/scenario-assignment.md --skill .claude/skills/scenario-assignment/SKILL.md`,
+  which also regenerated the definition's diagram.
+- `basis/glossary.md` — v21 → v22: **implementation guidance** added;
+  history row citing this request.
+- `basis/tools/lint_basis.py` — check 12 added: `lint_guidance()`,
+  beside the other per-type checks, walks `guidance/` at the
+  repository root when it exists and reports each required key a
+  record lacks by name (and a `type` that is not
+  `implementation-guidance`); the module docstring names it. Changed
+  together with the typedef that names the keys.
+- `basis/README.md` — v11 → v12: the `guidance/` home listed with the
+  typedef and its two produced texts; §Checks names check 12; history
+  row citing this request.
+
+**Maker's evaluation before the check.** Against the Definition's ten
+statements: 1–5 read from the typedef; 6 from the process's data
+block, assign and record steps; 7 from the glossary; 8 from the lint,
+which reports "front-matter lacks" for `status`, `version`,
+`initiative`, `feature`, `context`, `scenarios`, `owner`, `created`,
+`updated` for a probe carrying only `type` and `id`; 9 and 10 from
+the renderings, which the observation compares with fresh renders.
+The observation run as written exited 0 with its five lines; the
+plain lint reports `PASS: 0 violation(s)`. Reads beyond the paths,
+disclosed: the artifact-typedef typedef and the product-decision-record
+typedef for the typedef form, the process-definition typedef's
+`produces` clause, the assignment data type, the adr fitness set's
+judge, and the reconcile-and-close process's roles — each to make an
+artifact by its own producing rules, none changed. One judgement
+call: `produces` now lists the type, read as part of statement 6's
+"outputs include one implementation-guidance record" rather than as
+"else"; the checker decides.
+
+### Check
+
+**Round 1** — verdict: **pass** — by the lead-pm role, 2026-09-06, at
+the small-change process's check step; the maker was the
+lead-solutions-architect role. Each statement decided against the
+changed artifacts: the typedef exists with the identity, field set,
+sections, rules, commitment, and its writing rules and fitness
+scenarios; its guideline and fitness set are produced and current;
+the scenario-assignment process produces one record per context
+tagged and names them at its record step, its skill re-rendered; the
+glossary carries the term; the lint walks the guidance directory and
+refuses a record missing a required key; every history row cites this
+request with its version bumped. The maker's judgment call — the
+process declaring the type as produced — is within the definition's
+statement on the process's outputs. Every path in Change made is in
+the Definition's list. Finding: none.
+
+### Verified result
+
+The verifying observation the Definition named was run by the runtime
+from the repository root on 2026-09-06; its evidence:
+
+```
+PASS: 0 violation(s)
+implementation-guidance: guideline and fitness set current
+scenario-assignment: diagram current, skill equals fresh render
+glossary: implementation guidance defined
+lint: a guidance record missing required keys is rejected
+exit 0
+```
+
+Recorded by the lead-pm role, 2026-09-06. The Definition, the Check's
+verdict by the lead-pm role, and this result stand; between the
+request and this result no bet was taken and no check of record was
+run. The effect in the running system: the next scenario assignment
+produces one implementation guidance record per Bounded Context, the
+harness lists the re-rendered assignment skill, and the lint refuses a
+malformed record.
+
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+| 1 | 2026-09-06 | update | Recorded by the lead-pm at the request-intake process's record step from the authority's words in the review of init-role-decisions; routed small-change and said; accepted by the originator's own direction; work item lead-i9mde opened; dispatched to the small-change lane. |
+| 2 | 2026-09-06 | update | Definition written by the lead-po at the small-change process's define step: judged a simple change; ten Given/When/Then statements over the new typedef, the scenario-assignment process, the glossary, the lint, the README and the three renderings; maker lead-solutions-architect; one verifying observation. No artifact but this request touched. |
+| 3 | 2026-09-06 | update | Change made by the lead-solutions-architect at the small-change process's make step, round 1: the implementation-guidance typedef authored (v1, approved on the authority's direction of 2026-09-06) and its guideline and fitness set produced; scenario-assignment v12 with its skill re-rendered; glossary v22; lint check 12; README v12. The observation run as written exited 0; the plain lint passes. |
+| 4 | 2026-09-06 | update | Check passed (round 1) by the lead-pm role; the verifying observation run by the runtime, exit 0; the verified result recorded and status set to done at the small-change process's record step. |
+| 5 | 2026-09-06 | update | Where the route led written into routed-to by the lead-pm at the request-intake process's land-result step; the lane's work item lead-i9mde closed as done. |
+===== requests/req-2026-09-06-tools-through-skills.md
+---
+type: request
+id: req-2026-09-06-tools-through-skills
+status: done
+version: 7
+date: 2026-09-06
+reader: lead-pm
+owner: lead-pm
+created: 2026-09-06
+updated: 2026-09-06
+originator: product-authority
+received-through: operational-contract
+route: small-change
+route-reason: "one principle added to the working principle set, made through principle-set-authoring, its one screen and the owner's approval standing on the authority's direction; within the lead shop's own definitions, demonstrable on the compiled principles page in one session, no appetite worth a bet"
+routed-to: requests/req-2026-09-06-tools-through-skills.md#result
+work-item: lead-xsbuk
+---
+
+# Request: framework tools are used through skills
+
+## 1. What is requested
+
+The product authority, 2026-09-06, in open conversation with the
+lead-pm on seeing the PO role read a tool's usage: "All custom tools
+must be wrapped in skills that allow the tool to be used for a given
+scenario without analysing usage. Is this already a principle or does
+it need to be? The principle should be something to the effect that
+all framework tools should be self-describing in a way that is
+compatible with agent skills and not require analyzing help output.
+The corollary would be that an agent should always prefer to use a
+skill over a bare bash tool." And, on the lead-pm's answer that no
+principle states it: "record it".
+
+## 2. From whom
+
+Reader: the lead-pm role. Originator: the product authority. Received
+through the lead shop's operational contract, which has no artifact
+yet (lead-4kymc). The ask arose directly, in conversation.
+
+## 3. Route
+
+Route said by the lead-pm role, 2026-09-06: **the small-change lane**.
+What it means: the lead-po role defines the change, the architect
+makes it through the principle set's own producing process
+(principle-set-authoring: one screen, one revise, the owner's
+approval), the lead-pm checks it, the runtime verifies it on the
+compiled principles page every session loads. Why: one principle added
+to the working principle set — every framework tool usable through a
+skill that states its use for a scenario without reading its help; an
+agent prefers that skill over a bare invocation; a tool with no such
+skill is a gap the shop records — within the lead shop's own
+definitions, demonstrable in one session, spending no appetite worth a
+bet. Topic: "framework tools are used through skills
+(req-2026-09-06-tools-through-skills)".
+
+Originator's answer: **accepted** — "record tools-through-skills",
+2026-09-06, read by the lead-pm as the answer to the route said (the
+request itself was already recorded); disclosed here. Landed; work
+item lead-xsbuk opened for the lane; it points here and carries nothing
+of what was asked.
+
+## 4. Result
+
+### Definition
+
+req-2026-09-06-tools-through-skills — defined by the lead-po role,
+2026-09-06, at the small-change lane's define step. Judged a simple
+change by the glossary's entry: it stays within the lead shop's own
+definitions (one principle set and its rendering), touches no Bounded
+Context, and its effect is demonstrable in the running system in one
+session.
+
+**What will be different.** The working principle set gains one
+principle, and the principles page every session loads carries it.
+
+The principle, as it will read in the set — name **Use tools through
+skills**, slug `tools-through-skills`, three statements:
+
+> Every framework tool MUST be usable through a skill that states, for
+> a scenario, what it does, what it takes, what it returns, and how it
+> fails, so that an agent uses it without reading its help.
+>
+> An agent MUST prefer that skill over a bare invocation of the tool.
+>
+> A tool with no such skill MUST be recorded as a gap, not worked
+> around.
+
+The rationale, implications, and fitness-screen row the set requires of
+each principle are the maker's to write, in the set's own form; the
+statements above are what the set must say.
+
+Acceptance statements — a checker decides each against the changed
+artifacts:
+
+1. **Given** the working principle set at `basis/principles.md`,
+   **when** the change is done, **then** it carries the principle
+   `tools-through-skills` with the three statements above as its
+   statements, each a separate bullet carrying one obligation; and no
+   existing principle in the set is changed or removed.
+2. **Given** that principle set, **when** the change is done, **then**
+   its Document History has a new row, its version bumped, citing this
+   request by id (`req-2026-09-06-tools-through-skills`) and recording
+   that the amendment was made through principle-set-authoring — the
+   set's own producing process, one screen, one revise, the owner's
+   approval — with the one screen it ran recorded, and the owner's
+   approval standing on the product authority's acceptance of
+   2026-09-06 recorded in section 3.
+3. **Given** the compiled principles page at `.claude/shop/principles.md`,
+   **when** the change is done, **then** it is byte-for-byte a fresh
+   render of `basis/principles.md` by `basis/tools/compile_principles.py`,
+   and within its `tools-through-skills` entry it carries the three
+   statements; it was not edited by hand.
+4. **Given** the basis tree, **when** the change is done, **then** the
+   lint passes.
+
+**Artifacts the change touches (paths):**
+
+- `basis/principles.md` — the working principle set; the source.
+- `.claude/shop/principles.md` — a rendering: source
+  `basis/principles.md`, tool `basis/tools/compile_principles.py`
+  (invoked as `python3 basis/tools/compile_principles.py <source> <out>`);
+  re-rendered, never hand-edited.
+
+**Maker:** lead-solutions-architect — the role the make step runs by.
+It makes the amendment through principle-set-authoring's author step,
+records the one screen that process runs, and re-renders the page.
+
+**Verifying observation** — one command, run from the repository root;
+exit 0 shows the effect in the running system and its output is the
+evidence:
+
+```
+python3 basis/tools/lint_basis.py && grep -Fq 'without reading its help' basis/principles.md && grep -Fq 'over a bare invocation' basis/principles.md && grep -Fq 'recorded as a gap' basis/principles.md && grep -Fq 'req-2026-09-06-tools-through-skills' basis/principles.md && awk '/^- \*\*Use tools through skills\*\*/{f=1;next} /^- \*\*/{f=0} f' .claude/shop/principles.md | grep -Fq 'without reading its help' && t=$(mktemp) && python3 basis/tools/compile_principles.py basis/principles.md "$t" && diff "$t" .claude/shop/principles.md && echo 'principles: tools-through-skills present with its three statements, history cites request, rendering fresh, lint clean'
+```
+
+What the command decides, in order: the lint passes; the source carries
+each of the three new MUST statements (one phrase from each, chosen
+short enough to sit on one wrapped line); the source's history cites
+this request; the rendering carries the first statement inside its
+`tools-through-skills` entry; a fresh render of the source equals the
+committed rendering (diff empty). Any failing part exits nonzero.
+
+### Change made
+
+**Round 1** — maker: the lead-solutions-architect role, 2026-09-06, at the
+small-change lane's make step.
+
+Paths changed this round:
+
+- `basis/principles.md` — version 9 → 10. The set gains a tenth
+  principle, `tools-through-skills`, in the set's four-part form: the
+  three statements the Definition fixes, one obligation per bullet,
+  each wrapped so its verifying phrase sits on one source line; a
+  rationale showing the generic failure (a tool's use reconstructed
+  from help output differently by every agent that meets it; a missing
+  skill worked around and reconstructed again), supported by Norman,
+  *The Design of Everyday Things*; four implications, each on a named
+  actor (tool owners, process authors, whoever meets a tool with no
+  skill, reviewers), each following from a statement bullet; a
+  `tools-through-skills` column in the fitness screen, every row
+  filled. Every existing principle and every existing screen cell
+  unchanged; `updated` set to 2026-09-06; one Document History row
+  citing this request, recording the make through
+  principle-set-authoring's draft step, the author's self-check against
+  the set's opening tests, that the process's one screen is the
+  lead-pm's to run at the lane's check step and record there, and the
+  owner's approval standing on the product authority's acceptance of
+  2026-09-06 in section 3.
+- `.claude/shop/principles.md` — source-digest sha256:87b81b1e3a36 →
+  sha256:96ae4155dc8e (the rendering carries no version of its own).
+  Re-rendered by `python3 basis/tools/compile_principles.py
+  basis/principles.md .claude/shop/principles.md`; not edited by hand.
+
+Nothing outside paths changed by the maker. Disclosed: while this
+round ran, a commit of other work by the lead-pm's session (`3b50b9b`)
+swept both changed paths into HEAD before this entry was written; the
+committed content is byte-for-byte the maker's, as `git diff HEAD` on
+both paths shows empty.
+
+Disclosed for the check step's screen: the terms "framework tool",
+"skill", "agent", and "gap" have no glossary entry ("skill" is named
+only inside the glossary's rendering entry); the glossary lies outside
+the lane's paths, so principle-set-authoring's term-to-glossary rule
+could not be met in this round. The statements are the Definition's
+and were not altered.
+
+The verifying observation was run by the maker from the repository root
+after the change: exit 0, last line "principles: tools-through-skills
+present with its three statements, history cites request, rendering
+fresh, lint clean". The lint run alone: "PASS: 0 violation(s)". Their
+results are the lane's to record at verify.
+
+**Round 2** (repair) — maker: the lead-solutions-architect role,
+2026-09-06. The one screen principle-set-authoring allows ran at the
+lane's check step (judge claude-fable-5-1, screen prompt v6): four
+confident findings, three wobbly, the wobbly three ruled by the lead-pm.
+At the check step the lead-pm widened the lane's paths to include
+`basis/glossary.md`: use-defined-terms requires the binding terms
+defined, and the glossary is their home.
+
+Paths changed this round:
+
+- `basis/glossary.md` — version 22 → 23. Three terms added at the end
+  of Terms: **framework tool** (a tool the shop's definitions name for
+  an activity: the compilers, the lint, the work register's command,
+  and their like), **skill** (the rendering at the agent's load point
+  that states an activity or a tool's use so an agent performs it from
+  the definition alone), **gap** (a missing definition, tool, or skill
+  the shop records as a request rather than works around). History row
+  citing this request. The set's opening claim that its terms are
+  defined in the glossary now holds for the new principle.
+- `basis/principles.md` — version 10 → 11. Statement bullet 1: "for a
+  scenario" → "for each use it supports". Statement bullet 3 split, one
+  obligation each: "A tool with no such skill MUST be recorded as a
+  gap." / "A tool with no such skill MUST NOT be worked around."
+  Implication bullet 2's second clause became the permission that
+  follows — "a step with no agent may carry the bare command" — the
+  step-kind terms dropped. Implication bullet 3 split in two, one per
+  statement bullet: records the gap as a request through intake; does
+  not read the tool's help to proceed. governed-context's "Tool owners
+  ship each tool's skill with the tool, in lockstep" moved under
+  `tools-through-skills` as its first implication, so the obligation
+  has one home; governed-context otherwise unchanged. The
+  `tools-through-skills` screen column re-run against the repaired text:
+  every cell holds; the Spool cell now names the three rejections.
+  The three verifying phrases each still sit on one source line.
+  History row 11: the screen's findings in short, the repairs, the
+  owner's approval on the authority's acceptance of 2026-09-06.
+- `.claude/shop/principles.md` — source-digest sha256:96ae4155dc8e →
+  sha256:3c4576a133a4. Re-rendered by the tool; not edited by hand.
+
+Nothing outside the widened paths changed. The verifying observation was
+run by the maker from the repository root after the repair: exit 0,
+last line "principles: tools-through-skills present with its three
+statements, history cites request, rendering fresh, lint clean" — the
+Definition's phrase "three statements" now names the three the
+Definition fixed, carried as four bullets after the split. The lint run
+alone: "PASS: 0 violation(s)".
+
+### Check
+
+**Round 1** — verdict: **fail** — by the lead-pm role, 2026-09-06: the
+principle set's own producing process, principle-set-authoring, ran its
+one screen at this step (judge claude-fable-5-1 / screen prompt v6):
+four confident findings in the amendment — two binding terms
+undefined; a bullet with two obligations; an implication with two
+changes; a screen cell not reproducible — and three wobbly. Returned to
+the maker for the one repair; the lead-pm widened the lane's paths to
+the glossary, the home of the binding terms, and recorded it.
+
+**Round 2** — verdict: **pass** — by the lead-pm role, 2026-09-06. The
+terms defined in the glossary; the statement and implication bullets
+one obligation each; the ship-with-the-tool obligation given one home;
+the screen column re-run; the set at v11 with its history row and the
+owner's approval standing on the authority's acceptance; the rendering
+produced by the compiler. Finding: none.
+
+### Verified result
+
+The verifying observation the Definition named was run by the runtime
+from the repository root on 2026-09-06; its evidence:
+
+```
+PASS: 0 violation(s)
+/tmp/tmp.PPPmWUq8eD: rendered 10 principles (digest 3c4576a133a4)
+principles: tools-through-skills present with its three statements, history cites request, rendering fresh, lint clean
+exit 0
+```
+
+Recorded by the lead-pm role, 2026-09-06. The Definition, the Check's
+verdict by the lead-pm role, and this result stand; between the
+request and this result no bet was taken and no check of record was
+run. The effect in the running system: the principles page compiled
+into every session now requires every framework tool to be usable
+through a skill, an agent to prefer the skill, and a missing skill to
+be recorded as a gap.
+
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+| 1 | 2026-09-06 | update | Recorded by the lead-pm at the request-intake process's record step; the originator's "record it" confirmed the reading of the words as an ask. Route decided and said at decide-route; awaiting the originator's answer. Evidence at recording: the PO read three tools' argument handling to write verification commands this week; the intake process's scripts carry bare commands with their flags; the lead-pm ran the rendering checks by copying shell from a skill. |
+| 2 | 2026-09-06 | update | The route accepted by the originator's "record tools-through-skills", read as the answer and disclosed; landed; work item lead-xsbuk opened; dispatched to the small-change lane. |
+| 3 | 2026-09-06 | update | Definition written by the lead-po role at the small-change lane's define step: judged a simple change by the glossary's entry; the principle named (`tools-through-skills`) and its three statements fixed; four acceptance statements, two paths (the principle set and its rendering with source and tool), maker lead-solutions-architect, one verifying command in the form req-2026-09-05-maker-self-check's Definition used. No artifact but this request touched. |
+| 4 | 2026-09-06 | update | Change made by the lead-solutions-architect role at the small-change lane's make step, round 1: `basis/principles.md` v9 → v10 amended through principle-set-authoring's draft step (the principle `tools-through-skills` added with its rationale, implications, and screen column); `.claude/shop/principles.md` re-rendered by the tool. Entry written under Change made, disclosing the undefined terms for the screen and the sweep of both paths into HEAD by another commit. |
+| 5 | 2026-09-06 | update | Round 2 (repair) made by the lead-solutions-architect role at the small-change lane's make step on the check step's screen findings: `basis/glossary.md` v22 → v23 (framework tool, skill, gap defined — the lead-pm widened paths to the glossary at the check step); `basis/principles.md` v10 → v11 (bullet 1 reworded, bullet 3 split, implications 2 and 3 repaired, the lockstep implication moved from governed-context, screen column re-run); `.claude/shop/principles.md` re-rendered. Entry written under Change made. |
+| 6 | 2026-09-06 | update | Check: round 1 fail on the one screen, round 2 pass by the lead-pm role; the verifying observation run by the runtime, exit 0; the verified result recorded and status set to done at the small-change process's record step. |
+| 7 | 2026-09-06 | update | Where the route led written into routed-to by the lead-pm at the request-intake process's land-result step; the lane's work item lead-xsbuk closed as done. |
+===== requests/req-2026-09-06-plain-status.md
+---
+type: request
+id: req-2026-09-06-plain-status
+status: routed
+version: 1
+date: 2026-09-06
+reader: lead-pm
+owner: lead-pm
+created: 2026-09-06
+updated: 2026-09-06
+originator: product-authority
+received-through: operational-contract
+route: small-change
+route-reason: "one rule added to the base writing style guideline the lead-pm's prose and every rendered role load — state what is being waited on plainly, never a shorthand for the state of the work — within the lead shop's own definitions, demonstrable in one session, no appetite worth a bet"
+routed-to: ""
+---
+
+# Request: status is said plainly
+
+## 1. What is requested
+
+The product authority, 2026-09-06, on the lead-pm's habit of ending
+turns with "nothing else is independent": "What is meant by nothing
+else is independent?" — and, on the lead-pm's undertaking to say it
+plainly from then on: "How will you know to say that from here after
+the session ends?"
+
+## 2. From whom
+
+Reader: the lead-pm role. Originator: the product authority. Received
+through the lead shop's operational contract, which has no artifact
+yet (lead-4kymc). The ask arose directly, in conversation.
+
+## 3. Route
+
+Route said by the lead-pm role, 2026-09-06: **the small-change lane**.
+Why: the correction needs a home a later session loads; the transcript
+is not one and memory writes are frozen at handoff. The home is the
+base writing style guideline, which the lead-pm's prose and every
+rendered role load: one rule — when work is waiting, say what it is
+waiting on and on whom, in plain words; never a shorthand for the state
+of the work. Within the lead shop's own definitions, demonstrable in
+one session. Topic: "status said plainly (req-2026-09-06-plain-status)".
+
+Originator's answer: **not yet answered.** Nothing is acted on until
+the originator answers.
+
+## 4. Result
+
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+| 1 | 2026-09-06 | update | Recorded by the lead-pm at the request-intake process's record step from the authority's two questions, read as an ask for the correction to survive the session; route decided and said; awaiting the originator's answer. |
+===== requests/req-2026-09-05-step-communication.md
+---
+type: request
+id: req-2026-09-05-step-communication
+status: routed
+version: 1
+date: 2026-09-05
+reader: lead-pm
+owner: lead-pm
+created: 2026-09-05
+updated: 2026-09-05
+originator: product-authority
+received-through: operational-contract
+route: discovery
+route-reason: "design decision across every process: what an agent's instruction is assembled from and in what form — larger than a simple change, and it rests on the typedef renderings init-typedef-rendering delivers"
+routed-to: ""
+---
+
+# Request: Communication between steps and agents in the most effective format
+
+## 1. What is requested
+
+The product authority, 2026-09-05, in open conversation with the
+lead-pm reviewing the init-request-routing run: "As far as communication between steps and agents, that should be broken down into the most effective format for clear communication." And on instructions: "Simply providing long instructions does not equate to good instructions. Part of defining what good looks like is also about being fit for purpose and instructions need to be shaped for the implementer, not the decision maker. They are common ground."
+
+## 2. From whom
+
+Reader: the lead-pm role. Originator: the product authority. Received
+through the lead shop's operational contract, which has no artifact
+yet (lead-4kymc). The ask arose directly, in conversation.
+
+## 3. Route
+
+Route said by the lead-pm role, 2026-09-05: **a discovery conversation, interview form, after init-typedef-rendering's proof, since the assembled instruction includes the renderings it produces**. Why: design decision across every process: what an agent's instruction is assembled from and in what form — larger than a simple change, and it rests on the typedef renderings init-typedef-rendering delivers.
+Topic: "Communication between steps and agents in the most effective format (req-2026-09-05-step-communication)".
+
+Originator's answer: **not yet answered.** Nothing is acted on until
+the originator answers.
+
+## 4. Result
+
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+| 1 | 2026-09-05 | update | Recorded by the lead-pm at the request-intake process's record step; the originator's "record the other requests" confirmed the reading of these words as asks. Route decided and said at decide-route; awaiting the originator's answer. |

@@ -1,0 +1,529 @@
+===== basis/processes/po-output-check.md =====
+     1	---
+     2	type: process-definition
+     3	id: po-output-check-process
+     4	owner: product-authority
+     5	status: approved
+     6	approved: 2026-08-26
+     7	version: 4
+     8	created: 2026-08-25
+     9	updated: 2026-08-28
+    10	produces: []
+    11	carried-by: po-output-check-skill
+    12	condition-language: cel
+    13	hold-after: P7D
+    14	ask-cap: P1D
+    15	annotations:
+    16	  claude-code:
+    17	    activation: model-judged
+    18	    promotion: experiment-local
+    19	    use-when: "the PO role submits a feature, product decision record, or backlog order for the PM role's check against the framing"
+    20	---
+    21	
+    22	# Process: PO output check
+    23	
+    24	**Purpose:** Check a piece of the PO role's output against the PM
+    25	role's framing under criteria the definitions state, so that the PM
+    26	role decides from a screen verdict — pass, fail with the criterion
+    27	named, or a definition change — and never by reading every artifact.
+    28	
+    29	**Guiding statement:** The check is the criteria applied, not the
+    30	checker's reading. A finding the criteria cannot name is a missing
+    31	criterion, and the decision that follows is a definition change, not a
+    32	verdict on the maker.
+    33	
+    34	**Outcomes:**
+    35	- O1. The output — a feature, a product decision record, or a backlog
+    36	  order — is screened against a named criteria set and the framing it
+    37	  claims to serve — witnessed by `screen`'s inputs and the
+    38	  `screen-review` it returns.
+    39	- O2. The PM role decides from the review and round log; the artifact
+    40	  reaches the PM role only through the findings' quotes — witnessed by
+    41	  `decide`'s inputs, which exclude the artifact.
+    42	- O3. Every screen round is recorded and the loop exits on a clean
+    43	  verdict, on findings no criterion names, or at the round cap —
+    44	  witnessed by `log-round` and `route-screen`.
+    45	- O4. A fail names the criterion missed; a definition change names the
+    46	  gap, and the gap is filed in the named definition's Document History
+    47	  — witnessed by the `check-decision` fields and `record`'s
+    48	  `definition` and `gap_entry` outputs.
+    49	- O5. A question the framing cannot answer leaves the run as an ask to
+    50	  the PM role, with a default, and the run resumes — witnessed by
+    51	  `revise`'s `asks` and the `ask` value.
+    52	
+    53	**Roles:** maker — [`../roles/lead-po.md`](../roles/lead-po.md)
+    54	(submits and revises; never decides its own pass). screener —
+    55	[`../roles/cold-reviewer.md`](../roles/cold-reviewer.md) (fresh
+    56	context every round; judges against the criteria). the PM role —
+    57	[`../roles/lead-pm.md`](../roles/lead-pm.md) (accountable for the
+    58	decision; a human-held role that decides from the verdict; its
+    59	assisting agent prepares the record and the gap entry).
+    60	
+    61	**Carried by:**
+    62	[`../skills/po-output-check/SKILL.md`](../skills/po-output-check/SKILL.md)
+    63	— generated from this definition by
+    64	[`../tools/compile_process.py`](../tools/compile_process.py), never
+    65	edited by hand.
+    66	
+    67	## Flow (compiled)
+    68	
+    69	Generated from the steps below by `tools/compile_process.py`; do not
+    70	edit by hand.
+    71	
+    72	```mermaid
+    73	flowchart TD
+    74	  screen(["Screen against the criteria — agent: cold-reviewer<br/>in — artifact: string, framing: string, criteria_path: string<br/>out — review: screen-review"])
+    75	  log_round["Record the round — runtime<br/>in — review: screen-review, round_log: screen-review[]<br/>sets — round_log: screen-review[]"]
+    76	  route_screen{"Route on the screen<br/>in — review: screen-review, round: integer, round_cap: integer"}
+    77	  revise(["Revise the output — agent: lead-po<br/>in — artifact: string, review: screen-review, framing: string, ask: ask<br/>out — artifact: string"])
+    78	  advance_round["Advance the round — runtime<br/>in — round: integer<br/>sets — round: integer"]
+    79	  decide[["Decide on the verdict — human: lead-pm<br/>in — review: screen-review, round_log: screen-review[], framing: string<br/>out — decision: check-decision"]]
+    80	  record(["Record the decision — agent: lead-pm<br/>in — decision: check-decision, artifact: string, round_log: screen-review[]<br/>out — artifact: string, gap_entry: string, definition: string"])
+    81	  __end(("end<br/>result — decision: check-decision"))
+    82	  __start(("start")) --> screen
+    83	  screen --> log_round
+    84	  log_round --> route_screen
+    85	  route_screen -->|success exit: clean| decide
+    86	  route_screen -->|definition exit: every finding is uncovered — nothing the maker can repair| decide
+    87	  route_screen -->|failsafe exit: round >= round_cap — decide with findings open| decide
+    88	  route_screen -->|else| revise
+    89	  revise --> advance_round
+    90	  advance_round --> screen
+    91	  decide --> record
+    92	  record --> __end
+    93	```
+    94	
+    95	
+    96	## Data
+    97	
+    98	Each entry names a process-local value. Simple types use JSON Schema
+    99	names inline; every structured shape is a `$ref` to a defined type with
+   100	an explicit source. Conditions are CEL expressions over these names. A
+   101	*criteria set* is the approved fitness set or guideline for the
+   102	artifact's type. The framing is always a criterion, named `framing`;
+   103	until a criteria set exists for a type, `criteria_path` names the
+   104	framing itself and `framing` is the only named criterion. The artifact
+   105	status values this process sets — `checked` on pass, `returned` on
+   106	fail, `pending-definition` on definition change — are this process's
+   107	until the artifact typedefs define their own.
+   108	
+   109	```yaml
+   110	data:
+   111	  artifact: {type: string, format: uri-reference}
+   112	  framing: {type: string, format: uri-reference}
+   113	  criteria_path: {type: string, format: uri-reference}
+   114	  review: {$ref: screen-review, from: ../types/screen-review.md}
+   115	  round: {type: integer, initial: 1}
+   116	  round_cap: {type: integer, initial: 3}
+   117	  round_log: {type: array, items: {$ref: screen-review}, initial: []}
+   118	  ask: {$ref: ask, from: ../types/ask.md, initial: null}
+   119	  decision: {$ref: check-decision, from: ../types/check-decision.md}
+   120	  gap_entry: {type: string}
+   121	  definition: {type: string, format: uri-reference}
+   122	```
+   123	
+   124	## Steps
+   125	
+   126	```yaml
+   127	start: screen
+   128	parameters: [artifact, framing, criteria_path]
+   129	result: decision
+   130	steps:
+   131	  - id: screen
+   132	    name: Screen against the criteria
+   133	    run-by: {role: cold-reviewer, execution: agent, fresh-context: true}
+   134	    inputs: [artifact, framing, criteria_path]
+   135	    outputs: [review]
+   136	    prompt: |
+   137	      Read the criteria set at criteria_path, the framing at framing,
+   138	      and the artifact at artifact — nothing else. Judge the artifact
+   139	      against every criterion and against the framing: does each part
+   140	      of it trace to the framing, and does anything in it serve no
+   141	      framed outcome? Report every finding with the criterion it fails
+   142	      by name — "framing" for a part that does not trace to the framing
+   143	      or serves no framed outcome — the quoted text, the change, and
+   144	      whether you could decide it (confident) or not (wobbly); for a
+   145	      wobbly finding quote the whole passage, since the PM role decides
+   146	      from the review alone. A defect no criterion names is a finding
+   147	      with criterion "uncovered". Verdict "clean"
+   148	      only if there are no findings; otherwise "findings" with the top
+   149	      three changes.
+   150	    next: log-round
+   151	    annotations:
+   152	      fabro: {model: high-reasoning, node: separate-context-per-round}
+   153	
+   154	  - id: log-round
+   155	    name: Record the round
+   156	    run-by: {execution: runtime}
+   157	    inputs: [review, round_log]
+   158	    set:
+   159	      round_log: round_log + [review]
+   160	    next: route-screen
+   161	
+   162	  - id: route-screen
+   163	    name: Route on the screen
+   164	    run-by: {execution: runtime}
+   165	    inputs: [review, round, round_cap]
+   166	    branches:
+   167	      - label: "success exit: clean"
+   168	        when: review.verdict == "clean"
+   169	        next: decide
+   170	      - label: "definition exit: every finding is uncovered — nothing the maker can repair"
+   171	        when: size(review.findings) > 0 && review.findings.all(f, f.criterion == "uncovered")
+   172	        next: decide
+   173	      - label: "failsafe exit: round >= round_cap — decide with findings open"
+   174	        when: round >= round_cap
+   175	        next: decide
+   176	      - else: revise
+   177	
+   178	  - id: revise
+   179	    name: Revise the output
+   180	    run-by: {role: lead-po, execution: agent}
+   181	    inputs: [artifact, review, framing, ask]
+   182	    outputs: [artifact]
+   183	    asks: [lead-pm]
+   184	    prompt: |
+   185	      Repair every finding whose criterion is named, "framing"
+   186	      included; leave findings marked "uncovered" as they are — they
+   187	      are the PM role's to decide. If a repair needs something the framing does not say —
+   188	      the originator's intent, whether a thing is in scope, a decision
+   189	      another role's domain holds — return an ask to lead-pm instead
+   190	      of guessing: the question, its kind, the default you will apply
+   191	      if unanswered, and a checkpoint holding the repairs made so far.
+   192	      On the first pass ask is absent; if it carries an answer or
+   193	      resolved defaulted, act on it and finish the repairs.
+   194	    next: advance-round
+   195	
+   196	  - id: advance-round
+   197	    name: Advance the round
+   198	    run-by: {execution: runtime}
+   199	    inputs: [round]
+   200	    set:
+   201	      round: round + 1
+   202	    next: screen
+   203	
+   204	  - id: decide
+   205	    name: Decide on the verdict
+   206	    run-by: {role: lead-pm, execution: human}
+   207	    inputs: [review, round_log, framing]
+   208	    outputs: [decision]
+   209	    prompt: |
+   210	      From the final review and the round log, decide. "pass": the
+   211	      screen is clean, or its only findings are uncovered and you judge
+   212	      none of them needs a criterion — say so in the reasons. "fail": a
+   213	      named criterion, "framing" included, is still missed at the round
+   214	      cap — name it.
+   215	      "definition-change": an uncovered finding should have been a
+   216	      criterion, or a criterion the output met produced something that
+   217	      does not serve the framing — name the definition and what it
+   218	      lacks. Where both a missed named criterion and an open uncovered finding
+   219	      stand at the cap, "fail" takes precedence and the reasons carry
+   220	      the uncovered finding. Decide from the quotes in the review.
+   221	      Record your reasons.
+   222	    next: record
+   223	
+   224	  - id: record
+   225	    name: Record the decision
+   226	    run-by: {role: lead-pm, execution: agent}
+   227	    inputs: [decision, artifact, round_log]
+   228	    outputs: [artifact, gap_entry, definition]
+   229	    prompt: |
+   230	      Write into the artifact's Document History one review entry per
+   231	      round with its verdict, then a state entry carrying the decision
+   232	      and its reasons. Set the artifact's status: "checked" on pass,
+   233	      "returned" on fail with the criterion named, "pending-definition"
+   234	      on definition-change. On "definition-change", write a review
+   235	      entry stating the gap into the Document History of the definition
+   236	      the decision names; return that file's path as definition and the
+   237	      entry's text as gap_entry. Otherwise return both empty. Return
+   238	      the artifact.
+   239	    next: end
+   240	```
+   241	
+   242	## Derived checks
+   243	
+   244	| Outcome | Check | Kind | Where |
+   245	|---|---|---|---|
+   246	| O1 | screen reads only criteria, framing, artifact | judged | `screen.prompt` and inputs |
+   247	| O2 | `artifact` absent from `decide.inputs` | mechanical | `decide.inputs` |
+   248	| O3 | every round logged; three labeled exits | mechanical | `log-round`, `route-screen` |
+   249	| O4 | `criterion` present on fail, `gap` on definition-change; `definition` and `gap_entry` non-empty on definition-change | judged | `check-decision`, `record` outputs |
+   250	| O5 | `revise` carries `asks`; process carries `ask-cap`; `ask` listed in inputs | mechanical | `revise`, frontmatter |
+   251	
+   252	## Document History
+   253	
+   254	| Version | Date | Kind | Entry |
+   255	|---|---|---|---|
+   256	| 1 | 2026-08-25 | update | Authored by owner decision as the check the lead-pm role runs on the lead-po role's output — the maker/checker split's named process. First process to carry `asks` and `ask-cap`. Criteria sets per artifact type (brief, product decision record, acceptance scenarios, backlog order) are a filed gap: until each exists, `criteria_path` names the nearest approved fitness set or the framing alone. |
+   257	| 1 | 2026-08-25 | review | Screened against the process-definition chain: findings — an uncovered finding could never clear the screen; the `review` type lacked per-finding criterion, quote, and decidability; two prompts wrote to undeclared channels; `artifact_type` loaded and unread; one route-decision branch dead; status values and the gap's home undefined. |
+   258	| 2 | 2026-08-25 | update | Reworked: a `screen-review` type carries findings with criterion, quote, and decidability; route-screen gains a definition exit when every finding is uncovered; decide routes straight to record; the artifact leaves the decider's inputs; `artifact_type` dropped; the gap is filed as a review entry in the named definition's history and returned as `gap_entry`; status values declared as this process's pending the typedefs. |
+   259	| 2 | 2026-08-25 | review | Re-screened: findings — decide's prompt opened an undeclared artifact; a framing-trace failure had no criterion name and so was never repaired; record wrote a file outside its outputs; a vacuous all-uncovered branch on an empty list; ask without an initial. |
+   260	| 3 | 2026-08-25 | update | Repairs: the PM role decides from the review alone, wobbly findings quote the whole passage; `framing` is a named criterion the maker repairs; record returns the written definition's path; the definition exit guarded on a non-empty list; `ask` initial null; status vocabulary moved to Data prose. The v1 entry's "nearest approved fitness set or the framing alone" is superseded by Data's rule. |
+   261	| 3 | 2026-08-25 | review | Re-screened (round 3): clean — all six scenarios pass, six rules hold; both paths traced; stumbles polished in place (verdict precedence at the cap; the framing criterion named in the type). |
+   262	| 3 | 2026-08-26 | state | draft → approved by the owner. |
+   263	| 4 | 2026-08-28 | update | Owner decision: acceptance-scenarios re-formed as feature (product-level, scenarios assigned per Bounded Context by tag); the brief retired — shops receive their assigned scenarios. |
+===== basis/artifacts/feature.md =====
+     1	---
+     2	type: artifact-typedef
+     3	id: feature-typedef
+     4	defines: feature
+     5	owner: product-authority
+     6	status: draft
+     7	version: 11
+     8	created: 2026-08-26
+     9	updated: 2026-08-31
+    10	ancestry: [feature]
+    11	---
+    12	
+    13	# Artifact type: feature
+    14	
+    15	## Identity and ancestry
+    16	
+    17	- **Type:** `feature` — a Gherkin Feature: one capability described
+    18	  from the user's or agent's point of view, with the scenarios that
+    19	  state, as requirements, what counts as done for it. A product-level
+    20	  artifact: it belongs to the [initiative](initiative.md) it is made
+    21	  from and may hold scenarios owned by
+    22	  several Bounded Contexts. The scenario is the atom; the feature is
+    23	  its grouping; the feature repository — the lead shop's directory of
+    24	  feature artifacts — is the record of what is specified, and a
+    25	  context's assigned set is the subset of scenarios, across all
+    26	  features, tagged to it. The instance is a
+    27	  markdown document with frontmatter whose Scenarios section holds one
+    28	  fenced Gherkin block — the executable unit the shops receive; the
+    29	  other sections are the document's, not Gherkin's. Scenarios are
+    30	  executed by the owning shops; the feature as a document is judged by
+    31	  the [feature fitness set](../fitness/feature.fitness.md), never
+    32	  executed there. `ancestry` names no generic root: a feature is
+    33	  neither a request nor a definition.
+    34	- **Produced by:** the [PO role](../roles/lead-po.md), as sole author —
+    35	  the scenarios' steps included; the product designer role contributes
+    36	  usability and accessibility criteria, the solutions architect role
+    37	  its non-functional constraints where the decomposition names them.
+    38	  The owning shops do not co-author: conflicts with behavior already
+    39	  specified are caught by the repository sweep at assignment, and a
+    40	  shop's objection travels as a clarify or a returned dispatch after
+    41	  it receives its scenarios. Checked by the
+    42	  [PO output check](../processes/po-output-check.md); its scenarios
+    43	  assigned to Bounded Contexts by the solutions architect role in the
+    44	  [scenario assignment](../processes/scenario-assignment.md) process.
+    45	  **Consumed by:** the shops, each receiving the scenarios tagged to it;
+    46	  the [interaction conformance check](../processes/interaction-conformance-check.md)
+    47	  for the interaction types named; the changelog rendering the same report proposes, when the
+    48	  [reconcile-and-close](../processes/reconcile-and-close.md) process
+    49	  closes the work that delivered its scenarios.
+    50	
+    51	## Required frontmatter
+    52	
+    53	`type: feature`, `id`, `status`, `version`, `name` (the Feature's
+    54	name), `initiative` (link to the initiative it is made from; its
+    55	framing is that document's first section), `owner`, `created`,
+    56	`updated`. `approved` does not apply: a feature's terminal state is
+    57	`assigned`. Status values and their writers: `draft` (the PO role);
+    58	`checked`, `returned`, `pending-definition` (the PO output check's
+    59	record step, replacing `draft`); a returned or pending feature the PO
+    60	role resubmits goes back to `draft`; `assigned` (the scenario
+    61	assignment process's record step, replacing `checked` when every
+    62	scenario carries its tag); a feature the assignment process returns
+    63	goes to `returned`.
+    64	
+    65	## Required sections
+    66	
+    67	1. **Feature** — the Gherkin `Feature:` line with its name, and the
+    68	   narrative beneath it: who the capability is for, what they can do,
+    69	   and the outcome it serves, in the framing's words.
+    70	2. **Contributors** — for every scenario, the owning shop named — the
+    71	   shop the solutions architect's decomposition places the behavior in
+    72	   (ownership for assignment, not authorship); where the capability has
+    73	   an interaction, the product designer role's usability acceptance
+    74	   criteria and the accessibility criteria; where the decomposition
+    75	   names them, the solutions architect role's non-functional
+    76	   constraints, riding as criteria on the scenarios they bound.
+    77	3. **Interaction types** — always present: the interaction types the
+    78	   capability must be available on, from the
+    79	   [core-task list](../experience/core-tasks.md), or "none" with the
+    80	   reason when the capability has no interaction.
+    81	4. **Scenarios** — one fenced `gherkin` block, the executable unit:
+    82	   it opens with the `Feature:` line and narrative of §1 verbatim (§1
+    83	   is the document's reading of the block's head; the block is the
+    84	   source, and the repeat is accepted so the document reads without
+    85	   the block), then an optional `Background:` (its Given steps judged as any
+    86	   step), then each `Scenario:` carrying the tags `@feature:<id>` (so a
+    87	   scenario travels alone to a shop and still names its feature —
+    88	   the reason the Feature line's tag inheritance is not relied on),
+    89	   `@hash:<sha>` (a hash of the scenario's text), and, once assigned,
+    90	   `@bounded-context:<name>`; Given/When/Then with one action or event
+    91	   in the When and an outcome observable in the running system in the
+    92	   Then; no step names an implementation detail.
+    93	5. **Edges** — a table of every failure and boundary case the framing
+    94	   or a contributor's criteria name: case · who named it · the
+    95	   `Scenario:` name that covers it, or "out of scope" with the reason.
+    96	
+    97	## Rules
+    98	
+    99	- A scenario's `@bounded-context:` tag is written by the solutions
+   100	  architect role at assignment, never by the PO role — a writer rule
+   101	  the assignment process enforces; the check does not judge the tag's
+   102	  presence, since a re-verified or resubmitted feature may carry it. In
+   103	  the assignment process, a scenario whose owning context differs from
+   104	  its Contributors' shop is treated as unowned with that reason, so the
+   105	  feature returns (`returned`) for the PO role to correct the owning
+   106	  shop it names.
+   107	- A changed scenario text is a new scenario with a new `@hash:`.
+   108	  Whether the hash matches the text is a mechanical check, to be filed
+   109	  as a lint.
+   110	- A scenario's conflicts with behavior already specified are caught
+   111	  by the sweep of the feature repository at assignment, never by
+   112	  asking the shop during authoring; the shop's voice after dispatch
+   113	  is the clarify and the return.
+   114	
+   115	## Commitment (Definition of Done)
+   116	
+   117	A feature is done when it has passed the PO output check against its
+   118	fitness set and the framing, and every scenario carries a
+   119	`@bounded-context:` tag. **Consequence on failure:** it is returned
+   120	with the criterion named and no scenario is dispatched.
+   121	
+   122	## Sources
+   123	
+   124	Gherkin (Feature, narrative, Background, Scenario, tags — the block's
+   125	form); the
+   126	experience principles `core-task-parity` and `accessible-by-standard`.
+   127	
+   128	## Derived review checklist
+   129	
+   130	- Feature line and narrative present, tied to the framing. *(§Required sections 1; fitness 6)*
+   131	- Each scenario one observable behavior, no how. *(§Required sections 4; fitness 1)*
+   132	- Every scenario has a named owning shop; designer criteria where there is an interaction; architect constraints where named. *(§Required sections 2; fitness 2)*
+   133	- `@feature:` and `@hash:` on every scenario. *(§Required sections 4; fitness 3)*
+   134	- Every listed edge covered or excluded with reason. *(§Required sections 5; fitness 4)*
+   135	- Interaction types section present, named or "none" with reason. *(§Required sections 3; fitness 5)*
+   136	
+   137	## Document History
+   138	
+   139	| Version | Date | Kind | Entry |
+   140	|---|---|---|---|
+   141	| 1 | 2026-08-26 | update | Authored as `acceptance-scenarios` from the approved fitness set; carried the co-production statement and the tag's content the set asked the typedef to carry. |
+   142	| 1 | 2026-08-26 | review | Screened: findings — definition wrongly in the ancestry; fitness 2's two criteria collapsed; an undefined consumer; the tag's content in two homes. |
+   143	| 2 | 2026-08-26 | update | Repairs: ancestry corrected; both criteria named; the conformance check linked; the tag carries the frontmatter values. |
+   144	| 3 | 2026-08-26 | update | assigned's transition stated; edges bound to §1's stated contribution; core-task list linked. |
+   145	| 3 | 2026-08-26 | review | Re-screened (round 3): clean. |
+   146	| 4 | 2026-08-28 | update | Owner decision: re-formed as `feature` on Gherkin's own unit — the type was grouped per behavior and pre-assigned to one context, a dispatch convenience carried from `main`. A feature is product-level, belongs to its framing or initiative, holds scenarios owned by several contexts; assignment moves to the solutions architect's scenario-assignment process and lives on `@bounded-context:` tags; `context` leaves the frontmatter; a Feature line and narrative are required. File renamed from `acceptance-scenarios.md`. |
+   147	| 4 | 2026-08-28 | review | Screened with the chain: findings — the instance form unstated and the hash not Gherkin-legal; pre-assignment ownership undefined; the edge list required by nothing; status transitions incomplete; `date` undefined; consumers unlinked. |
+   148	| 5 | 2026-08-28 | update | Repairs: markdown instance with one fenced Gherkin block; `@feature:` and `@hash:` tags; ownership from the decomposition, confirmed or corrected at assignment; an edge table; every transition with its writer; `date` dropped; consumers linked; interaction types always present. |
+   149	| 5 | 2026-08-28 | review | Re-screened: findings — the "no bounded-context tag at the check" clause failed re-verified and resubmitted features; the correction path had no deciding step or status; the Edges reference form unstated; two insider references. |
+   150	| 6 | 2026-08-28 | update | Repairs: the clause removed, the writer rule kept and enforced by the assignment process, which returns a feature whose tag differs from its Contributors' shop; Edges rows reference the Scenario name; the block's head stated as the source; references located. |
+   151	| 6 | 2026-08-28 | review | Final screen (round 3): clean — no absence clause survives in any check; the correction path carried by the assignment process; two stumbles polished in place. |
+   152	| 7 | 2026-08-28 | update | The initiative typedef now exists: the feature links its initiative, whose first section is the framing. |
+   153	| 8 | 2026-08-31 | update | Owner direction: the register is the lead shop's, viewed per context. |
+   154	| 9 | 2026-08-31 | update | Owner decision: co-production dropped — the PO authors alone (the register sweep and the post-dispatch clarify are the shop's voice); the architect's non-functional constraints added beside the designer's criteria; Contributors names ownership, not authorship. |
+   155	| 10 | 2026-08-31 | review | Round-1 screen of the co-production removal: the Edges table's sources are the framing and the contributors' criteria, not a shop. |
+   156	| 11 | 2026-08-31 | update | Owner direction: the repository/register split — the feature repository (the artifacts as specified) is what the conflict sweep at assignment reads; the scenario register is the tracker of implemented scenarios, a feature to be built. |
+===== basis/fitness/feature.fitness.md =====
+     1	---
+     2	type: fitness-set
+     3	id: feature-fitness
+     4	owner: product-authority
+     5	status: draft
+     6	version: 8
+     7	created: 2026-08-26
+     8	updated: 2026-08-28
+     9	target-type: feature
+    10	judged: true
+    11	executable: false
+    12	judged-by: cold-reviewer
+    13	---
+    14	
+    15	# Fitness set: feature
+    16	
+    17	A feature is a Gherkin Feature — one capability from the user's or
+    18	agent's point of view with the scenarios that state what counts as
+    19	done for it — authored by the PO role alone, product-level, its
+    20	scenarios later assigned to Bounded Contexts by the solutions
+    21	architect role.
+    22	The scenarios are executable by the owning shops; this set judges the
+    23	feature as a document and is never executed. These scenarios are the
+    24	criteria set the [PO output check](../processes/po-output-check.md)
+    25	screens a feature against, alongside the framing (criterion
+    26	`framing`). Evaluated by the `cold-reviewer` role. The judge reads only
+    27	the criteria set, the framing, and the feature; a fact the feature must
+    28	carry — an owning shop, a tag, an edge — is what these scenarios make it
+    29	carry. Assignment is not judged here: the `@bounded-context:` tag is
+    30	set after the check.
+    31	
+    32	## Scenarios
+    33	
+    34	Scenario 1: each scenario is one observable behavior
+    35	  Given a scenario in the feature's Gherkin block, Background steps
+    36	  included
+    37	  When its steps are read
+    38	  Then the When is one action or event, the Then an outcome observable
+    39	  in the running system, and no step names an implementation detail
+    40	
+    41	Scenario 2: ownership and criteria are present
+    42	  Given the Contributors section
+    43	  When each scenario is read against it
+    44	  Then an owning shop is named for that scenario, and, where the
+    45	  Interaction types section names a type, the product designer role's
+    46	  usability acceptance criteria and the accessibility criteria are
+    47	  present, and, where the Contributors section says the decomposition names them,
+    48	  the solutions architect role's non-functional constraints are
+    49	  present (sources are provenance, not documents to open)
+    50	
+    51	Scenario 3: identity tags are present
+    52	  Given each scenario's tags
+    53	  When they are read
+    54	  Then `@feature:<id>` and `@hash:<sha>` are present (whether the hash
+    55	  matches the text is a lint, not this judge's; the `@bounded-context:`
+    56	  tag is assignment's and is not judged here, present or absent)
+    57	
+    58	Scenario 4: every listed edge is covered
+    59	  Given the Edges table and the cases the framing or a contributor's
+    60	  criteria name
+    61	  When each case is read
+    62	  Then it names the covering scenario by its Scenario name or is marked
+    63	  out of scope with a reason, and every case the framing or a contributor's criteria name appears
+    64	  in the table
+    65	
+    66	Scenario 5: interaction types are stated
+    67	  Given the Interaction types section
+    68	  When it is read
+    69	  Then it names the types the capability must be available on, or
+    70	  "none" with a reason the framing bears out (the experience principle
+    71	  `core-task-parity`)
+    72	
+    73	Scenario 6: the feature says who it is for and why
+    74	  Given the Feature line and its narrative
+    75	  When they are read
+    76	  Then they name who the capability is for, what they can do, and the
+    77	  outcome it serves, and that outcome is the framing's
+    78	
+    79	## Compile mapping (each Then → one judge-rubric assertion)
+    80	
+    81	| Scenario Then | Judge-rubric assertion |
+    82	|---|---|
+    83	| 1 — one observable behavior | "For each scenario and the Background: is the When one action, the Then observable in the running system, and no step implementation-specific? Cite any failing step." |
+    84	| 2 — ownership and criteria | "For each scenario: is an owning shop named? Where a type is named, are both designer criteria present? Where constraints are said to be named, are they present? Cite or name the absence." |
+    85	| 3 — identity tags | "For each scenario: `@feature:` present? `@hash:` present? Cite any scenario without both." |
+    86	| 4 — edges covered | "For each row of the Edges table and each case the framing or a contributor's criteria name: a covering scenario or a reasoned exclusion? Any uncovered or missing case = fail." |
+    87	| 5 — interaction types stated | "Does the Interaction types section name types, or 'none' with a reason the framing bears out? Cite the sentence or its absence." |
+    88	| 6 — narrative | "Does the Feature narrative name who, what, and the outcome, and is the outcome the framing's? Cite the lines or their absence." |
+    89	
+    90	## Document History
+    91	
+    92	| Version | Date | Kind | Entry |
+    93	|---|---|---|---|
+    94	| 1 | 2026-08-26 | update | Authored as the criteria set the PO output check screens acceptance-scenario sets against. |
+    95	| 1 | 2026-08-26 | review | Screened: findings — "usability criteria" alone; an attribution record no definition carried; a hash comparison a reading judge cannot make; edge cases the judge would invent. |
+    96	| 2 | 2026-08-26 | update | Repairs: both criteria named with sources; co-production stated as what the set must say; hash reduced to presence; edges bound to the framing and the set's own contribution. |
+    97	| 3 | 2026-08-26 | update | Repairs: scenario 4 bound to the framing and the set's stated shop contribution; sources in the Then; the hash lint marked to-be-filed. |
+    98	| 3 | 2026-08-26 | review | Re-screened (round 3): clean. |
+    99	| 3 | 2026-08-26 | state | draft → approved by the owner. |
+   100	| 4 | 2026-08-28 | update | Owner decision: re-formed with the `feature` typedef — a Feature is product-level with scenarios owned by several contexts; scenario 2 reads per owning shop; scenario 3 asks for the feature tag only, the bounded-context tag being assignment's; scenario 6 added for the Feature narrative. Returned to draft with the typedef. File renamed. |
+   101	| 4 | 2026-08-28 | review | Screened with the chain: findings — scenario 4's Given named a set the judge could not enumerate; scenario 2 needed knowledge of who owns what; scenario 5 could not tell absence from omission; "hold on" unplain. |
+   102	| 5 | 2026-08-28 | update | Repairs: scenario 4 reads the Edges table; scenario 2 asks for a named source per scenario; scenario 5 reads a section that is always present; Background steps judged under scenario 1; the tag forms named. |
+   103	| 5 | 2026-08-28 | review | Re-screened: findings — scenario 3's absence clause failed correct features. |
+   104	| 6 | 2026-08-28 | update | Repairs: scenario 3 judges presence only; Edges rows by Scenario name; scenario 2's sources marked as provenance. |
+   105	| 6 | 2026-08-28 | review | Final screen (round 3): clean — every Then falsifiable from the three inputs. |
+   106	| 7 | 2026-08-31 | update | Owner decision: scenario 2 checks ownership and the two roles' criteria, not shop authorship. |
+   107	| 8 | 2026-08-31 | review | Round-2 screen: scenario 4 and its judge framing extended to cases a contributor's criteria name (matching the typedef's Edges sources); the constraints clause's antecedent named (Contributors section); the intro's source shop is an owning shop. |

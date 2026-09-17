@@ -1,0 +1,694 @@
+===== basis/artifacts/run-cost.md
+     1	---
+     2	type: artifact-typedef
+     3	id: run-cost-typedef
+     4	defines: run-cost
+     5	owner: product-authority
+     6	status: approved
+     7	approved: 2026-09-08
+     8	version: 4
+     9	created: 2026-09-08
+    10	updated: 2026-09-09
+    11	ancestry: [run-cost]
+    12	---
+    13	
+    14	# Artifact type: run-cost
+    15	
+    16	## Identity and ancestry
+    17	
+    18	- **Type:** `run-cost` — the cost rows for one session's close: one row
+    19	  per step recorded on the session's anchor, naming step, role,
+    20	  minutes, context tokens, output tokens, and tool uses, none of them
+    21	  computed by a model. A mechanical record, never a governing
+    22	  definition: nobody approves an instance, and none is amended once
+    23	  written.
+    24	- **Produced by:** the `write-cost-rows` step of
+    25	  [session-handoff-process](../processes/session-handoff.md), a runtime
+    26	  step, from the execution's bead and the harness's own usage report alone.
+    27	  **Consumed by:** the authority, who reads the cost; the run-efficiency
+    28	  parent initiative, whose measure the rows feed.
+    29	
+    30	## Required frontmatter
+    31	
+    32	`type: run-cost`, `id`, `session` (the path of the session record this
+    33	instance sits beside), `anchor` (the `bd` work item id the rows were
+    34	read from), `created`, `updated`. The field set is closed.
+    35	
+    36	## Required sections
+    37	
+    38	1. **Rows** — one table row per step the anchor records: step,
+    39	   role, minutes, context tokens, output tokens, tool uses. A field the
+    40	   harness's usage report does not expose for that run is blank.
+    41	
+    42	## Commitment (Definition of Done)
+    43	
+    44	An instance is done when its rows can be read without opening the
+    45	session record or a transcript. **Consequence on failure:** the
+    46	authority reads transcripts by hand instead, the cost this feature
+    47	exists to remove.
+    48	
+    49	## Sources
+    50	
+    51	The cost row's fields and the blank-field rule from
+    52	adr-2026-09-08-run-cost-artifact; the file-beside-the-record form from
+    53	the implementation-guidance typedef's own precedent, so the session
+    54	record it sits beside is never amended.
+    55	
+    56	## Derived review checklist
+    57	
+    58	- `session` and `anchor` present; the session record itself unchanged.
+    59	  *(§Required frontmatter)*
+    60	- Every row names step, role, minutes, context tokens, output tokens,
+    61	  tool uses; a field the usage report withheld is blank, never a
+    62	  number a model supplied. *(§Required sections 1)*
+    63	- No row for a runtime step. *(§Identity and ancestry)*
+    64	
+    65	## Document History
+    66	
+    67	| Version | Date | Kind | Entry |
+    68	|---|---|---|---|
+    69	| 1 | 2026-09-08 | update | Authored under feat-run-measurement's five scenarios assigned to shopsystem-product (guidance/feat-run-measurement-shopsystem-product.md v1), per adr-2026-09-08-run-cost-artifact (D1: a new artifact beside the session record, never an amendment to `pkg:shopsystem-knowledge/session-record`) and U2's default (one file per session record, in `sessions/`, named to pair with it). No Writing rules or Fitness scenarios sections: no role's judgment goes into an instance, so nothing is judged. Maker's evaluation against the artifact-typedef typedef's derived checklist: `defines` matches the instance `type`; the six required sections present in order; the commitment states a consequence; sources present, no pinned example links; every checklist entry cites a clause; Writing rules and Fitness scenarios both absent, matching (neither present). Made by the lead-solutions-architect role. |
+    70	| 1 | 2026-09-08 | state | draft → approved, made together with the session-handoff-process amendment it serves and the demonstrated row at sessions/sess-2026-09-07-b-cost.md, under the same working session. |
+    71	| 2 | 2026-09-09 | update | `run` propagated to `execution` as the noun for a process instance, under req-2026-09-08-definition-vs-instance / feat-execution-vocabulary (shopsystem-product): mechanical, determiner-adjacent occurrences only (`a/the/this/one/another/each/no/any run(s)`); `run-by`, `run` as a schema field or step key, and compound/heading uses (e.g. `run-cost`, `run list`, `Run lifecycle`) left unchanged, that residue disclosed as not done in this pass. Self-check against define-good-up-front: diffed against the file's pre-edit text; no requirement, field name, or heading changed. Made by the lead-solutions-architect role. |
+    72	| 3 | 2026-09-09 | update | `anchor` propagated to `bead` for the identifier a process instance is tracked on, under feat-execution-vocabulary (shopsystem-product): 1 occurrence(s) changed in body text (`anchored to` → `tracked on`), the anchor sense of the governed record left unchanged; schema field names, tool flags, and step ids untouched. Made by the lead-solutions-architect role. |
+    73	| 4 | 2026-09-09 | update | Under req-2026-09-08-agent-run-term: the retired phrase this request names is replaced by "step" in the Identity and ancestry bullet and Required sections item 1 (both named the countable unit a row is written for by that phrase); `run` as the instance noun (e.g. "one execution of a process") is unchanged, out of this request's scope. Self-check: the two edits change wording only, no field, requirement, or commitment altered. Made by the lead-solutions-architect role. |
+===== basis/processes/session-handoff.md
+     1	---
+     2	type: process-definition
+     3	id: session-handoff-process
+     4	owner: product-authority
+     5	status: approved
+     6	approved: 2026-08-22
+     7	version: 7
+     8	created: 2026-08-21
+     9	updated: 2026-09-09
+    10	produces: [session-record]
+    11	carried-by: session-handoff-skill
+    12	condition-language: cel
+    13	---
+    14	
+    15	# Process: Session handoff
+    16	
+    17	**Purpose:** Close a conversation so later work starts from governed
+    18	records alone — no memory channel, no chat summary, and no transcript as
+    19	the carrier.
+    20	
+    21	**Guiding statement:** State crosses sessions only inside governed
+    22	artifacts. A fact worth remembering has a governed home; a durable
+    23	correction amends the definition it corrects, never a memory.
+    24	
+    25	**Outcomes:**
+    26	- O1. The session record validates against its type — witnessed by the
+    27	  `validate` run and the `route-validation` branches.
+    28	- O2. The record and the work registry are pushed — witnessed by the
+    29	  atomic `land` run.
+    30	- O3. Every durable correction is filed as an amendment bead targeting
+    31	  the definition it corrects, and the record only points at those beads —
+    32	  witnessed by the check on `collect`.
+    33	- O4. A record that cannot validate within the round cap lands anyway
+    34	  with a filed defect, so the handoff never silently fails — witnessed by
+    35	  the failsafe branch and `file-defect`.
+    36	- O5. A session whose conversation ran tracked on a `bd` work item gets
+    37	  a cost row for each step that item recorded, beside the session
+    38	  record and without a model — witnessed by `write-cost-rows`.
+    39	
+    40	**Roles:** router (Accountable — runs the handoff when a conversation
+    41	closes). The consumer is the router that next touches the work: the
+    42	start drain reads the anchor before accepting it.
+    43	
+    44	**Scope note:** one execution closes one discovery conversation, whose anchor
+    45	is a session record. Review and work conversations close through their
+    46	own anchors — decisions land as changes in the artifacts they affect, work discussion lands
+    47	on the work item — under the same discipline: the anchor is the only
+    48	carrier. A transcript that ends mid-conversation is not a close; the
+    49	conversation stays open until its anchor says otherwise. `run_anchor` is
+    50	a second, distinct thing: the `bd` work item the closed conversation's
+    51	own run passed through the router on, if it had one — never the session
+    52	record itself. An ad hoc conversation the router never moved has none;
+    53	`write-cost-rows` then writes nothing.
+    54	
+    55	## Flow (compiled)
+    56	
+    57	Generated from the steps below by `tools/compile_process.py`; do not
+    58	edit by hand.
+    59	
+    60	```mermaid
+    61	flowchart TD
+    62	  collect(["Write the session record — agent: router<br/>out — session_record: session-record, corrections: correction[]"])
+    63	  write_cost_rows["Write the cost rows — runtime<br/>in — session_record: session-record, run_anchor: string<br/>out — cost_artifact: string"]
+    64	  validate["Validate the record — runtime<br/>in — session_record: session-record<br/>out — validation: validation-report"]
+    65	  route_validation{"Route on validation<br/>in — validation: validation-report, round: integer"}
+    66	  repair(["Repair the record — agent: router<br/>in — session_record: session-record, validation: validation-report<br/>out — session_record: session-record"])
+    67	  advance_round["Advance the round counter — runtime<br/>in — round: integer<br/>sets — round: integer"]
+    68	  file_defect["File the validation defect — runtime<br/>in — session_record: session-record, validation: validation-report"]
+    69	  land["Land the handoff — runtime<br/>in — session_record: session-record"]
+    70	  __end(("end<br/>result — session_record: session-record"))
+    71	  __start(("start")) --> collect
+    72	  collect --> write_cost_rows
+    73	  write_cost_rows --> validate
+    74	  validate --> route_validation
+    75	  route_validation -->|success exit: record validates| land
+    76	  route_validation -->|failsafe exit: round >= 3| file_defect
+    77	  route_validation -->|else| repair
+    78	  repair --> advance_round
+    79	  advance_round --> validate
+    80	  file_defect --> land
+    81	  land --> __end
+    82	```
+    83	
+    84	
+    85	## Data
+    86	
+    87	Each entry names a process-local value. Simple types use JSON Schema
+    88	names inline; every structured shape is a `$ref` to a defined type with
+    89	an explicit source — `from:` links the defining file, or names the owning
+    90	package as `pkg:<package>/<type>` (fetched through that package's
+    91	contract tool).
+    92	
+    93	```yaml
+    94	data:
+    95	  session_record: {$ref: session-record, from: pkg:shopsystem-knowledge/session-record}
+    96	  corrections: {type: array, items: {$ref: correction, from: ../types/correction.md}}
+    97	  validation: {$ref: validation-report, from: ../types/validation-report.md}
+    98	  round: {type: integer, initial: 1}
+    99	  run_anchor: {type: string, initial: ""}
+   100	  cost_artifact: {type: string, format: uri-reference, initial: ""}
+   101	```
+   102	
+   103	## Steps
+   104	
+   105	```yaml
+   106	start: collect
+   107	parameters: [run_anchor]
+   108	result: session_record
+   109	steps:
+   110	  - id: collect
+   111	    name: Write the session record
+   112	    run-by: {role: router, execution: agent}
+   113	    inputs: []
+   114	    outputs: [session_record, corrections]
+   115	    checks:
+   116	      - corrections.all(c, c.target != "" && c.bead != "")
+   117	    prompt: |
+   118	      Write or update the session record: outcome first; the produced and
+   119	      revised lists complete; every open thread names its next ready
+   120	      action. For each durable correction met this session — a rule,
+   121	      preference, or mode change that should outlive the session — file a
+   122	      bead targeting the definition it amends and list the pair here. The
+   123	      record points; the definition carries. Nothing goes to a memory
+   124	      channel: memory writes are frozen.
+   125	    next: write-cost-rows
+   126	
+   127	  - id: write-cost-rows
+   128	    name: Write the cost rows
+   129	    run-by: {execution: runtime}
+   130	    inputs: [session_record, run_anchor]
+   131	    outputs: [cost_artifact]
+   132	    run: |
+   133	      python3 basis/tools/write_cost_rows.py ${session_record.id} --anchor ${run_anchor}
+   134	    next: validate
+   135	
+   136	  - id: validate
+   137	    name: Validate the record
+   138	    run-by: {execution: runtime}
+   139	    inputs: [session_record]
+   140	    outputs: [validation]
+   141	    run: |
+   142	      shop-knowledge validate ${session_record.path}
+   143	    next: route-validation
+   144	
+   145	  - id: route-validation
+   146	    name: Route on validation
+   147	    run-by: {execution: runtime}
+   148	    inputs: [validation, round]
+   149	    branches:
+   150	      - label: "success exit: record validates"
+   151	        when: validation.ok
+   152	        next: land
+   153	      - label: "failsafe exit: round >= 3"
+   154	        when: round >= 3
+   155	        next: file-defect
+   156	      - else: repair
+   157	
+   158	  - id: repair
+   159	    name: Repair the record
+   160	    run-by: {role: router, execution: agent}
+   161	    inputs: [session_record, validation]
+   162	    outputs: [session_record]
+   163	    prompt: |
+   164	      Repair every named violation in the validation errors. Do not
+   165	      remove content to pass validation — a section the schema demands is
+   166	      written, not deleted.
+   167	    next: advance-round
+   168	
+   169	  - id: advance-round
+   170	    name: Advance the round counter
+   171	    run-by: {execution: runtime}
+   172	    inputs: [round]
+   173	    set:
+   174	      round: round + 1
+   175	    next: validate
+   176	
+   177	  - id: file-defect
+   178	    name: File the validation defect
+   179	    run-by: {execution: runtime}
+   180	    inputs: [session_record, validation]
+   181	    run: |
+   182	      bd create --title "Session record failed validation at handoff: ${session_record.id}" \
+   183	        --body "${validation.errors}"
+   184	    next: land
+   185	
+   186	  - id: land
+   187	    name: Land the handoff
+   188	    run-by: {execution: runtime}
+   189	    atomic: true
+   190	    inputs: [session_record]
+   191	    run: |
+   192	      git add -A && git commit -m "Session handoff: ${session_record.id}"
+   193	      bd dolt push
+   194	      git push
+   195	    next: end
+   196	```
+   197	
+   198	## Derived checks
+   199	
+   200	| Outcome | Check | Kind | Where |
+   201	|---|---|---|---|
+   202	| O1 | validation ran; success branch requires `validation.ok` | mechanical | `route-validation` |
+   203	| O2 | commit, registry push, and git push are one atomic act | mechanical | `land.atomic` |
+   204	| O3 | every correction row carries a target and a bead | mechanical | `collect.checks` |
+   205	| O4 | failsafe lands with a filed defect, never a silent drop | mechanical | `file-defect.run` |
+   206	| O5 | a cost row per step on `run_anchor`, none computed by a model, no row for a runtime step | mechanical | `write-cost-rows.run` |
+   207	
+   208	## Document History
+   209	
+   210	| Version | Date | Kind | Entry |
+   211	|---|---|---|---|
+   212	| 1 | 2026-08-21 | update | Authored (seed layer); earlier history, if any, in the repository history. |
+   213	| 1 | 2026-08-22 | state | draft → approved. |
+   214	| 2 | 2026-08-23 | update | Owner direction: decision-ledger references removed — changes stand on their own; history entries and text no longer cite numbered decisions. |
+   215	| 2 | 2026-09-02 | review | Skill rendering run (skill-rendering-process): the definition stands approved with no carried-by skill id, so no loadable skill renders at the agent’s load point — finding "missing session-handoff-process no-skill-id" escalated; the owner decides the amendment. |
+   216	| 3 | 2026-09-02 | update | Owner decision, resolving the skill-rendering first run's no-skill-id escalation: carried-by session-handoff-skill added, so the process renders to the agent's load point like every approved definition; the prose Carried-by paragraph left to the consistency pass (lead-dyz0o). |
+   217	| 4 | 2026-09-08 | update | Built under feat-run-measurement's five scenarios assigned to shopsystem-product (guidance/feat-run-measurement-shopsystem-product.md v1), per adr-2026-09-08-run-cost-artifact (D1, D2) and its unknowns' defaults (U1 wall-clock minutes; U3 no row for a runtime step). `write-cost-rows`, a runtime step, added between `collect` and `validate`: it reads the session's own run_anchor (new parameter and data value, distinct from the anchor-as-session-record sense the Scope note already carries) through `basis/tools/write_cost_rows.py`, and the process definition of the step the anchor names, and writes the run-cost typedef's rows to `sessions/<id>-cost.md` — never amending the session record, never a step naming a Bounded Context, no model computing a field. An empty run_anchor (no process definition moved the closed conversation through the router) writes nothing, per the feature's Edges row on that case. O5 and its derived check added. Self-check against the process-definition typedef's producing rules: every step's inputs and outputs declared in Data; no `$ref` added, none to source; the new tool exists at the path the step names before this version compiles, so check 11 passes; the loop's exits unchanged; no prose outside `prompt` fields, `write-cost-rows` carrying none since it is a runtime step. Observed in the running tree: `python3 basis/tools/write_cost_rows.py sess-2026-09-07-b --anchor lead-5wzgl` against the real anchor of the delivered request-intake run (feat-process-runner's own demonstration), producing `sessions/sess-2026-09-07-b-cost.md` — four agent/human-step rows and three router-turn rows, no row for any of the anchor's eight runtime or sub-process steps, one field blank where the anchor's own usage-report comment gave no separable per-step figure (never estimated), the session record itself unread by the write and unchanged. Made by the lead-solutions-architect role. |
+   218	| 5 | 2026-09-09 | update | `run` propagated to `execution` as the noun for a process instance, under req-2026-09-08-definition-vs-instance / feat-execution-vocabulary (shopsystem-product): mechanical, determiner-adjacent occurrences only (`a/the/this/one/another/each/no/any run(s)`); `run-by`, `run` as a schema field or step key, and compound/heading uses (e.g. `run-cost`, `run list`, `Run lifecycle`) left unchanged, that residue disclosed as not done in this pass. Self-check against define-good-up-front: diffed against the file's pre-edit text; no requirement, field name, or heading changed. Made by the lead-solutions-architect role. |
+   219	| 6 | 2026-09-09 | update | `anchor` propagated to `bead` for the identifier a process instance is tracked on, under feat-execution-vocabulary (shopsystem-product): 1 occurrence(s) changed in body text (`anchored to` → `tracked on`), the anchor sense of the governed record left unchanged; schema field names, tool flags, and step ids untouched. Made by the lead-solutions-architect role. |
+   220	| 7 | 2026-09-09 | update | Under req-2026-09-08-agent-run-term: the retired phrase this request names is replaced by "step" in outcome O5 and its Derived checks row; `run_anchor`, the data value and parameter name, and `run` as the instance noun in the Scope note are unchanged, out of this request's scope. The Flow diagram is unaffected (no step's inputs, outputs, or branches changed) so it is not re-rendered. Self-check: the wording change carries the same outcome — a cost row per step on `run_anchor`, none computed by a model, none for a runtime step. Made by the lead-solutions-architect role. |
+===== basis/tools/write_cost_rows.py
+     1	#!/usr/bin/env python3
+     2	"""Write the cost rows for one session's close.
+     3	
+     4	Sibling of compile_process.py and the other interim tools: the lead
+     5	shop's own tool for adr-2026-09-08-run-cost-artifact. Reads an execution's
+     6	anchor — a `bd` work item — and writes one row per step beside
+     7	the session record it closes, without a model.
+     8	
+     9	A row is written only for a step the anchor records whose process
+    10	definition names it `execution: agent` or `execution: human`, and for
+    11	the router's own top-level turns between such steps (the anchor's
+    12	`context` comments, the harness's own usage report). A runtime step,
+    13	and a sub-process step (it opens its own anchor), get no row. Minutes
+    14	is the wall-clock span between a step's own anchor event and the
+    15	event immediately before it. A field the harness's usage report does
+    16	not expose for an execution is left blank, never estimated.
+    17	
+    18	No anchor is not an error: a session no process definition moved
+    19	through the router has none to key a row on (out of scope, per
+    20	feat-run-measurement's Edges), and this tool writes nothing.
+    21	
+    22	Usage:
+    23	  write_cost_rows.py <session_id> --anchor <anchor_id>
+    24	                                     # write sessions/<session_id>-cost.md
+    25	                                     # from the anchor's `bd` comments;
+    26	                                     # <anchor_id> "" (or omitted) writes
+    27	                                     # nothing, prints nothing, exit 0
+    28	  write_cost_rows.py --describe     # answer the standard question
+    29	                                     # (DESCRIPTION below) as JSON on
+    30	                                     # standard output, exit 0, before
+    31	                                     # any other action
+    32	
+    33	On success: nothing printed for an empty anchor; otherwise one line,
+    34	the path written. Every failure is one line on standard error
+    35	beginning with its code from the tool-description data type's closed
+    36	set, never a traceback.
+    37	"""
+    38	import json
+    39	import pathlib
+    40	import re
+    41	import subprocess
+    42	import sys
+    43	from datetime import datetime, timezone
+    44	
+    45	import yaml
+    46	
+    47	TOOL = "basis/tools/write_cost_rows.py"
+    48	REPO = pathlib.Path(__file__).resolve().parent.parent.parent
+    49	EXIT = {"usage": 2, "unreadable": 2, "unparseable": 1, "unwritable": 1}
+    50	
+    51	
+    52	def fail(code: str, message: str) -> None:
+    53	    print(f"{code}: {' '.join(str(message).split())}", file=sys.stderr)
+    54	    sys.exit(EXIT[code])
+    55	
+    56	
+    57	DESCRIPTION = {
+    58	    "name": "write-cost-rows",
+    59	    "description": (
+    60	        "Reads one execution's anchor (a `bd` work item) and the harness's own "
+    61	        "usage report recorded on it, and writes the cost rows for that "
+    62	        "session's close beside the session record: one row per agent or "
+    63	        "human step and per top-level router turn, naming its step, role, "
+    64	        "wall-clock minutes, context tokens, output tokens, and tool uses "
+    65	        "— a field the usage report does not expose left blank, never "
+    66	        "estimated. No model computes a row. Use it from "
+    67	        "session-handoff-process's write-cost-rows step; an empty anchor "
+    68	        "writes nothing."
+    69	    ),
+    70	    "uses": [
+    71	        {
+    72	            "name": "produce",
+    73	            "description": (
+    74	                "Reads the anchor's comments and, for each step they "
+    75	                "record, the role and execution the named process "
+    76	                "definition gives that step; writes "
+    77	                "sessions/<session_id>-cost.md, creating the directory, "
+    78	                "overwriting what stands there. An empty or absent anchor "
+    79	                "writes nothing and prints nothing."
+    80	            ),
+    81	            "invocation": (
+    82	                "python3 basis/tools/write_cost_rows.py <session_id> "
+    83	                "--anchor <anchor_id>"
+    84	            ),
+    85	            "input_schema": {
+    86	                "type": "object",
+    87	                "properties": {
+    88	                    "session_id": {
+    89	                        "type": "string",
+    90	                        "description": (
+    91	                            "the session record's own id, e.g. "
+    92	                            "sess-2026-09-08-a; the cost file pairs with "
+    93	                            "sessions/<session_id>.md"
+    94	                        ),
+    95	                    },
+    96	                    "anchor_id": {
+    97	                        "type": "string",
+    98	                        "description": (
+    99	                            "the bd work item id the execution passed through "
+   100	                            "the router on; empty (the default) means no "
+   101	                            "anchor exists for this session"
+   102	                        ),
+   103	                        "default": "",
+   104	                    },
+   105	                },
+   106	                "required": ["session_id"],
+   107	                "additionalProperties": False,
+   108	            },
+   109	            "returns": {
+   110	                "form": "text",
+   111	                "text": (
+   112	                    "one line, the path written "
+   113	                    "(sessions/<session_id>-cost.md), on a non-empty "
+   114	                    "anchor; nothing on an empty one; exit status 0"
+   115	                ),
+   116	            },
+   117	            "failures": [
+   118	                {
+   119	                    "code": "unreadable",
+   120	                    "exit_status": 2,
+   121	                    "condition": (
+   122	                        "`bd comments <anchor_id> --json` failed — no such "
+   123	                        "work item, or bd itself errored; one line on "
+   124	                        "standard error beginning `unreadable:` names the "
+   125	                        "anchor and bd's own message; nothing is written"
+   126	                    ),
+   127	                    "next": (
+   128	                        "give the id of an anchor bd holds, or omit "
+   129	                        "--anchor, and run the invocation again"
+   130	                    ),
+   131	                },
+   132	                {
+   133	                    "code": "unparseable",
+   134	                    "exit_status": 1,
+   135	                    "condition": (
+   136	                        "the anchor's first comment names no process id "
+   137	                        "ending `-process`, or no file under "
+   138	                        "basis/processes/ carries that id, or that "
+   139	                        "definition's Steps yaml block does not parse; one "
+   140	                        "line on standard error beginning `unparseable:` "
+   141	                        "names the anchor and the defect; nothing is "
+   142	                        "written"
+   143	                    ),
+   144	                    "next": (
+   145	                        "repair the anchor's start comment or the named "
+   146	                        "process definition, and run the invocation again"
+   147	                    ),
+   148	                },
+   149	                {
+   150	                    "code": "unwritable",
+   151	                    "exit_status": 1,
+   152	                    "condition": (
+   153	                        "sessions/<session_id>-cost.md could not be "
+   154	                        "written; one line on standard error beginning "
+   155	                        "`unwritable:` names the path and the reason"
+   156	                    ),
+   157	                    "next": "make the path writable and run the invocation again",
+   158	                },
+   159	                {
+   160	                    "code": "usage",
+   161	                    "exit_status": 2,
+   162	                    "condition": (
+   163	                        "the arguments are not one of the two invocations "
+   164	                        "this tool states; one line on standard error "
+   165	                        "beginning `usage:` names them; nothing is written"
+   166	                    ),
+   167	                    "next": "run the invocation the use states, as written",
+   168	                },
+   169	            ],
+   170	        }
+   171	    ],
+   172	}
+   173	
+   174	STEP_RE = re.compile(r"^step\s+(\S+)")
+   175	PROCESS_RE = re.compile(r"\b([a-z][a-z0-9-]*-process)\b")
+   176	QUAD_RE = re.compile(
+   177	    r"input\s+(\d+),\s*cache-creation\s+(\d+),\s*cache-read\s+(\d+),"
+   178	    r"\s*output\s+(\d+)"
+   179	)
+   180	
+   181	
+   182	def parse_ts(value: str) -> datetime:
+   183	    return datetime.fromisoformat(value.replace("Z", "+00:00"))
+   184	
+   185	
+   186	def step_map(process_id: str) -> dict:
+   187	    """id -> {role, execution} for every step of the named process, read
+   188	    from its Steps yaml block. `unparseable` on any defect."""
+   189	    for path in sorted((REPO / "basis" / "processes").glob("*.md")):
+   190	        text = path.read_text()
+   191	        m = re.match(r"^---\n(.*?)\n---\n", text, re.S)
+   192	        if not m:
+   193	            continue
+   194	        try:
+   195	            fm = yaml.safe_load(m.group(1))
+   196	        except yaml.YAMLError:
+   197	            continue
+   198	        if not isinstance(fm, dict) or fm.get("id") != process_id:
+   199	            continue
+   200	        steps_section = text.split("## Steps", 1)
+   201	        if len(steps_section) != 2:
+   202	            fail("unparseable", f"{path}: no `## Steps` section")
+   203	        block = re.search(r"```yaml\n(.*?)\n```", steps_section[1], re.S)
+   204	        if not block:
+   205	            fail("unparseable", f"{path}: no yaml block under `## Steps`")
+   206	        try:
+   207	            data = yaml.safe_load(block.group(1))
+   208	        except yaml.YAMLError as exc:
+   209	            fail("unparseable", f"{path}: Steps yaml does not parse: {exc}")
+   210	        out = {}
+   211	        for step in data.get("steps", []):
+   212	            run_by = step.get("run-by", {})
+   213	            out[step["id"]] = {
+   214	                "role": run_by.get("role", run_by.get("execution", "")),
+   215	                "execution": run_by.get("execution", ""),
+   216	            }
+   217	        return out
+   218	    fail("unparseable", f"no basis/processes/*.md carries id {process_id}")
+   219	
+   220	
+   221	def blank(n):
+   222	    return "" if n is None else str(n)
+   223	
+   224	
+   225	def produce(session_id: str, anchor_id: str) -> None:
+   226	    if not anchor_id:
+   227	        return  # no anchor: nothing to read, nothing written (out of scope)
+   228	
+   229	    proc = subprocess.run(
+   230	        ["bd", "comments", anchor_id, "--json"],
+   231	        capture_output=True, text=True, cwd=REPO,
+   232	    )
+   233	    if proc.returncode != 0:
+   234	        fail("unreadable", f"{anchor_id}: {proc.stderr.strip() or 'bd comments failed'}")
+   235	    try:
+   236	        comments = json.loads(proc.stdout)
+   237	    except json.JSONDecodeError as exc:
+   238	        fail("unreadable", f"{anchor_id}: bd's answer does not parse as json: {exc}")
+   239	    if not comments:
+   240	        fail("unreadable", f"{anchor_id}: no comments on the anchor")
+   241	
+   242	    events = [(parse_ts(c["created_at"]), c["text"]) for c in comments]
+   243	    events.sort(key=lambda e: e[0])
+   244	
+   245	    start_text = events[0][1]
+   246	    pm = PROCESS_RE.search(start_text)
+   247	    if not pm:
+   248	        fail("unparseable", f"{anchor_id}: the start comment names no *-process id")
+   249	    steps = step_map(pm.group(1))
+   250	
+   251	    rows = []  # each: [step, role, minutes, ctx, out, tools]
+   252	    row_by_step_id = {}
+   253	    segment_start = events[0][0]
+   254	
+   255	    for i, (ts, text) in enumerate(events):
+   256	        first_line = text.splitlines()[0].strip()
+   257	        sm = STEP_RE.match(first_line)
+   258	        if sm:
+   259	            step_id = sm.group(1)
+   260	            defn = steps.get(step_id)
+   261	            if defn and defn["execution"] in ("agent", "human"):
+   262	                minutes = round((ts - events[i - 1][0]).total_seconds() / 60, 1)
+   263	                row = [step_id, defn["role"] or defn["execution"], minutes, None, None, None]
+   264	                rows.append(row)
+   265	                row_by_step_id.setdefault(step_id, []).append((ts, row))
+   266	            continue
+   267	        if first_line.startswith("context"):
+   268	            quads = QUAD_RE.findall(text)
+   269	            label_m = re.search(r"context \(([^)]*)\)", text)
+   270	            label = f"router: {label_m.group(1)}" if label_m else "router turn"
+   271	            router_in, router_cc, router_cr, router_out = (int(x) for x in quads[0])
+   272	            minutes = round((ts - segment_start).total_seconds() / 60, 1)
+   273	            rows.append([
+   274	                label, "router", minutes,
+   275	                router_in + router_cc + router_cr, router_out, None,
+   276	            ])
+   277	            if len(quads) > 1:
+   278	                agent_rows_here = [
+   279	                    r for (rts, r) in [
+   280	                        (rts, r) for step_rows in row_by_step_id.values()
+   281	                        for (rts, r) in step_rows
+   282	                    ]
+   283	                    if segment_start <= rts <= ts and steps.get(r[0], {}).get("execution") == "agent"
+   284	                ]
+   285	                if len(agent_rows_here) == 1:
+   286	                    sub_in, sub_cc, sub_cr, sub_out = (int(x) for x in quads[1])
+   287	                    agent_rows_here[0][3] = sub_in + sub_cc + sub_cr
+   288	                    agent_rows_here[0][4] = sub_out
+   289	            segment_start = ts
+   290	
+   291	    out_path = REPO / "sessions" / f"{session_id}-cost.md"
+   292	    lines = [
+   293	        "---",
+   294	        "type: run-cost",
+   295	        f"id: {session_id}-cost",
+   296	        f"session: sessions/{session_id}.md",
+   297	        f"anchor: {anchor_id}",
+   298	        f"created: {datetime.now(timezone.utc).date()}",
+   299	        f"updated: {datetime.now(timezone.utc).date()}",
+   300	        "---",
+   301	        "",
+   302	        f"# Run cost: {session_id}",
+   303	        "",
+   304	        "Cost rows for the steps recorded on the anchor above, read "
+   305	        "without a model. A blank field is one the harness's usage report "
+   306	        "did not expose for that run.",
+   307	        "",
+   308	        "## Rows",
+   309	        "",
+   310	        "| Step | Role | Minutes | Context tokens | Output tokens | Tool uses |",
+   311	        "|---|---|---|---|---|---|",
+   312	    ]
+   313	    for step, role, minutes, ctx, outp, tools in rows:
+   314	        lines.append(f"| {step} | {role} | {minutes} | {blank(ctx)} | {blank(outp)} | {blank(tools)} |")
+   315	    lines.append("")
+   316	    try:
+   317	        out_path.parent.mkdir(parents=True, exist_ok=True)
+   318	        out_path.write_text("\n".join(lines))
+   319	    except OSError as exc:
+   320	        fail("unwritable", f"{out_path}: {exc}")
+   321	    print(f"sessions/{session_id}-cost.md")
+   322	
+   323	
+   324	def main(argv):
+   325	    if argv[:1] == ["--describe"]:
+   326	        print(json.dumps(DESCRIPTION, indent=2))
+   327	        return 0
+   328	    args = list(argv)
+   329	    anchor = ""
+   330	    positional = []
+   331	    i = 0
+   332	    while i < len(args):
+   333	        if args[i] == "--anchor":
+   334	            if i + 1 >= len(args):
+   335	                fail("usage", "--anchor needs a value")
+   336	            anchor = args[i + 1]
+   337	            i += 2
+   338	            continue
+   339	        positional.append(args[i])
+   340	        i += 1
+   341	    if len(positional) != 1:
+   342	        fail("usage", f"{TOOL} <session_id> [--anchor <anchor_id>] | --describe")
+   343	    produce(positional[0], anchor)
+   344	    return 0
+   345	
+   346	
+   347	if __name__ == "__main__":
+   348	    sys.exit(main(sys.argv[1:]))
+===== .claude/skills/write-cost-rows/SKILL.md
+     1	---
+     2	name: write-cost-rows
+     3	description: 'Reads one execution''s anchor (a `bd` work item) and the harness''s
+     4	  own usage report recorded on it, and writes the cost rows for that session''s close
+     5	  beside the session record: one row per agent or human step and per top-level router
+     6	  turn, naming its step, role, wall-clock minutes, context tokens, output tokens,
+     7	  and tool uses — a field the usage report does not expose left blank, never estimated.
+     8	  No model computes a row. Use it from session-handoff-process''s write-cost-rows
+     9	  step; an empty anchor writes nothing. Tool: `basis/tools/write_cost_rows.py`. Uses,
+    10	  each with its exact invocation below: `produce`.'
+    11	type: skill
+    12	id: write-cost-rows-skill
+    13	generated: true
+    14	generated-by: basis/tools/compile_tool.py
+    15	derived-from: write-cost-rows
+    16	source: basis/tools/write_cost_rows.py
+    17	source-digest: sha256:d32b2af40cc8
+    18	---
+    19	
+    20	# write-cost-rows (produced from the answer of `basis/tools/write_cost_rows.py`)
+    21	
+    22	Reads one execution's anchor (a `bd` work item) and the harness's own usage report recorded on it, and writes the cost rows for that session's close beside the session record: one row per agent or human step and per top-level router turn, naming its step, role, wall-clock minutes, context tokens, output tokens, and tool uses — a field the usage report does not expose left blank, never estimated. No model computes a row. Use it from session-handoff-process's write-cost-rows step; an empty anchor writes nothing.
+    23	
+    24	Uses: [produce](#produce).
+    25	
+    26	## produce
+    27	
+    28	Reads the anchor's comments and, for each step they record, the role and execution the named process definition gives that step; writes sessions/<session_id>-cost.md, creating the directory, overwriting what stands there. An empty or absent anchor writes nothing and prints nothing.
+    29	
+    30	Invocation:
+    31	
+    32	```sh
+    33	python3 basis/tools/write_cost_rows.py <session_id> --anchor <anchor_id>
+    34	```
+    35	
+    36	Takes:
+    37	- `<session_id>` — the session record's own id, e.g. sess-2026-09-08-a; the cost file pairs with sessions/<session_id>.md (required)
+    38	- `<anchor_id>` — the bd work item id the execution passed through the router on; empty (the default) means no anchor exists for this session (omitted: `""` is taken)
+    39	
+    40	Returns (text): one line, the path written (sessions/<session_id>-cost.md), on a non-empty anchor; nothing on an empty one; exit status 0
+    41	
+    42	Fails:
+    43	
+    44	| code | exit status | condition | next step |
+    45	|---|---|---|---|
+    46	| `unreadable` | 2 | `bd comments <anchor_id> --json` failed — no such work item, or bd itself errored; one line on standard error beginning `unreadable:` names the anchor and bd's own message; nothing is written | give the id of an anchor bd holds, or omit --anchor, and run the invocation again |
+    47	| `unparseable` | 1 | the anchor's first comment names no process id ending `-process`, or no file under basis/processes/ carries that id, or that definition's Steps yaml block does not parse; one line on standard error beginning `unparseable:` names the anchor and the defect; nothing is written | repair the anchor's start comment or the named process definition, and run the invocation again |
+    48	| `unwritable` | 1 | sessions/<session_id>-cost.md could not be written; one line on standard error beginning `unwritable:` names the path and the reason | make the path writable and run the invocation again |
+    49	| `usage` | 2 | the arguments are not one of the two invocations this tool states; one line on standard error beginning `usage:` names them; nothing is written | run the invocation the use states, as written |

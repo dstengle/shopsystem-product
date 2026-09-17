@@ -1,0 +1,1474 @@
+===== discovery-conversation =====
+     1	---
+     2	type: process-definition
+     3	id: discovery-conversation-process
+     4	owner: product-authority
+     5	status: approved
+     6	approved: 2026-08-22
+     7	version: 8
+     8	created: 2026-08-22
+     9	updated: 2026-08-31
+    10	produces: [session-record, initiative]
+    11	condition-language: cel
+    12	hold-after: P7D
+    13	---
+    14	
+    15	# Process: Discovery conversation
+    16	
+    17	**Purpose:** Conduct a bounded discovery dialogue in a declared form —
+    18	brainstorm (the first form), interview, or review of evidence: the
+    19	authority explores direction with the lead-pm as interlocutor, nothing
+    20	is operationalized before convergence, the session record anchors the
+    21	conversation, and a converged discovery leaves an initiative recorded
+    22	`proposed` — or `proposed` and then `cancelled` in the same document
+    23	when the request is declined, so the record of the decline survives.
+    24	
+    25	**Guiding statement:** Engage the authority's statements as an
+    26	interlocutor; record and launch only after convergence.
+    27	
+    28	**Outcomes:**
+    29	- O1. No work is launched and no definition is written before the
+    30	  authority converges — witnessed by the `route` branches: the handoff
+    31	  is reachable only from the authority's own classification.
+    32	- O2. The conversation closes onto a validated session record carrying
+    33	  its produced and revised lists — witnessed by the `handoff`
+    34	  sub-process, whose child validates the record before landing it.
+    35	- O3. Only the authority converges, closes, or cancels — witnessed by
+    36	  the `route` branches.
+    37	- O4. An inactive conversation holds instead of dangling — witnessed by
+    38	  `hold-after` and the run lifecycle.
+    39	- O5. A converged discovery returns an initiative recorded `proposed`
+    40	  (or `proposed` then `cancelled` with the authority's reason when the
+    41	  request is declined); a close without convergence lands the session
+    42	  record and frames nothing — witnessed by `route-frame`, which
+    43	  reaches `frame` only from the authority's converge classification.
+    44	
+    45	**Roles:** product-authority (human-held role — explores, converges, and owns
+    46	the exclusive right to close or cancel). lead-pm — held by the same
+    47	person; its agent steps assist: `engage` prepares the reflection —
+    48	probes, names tensions, offers options with a recommendation, keeps the
+    49	draft record's quotes and state current — and the authority decides
+    50	what converges. The agent operationalizes nothing.
+    51	
+    52	## Flow (compiled)
+    53	
+    54	Generated from the steps below by `tools/compile_process.py`; do not
+    55	edit by hand.
+    56	
+    57	```mermaid
+    58	flowchart TD
+    59	  open["Open the work item — runtime<br/>in — topic: string, form: string"]
+    60	  observe[["Authority explores — human: product-authority<br/>in — topic: string<br/>out — statement: string, classification: string"]]
+    61	  route{"Route on the input<br/>in — classification: string"}
+    62	  engage(["Engage as interlocutor — agent: lead-pm<br/>in — statement: string, classification: string, form: string, initiative_draft: string<br/>out — reply: string, initiative_draft: string"])
+    63	  handoff{{"Close onto the session record — sub-process: session-handoff-process<br/>out — session_record: session-record"}}
+    64	  route_frame{"Route on what the close carried<br/>in — classification: string"}
+    65	  frame(["Record the initiative — agent: lead-pm<br/>in — session_record: session-record, initiative_draft: string<br/>out — initiative: string"])
+    66	  close_out["Close the work item — runtime<br/>in — session_record: session-record"]
+    67	  cancel_out["Cancel the conversation — runtime<br/>in — statement: string"]
+    68	  __end(("end<br/>result — initiative: string"))
+    69	  __start(("start")) --> open
+    70	  open --> observe
+    71	  observe --> route
+    72	  route -->|success exit: converge or close — hand off| handoff
+    73	  route -->|cancel exit: authority cancels| cancel_out
+    74	  route -->|else| engage
+    75	  engage --> observe
+    76	  handoff --> route_frame
+    77	  route_frame -->|converged — frame the initiative| frame
+    78	  route_frame -->|else| close_out
+    79	  frame --> close_out
+    80	  close_out --> __end
+    81	  cancel_out --> __end
+    82	```
+    83	
+    84	
+    85	## Data
+    86	
+    87	Each entry names a process-local value. Simple types use JSON Schema
+    88	names inline; every structured shape is a `$ref` to a defined type with
+    89	an explicit source.
+    90	
+    91	```yaml
+    92	data:
+    93	  topic: {type: string}
+    94	  form: {type: string, enum: [brainstorm, interview, review-of-evidence]}
+    95	  initiative: {type: string, format: uri-reference}
+    96	  initiative_draft: {type: string, initial: ""}
+    97	  session_record: {$ref: session-record, from: pkg:shopsystem-knowledge/session-record}
+    98	  statement: {type: string}
+    99	  classification: {type: string, enum: [direction, question, converge, close, cancel]}
+   100	  reply: {type: string}
+   101	```
+   102	
+   103	## Steps
+   104	
+   105	```yaml
+   106	start: open
+   107	parameters: [topic, form]
+   108	result: initiative
+   109	steps:
+   110	  - id: open
+   111	    name: Open the work item
+   112	    run-by: {execution: runtime}
+   113	    inputs: [topic, form]
+   114	    outputs: []
+   115	    run: |
+   116	      bd create --title "Discovery conversation (${form}): ${topic}"
+   117	    next: observe
+   118	
+   119	  - id: observe
+   120	    name: Authority explores
+   121	    run-by: {role: product-authority, execution: human}
+   122	    inputs: [topic]
+   123	    outputs: [statement, classification]
+   124	    prompt: |
+   125	      Think out loud. Your message is one of: a direction or exploration
+   126	      to engage, a question, a convergence (the direction is settled —
+   127	      record and route it), a close, or a cancel. Silence holds the
+   128	      conversation after the declared window; the draft record carries
+   129	      the resume point.
+   130	    next: route
+   131	
+   132	  - id: route
+   133	    name: Route on the input
+   134	    run-by: {execution: runtime}
+   135	    inputs: [classification]
+   136	    branches:
+   137	      - label: "success exit: converge or close — hand off"
+   138	        when: classification in ["converge", "close"]
+   139	        next: handoff
+   140	      - label: "cancel exit: authority cancels"
+   141	        when: classification == "cancel"
+   142	        next: cancel-out
+   143	      - else: engage
+   144	
+   145	  - id: engage
+   146	    name: Engage as interlocutor
+   147	    run-by: {role: lead-pm, execution: agent}
+   148	    inputs: [statement, classification, form, initiative_draft]
+   149	    outputs: [reply, initiative_draft]
+   150	    checks:
+   151	      - reply != ""
+   152	    prompt: |
+   153	      Engage the statement as an interlocutor, shaped to the declared
+   154	      form — brainstorm: diverge into options before any convergence;
+   155	      interview: draw out and quote the originator's own words; review
+   156	      of evidence: read the record against its sources. Probe, reflect
+   157	      back, name tensions with what is already decided, and offer
+   158	      options with a recommendation when a decision is near. Do not
+   159	      operationalize — no launching work, no writing definitions, no
+   160	      dispatches — before the authority converges. Capture select
+   161	      quotes into the draft session record, and maintain
+   162	      initiative_draft — the initiative's Framing, For whom, and
+   163	      Appetite sections, drafted from the authority's words — as the
+   164	      dialogue moves.
+   165	    next: observe
+   166	
+   167	  - id: handoff
+   168	    name: Close onto the session record
+   169	    run-by: {execution: sub-process, process: session-handoff-process, from: session-handoff.md}
+   170	    inputs: []
+   171	    outputs: [session_record]
+   172	    next: route-frame
+   173	
+   174	  - id: route-frame
+   175	    name: Route on what the close carried
+   176	    run-by: {execution: runtime}
+   177	    inputs: [classification]
+   178	    branches:
+   179	      - label: "converged — frame the initiative"
+   180	        when: classification == "converge"
+   181	        next: frame
+   182	      - else: close-out
+   183	
+   184	  - id: frame
+   185	    name: Record the initiative
+   186	    run-by: {role: lead-pm, execution: agent}
+   187	    inputs: [session_record, initiative_draft]
+   188	    outputs: [initiative]
+   189	    prompt: |
+   190	      Assist step. From the session record and initiative_draft,
+   191	      write the initiative per its typedef: the
+   192	      Framing with the originator quoted, For whom with one measure,
+   193	      Appetite with its no-gos; Feasibility and usability and
+   194	      Decomposition "not yet"; Features empty; status "proposed",
+   195	      owner lead-pm. Where the conversation declined the request,
+   196	      record the initiative "proposed" and cancel it in the same
+   197	      document with the authority's reason, so the record of the
+   198	      decline survives; state in the cancellation entry that the
+   199	      product decision record for the decline is the PO role's to
+   200	      make and the PO output check screens it, linked once made — the
+   201	      initiative typedef's rule. Return the initiative's path.
+   202	    next: close-out
+   203	
+   204	  - id: close-out
+   205	    name: Close the work item
+   206	    run-by: {execution: runtime}
+   207	    inputs: [session_record]
+   208	    run: |
+   209	      bd close --reason "Discovery closed onto ${session_record.id}"
+   210	    next: end
+   211	
+   212	  - id: cancel-out
+   213	    name: Cancel the conversation
+   214	    run-by: {execution: runtime}
+   215	    inputs: [statement]
+   216	    run: |
+   217	      bd close --reason "Discovery cancelled: ${statement}"
+   218	    next: end
+   219	```
+   220	
+   221	A close without convergence still routes through the handoff: a
+   222	discovery that produced nothing durable is recorded as exactly that,
+   223	never released silently.
+   224	
+   225	## Derived checks
+   226	
+   227	| Outcome | Check | Kind | Where |
+   228	|---|---|---|---|
+   229	| O1 | `handoff` reachable only via the authority's classification | mechanical | `route.branches` |
+   230	| O2 | the child process validates the record before landing | mechanical | `handoff` sub-process (session-handoff O1) |
+   231	| O3 | close and cancel reachable only from the authority's input | mechanical | `route.branches` |
+   232	| O4 | inactivity holds the run | mechanical | `hold-after` + run lifecycle |
+   233	| O5 | `frame` reachable only from `converge`; a converged run returns an initiative recorded `proposed` | mechanical, judged | `route-frame.branches`, `frame` |
+   234	
+   235	## Document History
+   236	
+   237	| Version | Date | Kind | Entry |
+   238	|---|---|---|---|
+   239	| 1 | 2026-08-22 | update | Authored (seed layer); earlier history, if any, in the repository history. |
+   240	| 1 | 2026-08-22 | state | draft → approved. |
+   241	| 2 | 2026-08-23 | update | Owner direction: decision-ledger references removed — changes stand on their own; history entries and text no longer cite numbered decisions. |
+   242	| 3 | 2026-08-25 | update | Owner direction: a near-synonym of "role" retired and banned. |
+   243	| 4 | 2026-08-26 | update | Owner decision: lead-pm is held by the authority in person; the Roles header now names what the role's agent steps prepare and what the authority decides, per the lead-pm role's Interfaces. |
+   244	| 4 | 2026-08-26 | review | Assist re-basing screened: clean; a timing phrase polished in place. |
+   245	| 5 | 2026-08-31 | update | Batch B of brief-032's plan, on the authority's approval of the model (ask 1): a `form` parameter (brainstorm first, interview, review of evidence) shapes the engagement; `engage` drafts the initiative's first three sections as the dialogue moves; a `frame` step records the initiative `proposed` — or `proposed` then `cancelled` when declined — and the run's result is the initiative. |
+   246	| 6 | 2026-08-31 | review | Batch screen round 1: the drafted sections travel as initiative_draft, a declared value engage maintains and frame reads; the decline path states the product decision record obligation the initiative typedef's rule requires. |
+   247	| 7 | 2026-08-31 | review | Batch screen round 2: a close without convergence no longer reaches frame — route-frame sends only the converge classification there, so the run lands the session record and frames nothing, matching the close-without-convergence paragraph. |
+   248	| 8 | 2026-08-31 | review | Round-3 screen (final): frame's unread topic input dropped — the declared list is the context load list. Repair after the last screening round; the next screen covers it. |
+===== initiative-check =====
+     1	---
+     2	type: process-definition
+     3	id: initiative-check-process
+     4	owner: product-authority
+     5	status: approved
+     6	approved: 2026-08-31
+     7	version: 4
+     8	created: 2026-08-31
+     9	updated: 2026-08-31
+    10	produces: []
+    11	carried-by: initiative-check-skill
+    12	condition-language: cel
+    13	hold-after: P7D
+    14	ask-cap: P1D
+    15	annotations:
+    16	  claude-code:
+    17	    activation: model-judged
+    18	    promotion: experiment-local
+    19	    use-when: "a proposed initiative needs its feasibility, decomposition, and usability attached, the check of record run, and the authority's bet taken"
+    20	---
+    21	
+    22	# Process: Initiative check
+    23	
+    24	**Purpose:** Take a proposed initiative to the bet: the solutions
+    25	architect and product designer roles attach the sections they own, the
+    26	cold reviewer screens the whole against the initiative fitness set —
+    27	the check of record on the PM role's framing — and the authority
+    28	decides, from the verdict, whether to spend the appetite.
+    29	
+    30	**Guiding statement:** The bet is taken on the screen's verdict and
+    31	the initiative's own first three sections, never on advocacy; a
+    32	finding in another role's attachment is that role's to answer, not the
+    33	reviser's to rewrite.
+    34	
+    35	**Outcomes:**
+    36	- O1. The screen reads an initiative whose Feasibility and usability
+    37	  and Decomposition sections were written by the roles that own them —
+    38	  witnessed by `attach-architecture` and `attach-usability` preceding
+    39	  `screen`, each outputting the initiative.
+    40	- O2. Every round is screened in a fresh context against the
+    41	  initiative fitness set and logged — witnessed by `screen`'s
+    42	  `fresh-context` and inputs, and by `log-round`.
+    43	- O3. The screen loop exits on a clean verdict, on findings no
+    44	  criterion names, or at the round cap — witnessed by `route-screen`'s
+    45	  labeled branches.
+    46	- O4. The decision — bet, hold, or cancel — is the authority's alone,
+    47	  taken in a human step; a bet is available only on a screen the
+    48	  typedef's commitment admits, and the status the run writes follows
+    49	  the decision — witnessed by `decide`'s prompt and outputs and
+    50	  `record`'s inputs.
+    51	- O5. A repair that touches another role's attachment leaves the run
+    52	  as an ask to that role, with a default — witnessed by `revise`'s
+    53	  `asks` and the `ask` value.
+    54	
+    55	**Roles:** attacher (architecture) —
+    56	[`../roles/lead-solutions-architect.md`](../roles/lead-solutions-architect.md)
+    57	(writes the feasibility verdict and the decomposition; its feasibility
+    58	accountability). attacher (usability) —
+    59	[`../roles/lead-product-designer.md`](../roles/lead-product-designer.md)
+    60	(writes the usability evidence or hypothesis where an interaction type
+    61	is named). screener —
+    62	[`../roles/cold-reviewer.md`](../roles/cold-reviewer.md) (fresh
+    63	context every round; the check of record — the
+    64	[initiative typedef](../artifacts/initiative.md) says why no other
+    65	role checks the PM role's framing). the authority —
+    66	product-authority (human-held; takes the bet). the PM role —
+    67	[`../roles/lead-pm.md`](../roles/lead-pm.md) (held by the authority in
+    68	person; its agent steps assist — `revise` repairs and asks, `record`
+    69	writes the outcome).
+    70	
+    71	**Carried by:**
+    72	[`../skills/initiative-check/SKILL.md`](../skills/initiative-check/SKILL.md)
+    73	— generated from this definition by
+    74	[`../tools/compile_process.py`](../tools/compile_process.py), never
+    75	edited by hand.
+    76	
+    77	## Flow (compiled)
+    78	
+    79	Generated from the steps below by `tools/compile_process.py`; do not
+    80	edit by hand.
+    81	
+    82	```mermaid
+    83	flowchart TD
+    84	  attach_architecture(["Attach feasibility and decomposition — agent: lead-solutions-architect<br/>in — initiative: string, contracts: string, repository: string<br/>out — initiative: string"])
+    85	  attach_usability(["Attach usability evidence — agent: lead-product-designer<br/>in — initiative: string, experience_principles: string, core_tasks: string<br/>out — initiative: string"])
+    86	  screen(["Screen against the fitness set — agent: cold-reviewer<br/>in — initiative: string, criteria_path: string<br/>out — review: screen-review, judge_stamp: string"])
+    87	  log_round["Record the round — runtime<br/>in — review: screen-review, round_log: screen-review[], judge_stamp: string, judge_log: string[]<br/>sets — round_log: screen-review[], judge_log: string[]"]
+    88	  route_screen{"Route on the screen<br/>in — review: screen-review, round: integer, round_cap: integer"}
+    89	  revise(["Revise the initiative — agent: lead-pm<br/>in — initiative: string, review: screen-review, ask: ask<br/>out — initiative: string"])
+    90	  advance_round["Advance the round — runtime<br/>in — round: integer<br/>sets — round: integer"]
+    91	  decide[["Take the bet — human: product-authority<br/>in — review: screen-review, round_log: screen-review[], initiative: string<br/>out — bet: string, reasons: string"]]
+    92	  record(["Record the bet — agent: lead-pm<br/>in — initiative: string, bet: string, reasons: string, round_log: screen-review[], judge_log: string[]<br/>out — initiative: string"])
+    93	  __end(("end<br/>result — initiative: string"))
+    94	  __start(("start")) --> attach_architecture
+    95	  attach_architecture --> attach_usability
+    96	  attach_usability --> screen
+    97	  screen --> log_round
+    98	  log_round --> route_screen
+    99	  route_screen -->|success exit: clean| decide
+   100	  route_screen -->|definition exit: every finding is uncovered — nothing a repair can reach| decide
+   101	  route_screen -->|failsafe exit: round >= round_cap — decide with findings open| decide
+   102	  route_screen -->|else| revise
+   103	  revise --> advance_round
+   104	  advance_round --> screen
+   105	  decide --> record
+   106	  record --> __end
+   107	```
+   108	
+   109	
+   110	## Data
+   111	
+   112	Each entry names a process-local value. Simple types use JSON Schema
+   113	names inline; every structured shape is a `$ref` to a defined type with
+   114	an explicit source. Conditions are CEL expressions over these names.
+   115	`criteria_path` names the
+   116	[initiative fitness set](../fitness/initiative.fitness.md) — the check
+   117	of record's criteria; the framing is the initiative's own first
+   118	section, so the screen carries no separate framing input.
+   119	`contracts` is the path under which each Bounded Context's contracts
+   120	are read, `repository` the path of the feature repository,
+   121	`experience_principles` the experience principle set, and `core_tasks`
+   122	the core-task list — each a lead-shop-held record, declared so the
+   123	attach steps load nothing undeclared. The status
+   124	values this process writes — `planned` on bet, `proposed` kept on
+   125	hold, `cancelled` on cancel — are the
+   126	[initiative typedef](../artifacts/initiative.md)'s, written by this
+   127	process as that typedef names.
+   128	
+   129	```yaml
+   130	data:
+   131	  initiative: {type: string, format: uri-reference}
+   132	  criteria_path: {type: string, format: uri-reference}
+   133	  contracts: {type: string, format: uri-reference}
+   134	  repository: {type: string, format: uri-reference}
+   135	  experience_principles: {type: string, format: uri-reference}
+   136	  core_tasks: {type: string, format: uri-reference}
+   137	  review: {$ref: screen-review, from: ../types/screen-review.md}
+   138	  round: {type: integer, initial: 1}
+   139	  round_cap: {type: integer, initial: 3}
+   140	  round_log: {type: array, items: {$ref: screen-review}, initial: []}
+   141	  judge_stamp: {type: string}
+   142	  judge_log: {type: array, items: {type: string}, initial: []}
+   143	  ask: {$ref: ask, from: ../types/ask.md, initial: null}
+   144	  bet: {type: string, enum: [bet, hold, cancel]}
+   145	  reasons: {type: string}
+   146	```
+   147	
+   148	## Steps
+   149	
+   150	```yaml
+   151	start: attach-architecture
+   152	parameters: [initiative, criteria_path, contracts, repository, experience_principles, core_tasks]
+   153	result: initiative
+   154	steps:
+   155	  - id: attach-architecture
+   156	    name: Attach feasibility and decomposition
+   157	    run-by: {role: lead-solutions-architect, execution: agent}
+   158	    inputs: [initiative, contracts, repository]
+   159	    outputs: [initiative]
+   160	    prompt: |
+   161	      Read the initiative. Write into its Decomposition section the
+   162	      Bounded Contexts it touches, the relationship kind of each
+   163	      contract between them it relies on, and the cross-context flow —
+   164	      the saga or process manager that will carry it, or "none" when
+   165	      the contexts need no flow between them. Write into its
+   166	      Feasibility and usability section your feasibility verdict with
+   167	      its reasons. Judge from the contracts at contracts and the
+   168	      feature repository at repository — your role's admissible
+   169	      evidence, never a context's internals. Infeasible is a verdict:
+   170	      give it with reasons rather than withholding one. Return the
+   171	      initiative.
+   172	    next: attach-usability
+   173	
+   174	  - id: attach-usability
+   175	    name: Attach usability evidence
+   176	    run-by: {role: lead-product-designer, execution: agent}
+   177	    inputs: [initiative, experience_principles, core_tasks]
+   178	    outputs: [initiative]
+   179	    prompt: |
+   180	      Read the initiative. Where its For whom section names an
+   181	      interaction type, write into the Feasibility and usability
+   182	      section the usability evidence for the outcome on those types,
+   183	      or the hypothesis it stands on, or "not yet" with the text of
+   184	      the ask that requests it — judged against the experience
+   185	      principle set at experience_principles and the core-task list at
+   186	      core_tasks, your role's standard. Where
+   187	      the For whom section says "none", write that no usability
+   188	      attachment is due, with the section's reason. Return the
+   189	      initiative.
+   190	    next: screen
+   191	
+   192	  - id: screen
+   193	    name: Screen against the fitness set
+   194	    run-by: {role: cold-reviewer, execution: agent, fresh-context: true}
+   195	    inputs: [initiative, criteria_path]
+   196	    outputs: [review, judge_stamp]
+   197	    prompt: |
+   198	      State, as judge_stamp, the model and prompt version you judge
+   199	      as. Read the criteria set at criteria_path and the initiative at
+   200	      initiative — nothing else. Judge the initiative against every
+   201	      scenario. Report every finding with the criterion it fails by
+   202	      name, the quoted text, the change, and whether you could decide
+   203	      it (confident) or not (wobbly); for a wobbly finding quote the
+   204	      whole passage, since the authority decides from the review. A
+   205	      defect no criterion names is a finding with criterion
+   206	      "uncovered". Verdict "clean" only if there are no findings;
+   207	      otherwise "findings" with the top three changes.
+   208	    next: log-round
+   209	    annotations:
+   210	      fabro: {model: high-reasoning, node: separate-context-per-round}
+   211	
+   212	  - id: log-round
+   213	    name: Record the round
+   214	    run-by: {execution: runtime}
+   215	    inputs: [review, round_log, judge_stamp, judge_log]
+   216	    set:
+   217	      round_log: round_log + [review]
+   218	      judge_log: judge_log + [judge_stamp]
+   219	    next: route-screen
+   220	
+   221	  - id: route-screen
+   222	    name: Route on the screen
+   223	    run-by: {execution: runtime}
+   224	    inputs: [review, round, round_cap]
+   225	    branches:
+   226	      - label: "success exit: clean"
+   227	        when: review.verdict == "clean"
+   228	        next: decide
+   229	      - label: "definition exit: every finding is uncovered — nothing a repair can reach"
+   230	        when: size(review.findings) > 0 && review.findings.all(f, f.criterion == "uncovered")
+   231	        next: decide
+   232	      - label: "failsafe exit: round >= round_cap — decide with findings open"
+   233	        when: round >= round_cap
+   234	        next: decide
+   235	      - else: revise
+   236	
+   237	  - id: revise
+   238	    name: Revise the initiative
+   239	    run-by: {role: lead-pm, execution: agent}
+   240	    inputs: [initiative, review, ask]
+   241	    outputs: [initiative]
+   242	    asks: [lead-solutions-architect, lead-product-designer]
+   243	    prompt: |
+   244	      Assist step. Repair every finding whose criterion is named and
+   245	      whose passage the PM role owns — the Framing, For whom,
+   246	      Appetite, and Features sections. A finding in the Feasibility
+   247	      and usability or Decomposition sections is another role's
+   248	      attachment: return an ask to the role that owns it — the
+   249	      solutions architect for feasibility and decomposition, the
+   250	      product designer for usability — with the question, the default
+   251	      you will apply if unanswered, and a checkpoint of the repairs
+   252	      made so far; never rewrite another role's verdict. Leave
+   253	      findings marked "uncovered" as they are — they are the decide
+   254	      step's. On the first pass ask is absent; if it carries an answer
+   255	      or resolved defaulted, apply it and finish the repairs.
+   256	    next: advance-round
+   257	
+   258	  - id: advance-round
+   259	    name: Advance the round
+   260	    run-by: {execution: runtime}
+   261	    inputs: [round]
+   262	    set:
+   263	      round: round + 1
+   264	    next: screen
+   265	
+   266	  - id: decide
+   267	    name: Take the bet
+   268	    run-by: {role: product-authority, execution: human}
+   269	    inputs: [review, round_log, initiative]
+   270	    outputs: [bet, reasons]
+   271	    prompt: |
+   272	      From the final review, the round log, and the initiative's
+   273	      Framing, For whom, and Appetite sections, take the go/no-go on
+   274	      spending the appetite. "bet": spend it — the initiative becomes
+   275	      planned and features are made from it; available when the
+   276	      screen is clean, or when its only findings are uncovered and
+   277	      you judge none of them needs a criterion — say so in the
+   278	      reasons. An initiative still failing a named criterion at the
+   279	      round cap cannot be bet on — the typedef's commitment: it stays
+   280	      proposed with the criterion named. "hold": it stays proposed —
+   281	      say what would change your mind. "cancel": with the reason —
+   282	      the record of the decline survives. Record your reasons.
+   283	    next: record
+   284	
+   285	  - id: record
+   286	    name: Record the bet
+   287	    run-by: {role: lead-pm, execution: agent}
+   288	    inputs: [initiative, bet, reasons, round_log, judge_log]
+   289	    outputs: [initiative]
+   290	    prompt: |
+   291	      Assist step. Write into the initiative's Document History one
+   292	      review entry per round with its verdict and, from judge_log,
+   293	      the screening judge's model and prompt version — the record the
+   294	      fitness set promises — then a state entry
+   295	      carrying the decision and its reasons. Set the status: "planned"
+   296	      on bet; leave "proposed" on hold; "cancelled" on cancel with the
+   297	      reason. On bet or cancel, the typedef requires a product
+   298	      decision record: state in the entry that the record is the PO
+   299	      role's to make and the PO output check screens it, and that the
+   300	      entry links it once made. Return the initiative.
+   301	    next: end
+   302	```
+   303	
+   304	## Derived checks
+   305	
+   306	| Outcome | Check | Kind | Where |
+   307	|---|---|---|---|
+   308	| O1 | both attach steps precede `screen` and output `initiative` | mechanical | step order, `attach-*` outputs |
+   309	| O2 | `screen` carries `fresh-context: true` and reads only `initiative` and `criteria_path`; every round appended | mechanical | `screen`, `log-round` |
+   310	| O3 | three labeled exits on the loop | mechanical | `route-screen.branches` |
+   311	| O4 | `decide` is a human step outputting `bet` and `reasons`, its prompt bounding the bet by the typedef's commitment; `record` reads them | mechanical, judged | `decide`, `record.inputs` |
+   312	| O5 | `revise` carries `asks`; process carries `ask-cap`; `ask` listed in inputs | mechanical | `revise`, frontmatter |
+   313	
+   314	## Document History
+   315	
+   316	| Version | Date | Kind | Entry |
+   317	|---|---|---|---|
+   318	| 1 | 2026-08-31 | update | Authored as batch A of brief-032's plan, on the authority's approval of the model (ask 1): the initiative typedef's pending check named and defined — attach by the owning roles, the cold reviewer's screen as the check of record, the bet taken inside the check by the authority in a human step, recorded with the product decision record obligation stated. |
+   319	| 2 | 2026-08-31 | review | Batch screen round 1: the attach steps' reads declared — contracts, repository, experience_principles, core_tasks as parameters and inputs, the prompts referencing only declared names; the record step writes the judge's model and prompt version from the run's anchor, keeping the fitness set's promise. |
+   320	| 3 | 2026-08-31 | review | Batch screen round 2: the bet bounded by the initiative typedef's commitment — no bet over a named-criterion failure at the cap (it stays proposed with the criterion named); O4's vocabulary aligned to the declared enum. |
+   321	| 4 | 2026-08-31 | review | Round-3 screen (final): the judge's model and prompt version travel as declared data — judge_stamp from the screen step, accumulated in judge_log, read by record — replacing the undeclared anchor read. Repair after the last screening round; the next screen of this file covers it. |
+   322	| 4 | 2026-08-31 | state | draft → approved with batch A+B as one block (brief-032 ask 2, default accepted). |
+===== backlog-ordering =====
+     1	---
+     2	type: process-definition
+     3	id: backlog-ordering-process
+     4	owner: product-authority
+     5	status: approved
+     6	approved: 2026-08-31
+     7	version: 2
+     8	created: 2026-08-31
+     9	updated: 2026-08-31
+    10	produces: [backlog-order]
+    11	carried-by: backlog-ordering-skill
+    12	condition-language: cel
+    13	hold-after: P7D
+    14	annotations:
+    15	  claude-code:
+    16	    activation: model-judged
+    17	    promotion: experiment-local
+    18	    use-when: "a planned initiative must be placed in the backlog order and the order checked"
+    19	---
+    20	
+    21	# Process: Backlog ordering
+    22	
+    23	**Purpose:** Place a planned initiative's features-to-be in the
+    24	backlog order: the PO role writes the superseding order against the
+    25	PM role's recorded priority — enabler recommendations placed or
+    26	declined with reasons — and the PO output check sets its status.
+    27	
+    28	**Guiding statement:** The order is the PO role's exclusive decision,
+    29	made within the priority and defended in the document itself; the
+    30	check judges only what the order states.
+    31	
+    32	**Outcomes:**
+    33	- O1. The new order is placed by the PO role alone, against the
+    34	  priority named in its own first section — witnessed by `place`'s
+    35	  run-by and declared inputs.
+    36	- O2. Every enabler recommendation received is placed or declined
+    37	  with a reason in the order itself — witnessed by `place`'s prompt
+    38	  and the backlog-order typedef's second required section, which the
+    39	  check screens.
+    40	- O3. The order's check statuses — checked, returned,
+    41	  pending-definition — are set only by the PO output check; draft is
+    42	  the maker's own initial status — witnessed by `place`'s prompt and
+    43	  `check`, the run's only other status-writing step.
+    44	
+    45	**Roles:** maker — [`../roles/lead-po.md`](../roles/lead-po.md)
+    46	(orders the backlog; its exclusive domain). the check — the
+    47	[PO output check](po-output-check.md) as a sub-process, with its own
+    48	roles.
+    49	
+    50	**Carried by:**
+    51	[`../skills/backlog-ordering/SKILL.md`](../skills/backlog-ordering/SKILL.md)
+    52	— generated from this definition by
+    53	[`../tools/compile_process.py`](../tools/compile_process.py), never
+    54	edited by hand.
+    55	
+    56	## Flow (compiled)
+    57	
+    58	Generated from the steps below by `tools/compile_process.py`; do not
+    59	edit by hand.
+    60	
+    61	```mermaid
+    62	flowchart TD
+    63	  place(["Place the initiative in the order — agent: lead-po<br/>in — initiative: string, order: string, priority: string, recommendations: string<br/>out — artifact: string"])
+    64	  prepare["Name the framing for the check — runtime<br/>in — priority: string<br/>sets — framing: string"]
+    65	  check{{"Check the order — sub-process: po-output-check-process<br/>in — artifact: string, framing: string, criteria_path: string<br/>out — decision: check-decision"}}
+    66	  __end(("end<br/>result — artifact: string"))
+    67	  __start(("start")) --> place
+    68	  place --> prepare
+    69	  prepare --> check
+    70	  check --> __end
+    71	```
+    72	
+    73	
+    74	## Data
+    75	
+    76	Each entry names a process-local value. Simple types use JSON Schema
+    77	names inline; every structured shape is a `$ref` to a defined type
+    78	with an explicit source. Conditions are CEL expressions over these
+    79	names. `order` is the path of the order being superseded;
+    80	`recommendations` the path where the solutions architect role's
+    81	enabler recommendations are recorded — the interface the
+    82	backlog-order typedef's second section answers;
+    83	`priority` the path of the PM role's recorded roadmap priority;
+    84	`criteria_path` names the
+    85	[backlog-order fitness set](../fitness/backlog-order.fitness.md). The
+    86	`framing` the check reads is the priority: an order serves the PM
+    87	role's recorded priority as a whole, and each item's own framing is
+    88	stated inside the order, where the fitness set judges it — set by the
+    89	`prepare` step.
+    90	
+    91	```yaml
+    92	data:
+    93	  initiative: {type: string, format: uri-reference}
+    94	  order: {type: string, format: uri-reference}
+    95	  priority: {type: string, format: uri-reference}
+    96	  recommendations: {type: string, format: uri-reference}
+    97	  criteria_path: {type: string, format: uri-reference}
+    98	  artifact: {type: string, format: uri-reference}
+    99	  framing: {type: string, format: uri-reference}
+   100	  decision: {$ref: check-decision, from: ../types/check-decision.md}
+   101	```
+   102	
+   103	## Steps
+   104	
+   105	```yaml
+   106	start: place
+   107	parameters: [initiative, order, priority, recommendations, criteria_path]
+   108	result: artifact
+   109	steps:
+   110	  - id: place
+   111	    name: Place the initiative in the order
+   112	    run-by: {role: lead-po, execution: agent}
+   113	    inputs: [initiative, order, priority, recommendations]
+   114	    outputs: [artifact]
+   115	    prompt: |
+   116	      Write the new backlog order per its typedef, superseding the
+   117	      order at order and linking it: place the planned initiative's
+   118	      features-to-be against the roadmap priority at priority; state
+   119	      the priority in the first section and reason every exception to
+   120	      it; place or decline each enabler recommendation recorded at
+   121	      recommendations, with reasons; name each item's owning Bounded Context, marking a
+   122	      cross-context item and naming its escalation; state the first
+   123	      untaken item's readiness. Set the order's status to draft and
+   124	      link the priority in its frontmatter. Return the new order's
+   125	      path.
+   126	    next: prepare
+   127	
+   128	  - id: prepare
+   129	    name: Name the framing for the check
+   130	    run-by: {execution: runtime}
+   131	    inputs: [priority]
+   132	    set:
+   133	      framing: priority
+   134	    next: check
+   135	
+   136	  - id: check
+   137	    name: Check the order
+   138	    run-by: {execution: sub-process, process: po-output-check-process, from: po-output-check.md}
+   139	    inputs: [artifact, framing, criteria_path]
+   140	    outputs: [decision]
+   141	    next: end
+   142	```
+   143	
+   144	## Derived checks
+   145	
+   146	| Outcome | Check | Kind | Where |
+   147	|---|---|---|---|
+   148	| O1 | `place` run by `lead-po`, reading only `initiative`, `order`, `priority`, `recommendations` | mechanical | `place` |
+   149	| O2 | the recommendations section required and screened | judged | `place.prompt`, backlog-order typedef §2, `check` |
+   150	| O3 | `place` writes only the initial draft status; the check statuses come from the child | mechanical | `place.prompt`, `check` |
+   151	
+   152	## Document History
+   153	
+   154	| Version | Date | Kind | Entry |
+   155	|---|---|---|---|
+   156	| 1 | 2026-08-31 | update | Authored as batch C of brief-032's plan: the one-step placing process the model names — the PO role supersedes the order against the PM role's recorded priority and the PO output check screens it as sub-process. |
+   157	| 2 | 2026-08-31 | review | Batch C screen round 1: O3 no longer denies the maker's own draft status; the enabler recommendations declared as a parameter and input, so place acts on no undeclared context. |
+   158	| 2 | 2026-08-31 | state | draft → approved with batch C as one block (brief-032 ask 2, default accepted). |
+===== feature-authoring =====
+     1	---
+     2	type: process-definition
+     3	id: feature-authoring-process
+     4	owner: product-authority
+     5	status: approved
+     6	approved: 2026-08-31
+     7	version: 4
+     8	created: 2026-08-31
+     9	updated: 2026-08-31
+    10	produces: [feature]
+    11	carried-by: feature-authoring-skill
+    12	condition-language: cel
+    13	hold-after: P7D
+    14	annotations:
+    15	  claude-code:
+    16	    activation: model-judged
+    17	    promotion: experiment-local
+    18	    use-when: "a planned initiative needs one more feature authored, the designer's and architect's criteria added, and the check run"
+    19	---
+    20	
+    21	# Process: Feature authoring
+    22	
+    23	**Purpose:** Author one feature from a planned initiative and take it
+    24	through its check: the PO role writes it alone from the initiative's
+    25	framing, the product designer and solutions architect roles add the
+    26	criteria that ride on its scenarios, and the PO output check sets its
+    27	status.
+    28	
+    29	**Guiding statement:** One feature per run, authored alone: scope and
+    30	wording are the PO role's; the criteria ride on the scenarios; the
+    31	check, not the author, sets the status. Conflicts with behavior
+    32	already specified are the repository sweep's to catch at assignment,
+    33	never a question to a shop during authoring.
+    34	
+    35	**Outcomes:**
+    36	- O1. The feature is authored by the PO role alone, from the
+    37	  initiative's Framing and For whom sections, with each scenario's
+    38	  owning shop named from the initiative's Decomposition section —
+    39	  witnessed by `draft`'s run-by and declared inputs.
+    40	- O2. Where the initiative names an interaction type, the designer's
+    41	  usability and accessibility criteria are on the feature before the
+    42	  check; where the decomposition names non-functional constraints,
+    43	  the architect's constraints are — witnessed by `add-usability` and
+    44	  `add-constraints` preceding `check`, each outputting the feature.
+    45	- O3. The feature's check statuses — checked, returned,
+    46	  pending-definition — are set only by the PO output check; draft is
+    47	  the maker's own initial status, the typedef's writer list followed
+    48	  — witnessed by `draft`'s prompt and `check`, the run's only other
+    49	  status-writing step.
+    50	- O4. A run returns the feature with the check's decision recorded in
+    51	  its Document History — witnessed by `check`'s output and the child's
+    52	  record step, whose prompt writes the review rounds and the decision
+    53	  into the artifact's Document History.
+    54	
+    55	**Roles:** maker — [`../roles/lead-po.md`](../roles/lead-po.md)
+    56	(authors the feature alone; its feature-authoring accountability).
+    57	criteria — [`../roles/lead-product-designer.md`](../roles/lead-product-designer.md)
+    58	(usability and accessibility criteria where an interaction type is
+    59	named) and
+    60	[`../roles/lead-solutions-architect.md`](../roles/lead-solutions-architect.md)
+    61	(non-functional constraints where the decomposition names them). the
+    62	check — the [PO output check](po-output-check.md) as a sub-process,
+    63	with its own roles.
+    64	
+    65	**Carried by:**
+    66	[`../skills/feature-authoring/SKILL.md`](../skills/feature-authoring/SKILL.md)
+    67	— generated from this definition by
+    68	[`../tools/compile_process.py`](../tools/compile_process.py), never
+    69	edited by hand.
+    70	
+    71	## Flow (compiled)
+    72	
+    73	Generated from the steps below by `tools/compile_process.py`; do not
+    74	edit by hand.
+    75	
+    76	```mermaid
+    77	flowchart TD
+    78	  draft(["Draft the feature — agent: lead-po<br/>in — initiative: string, repository: string<br/>out — artifact: string, initiative: string"])
+    79	  add_usability(["Add the designer's criteria — agent: lead-product-designer<br/>in — artifact: string, initiative: string, experience_principles: string, core_tasks: string<br/>out — artifact: string"])
+    80	  add_constraints(["Add the architect's constraints — agent: lead-solutions-architect<br/>in — artifact: string, decomposition: string<br/>out — artifact: string"])
+    81	  prepare["Name the framing for the check — runtime<br/>in — initiative: string<br/>sets — framing: string"]
+    82	  check{{"Check the feature — sub-process: po-output-check-process<br/>in — artifact: string, framing: string, criteria_path: string<br/>out — decision: check-decision"}}
+    83	  __end(("end<br/>result — artifact: string"))
+    84	  __start(("start")) --> draft
+    85	  draft --> add_usability
+    86	  add_usability --> add_constraints
+    87	  add_constraints --> prepare
+    88	  prepare --> check
+    89	  check --> __end
+    90	```
+    91	
+    92	
+    93	## Data
+    94	
+    95	Each entry names a process-local value. Simple types use JSON Schema
+    96	names inline; every structured shape is a `$ref` to a defined type with
+    97	an explicit source. Conditions are CEL expressions over these names.
+    98	`repository` is the path of the feature repository the draft is
+    99	written into; `decomposition` the path of the solutions architect's
+   100	structural model; `experience_principles` and `core_tasks` the
+   101	experience principle set and core-task list — each a lead-shop-held
+   102	record, declared so no step loads undeclared context. `criteria_path`
+   103	names the [feature fitness set](../fitness/feature.fitness.md). The
+   104	`framing` the check reads is the initiative's Framing section — the
+   105	`prepare` step names it by fragment, since the
+   106	[initiative typedef](../artifacts/initiative.md) rules that a check
+   107	naming the framing as a criterion reads §1, not the whole document.
+   108	
+   109	```yaml
+   110	data:
+   111	  initiative: {type: string, format: uri-reference}
+   112	  repository: {type: string, format: uri-reference}
+   113	  decomposition: {type: string, format: uri-reference}
+   114	  experience_principles: {type: string, format: uri-reference}
+   115	  core_tasks: {type: string, format: uri-reference}
+   116	  criteria_path: {type: string, format: uri-reference}
+   117	  artifact: {type: string, format: uri-reference}
+   118	  framing: {type: string, format: uri-reference}
+   119	  decision: {$ref: check-decision, from: ../types/check-decision.md}
+   120	```
+   121	
+   122	## Steps
+   123	
+   124	```yaml
+   125	start: draft
+   126	parameters: [initiative, repository, decomposition, experience_principles, core_tasks, criteria_path]
+   127	result: artifact
+   128	steps:
+   129	  - id: draft
+   130	    name: Draft the feature
+   131	    run-by: {role: lead-po, execution: agent}
+   132	    inputs: [initiative, repository]
+   133	    outputs: [artifact, initiative]
+   134	    prompt: |
+   135	      From the initiative's Framing and For whom sections, write one
+   136	      feature per its typedef into the feature repository at
+   137	      repository: the Feature line and narrative in the framing's
+   138	      words; the scenarios, steps included, each tagged @feature: and
+   139	      @hash:; the Contributors section naming each scenario's owning
+   140	      shop from the initiative's Decomposition section; the
+   141	      Interaction types section stating the types the initiative's
+   142	      For whom section names, or "none" with the reason; the Edges
+   143	      table from the cases the framing names, covered or excluded
+   144	      with a reason. You author alone — no shop is asked. Set the
+   145	      feature's status to draft and link the initiative in its
+   146	      frontmatter; add the feature's id to the initiative's Features
+   147	      section — the typedef's list of features as they are made.
+   148	      Return the feature's path.
+   149	    next: add-usability
+   150	
+   151	  - id: add-usability
+   152	    name: Add the designer's criteria
+   153	    run-by: {role: lead-product-designer, execution: agent}
+   154	    inputs: [artifact, initiative, experience_principles, core_tasks]
+   155	    outputs: [artifact]
+   156	    prompt: |
+   157	      Where the initiative's For whom section names an interaction
+   158	      type, write into the feature's Contributors section the
+   159	      usability acceptance criteria and the accessibility criteria
+   160	      for its scenarios, judged against the experience principle set
+   161	      at experience_principles and the core-task list at core_tasks —
+   162	      and add to the Edges table any failure or boundary case those
+   163	      criteria name. Where the section says "none", record that no
+   164	      criteria are due, with its reason. Return the feature.
+   165	    next: add-constraints
+   166	
+   167	  - id: add-constraints
+   168	    name: Add the architect's constraints
+   169	    run-by: {role: lead-solutions-architect, execution: agent}
+   170	    inputs: [artifact, decomposition]
+   171	    outputs: [artifact]
+   172	    prompt: |
+   173	      Read the decomposition at decomposition. Where it names
+   174	      non-functional constraints bounding the behaviors this
+   175	      feature's scenarios state, write them into the Contributors
+   176	      section as criteria riding on the scenarios they bound — and
+   177	      add to the Edges table any failure or boundary case those
+   178	      constraints name. Where none apply, record that the
+   179	      decomposition names none for this feature. Return the feature.
+   180	    next: prepare
+   181	
+   182	  - id: prepare
+   183	    name: Name the framing for the check
+   184	    run-by: {execution: runtime}
+   185	    inputs: [initiative]
+   186	    set:
+   187	      framing: initiative + "#framing"
+   188	    next: check
+   189	
+   190	  - id: check
+   191	    name: Check the feature
+   192	    run-by: {execution: sub-process, process: po-output-check-process, from: po-output-check.md}
+   193	    inputs: [artifact, framing, criteria_path]
+   194	    outputs: [decision]
+   195	    next: end
+   196	```
+   197	
+   198	## Derived checks
+   199	
+   200	| Outcome | Check | Kind | Where |
+   201	|---|---|---|---|
+   202	| O1 | `draft` run by `lead-po`, reading only `initiative` and `repository` (writing the feature and §6); no shop in any step | mechanical | `draft`, step list |
+   203	| O2 | both criteria steps precede `check` and output `artifact` | mechanical | step order, outputs |
+   204	| O3 | `draft` writes only the initial draft status; the check statuses come from the child | mechanical | `draft.prompt`, `check` |
+   205	| O4 | `check` outputs `decision`; the child's record step writes the rounds and decision into the artifact's Document History | mechanical | `check`, po-output-check `record.prompt` |
+   206	
+   207	## Document History
+   208	
+   209	| Version | Date | Kind | Entry |
+   210	|---|---|---|---|
+   211	| 1 | 2026-08-31 | update | Authored as batch C of brief-032's plan: the making step the system read found missing — the PO role authors one feature from the initiative alone (co-production removed by owner decision; the repository sweep at assignment is the check on specified behavior), the designer's and architect's criteria ride on the scenarios, and the PO output check sets the status as sub-process. |
+   212	| 2 | 2026-08-31 | review | Batch C screen round 1: O3 no longer denies the maker's own draft status (the typedef's writer list followed); the framing named by fragment as §1; the Interaction types section enumerated in the draft prompt; the use-when's criteria named. |
+   213	| 3 | 2026-08-31 | review | Batch C screen round 2: O4's witness cites the child's record step prompt, which writes the artifact's Document History — po-output-check O4 covers the definition-change gap, not this. Round 2's other finding — the feature fitness set standing draft against the check's approved-criteria rule — is resolved by this batch's block approval. Repair after round 2; the end-to-end screen (batch E) covers it. |
+   214	| 3 | 2026-08-31 | state | draft → approved with batch C as one block (brief-032 ask 2, default accepted). |
+   215	| 4 | 2026-08-31 | review | Batch E end-to-end screen round 1: the draft step writes the feature's id into the initiative's Features section — the §6 writer the product-flow loop's judgment reads. Post-approval repair from the end-to-end screen. |
+===== scenario-assignment =====
+     1	---
+     2	type: process-definition
+     3	id: scenario-assignment-process
+     4	owner: product-authority
+     5	status: approved
+     6	approved: 2026-08-31
+     7	version: 10
+     8	created: 2026-08-28
+     9	updated: 2026-08-31
+    10	produces: []
+    11	carried-by: scenario-assignment-skill
+    12	condition-language: cel
+    13	hold-after: P7D
+    14	ask-cap: P1D
+    15	annotations:
+    16	  claude-code:
+    17	    activation: model-judged
+    18	    promotion: experiment-local
+    19	    use-when: "a feature has passed the PO output check and its scenarios must each be assigned to the Bounded Context that owns the behavior and sent to that shop"
+    20	---
+    21	
+    22	# Process: Scenario assignment
+    23	
+    24	**Purpose:** Turn a checked feature into work the Bounded Context shops
+    25	can take up: the solutions architect role tags each scenario with the
+    26	context that owns its behavior, reads each tagged context's
+    27	pre-state, sweeps the feature repository for conflicts, records the
+    28	feature as assigned, and sends each shop its scenarios as an
+    29	`assign_scenarios` message.
+    30	
+    31	**Guiding statement:** The decomposition decides, not the wording.
+    32	Which context owns a behavior is read from the decomposition and the
+    33	contexts' contracts; a scenario no context can own is the architect's
+    34	finding, not a guess.
+    35	
+    36	**Outcomes:**
+    37	- O1. Every scenario in the feature carries exactly one
+    38	  `@bounded-context:` tag (judged in `assign`), or the feature is
+    39	  returned with the scenarios no context owns named — witnessed by
+    40	  `assign`'s outputs and `route`.
+    41	- O2. Each tagged context's pre-state — its contracts and the feature
+    42	  repository, declared inputs of `assign` — is read and carried in
+    43	  `assignment`; `dispatch` sends one `assign_scenarios` message per
+    44	  entry — witnessed by `dispatch`'s `run`, which iterates
+    45	  `entries[].context`.
+    46	- O3. The feature's status becomes `assigned` and the assignment —
+    47	  the pre-states read and the messages sent — is recorded in its
+    48	  Document History —
+    49	  judged in `record` from `assignment` and `sent`.
+    50	- O4. A question the decomposition cannot answer — whether a behavior
+    51	  is in scope at all — leaves the run as an ask to the PM role with a
+    52	  default — witnessed by `assign`'s `asks` and the `ask` value.
+    53	
+    54	**Roles:** assigner —
+    55	[`../roles/lead-solutions-architect.md`](../roles/lead-solutions-architect.md)
+    56	(decides which context owns each scenario — its decomposition
+    57	decision right — and sweeps the feature repository for conflicts —
+    58	its assignment-loop accountability, under its posture that the
+    59	pre-state, not the wording, decides). The [PM role](../roles/lead-pm.md) — answers asks.
+    60	Bounded Context shops — receive their scenarios; not a role of this
+    61	process.
+    62	
+    63	**Carried by:**
+    64	[`../skills/scenario-assignment/SKILL.md`](../skills/scenario-assignment/SKILL.md)
+    65	— generated from this definition by
+    66	[`../tools/compile_process.py`](../tools/compile_process.py), never
+    67	edited by hand.
+    68	
+    69	## Flow (compiled)
+    70	
+    71	Generated from the steps below by `tools/compile_process.py`; do not
+    72	edit by hand.
+    73	
+    74	```mermaid
+    75	flowchart TD
+    76	  assign(["Tag each scenario with its owning context — agent: lead-solutions-architect<br/>in — feature: string, decomposition: string, contracts: string, repository: string, ask: ask<br/>out — feature: string, unowned: string[], assignment: assignment"])
+    77	  route{"Route on ownership<br/>in — unowned: string[]"}
+    78	  return(["Return the feature with the unowned scenarios named — agent: lead-solutions-architect<br/>in — feature: string, unowned: string[]<br/>out — feature: string"])
+    79	  dispatch["Send each shop its scenarios — runtime<br/>in — feature: string, assignment: assignment<br/>out — sent: string[]"]
+    80	  record(["Record the assignment — agent: lead-solutions-architect<br/>in — feature: string, assignment: assignment, sent: string[]<br/>out — feature: string"])
+    81	  __end(("end<br/>result — feature: string"))
+    82	  __start(("start")) --> assign
+    83	  assign --> route
+    84	  route -->|success exit: every scenario owned| dispatch
+    85	  route -->|else| return
+    86	  return --> __end
+    87	  dispatch --> record
+    88	  record --> __end
+    89	```
+    90	
+    91	
+    92	## Data
+    93	
+    94	Each entry names a process-local value. Simple types use JSON Schema
+    95	names inline; every structured shape is a `$ref` to a defined type with
+    96	an explicit source. Conditions are CEL expressions over these names.
+    97	`decomposition` is the path of the solutions architect's structural
+    98	model, and `contracts` the path under which each Bounded Context's contracts
+    99	are read, and `repository` the path of the lead shop's feature
+   100	repository — the directory of feature artifacts themselves (typedef:
+   101	[`../artifacts/feature.md`](../artifacts/feature.md)); neither of the
+   102	first two has a typedef on this branch — an unfiled gap, named here —
+   103	so each names the record the architect maintains, an approved source
+   104	by the role's own admissible evidence.
+   105	
+   106	```yaml
+   107	data:
+   108	  feature: {type: string, format: uri-reference}
+   109	  decomposition: {type: string, format: uri-reference}
+   110	  contracts: {type: string, format: uri-reference}
+   111	  repository: {type: string, format: uri-reference}
+   112	  ask: {$ref: ask, from: ../types/ask.md, initial: null}
+   113	  unowned: {type: array, items: {type: string}, initial: []}
+   114	  assignment: {$ref: assignment, from: ../types/assignment.md}
+   115	  sent: {type: array, items: {type: string}, initial: []}
+   116	```
+   117	
+   118	## Steps
+   119	
+   120	```yaml
+   121	start: assign
+   122	parameters: [feature, decomposition, contracts, repository]
+   123	result: feature
+   124	steps:
+   125	  - id: assign
+   126	    name: Tag each scenario with its owning context
+   127	    run-by: {role: lead-solutions-architect, execution: agent}
+   128	    inputs: [feature, decomposition, contracts, repository, ask]
+   129	    outputs: [feature, unowned, assignment]
+   130	    asks: [lead-pm]
+   131	    prompt: |
+   132	      Read the decomposition and the feature. For each scenario, decide
+   133	      which Bounded Context owns the behavior it states — from the
+   134	      decomposition and that context's contract at contracts, never
+   135	      from the scenario's wording alone — and write a single
+   136	      @bounded-context:<name> tag on it. A scenario whose behavior no
+   137	      context owns, that two contexts would each have to own, or whose
+   138	      owning context differs from the shop Contributors names as its
+   139	      owner, goes to unowned with the reason; do not guess. Then, for each context
+   140	      tagged, read its pre-state — the state of the design: its contract
+   141	      at contracts and the feature repository at repository — and
+   142	      sweep the repository for conflicts: a scenario that contradicts
+   143	      one already specified there goes to unowned with the conflict
+   144	      as its reason. Write one assignment entry per context with
+   145	      the @hash: values of its scenarios and the pre-state read. If deciding needs what the decomposition
+   146	      cannot say — whether a behavior is meant to be in the product at
+   147	      all — return an ask to lead-pm (kind: scope) with the question,
+   148	      the default you will apply, and a checkpoint of the tags written
+   149	      so far; on the first pass ask is absent, and if it carries an
+   150	      answer or resolved defaulted, act on it. Return the tagged
+   151	      feature.
+   152	    next: route
+   153	
+   154	  - id: route
+   155	    name: Route on ownership
+   156	    run-by: {execution: runtime}
+   157	    inputs: [unowned]
+   158	    branches:
+   159	      - label: "success exit: every scenario owned"
+   160	        when: size(unowned) == 0
+   161	        next: dispatch
+   162	      - else: return
+   163	
+   164	  - id: return
+   165	    name: Return the feature with the unowned scenarios named
+   166	    run-by: {role: lead-solutions-architect, execution: agent}
+   167	    inputs: [feature, unowned]
+   168	    outputs: [feature]
+   169	    prompt: |
+   170	      Write a review entry into the feature's Document History naming
+   171	      each unowned scenario and its reason and set the feature's
+   172	      status to "returned" — the returned feature is the handoff to
+   173	      the PO role, which reads its status. The decomposition may need
+   174	      a change, which this role raises as an architecture decision
+   175	      record; the scenario may need a split, which is the PO role's;
+   176	      or the feature's Contributors must be corrected to name the
+   177	      owning shop the decomposition places the behavior in, which is
+   178	      the PO role's; or the scenario contradicts one already specified
+   179	      in the feature repository, which the PO role resolves against
+   180	      the framing — the reason in unowned names which case.
+   181	    next: end
+   182	
+   183	  - id: dispatch
+   184	    name: Send each shop its scenarios
+   185	    run-by: {execution: runtime}
+   186	    inputs: [feature, assignment]
+   187	    outputs: [sent]
+   188	    run: |
+   189	      for ctx in ${assignment.entries[].context}; do
+   190	        shop-msg send --bc "$ctx" --type assign_scenarios \
+   191	          --feature "${feature}" --tag "@bounded-context:$ctx"
+   192	      done
+   193	    next: record
+   194	
+   195	  - id: record
+   196	    name: Record the assignment
+   197	    run-by: {role: lead-solutions-architect, execution: agent}
+   198	    inputs: [feature, assignment, sent]
+   199	    outputs: [feature]
+   200	    prompt: |
+   201	      Set the feature's status to "assigned" and write a state entry
+   202	      into its Document History listing, from assignment, each
+   203	      context's scenario hashes and the pre-state read, and, from
+   204	      sent (the tool's
+   205	      standard output, one line per message — its output contract is
+   206	      pinned when the messaging package is imported), the message sent to each. Return
+   207	      the feature.
+   208	    next: end
+   209	```
+   210	
+   211	## Derived checks
+   212	
+   213	| Outcome | Check | Kind | Where |
+   214	|---|---|---|---|
+   215	| O1 | every scenario carries one `@bounded-context:` tag (judged), or `unowned` is non-empty and the run returns (mechanical) | judged, mechanical | `assign` outputs, `route` |
+   216	| O2 | every `assignment` entry records the pre-state read; one `assign_scenarios` message per entry | judged (`assign`), mechanical (`dispatch`) | `assignment`, `dispatch.run`, `sent` |
+   217	| O3 | status `assigned` and a state entry listing contexts, pre-states, and messages | judged | `record` |
+   218	| O4 | `assign` carries `asks`; process carries `ask-cap`; `ask` listed in inputs | mechanical | `assign`, frontmatter |
+   219	
+   220	## Document History
+   221	
+   222	| Version | Date | Kind | Entry |
+   223	|---|---|---|---|
+   224	| 1 | 2026-08-28 | update | Authored by owner decision as the assignment step the system-read report found undefined: the solutions architect tags each scenario of a checked feature with its owning Bounded Context and sends each shop its scenarios; the message type `assign_scenarios` and the `shop-msg` tool are the frozen corpus's, imported by name until the messaging package is imported. The decomposition artifact's typedef is pending. |
+   225	| 1 | 2026-08-28 | review | Screened: findings — the vehicle fixed in the command while O2 claimed the pre-state chose it; a shell loop over an array with no defined interpolation; assign read contracts it did not declare; record read messages no value carried; the Roles line misnamed the decomposition as exclusive; the return handoff and "decision record" unnamed. |
+   226	| 2 | 2026-08-28 | update | Repairs: the assigner reads each context's contract and register (declared) and chooses the vehicle per context, carried in a new `assignment` type; the typedef now defines array interpolation so the fan-out is a defined form; dispatch outputs `sent`; decision rights named correctly; the returned status is the handoff; architecture decision record named. |
+   227	| 2 | 2026-08-28 | review | Re-screened: findings — an invented `shop-msg vehicle-for`; `>> sent` as an undefined output mechanism; a vehicle decision right the role does not list; scenario identity unstated. |
+   228	| 3 | 2026-08-28 | update | Repairs: paired positional iteration over `entries[].vehicle` and `entries[].context`; the output is the tool's standard output under the typedef's new run-output rule; the Roles line names the right and the accountability the role has; scenarios identified by `@hash:`. |
+   229	| 4 | 2026-08-28 | update | From the feature chain's screen: a scenario whose owning context differs from its Contributors' shop is treated as unowned, so the correction path the feature typedef states is carried by this process's return. |
+   230	| 4 | 2026-08-28 | review | Final screen (round 3): clean — O2's witness true under the typedef's paired iteration and run-output rules; the Contributors clause consistent with the feature typedef; two prose stumbles polished in place. |
+   231	| 5 | 2026-08-31 | update | Owner direction: `registers` is the lead shop's one register with per-context views; the dispatch step is where assignment writes to it (a line for batch D's amendment); no on-demand shop queries. |
+   232	| 6 | 2026-08-31 | update | Owner decision: co-production dropped — a Contributors mismatch returns for the PO role's ownership correction, not for co-authoring. |
+   233	| 7 | 2026-08-31 | review | Round-1 screen of the co-production removal: the register sweep's catch had no resulting action — a scenario contradicting held behavior now goes to unowned with the conflict as its reason and returns to the PO role; Contributors wording aligned to ownership. |
+   234	| 8 | 2026-08-31 | review | Round-2 screen: the conflict clause names the two vehicles it excludes instead of pointing at the list. |
+   235	| 9 | 2026-08-31 | update | Owner direction: the vehicle choice removed — assignment only assigns (bugfix and maintenance requests come from operational activities); the sweep reads the feature repository (the artifacts as specified), pre-state is the state of the design (contracts + repository), and the scenario register — the tracker of implemented scenarios, a feature to be built — leaves this process. |
+   236	| 10 | 2026-08-31 | review | Batch D screen round 1: the pre-state read gains its consumer — the record step writes it into the state entry, so the evidence O2 carries survives the run. |
+   237	| 10 | 2026-08-31 | state | draft → approved with batch D as one block (brief-032 ask 2, default accepted). |
+===== po-output-check =====
+     1	---
+     2	type: process-definition
+     3	id: po-output-check-process
+     4	owner: product-authority
+     5	status: approved
+     6	approved: 2026-08-26
+     7	version: 6
+     8	created: 2026-08-25
+     9	updated: 2026-08-31
+    10	produces: []
+    11	carried-by: po-output-check-skill
+    12	condition-language: cel
+    13	hold-after: P7D
+    14	ask-cap: P1D
+    15	annotations:
+    16	  claude-code:
+    17	    activation: model-judged
+    18	    promotion: experiment-local
+    19	    use-when: "the PO role submits a feature, product decision record, or backlog order for the PM role's check against the framing"
+    20	---
+    21	
+    22	# Process: PO output check
+    23	
+    24	**Purpose:** Check a piece of the PO role's output against the PM
+    25	role's framing under criteria the definitions state, so that the PM
+    26	role decides from a screen verdict — pass, fail with the criterion
+    27	named, or a definition change — and never by reading every artifact.
+    28	
+    29	**Guiding statement:** The check is the criteria applied, not the
+    30	checker's reading. A finding the criteria cannot name is a missing
+    31	criterion, and the decision that follows is a definition change, not a
+    32	verdict on the maker.
+    33	
+    34	**Outcomes:**
+    35	- O1. The output — a feature, a product decision record, or a backlog
+    36	  order — is screened against a named criteria set and the framing it
+    37	  claims to serve — witnessed by `screen`'s inputs and the
+    38	  `screen-review` it returns.
+    39	- O2. The PM role decides from the review and round log; the artifact
+    40	  reaches the PM role only through the findings' quotes — witnessed by
+    41	  `decide`'s inputs, which exclude the artifact.
+    42	- O3. Every screen round is recorded and the loop exits on a clean
+    43	  verdict, on findings no criterion names, or at the round cap —
+    44	  witnessed by `log-round` and `route-screen`.
+    45	- O4. A fail names the criterion missed; a definition change names the
+    46	  gap, and the gap is filed in the named definition's Document History
+    47	  — witnessed by the `check-decision` fields and `record`'s
+    48	  `definition` and `gap_entry` outputs.
+    49	- O5. A question the framing cannot answer leaves the run as an ask to
+    50	  the PM role, with a default, and the run resumes — witnessed by
+    51	  `revise`'s `asks` and the `ask` value.
+    52	- O6. A feature's first pass activates its planned initiative — the
+    53	  `active` status the initiative typedef assigns this process, written
+    54	  only over `planned` — witnessed by `record`'s `initiative` output
+    55	  and its prompt.
+    56	
+    57	**Roles:** maker — [`../roles/lead-po.md`](../roles/lead-po.md)
+    58	(submits and revises; never decides its own pass). screener —
+    59	[`../roles/cold-reviewer.md`](../roles/cold-reviewer.md) (fresh
+    60	context every round; judges against the criteria). the PM role —
+    61	[`../roles/lead-pm.md`](../roles/lead-pm.md) (accountable for the
+    62	decision; a human-held role that decides from the verdict; its
+    63	assisting agent prepares the record and the gap entry).
+    64	
+    65	**Carried by:**
+    66	[`../skills/po-output-check/SKILL.md`](../skills/po-output-check/SKILL.md)
+    67	— generated from this definition by
+    68	[`../tools/compile_process.py`](../tools/compile_process.py), never
+    69	edited by hand.
+    70	
+    71	## Flow (compiled)
+    72	
+    73	Generated from the steps below by `tools/compile_process.py`; do not
+    74	edit by hand.
+    75	
+    76	```mermaid
+    77	flowchart TD
+    78	  screen(["Screen against the criteria — agent: cold-reviewer<br/>in — artifact: string, framing: string, criteria_path: string<br/>out — review: screen-review, judge_stamp: string"])
+    79	  log_round["Record the round — runtime<br/>in — review: screen-review, round_log: screen-review[], judge_stamp: string, judge_log: string[]<br/>sets — round_log: screen-review[], judge_log: string[]"]
+    80	  route_screen{"Route on the screen<br/>in — review: screen-review, round: integer, round_cap: integer"}
+    81	  revise(["Revise the output — agent: lead-po<br/>in — artifact: string, review: screen-review, framing: string, ask: ask<br/>out — artifact: string"])
+    82	  advance_round["Advance the round — runtime<br/>in — round: integer<br/>sets — round: integer"]
+    83	  decide[["Decide on the verdict — human: lead-pm<br/>in — review: screen-review, round_log: screen-review[], framing: string<br/>out — decision: check-decision"]]
+    84	  record(["Record the decision — agent: lead-pm<br/>in — decision: check-decision, artifact: string, round_log: screen-review[], judge_log: string[], framing: string<br/>out — artifact: string, gap_entry: string, definition: string, initiative: string"])
+    85	  __end(("end<br/>result — decision: check-decision"))
+    86	  __start(("start")) --> screen
+    87	  screen --> log_round
+    88	  log_round --> route_screen
+    89	  route_screen -->|success exit: clean| decide
+    90	  route_screen -->|definition exit: every finding is uncovered — nothing the maker can repair| decide
+    91	  route_screen -->|failsafe exit: round >= round_cap — decide with findings open| decide
+    92	  route_screen -->|else| revise
+    93	  revise --> advance_round
+    94	  advance_round --> screen
+    95	  decide --> record
+    96	  record --> __end
+    97	```
+    98	
+    99	
+   100	## Data
+   101	
+   102	Each entry names a process-local value. Simple types use JSON Schema
+   103	names inline; every structured shape is a `$ref` to a defined type with
+   104	an explicit source. Conditions are CEL expressions over these names. A
+   105	*criteria set* is the approved fitness set or guideline for the
+   106	artifact's type. The framing is always a criterion, named `framing`;
+   107	until a criteria set exists for a type, `criteria_path` names the
+   108	framing itself and `framing` is the only named criterion. The artifact
+   109	status values this process sets — `checked` on pass, `returned` on
+   110	fail, `pending-definition` on definition change — were this process's
+   111	until the artifact typedefs defined their own; the feature,
+   112	product-decision-record, and backlog-order typedefs now carry them,
+   113	and this process follows those definitions. The `active` status it
+   114	writes on a feature's first pass is the
+   115	[initiative typedef](../artifacts/initiative.md)'s, written by
+   116	`record` as that typedef names.
+   117	
+   118	```yaml
+   119	data:
+   120	  artifact: {type: string, format: uri-reference}
+   121	  framing: {type: string, format: uri-reference}
+   122	  criteria_path: {type: string, format: uri-reference}
+   123	  review: {$ref: screen-review, from: ../types/screen-review.md}
+   124	  round: {type: integer, initial: 1}
+   125	  round_cap: {type: integer, initial: 3}
+   126	  round_log: {type: array, items: {$ref: screen-review}, initial: []}
+   127	  judge_stamp: {type: string}
+   128	  judge_log: {type: array, items: {type: string}, initial: []}
+   129	  ask: {$ref: ask, from: ../types/ask.md, initial: null}
+   130	  decision: {$ref: check-decision, from: ../types/check-decision.md}
+   131	  gap_entry: {type: string}
+   132	  definition: {type: string, format: uri-reference}
+   133	  initiative: {type: string, format: uri-reference}
+   134	```
+   135	
+   136	## Steps
+   137	
+   138	```yaml
+   139	start: screen
+   140	parameters: [artifact, framing, criteria_path]
+   141	result: decision
+   142	steps:
+   143	  - id: screen
+   144	    name: Screen against the criteria
+   145	    run-by: {role: cold-reviewer, execution: agent, fresh-context: true}
+   146	    inputs: [artifact, framing, criteria_path]
+   147	    outputs: [review, judge_stamp]
+   148	    prompt: |
+   149	      State, as judge_stamp, the model and prompt version you judge
+   150	      as. Read the criteria set at criteria_path, the framing at framing,
+   151	      and the artifact at artifact — nothing else. Judge the artifact
+   152	      against every criterion and against the framing: does each part
+   153	      of it trace to the framing, and does anything in it serve no
+   154	      framed outcome? Report every finding with the criterion it fails
+   155	      by name — "framing" for a part that does not trace to the framing
+   156	      or serves no framed outcome — the quoted text, the change, and
+   157	      whether you could decide it (confident) or not (wobbly); for a
+   158	      wobbly finding quote the whole passage, since the PM role decides
+   159	      from the review alone. A defect no criterion names is a finding
+   160	      with criterion "uncovered". Verdict "clean"
+   161	      only if there are no findings; otherwise "findings" with the top
+   162	      three changes.
+   163	    next: log-round
+   164	    annotations:
+   165	      fabro: {model: high-reasoning, node: separate-context-per-round}
+   166	
+   167	  - id: log-round
+   168	    name: Record the round
+   169	    run-by: {execution: runtime}
+   170	    inputs: [review, round_log, judge_stamp, judge_log]
+   171	    set:
+   172	      round_log: round_log + [review]
+   173	      judge_log: judge_log + [judge_stamp]
+   174	    next: route-screen
+   175	
+   176	  - id: route-screen
+   177	    name: Route on the screen
+   178	    run-by: {execution: runtime}
+   179	    inputs: [review, round, round_cap]
+   180	    branches:
+   181	      - label: "success exit: clean"
+   182	        when: review.verdict == "clean"
+   183	        next: decide
+   184	      - label: "definition exit: every finding is uncovered — nothing the maker can repair"
+   185	        when: size(review.findings) > 0 && review.findings.all(f, f.criterion == "uncovered")
+   186	        next: decide
+   187	      - label: "failsafe exit: round >= round_cap — decide with findings open"
+   188	        when: round >= round_cap
+   189	        next: decide
+   190	      - else: revise
+   191	
+   192	  - id: revise
+   193	    name: Revise the output
+   194	    run-by: {role: lead-po, execution: agent}
+   195	    inputs: [artifact, review, framing, ask]
+   196	    outputs: [artifact]
+   197	    asks: [lead-pm]
+   198	    prompt: |
+   199	      Repair every finding whose criterion is named, "framing"
+   200	      included; leave findings marked "uncovered" as they are — they
+   201	      are the PM role's to decide. If a repair needs something the framing does not say —
+   202	      the originator's intent, whether a thing is in scope, a decision
+   203	      another role's domain holds — return an ask to lead-pm instead
+   204	      of guessing: the question, its kind, the default you will apply
+   205	      if unanswered, and a checkpoint holding the repairs made so far.
+   206	      On the first pass ask is absent; if it carries an answer or
+   207	      resolved defaulted, act on it and finish the repairs.
+   208	    next: advance-round
+   209	
+   210	  - id: advance-round
+   211	    name: Advance the round
+   212	    run-by: {execution: runtime}
+   213	    inputs: [round]
+   214	    set:
+   215	      round: round + 1
+   216	    next: screen
+   217	
+   218	  - id: decide
+   219	    name: Decide on the verdict
+   220	    run-by: {role: lead-pm, execution: human}
+   221	    inputs: [review, round_log, framing]
+   222	    outputs: [decision]
+   223	    prompt: |
+   224	      From the final review and the round log, decide. "pass": the
+   225	      screen is clean, or its only findings are uncovered and you judge
+   226	      none of them needs a criterion — say so in the reasons. "fail": a
+   227	      named criterion, "framing" included, is still missed at the round
+   228	      cap — name it.
+   229	      "definition-change": an uncovered finding should have been a
+   230	      criterion, or a criterion the output met produced something that
+   231	      does not serve the framing — name the definition and what it
+   232	      lacks. Where both a missed named criterion and an open uncovered finding
+   233	      stand at the cap, "fail" takes precedence and the reasons carry
+   234	      the uncovered finding. Decide from the quotes in the review.
+   235	      Record your reasons.
+   236	    next: record
+   237	
+   238	  - id: record
+   239	    name: Record the decision
+   240	    run-by: {role: lead-pm, execution: agent}
+   241	    inputs: [decision, artifact, round_log, judge_log, framing]
+   242	    outputs: [artifact, gap_entry, definition, initiative]
+   243	    prompt: |
+   244	      Write into the artifact's Document History one review entry per
+   245	      round with its verdict and, from judge_log, the screening
+   246	      judge's model and prompt version, then a state entry carrying the decision
+   247	      and its reasons. Set the artifact's status: "checked" on pass,
+   248	      "returned" on fail with the criterion named, "pending-definition"
+   249	      on definition-change. On "definition-change", write a review
+   250	      entry stating the gap into the Document History of the definition
+   251	      the decision names; return that file's path as definition and the
+   252	      entry's text as gap_entry. Otherwise return both empty.
+   253	      Where the artifact is a feature, framing names a section of the
+   254	      initiative it was made from — the document at framing is the
+   255	      one declared input that carries it. If the decision is pass and
+   256	      that initiative's status is planned, set it to active with a
+   257	      state entry naming this feature's pass — the initiative
+   258	      typedef's writer, and planned is the only status it writes
+   259	      over — and return its path as initiative; otherwise return
+   260	      initiative empty. Return the artifact.
+   261	    next: end
+   262	```
+   263	
+   264	## Derived checks
+   265	
+   266	| Outcome | Check | Kind | Where |
+   267	|---|---|---|---|
+   268	| O1 | screen reads only criteria, framing, artifact | judged | `screen.prompt` and inputs |
+   269	| O2 | `artifact` absent from `decide.inputs` | mechanical | `decide.inputs` |
+   270	| O3 | every round logged; three labeled exits | mechanical | `log-round`, `route-screen` |
+   271	| O4 | `criterion` present on fail, `gap` on definition-change; `definition` and `gap_entry` non-empty on definition-change | judged | `check-decision`, `record` outputs |
+   272	| O5 | `revise` carries `asks`; process carries `ask-cap`; `ask` listed in inputs | mechanical | `revise`, frontmatter |
+   273	| O6 | `initiative` non-empty exactly on a feature's pass with a planned linked initiative | judged | `record` outputs and prompt |
+   274	
+   275	## Document History
+   276	
+   277	| Version | Date | Kind | Entry |
+   278	|---|---|---|---|
+   279	| 1 | 2026-08-25 | update | Authored by owner decision as the check the lead-pm role runs on the lead-po role's output — the maker/checker split's named process. First process to carry `asks` and `ask-cap`. Criteria sets per artifact type (brief, product decision record, acceptance scenarios, backlog order) are a filed gap: until each exists, `criteria_path` names the nearest approved fitness set or the framing alone. |
+   280	| 1 | 2026-08-25 | review | Screened against the process-definition chain: findings — an uncovered finding could never clear the screen; the `review` type lacked per-finding criterion, quote, and decidability; two prompts wrote to undeclared channels; `artifact_type` loaded and unread; one route-decision branch dead; status values and the gap's home undefined. |
+   281	| 2 | 2026-08-25 | update | Reworked: a `screen-review` type carries findings with criterion, quote, and decidability; route-screen gains a definition exit when every finding is uncovered; decide routes straight to record; the artifact leaves the decider's inputs; `artifact_type` dropped; the gap is filed as a review entry in the named definition's history and returned as `gap_entry`; status values declared as this process's pending the typedefs. |
+   282	| 2 | 2026-08-25 | review | Re-screened: findings — decide's prompt opened an undeclared artifact; a framing-trace failure had no criterion name and so was never repaired; record wrote a file outside its outputs; a vacuous all-uncovered branch on an empty list; ask without an initial. |
+   283	| 3 | 2026-08-25 | update | Repairs: the PM role decides from the review alone, wobbly findings quote the whole passage; `framing` is a named criterion the maker repairs; record returns the written definition's path; the definition exit guarded on a non-empty list; `ask` initial null; status vocabulary moved to Data prose. The v1 entry's "nearest approved fitness set or the framing alone" is superseded by Data's rule. |
+   284	| 3 | 2026-08-25 | review | Re-screened (round 3): clean — all six scenarios pass, six rules hold; both paths traced; stumbles polished in place (verdict precedence at the cap; the framing criterion named in the type). |
+   285	| 3 | 2026-08-26 | state | draft → approved by the owner. |
+   286	| 4 | 2026-08-28 | update | Owner decision: acceptance-scenarios re-formed as feature (product-level, scenarios assigned per Bounded Context by tag); the brief retired — shops receive their assigned scenarios. |
+   287	| 5 | 2026-08-31 | update | Batch D of brief-032's plan: the record step activates a feature's initiative on its first pass (the initiative typedef's active writer resolved); the screening judge's model and prompt version travel as declared data — judge_stamp from screen, accumulated in judge_log, recorded with each round — keeping the fitness sets' promise; the status vocabulary notes the typedefs now define their own. |
+   288	| 6 | 2026-08-31 | review | Batch D screen round 1: the initiative reached through the declared framing input, not an undeclared link-follow; active written only over planned, so a cancelled or unbet initiative is never activated. |

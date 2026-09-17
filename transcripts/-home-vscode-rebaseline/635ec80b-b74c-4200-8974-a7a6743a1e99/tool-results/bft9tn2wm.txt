@@ -1,0 +1,744 @@
+     1	---
+     2	name: product-flow
+     3	description: "Carry one problem from discovery to assigned work: a discovery conversation\
+     4	  \ frames an initiative, the initiative check takes it to the authority's bet, the\
+     5	  \ backlog ordering places it, and the flow then loops \u2014 one feature authored,\
+     6	  \ checked, and its scenarios assigned \u2014 until the PO role judges the initiative's\
+     7	  \ features done. The shop's operating process; every sub-process is defined in its\
+     8	  \ own document."
+     9	type: skill
+    10	id: product-flow-skill
+    11	status: draft
+    12	created: 2026-08-31
+    13	updated: 2026-08-31
+    14	generated: true
+    15	generated-by: basis/tools/compile_process.py
+    16	derived-from: product-flow-process
+    17	source: basis/processes/product-flow.md
+    18	source-digest: sha256:f43c7786468c
+    19	---
+    20	
+    21	# Product flow (compiled from `product-flow-process`)
+    22	
+    23	Carry one problem from discovery to assigned work: a discovery conversation frames an initiative, the initiative check takes it to the authority's bet, the backlog ordering places it, and the flow then loops — one feature authored, checked, and its scenarios assigned — until the PO role judges the initiative's features done. The shop's operating process; every sub-process is defined in its own document.
+    24	
+    25	**One initiative per run, one feature per pass; every hand-off is a recorded status, and no step reaches the next except through the status the last one wrote.**
+    26	
+    27	Result of a run: `initiative` (string).
+    28	
+    29	```mermaid
+    30	flowchart TD
+    31	  discover{{"Discover the problem — sub-process: discovery-conversation-process<br/>in — topic: string, form: string<br/>out — initiative: string"}}
+    32	  route_discover{"Route on the discovery<br/>in — initiative: string"}
+    33	  check{{"Check the initiative and take the bet — sub-process: initiative-check-process<br/>in — initiative: string, initiative_criteria: string, contracts: string, repository: string, experience_principles: string, core_tasks: string<br/>out — initiative: string"}}
+    34	  read_bet["Read the initiative's status — runtime<br/>in — initiative: string<br/>out — initiative_status: string"]
+    35	  route_bet{"Route on the bet<br/>in — initiative_status: string"}
+    36	  place{{"Place the initiative in the backlog order — sub-process: backlog-ordering-process<br/>in — initiative: string, order: string, priority: string, recommendations: string, order_criteria: string<br/>out — new_order: string"}}
+    37	  read_order["Read the order's status — runtime<br/>in — new_order: string<br/>out — order_status: string"]
+    38	  route_order{"Route on the order's check<br/>in — order_status: string"}
+    39	  author{{"Author and check one feature — sub-process: feature-authoring-process<br/>in — initiative: string, repository: string, decomposition: string, experience_principles: string, core_tasks: string, feature_criteria: string<br/>out — feature: string"}}
+    40	  read_feature["Read the feature's status — runtime<br/>in — feature: string<br/>out — feature_status: string"]
+    41	  route_checked{"Route on the check<br/>in — feature_status: string"}
+    42	  assign{{"Assign the feature's scenarios — sub-process: scenario-assignment-process<br/>in — feature: string, decomposition: string, contracts: string, repository: string<br/>out — feature: string"}}
+    43	  more_features(["Judge whether the initiative needs another feature — agent: lead-po<br/>in — initiative: string, new_order: string, repository: string, feature_status: string<br/>out — more: string"])
+    44	  advance_feature["Advance the feature count — runtime<br/>in — feature_count: integer<br/>sets — feature_count: integer"]
+    45	  route_more{"Route on the PO role's judgment<br/>in — more: string, feature_count: integer, feature_cap: integer"}
+    46	  __end(("end<br/>result — initiative: string"))
+    47	  __start(("start")) --> discover
+    48	  discover --> route_discover
+    49	  route_discover -->|framed — an initiative stands proposed| check
+    50	  route_discover -->|else| __end
+    51	  check --> read_bet
+    52	  read_bet --> route_bet
+    53	  route_bet -->|bet — the initiative is planned| place
+    54	  route_bet -->|else| __end
+    55	  place --> read_order
+    56	  read_order --> route_order
+    57	  route_order -->|checked — proceed to authoring| author
+    58	  route_order -->|else| __end
+    59	  author --> read_feature
+    60	  read_feature --> route_checked
+    61	  route_checked -->|checked — assign its scenarios| assign
+    62	  route_checked -->|returned — back through the PO role's judgment for another pass| more_features
+    63	  route_checked -->|else| __end
+    64	  assign --> more_features
+    65	  more_features --> advance_feature
+    66	  advance_feature --> route_more
+    67	  route_more -->|success exit: the initiative's features are done and assigned| __end
+    68	  route_more -->|failsafe exit: feature_count >= feature_cap — the run ends with the initiative's state recorded| __end
+    69	  route_more -->|else| author
+    70	```
+    71	
+    72	## discover — Discover the problem
+    73	
+    74	Run by the runtime — no agent, no prose. reads: topic, form · writes: initiative.
+    75	
+    76	```yaml
+    77	next: route-discover
+    78	```
+    79	
+    80	## route-discover — Route on the discovery
+    81	
+    82	Run by the runtime — no agent, no prose. reads: initiative · writes: —.
+    83	
+    84	```yaml
+    85	branches:
+    86	- label: "framed \u2014 an initiative stands proposed"
+    87	  when: initiative != ""
+    88	  next: check
+    89	- else: end
+    90	```
+    91	
+    92	## check — Check the initiative and take the bet
+    93	
+    94	Run by the runtime — no agent, no prose. reads: initiative, initiative_criteria, contracts, repository, experience_principles, core_tasks · writes: initiative.
+    95	
+    96	```yaml
+    97	next: read-bet
+    98	```
+    99	
+   100	## read-bet — Read the initiative's status
+   101	
+   102	Run by the runtime — no agent, no prose. reads: initiative · writes: initiative_status.
+   103	
+   104	```yaml
+   105	run: 'sed -n ''s/^status: //p'' ${initiative}
+   106	
+   107	  '
+   108	next: route-bet
+   109	```
+   110	
+   111	## route-bet — Route on the bet
+   112	
+   113	Run by the runtime — no agent, no prose. reads: initiative_status · writes: —.
+   114	
+   115	```yaml
+   116	branches:
+   117	- label: "bet \u2014 the initiative is planned"
+   118	  when: initiative_status == "planned"
+   119	  next: place
+   120	- else: end
+   121	```
+   122	
+   123	## place — Place the initiative in the backlog order
+   124	
+   125	Run by the runtime — no agent, no prose. reads: initiative, order, priority, recommendations, order_criteria · writes: new_order.
+   126	
+   127	```yaml
+   128	next: read-order
+   129	```
+   130	
+   131	## read-order — Read the order's status
+   132	
+   133	Run by the runtime — no agent, no prose. reads: new_order · writes: order_status.
+   134	
+   135	```yaml
+   136	run: 'sed -n ''s/^status: //p'' ${new_order}
+   137	
+   138	  '
+   139	next: route-order
+   140	```
+   141	
+   142	## route-order — Route on the order's check
+   143	
+   144	Run by the runtime — no agent, no prose. reads: order_status · writes: —.
+   145	
+   146	```yaml
+   147	branches:
+   148	- label: "checked \u2014 proceed to authoring"
+   149	  when: order_status == "checked"
+   150	  next: author
+   151	- else: end
+   152	```
+   153	
+   154	## author — Author and check one feature
+   155	
+   156	Run by the runtime — no agent, no prose. reads: initiative, repository, decomposition, experience_principles, core_tasks, feature_criteria · writes: feature.
+   157	
+   158	```yaml
+   159	next: read-feature
+   160	```
+   161	
+   162	## read-feature — Read the feature's status
+   163	
+   164	Run by the runtime — no agent, no prose. reads: feature · writes: feature_status.
+   165	
+   166	```yaml
+   167	run: 'sed -n ''s/^status: //p'' ${feature}
+   168	
+   169	  '
+   170	next: route-checked
+   171	```
+   172	
+   173	## route-checked — Route on the check
+   174	
+   175	Run by the runtime — no agent, no prose. reads: feature_status · writes: —.
+   176	
+   177	```yaml
+   178	branches:
+   179	- label: "checked \u2014 assign its scenarios"
+   180	  when: feature_status == "checked"
+   181	  next: assign
+   182	- label: "returned \u2014 back through the PO role's judgment for another pass"
+   183	  when: feature_status == "returned"
+   184	  next: more-features
+   185	- else: end
+   186	```
+   187	
+   188	## assign — Assign the feature's scenarios
+   189	
+   190	Run by the runtime — no agent, no prose. reads: feature, decomposition, contracts, repository · writes: feature.
+   191	
+   192	```yaml
+   193	next: more-features
+   194	```
+   195	
+   196	## more-features — Judge whether the initiative needs another feature
+   197	
+   198	Run by an agent in role `lead-po`. reads: initiative, new_order, repository, feature_status · writes: more.
+   199	- then: `advance-feature`
+   200	
+   201	Prompt:
+   202	
+   203	```text
+   204	Read the initiative's Features section — the features this and
+   205	earlier passes made, by id — the backlog order at new_order,
+   206	the status feature_status of the feature just processed, and,
+   207	for the listed features, their statuses in the feature
+   208	repository at repository. Judge whether the initiative needs
+   209	another feature — a behavior its framing serves that no feature
+   210	yet states, or a returned feature to author again — or whether
+   211	its features are done and every one is assigned. Return
+   212	"another" or "done". This is your backlog accountability, not a
+   213	check: the framing decides what is needed, the appetite bounds
+   214	it.
+   215	```
+   216	
+   217	## advance-feature — Advance the feature count
+   218	
+   219	Run by the runtime — no agent, no prose. reads: feature_count · writes: feature_count.
+   220	
+   221	```yaml
+   222	set:
+   223	  feature_count: feature_count + 1
+   224	next: route-more
+   225	```
+   226	
+   227	## route-more — Route on the PO role's judgment
+   228	
+   229	Run by the runtime — no agent, no prose. reads: more, feature_count, feature_cap · writes: —.
+   230	
+   231	```yaml
+   232	branches:
+   233	- label: 'success exit: the initiative''s features are done and assigned'
+   234	  when: more == "done"
+   235	  next: end
+   236	- label: "failsafe exit: feature_count >= feature_cap \u2014 the run ends with the\
+   237	    \ initiative's state recorded"
+   238	  when: feature_count >= feature_cap
+   239	  next: end
+   240	- else: author
+   241	```
+===== initiative typedef =====
+     1	---
+     2	type: artifact-typedef
+     3	id: initiative-typedef
+     4	defines: initiative
+     5	owner: product-authority
+     6	status: approved
+     7	approved: 2026-08-31
+     8	version: 9
+     9	created: 2026-08-28
+    10	updated: 2026-08-31
+    11	ancestry: [initiative]
+    12	---
+    13	
+    14	# Artifact type: initiative
+    15	
+    16	## Identity and ancestry
+    17	
+    18	- **Type:** `initiative` — the product-level problem artifact: one
+    19	  problem worth solving, stated for the product, not for any Bounded
+    20	  Context. It carries the outcome the problem serves and how that
+    21	  outcome is measured, the appetite the product will spend, what it
+    22	  will not do, and — once attached — the feasibility verdict and the
+    23	  decomposition. It is the home of the framing: the PM role's recorded
+    24	  statement of what a request is about is its first section and lives
+    25	  nowhere else. Features are made from it and link it. It is bounded
+    26	  to 500 words by rule, so its check reads the whole of it and there
+    27	  is no second document to keep in step. `ancestry` names no generic root: an initiative is
+    28	  neither a request nor a definition, as the feature typedef also
+    29	  states.
+    30	- **Produced by:** the [PM role](../roles/lead-pm.md), in the
+    31	  [discovery conversation](../processes/discovery-conversation.md) —
+    32	  the role's assisting agent drafts, the PM decides its content.
+    33	- **Attached and screened in** the
+    34	  [initiative-check](../processes/initiative-check.md) process: it
+    35	  mirrors the PO output check with maker
+    36	  `lead-pm`; before the screen, two attach steps: the solutions
+    37	  architect role attaches the decomposition and its feasibility verdict,
+    38	  then the product designer role attaches its usability evidence or
+    39	  hypothesis; then the cold reviewer's screen against the
+    40	  [initiative fitness set](../fitness/initiative.fitness.md); then the
+    41	  authority's decision. That screen is the *check of record*:
+    42	  the check whose verdict the definitions rely on, since the authority
+    43	  holds the PM role in person and no other role checks the PM's
+    44	  framing. What it checks is completeness and form — originator
+    45	  quoted, one measure, a bound, no solution, attachments present. It
+    46	  does not check whether the problem is worth solving; that value
+    47	  judgment stands unchecked by design and rests on the recorded
+    48	  originator's words and the measure. The authority *bets* on a
+    49	  screened initiative — decides to spend the appetite — in that
+    50	  process's own decide step, a human step.
+    51	- **Consumed by:** the PO role, which makes features from it; the
+    52	  solutions architect role; the PO output check, where a feature's
+    53	  `framing` input names this document's first section.
+    54	
+    55	## Required frontmatter
+    56	
+    57	`type: initiative`, `id`, `status`, `version`, `name`, `owner`
+    58	(`lead-pm`), `created`, `updated`. `approved` does not apply; the
+    59	lifecycle stands in. Status values and their writers:
+    60	- `proposed` — the PM role, when the discovery conversation's `frame`
+    61	  step records it: the framed-but-unbet state.
+    62	- `planned` — the authority's bet, taken and recorded in the
+    63	  [initiative-check](../processes/initiative-check.md) process's
+    64	  decide and record steps, replacing `proposed`.
+    65	- `active` — the PO output check's record step, when the first feature
+    66	  made from it passes, replacing `planned` — the only status it writes
+    67	  over; the step reaches this document through its declared framing
+    68	  input, since a feature's framing names this document's first
+    69	  section.
+    70	- `completed` — the [reconcile-and-close](../processes/reconcile-and-close.md)
+    71	  process, when the last delivery under it is reconciled — read from
+    72	  §6 and each feature's state — and the measure is recorded against
+    73	  its target (amendment pending).
+    74	- `cancelled` — with the reason recorded, from `proposed`, `planned`,
+    75	  or `active`: a request declined at discovery is recorded `proposed`
+    76	  and cancelled in the same discovery conversation (its `frame` step),
+    77	  so the record of what was declined survives; a cancellation at the
+    78	  bet is taken in the initiative-check decide step and written by its
+    79	  record step; a later cancellation is
+    80	  the PM role's decision recorded as an outcome of the
+    81	  [review conversation](../processes/review-conversation.md)
+    82	  (amendment pending).
+    83	
+    84	## Required sections
+    85	
+    86	1. **Framing** — the originator (who expressed the intent, quoted in
+    87	   their own words), the problem taken to be worth solving, the outcome
+    88	   it serves, and the contract — product or operational — it entered
+    89	   through. The PM role's exclusive decision.
+    90	2. **For whom** — who has the problem; one measure with its current
+    91	   condition, quantified, and its target; and the interaction types the
+    92	   outcome must hold on, from the
+    93	   [core-task list](../experience/core-tasks.md), or "none" with the
+    94	   reason.
+    95	3. **Appetite** — the bound the product will spend — time or capacity
+    96	   — that the features stay within; and the no-gos: what this
+    97	   initiative will not do, each with its reason.
+    98	4. **Feasibility and usability** — the solutions architect role's
+    99	   feasibility verdict with its reasons, present; and, where §2 names
+   100	   an interaction type, the product designer role's usability evidence
+   101	   or the hypothesis it stands on, or "not yet" with the text of the
+   102	   ask that requests it.
+   103	5. **Decomposition** — attached by the solutions architect role: the
+   104	   Bounded Contexts the initiative touches, the relationship kind of
+   105	   each contract between them it relies on, and the cross-context flow
+   106	   in one place — the saga or process manager (the one component that
+   107	   routes the flow between contexts) that will carry it, or "none" when
+   108	   the contexts need no flow between them. "Not yet" until attached.
+   109	6. **Features** — the features made from it, by id, as they are made
+   110	   — the feature-authoring draft step adds each; empty until the
+   111	   first.
+   112	
+   113	## Rules
+   114	
+   115	- The framing is written here and nowhere else; a check that names the
+   116	  framing as a criterion reads §1.
+   117	- Sections 1–3 name no technology, structure, or interface form; an
+   118	  interaction type named in §2 is a what.
+   119	- At most 500 words outside the Document History; the bet — what is
+   120	  spent on what, for which outcome — must be statable from §1–3 alone.
+   121	- The go/no-go and a cancellation are each carried by a
+   122	  [product decision record](product-decision-record.md) the PO role
+   123	  makes for the decision and the PO output check screens, linked from
+   124	  the Document History state entry; for the go/no-go, `decided-by` is
+   125	  `product-authority` and `right` is `bet`, values the decision-record
+   126	  typedef admits.
+   127	- The count of initiatives whose §5 names more than one Bounded
+   128	  Context, per quarter, is a report the solutions architect role
+   129	  reads through its interface with the PO role; a rising count is its
+   130	  signal to review the decomposition, recorded as an architecture
+   131	  decision record.
+   132	
+   133	## Commitment (Definition of Done)
+   134	
+   135	An initiative is done — able to be bet on — when it has passed the
+   136	cold reviewer's screen against its fitness set, which requires the
+   137	feasibility verdict present and the measure with a current condition
+   138	and a target. **Consequence on failure:** it stays `proposed` with the
+   139	criterion named; no feature is made from it.
+   140	
+   141	## Sources
+   142	
+   143	Cagan's product opportunity assessment (the problem, for whom, how
+   144	big); Torres's opportunity as distinct from any solution; Perri's
+   145	target condition with a measured current condition; Basecamp's pitch
+   146	(appetite, no-gos); Linear's initiative statuses; the CQRS Journey's
+   147	process manager and saga for the cross-context flow; all as the
+   148	research report `product-process-2026-08` on the `research` branch
+   149	carries them; the shop's `define-good-up-front` principle for the check
+   150	of record.
+   151	
+   152	## Derived review checklist
+   153	
+   154	- Framing carries originator quoted, problem, outcome, contract. *(§Required sections 1; fitness 1)*
+   155	- Who; one measure with current condition and target; interaction types or "none". *(§Required sections 2; fitness 2)*
+   156	- Appetite bounded; every no-go reasoned. *(§Required sections 3; fitness 3)*
+   157	- Sections 1–3 name no solution or interface form. *(§Rules; fitness 4)*
+   158	- Feasibility present; usability present or asked where §2 names a type. *(§Required sections 4; fitness 5)*
+   159	- Decomposition attached or "not yet"; flow named or "none". *(§Required sections 5; fitness 6)*
+   160	- At most 500 words; the bet statable from §1–3. *(§Rules; fitness 7)*
+   161	
+   162	## Document History
+   163	
+   164	| Version | Date | Kind | Entry |
+   165	|---|---|---|---|
+   166	| 1 | 2026-08-28 | update | Authored by owner direction as the product-level artifact the brief's retirement left missing — the system-read report's 13(a): the framing absorbed as its first section, made by the PM role, screened by the cold reviewer as the check of record, bet by the authority; lifecycle from Linear, appetite and no-gos from Shape Up, the measured condition from Perri, the decomposition from the product-process report. |
+   167	| 1 | 2026-08-28 | review | Screened with the chain: findings — the screen's carrying process unnamed; three status transitions with no carrying process and one misattributed; feasibility "not yet" admitted against the commitment; the no-solution rule unscoped; the one-page bound with no authoritative home; the boundary signal without consumer or action; product decision record's writer in conflict; insider references and undefined terms. |
+   168	| 2 | 2026-08-28 | update | Repairs: `initiative-check` named as pending; every transition's writer named, existing or pending amendment; feasibility mandatory, usability may be asked; no-solution scoped to §1–3; the 500-word rule; the signal's consumer and action named; the decision record's maker and check stated; check of record and bet defined in place; the research consumer cut. |
+   169	| 2 | 2026-08-28 | review | Re-screened: findings — the bet not statable from §1–2 when it spends §3; the decision record could not carry the authority as decider; `cancelled` with two writers and no process; the attachments in no process. |
+   170	| 3 | 2026-08-28 | update | Repairs: statable from §1–3; `decided-by: product-authority`, `right: bet` admitted by the decision-record typedef; both cancellation paths named with their pending amendments; the attachment step placed in `initiative-check`; Produced-by split; a count is a report, not a rendering. |
+   171	| 3 | 2026-08-28 | review | Final screen (round 3): clean — the bet statable from §1–3; the decision record carries the authority's bet; both cancellation paths and the attachment step named; consistent with lead-pm, feature, and the decision-record typedef. |
+   172	| 4 | 2026-08-31 | update | Batch A of brief-032's plan: the pending process names resolved — initiative-check authored (the bet taken inside its decide step, removing the review-conversation amendment for the bet), the discovery frame step recording proposed and the decline path; active and completed writers stay pending on batches D and the reconcile side. |
+   173	| 5 | 2026-08-31 | review | Batch screen round 2: the check's two attach steps described as two. |
+   174	| 6 | 2026-08-31 | review | Round-3 screen (final): the at-bet cancellation's writer named (the record step writes what decide takes). |
+   175	| 6 | 2026-08-31 | state | draft → approved with batch A+B as one block (brief-032 ask 2, default accepted). |
+   176	| 7 | 2026-08-31 | update | Batch D: the active writer's pending amendment resolved — the PO output check's record step activates the initiative on a feature's first pass. |
+   177	| 8 | 2026-08-31 | review | Batch D screen round 2: the active entry names the status it replaces (planned, the only one written over) and the declared route the writer takes (the framing input), matching po-output-check v6. Repair after round 2; the end-to-end screen (batch E) covers it. |
+   178	| 9 | 2026-08-31 | review | Batch E end-to-end screen round 1: the Features section's writer named (the feature-authoring draft step). |
+===== feature typedef =====
+     1	---
+     2	type: artifact-typedef
+     3	id: feature-typedef
+     4	defines: feature
+     5	owner: product-authority
+     6	status: approved
+     7	approved: 2026-08-31
+     8	version: 11
+     9	created: 2026-08-26
+    10	updated: 2026-08-31
+    11	ancestry: [feature]
+    12	---
+    13	
+    14	# Artifact type: feature
+    15	
+    16	## Identity and ancestry
+    17	
+    18	- **Type:** `feature` — a Gherkin Feature: one capability described
+    19	  from the user's or agent's point of view, with the scenarios that
+    20	  state, as requirements, what counts as done for it. A product-level
+    21	  artifact: it belongs to the [initiative](initiative.md) it is made
+    22	  from and may hold scenarios owned by
+    23	  several Bounded Contexts. The scenario is the atom; the feature is
+    24	  its grouping; the feature repository — the lead shop's directory of
+    25	  feature artifacts — is the record of what is specified, and a
+    26	  context's assigned set is the subset of scenarios, across all
+    27	  features, tagged to it. The instance is a
+    28	  markdown document with frontmatter whose Scenarios section holds one
+    29	  fenced Gherkin block — the executable unit the shops receive; the
+    30	  other sections are the document's, not Gherkin's. Scenarios are
+    31	  executed by the owning shops; the feature as a document is judged by
+    32	  the [feature fitness set](../fitness/feature.fitness.md), never
+    33	  executed there. `ancestry` names no generic root: a feature is
+    34	  neither a request nor a definition.
+    35	- **Produced by:** the [PO role](../roles/lead-po.md), as sole author —
+    36	  the scenarios' steps included; the product designer role contributes
+    37	  usability and accessibility criteria, the solutions architect role
+    38	  its non-functional constraints where the decomposition names them.
+    39	  The owning shops do not co-author: conflicts with behavior already
+    40	  specified are caught by the repository sweep at assignment, and a
+    41	  shop's objection travels as a clarify or a returned dispatch after
+    42	  it receives its scenarios. Checked by the
+    43	  [PO output check](../processes/po-output-check.md); its scenarios
+    44	  assigned to Bounded Contexts by the solutions architect role in the
+    45	  [scenario assignment](../processes/scenario-assignment.md) process.
+    46	  **Consumed by:** the shops, each receiving the scenarios tagged to it;
+    47	  the [interaction conformance check](../processes/interaction-conformance-check.md)
+    48	  for the interaction types named; the changelog rendering the same report proposes, when the
+    49	  [reconcile-and-close](../processes/reconcile-and-close.md) process
+    50	  closes the work that delivered its scenarios.
+    51	
+    52	## Required frontmatter
+    53	
+    54	`type: feature`, `id`, `status`, `version`, `name` (the Feature's
+    55	name), `initiative` (link to the initiative it is made from; its
+    56	framing is that document's first section), `owner`, `created`,
+    57	`updated`. `approved` does not apply: a feature's terminal state is
+    58	`assigned`. Status values and their writers: `draft` (the PO role);
+    59	`checked`, `returned`, `pending-definition` (the PO output check's
+    60	record step, replacing `draft`); a returned or pending feature the PO
+    61	role resubmits goes back to `draft`; `assigned` (the scenario
+    62	assignment process's record step, replacing `checked` when every
+    63	scenario carries its tag); a feature the assignment process returns
+    64	goes to `returned`.
+    65	
+    66	## Required sections
+    67	
+    68	1. **Feature** — the Gherkin `Feature:` line with its name, and the
+    69	   narrative beneath it: who the capability is for, what they can do,
+    70	   and the outcome it serves, in the framing's words.
+    71	2. **Contributors** — for every scenario, the owning shop named — the
+    72	   shop the solutions architect's decomposition places the behavior in
+    73	   (ownership for assignment, not authorship); where the capability has
+    74	   an interaction, the product designer role's usability acceptance
+    75	   criteria and the accessibility criteria; where the decomposition
+    76	   names them, the solutions architect role's non-functional
+    77	   constraints, riding as criteria on the scenarios they bound.
+    78	3. **Interaction types** — always present: the interaction types the
+    79	   capability must be available on, from the
+    80	   [core-task list](../experience/core-tasks.md), or "none" with the
+    81	   reason when the capability has no interaction.
+    82	4. **Scenarios** — one fenced `gherkin` block, the executable unit:
+    83	   it opens with the `Feature:` line and narrative of §1 verbatim (§1
+    84	   is the document's reading of the block's head; the block is the
+    85	   source, and the repeat is accepted so the document reads without
+    86	   the block), then an optional `Background:` (its Given steps judged as any
+    87	   step), then each `Scenario:` carrying the tags `@feature:<id>` (so a
+    88	   scenario travels alone to a shop and still names its feature —
+    89	   the reason the Feature line's tag inheritance is not relied on),
+    90	   `@hash:<sha>` (a hash of the scenario's text), and, once assigned,
+    91	   `@bounded-context:<name>`; Given/When/Then with one action or event
+    92	   in the When and an outcome observable in the running system in the
+    93	   Then; no step names an implementation detail.
+    94	5. **Edges** — a table of every failure and boundary case the framing
+    95	   or a contributor's criteria name: case · who named it · the
+    96	   `Scenario:` name that covers it, or "out of scope" with the reason.
+    97	
+    98	## Rules
+    99	
+   100	- A scenario's `@bounded-context:` tag is written by the solutions
+   101	  architect role at assignment, never by the PO role — a writer rule
+   102	  the assignment process enforces; the check does not judge the tag's
+   103	  presence, since a re-verified or resubmitted feature may carry it. In
+   104	  the assignment process, a scenario whose owning context differs from
+   105	  its Contributors' shop is treated as unowned with that reason, so the
+   106	  feature returns (`returned`) for the PO role to correct the owning
+   107	  shop it names.
+   108	- A changed scenario text is a new scenario with a new `@hash:`.
+   109	  Whether the hash matches the text is a mechanical check, to be filed
+   110	  as a lint.
+   111	- A scenario's conflicts with behavior already specified are caught
+   112	  by the sweep of the feature repository at assignment, never by
+   113	  asking the shop during authoring; the shop's voice after dispatch
+   114	  is the clarify and the return.
+   115	
+   116	## Commitment (Definition of Done)
+   117	
+   118	A feature is done when it has passed the PO output check against its
+   119	fitness set and the framing, and every scenario carries a
+   120	`@bounded-context:` tag. **Consequence on failure:** it is returned
+   121	with the criterion named and no scenario is dispatched.
+   122	
+   123	## Sources
+   124	
+   125	Gherkin (Feature, narrative, Background, Scenario, tags — the block's
+   126	form); the
+   127	experience principles `core-task-parity` and `accessible-by-standard`.
+   128	
+   129	## Derived review checklist
+   130	
+   131	- Feature line and narrative present, tied to the framing. *(§Required sections 1; fitness 6)*
+   132	- Each scenario one observable behavior, no how. *(§Required sections 4; fitness 1)*
+   133	- Every scenario has a named owning shop; designer criteria where there is an interaction; architect constraints where named. *(§Required sections 2; fitness 2)*
+   134	- `@feature:` and `@hash:` on every scenario. *(§Required sections 4; fitness 3)*
+   135	- Every listed edge covered or excluded with reason. *(§Required sections 5; fitness 4)*
+   136	- Interaction types section present, named or "none" with reason. *(§Required sections 3; fitness 5)*
+   137	
+   138	## Document History
+   139	
+   140	| Version | Date | Kind | Entry |
+   141	|---|---|---|---|
+   142	| 1 | 2026-08-26 | update | Authored as `acceptance-scenarios` from the approved fitness set; carried the co-production statement and the tag's content the set asked the typedef to carry. |
+   143	| 1 | 2026-08-26 | review | Screened: findings — definition wrongly in the ancestry; fitness 2's two criteria collapsed; an undefined consumer; the tag's content in two homes. |
+   144	| 2 | 2026-08-26 | update | Repairs: ancestry corrected; both criteria named; the conformance check linked; the tag carries the frontmatter values. |
+   145	| 3 | 2026-08-26 | update | assigned's transition stated; edges bound to §1's stated contribution; core-task list linked. |
+   146	| 3 | 2026-08-26 | review | Re-screened (round 3): clean. |
+   147	| 4 | 2026-08-28 | update | Owner decision: re-formed as `feature` on Gherkin's own unit — the type was grouped per behavior and pre-assigned to one context, a dispatch convenience carried from `main`. A feature is product-level, belongs to its framing or initiative, holds scenarios owned by several contexts; assignment moves to the solutions architect's scenario-assignment process and lives on `@bounded-context:` tags; `context` leaves the frontmatter; a Feature line and narrative are required. File renamed from `acceptance-scenarios.md`. |
+   148	| 4 | 2026-08-28 | review | Screened with the chain: findings — the instance form unstated and the hash not Gherkin-legal; pre-assignment ownership undefined; the edge list required by nothing; status transitions incomplete; `date` undefined; consumers unlinked. |
+   149	| 5 | 2026-08-28 | update | Repairs: markdown instance with one fenced Gherkin block; `@feature:` and `@hash:` tags; ownership from the decomposition, confirmed or corrected at assignment; an edge table; every transition with its writer; `date` dropped; consumers linked; interaction types always present. |
+   150	| 5 | 2026-08-28 | review | Re-screened: findings — the "no bounded-context tag at the check" clause failed re-verified and resubmitted features; the correction path had no deciding step or status; the Edges reference form unstated; two insider references. |
+   151	| 6 | 2026-08-28 | update | Repairs: the clause removed, the writer rule kept and enforced by the assignment process, which returns a feature whose tag differs from its Contributors' shop; Edges rows reference the Scenario name; the block's head stated as the source; references located. |
+   152	| 6 | 2026-08-28 | review | Final screen (round 3): clean — no absence clause survives in any check; the correction path carried by the assignment process; two stumbles polished in place. |
+   153	| 7 | 2026-08-28 | update | The initiative typedef now exists: the feature links its initiative, whose first section is the framing. |
+   154	| 8 | 2026-08-31 | update | Owner direction: the register is the lead shop's, viewed per context. |
+   155	| 9 | 2026-08-31 | update | Owner decision: co-production dropped — the PO authors alone (the register sweep and the post-dispatch clarify are the shop's voice); the architect's non-functional constraints added beside the designer's criteria; Contributors names ownership, not authorship. |
+   156	| 10 | 2026-08-31 | review | Round-1 screen of the co-production removal: the Edges table's sources are the framing and the contributors' criteria, not a shop. |
+   157	| 11 | 2026-08-31 | update | Owner direction: the repository/register split — the feature repository (the artifacts as specified) is what the conflict sweep at assignment reads; the scenario register is the tracker of implemented scenarios, a feature to be built. |
+   158	| 11 | 2026-08-31 | state | draft → approved with batch C as one block (brief-032 ask 2, default accepted). |
+===== backlog-order typedef =====
+     1	---
+     2	type: artifact-typedef
+     3	id: backlog-order-typedef
+     4	defines: backlog-order
+     5	owner: product-authority
+     6	status: approved
+     7	approved: 2026-08-31
+     8	version: 4
+     9	created: 2026-08-26
+    10	updated: 2026-08-28
+    11	ancestry: [backlog-order]
+    12	---
+    13	
+    14	# Artifact type: backlog-order
+    15	
+    16	## Identity and ancestry
+    17	
+    18	- **Type:** `backlog-order` — the PO role's ordered list of requirements
+    19	  within the PM role's framing, as submitted for the PM role's check:
+    20	  which requirement the shops take up next, the PO role's exclusive
+    21	  decision, with the priority, recommendations, and contexts it was
+    22	  ordered against stated in the document itself.
+    23	- **Produced by:** the [PO role](../roles/lead-po.md); checked by the
+    24	  [PO output check](../processes/po-output-check.md) against the
+    25	  [backlog-order fitness set](../fitness/backlog-order.fitness.md).
+    26	  **Consumed by:** Bounded Context shops taking up work; the solutions
+    27	  architect role (§Rules); the PM role at the
+    28	  check.
+    29	
+    30	## Required frontmatter
+    31	
+    32	`type: backlog-order`, `id`, `status` (draft | checked | returned |
+    33	pending-definition | current | superseded — `current` replaces
+    34	`checked` when the PO role publishes the order the shops take up from,
+    35	and `superseded` marks the one it replaces), `version`, `date`, `priority` (link to the PM role's
+    36	recorded roadmap priority; provenance — the check judges the priority
+    37	stated in §1), `owner`, `created`, `updated`.
+    38	
+    39	## Required sections
+    40	
+    41	1. **Priority followed** — the roadmap priority stated, and a reason for
+    42	   each exception to it in the order.
+    43	2. **Enabler recommendations received** — each recommendation from the
+    44	   solutions architect role, placed with its position reasoned or
+    45	   declined with a reason.
+    46	3. **The order** — each item: the framing it serves or a declined mark
+    47	   with reason; the owning Bounded Context, with a cross-context item
+    48	   marked and its escalation to the PM role named; and for the first
+    49	   untaken item, ready (with its checked feature linked)
+    50	   or not ready with what it waits on.
+    51	
+    52	## Rules
+    53	
+    54	- An order that omits a recommendation received or misnames a context
+    55	  is the solutions architect role's to raise; the check judges only
+    56	  what the order states.
+    57	- A superseding order links the one it supersedes.
+    58	
+    59	## Commitment (Definition of Done)
+    60	
+    61	An order is done when it has passed the PO output check against its
+    62	fitness set and the framing. **Consequence on failure:** it is
+    63	returned with the criterion named and the current order stands.
+    64	
+    65	## Sources
+    66	
+    67	The Scrum Guide's product backlog (ordered, transparent, one owner);
+    68	the shop's own role definitions (the PO role's exclusive domain; the
+    69	PM role's roadmap priority; the solutions architect's enablers and
+    70	decomposition); the
+    71	[backlog-order fitness set](../fitness/backlog-order.fitness.md).
+    72	
+    73	## Derived review checklist
+    74	
+    75	- Every item names its framing or is declined with reason. *(§Required sections 3; fitness 1)*
+    76	- Priority stated and exceptions reasoned. *(§Required sections 1; fitness 2)*
+    77	- Recommendations placed or declined. *(§Required sections 2; fitness 3)*
+    78	- Contexts named; cross-context escalations named. *(§Required sections 3; fitness 4)*
+    79	- Next item's readiness stated. *(§Required sections 3; fitness 5)*
+    80	
+    81	## Document History
+    82	
+    83	| Version | Date | Kind | Entry |
+    84	|---|---|---|---|
+    85	| 1 | 2026-08-26 | update | Authored by owner direction from the approved fitness set; the first definition to treat the backlog order as an artifact. |
+    86	| 1 | 2026-08-26 | review | Screened: findings — definition wrongly in the ancestry; current/superseded ungrounded; the commitment diverged from the process; checklist cited another document. |
+    87	| 2 | 2026-08-26 | update | Repairs: ancestry corrected; current and superseded's setter and trigger named; commitment aligned; checklist cites this typedef's clauses. |
+    88	| 2 | 2026-08-26 | review | Re-screened: clean; two stumbles. |
+    89	| 3 | 2026-08-26 | update | current's transition stated; the architect's raising rule kept in one home. |
+    90	| 3 | 2026-08-26 | review | Re-screened (round 3): clean — every round-2 change and stumble addressed; checklist citations resolve after renumbering. |
+    91	| 4 | 2026-08-28 | update | Owner decision: acceptance-scenarios re-formed as feature (product-level, scenarios assigned per Bounded Context by tag); the brief retired — shops receive their assigned scenarios. |
+    92	| 4 | 2026-08-31 | state | draft → approved with batch C as one block (brief-032 ask 2, default accepted). |
+===== primer =====
+     1	# Rebaseline migration branch — session primer
+     2	
+     3	The product is the **shopsystem**: the system by which a lead shop
+     4	and its Bounded Context shops — agent-run execution units — take a
+     5	problem from discovery to verified, running software; it is built by
+     6	the same kind of shops it defines, and this repository is its lead
+     7	shop. For whom: the people who stand up and run products on it — a
+     8	product authority who frames and bets, and the builders and operators
+     9	who meet the work through its interaction types. The shop's operating
+    10	process is
+    11	[product-flow](../../basis/processes/product-flow.md): discovery →
+    12	initiative check and bet → backlog ordering → feature authoring →
+    13	scenario assignment, each stage a defined sub-process with its own
+    14	check.
+    15	
+    16	This is the `rebaseline` branch: the greenfield tree of the
+    17	shopsystem-product migration, seeded 2026-08-22 under the approved
+    18	migration plan. Nothing exists here except through an explicit import
+    19	step; nothing from the old corpus is read here except through the
+    20	curated feed.
+    21	
+    22	## Governing instruments
+    23	
+    24	- `basis/` on this branch — the definition corpus. Every activity here
+    25	  operates through these definitions; the index is
+    26	  [`basis/README.md`](../../basis/README.md).
+    27	- The migration plan: `main:drafts/migration-plan.md` (read via
+    28	  `git show`; reference only) — phases, entry conditions, action table.
+    29	- The frozen corpus: `main` — the BC shops' contract of record until
+    30	  cut-over, and the pre-migration reference. Never copy from it outside
+    31	  an import step or the curated feed. The branch pulls from `main`;
+    32	  `main` never publishes to the branch.
+    33	
+    34	## Current state
+    35	
+    36	Seed and Phase 0 are complete: both principle sets stand approved.
+    37	Phase 1: the meta-chains, the four lead-shop roles, the ask mechanism
+    38	(held-and-resumed only), and the experience guidance corpus stand
+    39	approved. The product flow is defined end to end and approved by
+    40	batch under brief-032: `discovery-conversation` (brainstorm,
+    41	interview, or review of evidence; frames the initiative) →
+    42	`initiative-check` (attach, screen as check of record, the
+    43	authority's bet) → `backlog-ordering` → `feature-authoring` (the PO
+    44	authors alone; designer criteria and architect constraints ride the
+    45	scenarios) → `po-output-check` (activates the initiative on the first
+    46	pass) → `scenario-assignment` (repository sweep, `assign_scenarios`
+    47	only), with `product-flow` as the top level. The initiative, feature,
+    48	backlog-order, and product-decision-record chains are approved. Open:
+    49	the reconcile-side amendments (the initiative's `completed` state,
+    50	the product changelog, the roadmap, the `router` role); the scenario
+    51	register — a feature to be built by integrating the work on `main`;
+    52	the designer role's corpus records (vocabulary, patterns, tokens;
+    53	core tasks stand as hypotheses); brief-030's role-definition typedef
+    54	amendment and the 38-skill import plan.
+    55	
+    56	## Operating rules
+    57	
+    58	- The shop is frozen: no dispatches, no mailbox work; BC responses
+    59	  queue on `main`'s infrastructure until post-migration.
+    60	- Work proceeds by phase: Phase 0 (architecture principles) → Phase 1
+    61	  (meta-chains, then PM/PO/Architect definitions) → Phase 2
+    62	  (progressive disclosure as the first feature) → Phase 3 (demand-pull
+    63	  corpus migration, one discovery interview per feature).
+    64	- The product authority decides at every chain-and-exemplar step and
+    65	  phase exit; deliveries to the authority longer than ~300 words go
+    66	  through the `stakeholder-presentation` process — no exceptions.
+    67	- Decisions are applied as changes to the affected definitions and
+    68	  recorded in their Document History; no decision ledger exists, and no
+    69	  document cites one as authority.
+    70	- Session close: work is not done until `git push` succeeds on this
+    71	  branch.

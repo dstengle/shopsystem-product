@@ -1,0 +1,749 @@
+=================== basis/experience-principles.md
+     1	---
+     2	type: principle-set
+     3	id: experience-principles
+     4	scope: experience
+     5	owner: product-authority
+     6	status: approved
+     7	approved: 2026-08-26
+     8	version: 2
+     9	created: 2026-08-26
+    10	updated: 2026-08-26
+    11	derives-from:
+    12	  agent-is-a-user: actor-neutral-discipline
+    13	---
+    14	
+    15	# Experience principles
+    16	
+    17	## What this set governs
+    18	
+    19	This is the experience-scope principle set: the standing rules for how
+    20	the product's interactions are designed, whichever interaction type a
+    21	person or an agent reaches the product by — command line, terminal,
+    22	graphical or web, API and SDK, conversational, voice, or a generated
+    23	document. It is a peer of the working-scope set,
+    24	[Founding principles](principles.md), which governs how every activity
+    25	is performed, and of the architecture-scope set,
+    26	[Architecture principles](architecture-principles.md), which governs
+    27	what the designed system must look like; this set governs what a person
+    28	or an agent meets when they use it. It is the first layer of the
+    29	experience guidance corpus the
+    30	[product designer role](roles/lead-product-designer.md) owns; the
+    31	guidelines that apply it to each interaction type sit beneath it.
+    32	Backticked slugs cite principles; a slug not defined in this document is
+    33	defined in the working or architecture set. The terms interaction type,
+    34	experience guidance corpus, generated interface, BC-shop, contract, and
+    35	intent are defined in the [glossary](glossary.md). Two words carry one
+    36	sense each here: an *agent* is a software caller using the product on
+    37	someone's behalf; an *assistant interaction* is one in which the
+    38	product itself acts on an intent the person stated rather than on a
+    39	command — conversational, voice, or an assistant acting for the person
+    40	(a closed set; the solutions architect role is the lead shop's
+    41	architecture role). Where a principle here applies another set's
+    42	principle at the experience level, the frontmatter declares the lineage
+    43	in `derives-from` instead of restating the rule as a second authority.
+    44	
+    45	## What a good principle looks like
+    46	
+    47	This section restates the shared definition from the
+    48	[principle-set typedef](artifacts/principle-set.md) so this document can
+    49	be read alone; the restatement is a rendering, not a second authority.
+    50	
+    51	A principle is a standing rule, in four parts: a name, a statement, a
+    52	rationale, and implications.
+    53	
+    54	- The **statement** is the rule. It carries the only normative keywords
+    55	  (MUST, SHOULD, MAY — interpreted per BCP 14 when, and only when, they
+    56	  appear in capitals) and is testable: shown a piece of work, you can
+    57	  answer yes or no. A statement carrying more than one obligation
+    58	  presents one obligation per bullet.
+    59	- The **rationale** says why the rule earns its place: the failure it
+    60	  prevents, shown as a generic example; well-known external references
+    61	  may support it, the product's own history never appears. Rationales
+    62	  stay prose.
+    63	- The **implications** are the price tag: one implication per bullet,
+    64	  the concrete change each named actor absorbs to honor the rule. They
+    65	  add no obligations — every implication must be derivable from the
+    66	  statement.
+    67	
+    68	A good principle passes the tests applied in the fitness screen at the
+    69	end: its statement is testable (TOGAF's understandable, complete,
+    70	consistent); it helps you say no (Jared Spool, "Creating Great Design
+    71	Principles"); it is not fluff and not a goal in disguise (Richard
+    72	Rumelt, *Good Strategy/Bad Strategy*); it is not permission-to-play —
+    73	something every competent product already does (Patrick Lencioni, "Make
+    74	Your Values Mean Something"); and it implies at least one practice and
+    75	at least one check.
+    76	
+    77	## The principles
+    78	
+    79	### Consistent, not uniform (`consistent-not-uniform`)
+    80	
+    81	**Statement.**
+    82	- Every interaction type MUST name the product's things and actions with
+    83	  the product's one vocabulary, as the experience guidance corpus
+    84	  records it.
+    85	- Every interaction type MUST follow, for its form and idiom, the
+    86	  platform interface guidelines the corpus names for that type.
+    87	- Where a platform guideline names an action differently from the
+    88	  vocabulary, the platform's word MUST be used in that interaction
+    89	  type and the mapping recorded in the vocabulary.
+    90	- A rule of the corpus MAY be varied for one interaction type only
+    91	  with the variation and its reason recorded in the corpus.
+    92	
+    93	**Rationale.** A product reached through a command line, a web page,
+    94	and a chat window is three products when each names the same object
+    95	differently, and a foreign one when its command line ignores the
+    96	terminal's conventions to imitate its web page. People carry their
+    97	expectations from the platform they are on — Nielsen Norman Group's
+    98	usability heuristic "consistency and standards" and Jakob's law of
+    99	internet user experience — and from the last place they met the
+   100	product. The GOV.UK design principles put it as "be consistent, not
+   101	uniform": the same language and patterns wherever possible, without a
+   102	straitjacket. Words and rules are shared; form follows the platform.
+   103	
+   104	**Implications.**
+   105	- The product designer role maintains the vocabulary, its per-platform
+   106	  mappings, and the named platform guidelines per interaction type in
+   107	  the corpus.
+   108	- The product designer role screens every interaction type's text
+   109	  against the vocabulary.
+   110	- BC-shops building an interaction cite the platform guideline the
+   111	  corpus names for its type.
+   112	- The product designer role records each variation with its reason; an
+   113	  unrecorded variation is a finding against the corpus.
+   114	
+   115	### Core-task parity (`core-task-parity`)
+   116	
+   117	**Statement.**
+   118	- Every interaction type the product offers MUST support every task on
+   119	  the corpus's core-task list.
+   120	- An option the product offers in one interaction type MUST be
+   121	  reachable in every other interaction type that presents the same
+   122	  task.
+   123	
+   124	**Rationale.** A voice assistant that can start an order but only a
+   125	screen can confirm it strands the person who has no screen; a chat
+   126	interface that offers three choices only one of which the graphical
+   127	interface shows teaches people that the product hides things. Google's
+   128	conversation design guidelines and Amazon's Alexa design guide converge
+   129	on the rule: voice-first but not voice-only, every option offered in
+   130	one modality reachable in the other, the core message the same across
+   131	them. Parity of tasks and options is what lets a person move between
+   132	interaction types without relearning what the product can do.
+   133	
+   134	**Implications.**
+   135	- The product designer role keeps the core-task list in the corpus.
+   136	- The product designer role screens each new interaction type against
+   137	  the list before delivery.
+   138	- BC-shops that add an option to one interaction type add it to every
+   139	  other type presenting that task.
+   140	- The PO role's acceptance scenarios for a task name the interaction
+   141	  types it must hold on.
+   142	
+   143	### The agent is a user (`agent-is-a-user`)
+   144	
+   145	**Statement.**
+   146	- Every interface an agent uses to reach the product — a tool
+   147	  definition, a command line, an API, or an SDK (a closed set) — MUST
+   148	  be designed as an interface: named for its caller, its behavior
+   149	  stated in its documentation, and screened by the product designer
+   150	  role.
+   151	- An agent-facing interface MUST NOT expose a capability a person could
+   152	  not reach through some interaction type.
+   153	
+   154	**Rationale.** A tool whose parameters are named for the implementer
+   155	rather than the caller is misread by the agent calling it, and the
+   156	agent's failure is recorded as the agent's. Nielsen Norman Group's "AI
+   157	Agents as Users" states the shift plainly — "user" is no longer
+   158	synonymous with "human" — and Anthropic's guidance on building agents
+   159	asks for as much care in the agent-computer interface as in the human
+   160	one. This principle is `actor-neutral-discipline` applied at the
+   161	interface: the discipline of design does not lapse because the user is
+   162	an agent, and an agent gains no capability a person lacks. An interface
+   163	no one designed is still an interface; it is only an undesigned one.
+   164	
+   165	**Implications.**
+   166	- The solutions architect role submits contracts, command lines, and
+   167	  tool definitions to the product designer role's screen before they
+   168	  are published.
+   169	- BC-shops write tool and API documentation for the caller, with the
+   170	  same care as user-facing help.
+   171	- The product designer role screens agent-facing interfaces against
+   172	  the corpus with the same patterns as human-facing ones.
+   173	
+   174	### Evidence, not opinion (`evidence-not-opinion`)
+   175	
+   176	**Statement.**
+   177	- A claim that an interaction is usable MUST rest on observed use — a
+   178	  user test, a tested prototype, or measured task completion (a closed
+   179	  set the corpus may extend) — or be labeled a hypothesis.
+   180	- A preference — a stakeholder's, a maker's, the designer's own — MUST
+   181	  NOT decide a design question that observed use can answer; what the
+   182	  product is for is the PM role's decision, not a design question.
+   183	
+   184	**Rationale.** Design by committee, where every opinion in the room
+   185	weighs the same, produces the least-common-denominator interface; the
+   186	alternative is not one taste in charge but one decision-maker deciding
+   187	on evidence. Human-centred design as ISO 9241-210 describes it is
+   188	driven and refined by user-centred evaluation; GOV.UK's third design
+   189	principle is "design with data." Nielsen Norman Group's "The
+   190	Product-Manager Archetype" names the failure the second bullet
+   191	prevents: a sketch handed over as a requirement, with the designer
+   192	asked to polish it instead of to test it.
+   193	
+   194	**Implications.**
+   195	- The product designer role records the evidence behind each design
+   196	  decision in the corpus, and labels the rest hypotheses.
+   197	- The PM role treats a wireframe or sketch from any role as input to be
+   198	  tested, never as a requirement.
+   199	- BC-shops label an untested interaction's usability a hypothesis when
+   200	  they deliver it.
+   201	
+   202	### Accessible by standard (`accessible-by-standard`)
+   203	
+   204	**Statement.**
+   205	- Every graphical, web, and document interaction MUST meet WCAG 2.2 at
+   206	  level AA.
+   207	- Every non-web interaction — command line, terminal, voice, and
+   208	  assistant interactions (a closed set; APIs and SDKs are agent-facing
+   209	  and governed by `agent-is-a-user`) — MUST apply the WCAG 2.2
+   210	  success criteria as WCAG2ICT describes for non-web software, with a
+   211	  record of which criteria do not apply and why.
+   212	- Accessibility conformance MUST be established before an interaction
+   213	  is delivered.
+   214	
+   215	**Rationale.** An interface that conveys meaning by color alone, or a
+   216	terminal screen that a screen reader cannot follow, excludes the people
+   217	who depend on assistive technology and, increasingly, the agents that
+   218	read the same structure. The W3C's guidelines are the one shared
+   219	standard — WCAG 2.2 is ISO/IEC 40500:2025 — and, as GOV.UK's sixth
+   220	design principle has it, accessible design is good design: the
+   221	discipline it imposes, clear names and predictable structure, serves
+   222	every user. Retrofitting accessibility costs more than building it and
+   223	reaches fewer.
+   224	
+   225	**Implications.**
+   226	- The product designer role names the accessibility target per
+   227	  interaction type in the corpus, with the WCAG2ICT applicability
+   228	  record for non-web types.
+   229	- BC-shops test each interaction with assistive technology before
+   230	  delivery and attach the result.
+   231	- The PO role's acceptance scenarios for an interaction include its
+   232	  accessibility criteria.
+   233	
+   234	### Errors guide recovery (`errors-guide-recovery`)
+   235	
+   236	**Statement.**
+   237	- Every error the product shows MUST say what happened, in the
+   238	  product's vocabulary and the person's natural language, and what the
+   239	  person can do next.
+   240	- An error MUST NOT expose an internal identifier or message in place
+   241	  of that explanation, though it MAY carry one alongside it.
+   242	
+   243	**Rationale.** A command that fails with a stack trace, a form that
+   244	says "invalid input" without saying which field, a chat assistant that
+   245	answers a misunderstanding with silence — each leaves the person to
+   246	guess, and in a command line, where there is no interface to guide
+   247	them, the error message is the interface. The Command Line Interface
+   248	Guidelines (clig.dev) say it directly: catch errors and rewrite them
+   249	for humans. Microsoft's Guidelines for Human-AI Interaction ask the
+   250	same of assistants — support efficient correction — and Google's
+   251	conversation design guidelines warn that one poorly handled error
+   252	outweighs dozens of successful turns.
+   253	
+   254	**Implications.**
+   255	- BC-shops write every user-facing error with its next step, and keep
+   256	  the internal detail in a log or an alongside field.
+   257	- The product designer role screens error text against the vocabulary
+   258	  and voice.
+   259	- The solutions architect role's contracts define error responses that
+   260	  carry a human-readable explanation, not only a code.
+   261	
+   262	### Control stays with the person (`control-stays-with-the-person`)
+   263	
+   264	**Statement.**
+   265	- An assistant interaction MUST make clear what the product can do.
+   266	- An assistant interaction MUST say what it is about to do before an
+   267	  action the corpus classes as hard to reverse.
+   268	- An assistant interaction MUST let the person correct, dismiss, or
+   269	  stop it at any point.
+   270	- An assistant interaction MUST hand control back to the person when it
+   271	  fails.
+   272	- A generated interface MUST stay within the constraints the corpus
+   273	  states for it; it MAY vary its form within them.
+   274	
+   275	**Rationale.** Intent-based interaction reverses the locus of control:
+   276	the person states an outcome and the system chooses the steps. That is
+   277	its value and its danger. An assistant that books the wrong thing
+   278	silently, or cannot be interrupted, or shows a different interface each
+   279	visit, loses the trust that makes delegation possible. Microsoft's
+   280	Guidelines for Human-AI Interaction — make clear what the system can
+   281	do, support efficient invocation, dismissal, and correction, provide
+   282	global controls — and Ben Shneiderman's *Human-Centered AI*, which
+   283	holds that high automation and high human control are compatible
+   284	rather than a trade-off, point the same way: the system may act, and
+   285	the person stays in charge.
+   286	
+   287	**Implications.**
+   288	- BC-shops building an assistant interaction implement the confirm,
+   289	  correct, dismiss, and stop controls before the interaction is
+   290	  delivered.
+   291	- The product designer role screens assistant interactions against the
+   292	  human-AI guidelines named in the corpus.
+   293	- The product designer role states, in the corpus, which actions are
+   294	  hard to reverse and the constraints a generated interface varies
+   295	  within.
+   296	
+   297	## Fitness screen (the intro's tests; sources: TOGAF, Spool, Rumelt, Lencioni)
+   298	
+   299	| Screen | consistent-not-uniform | core-task-parity | agent-is-a-user | evidence-not-opinion | accessible-by-standard | errors-guide-recovery | control-stays-with-the-person |
+   300	|---|---|---|---|---|---|---|---|
+   301	| Statement testable (TOGAF: understandable, complete, consistent) | pass — precedence stated between vocabulary and platform | pass — against the corpus's list | pass | pass | pass | pass | pass |
+   302	| Helps you say no (Spool) | yes: rejects a second name for one thing and a CLI that imitates a web page | yes: rejects a task or option offered on one type only | yes: rejects an undesigned tool definition and an agent-only capability | yes: rejects a preference deciding a testable question | yes: rejects color-only meaning and accessibility as a later pass | yes: rejects a bare code or stack trace as an error | yes: rejects silent action, uninterruptible assistants, and unconstrained generated interfaces |
+   303	| Not fluff, not a goal-in-disguise (Rumelt) | pass — directs without prescribing form | pass | pass | pass | pass | pass | pass |
+   304	| Not permission-to-play (Lencioni) | pass — most multi-interface products drift into several vocabularies | pass — most voice and chat interfaces are subsets of the screen | pass — most tool definitions are named for the implementer | pass — most design questions are settled by the loudest preference | pass on bullets 2 and 3 — web AA is a legal floor in places; non-web application before delivery is rare | pass on bullet 2 — most CLI errors are stack traces | pass — most assistants act without confirming and cannot be stopped mid-action |
+   305	| Implies ≥1 practice and ≥1 check (this document's intro) | vocabulary and mappings maintained; text screened | core-task list kept; new type screened | screen before publication; agent-interface screen | evidence recorded per decision; sketches tested not adopted | target named per type; assistive-technology test before delivery | next-step in every error; error-text screen | controls implemented before delivery; human-AI guideline screen |
+   306	| Normative keywords used in statements only; capitals elsewhere only as the opening's mentions (mechanical) | pass | pass | pass | pass | pass | pass | pass |
+   307	| Implications derivable and actor-named, one per bullet (judged) | pass | pass | pass | pass | pass | pass | pass |
+   308	
+   309	## Document History
+   310	
+   311	| Version | Date | Kind | Entry |
+   312	|---|---|---|---|
+   313	| 1 | 2026-08-26 | update | Drafted through the principle-set authoring chain by owner direction, scope experience, from the research report on the product designer role (on the `research` branch: `research/product-designer-role-2026-08.md`) and the external standards it names; the first layer of the experience guidance corpus. |
+   314	| 1 | 2026-08-26 | review | Screen round 1: findings — bullets in conflict in consistent-not-uniform; fused obligations and an undefined "generated interface" in control-stays-with-the-person; "agent" in two senses; fused and passive implications; open enumerations; sources unnamed; BC-shop term. |
+   315	| 2 | 2026-08-26 | update | Repairs: precedence between vocabulary and platform guidelines stated in the statement; obligations one per bullet; enumerations marked closed; assistant interaction and generated interface defined (glossary); every source named; lineage to actor-neutral-discipline stated in the rationale; implications split and actor-named, none adding an obligation; BC-shop used. |
+   316	| 2 | 2026-08-26 | review | Screen round 2: clean — all six scenarios and seven rules pass per principle, the mechanical grep passes, every screen cell reproducible; seven stumbles polished in place (enumeration closed, error language, the assistant statement split, API/SDK placement stated). |
+   317	| 2 | 2026-08-26 | state | draft → approved by the owner. |
+=================== basis/guidelines/experience-common.md
+     1	---
+     2	type: quality-guideline
+     3	id: experience-common-guideline
+     4	target-type: interaction
+     5	interaction-type: all
+     6	owner: product-authority
+     7	status: approved
+     8	approved: 2026-08-26
+     9	version: 2
+    10	created: 2026-08-26
+    11	updated: 2026-08-26
+    12	---
+    13	
+    14	# Guideline: every interaction
+    15	
+    16	**Voice principle.** Design every interaction for the person or agent
+    17	who arrives from another part of the product and expects the same
+    18	words, the same tasks, an error that helps, and an interface they can
+    19	use — whichever way they reached it.
+    20	
+    21	**Highlights (the layer compiled into generating context):** the
+    22	vocabulary's word, or a recorded platform mapping · the platform's
+    23	idiom for form, departures recorded · every error: what happened, in
+    24	the vocabulary, and what next; identifiers alongside · every core task
+    25	and every option offered elsewhere · the accessibility target met and
+    26	attached before delivery.
+    27	
+    28	**Layers:** this guideline applies the
+    29	[experience principles](../experience-principles.md) to every
+    30	interaction type; the per-type experience guidelines (command line,
+    31	API, graphical, assistant, document) layer their idiom on it and never
+    32	override it, as every prose guideline layers on the
+    33	[base writing style](base-writing-style.md), which governs every
+    34	string an interaction shows. Precedence when rules conflict: an
+    35	approved principle beats the
+    36	[quality-guideline typedef](../artifacts/quality-guideline.md), which
+    37	beats this guideline, which beats a per-type guideline; the platform
+    38	guideline the corpus names for a type governs that type's form, and
+    39	the platform's word governs a name where `consistent-not-uniform`
+    40	bullet 3 says so. Every rule feeds the
+    41	[interaction fitness set](../fitness/interaction.fitness.md), judged by
+    42	the product designer role. The rules here and in the per-type
+    43	guidelines judge against corpus records the product designer role has
+    44	not yet authored — the vocabulary and its platform mappings, the
+    45	variations record, the core-task list, the interaction patterns, the
+    46	design tokens, the hard-to-reverse classification, the persona and
+    47	voice; none is yet filed as a work item. Until a record exists, a
+    48	rule that needs it returns "undecidable: record absent" — a finding
+    49	against the corpus, never a pass — as the fitness set states.
+    50	
+    51	---
+    52	
+    53	## Rules
+    54	
+    55	**1. The vocabulary's word, or a recorded platform mapping.**
+    56	Before: the web interface says "Remove", the command is `delete`, the
+    57	assistant says "drop".
+    58	After: the vocabulary names the action once; each interaction type uses
+    59	that name unless the platform guideline the corpus names for it uses
+    60	another, and the mapping is recorded in the vocabulary.
+    61	*Test:* list every noun and verb the interaction shows or accepts
+    62	against the vocabulary and its recorded mappings. *Criterion:* every
+    63	term is the vocabulary's or a recorded mapping. *Decision:* yes/no per
+    64	interaction.
+    65	*Derived check:* judged — interaction fitness scenario 1;
+    66	`consistent-not-uniform` bullets 1 and 3.
+    67	
+    68	**2. The platform's idiom for form; departures recorded.**
+    69	Before: a command line whose subcommands mimic the web navigation; a
+    70	native app whose dialogs follow the web page instead of the operating
+    71	system.
+    72	After: form follows the platform guideline the corpus names for the
+    73	type; the product designer role records a departure in the corpus
+    74	with its reason.
+    75	*Test:* compare the interaction's form with the named platform
+    76	guideline. *Criterion:* every departure is a recorded variation.
+    77	*Decision:* yes/no per interaction.
+    78	*Derived check:* judged — interaction fitness scenario 2;
+    79	`consistent-not-uniform` bullets 2 and 4.
+    80	
+    81	**3. Every error: what happened, in the vocabulary, and what next.**
+    82	Before: `Error: ENOENT`; a red banner "Invalid input"; "Sorry, I didn't
+    83	get that."
+    84	After: the thing named in the vocabulary, the cause, and at least one
+    85	next step; an internal identifier alongside — in a log, a verbose
+    86	mode, or a field beside the message — never in place.
+    87	*Test:* trigger each error path. *Criterion:* the message names what
+    88	happened in the vocabulary and gives a next step; identifiers stand
+    89	alongside only. *Decision:* yes/no per error.
+    90	*Derived check:* judged — interaction fitness scenario 3;
+    91	`errors-guide-recovery` bullets 1 and 2. Per-type guidelines say where
+    92	the message goes (at the field; in the response body; as a repair
+    93	turn — the assistant guideline's rule 5).
+    94	
+    95	**4. Every core task, and every option offered elsewhere.**
+    96	Before: an export only the command line offers; a chat assistant with
+    97	three choices of which the screen shows one.
+    98	After: every task on the corpus's core-task list completes in the
+    99	interaction, and every option another interaction type offers for the
+   100	task is present.
+   101	*Test:* walk the core-task list and the options other types offer.
+   102	*Criterion:* every task on the list completes; every option is
+   103	present. A task the type cannot carry is removed from the list for
+   104	that type by the product designer role, with the reason recorded — the
+   105	principle's own implication — never waived here.
+   106	*Decision:* yes/no per interaction.
+   107	*Derived check:* judged — interaction fitness scenario 4;
+   108	`core-task-parity` bullets 1 and 2.
+   109	
+   110	**5. The accessibility target, met and attached, before delivery.**
+   111	Before: an interaction delivered with accessibility "to follow".
+   112	After: the delivery carries the accessibility result at the target the
+   113	corpus names for the type — WCAG 2.2 AA for web, graphical, and
+   114	document types; the WCAG2ICT application with its applicability record
+   115	for command line, terminal, voice, and assistant types.
+   116	*Test:* read the delivery's attached accessibility result. *Criterion:*
+   117	it exists, meets the target, and carries the applicability record for
+   118	a non-web type; the BC-shop that delivered the interaction attached it.
+   119	*Decision:* yes/no per delivery.
+   120	*Derived check:* judged — interaction fitness scenario 5;
+   121	`accessible-by-standard` bullets 1–3.
+   122	
+   123	## Document History
+   124	
+   125	| Version | Date | Kind | Entry |
+   126	|---|---|---|---|
+   127	| 1 | 2026-08-26 | update | Authored after the first screen of the five per-type experience guidelines found the vocabulary, error, accessibility, and core-task rules written five times with drifting criteria: the common rules now have one home, the per-type guidelines layer their idiom on it, and every derived check names the interaction fitness set. |
+   128	| 1 | 2026-08-26 | review | Screened: rule 4's escape let a guideline waive a principle's MUST; the corpus records the rules depend on were unstated; a passive without actor. |
+   129	| 2 | 2026-08-26 | update | rule 4 defers to the principle's implication (the role edits the list); the dependent corpus records listed once with the absent-record verdict; actor named. |
+   130	| 2 | 2026-08-26 | review | Final screen (round 3): clean — every rule decidable with a named scenario and derivation; two line edits and three optional stumbles polished in place. |
+   131	| 2 | 2026-08-26 | state | draft → approved by the owner. |
+=================== basis/fitness/interaction.fitness.md
+     1	---
+     2	type: fitness-set
+     3	id: interaction-fitness
+     4	owner: product-authority
+     5	status: approved
+     6	approved: 2026-08-26
+     7	version: 2
+     8	created: 2026-08-26
+     9	updated: 2026-08-26
+    10	target-type: interaction
+    11	judged: true
+    12	executable: false
+    13	judged-by: lead-product-designer
+    14	---
+    15	
+    16	# Fitness set: interaction
+    17	
+    18	These scenarios are the conformance screen the product designer role
+    19	runs on a delivered interaction of any interaction type against the
+    20	experience guidance corpus — the [experience principles](../experience-principles.md),
+    21	the [common experience guideline](../guidelines/experience-common.md),
+    22	and the per-type guideline for the interaction's type. They are judged
+    23	by the `lead-product-designer` role, never executed. The judge's model
+    24	and prompt version (or the person's name) are recorded with each
+    25	verdict. The process that runs this screen at delivery is not yet
+    26	defined; until it is, the product designer role runs it on request from
+    27	the [PO output check](../processes/po-output-check.md) or a Bounded
+    28	Context shop; the process is not yet filed as a work item. Where a
+    29	scenario judges against a corpus record that does not yet exist — the
+    30	vocabulary, the variations record, the core-task list, the interaction
+    31	patterns — the verdict is "undecidable: record absent", recorded as a
+    32	finding against the corpus, never a pass.
+    33	
+    34	## Scenarios
+    35	
+    36	Scenario 1: one vocabulary, recorded mappings
+    37	  Given every noun and verb the interaction shows or accepts
+    38	  When each is compared with the corpus vocabulary
+    39	  Then it is the vocabulary's word or a platform mapping the vocabulary
+    40	  records
+    41	
+    42	Scenario 2: the platform's idiom
+    43	  Given the platform guideline the corpus names for the interaction
+    44	  type
+    45	  When the interaction's form is compared with it
+    46	  Then each departure is a variation the corpus records with a reason
+    47	
+    48	Scenario 3: errors guide recovery
+    49	  Given each error the interaction can show
+    50	  When it is read
+    51	  Then it says what happened in the vocabulary and what to do next,
+    52	  and any internal identifier stands alongside, not in place
+    53	
+    54	Scenario 4: core tasks and options hold
+    55	  Given the corpus's core-task list and the options other interaction
+    56	  types offer for those tasks
+    57	  When the interaction is walked
+    58	  Then every core task completes and every option offered elsewhere for
+    59	  the task is present
+    60	
+    61	Scenario 5: accessible before delivery
+    62	  Given the accessibility target the corpus names for the interaction
+    63	  type
+    64	  When the delivery's attached accessibility result is read
+    65	  Then it exists, meets the target, and for a non-web type carries the
+    66	  WCAG2ICT applicability record
+    67	
+    68	Scenario 6: the per-type rules hold
+    69	  Given the per-type experience guideline for the interaction's type
+    70	  When each of its rules' tests is run
+    71	  Then each rule's criterion is met
+    72	
+    73	## Compile mapping (each Then → one judge-rubric assertion)
+    74	
+    75	| Scenario Then | Judge-rubric assertion |
+    76	|---|---|
+    77	| 1 — vocabulary | "List every term that is neither the vocabulary's nor a recorded platform mapping. Empty list = pass." |
+    78	| 2 — platform idiom | "List every departure from the named platform guideline without a recorded variation. Empty list = pass." |
+    79	| 3 — errors | "For each error: what happened, in the vocabulary? what next? identifier alongside only? Cite any error failing one." |
+    80	| 4 — core tasks and options | "For each core task: does it complete? For each option offered elsewhere: present? Cite any missing." |
+    81	| 5 — accessibility | "Is the accessibility result attached, at target, with the WCAG2ICT record for a non-web type? Cite the result or its absence." |
+    82	| 6 — per-type rules | "For each rule of the type's guideline: run its test; cite each criterion not met, or the record it needs that is absent." |
+    83	
+    84	## Document History
+    85	
+    86	| Version | Date | Kind | Entry |
+    87	|---|---|---|---|
+    88	| 1 | 2026-08-26 | update | Authored with the experience guidelines so that their derived checks name a check that exists: scenarios 1–5 carry the common guideline's rules, scenario 6 defers to the per-type guideline. The process that runs this screen at delivery is a filed gap owned by the product designer role. |
+    89	| 1 | 2026-08-26 | review | Screened: the PO output check unlinked; the process gap 'filed' nowhere; scenario 6 carried a variation escape with no meaning for a per-type rule; no verdict for an absent corpus record. |
+    90	| 2 | 2026-08-26 | update | process linked and marked not yet filed; escape removed from scenario 6; the absent-record verdict defined. |
+    91	| 2 | 2026-08-26 | review | Final screen (round 3): clean — every rule decidable with a named scenario and derivation; two line edits and three optional stumbles polished in place. |
+    92	| 2 | 2026-08-26 | state | draft → approved by the owner. |
+=================== basis/glossary.md
+     1	---
+     2	type: glossary
+     3	id: glossary
+     4	owner: product-authority
+     5	status: approved
+     6	approved: 2026-08-19
+     7	version: 11
+     8	created: 2026-08-19
+     9	updated: 2026-08-26
+    10	---
+    11	
+    12	# Glossary
+    13	
+    14	## How the list combines
+    15	
+    16	The defined-term list is this glossary combined with every schema element
+    17	name. Per the `use-defined-terms` principle, a writer choosing between
+    18	terms uses one of these when one fits.
+    19	
+    20	## Terms
+    21	
+    22	- **artifact type** — a named, schema-defined document type (e.g.
+    23	  `decision-brief`); the term the schema registry uses. Not "kind".
+    24	- **data type** — a named, schema-defined structure that is not a
+    25	  human-readable document (e.g. `review`); passed between process steps.
+    26	- **simple type** — a JSON Schema primitive (`string`, `integer`,
+    27	  `boolean`, `array`, `object`), usable inline without registration.
+    28	- **typedef** — the single source a type is generated from; templates and
+    29	  schema fragments are its renderings (owned by shopsystem-knowledge).
+    30	- **schema** — the machine-checkable shape of a type: fields, types,
+    31	  enums, required sections.
+    32	- **process definition** — the source of truth for a process: header
+    33	  (purpose, outcomes, roles), data section, steps section.
+    34	- **step** — one unit of a process: an agent step (carries a prompt) or a
+    35	  runtime step (carries `set`, `run`, or `branches`; no prose).
+    36	- **rendering** — a generated output of a definition (a skill, a
+    37	  diagram, a template); never edited by hand, never the source of truth.
+    38	- **guiding statement** — an optional header element of a process
+    39	  definition that directs judgment across the whole process; compiled
+    40	  into every rendering.
+    41	- **fitness set** — judged (never executed) Given/When/Then scenarios
+    42	  scoring an artifact type's quality.
+    43	- **guideline** — prose quality rules for an artifact type, each with a
+    44	  test, a criterion, and a yes/no decision.
+    45	- **role** — a named capability contract and set of accountabilities,
+    46	  assigned by process steps to whoever fills it; sequencing lives in
+    47	  process definitions, not roles.
+    48	- **principle** — a standing rule about how we work: name, statement,
+    49	  rationale, implications (see the principles document's opening
+    50	  definition).
+    51	- **seed layer** — the hand-approved definitions the regress terminates
+    52	  at: the principle set plus one typedef per definition document type.
+    53	- **owner** — the role that approves changes to a definition; named in
+    54	  every definition's frontmatter.
+    55	- **definition chain** — the six linked definitions of good for one
+    56	  artifact type; required before instances are authored or rewritten.
+    57	- **keeper** — a corpus record whose action is keep-rewrite; rewritten
+    58	  forward through its type's approved chain, never used as-is.
+    59	- **rewrite-forward** — the default for keepers: re-author to the
+    60	  approved standard; repair-in-place only for records already at the bar.
+    61	- **rebaseline** — Phase 1 of the re-founding arc: the active tree comes
+    62	  to hold only chain-conforming records; retired mass moves to the
+    63	  archive.
+    64	- **scope** (of a principle set) — the level the set governs and whose
+    65	  context it loads into: working (every activity), architecture (the
+    66	  designed system), or experience (the product's interactions).
+    67	- **transcript** — the runtime log of turns; unscoped, not a governed
+    68	  artifact, never loaded into context.
+    69	- **conversation** — a scoped, bounded discussion attached to exactly one
+    70	  anchor; every conversation belongs to a process.
+    71	- **anchor** — the governed record a conversation attaches to: a session
+    72	  record, a review record, or a work item; carries the conversation's
+    73	  state across transcript boundaries.
+    74	- **conversation type** — discovery (anchor: a session record), review
+    75	  (anchor: a review record and its outcomes), or work (anchor: a work
+    76	  item).
+    77	- **session record** — the anchor record of a discovery conversation:
+    78	  outcome, produced and revised lists, open threads, select quotes.
+    79	- **review** — one bounded conversation in which the authority decides
+    80	  on presented material. Replaces "sitting".
+    81	- **review record** — the anchor record of a review: the material
+    82	  presented and the outcomes applied; each decision traces in the
+    83	  changed artifacts' Document History, never in a standing ledger.
+    84	- **park** — the failsafe for work that cannot pass review within its
+    85	  round cap: set aside with a filed finding.
+    86	- **round cap** — the declared maximum review rounds before a loop's
+    87	  failsafe exit fires.
+    88	- **action** — the approved choice for one record: keep-rewrite, keep,
+    89	  retire, or terminal, with its target.
+    90	- **authority-call** — a row marker on a migration-plan row awaiting a
+    91	  decision from the authority; not an action — the row has no effect and
+    92	  is out of scope for any run until ruled.
+    93	- **action table** — the table of records and their actions; approved row
+    94	  by row or in blocks at a review. Drives any bulk record change.
+    95	- **close-out** — the mechanical execution of the migration plan's
+    96	  pre-decided retire and terminal actions: snapshot, delete, archive
+    97	  move, a loud post-check, and the branch promotion; no review loop.
+    98	  All stages run consecutively at cut-over.
+    99	- **snapshot tag** — the annotated git tag (`pre-migration`) on `main`'s
+   100	  pre-execution commit, preserving the full corpus for terminal-recovery;
+   101	  after close-out a terminal record exists only there.
+   102	- **migration plan** — the rebaseline's action table plus the order of
+   103	  the per-type migration runs. Replaces "rebaseline bill".
+   104	- **run** — one execution of a process, anchored to a work item; states:
+   105	  running, held, done, cancelled.
+   106	- **hold** — a run state: paused with its step and data preserved in its
+   107	  anchor, by inactivity or by an ask; a held run is resumed or
+   108	  cancelled, never dropped.
+   109	- **checkpoint** — updating a conversation's anchor when a transcript
+   110	  ends mid-conversation; a checkpoint is not a close.
+   111	- **branched conversation** — a conversation run as a sub-process of
+   112	  another run; its anchor records the parent (`branched-from`).
+   113	- **Bounded Context** — a deliberately drawn region of the product with
+   114	  one internal language, one model, and one set of contracts to other
+   115	  regions; drawn by design, never discovered after the fact (Evans,
+   116	  *Domain-Driven Design*).
+   117	- **shop** — the entity that builds, operates, and evolves part of the
+   118	  product. Two types: the lead shop (the system-level coordinator; owns
+   119	  product-level artifacts and no Bounded Context) and the BC-shop (owns
+   120	  and produces exactly one Bounded Context).
+   121	- **activity** — a discrete unit of work performed inside a shop,
+   122	  following a contract or process, with inputs, outcomes, and provenance
+   123	  recorded. What an actor is stays unconstrained; the activity has the
+   124	  same shape whoever performs it.
+   125	- **contract** — a named, versioned statement of what one entity
+   126	  promises another: the schemas exchanged, the meaning of each
+   127	  operation, the error behavior, and the relationship kind. Offered as a
+   128	  product contract (on a Bounded Context) or an operational contract (on
+   129	  a shop); nothing outside a contract is promised.
+   130	- **relationship kind** — the named pattern a contract declares for how
+   131	  two Bounded Contexts relate, drawn from the context-mapping catalogue
+   132	  (Evans, *Domain-Driven Design*): customer–supplier, conformist,
+   133	  anti-corruption layer, open host service, published language, shared
+   134	  kernel, or separate ways.
+   135	- **vehicle** — the message type a request to a Bounded Context shop
+   136	  travels in; chosen from the pre-state, never from the request's
+   137	  wording.
+   138	- **pre-state** — what a Bounded Context actually is before a change,
+   139	  read from its contracts and its scenario register, never from its
+   140	  internals.
+   141	- **framing** — the PM role's recorded statement of what a request is
+   142	  about: the originator, the problem taken to be worth solving, and the
+   143	  outcome it serves; the exclusive decision of `lead-pm`.
+   144	- **acceptance scenario** — a Gherkin scenario that states, as a
+   145	  requirement, what counts as done for one behavior; co-produced by the
+   146	  PO role and the owning Bounded Context shop; held in that shop's
+   147	  scenario register.
+   148	- **scenario register** — a Bounded Context shop's own list of the
+   149	  acceptance scenarios it holds, with their hashes and states; read in
+   150	  full across every context when a claim spans contexts.
+   151	- **ask** — a question one activity puts to another role in place of
+   152	  its output, carrying a default and a checkpoint; the run holds, the
+   153	  role answers, the step resumes — never a wait in place (data type
+   154	  `ask`; process-definition typedef §Run lifecycle).
+   155	- **clarify** — an ask from a Bounded Context shop to the lead shop on
+   156	  scope, vocabulary, structure, or contract; answered by the role whose
+   157	  domain the question falls in.
+   158	- **decomposition** — the solutions architect's record of which Bounded
+   159	  Context owns which capability, and the relationship kind of each
+   160	  contract between contexts.
+   161	- **enabler work** — technical work that makes a feature possible;
+   162	  recommended by the solutions architect, placed in the backlog by the
+   163	  PO role.
+   164	- **interaction type** — one way a person or an agent reaches the
+   165	  product: command line (CLI), full-screen terminal (TUI), graphical or
+   166	  web (GUI), API and SDK, conversational, voice, or a generated document
+   167	  or notification; each honours its own conventions within one
+   168	  experience.
+   169	- **experience guidance corpus** — the product designer role's
+   170	  principle set and guidelines for the experience: design principles,
+   171	  vocabulary and voice, core-task parity across interaction types,
+   172	  interaction patterns per type, and the accessibility target; the
+   173	  role's exclusive domain.
+   174	- **originator** — whoever expresses intent at the product's edge: a
+   175	  person, a shop, or a system outside the product.
+   176	- **generated interface** — an interface whose form the product composes
+   177	  at run time from the person's context, within constraints the
+   178	  experience guidance corpus states; a form, not an interaction type.
+   179	- **assistant interaction** — an interaction in which the product acts on
+   180	  an intent the person stated rather than on a command — conversational,
+   181	  voice, or an assistant acting for the person (a closed set); the locus
+   182	  of control is the product's, so the experience principles bound it.
+   183	- **intent** — a desired outcome expressed by an originator at the
+   184	  product's edge; enters the product through a contract and keeps its
+   185	  provenance through every translation and delegation.
+   186	
+   187	## Document History
+   188	
+   189	| Version | Date | Kind | Entry |
+   190	|---|---|---|---|
+   191	| 1 | 2026-08-19 | update | Seed term list authored. |
+   192	| 1 | 2026-08-19 | state | draft → approved. |
+   193	| 2 | 2026-08-22 | update | Conversation-model terms added; action extended to four values, authority-call and action-table amended, close-out and snapshot tag added. |
+   194	| 3 | 2026-08-23 | update | Architecture terms added, riding the architecture-principle-set approval: Bounded Context, shop, activity, contract, relationship kind, intent. |
+   195	| 3 | 2026-08-23 | state | The six architecture terms approved with the architecture principle set; pending markers removed. |
+   196	| 4 | 2026-08-23 | update | Owner direction: ruling and experiment-index entries removed with the ledger practice; review and review-record entries rewritten to the outcomes model. |
+   197	| 5 | 2026-08-23 | update | Anchor entry added — the term recurred as an unintroduced-term stumble across three screens. |
+   198	| 6 | 2026-08-23 | update | vehicle and pre-state added — terms the lead-solutions-architect role turns on. |
+   199	| 7 | 2026-08-25 | update | Owner direction: a near-synonym of "role" retired and banned. |
+   200	| 8 | 2026-08-25 | update | framing, acceptance scenario, scenario register, clarify, decomposition, enabler work added — each arrived undefined in the PM and PO role screens. |
+   201	| 9 | 2026-08-25 | update | interaction type and experience guidance corpus added with the lead-product-designer role. |
+   202	| 10 | 2026-08-25 | update | ask added; clarify re-based as an ask; hold now names the ask as a cause. |
+   203	| 10 | 2026-08-25 | update | originator added — used by the PM role and the ask type without a definition. |
+   204	| 11 | 2026-08-26 | update | scope gains the experience level with the experience principle set. |
+   205	| 11 | 2026-08-26 | update | generated interface and assistant interaction added with the experience principle set. |

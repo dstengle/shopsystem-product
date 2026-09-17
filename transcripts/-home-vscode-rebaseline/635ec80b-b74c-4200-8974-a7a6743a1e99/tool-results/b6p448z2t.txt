@@ -1,0 +1,448 @@
+===== basis/artifacts/brief.md
+---
+type: artifact-typedef
+id: brief-typedef
+defines: brief
+owner: product-authority
+status: draft
+version: 2
+created: 2026-08-26
+updated: 2026-08-26
+ancestry: [request, brief]
+---
+
+# Artifact type: brief
+
+## Identity and ancestry
+
+- **Type:** `brief` — the PO role's bounded statement of a problem and
+  its scope for a Bounded Context shop: what the shop is asked for,
+  which framing it serves, what is in and out, and what the shop must
+  know to start. A request, not a specification: it names the problem
+  and the outcome, never the how.
+- **Produced by:** the [PO role](../roles/lead-po.md), from the PM
+  role's framing; checked by the
+  [PO output check](../processes/po-output-check.md) against the
+  [brief fitness set](../fitness/brief.fitness.md). **Consumed by:** the
+  receiving Bounded Context shop; the PM role at the check.
+
+## Required frontmatter
+
+`type: brief`, `id`, `status` (draft | checked | returned |
+pending-definition), `version`, `date`, `reader` (the
+receiving shop), `framing` (link to the framing it serves), `owner`,
+`created`, `updated`.
+
+## Required sections
+
+1. **What is requested** — the request ancestor's first section: the
+   first paragraph states what problem the shop is asked to solve and
+   the outcome the framing states; the reader named in `reader` is the
+   request ancestor's "from whom".
+2. **Scope** — what is in; what is out, each exclusion with its reason;
+   for each neighbouring piece of work the framing or this brief names,
+   in or out or the rule that decides.
+3. **What the shop needs** — every term defined here or in the framing,
+   every referenced artifact linked, and every question the framing or
+   this brief raises either answered or listed as open.
+4. **Interaction types**, where the problem has one — the interaction
+   types the behavior must hold on (permitted by the fitness set's
+   scenario 2 as a what; required of the acceptance scenarios by their
+   own typedef), taken from the core-task list in the experience
+   record `core-tasks`.
+
+## Rules
+
+- The brief names no technology, structure, or interface form the shop
+  would otherwise choose; naming an interaction type is a what, not a
+  form.
+- Declined scope carries its reason.
+
+## Commitment (Definition of Done)
+
+A brief is done when it has passed the PO output check against the
+brief fitness set and the framing. **Consequence on failure:** it is
+returned to the PO role with the criterion named, and no shop receives
+it.
+
+## Sources
+
+The [brief fitness set](../fitness/brief.fitness.md), whose scenarios
+this typedef inherits section by section; the request typedef as
+ancestor; the [decision-brief typedef](decision-brief.md)'s answer-first
+opening.
+
+## Derived review checklist
+
+- The first paragraph states problem and outcome. *(§Required sections 1; fitness 5)*
+- No how; interaction types named as what. *(§Rules; fitness 2)*
+- Every neighbour the framing or brief names is placed. *(§Required sections 2; fitness 3)*
+- Terms, links, and open questions complete. *(§Required sections 3; fitness 4)*
+- Declined scope reasoned. *(§Rules; fitness 1)*
+
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+| 1 | 2026-08-26 | update | Authored by owner direction from the approved brief fitness set, which stood in for it; the frozen corpus on `main` was the reference for the type's purpose, rewritten here, never pasted. |
+| 1 | 2026-08-26 | review | Screened: findings — the request ancestor's sections not carried; fitness 3 narrowed; an interaction-types section ungrounded; the architect named a consumer without a use; checklist cited another document; an extra status no one sets. |
+| 2 | 2026-08-26 | update | Repairs: request's sections carried by equivalence; neighbours the brief names included; interaction types grounded; consumer list corrected; checklist cites this typedef's clauses; delivered status dropped. |
+===== basis/artifacts/product-decision-record.md
+---
+type: artifact-typedef
+id: product-decision-record-typedef
+defines: product-decision-record
+owner: product-authority
+status: draft
+version: 2
+created: 2026-08-26
+updated: 2026-08-26
+ancestry: [product-decision-record]
+---
+
+# Artifact type: product-decision-record
+
+## Identity and ancestry
+
+- **Type:** `product-decision-record` — the record of one product-level
+  decision and its reasons: what was decided, by which role under which
+  right, against which alternatives, with what consequences, and how
+  hard it is to reverse. The product-side counterpart of the
+  architecture decision record.
+- **Produced by:** the [PO role](../roles/lead-po.md), for a decision the
+  PM role or the PO role has taken; checked by the
+  [PO output check](../processes/po-output-check.md) against the
+  [product-decision-record fitness set](../fitness/product-decision-record.fitness.md).
+  **Consumed by:** every role whose later decision the record bounds;
+  Bounded Context shops; the PM role at the check.
+
+## Required frontmatter
+
+`type: product-decision-record`, `id`, `status` (draft | checked |
+returned | pending-definition | superseded — set by the PO role when a later
+record names this one as superseded), `version`, `date`,
+`decided-by` (the role), `right` (the decision right exercised, or
+`escalation` with the escalation named), `owner`, `created`, `updated`.
+
+## Required sections
+
+1. **Decision** — exactly one decision, as a sentence a reader can act
+   on.
+2. **Alternatives** — at least one the deciding role could have chosen,
+   with the reason it was not.
+3. **Consequences** — each: what changes, for whom, and what it costs or
+   forecloses.
+4. **Reversibility** — how hard the decision is to reverse and, if hard,
+   what would trigger revisiting it.
+
+## Rules
+
+- Whether the named role held the right it exercised is the PM role's
+  ruling at the check, not the record's claim.
+- A superseding record links the one it supersedes.
+
+## Commitment (Definition of Done)
+
+A record is done when it has passed the PO output check against its
+fitness set and the framing. **Consequence on failure:** it is returned with the
+criterion named and binds nothing.
+
+## Sources
+
+Nygard's architecture decision record (decision, consequences); MADR
+(considered alternatives); decider and reversibility as the shop's own
+additions, from the roles' decision rights; the
+[product-decision-record fitness set](../fitness/product-decision-record.fitness.md).
+
+## Derived review checklist
+
+- One decision, actionable. *(§Required sections 1; fitness 1)*
+- A real alternative with its reason. *(§Required sections 2; fitness 2)*
+- Decider and right, or the escalation, named. *(§Required frontmatter; fitness 3)*
+- Each consequence names what changes, for whom, at what cost. *(§Required sections 3; fitness 4)*
+- Reversibility and its trigger stated. *(§Required sections 4; fitness 5)*
+
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+| 1 | 2026-08-26 | update | Authored by owner direction from the approved fitness set; the ADR and MADR forms adopted for decision, consequences, and alternatives, with decider and reversibility as the shop's own additions. |
+| 1 | 2026-08-26 | review | Screened: findings — definition wrongly in the ancestry; a PM-agent producer path ungrounded; the framing missing from the commitment; the escalation branch under-carried; an unverifiable Fowler attribution; checklist cited another document. |
+| 2 | 2026-08-26 | update | Repairs: ancestry corrected; PO role sole producer; framing added; escalation named when right is escalation; attribution dropped; superseded's setter named; checklist cites this typedef's clauses. |
+===== basis/artifacts/acceptance-scenarios.md
+---
+type: artifact-typedef
+id: acceptance-scenarios-typedef
+defines: acceptance-scenarios
+owner: product-authority
+status: draft
+version: 2
+created: 2026-08-26
+updated: 2026-08-26
+ancestry: [acceptance-scenarios]
+---
+
+# Artifact type: acceptance-scenarios
+
+## Identity and ancestry
+
+- **Type:** `acceptance-scenarios` — the set of Gherkin scenarios that
+  states, as requirements, what counts as done for one behavior; the
+  set the PO role submits and the owning Bounded Context shop executes.
+  The scenarios are executable by the shop; the set as a document is
+  judged by the [acceptance-scenarios fitness set](../fitness/acceptance-scenarios.fitness.md),
+  never executed there.
+- **Produced by:** the [PO role](../roles/lead-po.md) with the owning
+  shop (scope and wording from the PO; steps and edge cases from the
+  shop; context ownership and feasibility from the solutions architect;
+  usability and accessibility criteria from the product designer);
+  checked by the [PO output check](../processes/po-output-check.md).
+  **Consumed by:** the owning shop's scenario register; the solutions
+  architect role for assignment; the
+  [interaction conformance check](../processes/interaction-conformance-check.md)
+  for the interaction types named.
+
+## Required frontmatter
+
+`type: acceptance-scenarios`, `id`, `status` (draft | checked |
+returned | pending-definition | assigned — set by the solutions
+architect role on assignment), `version`, `date`,
+`behavior` (the behavior's name), `context` (the owning Bounded
+Context), `framing` (link), `owner`, `created`, `updated`.
+
+## Required sections
+
+1. **Contributors** — the owning shop named as the source of steps and
+   edge cases; where the behavior has an interaction, the product
+   designer role's usability acceptance criteria and the accessibility
+   criteria.
+2. **Interaction types** — those the behavior must hold on, from the
+   core-task list in the experience record `core-tasks`, where the
+   behavior has an interaction.
+3. **Scenarios** — each with a tag carrying the set's `behavior` and
+   `context` values and a hash field; Given/When/Then with one action or event
+   in the When and an outcome observable in the running system in the
+   Then; no step names an implementation detail.
+4. **Edges** — each failure or boundary case the framing or the shop's
+   contribution names, as a scenario above or marked out of scope with
+   a reason.
+
+## Rules
+
+- The hash is of the scenario's text; a changed text is a new
+  scenario. Whether the hash matches is a mechanical check, to be filed
+  as a lint.
+- A scenario written without the owning shop is not co-produced and
+  fails the check.
+
+## Commitment (Definition of Done)
+
+A set is done when it has passed the PO output check against its
+fitness set and the framing. **Consequence on failure:** it is returned
+with the criterion named and no scenario enters a register.
+
+## Sources
+
+Gherkin (Given/When/Then, tags); Cucumber's guidance on the three
+amigos (co-production); the experience principles `core-task-parity`
+and `accessible-by-standard`; the
+[acceptance-scenarios fitness set](../fitness/acceptance-scenarios.fitness.md).
+
+## Derived review checklist
+
+- Each scenario one observable behavior, no how. *(§Required sections 3; fitness 1)*
+- Owning shop and both designer criteria present. *(§Required sections 1; fitness 2)*
+- Tag and hash present on every scenario. *(§Required sections 3; §Rules; fitness 3)*
+- Named edges covered or excluded with reason. *(§Required sections 4; fitness 4)*
+- Interaction types named. *(§Required sections 2; fitness 5)*
+
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+| 1 | 2026-08-26 | update | Authored by owner direction from the approved fitness set; carries the co-production statement and the tag's content the set asked the typedef to carry. |
+| 1 | 2026-08-26 | review | Screened: findings — definition wrongly in the ancestry; fitness 2's two criteria collapsed; an undefined consumer; the tag's content in two homes; checklist cited another document. |
+| 2 | 2026-08-26 | update | Repairs: ancestry corrected; both criteria named; the conformance check linked; the tag carries the frontmatter values; assigned's setter named; checklist cites this typedef's clauses. |
+===== basis/artifacts/backlog-order.md
+---
+type: artifact-typedef
+id: backlog-order-typedef
+defines: backlog-order
+owner: product-authority
+status: draft
+version: 2
+created: 2026-08-26
+updated: 2026-08-26
+ancestry: [backlog-order]
+---
+
+# Artifact type: backlog-order
+
+## Identity and ancestry
+
+- **Type:** `backlog-order` — the PO role's ordered list of requirements
+  within the PM role's framing, as submitted for the PM role's check:
+  which requirement the shops take up next, the PO role's exclusive
+  decision, with the priority, recommendations, and contexts it was
+  ordered against stated in the document itself.
+- **Produced by:** the [PO role](../roles/lead-po.md); checked by the
+  [PO output check](../processes/po-output-check.md) against the
+  [backlog-order fitness set](../fitness/backlog-order.fitness.md).
+  **Consumed by:** Bounded Context shops taking up work; the solutions
+  architect role, which raises an omitted recommendation or a wrong
+  context through its interface with the PO role; the PM role at the
+  check.
+
+## Required frontmatter
+
+`type: backlog-order`, `id`, `status` (draft | checked | returned |
+pending-definition | current | superseded — the PO role sets
+`current` on the order the shops take up from and `superseded` on the
+one it replaces), `version`, `date`, `priority` (link to the PM role's
+recorded roadmap priority; provenance — the check judges the priority
+stated in §1), `owner`, `created`, `updated`.
+
+## Required sections
+
+1. **Priority followed** — the roadmap priority stated, and a reason for
+   each exception to it in the order.
+2. **Enabler recommendations received** — each recommendation from the
+   solutions architect role, placed with its position reasoned or
+   declined with a reason.
+3. **The order** — each item: the framing it serves or a declined mark
+   with reason; the owning Bounded Context, with a cross-context item
+   marked and its escalation to the PM role named; and for the first
+   untaken item, ready (with its checked brief or scenario set linked)
+   or not ready with what it waits on.
+
+## Rules
+
+- An order that omits a recommendation received or misnames a context
+  is the solutions architect role's to raise; the check judges only
+  what the order states.
+- A superseding order links the one it supersedes.
+
+## Commitment (Definition of Done)
+
+An order is done when it has passed the PO output check against its
+fitness set and the framing. **Consequence on failure:** it is
+returned with the criterion named and the current order stands.
+
+## Sources
+
+The Scrum Guide's product backlog (ordered, transparent, one owner);
+the shop's own role definitions (the PO role's exclusive domain; the
+PM role's roadmap priority; the solutions architect's enablers and
+decomposition); the
+[backlog-order fitness set](../fitness/backlog-order.fitness.md).
+
+## Derived review checklist
+
+- Every item names its framing or is declined with reason. *(§Required sections 3; fitness 1)*
+- Priority stated and exceptions reasoned. *(§Required sections 1; fitness 2)*
+- Recommendations placed or declined. *(§Required sections 2; fitness 3)*
+- Contexts named; cross-context escalations named. *(§Required sections 3; fitness 4)*
+- Next item's readiness stated. *(§Required sections 3; fitness 5)*
+
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+| 1 | 2026-08-26 | update | Authored by owner direction from the approved fitness set; the first definition to treat the backlog order as an artifact. |
+| 1 | 2026-08-26 | review | Screened: findings — definition wrongly in the ancestry; current/superseded ungrounded; the commitment diverged from the process; checklist cited another document. |
+| 2 | 2026-08-26 | update | Repairs: ancestry corrected; current and superseded's setter and trigger named; commitment aligned; checklist cites this typedef's clauses. |
+===== /tmp/claude-1000/-home-vscode-rebaseline/635ec80b-b74c-4200-8974-a7a6743a1e99/scratchpad/screen-td-1.md
+# Cold screen, round 1 — four artifact typedefs (brief, product-decision-record, acceptance-scenarios, backlog-order; all v1)
+
+Read: cold-reviewer role, artifact-typedef, definition, request, research-report (exemplar), base-writing-style, glossary, lead-po, lead-pm, po-output-check, the four approved fitness sets, the four typedefs. Nothing else.
+
+## Verdict summary
+
+| File | Verdict |
+|---|---|
+| basis/artifacts/brief.md | findings |
+| basis/artifacts/product-decision-record.md | findings |
+| basis/artifacts/acceptance-scenarios.md | findings |
+| basis/artifacts/backlog-order.md | findings |
+
+Two findings run across all four and are listed once (A, B); per-file findings follow, most important first.
+
+## Cross-cutting findings
+
+**A. `ancestry: [definition, …]` is wrong for product-decision-record, acceptance-scenarios, backlog-order (confident).**
+`definition` is "the generic root for documents that state what good looks like for something else … so a validator that knows only `definition` can check any definition document against the two requirements below." Declaring it means an instance must carry definition's frontmatter — `status (draft | approved | superseded)`, `owner`, `version`, `approved` — and body — an opening before the first heading, "a closing checks section (its heading contains 'check')", Document History last. A decision record, a scenario set, and a backlog order carry none of the checks-section requirement, and each typedef's status set (`draft | checked | returned | pending-definition | …`) contradicts definition's closed set. A validator that knows only `definition` would fail every instance. Required change: drop `definition` from the ancestry of the three (`[product-decision-record]`, `[acceptance-scenarios]`, `[backlog-order]`, after the research-report exemplar's `[research-report]`), or declare a root whose frontmatter and sections these instances actually carry. (If the authors intended "a typedef is a definition": that is already true of the typedef document via `artifact-typedef`'s own ancestry; the `ancestry` field is the instances' lineage — "from the generic root to the type this document defines".)
+
+**B. Derived review checklist entries cite the fitness set, not this typedef's clauses (confident).**
+artifact-typedef §Required sections 6: "every entry cites the clause it projects (cite-or-delete)"; the exemplars cite `*(§Rules)*`, `*(§Required sections 4)*`, `*(Commitment)*`. All four checklists cite `*(fitness 1)*` … `*(fitness 5)*` — a clause in another document. The commitment "a validator can check any instance from it alone" fails when the checklist's clauses live outside. Required change: cite the typedef's own section (`§Required sections 2; §Rules`), keeping the fitness scenario number as a secondary note if wanted.
+
+**C. Opening before the first heading (wobbly, inherited).** definition §Required sections 1: "An opening that states what the document defines before the first section heading." All four go `# Artifact type: x` → `## Identity and ancestry` with no prose between. The approved exemplars (artifact-typedef, definition, request, research-report) do the same, so this is a corpus convention, not a v1 defect; recording it so the owner can rule once. No change required from these four unless the owner rules the exemplars wrong too.
+
+**D. Status sets vs po-output-check (confident on the shared core; wobbly on the extras).** All four carry `checked`, `returned`, `pending-definition` plus `draft` — consistent with the process ("`checked` on pass, `returned` on fail, `pending-definition` on definition change"). Each also adds a value nothing read here sets: brief `delivered`; product-decision-record `superseded`; acceptance-scenarios `assigned`; backlog-order `current | superseded`. An author cannot tell from the typedef when to set them; a validator can only check spelling. Required change: for each extra value, name who sets it and on what (e.g. "`assigned` — set by the solutions architect role on assignment to the owning context"), or drop it.
+
+**E. Undefined terms arriving cold.** "core-task list" (brief §4, acceptance-scenarios §2) — the glossary defines *interaction type* and the principle is `core-task-parity`; no "core-task list" exists in anything read. "interaction conformance check" (acceptance-scenarios, Consumed by) — no such process or check is named anywhere read. "decision-brief form" (brief Sources; also in the fitness set) — unlinked; the glossary only mentions `decision-brief` as an example type name. Required change: link or define each, or cut.
+
+Banned words: no occurrence of "seat", "surface", "seam", "load-bearing" in the four files (checked).
+
+## basis/artifacts/brief.md — findings
+
+1. **Request ancestry not carried into the section list (confident).** Brief declares `ancestry: [request, brief]`. request §Required sections: "1. **What is requested** — named early, not implied. 2. **From whom** — the reader, named." artifact-typedef §Rules: "A **section** is a markdown heading. Required sections appear as headings in the listed order." Brief's sections are "The problem and the outcome", "Scope", "What the shop needs", "Interaction types" — neither ancestor heading appears, and the reader is carried only in frontmatter (`reader (the receiving shop)`). A validator that knows only `request` fails every brief. Frontmatter does carry through: `type`, `status`, `date`, `reader` are all present. Required change: either state in §Required sections that §1 is the `request` "What is requested" section and add a heading (or a stated equivalence) for "From whom", or amend the request typedef so its two items are content requirements rather than headings. Note the request typedef itself also puts Commitment before Sources, against artifact-typedef's order — not under screen, but the owner should know the ancestor is out of form.
+
+2. **Fitness 3 narrowed (confident).** Scenario 3: "the pieces of work the framing **or the brief itself** names as neighbouring". Typedef §2: "for each neighbouring piece of work the framing names, in or out or the rule that decides" — drops neighbours the brief itself names; checklist likewise: "Every neighbour the framing names is placed." Required change: "the framing or this brief names".
+
+3. **Added requirement not grounded (confident).** §4 "**Interaction types**, where the problem has one — the interaction types the behavior must hold on, from the core-task list." No brief scenario asks for it (scenario 2 only permits: "naming an interaction type … is a what, not a form"); the interaction-types requirement lives in the acceptance-scenarios fitness set (scenario 5) and lead-po carries nothing on it. Required change: cut §4, or ground it (a brief fitness scenario, or a role clause) and define "core-task list".
+
+4. **Consumer not grounded (wobbly).** "Consumed by: … the solutions architect role for assignment". lead-po's architect interface sends "PM-checked scenarios out, for assignment" — scenarios, not briefs. Quote the whole: "**Consumed by:** the receiving Bounded Context shop; the solutions architect role for assignment; the PM role at the check." Required change: drop the architect, or say what the architect does with a brief.
+
+5. Frontmatter closed set: stated as a list with no "open" marker — closed per artifact-typedef, fine. `framing (link to the framing it serves)` grounded in lead-po ("each traceable to the framing it serves"). `delivered` — see D.
+
+Mapping (fitness → home): 1 → §2 + Rules b.2; 2 → Rules b.1; 3 → §2 (narrowed, finding 2); 4 → §3; 5 → §1. No scenario without a home.
+
+## basis/artifacts/product-decision-record.md — findings
+
+1. Ancestry — cross-cutting A.
+
+2. **Producer clause not grounded and conflicts with the check (confident).** "**Produced by:** the PO role … for a decision the PM role or the PO role has taken, or by the PM role's assisting agent when the decision is the PM's own; checked by the PO output check". lead-po: the PO role authors "product decision records"; lead-pm names no record-writing by its assisting agent, and the po-output-check's maker is lead-po only ("maker — lead-po (submits and revises; never decides its own pass)"). A record the PM's agent wrote would go through a check whose maker role is not its author. Required change: keep the PO role as sole producer, or ground the PM-agent path in lead-pm and say which check it goes through.
+
+3. **Commitment omits the framing (confident).** "A record is done when it has passed the PO output check against its fitness set." The process: "The framing is always a criterion, named `framing`"; brief and acceptance-scenarios say "against … and the framing". Required change: "against its fitness set and the framing".
+
+4. **Fitness 3's escalation branch is under-carried (wobbly).** Scenario 3 Then: "names the role that decided and the decision right it exercised, or the escalation that settled it". Frontmatter: "`right` (the decision right exercised, or `escalation`)" — the literal word `escalation` names that an escalation happened, not "the escalation that settled it" (to whom, settled how). Checklist: "Decider and right named in frontmatter." Required change: require the escalation itself named (a field or a sentence in §1) when `right: escalation`.
+
+5. **Added rule not grounded (confident, low).** "A superseding record links the one it supersedes." No fitness scenario or role clause asks it; reasonable, but per the brief given ("does any typedef add a requirement its fitness set and the role definitions do not ground") it is quoted here for the owner. Same for the Sources attribution "Fowler's 'decide only what is hard to reverse'" — the fitness set records reversibility as "this set's proposal for the typedef"; the typedef adds a source the set did not name, in quotation marks, which the reader cannot verify.
+
+6. Stumble: checklist "Consequences priced" — "priced" is the fitness set's shorthand; §3 says it plainly ("what it costs or forecloses"); use the plain words.
+
+Mapping: 1 → §1; 2 → §2; 3 → frontmatter `decided-by`, `right` (finding 4); 4 → §3; 5 → §4. No scenario without a home.
+
+## basis/artifacts/acceptance-scenarios.md — findings
+
+1. Ancestry — cross-cutting A. (This is the one type where "states what counts as done" makes the claim tempting; the frontmatter/checks-section requirements still do not fit.)
+
+2. **Fitness 2's two criteria collapsed into one phrase (confident).** Scenario 2 Then: "the product designer role's usability acceptance criteria **and the accessibility criteria** are present". Typedef §1: "the criteria the product designer role supplied, where the behavior has an interaction"; checklist: "Contributors and designer criteria present." An author from the template alone would not know two kinds are required. Required change: "the usability acceptance criteria and the accessibility criteria the product designer role supplied".
+
+3. **Undefined consumer (confident).** "the interaction conformance check for the interaction types named" — nothing read defines it. Required change: link it or cut it (cross-cutting E).
+
+4. **"core-task list"** in §2 — cross-cutting E.
+
+5. Rules: both grounded — "a changed text is a new scenario" in lead-po ("identified by a hash of its text so that a changed scenario is a new scenario"); "A scenario written without the owning shop is not co-produced and fails the check" in lead-po's Admissible evidence. `assigned` status — see D; this one has a plausible setter (the solutions architect's assignment) but it is not named.
+
+6. Stumble: §3 requires the tag to name "the behavior and its Bounded Context" and frontmatter separately carries `behavior` and `context` — two homes for the same fact per scenario set; fine if the tag is per scenario and the frontmatter is per set, but say so.
+
+Mapping: 1 → §3; 2 → §1 (finding 2); 3 → §3 (tag, hash) + Rules b.1; 4 → §4; 5 → §2. No scenario without a home.
+
+## basis/artifacts/backlog-order.md — findings
+
+1. Ancestry — cross-cutting A.
+
+2. **Added requirements not grounded (confident).** "A superseding order links the one it supersedes." and, in the Commitment, "the previous current order stands" — a `current` status and a supersession chain that no fitness scenario, lead-po clause, or process sets. Required change: name who sets `current`/`superseded` and when (D), or drop both and the `superseded` link rule.
+
+3. **Commitment diverges from the process's inputs (wobbly).** "passed the PO output check against its fitness set and the framings it names" — the process passes one `framing`; the fitness intro says "the process passes one framing and an order spans many" and handles it by scenario 1. Saying "the framings it names" implies a check the process does not run. Required change: "against its fitness set and the framing", and let scenario 1 carry the per-item framings.
+
+4. Frontmatter `priority (link to the PM role's recorded roadmap priority …)` plus §1 "the roadmap priority stated" — two homes for the priority; the judge reads only the artifact, so §1's statement is the one that counts. Say the link is provenance and §1 is what is judged (stumble, low).
+
+5. Rules b.1 restates the fitness intro ("What the judge cannot catch … is the solutions architect role's to raise") — a second home for that sentence; acceptable as a rule only if the typedef is now the source and the fitness set will reference it (single-source-of-truth). Low.
+
+Mapping: 1 → §3; 2 → §1 (+ frontmatter `priority`); 3 → §2; 4 → §3; 5 → §3. No scenario without a home.
+
+## Decidability and overload
+
+Per file: decidable with confidence on A, B, D, E and the numbered findings marked confident; wobbly items are marked. Each typedef is right-sized for one reading; the Rules sections are short and the commitments carry a consequence as required. Sections not named above (Sources present, no pinned example links, Document History last, `version` present, `defines` matching the fitness `target-type`) are clean in all four.

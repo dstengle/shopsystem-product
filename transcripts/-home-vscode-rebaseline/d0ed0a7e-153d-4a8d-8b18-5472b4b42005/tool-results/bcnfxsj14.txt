@@ -1,0 +1,581 @@
+     1	---
+     2	type: process-definition
+     3	id: small-change-process
+     4	owner: product-authority
+     5	status: approved
+     6	approved: 2026-09-04
+     7	version: 7
+     8	created: 2026-09-04
+     9	updated: 2026-09-09
+    10	produces: []
+    11	carried-by: small-change-skill
+    12	condition-language: cel
+    13	annotations:
+    14	  claude-code:
+    15	    activation: model-judged
+    16	    promotion: experiment-local
+    17	    use-when: "a request's route is small-change and its work item stands — the lead shop is to take the simple change it records to a verified result; never for an ask not yet recorded as a request, and never in place of the request-intake process's routing"
+    18	---
+    19	
+    20	# Process: Small change
+    21	
+    22	**Purpose:** Take a request whose route is the small-change lane to a
+    23	verified result. No bet is taken and no check of record is run in
+    24	this process: both protect the appetite an initiative's bet spends
+    25	(the [initiative typedef](../artifacts/initiative.md)'s term), and a
+    26	simple change — the glossary's term — spends none of it worth a bet.
+    27	
+    28	**Guiding statement:** The definition on the request is the whole of
+    29	what good looks like for the change: every role in the execution judges by
+    30	it, and nothing outside it is made or counts as verified. Everything
+    31	the execution decides lands on the request or in the changed
+    32	artifacts' own histories; nothing binding lives only in the
+    33	transcript.
+    34	
+    35	The definition of good for this process is the feature
+    36	[feat-request-routing](../../features/feat-request-routing.md); each
+    37	outcome below names the scenarios of it that it witnesses.
+    38	
+    39	**Outcomes:**
+    40	- O1. The change is defined before it is made, by the lead-po role, on
+    41	  the request: the definition opens with the request's id, states
+    42	  what will be different as acceptance statements, names the maker
+    43	  role and the verifying observation, and stands before any artifact
+    44	  is touched — witnessed by `define`'s run-by and prompt, and by the
+    45	  step order: `make` is first reached only through
+    46	  `route-definition`'s else branch, after `define`; the only other
+    47	  entry is `advance-round`, itself downstream of `define` (feature
+    48	  scenario *a simple change is defined up front before it is made*).
+    49	- O2. The change is checked against its definition by a role other
+    50	  than the maker: `make` runs by `lead-solutions-architect` and
+    51	  `check` by `lead-pm`, two role ids fixed in this definition, and the
+    52	  verdict is written on the request by the checker with its role —
+    53	  witnessed by the two steps' run-by and `check`'s prompt (feature
+    54	  scenario *a simple change is checked by a role other than its
+    55	  maker*).
+    56	- O3. The result counts done only when the observation the definition
+    57	  named shows the effect in the running system, and the request then
+    58	  records the verified result with its evidence; between the request
+    59	  and that result no bet is taken and no check of record is run —
+    60	  witnessed by `route-verify`'s success exit, which requires the
+    61	  observation's `exit 0` as the last line of `evidence`, by `record`'s
+    62	  prompt, and by the step list, which carries no bet step and no step
+    63	  run by the cold-reviewer role (feature scenarios *a simple change
+    64	  reaches a verified result with no bet and no check of record* and
+    65	  *the example change reaches a verified result through the lane*).
+    66	- O4. A change found not simple once defined leaves the lane for a
+    67	  discovery conversation with the reason, and the lane makes no change
+    68	  for it: the route is changed by the lead-pm role and by no other —
+    69	  witnessed by `route-definition`'s not-simple exit, which precedes
+    70	  `make`, and `reroute`'s prompt (feature scenario *a request whose
+    71	  change turns out not simple is routed to discovery*).
+    72	- O5. Every run that reaches an exit ends in one of three stated
+    73	  states on the request — done, routed to discovery, or returned to
+    74	  routing with the findings recorded — closes the work item with a
+    75	  reason citing the request's id, returns `change`, the request's
+    76	  Result section, to the caller, and the make-check-verify loop is
+    77	  capped — witnessed by `record`, `reroute`, and `hand-back`, each
+    78	  writing its state on the request, by the run templates of
+    79	  `close-done`, `close-not-simple`, and `close-failed`, by
+    80	  `name-result`'s `set`, and by the failsafe rows of `route-check`
+    81	  and `route-verify`. An execution halted by a failed step (Data,
+    82	  Verification's rule) reaches no exit: it leaves the request as the
+    83	  last completed step wrote it, the work item open, and no `change`
+    84	  returned, and the failure is reported to the lead-pm role — the
+    85	  halt is not a state of the request.
+    86	
+    87	**Roles:** the definer —
+    88	[`../roles/lead-po.md`](../roles/lead-po.md) (writes the change's
+    89	definition on the request; the definition is a requirement, and this
+    90	role makes the requirements; it makes nothing else here). The maker —
+    91	[`../roles/lead-solutions-architect.md`](../roles/lead-solutions-architect.md)
+    92	(makes the change; the lane's scope — the glossary's *simple change* —
+    93	is the lead shop's own definitions, one instance of them, and the
+    94	tools that render them, and this role holds those: the compilers and
+    95	the lint are its apparatus, as the skill-rendering and role-rendering
+    96	processes record). The checker and recorder —
+    97	[`../roles/lead-pm.md`](../roles/lead-pm.md) (checks the change
+    98	against the definition, records the verified result, and alone
+    99	changes the request's route or status — the request typedef's writer
+   100	rules; the role the authority holds in person). The maker is fixed in
+   101	`make`'s run-by, not passed in: a step's run-by is a literal role id
+   102	under the process-definition typedef, and fixing both `make`'s and
+   103	`check`'s roles is what makes *the checker is never the maker* a
+   104	mechanical fact of this definition rather than a value a caller could
+   105	set to the same role. A change whose maker must be another role is a
+   106	change to this definition — a make step for that role — filed as the
+   107	definition gap it is, never a run-time substitution. The cold-reviewer
+   108	role has no step here: no check of record is run.
+   109	
+   110	**Carried by:** `.claude/skills/small-change/SKILL.md` — generated
+   111	from this definition by
+   112	[`../tools/compile_process.py`](../tools/compile_process.py), never
+   113	edited by hand, and placed at the skills load point by the
+   114	[skill-rendering](skill-rendering.md) process once this definition
+   115	stands approved. Until that run the carrier does not exist, so its
+   116	correspondence cannot be walked at screening time: skill-rendering's
+   117	own check — a fresh render diffed against what stands — is that check.
+   118	
+   119	## Flow (compiled)
+   120	
+   121	Generated from the steps below by `tools/compile_process.py`; do not
+   122	edit by hand.
+   123	
+   124	```mermaid
+   125	flowchart TD
+   126	  name_result["Name the request's Result section as the execution's result — runtime<br/>in — request: string<br/>sets — change: string"]
+   127	  read_id["Read the request's id — runtime<br/>in — request: string<br/>out — request_id: string"]
+   128	  read_anchor["Read the work item the request names — runtime<br/>in — request: string<br/>out — work_item: string"]
+   129	  define(["Define the change — agent: lead-po<br/>in — request: string, glossary: string<br/>out — request: string, not_simple: boolean, reason: string, observation: string, paths: string[]"])
+   130	  route_definition{"Route on the definition<br/>in — not_simple: boolean"}
+   131	  make(["Make the change — agent: lead-solutions-architect<br/>in — request: string, paths: string[], check_finding: string, evidence: string[], round: integer<br/>out — request: string, changed: string[]"])
+   132	  check(["Check the change against the definition — agent: lead-pm<br/>in — request: string, paths: string[], changed: string[], round: integer<br/>out — request: string, check_verdict: string, check_finding: string"])
+   133	  route_check{"Route on the check<br/>in — check_verdict: string, round: integer, round_cap: integer"}
+   134	  verify["Run the verifying observation — runtime<br/>in — observation: string<br/>out — evidence: string[]"]
+   135	  route_verify{"Route on the verification<br/>in — evidence: string[], round: integer, round_cap: integer"}
+   136	  advance_round["Advance the round — runtime<br/>in — round: integer<br/>sets — round: integer"]
+   137	  record(["Record the verified result — agent: lead-pm<br/>in — request: string, evidence: string[]<br/>out — request: string"])
+   138	  close_done["Close the work item as done — runtime<br/>in — work_item: string, request_id: string"]
+   139	  reroute(["Route the request to discovery — agent: lead-pm<br/>in — request: string, reason: string<br/>out — request: string"])
+   140	  close_not_simple["Close the work item as not simple — runtime<br/>in — work_item: string, request_id: string"]
+   141	  hand_back(["Return the request to routing — agent: lead-pm<br/>in — request: string, check_verdict: string, check_finding: string, evidence: string[], round: integer<br/>out — request: string"])
+   142	  close_failed["Close the work item as failed — runtime<br/>in — work_item: string, request_id: string"]
+   143	  __end(("end<br/>result — change: string"))
+   144	  __start(("start")) --> name_result
+   145	  name_result --> read_id
+   146	  read_id --> read_anchor
+   147	  read_anchor --> define
+   148	  define --> route_definition
+   149	  route_definition -->|not-simple exit: the change is not simple — routed to discovery, no change made| reroute
+   150	  route_definition -->|else| make
+   151	  make --> check
+   152	  check --> route_check
+   153	  route_check -->|success exit: check passed — verify| verify
+   154	  route_check -->|failsafe exit: round >= round_cap — failed, returned to routing| hand_back
+   155	  route_check -->|else| advance_round
+   156	  verify --> route_verify
+   157	  route_verify -->|success exit: the observation exited 0 — the effect is demonstrated| record
+   158	  route_verify -->|failsafe exit: round >= round_cap — failed, returned to routing| hand_back
+   159	  route_verify -->|else| advance_round
+   160	  advance_round --> make
+   161	  record --> close_done
+   162	  close_done --> __end
+   163	  reroute --> close_not_simple
+   164	  close_not_simple --> __end
+   165	  hand_back --> close_failed
+   166	  close_failed --> __end
+   167	```
+   168	
+   169	
+   170	## Data
+   171	
+   172	Each entry names a process-local value. Simple types use JSON Schema
+   173	names inline; conditions are CEL expressions over these names. Paths
+   174	are relative to the lead shop's repository root, the execution's working
+   175	directory. The feature named over Outcomes is the definition of good
+   176	the scenarios are cited from. *Simple change*,
+   177	*small-change lane*, *request* (the received-ask sense), and *check of
+   178	record* are the [glossary](../glossary.md)'s terms; `glossary` is
+   179	declared as data so that `define` judges simpleness against the term's
+   180	one home and loads nothing else.
+   181	
+   182	`request` is the path of the request the lane takes up — an instance
+   183	of the [request typedef](../artifacts/request.md)'s received-ask path,
+   184	its `route` `small-change`. This process runs as a sub-process of the
+   185	[request-intake](request-intake.md) process: its `open-lane` step maps
+   186	`request` to this parameter and receives this execution's `result` as
+   187	`change`; the execution is tracked on the work item that intake's `land`
+   188	step opened for the routed ask and wrote to the request's `work-item`
+   189	field. The work item lives in the work register, `bd` — the beads
+   190	tracker; `bd close <item> --reason` closes an item with its reason.
+   191	The lane owns that item once it takes up the request: `read-anchor`
+   192	reads it from the request — a request without one is a failed step
+   193	there, before any work — and every exit runs `bd close` on it with a
+   194	reason citing the request's id, read by `read-id`; no intake step
+   195	closes it. `routed-to` is intake's to write, on the lane's return.
+   196	The intake is the lane's one caller: the request typedef names the
+   197	lane as where the route leads, and no bead of its own is defined here.
+   198	The execution's `result` is `change`: the request's Result section by
+   199	fragment, `<request>#result` — the one place the definition, the check,
+   200	and the verified result stand, and what the request typedef's
+   201	`routed-to` points at for a simple change. `change` is the lane's
+   202	record on every exit: the verified result on done, or the reason the
+   203	lane has none on the other two. The Change made entry's `changed`
+   204	list is what a reader follows from there to the artifacts.
+   205	`produces` is empty because the execution creates no
+   206	artifact — the change lands in artifacts of their own types, and the
+   207	request already exists.
+   208	
+   209	**Where the definition lives.** The change's definition is written on
+   210	the request itself, in its Result section (the typedef's section 4),
+   211	and nowhere else. The alternative — a file of its own under a
+   212	`changes/` directory referencing the request — was not taken, under
+   213	`single-source-of-truth` and the feature's constraints C1 and C3: a
+   214	separate file is a second home that must reference the request and be
+   215	referenced back, an artifact with no type (the initiative's no-go: no
+   216	new types), and a document a reader must find from the request rather
+   217	than read on it. On the request, the definition references the request
+   218	by being part of it — it opens with the request's id — and every
+   219	later entry (the change made, the check, the verified result) sits
+   220	beside it, so the request reads as one record from the originator's
+   221	words to the demonstrated effect. `change` names that section, and
+   222	the intake process's `record-route` step writes it into the request's
+   223	`routed-to` — the typedef's "a change definition" as the place the
+   224	route led. The Result section carries four entries under headings of this process's naming:
+   225	*Definition* (written by `define`), *Change made* (by `make`, one entry
+   226	per round), *Check* (by `check`, one per round), and *Verified result*
+   227	(by `record`) — or, on an exit before the result, the entry `reroute`
+   228	or `hand-back` writes.
+   229	
+   230	**What a step reads and writes.** A step reads only what it lists.
+   231	`paths` is the list of artifacts the definition names, by path —
+   232	`define` returns it alongside the definition, `make` reads them as its
+   233	declared input and writes to them, and `check` reads them; a
+   234	definition that names a rendering — a skill, a subagent file, a
+   235	compiled diagram — lists the rendering's source and the rendering
+   236	tool in `paths` as well, since `make` reads what `paths` names and
+   237	nothing else, and a rendering is re-rendered, never edited; `changed`
+   238	is the list of paths `make` changed in a round, returned by `make` and
+   239	read by `check`, which fails a path in `changed` that is not in
+   240	`paths`. The artifacts' own Document History rows carry each change,
+   241	citing the request by id: the request's Change made entry references
+   242	the changed artifacts, the artifacts reference the request, and
+   243	neither restates the other. A definition or typedef is amended under its owner's
+   244	decision: for a definition the product authority owns, the decision is
+   245	the route recorded on the request by the lead-pm role, on the
+   246	authority's ruling recorded in
+   247	[adr-2026-09-04-request-front-end](../../decisions/adr-2026-09-04-request-front-end.md)
+   248	that the lead-pm is an extension of the authority; the history row
+   249	names the request. A rendering — a skill, a subagent file, a compiled
+   250	diagram — is never edited by hand; it is re-rendered from its source,
+   251	the rendering processes' rule. `make` never edits the definition: a
+   252	definition found wrong is a `check` finding that stands to the cap,
+   253	and the failed exit returns the request to routing.
+   254	
+   255	**Verification.** The *verifying observation* the definition names is
+   256	one command, run from the repository root, whose exit status 0 shows
+   257	the change's effect in the running system — a lint over the corpus, a
+   258	compiler's check, a check step of another process, a headless
+   259	fresh-session demonstration — and whose output is the evidence.
+   260	`verify` runs it as `observation` and yields `evidence`: the command's
+   261	output lines, standard error merged, then one closing line `exit <n>`
+   262	carrying the command's exit status. The observation's nonzero exit is
+   263	a failed verification — a finding routed back to `make` under the
+   264	cap, never a halted run — while a nonzero exit of a `run` step itself
+   265	(the shell failing, the bead missing, a close refused) is a failed
+   266	step, not an empty result: the execution halts at that step and the failure
+   267	is reported to the lead-pm role, the sibling processes' rule. `round`
+   268	counts make rounds and is shared by the check and the verification:
+   269	a fail from either advances it, and `round_cap` bounds both together.
+   270	
+   271	**Exit states.** Each exit writes its state on the request, closes
+   272	the work item, and returns `change` to the caller; the evidence
+   273	stands on the request, so the close reason cites the request's id
+   274	rather than copying it, and a close that exits nonzero is a failed
+   275	step. *Done*: the request's
+   276	status `done`, written by `record` — the typedef names this step as
+   277	that status's writer. *Not simple*: the route changed to `discovery`
+   278	with the reason, status unchanged (`routed`), written by `reroute` —
+   279	the typedef's rule that a later change of route is the lead-pm
+   280	role's; no artifact touched; the request, its route now discovery, is
+   281	the discovery conversation's input, opened on it by the intake
+   282	process's dispatch on the execution the lead-pm role enters with the
+   283	request. *Failed*: the findings standing at the cap recorded on the
+   284	request, its route set to `awaiting` with the reason and its status
+   285	to `recorded`, so the request is again visible as awaiting its route
+   286	and the intake process's route step takes it up; the changed artifacts
+   287	are not reverted — a revert is itself a change to governed artifacts
+   288	and belongs to the route decided next, and the request records
+   289	exactly what stands.
+   290	`check_verdict` is `pass` or `fail`; `check_finding` is the statement
+   291	or rule that fails, quoted, empty on pass. `not_simple` and `reason`
+   292	are `define`'s finding that the change is not simple by the glossary's
+   293	test — the lead-pm role judged it simple at routing, and the definer
+   294	may find otherwise once the change is defined, the feature's rule.
+   295	
+   296	```yaml
+   297	data:
+   298	  request: {type: string, format: uri-reference}
+   299	  change: {type: string, format: uri-reference}
+   300	  request_id: {type: string}
+   301	  work_item: {type: string}
+   302	  glossary: {type: string, format: uri-reference, initial: basis/glossary.md}
+   303	  not_simple: {type: boolean, initial: false}
+   304	  reason: {type: string, initial: ""}
+   305	  observation: {type: string, initial: ""}
+   306	  paths: {type: array, items: {type: string}, initial: []}
+   307	  changed: {type: array, items: {type: string}, initial: []}
+   308	  check_verdict: {type: string, enum: [pass, fail]}
+   309	  check_finding: {type: string, initial: ""}
+   310	  evidence: {type: array, items: {type: string}, initial: []}
+   311	  round: {type: integer, initial: 1}
+   312	  round_cap: {type: integer, initial: 3}
+   313	```
+   314	
+   315	## Steps
+   316	
+   317	```yaml
+   318	start: name-result
+   319	parameters: [request]
+   320	result: change
+   321	steps:
+   322	  - id: name-result
+   323	    name: Name the request's Result section as the execution's result
+   324	    run-by: {execution: runtime}
+   325	    inputs: [request]
+   326	    set:
+   327	      change: request + "#result"
+   328	    next: read-id
+   329	
+   330	  - id: read-id
+   331	    name: Read the request's id
+   332	    run-by: {execution: runtime}
+   333	    inputs: [request]
+   334	    outputs: [request_id]
+   335	    run: |
+   336	      sed -n 's/^id: //p' ${request} | head -1 | grep .
+   337	    next: read-anchor
+   338	
+   339	  - id: read-anchor
+   340	    name: Read the work item the request names
+   341	    run-by: {execution: runtime}
+   342	    inputs: [request]
+   343	    outputs: [work_item]
+   344	    run: |
+   345	      sed -n 's/^work-item: //p' ${request} | head -1 | grep .
+   346	    next: define
+   347	
+   348	  - id: define
+   349	    name: Define the change
+   350	    run-by: {role: lead-po, execution: agent}
+   351	    inputs: [request, glossary]
+   352	    outputs: [request, not_simple, reason, observation, paths]
+   353	    prompt: |
+   354	      Read the request — its sections 1 to 3: the originator's words,
+   355	      the reader, the route and its reason — and the entry for simple
+   356	      change in the glossary at glossary; nothing else. First judge
+   357	      the change by that entry. If it is not a simple change, return
+   358	      not_simple true with the reason, observation and paths empty,
+   359	      and write nothing on the request: the lane makes no change for it.
+   360	      Otherwise write the change's definition into the request's
+   361	      Result section under the heading Definition, opening with the
+   362	      request's id: what will be different when the change is done, as
+   363	      one or more Given/When/Then acceptance statements a checker can
+   364	      decide against the changed artifacts; the artifacts the change
+   365	      touches, by path — where one is a rendering, its source and the
+   366	      rendering tool listed with it, since the maker reads what paths
+   367	      names and nothing else; the maker role — lead-solutions-architect, the
+   368	      role the make step runs by; and the verifying observation — one
+   369	      command, run from the repository root, whose exit 0 shows the
+   370	      effect in the running system and whose output is the evidence.
+   371	      The definition says what, never how, and stands before any
+   372	      change: you touch no artifact but the request. Bump the
+   373	      request's version with the history row. Return the request,
+   374	      not_simple false, reason empty, observation as the command
+   375	      exactly as written, and paths as the artifacts the definition
+   376	      names.
+   377	    next: route-definition
+   378	
+   379	  - id: route-definition
+   380	    name: Route on the definition
+   381	    run-by: {execution: runtime}
+   382	    inputs: [not_simple]
+   383	    branches:
+   384	      - label: "not-simple exit: the change is not simple — routed to discovery, no change made"
+   385	        when: not_simple
+   386	        next: reroute
+   387	      - else: make
+   388	
+   389	  - id: make
+   390	    name: Make the change
+   391	    run-by: {role: lead-solutions-architect, execution: agent}
+   392	    inputs: [request, paths, check_finding, evidence, round]
+   393	    outputs: [request, changed]
+   394	    prompt: |
+   395	      Read the Definition in the request's Result section and the
+   396	      artifacts at paths — nothing else; the definition is not yours
+   397	      to edit, and paths is the whole of what you may change. Make
+   398	      the change so that every acceptance statement holds, through
+   399	      each artifact's own producing rules: a definition or typedef
+   400	      amended under the decision the request records, with its
+   401	      Document History row citing the request by id and its version
+   402	      bumped; its schema changed where the definition names one; a
+   403	      tool changed together with the definition that names it; a
+   404	      rendering never edited by hand — re-rendered by the tool paths
+   405	      names from the source paths names. Make nothing the definition
+   406	      does not cover. When
+   407	      check_finding is not empty this is a repair round: repair what
+   408	      it quotes. When evidence is not empty and check_finding is, the
+   409	      verifying observation failed: read the evidence and repair the
+   410	      cause. Write under Change made in the request's Result section,
+   411	      one entry for this round: your role as maker, every path
+   412	      changed with its version before and after, and round. Return
+   413	      the request and changed — the paths you changed this round.
+   414	    next: check
+   415	
+   416	  - id: check
+   417	    name: Check the change against the definition
+   418	    run-by: {role: lead-pm, execution: agent}
+   419	    inputs: [request, paths, changed, round]
+   420	    outputs: [request, check_verdict, check_finding]
+   421	    prompt: |
+   422	      Read the Definition and the Change made entry for round in the
+   423	      request's Result section, and the artifacts at paths and at
+   424	      changed — nothing else. You are not the maker: the make step runs by
+   425	      another role, and your verdict is judged against the definition
+   426	      alone, not against what you would have made. For each acceptance
+   427	      statement, decide whether the changed artifacts satisfy it; for
+   428	      each change, whether it went through the artifact's own
+   429	      producing rules — the history row citing the request, the
+   430	      version bumped, no rendering edited by hand, nothing made that
+   431	      the definition does not cover — a path in changed that is not in
+   432	      paths fails this rule. Verdict pass only when every
+   433	      statement holds and every change conforms; otherwise fail, with
+   434	      check_finding the statement or rule that fails, quoted, and what
+   435	      fails it. Write under Check in the Result section: the verdict,
+   436	      your role, round, and the finding. Return the request, the
+   437	      verdict, and the finding — empty on pass.
+   438	    next: route-check
+   439	
+   440	  - id: route-check
+   441	    name: Route on the check
+   442	    run-by: {execution: runtime}
+   443	    inputs: [check_verdict, round, round_cap]
+   444	    branches:
+   445	      - label: "success exit: check passed — verify"
+   446	        when: check_verdict == "pass"
+   447	        next: verify
+   448	      - label: "failsafe exit: round >= round_cap — failed, returned to routing"
+   449	        when: round >= round_cap
+   450	        next: hand-back
+   451	      - else: advance-round
+   452	
+   453	  - id: verify
+   454	    name: Run the verifying observation
+   455	    run-by: {execution: runtime}
+   456	    inputs: [observation]
+   457	    outputs: [evidence]
+   458	    run: |
+   459	      ( ${observation} ) 2>&1
+   460	      printf 'exit %s\n' "$?"
+   461	    next: route-verify
+   462	
+   463	  - id: route-verify
+   464	    name: Route on the verification
+   465	    run-by: {execution: runtime}
+   466	    inputs: [evidence, round, round_cap]
+   467	    branches:
+   468	      - label: "success exit: the observation exited 0 — the effect is demonstrated"
+   469	        when: size(evidence) > 0 && evidence[size(evidence) - 1] == "exit 0"
+   470	        next: record
+   471	      - label: "failsafe exit: round >= round_cap — failed, returned to routing"
+   472	        when: round >= round_cap
+   473	        next: hand-back
+   474	      - else: advance-round
+   475	
+   476	  - id: advance-round
+   477	    name: Advance the round
+   478	    run-by: {execution: runtime}
+   479	    inputs: [round]
+   480	    set:
+   481	      round: round + 1
+   482	    next: make
+   483	
+   484	  - id: record
+   485	    name: Record the verified result
+   486	    run-by: {role: lead-pm, execution: agent}
+   487	    inputs: [request, evidence]
+   488	    outputs: [request]
+   489	    prompt: |
+   490	      Read the request's Result section and evidence. Write under
+   491	      Verified result: the verifying observation the Definition named,
+   492	      its evidence — the output lines and the closing exit 0 — the
+   493	      date, and your role; state that the Definition, the Check's
+   494	      verdict by your role, and this result stand, and that between
+   495	      the request and this result no bet was taken and no check of
+   496	      record was run. Set the request's status to done; bump its
+   497	      version with the history row. Return the request.
+   498	    next: close-done
+   499	
+   500	  - id: close-done
+   501	    name: Close the work item as done
+   502	    run-by: {execution: runtime}
+   503	    inputs: [work_item, request_id]
+   504	    run: |
+   505	      bd close ${work_item} --reason "done: ${request_id}"
+   506	    next: end
+   507	
+   508	  - id: reroute
+   509	    name: Route the request to discovery
+   510	    run-by: {role: lead-pm, execution: agent}
+   511	    inputs: [request, reason]
+   512	    outputs: [request]
+   513	    prompt: |
+   514	      Change the request's route to discovery, with reason as its
+   515	      route-reason — the status unchanged; write under the Result
+   516	      section that the lane defined no change and made none, with the
+   517	      reason. The originator reads the changed route and its reason
+   518	      from the request, as the first route was read. Bump the
+   519	      request's version with the history row. Return the request.
+   520	    next: close-not-simple
+   521	
+   522	  - id: close-not-simple
+   523	    name: Close the work item as not simple
+   524	    run-by: {execution: runtime}
+   525	    inputs: [work_item, request_id]
+   526	    run: |
+   527	      bd close ${work_item} --reason "not simple: routed to discovery — ${request_id}"
+   528	    next: end
+   529	
+   530	  - id: hand-back
+   531	    name: Return the request to routing
+   532	    run-by: {role: lead-pm, execution: agent}
+   533	    inputs: [request, check_verdict, check_finding, evidence, round]
+   534	    outputs: [request]
+   535	    prompt: |
+   536	      The lane reached its round cap with the change unverified. Write
+   537	      under the Result section the findings standing at the cap — the
+   538	      last check_verdict with check_finding, and evidence from the
+   539	      last round in which the observation ran, with that round named;
+   540	      where the cap fell on a check, evidence is from an earlier round
+   541	      or empty, and you say which — and round; set the request's route to
+   542	      awaiting with the reason "small-change lane failed at the round
+   543	      cap" and its status to recorded, so the request is again visible
+   544	      as awaiting its route. Revert nothing: the changed artifacts'
+   545	      histories stand as the maker wrote them, and the request records
+   546	      what stands. Bump the request's version with the history row.
+   547	      Return the request.
+   548	    next: close-failed
+   549	
+   550	  - id: close-failed
+   551	    name: Close the work item as failed
+   552	    run-by: {execution: runtime}
+   553	    inputs: [work_item, request_id]
+   554	    run: |
+   555	      bd close ${work_item} --reason "failed at the cap: returned to routing — ${request_id}"
+   556	    next: end
+   557	```
+   558	
+   559	## Derived checks
+   560	
+   561	| Outcome | Check | Kind | Where |
+   562	|---|---|---|---|
+   563	| O1 | `define` runs by `lead-po`, reads only `request` and `glossary`, and writes the definition on the request; no step before `route-definition` writes any other artifact, and `make` is first reached only through `route-definition`'s else branch, after `define`; the only other entry is `advance-round`, itself downstream of `define` | mechanical | `define`, step order, `route-definition` branches |
+   564	| O2 | `make.run-by.role` and `check.run-by.role` are two different literal role ids; `make` reads `paths` and returns `changed`; `check` reads `request`, `paths`, `changed`, and `round` only and writes the verdict with its role under Check | mechanical | `make`, `check` |
+   565	| O3 | the success exit requires the last line of `evidence` to be `exit 0`; `record` writes the verified result with the evidence and sets `done`; no step names a bet and none runs by `cold-reviewer` | mechanical | `route-verify` branches, `record.prompt`, step list |
+   566	| O4 | the not-simple branch leaves `route-definition` before `make`; `reroute` runs by `lead-pm` and changes the route with the reason, status unchanged | mechanical | `route-definition` branches, `reroute` |
+   567	| O5 | every path to `end` passes through `record`, `reroute`, or `hand-back`, each writing the request's state and returning `request`, then through one of `close-done`, `close-not-simple`, `close-failed`, each citing `request_id` in its reason; `change` is set once by `name-result` as `request + "#result"` and is the declared `result`; both loops carry a labeled success exit and a `round >= round_cap` failsafe, and `advance-round`, itself downstream of `define`, is the only entry to `make` other than `route-definition`'s else branch | mechanical | `name-result.set`, `record`, `reroute`, `hand-back`, the three close steps' run templates, `route-check` and `route-verify` branches |
+   568	| O1–O3 | the definition says what, not how; the check judges the definition's statements and the producing rules, not the maker's choices; the evidence recorded is the observation's output, not a restatement | judged | `define`, `check`, and `record` prompts |
+   569	
+   570	## Document History
+   571	
+   572	| Version | Date | Kind | Entry |
+   573	|---|---|---|---|
+   574	| 1 | 2026-09-04 | update | Authored under init-request-routing / feat-request-routing, per adr-2026-09-04-request-front-end (the small-change lane as the second destination, its form the candidate this definition settles), on the authority's standing direction of 2026-09-04, by the lead-solutions-architect role. The lane: define (lead-po, on the request) → make (lead-solutions-architect, fixed) → check (lead-pm, never the maker) → verify (runtime: the observation the definition named; its exit status the closing line of the evidence) → record (lead-pm; status done). Exits: not simple — the route changed to discovery by the lead-pm with the reason, no change made; failed — the cap reached in check or verification, the findings recorded, the request returned to routing; done. Runs as a sub-process of request-intake's `open-lane` step (authored in parallel): the result `change` is the request's Result section by fragment, which intake writes into `routed-to`; the work item is intake's to close, so the lane closes none — the brief's "done: <request id>" close moved to the parent on that contract. No bet, no check of record, no cold-reviewer step, stated with the reason in Purpose. The definition lives on the request's Result section, not in a file of its own, under single-source-of-truth and constraints C1 and C3. The maker is fixed in `make`'s run-by rather than passed as a parameter: a step's run-by is a literal role id under the typedef, and the fixed pair is what makes the checker-never-maker rule mechanical. Draft, not yet screened; the lead-pm orchestrates the cold reviewer. |
+   575	| 2 | 2026-09-04 | review | Round 1 (judge: claude-fable-5-1 / screen prompt v6; criteria process-definition.fitness.md): two confident — `verify`'s run template carried two comment lines (scenario 6; removed, the Data Verification paragraph carries the rule); `bd` named unintroduced in that paragraph with no run step invoking it (uncovered; dropped) — and five wobbly, ruled by the lead-pm: the absent carrier deferred to skill-rendering's check on the role-rendering precedent (Carried by shortened); `make` and `check` read artifacts the definition names through `request` alone (scenario 4; `define` returns `paths`, `make` reads `paths` and returns `changed`, `check` reads both — Data and the O2 row aligned, the sibling analogy dropped); the result paragraph (scenario 5; cut to `change` as the Result section, what `routed-to` points at, `changed` the way to the artifacts; "never empty" dropped); `observation` an unread input of `route-definition` (removed); the Purpose restating the sequence (cut to its first clause and the no-bet reason). Same round, the lead-pm's ruling on the contract with request-intake as it now stands — its `land` step opens the work item and writes it to the request, and no intake step closes it: the lane owns the item once it takes up the request; `read-id` and `read-anchor` read the id and the item from the request's frontmatter, and `close-done`, `close-not-simple`, and `close-failed` close it at each exit with a reason citing the id, a nonzero exit a failed step — the v1 move of the close to the parent reversed. Repaired. |
+   576	| 3 | 2026-09-04 | review | Round 2 (judge: claude-fable-5-1 / screen prompt v6): one confident — `bd` invoked by the three close templates before any introduction (introduced in the Data anchor paragraph as the work register the item lives in, `bd close` the close with a reason) — and six wobbly, ruled by the lead-pm: the absent carrier (the round-1 ruling stands, no change); the O1 witness and the O1/O5 derived-check rows overstated `make`'s single entry (reworded: first reached only through `route-definition`'s else branch, after `define`; the only other entry `advance-round`, itself downstream of `define`); `make.prompt`'s "re-rendered from its source" read outside `paths` (rule: a definition naming a rendering lists its source and the rendering tool in `paths` — in `define`'s prompt and the Data paragraph on `paths`; `make` re-renders by the tool `paths` names from the source `paths` names); the guiding statement's middle clause sequenced roles (collapsed to the judgment: every role judges by the definition, nothing outside it is made or counts as verified); "appetite" in Purpose (not a glossary entry — replaced by "the bound an initiative spends"); the Data anchor sentence missing its relative (inserted: "the work item that intake's `land` step opened … and wrote to"). Repaired. |
+   577	| 4 | 2026-09-04 | review | Screen round 3, the cap (judge: claude-fable-5-1 / screen prompt v6): six wobbly, none confident — the absent carrier (deferred, ruled twice); O5 against the halted-run rule; `change` on the non-done exits; "the bound an initiative spends" unintroduced; the feature cited before introduced; hand-back's evidence attribution. Post-cap repairs, disclosed and not re-screened: O5 restated for every run that reaches an exit, with a halted run's state named (request as the last completed step wrote it, item open, no `change`, failure reported to the lead-pm); `change` stated as the lane's record on every exit; Purpose's phrase replaced by "the appetite an initiative's bet spends", the initiative typedef linked; a lead sentence over Outcomes introducing feat-request-routing, the Data sentence now referencing it; hand-back's prompt attributing evidence to the last round the observation ran, named, and saying so when the cap fell on a check. |
+   578	| 4 | 2026-09-04 | state | draft → approved by the owner, on the authority's standing direction for this session ("continue all the way through implementation … you have my permission to continue through"), recorded by the lead-pm: three screen rounds against the process-definition fitness set; round 1's two confident findings repaired, round 2's one repaired, the cap with wobbly findings only; the carrier to be rendered by the skill-rendering process's next run. |
+   579	| 5 | 2026-09-04 | update | The approval taken on the authority's standing direction confirmed by the authority's ruling of 2026-09-04 on brief-035 — "Take defaults. For 5. take discovery" (brief-035 ask 2, default taken). The carrier re-rendered by the skill-rendering process. |
+   580	| 6 | 2026-09-09 | update | `run` propagated to `execution` as the noun for a process instance, under req-2026-09-08-definition-vs-instance / feat-execution-vocabulary (shopsystem-product): mechanical, determiner-adjacent occurrences only (`a/the/this/one/another/each/no/any run(s)`); `run-by`, `run` as a schema field or step key, and compound/heading uses (e.g. `run-cost`, `run list`, `Run lifecycle`) left unchanged, that residue disclosed as not done in this pass. Self-check against define-good-up-front: diffed against the file's pre-edit text; no requirement, field name, or heading changed. Made by the lead-solutions-architect role. |
+   581	| 7 | 2026-09-09 | update | `anchor` propagated to `bead` for the identifier a process instance is tracked on, under feat-execution-vocabulary (shopsystem-product): 3 occurrence(s) changed in body text (`anchored to` → `tracked on`), the anchor sense of the governed record left unchanged; schema field names, tool flags, and step ids untouched. Made by the lead-solutions-architect role. |

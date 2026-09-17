@@ -1,0 +1,936 @@
+=========== discovery-conversation
+0
+---
+type: process-definition
+id: discovery-conversation-process
+owner: product-authority
+status: approved
+approved: 2026-08-22
+version: 4
+created: 2026-08-22
+updated: 2026-08-26
+produces: [session-record]
+condition-language: cel
+hold-after: P7D
+---
+
+# Process: Discovery conversation
+
+**Purpose:** Conduct a bounded discovery dialogue: the authority explores
+direction with the lead-pm as interlocutor, nothing is operationalized
+before convergence, and the session record anchors the conversation and
+carries what it produced.
+
+**Guiding statement:** Engage the authority's statements as an
+interlocutor; record and launch only after convergence.
+
+**Outcomes:**
+- O1. No work is launched and no definition is written before the
+  authority converges — witnessed by the `route` branches: the handoff
+  is reachable only from the authority's own classification.
+- O2. The conversation closes onto a validated session record carrying
+  its produced and revised lists — witnessed by the `handoff`
+  sub-process, whose child validates the record before landing it.
+- O3. Only the authority converges, closes, or cancels — witnessed by
+  the `route` branches.
+- O4. An inactive conversation holds instead of dangling — witnessed by
+  `hold-after` and the run lifecycle.
+
+**Roles:** product-authority (human-held role — explores, converges, and owns
+the exclusive right to close or cancel). lead-pm — held by the same
+person; its agent steps assist: `engage` prepares the reflection —
+probes, names tensions, offers options with a recommendation, keeps the
+draft record's quotes and state current — and the authority decides
+what converges and when. The agent operationalizes nothing.
+
+## Flow (compiled)
+
+Generated from the steps below by `tools/compile_process.py`; do not
+edit by hand.
+
+```mermaid
+flowchart TD
+  open["Open the work item — runtime<br/>in — topic: string"]
+  observe[["Authority explores — human: product-authority<br/>in — topic: string<br/>out — statement: string, classification: string"]]
+  route{"Route on the input<br/>in — classification: string"}
+  engage(["Engage as interlocutor — agent: lead-pm<br/>in — statement: string, classification: string<br/>out — reply: string"])
+  handoff{{"Close onto the session record — sub-process: session-handoff-process<br/>out — session_record: session-record"}}
+  close_out["Close the work item — runtime<br/>in — session_record: session-record"]
+  cancel_out["Cancel the conversation — runtime<br/>in — statement: string"]
+  __end(("end<br/>result — session_record: session-record"))
+  __start(("start")) --> open
+  open --> observe
+  observe --> route
+  route -->|success exit: converge or close — hand off| handoff
+  route -->|cancel exit: authority cancels| cancel_out
+  route -->|else| engage
+  engage --> observe
+  handoff --> close_out
+  close_out --> __end
+  cancel_out --> __end
+```
+
+
+## Data
+
+Each entry names a process-local value. Simple types use JSON Schema
+names inline; every structured shape is a `$ref` to a defined type with
+an explicit source.
+
+```yaml
+data:
+  topic: {type: string}
+  session_record: {$ref: session-record, from: pkg:shopsystem-knowledge/session-record}
+  statement: {type: string}
+  classification: {type: string, enum: [direction, question, converge, close, cancel]}
+  reply: {type: string}
+```
+
+## Steps
+
+```yaml
+start: open
+parameters: [topic]
+result: session_record
+steps:
+  - id: open
+    name: Open the work item
+    run-by: {execution: runtime}
+    inputs: [topic]
+    outputs: []
+    run: |
+      bd create --title "Discovery conversation: ${topic}"
+    next: observe
+
+  - id: observe
+    name: Authority explores
+    run-by: {role: product-authority, execution: human}
+    inputs: [topic]
+    outputs: [statement, classification]
+    prompt: |
+      Think out loud. Your message is one of: a direction or exploration
+      to engage, a question, a convergence (the direction is settled —
+      record and route it), a close, or a cancel. Silence holds the
+      conversation after the declared window; the draft record carries
+      the resume point.
+    next: route
+
+  - id: route
+    name: Route on the input
+    run-by: {execution: runtime}
+    inputs: [classification]
+    branches:
+      - label: "success exit: converge or close — hand off"
+        when: classification in ["converge", "close"]
+        next: handoff
+      - label: "cancel exit: authority cancels"
+        when: classification == "cancel"
+        next: cancel-out
+      - else: engage
+
+  - id: engage
+    name: Engage as interlocutor
+    run-by: {role: lead-pm, execution: agent}
+    inputs: [statement, classification]
+    outputs: [reply]
+    checks:
+      - reply != ""
+    prompt: |
+      Engage the statement as an interlocutor: probe it, reflect it back,
+      name tensions with what is already decided, and offer options with
+      a recommendation when a decision is near. Do not operationalize —
+      no launching work, no writing definitions, no dispatches — before
+      the authority converges. Capture select quotes into the draft
+      session record as the dialogue moves.
+    next: observe
+
+  - id: handoff
+    name: Close onto the session record
+    run-by: {execution: sub-process, process: session-handoff-process, from: session-handoff.md}
+    inputs: []
+    outputs: [session_record]
+    next: close-out
+
+  - id: close-out
+    name: Close the work item
+    run-by: {execution: runtime}
+    inputs: [session_record]
+    run: |
+      bd close --reason "Discovery closed onto ${session_record.id}"
+    next: end
+
+  - id: cancel-out
+    name: Cancel the conversation
+    run-by: {execution: runtime}
+    inputs: [statement]
+    run: |
+      bd close --reason "Discovery cancelled: ${statement}"
+    next: end
+```
+
+A close without convergence still routes through the handoff: a
+discovery that produced nothing durable is recorded as exactly that,
+never released silently.
+
+## Derived checks
+
+| Outcome | Check | Kind | Where |
+|---|---|---|---|
+| O1 | `handoff` reachable only via the authority's classification | mechanical | `route.branches` |
+| O2 | the child process validates the record before landing | mechanical | `handoff` sub-process (session-handoff O1) |
+| O3 | close and cancel reachable only from the authority's input | mechanical | `route.branches` |
+| O4 | inactivity holds the run | mechanical | `hold-after` + run lifecycle |
+
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+| 1 | 2026-08-22 | update | Authored (seed layer); earlier history, if any, in the repository history. |
+| 1 | 2026-08-22 | state | draft → approved. |
+| 2 | 2026-08-23 | update | Owner direction: decision-ledger references removed — changes stand on their own; history entries and text no longer cite numbered decisions. |
+| 3 | 2026-08-25 | update | Owner direction: a near-synonym of "role" retired and banned. |
+| 4 | 2026-08-26 | update | Owner decision: lead-pm is held by the authority in person; the Roles header now names what the role's agent steps prepare and what the authority decides, per the lead-pm role's Interfaces. |
+=========== definition-chain-migration
+0
+---
+type: process-definition
+id: definition-chain-migration-process
+owner: product-authority
+status: approved
+approved: 2026-08-22
+version: 4
+created: 2026-08-20
+updated: 2026-08-26
+produces: [definition]
+condition-language: cel
+external-refs: []
+---
+
+# Process: Definition-chain migration
+
+> Amended 2026-08-22.
+> Re-approved by the authority 2026-08-22.
+
+**Purpose:** Convert one artifact type from the frozen corpus into the new
+baseline: build its definition chain, prove the chain on a real keeper,
+approve it, rewrite every keeper through it, and move what does not survive
+to the archive.
+
+**Guiding statement:** Nothing enters the new baseline except through a
+approved definition. A document in an undefined format is source material
+for a rewrite, never a usable artifact.
+
+**Outcomes:**
+- O1. The type's definition chain is approved by the authority — witnessed
+  by the check on `approve-chain`.
+- O2. Every keeper is rewritten or demoted, none silently dropped —
+  witnessed by the check on `rewrite-keepers`.
+- O3. Retired and demoted records leave the active tree — witnessed by
+  the `queue-demoted` run and the cut-over close-out's post-check.
+- O4. A chain the authority cannot approve parks with a filed finding
+  instead of looping — witnessed by the failsafe branch of
+  `route-review` and the `park` step.
+
+**Roles:** product-authority (human-held role — reviews, approves,
+spot-checks). lead-pm — held by the
+authority; its agent steps assist: `build-chain`, `exemplar-rewrite`,
+`revise-chain`, and `rewrite-keepers` prepare the drafts and rewrites,
+and the authority decides at the review steps whether each stands.
+The per-instance reviewer roles come from the chain itself once approved.
+
+**Scope note:** one run migrates one artifact type. The order of runs
+comes from the approved migration plan; keepers for the run are the
+rows in `actions` whose action is keep-rewrite for that type. The
+retire and terminal mass is not this process's work — it closes out
+mechanically through
+[`corpus-close-out.md`](corpus-close-out.md).
+
+## Flow (compiled)
+
+Generated from the steps below by `tools/compile_process.py`; do not
+edit by hand.
+
+```mermaid
+flowchart TD
+  build_chain(["Build the definition chain — agent: lead-pm<br/>in — artifact_type: string, keepers: string[], actions: action-table<br/>out — authored: string[]"])
+  derive_chain["Derive the chain from references — runtime<br/>in — artifact_type: string, authored: string[]<br/>out — chain: definition-chain"]
+  exemplar_rewrite(["Prove the chain on one keeper — agent: lead-pm<br/>in — chain: definition-chain, keepers: string[], actions: action-table<br/>out — exemplar: string"])
+  authority_review[["Authority reviews chain and exemplar — human: product-authority<br/>in — chain: definition-chain, exemplar: string<br/>out — review: review"]]
+  route_review{"Route on the verdict<br/>in — review: review, round: integer"}
+  revise_chain(["Revise the chain — agent: lead-pm<br/>in — chain: definition-chain, review: review<br/>out — chain: definition-chain"])
+  advance_round["Advance the round counter — runtime<br/>in — round: integer<br/>sets — round: integer"]
+  approve_chain[["Approve the chain's documents — human: product-authority<br/>in — chain: definition-chain"]]
+  rederive_chain["Re-derive the approved chain — runtime<br/>in — artifact_type: string<br/>out — chain: definition-chain"]
+  rewrite_keepers(["Rewrite every keeper through the chain — agent: lead-pm<br/>in — chain: definition-chain, keepers: string[], exemplar: string, actions: action-table<br/>out — rewritten: string[], demoted: string[]"])
+  queue_demoted["Queue demotions for the cut-over close-out — runtime<br/>in — artifact_type: string, demoted: string[]"]
+  park["Park the type with a finding — runtime<br/>in — artifact_type: string, review: review"]
+  __end(("end<br/>result — chain: definition-chain"))
+  __start(("start")) --> build_chain
+  build_chain --> derive_chain
+  derive_chain --> exemplar_rewrite
+  exemplar_rewrite --> authority_review
+  authority_review --> route_review
+  route_review -->|success exit: clean or tradeoffs accepted| approve_chain
+  route_review -->|failsafe exit: round >= 3| park
+  route_review -->|else| revise_chain
+  revise_chain --> advance_round
+  advance_round --> authority_review
+  approve_chain --> rederive_chain
+  rederive_chain --> rewrite_keepers
+  rewrite_keepers --> queue_demoted
+  queue_demoted --> __end
+  park --> __end
+```
+
+
+## Data
+
+Each entry names a process-local value. Simple types use JSON Schema
+names inline; every structured shape is a `$ref` to a defined type with
+an explicit source — `from:` links the defining file, or names the owning
+package as `pkg:<package>/<type>` (fetched through that package's
+contract tool).
+
+```yaml
+data:
+  artifact_type: {type: string}
+  keepers: {type: array, items: {type: string}}
+  actions: {$ref: action-table, from: ../types/action-table.md}
+  authored: {type: array, items: {type: string}}
+  chain: {$ref: definition-chain, from: ../types/definition-chain.md}
+  exemplar: {type: string}
+  review: {$ref: review, from: ../types/review.md}
+  round: {type: integer, initial: 1}
+  rewritten: {type: array, items: {type: string}}
+  demoted: {type: array, items: {type: string}}
+```
+
+## Steps
+
+The `archive-move` command in `queue-demoted` follows the archive
+contract stated once in [`corpus-close-out.md`](corpus-close-out.md)
+(§Archive contract — recommended, pending the authority's decision); it is not
+restated here. Under the cut-over execution model no archive move happens
+per run: a demoted keeper's file lives on frozen `main`, so the run
+only QUEUES the demotion (`--queue` flips the keeper's action-table
+row to retire, recording the failing check); the actual move runs once,
+at the Phase 3 cut-over close-out. Until the tool exists and the
+contract is approved the step blocks — which is correct: mass moves
+are mechanical or they do not happen.
+
+```yaml
+start: build-chain
+parameters: [artifact_type, keepers, actions]
+result: chain
+steps:
+  - id: build-chain
+    name: Build the definition chain
+    run-by: {role: lead-pm, execution: agent}
+    inputs: [artifact_type, keepers, actions]
+    outputs: [authored]
+    checks:
+      - size(authored) >= 6
+    prompt: |
+      Draft every link of the definition chain for this artifact type:
+      typedef, quality guideline, fitness set, authoring process, roles,
+      and the compiled skill. Source the content from the authority's
+      recorded decisions and verbatim anchors, an autopsy of the best and
+      worst existing instances among the keepers, and established
+      external standards; name every adopted form in each document's
+      Sources section. A document in an undefined format is source
+      material only — nothing is used as-is. Per-keeper directives and
+      family nominations come only from `actions` — the governed channel
+      — never from retired documents. Family codes in `actions` are
+      nominations: the chain review decides final record granularity, so
+      do not pre-commit a collapse.
+    next: derive-chain
+
+  - id: derive-chain
+    name: Derive the chain from references
+    run-by: {execution: runtime}
+    inputs: [artifact_type, authored]
+    outputs: [chain]
+    checks:
+      - chain.typedef != "" && chain.guideline != "" && chain.fitness != ""
+      - chain.process != "" && chain.skill != ""
+    run: |
+      python3 tools/lint_basis.py --derive-chain ${artifact_type}
+    next: exemplar-rewrite
+
+  - id: exemplar-rewrite
+    name: Prove the chain on one keeper
+    run-by: {role: lead-pm, execution: agent}
+    inputs: [chain, keepers, actions]
+    outputs: [exemplar]
+    prompt: |
+      Rewrite one real keeper through the drafted chain's authoring
+      process, exactly as mass rewriting would run it. Pick a keeper of median size
+      among the type's keepers, preferring the most recently active —
+      representative by measure, not by ease. The keeper's per-keeper
+      directives come only from its `actions` row — the governed channel
+      — never from retired documents; a family code there is a
+      nomination, not a commitment, since the chain review decides final
+      record granularity. Record
+      every point where the chain failed to decide something — that
+      friction is a finding about the chain, and it goes to the authority
+      with the exemplar.
+    next: authority-review
+
+  - id: authority-review
+    name: Authority reviews chain and exemplar
+    run-by: {role: product-authority, execution: human}
+    inputs: [chain, exemplar]
+    outputs: [review]
+    prompt: |
+      One review, one type: the chain and the exemplar rewritten through
+      it, side by side. Rule on both — the chain's definitions and what
+      they actually produced. Findings land as decisions; verdict "clean"
+      or "tradeoffs-accepted" approves, "findings" sends the chain back.
+    next: route-review
+
+  - id: route-review
+    name: Route on the verdict
+    run-by: {execution: runtime}
+    inputs: [review, round]
+    branches:
+      - label: "success exit: clean or tradeoffs accepted"
+        when: review.verdict in ["clean", "tradeoffs-accepted"]
+        next: approve-chain
+      - label: "failsafe exit: round >= 3"
+        when: round >= 3
+        next: park
+      - else: revise-chain
+
+  - id: revise-chain
+    name: Revise the chain
+    run-by: {role: lead-pm, execution: agent}
+    inputs: [chain, review]
+    outputs: [chain]
+    prompt: |
+      Repair every finding in the review across the chain's links, then
+      re-run the exemplar through any link that changed. A finding
+      repaired in one link is checked against the others — the chain is
+      one definition in six parts, not six documents.
+    next: advance-round
+
+  - id: advance-round
+    name: Advance the round counter
+    run-by: {execution: runtime}
+    inputs: [round]
+    set:
+      round: round + 1
+    next: authority-review
+
+  - id: approve-chain
+    name: Approve the chain's documents
+    run-by: {role: product-authority, execution: human}
+    inputs: [chain]
+    outputs: []
+    prompt: |
+      Approval stamps every linked document: status approved, approved
+      date, owner. The chain's own status is derived — it reads approved
+      only when every link does. From this point the chain is the
+      standard the mass rewrite is checked against, and changes to any
+      link go through you.
+    next: rederive-chain
+
+  - id: rederive-chain
+    name: Re-derive the approved chain
+    run-by: {execution: runtime}
+    inputs: [artifact_type]
+    outputs: [chain]
+    checks:
+      - chain.status == "approved"
+    run: |
+      python3 tools/lint_basis.py --derive-chain ${artifact_type}
+    next: rewrite-keepers
+
+  - id: rewrite-keepers
+    name: Rewrite every keeper through the chain
+    run-by: {role: lead-pm, execution: agent}
+    inputs: [chain, keepers, exemplar, actions]
+    outputs: [rewritten, demoted]
+    checks:
+      - size(rewritten) + size(demoted) == size(keepers)
+    prompt: |
+      Run the type's approved authoring process once per keeper: author
+      role and fresh reviewer role per the chain, authority spot-checks
+      per the attention architecture. Each keeper's per-keeper
+      directives and family nomination come only from its `actions` row
+      — the governed channel — never from retired documents; family
+      codes are nominations, and the chain review's decision on record
+      granularity governs, not a pre-committed collapse. A keeper that
+      cannot reach the bar
+      after two attempts is demoted: file it for retirement with a note
+      naming the failing check. Never lower a check to pass a keeper.
+    next: queue-demoted
+
+  - id: queue-demoted
+    name: Queue demotions for the cut-over close-out
+    run-by: {execution: runtime}
+    inputs: [artifact_type, demoted]
+    run: |
+      archive-move --queue --type ${artifact_type} --ids ${demoted}
+    next: end
+
+  - id: park
+    name: Park the type with a finding
+    run-by: {execution: runtime}
+    inputs: [artifact_type, review]
+    run: |
+      bd create --title "Chain parked: ${artifact_type} after 3 review rounds" \
+        --body "${review.top_changes}"
+    next: end
+```
+
+## Derived checks
+
+| Outcome | Check | Kind | Where |
+|---|---|---|---|
+| O1 | chain status approved before any mass rewrite | mechanical | `approve-chain.checks` |
+| O2 | rewritten + demoted counts equal keepers | mechanical | `rewrite-keepers.checks` |
+| O3 | every demoted id is queued as a retire row; it leaves the active tree at cut-over | mechanical — `queue-demoted.run` now, close-out post-check at cut-over | `queue-demoted.run` |
+| O4 | parked types carry a filed finding | mechanical | `park.run` |
+| all | this definition compiles and screens against the principle set | mechanical + judged | the compiler; the principles screen |
+
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+| 1 | 2026-08-20 | update | Authored (seed layer); earlier history, if any, in the repository history. |
+| 1 | 2026-08-22 | state | draft → approved. |
+| 2 | 2026-08-23 | update | Owner direction: decision-ledger references removed — changes stand on their own; history entries and text no longer cite numbered decisions. |
+| 3 | 2026-08-25 | update | Owner direction: a near-synonym of "role" retired and banned. |
+| 4 | 2026-08-26 | update | Owner decision: lead-pm is held by the authority in person; the Roles header now names what the role's agent steps prepare and what the authority decides, per the lead-pm role's Interfaces. |
+=========== work-conversation
+0
+---
+type: process-definition
+id: work-conversation-process
+owner: product-authority
+status: approved
+approved: 2026-08-22
+version: 4
+created: 2026-08-22
+updated: 2026-08-26
+produces: []
+condition-language: cel
+hold-after: P7D
+---
+
+# Process: Work conversation
+
+**Purpose:** Conduct a bounded operational discussion scoped to one work
+item: every exchange lands on the item, so the discussion is containable,
+findable, and survives the transcript.
+
+**Guiding statement:** The work item carries the discussion; a
+conversation that cannot name its work item does not start.
+
+**Outcomes:**
+- O1. Every applied exchange lands as a comment on the work item —
+  witnessed by the check and `run` on `act`.
+- O2. The conversation is scoped to exactly one work item, named at the
+  start — witnessed by `parameters`.
+- O3. Only the authority closes or cancels the conversation — witnessed
+  by the `route` branches.
+- O4. An inactive conversation holds instead of dangling — witnessed by
+  `hold-after` and the run lifecycle.
+
+**Roles:** product-authority (human-held role — directs, asks, and owns the
+exclusive right to close or cancel). lead-pm — held by the
+authority; its agent step assists: `act` prepares the action within the
+work item's scope and lands the exchange on the item; the authority
+directs and decides what the item's scope is.
+
+**Scope note:** closing the conversation does not close the work item —
+work may continue outside conversation. The close lands a summary
+comment; the item's own life follows its own process.
+
+## Flow (compiled)
+
+Generated from the steps below by `tools/compile_process.py`; do not
+edit by hand.
+
+```mermaid
+flowchart TD
+  attach["Attach to the work item — runtime<br/>in — work_item: work-item"]
+  observe[["Authority directs — human: product-authority<br/>in — work_item: work-item<br/>out — message: string, classification: string"]]
+  route{"Route on the input<br/>in — classification: string"}
+  act(["Act and land the exchange — agent: lead-pm<br/>in — message: string, classification: string, work_item: work-item<br/>out — applied: string"])
+  close_out["Land the close summary — runtime<br/>in — work_item: work-item, applied: string"]
+  cancel_out["Land the cancel — runtime<br/>in — work_item: work-item, message: string"]
+  __end(("end<br/>result — work_item: work-item"))
+  __start(("start")) --> attach
+  attach --> observe
+  observe --> route
+  route -->|success exit: authority closes| close_out
+  route -->|cancel exit: authority cancels| cancel_out
+  route -->|else| act
+  act --> observe
+  close_out --> __end
+  cancel_out --> __end
+```
+
+
+## Data
+
+Each entry names a process-local value. Simple types use JSON Schema
+names inline; every structured shape is a `$ref` to a defined type with
+an explicit source.
+
+```yaml
+data:
+  work_item: {$ref: work-item, from: pkg:beads/work-item}
+  message: {type: string}
+  classification: {type: string, enum: [instruction, question, close, cancel]}
+  applied: {type: string}
+```
+
+## Steps
+
+```yaml
+start: attach
+parameters: [work_item]
+result: work_item
+steps:
+  - id: attach
+    name: Attach to the work item
+    run-by: {execution: runtime}
+    inputs: [work_item]
+    outputs: []
+    run: |
+      bd comment ${work_item.id} "Work conversation opened"
+    next: observe
+
+  - id: observe
+    name: Authority directs
+    run-by: {role: product-authority, execution: human}
+    inputs: [work_item]
+    outputs: [message, classification]
+    prompt: |
+      The work item and its history are in front of you. Your message is
+      one of: an instruction to act on, a question, a close (a summary
+      lands on the item; the item's own life continues), or a cancel.
+      Silence holds the conversation after the declared window; the work
+      item carries the resume point.
+    next: route
+
+  - id: route
+    name: Route on the input
+    run-by: {execution: runtime}
+    inputs: [classification]
+    branches:
+      - label: "success exit: authority closes"
+        when: classification == "close"
+        next: close-out
+      - label: "cancel exit: authority cancels"
+        when: classification == "cancel"
+        next: cancel-out
+      - else: act
+
+  - id: act
+    name: Act and land the exchange
+    run-by: {role: lead-pm, execution: agent}
+    inputs: [message, classification, work_item]
+    outputs: [applied]
+    checks:
+      - applied != ""
+    prompt: |
+      Act on the message within the work item's scope; answer questions
+      from the item's history and the corpus. Land the exchange as a
+      comment on the work item — what was asked, what was done, with
+      links. Work that outgrows the item's scope is not absorbed: file it
+      as its own item and say so. Nothing binding stays only in the
+      transcript.
+    next: observe
+
+  - id: close-out
+    name: Land the close summary
+    run-by: {execution: runtime}
+    inputs: [work_item, applied]
+    run: |
+      bd comment ${work_item.id} "Work conversation closed: ${applied}"
+    next: end
+
+  - id: cancel-out
+    name: Land the cancel
+    run-by: {execution: runtime}
+    inputs: [work_item, message]
+    run: |
+      bd comment ${work_item.id} "Work conversation cancelled: ${message}"
+    next: end
+```
+
+## Derived checks
+
+| Outcome | Check | Kind | Where |
+|---|---|---|---|
+| O1 | `applied` non-empty; the exchange comment names it | mechanical + judged | `act.checks`, `act.prompt` |
+| O2 | `work_item` is a run parameter — no item, no run | mechanical | `parameters` |
+| O3 | close and cancel reachable only from the authority's input | mechanical | `route.branches` |
+| O4 | inactivity holds the run | mechanical | `hold-after` + run lifecycle |
+
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+| 1 | 2026-08-22 | update | Authored (seed layer); earlier history, if any, in the repository history. |
+| 1 | 2026-08-22 | state | draft → approved. |
+| 2 | 2026-08-23 | update | Owner direction: decision-ledger references removed — changes stand on their own; history entries and text no longer cite numbered decisions. |
+| 3 | 2026-08-25 | update | Owner direction: a near-synonym of "role" retired and banned. |
+| 4 | 2026-08-26 | update | Owner decision: lead-pm is held by the authority in person; the Roles header now names what the role's agent steps prepare and what the authority decides, per the lead-pm role's Interfaces. |
+=========== stakeholder-presentation
+0
+---
+type: process-definition
+id: stakeholder-presentation-process
+owner: product-authority
+status: approved
+approved: 2026-08-19
+version: 4
+created: 2026-08-10
+updated: 2026-08-26
+produces: [decision-brief]
+carried-by: stakeholder-presentation-skill
+condition-language: cel
+condition-functions:
+  words: "string -> int"
+annotations:
+  claude-code:
+    activation: model-judged
+    promotion: experiment-local
+    use-when: "before delivering any report, review material, or status update longer than ~300 words"
+---
+
+# Process: Stakeholder presentation
+
+**Purpose:** Turn source material into a presentation the product authority
+can decide from in one short reading, verified by an independent cold read
+before delivery.
+
+**Guiding statement:** Lead with the answer. The reader must get the most
+important thing even if they stop after the first paragraph, and must be
+able to make every requested decision without opening an annex or the
+author's head.
+
+**Outcomes:**
+- O1. A presentation exists within budget — witnessed by the checks on
+  `compose`.
+- O2. Every ask carries a recommendation, inline evidence, and a default,
+  and states whether it gates work or resolves on silence — witnessed by
+  the check on `frame` and the
+  [fitness set](../fitness/decision-brief.fitness.md).
+- O3. An independent cold read has returned clean, or flags only
+  author-accepted tradeoffs — witnessed by `route-verdict` and the
+  `round_log`.
+- O4. The original material survives intact as a labeled, linked annex —
+  witnessed by the `annex` output of `compose`.
+
+**Roles:** author — lead-pm, held by the authority; its agent steps
+assist: `frame`, `compose`, `revise`, and `deliver` prepare the brief
+and the authority decides on it once delivered — the brief exists to
+make that decision possible in one reading. cold reviewer —
+[`../roles/cold-reviewer.md`](../roles/cold-reviewer.md) (Verifier; never
+the author).
+
+**Carried by:**
+[`../skills/stakeholder-presentation/SKILL.md`](../skills/stakeholder-presentation/SKILL.md)
+— generated from this definition by
+[`../tools/compile_process.py`](../tools/compile_process.py), never edited
+by hand.
+
+## Flow (compiled)
+
+Generated from the steps below by `tools/compile_process.py`; do not
+edit by hand.
+
+```mermaid
+flowchart TD
+  frame(["Frame — agent: lead-pm<br/>in — request: request<br/>out — frame: frame"])
+  compose(["Compose — agent: lead-pm<br/>in — request: request, frame: frame<br/>out — brief: decision-brief, annex: string"])
+  cold_read(["Cold read — agent: cold-reviewer<br/>in — brief: decision-brief<br/>out — review: review"])
+  log_round["Record the round — runtime<br/>in — review: review, round_log: review[]<br/>sets — round_log: review[]"]
+  route_verdict{"Route on the verdict<br/>in — review: review, round: integer"}
+  revise(["Revise — agent: lead-pm<br/>in — brief: decision-brief, review: review<br/>out — brief: decision-brief"])
+  advance_round["Advance the round counter — runtime<br/>in — round: integer<br/>sets — round: integer"]
+  deliver(["Deliver — agent: lead-pm<br/>in — brief: decision-brief, annex: string, review: review, round_log: review[]<br/>out — brief: decision-brief"])
+  __end(("end<br/>result — brief: decision-brief"))
+  __start(("start")) --> frame
+  frame --> compose
+  compose --> cold_read
+  cold_read --> log_round
+  log_round --> route_verdict
+  route_verdict -->|success exit: clean or tradeoffs accepted| deliver
+  route_verdict -->|failsafe exit: round >= 4| deliver
+  route_verdict -->|else| revise
+  revise --> advance_round
+  advance_round --> cold_read
+  deliver --> __end
+```
+
+
+## Data
+
+Each entry names a process-local value. Simple types use JSON Schema
+names inline; every structured shape is a `$ref` to a defined type with
+an explicit source — `from:` links the defining file, or names the owning
+package as `pkg:<package>/<type>` (fetched through that package's
+contract tool). Field access in conditions follows
+the referenced schema; conditions are CEL (Common Expression Language)
+expressions over these names.
+
+```yaml
+data:
+  request: {$ref: request, from: ../artifacts/request.md}
+  frame: {$ref: frame, from: ../types/frame.md}
+  brief: {$ref: decision-brief, from: ../artifacts/decision-brief.md}
+  annex: {type: string, format: uri-reference}
+  review: {$ref: review, from: ../types/review.md}
+  round: {type: integer, initial: 1}
+  round_log: {type: array, items: {$ref: review}, initial: []}
+```
+
+## Steps
+
+```yaml
+start: frame
+result: brief
+steps:
+  - id: frame
+    name: Frame
+    run-by: {role: lead-pm, execution: agent}
+    inputs: [request]
+    outputs: [frame]
+    checks:
+      - size(frame.asks) <= 7
+    prompt: |
+      Read the request. Name the reader and every decision the
+      presentation must enable. Enumerate the asks; keep only the asks
+      that gate the next unit of work, and record the rest as deferrals —
+      a deferral is a note, never an ask. Group related asks and order
+      them by consequence. If the material holds more decisions than one
+      reading can carry, split it by decision, not by topic, and frame
+      only the first split.
+    next: compose
+    annotations:
+      fabro: {model: high-reasoning, max_attempts: 2}
+
+  - id: compose
+    name: Compose
+    run-by: {role: lead-pm, execution: agent}
+    inputs: [request, frame]
+    outputs: [brief, annex]
+    checks:
+      - words(brief.decision_layer) <= 400
+      - words(brief.decision_layer) + words(brief.support_layer) <= 1500
+    prompt: |
+      Write the decision and support layers fresh — never abridge the
+      source by deletion. Open with situation, complication, question,
+      answer in at most four sentences, then the recommendations and the
+      asks. Write each ask in four parts: question, recommendation,
+      inline evidence, default. State which asks gate work and which
+      resolve by default on silence; a block-approval states what it
+      binds. Gloss every proper noun at first mention. Attach every block
+      to an ask or label it informational. Demote the original material
+      to a labeled annex and link it. Style rules:
+      guidelines/stakeholder-communication.md, layered on
+      guidelines/base-writing-style.md.
+    next: cold-read
+    annotations:
+      fabro: {model: high-reasoning}
+
+  - id: cold-read
+    name: Cold read
+    run-by: {role: cold-reviewer, execution: agent, fresh-context: true}
+    inputs: [brief]
+    outputs: [review]
+    prompt: |
+      Read the presentation alone; you have not seen the annex or any
+      earlier round, and that is the point. Report every stumble in
+      reading order; every term the text does not introduce; for each
+      ask, whether you could decide it (confident, wobbly, cannot-decide);
+      an overload verdict; your top three changes. Verdict "clean" only
+      if you found nothing. Verdict "tradeoffs-accepted" only if every
+      remaining finding is marked in the text as an accepted tradeoff.
+      Otherwise verdict "findings".
+    next: log-round
+    annotations:
+      fabro: {model: high-reasoning, node: separate-context-per-round}
+
+  - id: log-round
+    name: Record the round
+    run-by: {execution: runtime}
+    inputs: [review, round_log]
+    set:
+      round_log: round_log + [review]
+    next: route-verdict
+
+  - id: route-verdict
+    name: Route on the verdict
+    run-by: {execution: runtime}
+    inputs: [review, round]
+    branches:
+      - label: "success exit: clean or tradeoffs accepted"
+        when: review.verdict in ["clean", "tradeoffs-accepted"]
+        next: deliver
+      - label: "failsafe exit: round >= 4"
+        when: round >= 4
+        next: deliver
+      - else: revise
+
+  - id: revise
+    name: Revise
+    run-by: {role: lead-pm, execution: agent}
+    inputs: [brief, review]
+    outputs: [brief]
+    prompt: |
+      Repair every finding in the review. Then run the consistency
+      sweep: counts and cross-references match, and every promise the
+      text makes holds against every line that follows it. Mark any
+      finding you will not repair as an accepted tradeoff, in the text,
+      with one sentence saying why.
+    next: advance-round
+
+  - id: advance-round
+    name: Advance the round counter
+    run-by: {execution: runtime}
+    inputs: [round]
+    set:
+      round: round + 1
+    next: cold-read
+
+  - id: deliver
+    name: Deliver
+    run-by: {role: lead-pm, execution: agent}
+    inputs: [brief, annex, review, round_log]
+    outputs: [brief]
+    prompt: |
+      Deliver the brief to the reader with the annex linked. Set the
+      brief's status to "delivered" and record the round log in the
+      brief's Document History: one review entry per round with the
+      verdict and the judge's model. If the final verdict is
+      "findings" (the failsafe exit fired), state the open findings at
+      the top of the brief before anything else.
+    next: end
+```
+
+## Derived checks
+
+| Outcome | Check | Kind | Where |
+|---|---|---|---|
+| O1 | word counts vs budgets | mechanical | `compose.checks` |
+| O2 | ask cap after grouping | mechanical | `frame.checks` |
+| O2 | ask structure and decidability | judged | [`../fitness/decision-brief.fitness.md`](../fitness/decision-brief.fitness.md), scored in `cold-read` |
+| O3 | every round recorded; final verdict is a success exit or marked failsafe | mechanical | `log-round` output, `route-verdict` branches |
+| O4 | annex present, labeled, linked | mechanical | `compose` output `annex` |
+
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+| 1 | 2026-08-10 | update | Authored (seed layer); earlier history, if any, in the repository history. |
+| 1 | 2026-08-19 | state | draft → approved. |
+| 2 | 2026-08-23 | update | Owner direction: decision-ledger references removed — changes stand on their own; history entries and text no longer cite numbered decisions. |
+| 3 | 2026-08-23 | update | Owner direction: the deliver step records rounds as Document History review entries instead of a verified-by frontmatter block, matching the definition typedef's rule. |
+| 4 | 2026-08-26 | update | Owner decision: lead-pm is held by the authority in person; the Roles header now names what the role's agent steps prepare and what the authority decides, per the lead-pm role's Interfaces. |

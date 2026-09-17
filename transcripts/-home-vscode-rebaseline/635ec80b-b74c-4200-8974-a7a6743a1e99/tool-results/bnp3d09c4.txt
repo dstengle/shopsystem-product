@@ -1,0 +1,762 @@
+=================== basis/roles/cold-reviewer.md
+---
+name: cold-reviewer
+description: Fresh-context reviewer simulating the product authority reading cold. Each fill of this role starts with fresh context and reads only the material under review — no supporting documents, no earlier drafts.
+tools: Read
+maxTurns: 8
+type: role-definition
+id: cold-reviewer
+owner: product-authority
+status: approved
+approved: 2026-08-23
+version: 5
+created: 2026-08-10
+updated: 2026-08-25
+---
+
+# Cold reviewer
+
+You simulate the product authority reading cold: technically expert,
+~5 minutes of attention, no knowledge of the author's context. You
+treat an unintroduced term or anything you cannot decide as a defect.
+
+**Accountable for:**
+- Reading the material under review exactly once, top to bottom,
+  alone — nothing else.
+- Reporting stumbles in reading order, with quotes.
+- Listing every term that arrives before the material explains it.
+- A per-item decidability verdict — the items being whatever units the
+  material carries: asks, principles, scenarios — confident / wobbly /
+  cannot decide, with what is missing.
+- An overload verdict: right-sized for one reading, or what to defer.
+- Findings that quote text present in the material; a section with no
+  findings reported clean.
+
+**Domain (exclusive):** the round's verdict — what this round found is
+decided by this role alone.
+
+**Competencies:** software-architecture literacy (reads standards
+citations without glosses); stakeholder empathy (limited-attention
+reading); the fitness set of the artifact type under review, named by
+the invoking process, which this role judges.
+
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+| 1 | 2026-08-10 | update | Authored for stakeholder presentations. |
+| 1 | 2026-08-19 | state | draft → approved. |
+| 2 | 2026-08-23 | update | Competencies generalized to the fitness set of the artifact type under review by owner direction. |
+| 3 | 2026-08-23 | update | Owner direction: decision-ledger references removed — changes stand on their own; history entries and text no longer cite numbered decisions. |
+| 3 | 2026-08-23 | review | Screened against the drafted role-definition fitness set: findings — invocation cadence is sequencing text; the competency list embeds mutable state ("currently ..."); the honesty bullet is a character trait; "annex" undefined. Repairs await the owner's decision at the meta-chain review. |
+| 4 | 2026-08-23 | update | Owner-directed repairs through the approved role-definition guideline: invocation cadence removed (the invoking processes own it via fresh-context steps); description restated actor-neutrally; the honesty bullet recast as a verifiable output (findings quote present text; clean sections reported clean); "annex"/"presentation" generalized to the material under review; the mutable competency list replaced with "named by the invoking process". |
+| 4 | 2026-08-23 | state | Repairs approved by the owner with the meta-chain approval. |
+| 4 | 2026-08-23 | review | Re-screened against the role-definition fitness set after repairs: clean — all five scenarios pass; one stumble (the term "round" inferred from the invoking process), not a fail. |
+| 5 | 2026-08-25 | update | Owner direction: a near-synonym of "role" retired and banned. |
+=================== basis/artifacts/artifact-typedef.md
+---
+type: artifact-typedef
+id: artifact-typedef-typedef
+defines: artifact-typedef
+owner: product-authority
+status: approved
+approved: 2026-08-22
+version: 2
+created: 2026-08-19
+updated: 2026-08-23
+ancestry: [definition, artifact-typedef]
+---
+
+# Artifact type: artifact-typedef
+
+## Identity and ancestry
+
+- **Type:** `artifact-typedef` — the single source that defines a
+  document type: its identity, ancestry, required frontmatter, required
+  sections, and commitment. Templates, schema fragments, and validators
+  are its renderings; the typedef is the only hand-edited form.
+- **This document conforms to itself.** The definition regress terminates
+  here: the product authority approves this typedef and the principle set
+  by hand; everything else is checked against a typedef.
+- **Produced by:** seed drafting or a governed registry amendment.
+  **Consumed by:** authors (via the rendered template), validators (via
+  the rendered schema), reviewers (via the derived checklist).
+
+## Required frontmatter
+
+`type: artifact-typedef`, `id`, `defines` (the type name instances carry
+in their `type` field), `owner`, `status`, `created`, `updated`,
+`ancestry` (from the generic root to the type this document defines).
+Every instance also carries the identity base `definition` requires
+(`owner`, `status`, `approved` when applicable); a type's field set is
+closed over that base plus its own list.
+
+## Required sections
+
+1. **Identity and ancestry** — what the type is; who produces and
+   consumes instances.
+2. **Required frontmatter** — the instance field set, closed unless
+   stated open.
+3. **Required sections** — the instance body structure.
+4. **Commitment (Definition of Done)** — when an instance is done, with a
+   stated consequence on failure.
+5. **Sources** — the established forms the type composes; format
+   provenance lives here, not in instances and not in an index.
+6. **Derived review checklist** — every entry cites the clause it
+   projects (cite-or-delete).
+
+## Rules
+
+- A **section** is a markdown heading. Required sections appear as
+  headings in the listed order; intro prose and additional sections may
+  sit between them without breaking the order.
+- **No pinned example links.** Examples are found, not pinned: the
+  validator lists currently-conforming instances on demand; a pinned
+  example drifts as the collection changes.
+- Schemas of existing types evolve and new types are added through the
+  owner's approval — the registry is open and versioned, never fixed.
+
+## Commitment (Definition of Done)
+
+An artifact-typedef is done when a validator can check any instance from
+it alone and an author can write a conforming instance from its rendered
+template alone. **Consequence on failure:** instances of the type cannot
+be validated, so none are deliverable.
+
+## Sources
+
+ISO/IEC/IEEE 15289 (generic content types); DITA specialization and
+ancestry declaration; Scrum's artifact-commitment pairing; the live
+system's typedef lineage (PDR-032 sole ownership, ADR-059 generated
+drift-gated renderings).
+
+## Derived review checklist
+
+- `defines` matches the `type` field its instances carry. *(schema)*
+- Every required section present, in order. *(§Required sections)*
+- Commitment states a consequence. *(§Required sections 4)*
+- Sources present; no pinned example links anywhere. *(§Sources, §Rules)*
+- Every checklist entry cites a clause. *(§Required sections 6)*
+
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+| 1 | 2026-08-19 | update | Authored (seed layer); earlier history, if any, in the repository history. |
+| 1 | 2026-08-22 | state | draft → approved. |
+| 2 | 2026-08-23 | update | Owner direction: decision-ledger references removed — changes stand on their own; history entries and text no longer cite numbered decisions. |
+=================== basis/artifacts/fitness-set.md
+---
+type: artifact-typedef
+id: fitness-set-typedef
+defines: fitness-set
+owner: product-authority
+status: approved
+approved: 2026-08-22
+version: 2
+created: 2026-08-19
+updated: 2026-08-23
+ancestry: [definition, fitness-set]
+---
+
+# Artifact type: fitness-set
+
+## Identity and ancestry
+
+- **Type:** `fitness-set` — a small set of Given/When/Then scenarios that
+  a judge scores against an artifact type's instances. Judged, never
+  executed: there are no step definitions, and the schema says so where
+  tools can read it.
+- **Produced by:** the author of the target type's quality definition.
+  **Consumed by:** the judging role named in the frontmatter, at the
+  review step of the producing process and at any later re-verification.
+
+## Required frontmatter
+
+`type: fitness-set`, `id`, `target-type` (the artifact type judged),
+`judged: true`, `executable: false`, `judged-by` (the role), `owner`,
+`status`, `created`, `updated`.
+
+## Required sections
+
+1. **Scenarios** — Given/When/Then, each `Then` falsifiable: a competent
+   judge shown a failing instance can say "fails" and point at why.
+2. **Compile mapping** — a table taking every `Then`, one for one, into a
+   judge-rubric assertion, proving the set rests on established
+   evaluation practice and not a bespoke engine.
+
+## Rules
+
+- **Hard segregation from executable scenarios:** fitness sets never live
+  in `features/`, and `executable: false` is schema-level, so no test
+  runner can pick one up by accident.
+- Judge verdicts are recorded with the judge's model and prompt version
+  pinned; the owner grades a sample on a standing calibration loop.
+
+## Commitment (Definition of Done)
+
+A fitness set is done when every `Then` is falsifiable and mapped to a
+rubric assertion. **Consequence on failure:** its verdicts carry no
+standing in review.
+
+## Sources
+
+Gherkin syntax (the readable G/W/T frame — syntax only, no runner);
+LLM-judge practice (G-Eval–style rubric decomposition, promptfoo's
+llm-rubric assertions); EvalGen-style human calibration of judges.
+
+## Derived review checklist
+
+- Frontmatter guardrails present (`judged`, `executable`, `judged-by`).
+  *(schema)*
+- Not under `features/` — mechanical path check. *(§Rules)*
+- Every `Then` appears in the compile-mapping table. *(§Required sections 2)*
+
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+| 1 | 2026-08-19 | update | Authored (seed layer); earlier history, if any, in the repository history. |
+| 1 | 2026-08-22 | state | draft → approved. |
+| 2 | 2026-08-23 | update | Owner direction: decision-ledger references removed — changes stand on their own; history entries and text no longer cite numbered decisions. |
+=================== basis/artifacts/quality-guideline.md
+---
+type: artifact-typedef
+id: quality-guideline-typedef
+defines: quality-guideline
+owner: product-authority
+status: approved
+approved: 2026-08-26
+version: 4
+created: 2026-08-19
+updated: 2026-08-26
+ancestry: [definition, quality-guideline]
+---
+
+# Artifact type: quality-guideline
+
+## Identity and ancestry
+
+- **Type:** `quality-guideline` — the definition of well-made prose for
+  an artifact type or for all prose (the base writing style is a
+  quality-guideline every other one layers on and never overrides), or
+  of a well-made interaction for one interaction type or for all of
+  them (the common experience guideline is the one the per-type
+  experience guidelines layer on).
+- **Produced by:** the owner (authority-authored styles are stored verbatim as guideline documents) or
+  a definition author deriving type-specific rules. **Consumed by:**
+  authors at write time (the Highlights block is the layer compiled into
+  generating context); mechanical style checks and judges, which cite
+  rules by number.
+
+## Required frontmatter
+
+`type: quality-guideline`, `id`, `owner`, `status`, `created`,
+`updated`; `target-type` (the artifact type governed; `interaction`
+for an experience guideline; absent for the base style, which governs
+all prose); `interaction-type` (experience guidelines only: one or more of
+`cli`, `tui`, `gui`, `api`, `assistant`, `document` — a closed set
+matching the glossary's interaction types, `cli` and `tui` split — or
+`all` for the common experience guideline). For an experience
+guideline the "artifact type's typedef" in the precedence order is
+this typedef, and the common experience guideline ranks above the
+per-type ones.
+
+## Required sections
+
+1. **Voice principle** — one sentence naming the reader and the stance.
+2. **Highlights** — the compressed layer compiled into the author's
+   context.
+3. **Layers** — what this guideline sits on and the precedence order when
+   rules conflict (an approved principle beats the artifact type's typedef, which beats
+   any guideline; the base writing style is a guideline other guidelines
+   never override, and it yields to principles and typedefs like any
+   guideline).
+4. **Rules** — each numbered, with a before/after pair and Deming's three
+   elements: a test, a criterion, a yes/no decision — plus the derived
+   check it feeds (mechanical, judged, or both).
+
+Sections 1–3 may appear as bolded labels; Rules is a heading. The base
+writing style is stored verbatim, so its structure is the authority's
+own and is exempt from the section requirements.
+
+## Commitment (Definition of Done)
+
+A quality guideline is done when every rule
+is decidable yes/no on real text — or, for an experience guideline, on
+a delivered interaction — and feeds a named check (an experience
+guideline's judged checks name scenarios of the `interaction` fitness
+set) — a check that
+exists, or a filed work item for the tool that will run it; "tool chosen
+later" with no work item fails. **Consequence on failure:** the rule is
+advice, not a definition, and is removed.
+
+## Sources
+
+Google and Microsoft style-guide anatomy (principle → highlights → rules
+with examples → precedence); Deming's operational definitions; Federal
+Plain Language guidelines.
+
+## Derived review checklist
+
+- Highlights block present and shorter than the rules. *(§Required sections 2)*
+- Precedence stated. *(§Required sections 3)*
+- Every rule: before/after + test + criterion + decision + derived check.
+  *(§Required sections 4)*
+
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+| 1 | 2026-08-19 | update | Authored (seed layer); earlier history, if any, in the repository history. |
+| 1 | 2026-08-22 | state | draft → approved. |
+| 2 | 2026-08-23 | update | Owner direction: decision-ledger references removed — changes stand on their own; history entries and text no longer cite numbered decisions. |
+| 3 | 2026-08-26 | update | Owner direction: the type admits experience guidelines — target `interaction`, an `interaction-type` key with a closed set, decidability on a delivered interaction, judged checks naming the `interaction` fitness set — for the experience guidance corpus's second layer. |
+| 3 | 2026-08-26 | review | Screened with the experience guidelines: the closed set admitted one value where the cli guideline covers two; the precedence order's second rank had no referent for an interaction target. |
+| 4 | 2026-08-26 | update | interaction-type admits one or more values; the precedence referent for experience guidelines stated. |
+| 4 | 2026-08-26 | state | The experience-guideline amendment (v3–v4) approved by the owner. |
+=================== basis/glossary.md
+---
+type: glossary
+id: glossary
+owner: product-authority
+status: approved
+approved: 2026-08-19
+version: 14
+created: 2026-08-19
+updated: 2026-08-28
+---
+
+# Glossary
+
+## How the list combines
+
+The defined-term list is this glossary combined with every schema element
+name. Per the `use-defined-terms` principle, a writer choosing between
+terms uses one of these when one fits.
+
+## Terms
+
+- **artifact type** — a named, schema-defined document type (e.g.
+  `decision-brief`); the term the schema registry uses. Not "kind".
+- **data type** — a named, schema-defined structure that is not a
+  human-readable document (e.g. `review`); passed between process steps.
+- **simple type** — a JSON Schema primitive (`string`, `integer`,
+  `boolean`, `array`, `object`), usable inline without registration.
+- **typedef** — the single source a type is generated from; templates and
+  schema fragments are its renderings (owned by shopsystem-knowledge).
+- **schema** — the machine-checkable shape of a type: fields, types,
+  enums, required sections.
+- **process definition** — the source of truth for a process: header
+  (purpose, outcomes, roles), data section, steps section.
+- **step** — one unit of a process: an agent step (carries a prompt) or a
+  runtime step (carries `set`, `run`, or `branches`; no prose).
+- **rendering** — a generated output of a definition (a skill, a
+  diagram, a template); never edited by hand, never the source of truth.
+- **guiding statement** — an optional header element of a process
+  definition that directs judgment across the whole process; compiled
+  into every rendering.
+- **fitness set** — judged (never executed) Given/When/Then scenarios
+  scoring an artifact type's quality.
+- **guideline** — prose quality rules for an artifact type, each with a
+  test, a criterion, and a yes/no decision.
+- **role** — a named capability contract and set of accountabilities,
+  assigned by process steps to whoever fills it; sequencing lives in
+  process definitions, not roles.
+- **principle** — a standing rule about how we work: name, statement,
+  rationale, implications (see the principles document's opening
+  definition).
+- **seed layer** — the hand-approved definitions the regress terminates
+  at: the principle set plus one typedef per definition document type.
+- **owner** — the role that approves changes to a definition; named in
+  every definition's frontmatter.
+- **definition chain** — the six linked definitions of good for one
+  artifact type; required before instances are authored or rewritten.
+- **keeper** — a corpus record whose action is keep-rewrite; rewritten
+  forward through its type's approved chain, never used as-is.
+- **rewrite-forward** — the default for keepers: re-author to the
+  approved standard; repair-in-place only for records already at the bar.
+- **rebaseline** — Phase 1 of the re-founding arc: the active tree comes
+  to hold only chain-conforming records; retired mass moves to the
+  archive.
+- **scope** (of a principle set) — the level the set governs and whose
+  context it loads into: working (every activity), architecture (the
+  designed system), or experience (the product's interactions).
+- **transcript** — the runtime log of turns; unscoped, not a governed
+  artifact, never loaded into context.
+- **conversation** — a scoped, bounded discussion attached to exactly one
+  anchor; every conversation belongs to a process.
+- **anchor** — the governed record a conversation attaches to: a session
+  record, a review record, or a work item; carries the conversation's
+  state across transcript boundaries.
+- **conversation type** — discovery (anchor: a session record), review
+  (anchor: a review record and its outcomes), or work (anchor: a work
+  item).
+- **session record** — the anchor record of a discovery conversation:
+  outcome, produced and revised lists, open threads, select quotes.
+- **review** — one bounded conversation in which the authority decides
+  on presented material. Replaces "sitting".
+- **review record** — the anchor record of a review: the material
+  presented and the outcomes applied; each decision traces in the
+  changed artifacts' Document History, never in a standing ledger.
+- **park** — the failsafe for work that cannot pass review within its
+  round cap: set aside with a filed finding.
+- **round cap** — the declared maximum review rounds before a loop's
+  failsafe exit fires.
+- **action** — the approved choice for one record: keep-rewrite, keep,
+  retire, or terminal, with its target.
+- **authority-call** — a row marker on a migration-plan row awaiting a
+  decision from the authority; not an action — the row has no effect and
+  is out of scope for any run until ruled.
+- **action table** — the table of records and their actions; approved row
+  by row or in blocks at a review. Drives any bulk record change.
+- **close-out** — the mechanical execution of the migration plan's
+  pre-decided retire and terminal actions: snapshot, delete, archive
+  move, a loud post-check, and the branch promotion; no review loop.
+  All stages run consecutively at cut-over.
+- **snapshot tag** — the annotated git tag (`pre-migration`) on `main`'s
+  pre-execution commit, preserving the full corpus for terminal-recovery;
+  after close-out a terminal record exists only there.
+- **migration plan** — the rebaseline's action table plus the order of
+  the per-type migration runs. Replaces "rebaseline bill".
+- **run** — one execution of a process, anchored to a work item; states:
+  running, held, done, cancelled.
+- **hold** — a run state: paused with its step and data preserved in its
+  anchor, by inactivity or by an ask; a held run is resumed or
+  cancelled, never dropped.
+- **checkpoint** — updating a conversation's anchor when a transcript
+  ends mid-conversation; a checkpoint is not a close.
+- **branched conversation** — a conversation run as a sub-process of
+  another run; its anchor records the parent (`branched-from`).
+- **Bounded Context** — a deliberately drawn region of the product with
+  one internal language, one model, and one set of contracts to other
+  regions; drawn by design, never discovered after the fact (Evans,
+  *Domain-Driven Design*).
+- **shop** — the entity that builds, operates, and evolves part of the
+  product. Two types: the lead shop (the system-level coordinator; owns
+  product-level artifacts and no Bounded Context) and the BC-shop (owns
+  and produces exactly one Bounded Context). By the owner's decision a
+  BC-shop is a component team in the product literature's sense: it
+  receives bounded work for its context and does not own a feature end
+  to end; a request that crosses contexts is decomposed above it, in
+  the initiative, never by the shops between themselves.
+- **activity** — a discrete unit of work performed inside a shop,
+  following a contract or process, with inputs, outcomes, and provenance
+  recorded. What an actor is stays unconstrained; the activity has the
+  same shape whoever performs it.
+- **contract** — a named, versioned statement of what one entity
+  promises another: the schemas exchanged, the meaning of each
+  operation, the error behavior, and the relationship kind. Offered as a
+  product contract (on a Bounded Context) or an operational contract (on
+  a shop); nothing outside a contract is promised.
+- **relationship kind** — the named pattern a contract declares for how
+  two Bounded Contexts relate, drawn from the context-mapping catalogue
+  (Evans, *Domain-Driven Design*): customer–supplier, conformist,
+  anti-corruption layer, open host service, published language, shared
+  kernel, or separate ways.
+- **vehicle** — the message type a request to a Bounded Context shop
+  travels in; chosen from the pre-state, never from the request's
+  wording.
+- **pre-state** — what a Bounded Context actually is before a change,
+  read from its contracts and its scenario register, never from its
+  internals.
+- **framing** — the PM role's recorded statement of what a request is
+  about: the originator, the problem taken to be worth solving, and the
+  outcome it serves; the exclusive decision of `lead-pm`.
+- **acceptance scenario** — a Gherkin scenario in a feature that
+  states, as a requirement, what counts as done for one behavior;
+  co-produced by the PO role and the owning Bounded Context shop;
+  assigned to that context by a `@bounded-context:<name>` tag the
+  solutions architect writes; held in that shop's scenario register.
+- **scenario register** — a Bounded Context shop's own list of the
+  acceptance scenarios tagged to it across all features, with their
+  hashes and states; read in full across every context when a claim
+  spans contexts.
+- **ask** — a question one activity puts to another role in place of
+  its output, carrying a default and a checkpoint; the run holds, the
+  role answers, the step resumes — never a wait in place (data type
+  `ask`; process-definition typedef §Run lifecycle).
+- **clarify** — an ask from a Bounded Context shop to the lead shop on
+  scope, vocabulary, structure, or contract; answered by the role whose
+  domain the question falls in.
+- **decomposition** — the solutions architect's record of which Bounded
+  Context owns which capability, and the relationship kind of each
+  contract between contexts.
+- **enabler work** — technical work that makes a feature possible;
+  recommended by the solutions architect, placed in the backlog by the
+  PO role.
+- **interaction type** — one way a person or an agent reaches the
+  product: command line (CLI), full-screen terminal (TUI), graphical or
+  web (GUI), API and SDK, conversational, voice, or a generated document
+  or notification; each honours its own conventions within one
+  experience. The experience guidelines cover conversational and voice
+  together as the `assistant` guideline.
+- **experience guidance corpus** — the product designer role's
+  principle set and guidelines for the experience: design principles,
+  vocabulary and voice, core-task parity across interaction types,
+  interaction patterns per type, and the accessibility target; the
+  role's exclusive domain.
+- **originator** — whoever expresses intent at the product's edge: a
+  person, a shop, or a system outside the product.
+- **generated interface** — an interface whose form the product composes
+  at run time from the person's context, within constraints the
+  experience guidance corpus states; a form, not an interaction type.
+- **assistant interaction** — an interaction in which the product acts on
+  an intent the person stated rather than on a command — conversational,
+  voice, or an assistant acting for the person (a closed set); the locus
+  of control is the product's, so the experience principles bound it.
+- **feature** — a Gherkin Feature: one capability from the user's or
+  agent's point of view — a narrative saying who, what, and the outcome
+  — with the acceptance scenarios that state what counts as done for
+  it; product-level, belonging to its framing or initiative; its
+  scenarios may be owned by several Bounded Contexts. The PO role's
+  artifact. (The per-shop *brief* was retired 2026-08-28; the
+  `decision-brief` to the authority is unrelated.)
+- **intent** — a desired outcome expressed by an originator at the
+  product's edge; enters the product through a contract and keeps its
+  provenance through every translation and delegation.
+
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+| 1 | 2026-08-19 | update | Seed term list authored. |
+| 1 | 2026-08-19 | state | draft → approved. |
+| 2 | 2026-08-22 | update | Conversation-model terms added; action extended to four values, authority-call and action-table amended, close-out and snapshot tag added. |
+| 3 | 2026-08-23 | update | Architecture terms added, riding the architecture-principle-set approval: Bounded Context, shop, activity, contract, relationship kind, intent. |
+| 3 | 2026-08-23 | state | The six architecture terms approved with the architecture principle set; pending markers removed. |
+| 4 | 2026-08-23 | update | Owner direction: ruling and experiment-index entries removed with the ledger practice; review and review-record entries rewritten to the outcomes model. |
+| 5 | 2026-08-23 | update | Anchor entry added — the term recurred as an unintroduced-term stumble across three screens. |
+| 6 | 2026-08-23 | update | vehicle and pre-state added — terms the lead-solutions-architect role turns on. |
+| 7 | 2026-08-25 | update | Owner direction: a near-synonym of "role" retired and banned. |
+| 8 | 2026-08-25 | update | framing, acceptance scenario, scenario register, clarify, decomposition, enabler work added — each arrived undefined in the PM and PO role screens. |
+| 9 | 2026-08-25 | update | interaction type and experience guidance corpus added with the lead-product-designer role. |
+| 10 | 2026-08-25 | update | ask added; clarify re-based as an ask; hold now names the ask as a cause. |
+| 10 | 2026-08-25 | update | originator added — used by the PM role and the ask type without a definition. |
+| 11 | 2026-08-26 | update | scope gains the experience level with the experience principle set. |
+| 11 | 2026-08-26 | update | generated interface and assistant interaction added with the experience principle set. |
+| 12 | 2026-08-26 | update | interaction type: the guidelines' `assistant` coverage of conversational and voice noted. |
+| 13 | 2026-08-27 | update | Owner decision, from the system-read report: BC-shops are component teams by design; stated in the shop entry. |
+| 14 | 2026-08-28 | update | Owner decision: feature added; acceptance scenario and scenario register carry the `@bounded-context:` assignment; the per-shop brief retired. |
+=================== basis/processes/scenario-assignment.md
+---
+type: process-definition
+id: scenario-assignment-process
+owner: product-authority
+status: draft
+version: 4
+created: 2026-08-28
+updated: 2026-08-28
+produces: []
+carried-by: scenario-assignment-skill
+condition-language: cel
+hold-after: P7D
+ask-cap: P1D
+annotations:
+  claude-code:
+    activation: model-judged
+    promotion: experiment-local
+    use-when: "a feature has passed the PO output check and its scenarios must each be assigned to the Bounded Context that owns the behavior and sent to that shop"
+---
+
+# Process: Scenario assignment
+
+**Purpose:** Turn a checked feature into work the Bounded Context shops
+can take up: the solutions architect role tags each scenario with the
+context that owns its behavior, reads each tagged context's pre-state
+to choose the message type its scenarios travel in, records the
+feature as assigned, and sends each shop its scenarios.
+
+**Guiding statement:** The decomposition decides, not the wording.
+Which context owns a behavior is read from the decomposition and the
+contexts' contracts; a scenario no context can own is the architect's
+finding, not a guess.
+
+**Outcomes:**
+- O1. Every scenario in the feature carries exactly one
+  `@bounded-context:` tag (judged in `assign`), or the feature is
+  returned with the scenarios no context owns named — witnessed by
+  `assign`'s outputs and `route`.
+- O2. Each tagged context's vehicle is chosen from its pre-state — its
+  contracts and scenario register, declared inputs of `assign` — and
+  carried in `assignment`; `dispatch` sends one message per entry with
+  that entry's vehicle — witnessed by `dispatch`'s `run`, which pairs
+  `entries[].context` with `entries[].vehicle`.
+- O3. The feature's status becomes `assigned` and the assignment,
+  with the messages sent, is recorded in its Document History —
+  judged in `record` from `assignment` and `sent`.
+- O4. A question the decomposition cannot answer — whether a behavior
+  is in scope at all — leaves the run as an ask to the PM role with a
+  default — witnessed by `assign`'s `asks` and the `ask` value.
+
+**Roles:** assigner —
+[`../roles/lead-solutions-architect.md`](../roles/lead-solutions-architect.md)
+(decides which context owns each scenario — its decomposition
+decision right — and which vehicle each context's scenarios travel
+in — its scenario-register-loop accountability, under its posture
+that the pre-state determines the vehicle). The [PM role](../roles/lead-pm.md) — answers asks.
+Bounded Context shops — receive their scenarios; not a role of this
+process.
+
+**Carried by:**
+[`../skills/scenario-assignment/SKILL.md`](../skills/scenario-assignment/SKILL.md)
+— generated from this definition by
+[`../tools/compile_process.py`](../tools/compile_process.py), never
+edited by hand.
+
+## Flow (compiled)
+
+Generated from the steps below by `tools/compile_process.py`; do not
+edit by hand.
+
+```mermaid
+flowchart TD
+  assign(["Tag each scenario with its owning context — agent: lead-solutions-architect<br/>in — feature: string, decomposition: string, contracts: string, registers: string, ask: ask<br/>out — feature: string, unowned: string[], assignment: assignment"])
+  route{"Route on ownership<br/>in — unowned: string[]"}
+  return(["Return the feature with the unowned scenarios named — agent: lead-solutions-architect<br/>in — feature: string, unowned: string[]<br/>out — feature: string"])
+  dispatch["Send each shop its scenarios — runtime<br/>in — feature: string, assignment: assignment<br/>out — sent: string[]"]
+  record(["Record the assignment — agent: lead-solutions-architect<br/>in — feature: string, assignment: assignment, sent: string[]<br/>out — feature: string"])
+  __end(("end<br/>result — feature: string"))
+  __start(("start")) --> assign
+  assign --> route
+  route -->|success exit: every scenario owned| dispatch
+  route -->|else| return
+  return --> __end
+  dispatch --> record
+  record --> __end
+```
+
+
+## Data
+
+Each entry names a process-local value. Simple types use JSON Schema
+names inline; every structured shape is a `$ref` to a defined type with
+an explicit source. Conditions are CEL expressions over these names.
+`decomposition` is the path of the solutions architect's structural
+model, and `contracts` and `registers` the paths under which each
+Bounded Context's contracts and scenario register are read; none of
+the three has a typedef on this branch — an unfiled gap, named here —
+so each names the record the architect maintains, an approved source
+by the role's own admissible evidence.
+
+```yaml
+data:
+  feature: {type: string, format: uri-reference}
+  decomposition: {type: string, format: uri-reference}
+  contracts: {type: string, format: uri-reference}
+  registers: {type: string, format: uri-reference}
+  ask: {$ref: ask, from: ../types/ask.md, initial: null}
+  unowned: {type: array, items: {type: string}, initial: []}
+  assignment: {$ref: assignment, from: ../types/assignment.md}
+  sent: {type: array, items: {type: string}, initial: []}
+```
+
+## Steps
+
+```yaml
+start: assign
+parameters: [feature, decomposition, contracts, registers]
+result: feature
+steps:
+  - id: assign
+    name: Tag each scenario with its owning context
+    run-by: {role: lead-solutions-architect, execution: agent}
+    inputs: [feature, decomposition, contracts, registers, ask]
+    outputs: [feature, unowned, assignment]
+    asks: [lead-pm]
+    prompt: |
+      Read the decomposition and the feature. For each scenario, decide
+      which Bounded Context owns the behavior it states — from the
+      decomposition and that context's contract at contracts, never
+      from the scenario's wording alone — and write a single
+      @bounded-context:<name> tag on it. A scenario whose behavior no
+      context owns, that two contexts would each have to own, or whose
+      owning context differs from the shop named as its source in
+      Contributors, goes to unowned with the reason; do not guess. Then, for each context
+      tagged, read its pre-state — its contract and its scenario
+      register at registers, every register where a scenario could
+      conflict — and choose the vehicle: assign_scenarios for net-new
+      behavior, request_bugfix for a scenario the register already
+      holds and the system fails, request_maintenance for a tightening
+      of held behavior. Write one assignment entry per context with
+      its vehicle, the @hash: values of its scenarios, and the
+      pre-state read. If deciding needs what the decomposition
+      cannot say — whether a behavior is meant to be in the product at
+      all — return an ask to lead-pm (kind: scope) with the question,
+      the default you will apply, and a checkpoint of the tags written
+      so far; on the first pass ask is absent, and if it carries an
+      answer or resolved defaulted, act on it. Return the tagged
+      feature.
+    next: route
+
+  - id: route
+    name: Route on ownership
+    run-by: {execution: runtime}
+    inputs: [unowned]
+    branches:
+      - label: "success exit: every scenario owned"
+        when: size(unowned) == 0
+        next: dispatch
+      - else: return
+
+  - id: return
+    name: Return the feature with the unowned scenarios named
+    run-by: {role: lead-solutions-architect, execution: agent}
+    inputs: [feature, unowned]
+    outputs: [feature]
+    prompt: |
+      Write a review entry into the feature's Document History naming
+      each unowned scenario and its reason and set the feature's
+      status to "returned" — the returned feature is the handoff to
+      the PO role, which reads its status. The decomposition may need
+      a change, which this role raises as an architecture decision
+      record, or the scenario may need a split, which is the PO role's.
+    next: end
+
+  - id: dispatch
+    name: Send each shop its scenarios
+    run-by: {execution: runtime}
+    inputs: [feature, assignment]
+    outputs: [sent]
+    run: |
+      set -- ${assignment.entries[].vehicle}
+      for ctx in ${assignment.entries[].context}; do
+        vehicle=$1; shift
+        shop-msg send --bc "$ctx" --type "$vehicle" \
+          --feature "${feature}" --tag "@bounded-context:$ctx"
+      done
+    next: record
+
+  - id: record
+    name: Record the assignment
+    run-by: {role: lead-solutions-architect, execution: agent}
+    inputs: [feature, assignment, sent]
+    outputs: [feature]
+    prompt: |
+      Set the feature's status to "assigned" and write a state entry
+      into its Document History listing, from assignment, each
+      context's scenario hashes and vehicle, and, from sent (one line
+      per message the tool printed), the message sent to each. Return
+      the feature.
+    next: end
+```
+
+## Derived checks
+
+| Outcome | Check | Kind | Where |
+|---|---|---|---|
+| O1 | every scenario carries one `@bounded-context:` tag (judged), or `unowned` is non-empty and the run returns (mechanical) | judged, mechanical | `assign` outputs, `route` |
+| O2 | every `assignment` entry names a vehicle and the pre-state read; one message per entry | judged (`assign`), mechanical (`dispatch`) | `assignment`, `dispatch.run`, `sent` |
+| O3 | status `assigned` and a state entry listing vehicles and messages | judged | `record` |
+| O4 | `assign` carries `asks`; process carries `ask-cap`; `ask` listed in inputs | mechanical | `assign`, frontmatter |
+
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+| 1 | 2026-08-28 | update | Authored by owner decision as the assignment step the system-read report found undefined: the solutions architect tags each scenario of a checked feature with its owning Bounded Context and sends each shop its scenarios; the message type `assign_scenarios` and the `shop-msg` tool are the frozen corpus's, imported by name until the messaging package is imported. The decomposition artifact's typedef is pending. |
+| 1 | 2026-08-28 | review | Screened: findings — the vehicle fixed in the command while O2 claimed the pre-state chose it; a shell loop over an array with no defined interpolation; assign read contracts it did not declare; record read messages no value carried; the Roles line misnamed the decomposition as exclusive; the return handoff and "decision record" unnamed. |
+| 2 | 2026-08-28 | update | Repairs: the assigner reads each context's contract and register (declared) and chooses the vehicle per context, carried in a new `assignment` type; the typedef now defines array interpolation so the fan-out is a defined form; dispatch outputs `sent`; decision rights named correctly; the returned status is the handoff; architecture decision record named. |
+| 2 | 2026-08-28 | review | Re-screened: findings — an invented `shop-msg vehicle-for`; `>> sent` as an undefined output mechanism; a vehicle decision right the role does not list; scenario identity unstated. |
+| 3 | 2026-08-28 | update | Repairs: paired positional iteration over `entries[].vehicle` and `entries[].context`; the output is the tool's standard output under the typedef's new run-output rule; the Roles line names the right and the accountability the role has; scenarios identified by `@hash:`. |
+| 4 | 2026-08-28 | update | From the feature chain's screen: a scenario whose owning context differs from its Contributors' shop is treated as unowned, so the correction path the feature typedef states is carried by this process's return. |

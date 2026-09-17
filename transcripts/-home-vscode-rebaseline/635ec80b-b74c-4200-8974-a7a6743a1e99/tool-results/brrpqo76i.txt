@@ -1,0 +1,541 @@
+=================== basis/artifacts/feature.md
+---
+type: artifact-typedef
+id: feature-typedef
+defines: feature
+owner: product-authority
+status: draft
+version: 6
+created: 2026-08-26
+updated: 2026-08-28
+ancestry: [feature]
+---
+
+# Artifact type: feature
+
+## Identity and ancestry
+
+- **Type:** `feature` — a Gherkin Feature: one capability described
+  from the user's or agent's point of view, with the scenarios that
+  state, as requirements, what counts as done for it. A product-level
+  artifact: it belongs to the framing it serves (the initiative, once
+  that type exists — the product-level problem artifact the research
+  report `product-process-2026-08` on the `research` branch proposes) and may hold scenarios owned by
+  several Bounded Contexts. The scenario is the atom; the feature is
+  its grouping; a Bounded Context's scenario register is the subset of
+  scenarios, across all features, tagged to it. The instance is a
+  markdown document with frontmatter whose Scenarios section holds one
+  fenced Gherkin block — the executable unit the shops receive; the
+  other sections are the document's, not Gherkin's. Scenarios are
+  executed by the owning shops; the feature as a document is judged by
+  the [feature fitness set](../fitness/feature.fitness.md), never
+  executed there. `ancestry` names no generic root: a feature is
+  neither a request nor a definition.
+- **Produced by:** the [PO role](../roles/lead-po.md), with the shops
+  that own the behaviors (scope and wording from the PO; steps and edge
+  cases from each owning shop; usability and accessibility criteria
+  from the product designer role); checked by the
+  [PO output check](../processes/po-output-check.md); its scenarios
+  assigned to Bounded Contexts by the solutions architect role in the
+  [scenario assignment](../processes/scenario-assignment.md) process.
+  **Consumed by:** the shops, each receiving the scenarios tagged to it;
+  the [interaction conformance check](../processes/interaction-conformance-check.md)
+  for the interaction types named; the changelog rendering the same report proposes, when
+  `reconcile-and-close` closes the work that delivered its scenarios.
+
+## Required frontmatter
+
+`type: feature`, `id`, `status`, `version`, `name` (the Feature's
+name), `framing` (link to the framing it serves), `owner`, `created`,
+`updated`. `approved` does not apply: a feature's terminal state is
+`assigned`. Status values and their writers: `draft` (the PO role);
+`checked`, `returned`, `pending-definition` (the PO output check's
+record step, replacing `draft`); a returned or pending feature the PO
+role resubmits goes back to `draft`; `assigned` (the scenario
+assignment process's record step, replacing `checked` when every
+scenario carries its tag); a feature the assignment process returns
+goes to `returned`.
+
+## Required sections
+
+1. **Feature** — the Gherkin `Feature:` line with its name, and the
+   narrative beneath it: who the capability is for, what they can do,
+   and the outcome it serves, in the framing's words.
+2. **Contributors** — for every scenario, the shop named as the source
+   of its steps and edge cases — the shop the solutions architect's
+   decomposition places the behavior in; where the capability has an
+   interaction, the product designer role's usability acceptance
+   criteria and the accessibility criteria.
+3. **Interaction types** — always present: the interaction types the
+   capability must be available on, from the
+   [core-task list](../experience/core-tasks.md), or "none" with the
+   reason when the capability has no interaction.
+4. **Scenarios** — one fenced `gherkin` block, the executable unit:
+   it opens with the `Feature:` line and narrative of §1 verbatim (§1
+   is the document's reading of the block's head; the block is the
+   source, and the repeat is accepted so the document reads without
+   the block), then an optional `Background:` (its Given steps judged as any
+   step), then each `Scenario:` carrying the tags `@feature:<id>` (so a
+   scenario travels alone to a register and still names its feature —
+   the reason the Feature line's tag inheritance is not relied on),
+   `@hash:<sha>` (a hash of the scenario's text), and, once assigned,
+   `@bounded-context:<name>`; Given/When/Then with one action or event
+   in the When and an outcome observable in the running system in the
+   Then; no step names an implementation detail.
+5. **Edges** — a table of every failure and boundary case the framing
+   or a contributing shop named: case · who named it · the `Scenario:`
+   name that covers it, or "out of scope" with the reason.
+
+## Rules
+
+- A scenario's `@bounded-context:` tag is written by the solutions
+  architect role at assignment, never by the PO role — a writer rule
+  the assignment process enforces; the check does not judge the tag's
+  presence, since a re-verified or resubmitted feature carries it. In
+  the assignment process, a scenario whose owning context differs from
+  its Contributors' shop is treated as unowned with that reason, so the
+  feature returns (`returned`) for co-production with the newly named
+  shop.
+- A changed scenario text is a new scenario with a new `@hash:`.
+  Whether the hash matches the text is a mechanical check, to be filed
+  as a lint.
+- A scenario written without the shop named as its source is not
+  co-produced and fails the check.
+
+## Commitment (Definition of Done)
+
+A feature is done when it has passed the PO output check against its
+fitness set and the framing, and every scenario carries a
+`@bounded-context:` tag. **Consequence on failure:** it is returned
+with the criterion named and no scenario enters a register.
+
+## Sources
+
+Gherkin (Feature, narrative, Background, Scenario, tags — the block's
+form); Cucumber's guidance on the three amigos (co-production); the
+experience principles `core-task-parity` and `accessible-by-standard`.
+
+## Derived review checklist
+
+- Feature line and narrative present, tied to the framing. *(§Required sections 1; fitness 6)*
+- Each scenario one observable behavior, no how. *(§Required sections 4; fitness 1)*
+- Every scenario has a named source shop; designer criteria where there is an interaction. *(§Required sections 2; fitness 2)*
+- `@feature:` and `@hash:` on every scenario. *(§Required sections 4; fitness 3)*
+- Every listed edge covered or excluded with reason. *(§Required sections 5; fitness 4)*
+- Interaction types section present, named or "none" with reason. *(§Required sections 3; fitness 5)*
+
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+| 1 | 2026-08-26 | update | Authored as `acceptance-scenarios` from the approved fitness set; carried the co-production statement and the tag's content the set asked the typedef to carry. |
+| 1 | 2026-08-26 | review | Screened: findings — definition wrongly in the ancestry; fitness 2's two criteria collapsed; an undefined consumer; the tag's content in two homes. |
+| 2 | 2026-08-26 | update | Repairs: ancestry corrected; both criteria named; the conformance check linked; the tag carries the frontmatter values. |
+| 3 | 2026-08-26 | update | assigned's transition stated; edges bound to §1's stated contribution; core-task list linked. |
+| 3 | 2026-08-26 | review | Re-screened (round 3): clean. |
+| 4 | 2026-08-28 | update | Owner decision: re-formed as `feature` on Gherkin's own unit — the type was grouped per behavior and pre-assigned to one context, a dispatch convenience carried from `main`. A feature is product-level, belongs to its framing or initiative, holds scenarios owned by several contexts; assignment moves to the solutions architect's scenario-assignment process and lives on `@bounded-context:` tags; `context` leaves the frontmatter; a Feature line and narrative are required. File renamed from `acceptance-scenarios.md`. |
+| 4 | 2026-08-28 | review | Screened with the chain: findings — the instance form unstated and the hash not Gherkin-legal; pre-assignment ownership undefined; the edge list required by nothing; status transitions incomplete; `date` undefined; consumers unlinked. |
+| 5 | 2026-08-28 | update | Repairs: markdown instance with one fenced Gherkin block; `@feature:` and `@hash:` tags; ownership from the decomposition, confirmed or corrected at assignment; an edge table; every transition with its writer; `date` dropped; consumers linked; interaction types always present. |
+| 5 | 2026-08-28 | review | Re-screened: findings — the "no bounded-context tag at the check" clause failed re-verified and resubmitted features; the correction path had no deciding step or status; the Edges reference form unstated; two insider references. |
+| 6 | 2026-08-28 | update | Repairs: the clause removed, the writer rule kept and enforced by the assignment process, which returns a feature whose tag differs from its Contributors' shop; Edges rows reference the Scenario name; the block's head stated as the source; references located. |
+=================== basis/fitness/feature.fitness.md
+---
+type: fitness-set
+id: feature-fitness
+owner: product-authority
+status: draft
+version: 6
+created: 2026-08-26
+updated: 2026-08-28
+target-type: feature
+judged: true
+executable: false
+judged-by: cold-reviewer
+---
+
+# Fitness set: feature
+
+A feature is a Gherkin Feature — one capability from the user's or
+agent's point of view with the scenarios that state what counts as
+done for it — submitted by the PO role, product-level, its scenarios
+later assigned to Bounded Contexts by the solutions architect role.
+The scenarios are executable by the owning shops; this set judges the
+feature as a document and is never executed. These scenarios are the
+criteria set the [PO output check](../processes/po-output-check.md)
+screens a feature against, alongside the framing (criterion
+`framing`). Evaluated by the `cold-reviewer` role. The judge reads only
+the criteria set, the framing, and the feature; a fact the feature must
+carry — a source shop, a tag, an edge — is what these scenarios make it
+carry. Assignment is not judged here: the `@bounded-context:` tag is
+set after the check.
+
+## Scenarios
+
+Scenario 1: each scenario is one observable behavior
+  Given a scenario in the feature's Gherkin block, Background steps
+  included
+  When its steps are read
+  Then the When is one action or event, the Then an outcome observable
+  in the running system, and no step names an implementation detail
+
+Scenario 2: every scenario has a named source
+  Given the Contributors section
+  When each scenario is read against it
+  Then a shop is named as the source of that scenario's steps and edge
+  cases, and, where the Interaction types section names a type, the
+  product designer role's usability acceptance criteria and the
+  accessibility criteria are present (their sources: the
+  lead-product-designer role and the experience principle
+  `accessible-by-standard` — provenance, not a document to open)
+
+Scenario 3: identity tags are present
+  Given each scenario's tags
+  When they are read
+  Then `@feature:<id>` and `@hash:<sha>` are present (whether the hash
+  matches the text is a lint, not this judge's; the `@bounded-context:`
+  tag is assignment's and is not judged here, present or absent)
+
+Scenario 4: every listed edge is covered
+  Given the Edges table and the cases the framing names
+  When each case is read
+  Then it names the covering scenario by its Scenario name or is marked
+  out of scope with a reason, and every case the framing names appears in the table
+
+Scenario 5: interaction types are stated
+  Given the Interaction types section
+  When it is read
+  Then it names the types the capability must be available on, or
+  "none" with a reason the framing bears out (the experience principle
+  `core-task-parity`)
+
+Scenario 6: the feature says who it is for and why
+  Given the Feature line and its narrative
+  When they are read
+  Then they name who the capability is for, what they can do, and the
+  outcome it serves, and that outcome is the framing's
+
+## Compile mapping (each Then → one judge-rubric assertion)
+
+| Scenario Then | Judge-rubric assertion |
+|---|---|
+| 1 — one observable behavior | "For each scenario and the Background: is the When one action, the Then observable in the running system, and no step implementation-specific? Cite any failing step." |
+| 2 — named source | "For each scenario: is a source shop named in Contributors? Where a type is named, are usability and accessibility criteria present? Cite or name the absence." |
+| 3 — identity tags | "For each scenario: `@feature:` present? `@hash:` present? Cite any scenario without both." |
+| 4 — edges covered | "For each row of the Edges table and each case the framing names: a covering scenario or a reasoned exclusion? Any uncovered or missing case = fail." |
+| 5 — interaction types stated | "Does the Interaction types section name types, or 'none' with a reason the framing bears out? Cite the sentence or its absence." |
+| 6 — narrative | "Does the Feature narrative name who, what, and the outcome, and is the outcome the framing's? Cite the lines or their absence." |
+
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+| 1 | 2026-08-26 | update | Authored as the criteria set the PO output check screens acceptance-scenario sets against. |
+| 1 | 2026-08-26 | review | Screened: findings — "usability criteria" alone; an attribution record no definition carried; a hash comparison a reading judge cannot make; edge cases the judge would invent. |
+| 2 | 2026-08-26 | update | Repairs: both criteria named with sources; co-production stated as what the set must say; hash reduced to presence; edges bound to the framing and the set's own contribution. |
+| 3 | 2026-08-26 | update | Repairs: scenario 4 bound to the framing and the set's stated shop contribution; sources in the Then; the hash lint marked to-be-filed. |
+| 3 | 2026-08-26 | review | Re-screened (round 3): clean. |
+| 3 | 2026-08-26 | state | draft → approved by the owner. |
+| 4 | 2026-08-28 | update | Owner decision: re-formed with the `feature` typedef — a Feature is product-level with scenarios owned by several contexts; scenario 2 reads per owning shop; scenario 3 asks for the feature tag only, the bounded-context tag being assignment's; scenario 6 added for the Feature narrative. Returned to draft with the typedef. File renamed. |
+| 4 | 2026-08-28 | review | Screened with the chain: findings — scenario 4's Given named a set the judge could not enumerate; scenario 2 needed knowledge of who owns what; scenario 5 could not tell absence from omission; "hold on" unplain. |
+| 5 | 2026-08-28 | update | Repairs: scenario 4 reads the Edges table; scenario 2 asks for a named source per scenario; scenario 5 reads a section that is always present; Background steps judged under scenario 1; the tag forms named. |
+| 5 | 2026-08-28 | review | Re-screened: findings — scenario 3's absence clause failed correct features. |
+| 6 | 2026-08-28 | update | Repairs: scenario 3 judges presence only; Edges rows by Scenario name; scenario 2's sources marked as provenance. |
+=================== basis/guidelines/feature.md
+---
+type: quality-guideline
+id: feature-guideline
+target-type: feature
+owner: product-authority
+status: draft
+version: 5
+created: 2026-08-27
+updated: 2026-08-28
+---
+
+# Guideline: feature
+
+**Voice principle.** Write the feature for the person or agent it
+serves and for the shops that will run its scenarios against the real
+system: a narrative that says who and why, then scenarios that each
+state one action and one observable outcome, with nothing about how.
+
+**Highlights (the layer compiled into generating context):** a Feature
+line and a narrative — who, what, the outcome, in the framing's words ·
+one When, one observable Then, no how · each owning shop named as the
+source of its scenarios' steps and edges · usability and accessibility
+criteria where there is an interaction · `@feature:` and `@hash:` on every
+scenario · every named edge
+covered or excluded with a reason · the interaction types stated, or "none" with a reason.
+
+**Layers:** this guideline adds feature rules on top of the
+[base writing style](base-writing-style.md); the base always applies
+and is never overridden. When rules conflict, an approved principle
+beats the [feature typedef](../artifacts/feature.md), which beats this
+guideline. Gherkin's own syntax governs the Feature, Background, and
+Given/When/Then form. Every rule feeds the
+[feature fitness set](../fitness/feature.fitness.md), scored in the
+[PO output check](../processes/po-output-check.md).
+
+---
+
+## Rules
+
+**1. A narrative that says who and why.**
+Before: "Feature: Run list" with scenarios beneath and no narrative.
+After: "Feature: Failed runs visible in the run list / An operator
+checking last night's runs / can see which failed without opening each
+/ so that a failed run is noticed within one glance (the framing's
+outcome)."
+*Test:* read the Feature line and the lines beneath it. *Criterion:*
+they name who the capability is for, what they can do, and the outcome
+it serves, and the outcome is the framing's. *Decision:* yes/no per
+feature.
+*Derived check:* judged — feature fitness scenario 6.
+
+**2. One action, one observable outcome, no implementation.**
+Before: "When the user clicks the red button and the API returns 200,
+Then the database row is updated."
+After: "When the operator lists runs, Then each failed run is marked as
+failed in the list."
+*Test:* for each scenario and the Background, count the actions in the
+When and check the Then against what a person or agent could observe
+from outside the system. *Criterion:* one action or event; an outcome
+observable in the running system; no step names an implementation
+detail, such as a component, call, storage, algorithm, format, or
+vendor. *Decision:* yes/no per scenario.
+*Derived check:* judged — feature fitness scenario 1.
+
+**3. Name a source shop for every scenario.**
+Before: a feature with no contributors section.
+After: "Contributors: the reporting shop supplied the steps and edge
+cases for the list scenarios; the export shop for the CSV scenarios;
+the product designer role supplied the usability criterion (marked
+within one glance) and the accessibility criterion (failure not by
+color alone)."
+*Test:* read each scenario against the Contributors section.
+*Criterion:* every scenario has a named source shop; where the
+Interaction types section names a type, both designer criteria are
+present. *Decision:* yes/no per scenario.
+*Derived check:* judged — feature fitness scenario 2.
+
+**4. Tag every scenario with its feature and hash.**
+Before: a scenario with a title only.
+After: `@feature:failed-runs-visible @hash:3f9a…` on the line above
+`Scenario:` (the `@bounded-context:` tag is the architect's, written at
+assignment; its presence is not this rule's).
+*Test:* read each scenario's tag line. *Criterion:* `@feature:` and
+`@hash:` are present. *Decision:* yes/no per scenario.
+*Derived check:* judged — feature fitness scenario 3.
+
+**5. List every edge and cover or exclude it.**
+Before: a happy path only, with the cancelled-run case the shop named
+absent from the Edges table.
+After: an Edges row "cancelled run · reporting shop · Scenario: a
+cancelled run is not marked failed" and a row "runs older than
+the retention window · framing · out of scope: the archive feature
+owns them".
+*Test:* read the Edges table and the cases the framing names.
+*Criterion:* every row names a covering scenario or a reasoned
+exclusion, and every case the framing names has a row. *Decision:*
+yes/no per case.
+*Derived check:* judged — feature fitness scenario 4.
+
+**6. State the interaction types, or "none" with a reason.**
+Before: no Interaction types section.
+After: "Interaction types: cli, gui — from the core-task list's 'read
+a decision' row." or "Interaction types: none — the capability is a
+nightly reconciliation with no person or agent at an interface."
+*Test:* read the Interaction types section. *Criterion:* it names the
+types the capability must be available on (the typedef requires them
+to come from the [core-task list](../experience/core-tasks.md);
+whether they do is a filed gap for a lint or the conformance check),
+or "none" with a reason the framing bears out. *Decision:* yes/no per feature.
+*Derived check:* judged — feature fitness scenario 5.
+
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+| 1 | 2026-08-27 | update | Authored as the acceptance-scenarios guideline to complete the type's definition chain. |
+| 1 | 2026-08-27 | review | Screened: findings — rule 5's criterion carried a clause no check decides; rule 1 narrower than the typedef; a section reference by number. |
+| 2 | 2026-08-27 | update | Repairs applied. |
+| 2 | 2026-08-27 | review | Re-screened: clean. |
+| 3 | 2026-08-28 | update | Owner decision: re-formed for the `feature` type — a narrative rule added; contributors per owning shop; the bounded-context tag left to assignment; the exclusion example names a feature, not a brief. File renamed. |
+| 3 | 2026-08-28 | review | Screened with the chain: findings — rule 4 stricter than its scenario and failing every assigned feature; a hash form Gherkin cannot parse; rule 5 reading a list the typedef did not require; rule 6 undecidable on absence; rule 2 narrower than scenario 1. |
+| 4 | 2026-08-28 | update | Repairs: rule 4 presence-only with the tag forms; rules 3, 5, 6 aligned to scenarios 2, 4, 5; rule 2 widened to any implementation detail. |
+| 4 | 2026-08-28 | review | Re-screened: findings — rule 4's absence clause; rule 2's test without Background and a closed detail list; an invented reference form; the core-task source unchecked anywhere. |
+| 5 | 2026-08-28 | update | Repairs applied; the core-task source named as a filed gap. |
+=================== /tmp/claude-1000/-home-vscode-rebaseline/635ec80b-b74c-4200-8974-a7a6743a1e99/scratchpad/screen-feature-2.md
+# Cold screen — feature chain, round 2
+
+Material: `basis/artifacts/feature.md` (v5), `basis/fitness/feature.fitness.md` (v5),
+`basis/guidelines/feature.md` (v4). Read once, in that order, after the role, the
+three typedefs, the base style, the glossary v14, lead-po v6, the PO output check
+v4, the scenario-assignment process v2, and the round-1 screen.
+
+Banned words: none in any file. Consistency with the owner's decisions (product-level
+Gherkin Feature; several contexts per feature; the `@bounded-context:` tag the
+architect's, written after the check; shops receive scenarios, never a brief): all
+three files state it and nothing contradicts it.
+
+---
+
+## Round-1 required changes — confirmation
+
+| # | Change | Made? | Where |
+|---|---|---|---|
+| 1 | Instance form + Gherkin-legal hash | Yes | Typedef §Identity "a markdown document with frontmatter whose Scenarios section holds one fenced Gherkin block"; §4 tags `@feature:<id>`, `@hash:<sha>`; guideline rule 4 After `@feature:failed-runs-visible @hash:3f9a…`; fitness 3 names both forms. |
+| 2 | Edge list required; fitness 4 and rule 5 re-pointed | Yes | Typedef §5 Edges table (case · who named it · scenario or out of scope); fitness 4 "Given the Edges table and the cases the framing names"; rule 5 test reads the table. |
+| 3 | Rule 4 reduced; PO-tag rule matched to scenario 3 | Yes, with a residue | Rule 4 criterion "`@feature:` and `@hash:` are present and `@bounded-context:` is absent"; scenario 3 "no `@bounded-context:` tag is". Rule and scenario now match — but see F1 below: the absence clause was added to the scenario without the "at the PO output check" qualifier the round-1 finding named, and the re-verification hazard stands. |
+| 4 | Scenario 2 per scenario as a named source | Yes | "a shop is named as the source of that scenario's steps and edge cases"; rubric row "For each scenario: is a source shop named in Contributors?"; rule 3 criterion "every scenario has a named source shop". |
+| 5 | Interaction types always present, "none" form | Yes | Typedef §3 "always present … or 'none' with the reason"; fitness 5 Given the section, Then admits "none" with a reason the framing bears out; rule 6 After shows both forms. |
+| 6 | Pre-assignment ownership vs the tag | Yes, with a residue | §2 "the shop the solutions architect's decomposition places the behavior in"; §Rules "The tag confirms the Contributors' shop or corrects it; a corrected scenario returns to the PO role". See F2: the correction path names no process step and no status. |
+| 7 | Full transitions with writers; `date` dropped | Yes | §Required frontmatter lists every value with its writer, the resubmit path to `draft`, `approved` stated not applicable; `date` gone. |
+| 8 | initiative / conformance check / changelog; "hold on" | Yes | initiative glossed inline; conformance check linked; changelog named as a proposed rendering; "must be available on" in fitness 5 and the typedef. |
+
+Lesser round-1 items also done: checklist entry 3 now conditional on an interaction;
+the fitness set removed from §Sources; `ancestry: [feature]` carries its reason; the
+feature-tag-per-scenario reason (a scenario travels alone to a register) stated once
+in §4; rule 2 widened to "any implementation detail"; Background steps judged under
+scenario 1.
+
+---
+
+## 1. `basis/artifacts/feature.md` (v5) — verdict: **findings**
+
+**F1. The "no `@bounded-context:` at the check" rule fails a correct feature on two
+paths the chain itself defines.** §Rules: "at the PO output check no scenario carries
+one." Path (a): the scenario-assignment process's `assign` step writes tags on every
+owned scenario and its `return` step returns the *tagged* feature ("Return the tagged
+feature" → `return` takes `feature`); §Required frontmatter then sends it "back to
+`draft`" on resubmit, and the PO output check screens it — scenario 3 and rule 4 fail
+every scenario the architect had already owned. Path (b): the fitness-set typedef
+consumes the set "at any later re-verification", and §Commitment says a done feature
+"every scenario carries a `@bounded-context:` tag" — a done feature fails scenario 3.
+Nothing says the tags are stripped on return, and no step is written to strip them.
+*Required (owner's choice):* drop the absence clause from scenario 3, rule 4, the
+Highlights, and checklist entry 4, keeping "written by the solutions architect role,
+never by the PO role" in §Rules as a writer rule the process enforces (the check
+cannot see who wrote a tag anyway); or keep the clause and qualify it to a first
+check of a never-assigned feature, and state what happens to tags on a returned
+feature. Wobbly until decided: I can point at the failing scenario but not say which
+of the two the owner wants.
+
+**F2. The correction path has no writer and no status.** §Rules: "The tag confirms
+the Contributors' shop or corrects it; a corrected scenario returns to the PO role
+for co-production with the newly named shop." The scenario-assignment process's
+`assign` step reads the decomposition and writes the tag; it never compares the tag
+against Contributors, and its only return exit is for scenarios no context owns
+(`size(unowned) == 0`). So "corrects it" is decided by no step, and "returns to the
+PO role" is a scenario-level return where the status vocabulary is feature-level
+(`returned` is written only for unowned scenarios). *Required:* name the status the
+feature takes when a tag corrects a Contributors' shop (presumably `returned`, with
+the corrected scenarios named in the Document History) and say the assignment
+process decides it — the process change is the process's, but the typedef must not
+state a path nothing carries.
+
+Lesser (stumbles, not fails):
+- §4: "the `Feature:` line repeated" — the Feature line lives in §1 and again in the
+  block, two homes for one fact (single-source-of-truth); say whether the narrative
+  is also in the block (shops receive the block; Gherkin puts the narrative under
+  `Feature:`), and record why the repeat is accepted.
+- §5: "the scenario that covers it" — the reference form is unstated (title? `@hash:`?
+  — a hash changes with the text); rule 5's After invents
+  `@feature:failed-runs-visible/cancelled`, a form nothing defines. State one form.
+- "the product-process research proposes" (twice) — an insider reference with no
+  location; base style asks for one plain sentence or a cut.
+- Consumers: "when its scenarios are reconciled" — "reconciled" undefined.
+
+Clean: instance form; §Required frontmatter transitions; §2 ownership from the
+decomposition; §3; §5's table shape; Commitment with consequence; Sources; every
+checklist entry cites a clause and a fitness scenario; no pinned examples.
+
+## 2. `basis/fitness/feature.fitness.md` (v5) — verdict: **findings**
+
+Frontmatter guardrails present; six Thens, six rubric rows, one for one; not under
+`features/`.
+
+**F1. Scenario 3's absence clause fails correct features** — the same defect as
+typedef F1, this file's share: "Then `@feature:<id>` and `@hash:<sha>` are present and
+no `@bounded-context:` tag is (assignment writes it after this check …)". The
+parenthetical explains the intent but the assertion is unconditional; a judge
+re-verifying an assigned feature, or screening one resubmitted after an assignment
+return, must say "fails". *Required:* per typedef F1 — remove the clause, or
+condition it ("at the first PO output check of a feature that has not been
+assigned") with the rubric row matched.
+
+Falsifiability of the six Thens from the criteria set, the framing, and the feature:
+1 yes (the block, Background included); 2 yes (Contributors and Interaction types
+sections are required and readable); 3 yes as to presence; 4 yes (the Edges table
+and the framing's cases are both in hand); 5 yes (section always present; "a reason
+the framing bears out" is decidable against the framing); 6 yes. Every Then mapped.
+
+Stumble: scenario 2's parenthetical names "the lead-product-designer role's
+accountabilities" — a document the judge does not open; it is provenance, not a
+criterion, so harmless, but it reads as something to check.
+
+## 3. `basis/guidelines/feature.md` (v4) — verdict: **findings**
+
+Form: voice principle; Highlights shorter than the rules; Layers with the precedence
+order; six rules each with before/after, test, criterion, decision, derived check;
+one rule per scenario, one scenario per rule.
+
+**F1. Rule 4 carries the absence clause** — criterion "`@bounded-context:` is absent";
+same defect, same repair as typedef F1 / fitness F1. Rule and scenario match, which
+is what round 1 asked; the residue is that both now fail an assigned or resubmitted
+feature.
+
+Lesser:
+- Rule 2 is looser than scenario 1 on one point: the test reads "for each scenario";
+  scenario 1 judges "Background steps included". Add Background to the test.
+- Rule 2's criterion "no step names an implementation detail — a component, call,
+  storage, algorithm, format, or vendor" reads as a closed list; "such as" makes it
+  the scenario's open one.
+- Rule 5's After uses an undefined scenario-reference form (typedef lesser).
+- Rule 6's parenthetical "(the typedef requires them to come from the core-task
+  list; whether they do is not this judge's check)" — correct and consistent with
+  scenario 5, but it is the only place the exclusion is stated; the typedef checklist
+  entry 6 does not cite the core-task requirement either, so no check covers it.
+  Name the check that will (a lint or the conformance check), or record it as a
+  filed gap, per the quality-guideline commitment.
+
+Clean: rules 1, 3, 5, 6 each no stricter or looser than their scenario; Highlights;
+Layers; the examples (one library-style domain, no real vocabulary).
+
+## Cross-file consistency
+
+- All three agree on the instance form, the two identity tags, the Contributors'
+  source per scenario, the Edges table, the always-present Interaction types
+  section, and the narrative. Consistent with lead-po v6 and the PO output check's
+  status values, which the typedef now owns.
+- One disagreement, shared across the three and with the scenario-assignment
+  process: the absence of `@bounded-context:` as a check criterion (F1 in each
+  file) against the process returning tagged features and the typedef's
+  re-verifiable Commitment.
+- One gap between typedef and process: the correction path (typedef F2).
+
+## Overload
+
+Right-sized for one reading, all three. Nothing to defer.
+
+## Undefined terms, in arrival order
+
+"product-process research" (typedef §Identity, twice — a reference, not a term);
+"reconciled" (typedef consumers); scenario-reference form in an Edges row (typedef
+§5, guideline rule 5). initiative is now glossed inline; "interaction conformance
+check" and "core-task list" are linked, unverified from this reading.
+
+## Ordered required changes
+
+1. Typedef §Rules + fitness 3 + guideline rule 4 + Highlights + checklist 4: decide
+   the `@bounded-context:` absence clause — remove it (recommended: the writer rule
+   stays in the typedef; the check cannot see who wrote a tag) or condition it to a
+   first check and say what happens to tags on a returned feature.
+2. Typedef §Rules: the correction path — name the feature status and the deciding
+   process step, or reduce the sentence to what the assignment process carries
+   today (tags written from the decomposition; unowned scenarios returned).
+3. Typedef §5 and guideline rule 5: one scenario-reference form for Edges rows.
+4. Guideline rule 2: test includes Background; "such as" on the detail list.
+5. Typedef: locate or cut "the product-process research"; define "reconciled";
+   record why the Feature line appears in §1 and in the block, and whether the
+   narrative is in the block.

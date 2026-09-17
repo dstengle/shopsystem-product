@@ -1,0 +1,514 @@
+=============== basis/processes/po-output-check.md
+---
+type: process-definition
+id: po-output-check-process
+owner: product-authority
+status: draft
+version: 3
+created: 2026-08-25
+updated: 2026-08-25
+produces: []
+carried-by: po-output-check-skill
+condition-language: cel
+hold-after: P7D
+ask-cap: P1D
+annotations:
+  claude-code:
+    activation: model-judged
+    promotion: experiment-local
+    use-when: "the PO role submits a brief, product decision record, acceptance scenarios, or a backlog order for the PM role's check against the framing"
+---
+
+# Process: PO output check
+
+**Purpose:** Check a piece of the PO role's output against the PM
+role's framing under criteria the definitions state, so that the PM
+role decides from a screen verdict — pass, fail with the criterion
+named, or a definition change — and never by reading every artifact.
+
+**Guiding statement:** The check is the criteria applied, not the
+checker's reading. A finding the criteria cannot name is a missing
+criterion, and the decision that follows is a definition change, not a
+verdict on the maker.
+
+**Outcomes:**
+- O1. The output is screened against a named criteria set and the
+  framing it claims to serve — witnessed by `screen`'s inputs and the
+  `screen-review` it returns.
+- O2. The PM role decides from the review and round log; the artifact
+  reaches the PM role only through the findings' quotes — witnessed by
+  `decide`'s inputs, which exclude the artifact.
+- O3. Every screen round is recorded and the loop exits on a clean
+  verdict, on findings no criterion names, or at the round cap —
+  witnessed by `log-round` and `route-screen`.
+- O4. A fail names the criterion missed; a definition change names the
+  gap, and the gap is filed in the named definition's Document History
+  — witnessed by the `check-decision` fields and `record`'s
+  `definition` and `gap_entry` outputs.
+- O5. A question the framing cannot answer leaves the run as an ask to
+  the PM role, with a default, and the run resumes — witnessed by
+  `revise`'s `asks` and the `ask` value.
+
+**Roles:** maker — [`../roles/lead-po.md`](../roles/lead-po.md)
+(submits and revises; never decides its own pass). screener —
+[`../roles/cold-reviewer.md`](../roles/cold-reviewer.md) (fresh
+context every round; judges against the criteria). the PM role —
+[`../roles/lead-pm.md`](../roles/lead-pm.md) (accountable for the
+decision; a human-held role that decides from the verdict; its
+assisting agent prepares the record and the gap entry).
+
+**Carried by:**
+[`../skills/po-output-check/SKILL.md`](../skills/po-output-check/SKILL.md)
+— generated from this definition by
+[`../tools/compile_process.py`](../tools/compile_process.py), never
+edited by hand.
+
+## Flow (compiled)
+
+Generated from the steps below by `tools/compile_process.py`; do not
+edit by hand.
+
+```mermaid
+flowchart TD
+  screen(["Screen against the criteria — agent: cold-reviewer<br/>in — artifact: string, framing: string, criteria_path: string<br/>out — review: screen-review"])
+  log_round["Record the round — runtime<br/>in — review: screen-review, round_log: screen-review[]<br/>sets — round_log: screen-review[]"]
+  route_screen{"Route on the screen<br/>in — review: screen-review, round: integer, round_cap: integer"}
+  revise(["Revise the output — agent: lead-po<br/>in — artifact: string, review: screen-review, framing: string, ask: ask<br/>out — artifact: string"])
+  advance_round["Advance the round — runtime<br/>in — round: integer<br/>sets — round: integer"]
+  decide[["Decide on the verdict — human: lead-pm<br/>in — review: screen-review, round_log: screen-review[], framing: string<br/>out — decision: check-decision"]]
+  record(["Record the decision — agent: lead-pm<br/>in — decision: check-decision, artifact: string, round_log: screen-review[]<br/>out — artifact: string, gap_entry: string, definition: string"])
+  __end(("end<br/>result — decision: check-decision"))
+  __start(("start")) --> screen
+  screen --> log_round
+  log_round --> route_screen
+  route_screen -->|success exit: clean| decide
+  route_screen -->|definition exit: every finding is uncovered — nothing the maker can repair| decide
+  route_screen -->|failsafe exit: round >= round_cap — decide with findings open| decide
+  route_screen -->|else| revise
+  revise --> advance_round
+  advance_round --> screen
+  decide --> record
+  record --> __end
+```
+
+
+## Data
+
+Each entry names a process-local value. Simple types use JSON Schema
+names inline; every structured shape is a `$ref` to a defined type with
+an explicit source. Conditions are CEL expressions over these names. A
+*criteria set* is the approved fitness set or guideline for the
+artifact's type. The framing is always a criterion, named `framing`;
+until a criteria set exists for a type, `criteria_path` names the
+framing itself and `framing` is the only named criterion. The artifact
+status values this process sets — `checked` on pass, `returned` on
+fail, `pending-definition` on definition change — are this process's
+until the artifact typedefs define their own.
+
+```yaml
+data:
+  artifact: {type: string, format: uri-reference}
+  framing: {type: string, format: uri-reference}
+  criteria_path: {type: string, format: uri-reference}
+  review: {$ref: screen-review, from: ../types/screen-review.md}
+  round: {type: integer, initial: 1}
+  round_cap: {type: integer, initial: 3}
+  round_log: {type: array, items: {$ref: screen-review}, initial: []}
+  ask: {$ref: ask, from: ../types/ask.md, initial: null}
+  decision: {$ref: check-decision, from: ../types/check-decision.md}
+  gap_entry: {type: string}
+  definition: {type: string, format: uri-reference}
+```
+
+## Steps
+
+```yaml
+start: screen
+parameters: [artifact, framing, criteria_path]
+result: decision
+steps:
+  - id: screen
+    name: Screen against the criteria
+    run-by: {role: cold-reviewer, execution: agent, fresh-context: true}
+    inputs: [artifact, framing, criteria_path]
+    outputs: [review]
+    prompt: |
+      Read the criteria set at criteria_path, the framing at framing,
+      and the artifact at artifact — nothing else. Judge the artifact
+      against every criterion and against the framing: does each part
+      of it trace to the framing, and does anything in it serve no
+      framed outcome? Report every finding with the criterion it fails
+      by name — "framing" for a part that does not trace to the framing
+      or serves no framed outcome — the quoted text, the change, and
+      whether you could decide it (confident) or not (wobbly); for a
+      wobbly finding quote the whole passage, since the PM role decides
+      from the review alone. A defect no criterion names is a finding
+      with criterion "uncovered". Verdict "clean"
+      only if there are no findings; otherwise "findings" with the top
+      three changes.
+    next: log-round
+    annotations:
+      fabro: {model: high-reasoning, node: separate-context-per-round}
+
+  - id: log-round
+    name: Record the round
+    run-by: {execution: runtime}
+    inputs: [review, round_log]
+    set:
+      round_log: round_log + [review]
+    next: route-screen
+
+  - id: route-screen
+    name: Route on the screen
+    run-by: {execution: runtime}
+    inputs: [review, round, round_cap]
+    branches:
+      - label: "success exit: clean"
+        when: review.verdict == "clean"
+        next: decide
+      - label: "definition exit: every finding is uncovered — nothing the maker can repair"
+        when: size(review.findings) > 0 && review.findings.all(f, f.criterion == "uncovered")
+        next: decide
+      - label: "failsafe exit: round >= round_cap — decide with findings open"
+        when: round >= round_cap
+        next: decide
+      - else: revise
+
+  - id: revise
+    name: Revise the output
+    run-by: {role: lead-po, execution: agent}
+    inputs: [artifact, review, framing, ask]
+    outputs: [artifact]
+    asks: [lead-pm]
+    prompt: |
+      Repair every finding whose criterion is named, "framing"
+      included; leave findings marked "uncovered" as they are — they
+      are the PM role's to decide. If a repair needs something the framing does not say —
+      the originator's intent, whether a thing is in scope, a decision
+      another role's domain holds — return an ask to lead-pm instead
+      of guessing: the question, its kind, the default you will apply
+      if unanswered, and a checkpoint holding the repairs made so far.
+      On the first pass ask is absent; if it carries an answer or
+      resolved defaulted, act on it and finish the repairs.
+    next: advance-round
+
+  - id: advance-round
+    name: Advance the round
+    run-by: {execution: runtime}
+    inputs: [round]
+    set:
+      round: round + 1
+    next: screen
+
+  - id: decide
+    name: Decide on the verdict
+    run-by: {role: lead-pm, execution: human}
+    inputs: [review, round_log, framing]
+    outputs: [decision]
+    prompt: |
+      From the final review and the round log, decide. "pass": the
+      screen is clean, or its only findings are uncovered and you judge
+      none of them needs a criterion — say so in the reasons. "fail": a
+      named criterion, "framing" included, is still missed at the round
+      cap — name it.
+      "definition-change": an uncovered finding should have been a
+      criterion, or a criterion the output met produced something that
+      does not serve the framing — name the definition and what it
+      lacks. Decide from the quotes in the review. Record your reasons.
+    next: record
+
+  - id: record
+    name: Record the decision
+    run-by: {role: lead-pm, execution: agent}
+    inputs: [decision, artifact, round_log]
+    outputs: [artifact, gap_entry, definition]
+    prompt: |
+      Write into the artifact's Document History one review entry per
+      round with its verdict, then a state entry carrying the decision
+      and its reasons. Set the artifact's status: "checked" on pass,
+      "returned" on fail with the criterion named, "pending-definition"
+      on definition-change. On "definition-change", write a review
+      entry stating the gap into the Document History of the definition
+      the decision names; return that file's path as definition and the
+      entry's text as gap_entry. Otherwise return both empty. Return
+      the artifact.
+    next: end
+```
+
+## Derived checks
+
+| Outcome | Check | Kind | Where |
+|---|---|---|---|
+| O1 | screen reads only criteria, framing, artifact | judged | `screen.prompt` and inputs |
+| O2 | `artifact` absent from `decide.inputs` | mechanical | `decide.inputs` |
+| O3 | every round logged; three labeled exits | mechanical | `log-round`, `route-screen` |
+| O4 | `criterion` present on fail, `gap` on definition-change; `definition` and `gap_entry` non-empty on definition-change | judged | `check-decision`, `record` outputs |
+| O5 | `revise` carries `asks`; process carries `ask-cap`; `ask` listed in inputs | mechanical | `revise`, frontmatter |
+
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+| 1 | 2026-08-25 | update | Authored by owner decision as the check the lead-pm role runs on the lead-po role's output — the maker/checker split's named process. First process to carry `asks` and `ask-cap`. Criteria sets per artifact type (brief, product decision record, acceptance scenarios, backlog order) are a filed gap: until each exists, `criteria_path` names the nearest approved fitness set or the framing alone. |
+| 1 | 2026-08-25 | review | Screened against the process-definition chain: findings — an uncovered finding could never clear the screen; the `review` type lacked per-finding criterion, quote, and decidability; two prompts wrote to undeclared channels; `artifact_type` loaded and unread; one route-decision branch dead; status values and the gap's home undefined. |
+| 2 | 2026-08-25 | update | Reworked: a `screen-review` type carries findings with criterion, quote, and decidability; route-screen gains a definition exit when every finding is uncovered; decide routes straight to record; the artifact leaves the decider's inputs; `artifact_type` dropped; the gap is filed as a review entry in the named definition's history and returned as `gap_entry`; status values declared as this process's pending the typedefs. |
+| 2 | 2026-08-25 | review | Re-screened: findings — decide's prompt opened an undeclared artifact; a framing-trace failure had no criterion name and so was never repaired; record wrote a file outside its outputs; a vacuous all-uncovered branch on an empty list; ask without an initial. |
+| 3 | 2026-08-25 | update | Repairs: the PM role decides from the review alone, wobbly findings quote the whole passage; `framing` is a named criterion the maker repairs; record returns the written definition's path; the definition exit guarded on a non-empty list; `ask` initial null; status vocabulary moved to Data prose. The v1 entry's "nearest approved fitness set or the framing alone" is superseded by Data's rule. |
+=============== basis/skills/po-output-check/SKILL.md
+---
+name: po-output-check
+description: "Check a piece of the PO role's output against the PM role's framing\
+  \ under criteria the definitions state, so that the PM role decides from a screen\
+  \ verdict \u2014 pass, fail with the criterion named, or a definition change \u2014\
+  \ and never by reading every artifact. Use when the PO role submits a brief, product\
+  \ decision record, acceptance scenarios, or a backlog order for the PM role's check\
+  \ against the framing."
+type: skill
+id: po-output-check-skill
+status: draft
+created: 2026-08-25
+updated: 2026-08-25
+generated: true
+generated-by: basis/tools/compile_process.py
+derived-from: po-output-check-process
+source: basis/processes/po-output-check.md
+source-digest: sha256:64586b6953b4
+activation: model-judged
+promotion: experiment-local
+---
+
+# Po output check (compiled from `po-output-check-process`)
+
+Check a piece of the PO role's output against the PM role's framing under criteria the definitions state, so that the PM role decides from a screen verdict — pass, fail with the criterion named, or a definition change — and never by reading every artifact.
+
+**The check is the criteria applied, not the checker's reading. A finding the criteria cannot name is a missing criterion, and the decision that follows is a definition change, not a verdict on the maker.**
+
+Result of a run: `decision` (check-decision).
+
+```mermaid
+flowchart TD
+  screen(["Screen against the criteria — agent: cold-reviewer<br/>in — artifact: string, framing: string, criteria_path: string<br/>out — review: screen-review"])
+  log_round["Record the round — runtime<br/>in — review: screen-review, round_log: screen-review[]<br/>sets — round_log: screen-review[]"]
+  route_screen{"Route on the screen<br/>in — review: screen-review, round: integer, round_cap: integer"}
+  revise(["Revise the output — agent: lead-po<br/>in — artifact: string, review: screen-review, framing: string, ask: ask<br/>out — artifact: string"])
+  advance_round["Advance the round — runtime<br/>in — round: integer<br/>sets — round: integer"]
+  decide[["Decide on the verdict — human: lead-pm<br/>in — review: screen-review, round_log: screen-review[], framing: string<br/>out — decision: check-decision"]]
+  record(["Record the decision — agent: lead-pm<br/>in — decision: check-decision, artifact: string, round_log: screen-review[]<br/>out — artifact: string, gap_entry: string, definition: string"])
+  __end(("end<br/>result — decision: check-decision"))
+  __start(("start")) --> screen
+  screen --> log_round
+  log_round --> route_screen
+  route_screen -->|success exit: clean| decide
+  route_screen -->|definition exit: every finding is uncovered — nothing the maker can repair| decide
+  route_screen -->|failsafe exit: round >= round_cap — decide with findings open| decide
+  route_screen -->|else| revise
+  revise --> advance_round
+  advance_round --> screen
+  decide --> record
+  record --> __end
+```
+
+## screen — Screen against the criteria
+
+Run by an agent in role `cold-reviewer` (fresh context every run). reads: artifact, framing, criteria_path · writes: review.
+- then: `log-round`
+
+Prompt:
+
+```text
+Read the criteria set at criteria_path, the framing at framing,
+and the artifact at artifact — nothing else. Judge the artifact
+against every criterion and against the framing: does each part
+of it trace to the framing, and does anything in it serve no
+framed outcome? Report every finding with the criterion it fails
+by name — "framing" for a part that does not trace to the framing
+or serves no framed outcome — the quoted text, the change, and
+whether you could decide it (confident) or not (wobbly); for a
+wobbly finding quote the whole passage, since the PM role decides
+from the review alone. A defect no criterion names is a finding
+with criterion "uncovered". Verdict "clean"
+only if there are no findings; otherwise "findings" with the top
+three changes.
+```
+
+## log-round — Record the round
+
+Run by the runtime — no agent, no prose. reads: review, round_log · writes: round_log.
+
+```yaml
+set:
+  round_log: round_log + [review]
+next: route-screen
+```
+
+## route-screen — Route on the screen
+
+Run by the runtime — no agent, no prose. reads: review, round, round_cap · writes: —.
+
+```yaml
+branches:
+- label: 'success exit: clean'
+  when: review.verdict == "clean"
+  next: decide
+- label: "definition exit: every finding is uncovered \u2014 nothing the maker can\
+    \ repair"
+  when: size(review.findings) > 0 && review.findings.all(f, f.criterion == "uncovered")
+  next: decide
+- label: "failsafe exit: round >= round_cap \u2014 decide with findings open"
+  when: round >= round_cap
+  next: decide
+- else: revise
+```
+
+## revise — Revise the output
+
+Run by an agent in role `lead-po`. reads: artifact, review, framing, ask · writes: artifact.
+- may ask: `lead-pm` — return an `ask` (with default and checkpoint) in place of outputs; at most one per run.
+- then: `advance-round`
+
+Prompt:
+
+```text
+Repair every finding whose criterion is named, "framing"
+included; leave findings marked "uncovered" as they are — they
+are the PM role's to decide. If a repair needs something the framing does not say —
+the originator's intent, whether a thing is in scope, a decision
+another role's domain holds — return an ask to lead-pm instead
+of guessing: the question, its kind, the default you will apply
+if unanswered, and a checkpoint holding the repairs made so far.
+On the first pass ask is absent; if it carries an answer or
+resolved defaulted, act on it and finish the repairs.
+```
+
+## advance-round — Advance the round
+
+Run by the runtime — no agent, no prose. reads: round · writes: round.
+
+```yaml
+set:
+  round: round + 1
+next: screen
+```
+
+## decide — Decide on the verdict
+
+Run by a human holding role `lead-pm`. reads: review, round_log, framing · writes: decision.
+- then: `record`
+
+Prompt:
+
+```text
+From the final review and the round log, decide. "pass": the
+screen is clean, or its only findings are uncovered and you judge
+none of them needs a criterion — say so in the reasons. "fail": a
+named criterion, "framing" included, is still missed at the round
+cap — name it.
+"definition-change": an uncovered finding should have been a
+criterion, or a criterion the output met produced something that
+does not serve the framing — name the definition and what it
+lacks. Decide from the quotes in the review. Record your reasons.
+```
+
+## record — Record the decision
+
+Run by an agent in role `lead-pm`. reads: decision, artifact, round_log · writes: artifact, gap_entry, definition.
+- then: `end`
+
+Prompt:
+
+```text
+Write into the artifact's Document History one review entry per
+round with its verdict, then a state entry carrying the decision
+and its reasons. Set the artifact's status: "checked" on pass,
+"returned" on fail with the criterion named, "pending-definition"
+on definition-change. On "definition-change", write a review
+entry stating the gap into the Document History of the definition
+the decision names; return that file's path as definition and the
+entry's text as gap_entry. Otherwise return both empty. Return
+the artifact.
+```
+=============== /tmp/claude-1000/-home-vscode-rebaseline/635ec80b-b74c-4200-8974-a7a6743a1e99/scratchpad/screen-check-2.md
+# Cold-read screen: po-output-check (process-definition v2) + screen-review (v1) + check-decision (v2) — round 2
+
+**Verdict: findings.** Round 1's structural repairs landed: the loop now has three labeled exits, an all-uncovered screen reaches the PM on the round it appears, the `screen-review` type carries what the prompts read, `artifact_type` and the dead `route-decision` are gone, the status vocabulary is named. What remains are contradictions between the words and the contracts: the `decide` prompt tells the human to open an artifact the step does not list (and O2 claims the opposite); a framing-trace failure — the check's own question — has no criterion name, so it is routed as a definition gap the maker never repairs; `record` writes into a definition file that is not a declared output; and `check-decision`'s purpose names a consumer that no longer exists.
+
+## Round-1 required changes — confirmation
+
+| # | Round-1 change | Status | Evidence |
+|---|---|---|---|
+| 1 | Uncovered path defeats itself | made | `route-screen` row `"definition exit: every finding is uncovered — nothing the maker can repair"` → `decide`; screen prompt `Verdict "clean" only if there are no findings`; decide prompt has a pass for `its only findings are uncovered and you judge none of them needs a criterion`. Trace below. |
+| 2 | `review` lacks per-finding criterion/quote/decidability | made | New `screen-review`: `findings[].{criterion, quote, change, decidability}`, `criterion` = name or `"uncovered"`; screen prompt asks for `whether you could decide it (confident) or not (wobbly)`. |
+| 3 | Undeclared outputs in revise/record | partly made | Revise's "note it for the decider" is gone. Record now returns `gap_entry` — but still writes a review entry into `the Document History of the definition the decision names`, a file that is not among `record`'s outputs (`[artifact, gap_entry]`). See change 3 below. |
+| 4 | `artifact_type` unread | made | Not in Data, parameters, or any step. |
+| 5 | `route-decision` else dead | made | Step deleted; `decide` → `next: record`. |
+| 6 | Undefined status vocabulary | made | `"checked" on pass, "returned" on fail ..., "pending-definition" on definition-change; these three values are this process's until the artifact typedefs define their own`. "held" gone. |
+| 7 | O2's witness cannot show the outcome | partly made | O2 restated: `witnessed by decide's inputs, which exclude the artifact` — inputs are `[review, round_log, framing]`. But the decide prompt still says `open the artifact only for a finding marked wobbly`. See change 1 below. |
+| 8 | check-decision conditional fields / writer / token | made | `The decide step writes every field; that criterion accompanies fail and gap accompanies definition-change is a judged check`; O4's derived-check kind is now `judged`; "definition-change" reads as one token. |
+
+## Required changes, most important first
+
+**1. `decide` directs the human to load an undeclared input (rule 4 / scenario 4 fail; contradicts O2).**
+Decide's inputs: `[review, round_log, framing]`. Its prompt: `Decide from the quotes in the review; open the artifact only for a finding marked wobbly.` O2: `the artifact reaches the decider only through the findings' quotes — witnessed by decide's inputs, which exclude the artifact.` The screen-review purpose repeats the instruction: `the decider opens the artifact only for a wobbly finding.` The typed contract is the isolation mechanism; a prompt that tells the step to open a file it does not list is the guideline's own "before" example. The witness in O2 cannot hold while the prompt says this. Repair (either, not both): (a) keep O2 and delete the sentence from decide and from screen-review's purpose, and have the screen prompt require a wobbly finding to quote the whole passage in question so the decider can decide from the review alone; or (b) add `artifact` to decide's inputs and restate O2 to what the inputs can then show. (a) matches the purpose ("never by reading every artifact") and the lead-pm role's "the role's own reading of every artifact in place of a stated criterion" is not evidence.
+
+**2. A framing-trace failure has no criterion name, so the check's own question is routed as a definition gap the maker never repairs.**
+The screen judges two things: `against every criterion and against the framing: does each part of it trace to the framing, and does anything in it serve no framed outcome?` A finding's `criterion` may only be `the criterion it fails by name` or `"uncovered"`. A part that does not trace to the framing fails no named criterion of the criteria set, so the screener must mark it `uncovered`; `revise` then leaves it (`leave findings marked "uncovered" as they are`); if it is the only finding, `route-screen` sends the run to `decide`, whose prompt reads an uncovered finding as `should have been a criterion` → definition-change, and its `fail` fires only when `a named criterion is still missed at the round cap`. So the PO's most basic defect — scope that serves no framed outcome — is never handed back to the maker and cannot be failed. Data prose confirms the construction: `until one exists for a type, criteria_path names the framing itself and every finding is uncovered by construction` — under which the maker never revises anything. Repair: name the framing as a criterion — the screen prompt writes `criterion: "framing"` for a trace failure (or the screen-review enum reserves `framing` beside `uncovered`); revise repairs it like any named criterion; decide's fail case covers it; the Data sentence is corrected accordingly.
+
+**3. `record` writes to a file that is not a declared output (scenario 4; O4's witness).**
+Record: `write a review entry into the Document History of the definition the decision names ... and return that entry's text as gap_entry`. Outputs: `[artifact, gap_entry]`. The named definition resolves to `decision.gap` (declared input), but the write goes to a file no output names — the same shape as round 1's "owner's queue", with a text copy now returned. O4 claims `the gap is filed in the named definition's Document History — witnessed by ... record's gap_entry output`; `gap_entry` non-empty shows the text exists, not that it was written where O4 says. Repair: either declare the target — a `definition: {type: string, format: uri-reference}` value set from `decision.gap` and listed in `record`'s outputs — or narrow record to producing `gap_entry` and restate O4 so the filing is the PM role's act on the result (lead-pm: "a recurring ask becomes a definition change" is the role's).
+
+**4. `check-decision`'s purpose names a consumer that no longer exists.**
+`consumed by its routing and record steps` — after this rework no branch reads `decision` (`decide` → `record` → `end`). Under single-source-of-truth the type's purpose is stale against the process it points at. Repair: `consumed by its record step and written into ...`.
+
+**5. Explanation and a definition inside a prompt; the same fact stated two ways.**
+Record's prompt: `these three values are this process's until the artifact typedefs define their own` — an explanation to the reader of the definition, not an instruction to the agent; the guideline's voice principle puts explanation in body prose. The status vocabulary (`checked`, `returned`, `pending-definition`) needs one home — the Data section prose is the natural one, with the prompt referencing it. Related: Data says an absent criteria set means `criteria_path names the framing itself`; the History says `the nearest approved fitness set or the framing alone`. One rule, one place.
+
+**6. The definition-exit branch on a malformed review.**
+`review.findings.all(f, f.criterion == "uncovered")` is well-formed CEL (the `all` macro over a list of objects; `findings` is a required field, so no null risk). On an empty list `all` returns **true**. Row 1 (`review.verdict == "clean"`) precedes it, so a clean review takes the success exit first; the vacuous case fires only for `verdict: findings` with `findings: []`, which the screen prompt forbids but the schema does not. That run would reach `decide` with nothing to decide on. Cheap guard: `review.findings.size() > 0 && review.findings.all(...)`, or state the invariant (findings non-empty iff verdict is findings) in screen-review's purpose as a judged check, as check-decision does for its conditional fields.
+
+**7. `ask` has no value at first entry.**
+Revise's prompt: `On the first pass ask is empty` — `ask: {$ref: ask, from: ../types/ask.md}` declares no `initial`, and the typedef does not say what an unset `$ref` value is. Declare `initial` (the typedef allows it) or word the prompt as "absent".
+
+**8. Stumbles in reading order (none a fail).**
+- "criteria set" is used in the purpose and O1 before the Data section defines it (`A *criteria set* is the approved fitness set or guideline for the artifact's type`); the lead-pm role defines "screen verdict" as a judgment "against a named fitness set", which is narrower than this process's criteria set — say which is right in one of them.
+- "decider" (O2) is never introduced; Roles names "maker", "screener", and "the PM role".
+- `**Carried by:**` is a bold header element the typedef's list (1–4) does not name; harmless, but the compiler-generated skill link belongs in frontmatter (`carried-by`) already, so this is a second appearance of the same fact.
+- Skill title renders as `Po output check` (compiler capitalization); `fresh-context: true` sits inside `run-by` where the typedef lists it beside it (compiler accepts).
+- screen-review's purpose does not say what `change` or `top_changes` hold; the screen prompt does ("the change", "the top three changes"). The type reads alone only with the process open.
+
+## Uncovered-path trace
+
+- Round 1, only uncovered findings: `verdict: findings` → `log-round` → `route-screen` row 1 false, row 2 `all(...)` true → `decide` on round 1. No rounds burned.
+- Round 1, mixed (a named criterion + an uncovered finding): row 2 false → `revise` repairs the named finding and leaves the uncovered one → `advance-round` (round 2) → fresh `screen` → if only the uncovered finding remains, row 2 true → `decide` on round 2. One revision, which is the maker's work, not waste.
+- Round 1, all named: revise → round 2 → screen → clean → decide; or persisting → round 3 → screen → `round >= round_cap` → decide with findings open. Three screens, two revisions; the cap holds because `advance-round` runs on every pass.
+- Ask inside revise: one ask per run; a second resolves `defaulted` (typedef); resume is at `revise` with `ask` in inputs; the cycle exits are unchanged. Bounded.
+
+The path works. The defect is not in routing but in what the screener is allowed to name (change 2).
+
+## Scenario and rule verdicts
+
+| Item | Verdict | Evidence |
+|---|---|---|
+| S1 renderings correspond | pass | Skill: `generated: true`, `generated-by`, `derived-from`, `source`, `source-digest`; diagram identical in both; every step, prompt (verbatim), and branch row present; the YAML-folded labels (`—`) are the same strings; nothing added beyond the `may ask` line the `asks` clause generates. Round-1's "holding in role" wording fixed: `Run by a human holding role lead-pm`. |
+| S2 outcomes witnessed | fail | O1, O3, O5 pass. O2's witness (`decide`'s inputs) is contradicted by decide's own prompt (change 1). O4's `gap_entry` shows the entry text, not the filing into the definition's history (change 3). |
+| S3 loop exits | pass | One cycle: screen → log-round → route-screen → revise → advance-round → screen. Exits: `success exit: clean`, `definition exit: every finding is uncovered`, `failsafe exit: round >= round_cap`. Ask hold is bounded by one-ask-per-run and `ask-cap: P1D`. |
+| S4 declared reads only | fail | `screen`, `log-round`, `route-screen`, `advance-round`, `revise` pass (every reference resolves; `nothing else` in screen). `decide`: "open the artifact" — undeclared (change 1). `record`: writes the named definition's Document History — undeclared output (change 3). |
+| S5 artifact result | pass | `result: decision` (check-decision: verdict, criterion/gap, reasons — the decision itself, not a status record); purpose: "so that the PM role decides"; `produces: []` consistent with a state-change run. |
+| S6 prose placement | pass | Prose only in `prompt`; runtime steps carry `set`/`branches` only; the guiding statement is a cross-step judgment. (The explanatory sentence in `record`'s prompt is a voice-principle stumble, change 5, not a rule-2 fail by its test.) |
+| Rule 1 witness | fail (=S2) | |
+| Rule 2 no prose | pass | |
+| Rule 3 loop exits | pass | |
+| Rule 4 declared reads | fail (=S4) | |
+| Rule 5 artifact result | pass | |
+| Rule 6 guiding statement | pass | `The check is the criteria applied, not the checker's reading ...` — judgment, no sequence. |
+
+## The two data types against the shape the approved `ask` type sets (purpose with producer/consumer/writer, schema, history)
+
+- **screen-review (v1):** purpose names producer (`screen`), consumers (routing, `revise`, `decide`, round log), and the meaning of `criterion`/`uncovered`, `quote`, `decidability`; single producer stands in for a writer per field (acceptable, as check-decision states it — say it in one clause). Schema well-formed; `maxItems: 3` matches "top three changes". Defects: the "decider opens the artifact" sentence (change 1); stale-free otherwise; `change`/`top_changes` unexplained (stumble 8). History present.
+- **check-decision (v2):** purpose names producer and writer (`The decide step writes every field`), the judged conditional fields, and the three verdicts; token repaired; schema and history present. Defect: stale consumer "its routing" (change 4).
+
+## Other checks asked
+
+- Every prompt vs declared inputs/outputs: see S4 — five of seven steps clean; `decide` and `record` are the two failures.
+- Banned words (`load-bearing`, `surface`, `seam`, `scar tissue`, and the retired role near-synonym): absent from the process, skill, and both types (grep over the four files, no hits).
+- Overload: right-sized for one reading; seven steps, one cycle, five outcomes.
+- Frontmatter: `produces`, `carried-by`, `condition-language: cel`, `hold-after: P7D`, `ask-cap: P1D` present; `asks` only on `revise`; `ask` value declared and listed in revise's inputs; every ask names a default and a checkpoint per the prompt. Conforms to typedef v4.

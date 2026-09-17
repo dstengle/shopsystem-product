@@ -1,0 +1,1142 @@
+===== basis/guidelines/base-writing-style.md =====
+     1	---
+     2	type: quality-guideline
+     3	id: base-writing-style
+     4	owner: product-authority
+     5	status: approved
+     6	approved: 2026-08-19
+     7	version: 2
+     8	created: 2026-08-14
+     9	updated: 2026-08-23
+    10	---
+    11	
+    12	# Base writing style
+    13	
+    14	These rules apply to everything written for a human reader, regardless of
+    15	document type. Document types add a format layer on top of this base; they
+    16	never override it.
+    17	
+    18	## Goal
+    19	
+    20	The reader gets the point of any paragraph in one read, any section in 30
+    21	seconds, and the whole document in two minutes. Write for the first read.
+    22	
+    23	## Lead with the point
+    24	
+    25	At every scale, state the conclusion first and the support after.
+    26	
+    27	- A document opens with what it found or decided, not how it got there.
+    28	- A section opens with its main claim, then evidence.
+    29	- A paragraph opens with its point, then elaboration.
+    30	
+    31	If a document type defines a structure, that structure is just this rule
+    32	applied to that type. If no structure is defined, use this rule to invent
+    33	one.
+    34	
+    35	## Detail placement
+    36	
+    37	Precision serves the point; it never precedes it. Formal specification
+    38	language, methods, raw data, scoring tables, and citations go after the
+    39	claim they support — or in an appendix. The body is for understanding.
+    40	
+    41	## Sentences
+    42	
+    43	- One idea per sentence.
+    44	- Active voice, with a named actor: "Reviewers delete unlinked checks,"
+    45	  not "Unlinked checks are subject to deletion."
+    46	- Prefer the short common word: "use" not "utilize," "end" not
+    47	  "terminate," "before" not "prior to."
+    48	
+    49	## Terminology
+    50	
+    51	- Never use a metaphor as a technical term. If a word describes a thing
+    52	  by what it resembles instead of what it literally does, replace it with
+    53	  the literal description. Test: could a competent reader from outside
+    54	  the team work out the meaning from the words alone? If not, rewrite.
+    55	- Banned words. Never use these, in any form:
+    56	  - "load-bearing" → say "other work depends on it" or "critical to
+    57	    operations"
+    58	  - "surface" (as in context surface, config surface) → say "input,"
+    59	    "source," or "channel"
+    60	  - "seam" → say "boundary" or "integration point"
+    61	  - "scar tissue" → describe the actual problem, e.g. "an unreviewed
+    62	    workaround that was never removed"
+    63	- Explain every insider reference — a past incident, an internal system,
+    64	  a person — in one plain sentence, or cut it. Assume the reader knows
+    65	  none of our history.
+    66	
+    67	## Style examples
+    68	
+    69	These examples exist only to show sentence style. The domain (a public
+    70	library) is deliberately unrelated to our work. Copy the style; never
+    71	copy the content or vocabulary into real documents.
+    72	
+    73	bad:
+    74	
+    75	> Unreturned inventory constitutes scar tissue on the circulation loop
+    76	> and rapidly becomes load-bearing for downstream shelving throughput.
+    77	
+    78	good:
+    79	
+    80	> Overdue books pile up at the front desk, and staff spend their time
+    81	> reshelving late returns instead of helping visitors.
+    82	
+    83	The bad sentence uses two metaphors as terms and never names an actor.
+    84	The good sentence says who is affected and what actually happens, in
+    85	plain words.
+    86	
+    87	## Document History
+    88	
+    89	| Version | Date | Kind | Entry |
+    90	|---|---|---|---|
+    91	| 1 | 2026-08-14 | update | Authored (seed layer); earlier history, if any, in the repository history. |
+    92	| 1 | 2026-08-19 | state | draft → approved. |
+    93	| 2 | 2026-08-23 | update | Owner direction: decision-ledger references removed — changes stand on their own; history entries and text no longer cite numbered decisions. |
+===== basis/glossary.md =====
+     1	---
+     2	type: glossary
+     3	id: glossary
+     4	owner: product-authority
+     5	status: approved
+     6	approved: 2026-08-19
+     7	version: 12
+     8	created: 2026-08-19
+     9	updated: 2026-08-26
+    10	---
+    11	
+    12	# Glossary
+    13	
+    14	## How the list combines
+    15	
+    16	The defined-term list is this glossary combined with every schema element
+    17	name. Per the `use-defined-terms` principle, a writer choosing between
+    18	terms uses one of these when one fits.
+    19	
+    20	## Terms
+    21	
+    22	- **artifact type** — a named, schema-defined document type (e.g.
+    23	  `decision-brief`); the term the schema registry uses. Not "kind".
+    24	- **data type** — a named, schema-defined structure that is not a
+    25	  human-readable document (e.g. `review`); passed between process steps.
+    26	- **simple type** — a JSON Schema primitive (`string`, `integer`,
+    27	  `boolean`, `array`, `object`), usable inline without registration.
+    28	- **typedef** — the single source a type is generated from; templates and
+    29	  schema fragments are its renderings (owned by shopsystem-knowledge).
+    30	- **schema** — the machine-checkable shape of a type: fields, types,
+    31	  enums, required sections.
+    32	- **process definition** — the source of truth for a process: header
+    33	  (purpose, outcomes, roles), data section, steps section.
+    34	- **step** — one unit of a process: an agent step (carries a prompt) or a
+    35	  runtime step (carries `set`, `run`, or `branches`; no prose).
+    36	- **rendering** — a generated output of a definition (a skill, a
+    37	  diagram, a template); never edited by hand, never the source of truth.
+    38	- **guiding statement** — an optional header element of a process
+    39	  definition that directs judgment across the whole process; compiled
+    40	  into every rendering.
+    41	- **fitness set** — judged (never executed) Given/When/Then scenarios
+    42	  scoring an artifact type's quality.
+    43	- **guideline** — prose quality rules for an artifact type, each with a
+    44	  test, a criterion, and a yes/no decision.
+    45	- **role** — a named capability contract and set of accountabilities,
+    46	  assigned by process steps to whoever fills it; sequencing lives in
+    47	  process definitions, not roles.
+    48	- **principle** — a standing rule about how we work: name, statement,
+    49	  rationale, implications (see the principles document's opening
+    50	  definition).
+    51	- **seed layer** — the hand-approved definitions the regress terminates
+    52	  at: the principle set plus one typedef per definition document type.
+    53	- **owner** — the role that approves changes to a definition; named in
+    54	  every definition's frontmatter.
+    55	- **definition chain** — the six linked definitions of good for one
+    56	  artifact type; required before instances are authored or rewritten.
+    57	- **keeper** — a corpus record whose action is keep-rewrite; rewritten
+    58	  forward through its type's approved chain, never used as-is.
+    59	- **rewrite-forward** — the default for keepers: re-author to the
+    60	  approved standard; repair-in-place only for records already at the bar.
+    61	- **rebaseline** — Phase 1 of the re-founding arc: the active tree comes
+    62	  to hold only chain-conforming records; retired mass moves to the
+    63	  archive.
+    64	- **scope** (of a principle set) — the level the set governs and whose
+    65	  context it loads into: working (every activity), architecture (the
+    66	  designed system), or experience (the product's interactions).
+    67	- **transcript** — the runtime log of turns; unscoped, not a governed
+    68	  artifact, never loaded into context.
+    69	- **conversation** — a scoped, bounded discussion attached to exactly one
+    70	  anchor; every conversation belongs to a process.
+    71	- **anchor** — the governed record a conversation attaches to: a session
+    72	  record, a review record, or a work item; carries the conversation's
+    73	  state across transcript boundaries.
+    74	- **conversation type** — discovery (anchor: a session record), review
+    75	  (anchor: a review record and its outcomes), or work (anchor: a work
+    76	  item).
+    77	- **session record** — the anchor record of a discovery conversation:
+    78	  outcome, produced and revised lists, open threads, select quotes.
+    79	- **review** — one bounded conversation in which the authority decides
+    80	  on presented material. Replaces "sitting".
+    81	- **review record** — the anchor record of a review: the material
+    82	  presented and the outcomes applied; each decision traces in the
+    83	  changed artifacts' Document History, never in a standing ledger.
+    84	- **park** — the failsafe for work that cannot pass review within its
+    85	  round cap: set aside with a filed finding.
+    86	- **round cap** — the declared maximum review rounds before a loop's
+    87	  failsafe exit fires.
+    88	- **action** — the approved choice for one record: keep-rewrite, keep,
+    89	  retire, or terminal, with its target.
+    90	- **authority-call** — a row marker on a migration-plan row awaiting a
+    91	  decision from the authority; not an action — the row has no effect and
+    92	  is out of scope for any run until ruled.
+    93	- **action table** — the table of records and their actions; approved row
+    94	  by row or in blocks at a review. Drives any bulk record change.
+    95	- **close-out** — the mechanical execution of the migration plan's
+    96	  pre-decided retire and terminal actions: snapshot, delete, archive
+    97	  move, a loud post-check, and the branch promotion; no review loop.
+    98	  All stages run consecutively at cut-over.
+    99	- **snapshot tag** — the annotated git tag (`pre-migration`) on `main`'s
+   100	  pre-execution commit, preserving the full corpus for terminal-recovery;
+   101	  after close-out a terminal record exists only there.
+   102	- **migration plan** — the rebaseline's action table plus the order of
+   103	  the per-type migration runs. Replaces "rebaseline bill".
+   104	- **run** — one execution of a process, anchored to a work item; states:
+   105	  running, held, done, cancelled.
+   106	- **hold** — a run state: paused with its step and data preserved in its
+   107	  anchor, by inactivity or by an ask; a held run is resumed or
+   108	  cancelled, never dropped.
+   109	- **checkpoint** — updating a conversation's anchor when a transcript
+   110	  ends mid-conversation; a checkpoint is not a close.
+   111	- **branched conversation** — a conversation run as a sub-process of
+   112	  another run; its anchor records the parent (`branched-from`).
+   113	- **Bounded Context** — a deliberately drawn region of the product with
+   114	  one internal language, one model, and one set of contracts to other
+   115	  regions; drawn by design, never discovered after the fact (Evans,
+   116	  *Domain-Driven Design*).
+   117	- **shop** — the entity that builds, operates, and evolves part of the
+   118	  product. Two types: the lead shop (the system-level coordinator; owns
+   119	  product-level artifacts and no Bounded Context) and the BC-shop (owns
+   120	  and produces exactly one Bounded Context).
+   121	- **activity** — a discrete unit of work performed inside a shop,
+   122	  following a contract or process, with inputs, outcomes, and provenance
+   123	  recorded. What an actor is stays unconstrained; the activity has the
+   124	  same shape whoever performs it.
+   125	- **contract** — a named, versioned statement of what one entity
+   126	  promises another: the schemas exchanged, the meaning of each
+   127	  operation, the error behavior, and the relationship kind. Offered as a
+   128	  product contract (on a Bounded Context) or an operational contract (on
+   129	  a shop); nothing outside a contract is promised.
+   130	- **relationship kind** — the named pattern a contract declares for how
+   131	  two Bounded Contexts relate, drawn from the context-mapping catalogue
+   132	  (Evans, *Domain-Driven Design*): customer–supplier, conformist,
+   133	  anti-corruption layer, open host service, published language, shared
+   134	  kernel, or separate ways.
+   135	- **vehicle** — the message type a request to a Bounded Context shop
+   136	  travels in; chosen from the pre-state, never from the request's
+   137	  wording.
+   138	- **pre-state** — what a Bounded Context actually is before a change,
+   139	  read from its contracts and its scenario register, never from its
+   140	  internals.
+   141	- **framing** — the PM role's recorded statement of what a request is
+   142	  about: the originator, the problem taken to be worth solving, and the
+   143	  outcome it serves; the exclusive decision of `lead-pm`.
+   144	- **acceptance scenario** — a Gherkin scenario that states, as a
+   145	  requirement, what counts as done for one behavior; co-produced by the
+   146	  PO role and the owning Bounded Context shop; held in that shop's
+   147	  scenario register.
+   148	- **scenario register** — a Bounded Context shop's own list of the
+   149	  acceptance scenarios it holds, with their hashes and states; read in
+   150	  full across every context when a claim spans contexts.
+   151	- **ask** — a question one activity puts to another role in place of
+   152	  its output, carrying a default and a checkpoint; the run holds, the
+   153	  role answers, the step resumes — never a wait in place (data type
+   154	  `ask`; process-definition typedef §Run lifecycle).
+   155	- **clarify** — an ask from a Bounded Context shop to the lead shop on
+   156	  scope, vocabulary, structure, or contract; answered by the role whose
+   157	  domain the question falls in.
+   158	- **decomposition** — the solutions architect's record of which Bounded
+   159	  Context owns which capability, and the relationship kind of each
+   160	  contract between contexts.
+   161	- **enabler work** — technical work that makes a feature possible;
+   162	  recommended by the solutions architect, placed in the backlog by the
+   163	  PO role.
+   164	- **interaction type** — one way a person or an agent reaches the
+   165	  product: command line (CLI), full-screen terminal (TUI), graphical or
+   166	  web (GUI), API and SDK, conversational, voice, or a generated document
+   167	  or notification; each honours its own conventions within one
+   168	  experience. The experience guidelines cover conversational and voice
+   169	  together as the `assistant` guideline.
+   170	- **experience guidance corpus** — the product designer role's
+   171	  principle set and guidelines for the experience: design principles,
+   172	  vocabulary and voice, core-task parity across interaction types,
+   173	  interaction patterns per type, and the accessibility target; the
+   174	  role's exclusive domain.
+   175	- **originator** — whoever expresses intent at the product's edge: a
+   176	  person, a shop, or a system outside the product.
+   177	- **generated interface** — an interface whose form the product composes
+   178	  at run time from the person's context, within constraints the
+   179	  experience guidance corpus states; a form, not an interaction type.
+   180	- **assistant interaction** — an interaction in which the product acts on
+   181	  an intent the person stated rather than on a command — conversational,
+   182	  voice, or an assistant acting for the person (a closed set); the locus
+   183	  of control is the product's, so the experience principles bound it.
+   184	- **intent** — a desired outcome expressed by an originator at the
+   185	  product's edge; enters the product through a contract and keeps its
+   186	  provenance through every translation and delegation.
+   187	
+   188	## Document History
+   189	
+   190	| Version | Date | Kind | Entry |
+   191	|---|---|---|---|
+   192	| 1 | 2026-08-19 | update | Seed term list authored. |
+   193	| 1 | 2026-08-19 | state | draft → approved. |
+   194	| 2 | 2026-08-22 | update | Conversation-model terms added; action extended to four values, authority-call and action-table amended, close-out and snapshot tag added. |
+   195	| 3 | 2026-08-23 | update | Architecture terms added, riding the architecture-principle-set approval: Bounded Context, shop, activity, contract, relationship kind, intent. |
+   196	| 3 | 2026-08-23 | state | The six architecture terms approved with the architecture principle set; pending markers removed. |
+   197	| 4 | 2026-08-23 | update | Owner direction: ruling and experiment-index entries removed with the ledger practice; review and review-record entries rewritten to the outcomes model. |
+   198	| 5 | 2026-08-23 | update | Anchor entry added — the term recurred as an unintroduced-term stumble across three screens. |
+   199	| 6 | 2026-08-23 | update | vehicle and pre-state added — terms the lead-solutions-architect role turns on. |
+   200	| 7 | 2026-08-25 | update | Owner direction: a near-synonym of "role" retired and banned. |
+   201	| 8 | 2026-08-25 | update | framing, acceptance scenario, scenario register, clarify, decomposition, enabler work added — each arrived undefined in the PM and PO role screens. |
+   202	| 9 | 2026-08-25 | update | interaction type and experience guidance corpus added with the lead-product-designer role. |
+   203	| 10 | 2026-08-25 | update | ask added; clarify re-based as an ask; hold now names the ask as a cause. |
+   204	| 10 | 2026-08-25 | update | originator added — used by the PM role and the ask type without a definition. |
+   205	| 11 | 2026-08-26 | update | scope gains the experience level with the experience principle set. |
+   206	| 11 | 2026-08-26 | update | generated interface and assistant interaction added with the experience principle set. |
+   207	| 12 | 2026-08-26 | update | interaction type: the guidelines' `assistant` coverage of conversational and voice noted. |
+===== .claude/shop/principles.md =====
+     1	---
+     2	type: principles-rendering
+     3	id: principles-rendering
+     4	status: approved
+     5	generated: true
+     6	generated-by: basis/tools/compile_principles.py
+     7	derived-from: principles
+     8	source: basis/principles.md
+     9	source-digest: sha256:db2146e7321d
+    10	scope: working
+    11	---
+    12	
+    13	# Working principles (compiled into every session)
+    14	
+    15	These statements govern every activity in this shop. The full set —
+    16	rationales, implications, fitness screen — is the source document
+    17	named in the front-matter; on conflict the source wins.
+    18	
+    19	- **Define what good looks like up front** (`define-good-up-front`):
+    20	  - Every activity MUST operate from a stated definition of what good looks like.
+    21	  - That definition MUST drive both the performance of the activity and its check.
+    22	  - The check MUST sit with a different role holding a different accountability.
+    23	- **Govern the generating context** (`governed-context`):
+    24	  - Everything loaded into an agent's generating context — prompts, skills, memories, primers — MUST trace to an approved definition or a governed record.
+    25	  - An unsanctioned context channel MUST NOT be created or retained.
+    26	- **Every activity belongs to a process** (`no-orphan-activities`):
+    27	  - Every activity in the system MUST be part of a defined process with stated expected outcomes, expected outputs, and possible resulting actions.
+    28	  - Every long-running loop MUST declare its exit — a reached-state success exit, a round or budget cap, or both.
+    29	- **Use defined terms** (`use-defined-terms`):
+    30	  - Important terms MUST be defined in the system, in the glossary or as a schema element.
+    31	  - A term is important when a reader must know it to perform or check the work.
+    32	  - When more than one term could carry a statement, the writer MUST use a defined term if one is available.
+    33	- **Use external standards first** (`external-standards-first`):
+    34	  - A definition MUST adopt an established external form where one fits.
+    35	  - Bespoke structure MUST be justified by a recorded gap in the form it rejects.
+    36	- **Single source of truth** (`single-source-of-truth`):
+    37	  - Every fact, rule, or definition MUST have exactly one authoritative home.
+    38	  - Every other appearance MUST be a reference or a generated rendering.
+    39	- **Feedback loops have consumers** (`feedback-loops-with-consumers`):
+    40	  - Every feedback channel MUST name its consumer and the resulting action.
+    41	  - The effectiveness of processes, tools, and prompts MUST be measured.
+    42	  - The definitions of processes, tools, and prompts MUST be updated from what is measured.
+    43	- **Delivery is verified in the running system** (`delivery-verified`):
+    44	  - Work MUST be counted done only when its effect is demonstrated in the running system.
+    45	  - Artifacts existing, checks passing, or reviews approving MUST NOT count as done on their own.
+    46	- **Load the least context** (`least-context`):
+    47	  - An activity MUST load the minimum context necessary to accomplish its task.
+    48	  - The activity's process MUST name what loads into context and the source each input comes from.
+    49	  - Context from an unapproved source MUST NOT be loaded.
+===== basis/types/ask.md =====
+     1	---
+     2	type: data-type
+     3	id: ask
+     4	defines: ask
+     5	owner: product-authority
+     6	status: approved
+     7	approved: 2026-08-25
+     8	version: 2
+     9	created: 2026-08-25
+    10	updated: 2026-08-25
+    11	---
+    12	
+    13	# Data type: ask
+    14	
+    15	## Purpose
+    16	
+    17	A question one activity puts to another role, returned by an agent or
+    18	human step in place of its outputs. Produced by any step that carries
+    19	`asks`; routed by the runtime to whoever fills the role
+    20	named in `to`; consumed by that role, which writes `answer`, and by the
+    21	asking step, which resumes with the ask in its inputs. The process
+    22	declares an `ask` data value (`$ref: ask`) and lists it in each asking
+    23	step's inputs. Two resume paths: *answered* — the step acts on
+    24	`answer`; *defaulted* — the step acts on `default`, because the
+    25	process's `ask-cap` passed unanswered or because the step returned a
+    26	second ask in the same run (at most one is allowed). See the
+    27	[process-definition typedef](../artifacts/process-definition.md), §The
+    28	steps section and §Run lifecycle. A `clarify` — a Bounded Context
+    29	shop's question to the lead shop — conforms to this shape.
+    30	
+    31	## Schema
+    32	
+    33	```yaml
+    34	schema:
+    35	  type: object
+    36	  fields:
+    37	    to: {type: string}            # asker writes: the role asked; a derived check confirms it is in the step's `asks`
+    38	    kind:                         # asker writes: what the asker lacks
+    39	      type: string
+    40	      enum: [pre-state, intent, reserved-decision, scope, vocabulary, structure, contract]
+    41	      # pre-state: what a thing is before a change; intent: what the originator wanted;
+    42	      # reserved-decision: a decision another role's domain holds; scope: whether
+    43	      # something is in or out; vocabulary: what a term means; structure: which
+    44	      # Bounded Context owns something; contract: what is promised across a boundary
+    45	    question: {type: string}      # asker writes
+    46	    default: {type: string}       # asker writes: what the step will do if the ask resolves defaulted
+    47	    checkpoint: {type: string}    # asker writes: partial output sufficient to resume from
+    48	    answer: {type: string, optional: true}       # answering role writes
+    49	    answered_by: {type: string, optional: true}  # runtime writes: the role that answered
+    50	    resolution:                                  # runtime writes
+    51	      type: string
+    52	      enum: [answered, defaulted, cancelled]     # cancelled: the held run was cancelled
+    53	      optional: true
+    54	```
+    55	
+    56	## Document History
+    57	
+    58	| Version | Date | Kind | Entry |
+    59	|---|---|---|---|
+    60	| 1 | 2026-08-25 | update | Authored by owner decision: the ask mechanism is held-and-resumed only — a step returns an ask instead of an output, the run holds, the role answers, the step resumes with the answer; asks carry a default and a checkpoint; clarify becomes a specialization. |
+    61	| 1 | 2026-08-25 | review | Screened: findings — the ask-resume loop had no exit; the resumed ask had no declared data name; only the answered path was described; three fields had no writer; the kind enum did not cover clarify. |
+    62	| 2 | 2026-08-25 | update | Repairs: one ask per step per run; the process declares an `ask` value listed in asking steps' inputs; both resume paths stated; a writer per field; kind enum aligned to clarify's four subjects plus pre-state, intent, and reserved-decision, each explained. |
+    63	| 2 | 2026-08-25 | review | Re-screened with the typedef: clean — all eight repairs confirmed, no synchronous form survives; three wording stumbles polished in place. |
+    64	| 2 | 2026-08-25 | state | draft → approved by the owner. |
+===== basis/types/screen-review.md =====
+     1	---
+     2	type: data-type
+     3	id: screen-review
+     4	defines: screen-review
+     5	owner: product-authority
+     6	status: approved
+     7	approved: 2026-08-26
+     8	version: 3
+     9	created: 2026-08-25
+    10	updated: 2026-08-25
+    11	---
+    12	
+    13	# Data type: screen-review
+    14	
+    15	## Purpose
+    16	
+    17	One screen round's verdict and findings against a named criteria set.
+    18	Produced by the `screen` step of
+    19	[`../processes/po-output-check.md`](../processes/po-output-check.md)
+    20	and of
+    21	[`../processes/interaction-conformance-check.md`](../processes/interaction-conformance-check.md);
+    22	consumed by their routing, revision, and decision steps and, in the
+    23	first, appended to the round log. Each finding names the criterion it fails — or
+    24	`uncovered`, for a defect no criterion names — carries the quoted text,
+    25	and states whether the screener could decide it (`confident`) or not
+    26	(`wobbly`) — a wobbly finding quotes the whole passage, since the PM
+    27	role decides from the review alone. `change` is the repair the screener
+    28	proposes for that finding; `top_changes` the three the screener would
+    29	make first. The `screen` step writes every field.
+    30	
+    31	## Schema
+    32	
+    33	```yaml
+    34	schema:
+    35	  type: object
+    36	  fields:
+    37	    verdict: {type: string, enum: [clean, findings]}
+    38	    findings:
+    39	      type: array
+    40	      items:
+    41	        type: object
+    42	        fields:
+    43	          criterion: {type: string}          # the criterion's name (in the PO check "framing" is always one), or the literal "uncovered"; a criterion the corpus cannot decide keeps its name and says "record absent:" in change
+    44	          quote: {type: string}
+    45	          change: {type: string}
+    46	          decidability: {type: string, enum: [confident, wobbly]}
+    47	    top_changes: {type: array, items: {type: string}, maxItems: 3}
+    48	```
+    49	
+    50	## Document History
+    51	
+    52	| Version | Date | Kind | Entry |
+    53	|---|---|---|---|
+    54	| 1 | 2026-08-25 | update | Authored with the po-output-check process: the `review` type carries no per-finding criterion, quote, or decidability, which the check's routing and decision read. |
+    55	| 2 | 2026-08-25 | update | Screen repairs: the artifact is not opened by the decider; change and top_changes explained; writer stated. |
+    56	| 2 | 2026-08-26 | state | draft → approved by the owner. |
+    57	| 3 | 2026-08-26 | update | Second producer named (interaction-conformance-check); the record-absent form defined in the criterion comment. |
+===== basis/types/check-decision.md =====
+     1	---
+     2	type: data-type
+     3	id: check-decision
+     4	defines: check-decision
+     5	owner: product-authority
+     6	status: approved
+     7	approved: 2026-08-26
+     8	version: 4
+     9	created: 2026-08-25
+    10	updated: 2026-08-25
+    11	---
+    12	
+    13	# Data type: check-decision
+    14	
+    15	## Purpose
+    16	
+    17	A checking role's decision on a checked thing, taken from a screen
+    18	verdict: the PM role's on the PO role's output, or the product designer
+    19	role's on a delivered interaction. Produced by the `decide` step of
+    20	[`../processes/po-output-check.md`](../processes/po-output-check.md)
+    21	and of
+    22	[`../processes/interaction-conformance-check.md`](../processes/interaction-conformance-check.md);
+    23	consumed by their `record` steps and written into the checked
+    24	artifact's Document History. `pass` accepts the checked thing against
+    25	its criteria; `fail` names the criterion the output missed;
+    26	`definition-change` says the criteria themselves were insufficient and
+    27	names the gap to file. The `decide` step writes every field; that
+    28	`criterion` accompanies `fail` and `gap` accompanies
+    29	`definition-change` is a judged check on the decision, not a schema
+    30	constraint.
+    31	
+    32	## Schema
+    33	
+    34	```yaml
+    35	schema:
+    36	  type: object
+    37	  fields:
+    38	    verdict: {type: string, enum: [pass, fail, definition-change]}
+    39	    criterion: {type: string, optional: true}   # required when verdict is fail: the criterion missed, by name
+    40	    gap: {type: string, optional: true}         # required when verdict is definition-change: the definition and what it lacks
+    41	    reasons: {type: string}
+    42	```
+    43	
+    44	## Document History
+    45	
+    46	| Version | Date | Kind | Entry |
+    47	|---|---|---|---|
+    48	| 1 | 2026-08-25 | update | Authored with the po-output-check process by owner decision: the PM role decides from a screen verdict, never from reading every artifact. |
+    49	| 1 | 2026-08-25 | review | Screened with the process: the conditional fields are judged, not mechanical; a line-broken token. |
+    50	| 2 | 2026-08-25 | update | Writer and the judged nature of the conditional fields stated; token repaired. |
+    51	| 3 | 2026-08-25 | update | Consumer corrected: the record step only. |
+    52	| 3 | 2026-08-26 | state | draft → approved by the owner. |
+    53	| 4 | 2026-08-26 | update | Generalized to both checking processes. |
+===== basis/fitness/interaction.fitness.md =====
+     1	---
+     2	type: fitness-set
+     3	id: interaction-fitness
+     4	owner: product-authority
+     5	status: approved
+     6	approved: 2026-08-26
+     7	version: 3
+     8	created: 2026-08-26
+     9	updated: 2026-08-26
+    10	target-type: interaction
+    11	judged: true
+    12	executable: false
+    13	judged-by: lead-product-designer
+    14	---
+    15	
+    16	# Fitness set: interaction
+    17	
+    18	These scenarios are the conformance screen the product designer role
+    19	runs on a delivered interaction of any interaction type against the
+    20	experience guidance corpus — the [experience principles](../experience-principles.md),
+    21	the [common experience guideline](../guidelines/experience-common.md),
+    22	and the per-type guideline for the interaction's type. They are judged
+    23	by the `lead-product-designer` role, never executed. The judge's model
+    24	and prompt version (or the person's name) are recorded with each
+    25	verdict. The process that runs this screen at delivery is not yet
+    26	defined; until it is, the product designer role runs it on request from
+    27	the [PO output check](../processes/po-output-check.md) or a Bounded
+    28	Context shop; the process is not yet filed as a work item. Where a
+    29	scenario judges against a corpus record (under `basis/experience/`)
+    30	that is absent, lacks the entry, or whose entry is marked
+    31	`hypothesis`, the verdict is "undecidable" with that reason — record
+    32	absent, record empty, or entry is a hypothesis — recorded as a finding
+    33	against the corpus, never a pass.
+    34	
+    35	## Scenarios
+    36	
+    37	Scenario 1: one vocabulary, recorded mappings
+    38	  Given every noun and verb the interaction shows or accepts
+    39	  When each is compared with the corpus vocabulary
+    40	  Then it is the vocabulary's word or a platform mapping the vocabulary
+    41	  records
+    42	
+    43	Scenario 2: the platform's idiom
+    44	  Given the platform guideline the corpus names for the interaction
+    45	  type
+    46	  When the interaction's form is compared with it
+    47	  Then each departure is a variation the corpus records with a reason
+    48	
+    49	Scenario 3: errors guide recovery
+    50	  Given each error the interaction can show
+    51	  When it is read
+    52	  Then it says what happened in the vocabulary and what to do next,
+    53	  and any internal identifier stands alongside, not in place
+    54	
+    55	Scenario 4: core tasks and options hold
+    56	  Given the corpus's core-task list and the options other interaction
+    57	  types offer for those tasks
+    58	  When the interaction is walked
+    59	  Then every core task completes and every option offered elsewhere for
+    60	  the task is present
+    61	
+    62	Scenario 5: accessible before delivery
+    63	  Given the accessibility target the corpus names for the interaction
+    64	  type
+    65	  When the delivery's attached accessibility result is read
+    66	  Then it exists, meets the target, and for a non-web type carries the
+    67	  WCAG2ICT applicability record
+    68	
+    69	Scenario 6: the per-type rules hold
+    70	  Given the per-type experience guideline for the interaction's type
+    71	  When each of its rules' tests is run
+    72	  Then each rule's criterion is met
+    73	
+    74	## Compile mapping (each Then → one judge-rubric assertion)
+    75	
+    76	| Scenario Then | Judge-rubric assertion |
+    77	|---|---|
+    78	| 1 — vocabulary | "List every term that is neither the vocabulary's nor a recorded platform mapping. Empty list = pass." |
+    79	| 2 — platform idiom | "List every departure from the named platform guideline without a recorded variation. Empty list = pass." |
+    80	| 3 — errors | "For each error: what happened, in the vocabulary? what next? identifier alongside only? Cite any error failing one." |
+    81	| 4 — core tasks and options | "For each core task: does it complete? For each option offered elsewhere: present? Cite any missing." |
+    82	| 5 — accessibility | "Is the accessibility result attached, at target, with the WCAG2ICT record for a non-web type? Cite the result or its absence." |
+    83	| 6 — per-type rules | "For each rule of the type's guideline: run its test; cite each criterion not met, or the record it needs that is absent." |
+    84	
+    85	## Document History
+    86	
+    87	| Version | Date | Kind | Entry |
+    88	|---|---|---|---|
+    89	| 1 | 2026-08-26 | update | Authored with the experience guidelines so that their derived checks name a check that exists: scenarios 1–5 carry the common guideline's rules, scenario 6 defers to the per-type guideline. The process that runs this screen at delivery is a filed gap owned by the product designer role. |
+    90	| 1 | 2026-08-26 | review | Screened: the PO output check unlinked; the process gap 'filed' nowhere; scenario 6 carried a variation escape with no meaning for a per-type rule; no verdict for an absent corpus record. |
+    91	| 2 | 2026-08-26 | update | process linked and marked not yet filed; escape removed from scenario 6; the absent-record verdict defined. |
+    92	| 2 | 2026-08-26 | review | Final screen (round 3): clean — every rule decidable with a named scenario and derivation; two line edits and three optional stumbles polished in place. |
+    93	| 2 | 2026-08-26 | state | draft → approved by the owner. |
+    94	| 3 | 2026-08-26 | update | The corpus records now exist; the intro's absent-record verdict is joined by the experience-record typedef's "record empty" and "entry is a hypothesis" verdicts, each a finding against the corpus. |
+===== basis/artifacts/experience-record.md =====
+     1	---
+     2	type: artifact-typedef
+     3	id: experience-record-typedef
+     4	defines: experience-record
+     5	owner: product-authority
+     6	status: draft
+     7	version: 2
+     8	created: 2026-08-26
+     9	updated: 2026-08-26
+    10	ancestry: [definition, experience-record]
+    11	---
+    12	
+    13	# Artifact type: experience-record
+    14	
+    15	## Identity and ancestry
+    16	
+    17	- **Type:** `experience-record` — one of the seven records of the
+    18	  experience guidance corpus that the experience guidelines and the
+    19	  interaction fitness set judge against: the vocabulary and its
+    20	  platform mappings, the core-task list, the interaction patterns, the
+    21	  design tokens, the hard-to-reverse classification, the persona and
+    22	  voice, and the variations record. A record is a definition of good
+    23	  for interactions — a table the product designer role maintains and
+    24	  a screen reads — not prose.
+    25	- **Produced by:** the product designer role, from user research and
+    26	  the product's own definitions; every change is approved by the owner
+    27	  named in the frontmatter, as for any definition. **Consumed by:** the
+    28	  [interaction fitness set](../fitness/interaction.fitness.md)'s judge;
+    29	  the experience guidelines' rules; Bounded Context shops building an
+    30	  interaction; the PO role, for acceptance criteria.
+    31	
+    32	## Required frontmatter
+    33	
+    34	`type: experience-record`, `id`, `record` (one of `vocabulary`,
+    35	`core-tasks`, `patterns`, `tokens`, `hard-to-reverse`, `persona-voice`,
+    36	`variations` — a closed set), `owner`, `status`, `version`, `created`,
+    37	`updated`; `maintained-by: lead-product-designer`. Wherever a record
+    38	names interaction types it uses the closed token set `cli`, `tui`,
+    39	`gui`, `api` (API and SDK), `conversational`, `voice`, `document` —
+    40	the glossary's interaction types, one token each.
+    41	
+    42	## Required sections
+    43	
+    44	1. An **opening** stating which record this is, what reads it, and
+    45	   what an entry means.
+    46	2. **Entries** — one table, columns fixed per record kind, every kind
+    47	   ending in `status` (`evidenced` — the source is a user test,
+    48	   measured use, or a platform guideline — or `hypothesis` — the entry
+    49	   is proposed from a product definition or by design judgment and
+    50	   awaits evidence) and, except `variations`, `source`:
+    51	   - `vocabulary`: term · meaning ("see glossary" for a glossary term)
+    52	     · platform mappings (type: word, only where the platform's word
+    53	     differs) · source · status.
+    54	   - `core-tasks`: task · what a person or agent accomplishes ·
+    55	     interaction types it holds on (every type, unless the next column
+    56	     gives a reason) · types it is removed from, with the reason ·
+    57	     options every type must offer · source · status.
+    58	   - `patterns`: pattern · where it applies · the shape (in words) ·
+    59	     platform guideline it follows, by name · source · status.
+    60	   - `tokens`: token · value · used for · source · status.
+    61	   - `hard-to-reverse`: a product action · why it is hard to reverse ·
+    62	     what the assistant states before it · source · status.
+    63	   - `persona-voice`: dimension or trait · setting · when it varies ·
+    64	     source · status.
+    65	   - `variations`: rule varied · interaction type · the variation · the
+    66	     reason · recorded by (the guideline or the role; this record's
+    67	     evidence is the reason, so it carries no source column) · status.
+    68	   A record with no entries yet says so in one sentence under the
+    69	   heading. The screen's verdicts: a record that does not exist —
+    70	   "undecidable: record absent"; a record with no entry for what the
+    71	   rule needs — "undecidable: record empty"; an entry marked
+    72	   `hypothesis` — "undecidable: entry is a hypothesis". Each is a
+    73	   finding against the corpus, never a pass and never a finding
+    74	   against the delivery.
+    75	3. **Checks** — which guideline rules and fitness scenarios read this
+    76	   record: the document linked and the rule or scenario number.
+    77	
+    78	## Rules
+    79	
+    80	- An entry's `source` names the evidence — a user test, a platform
+    81	  guideline, a product definition — never a preference
+    82	  (`evidence-not-opinion`).
+    83	- A term in the vocabulary that is also in the
+    84	  [glossary](../glossary.md) carries the glossary's meaning, written
+    85	  "see glossary"; the vocabulary adds the platform mappings.
+    86	- The variations record is the one home for a per-type departure from
+    87	  a corpus rule (`consistent-not-uniform` bullet 4).
+    88	
+    89	## Commitment (Definition of Done)
+    90	
+    91	A record is done when the screen that reads it can decide every rule
+    92	that names it without asking the product designer role — every entry
+    93	the rule needs present and `evidenced`. **Consequence
+    94	on failure:** the rules that name it return "undecidable: record
+    95	absent" and every interaction they screen carries that finding.
+    96	
+    97	## Sources
+    98	
+    99	Design-system practice (Atlassian's tokens as "the single source of
+   100	truth"; GOV.UK's design system contribution model); Nielsen Norman
+   101	Group's tone-of-voice dimensions (persona-voice); the experience
+   102	principle set; the experience guidelines that name each record.
+   103	
+   104	## Derived review checklist
+   105	
+   106	- `record` is one of the seven; `maintained-by` present. *(§Required frontmatter)*
+   107	- The table's columns match the record kind. *(§Required sections 2)*
+   108	- Every entry carries a status, and a source that is evidence or a `hypothesis` mark; variations carry a reason instead of a source. *(§Required sections 2; §Rules)*
+   109	- Interaction types use the closed token set. *(§Required frontmatter)*
+   110	- The Checks section names at least one rule or scenario. *(§Required sections 3)*
+   111	
+   112	## Document History
+   113	
+   114	| Version | Date | Kind | Entry |
+   115	|---|---|---|---|
+   116	| 1 | 2026-08-26 | update | Authored by owner direction so the corpus records the experience guidelines judge against have a definition before their instances; seven record kinds, one table shape each. |
+   117	| 1 | 2026-08-26 | review | Screened with the seven instances: findings — interaction-type tokens undefined; evidence-not-opinion not applied to the records (seeds enforceable as evidence); no verdict for a present-but-empty record; variations had no source column for the checklist to read; rule 2 contradicted the meaning column; who approves amendments unclear. |
+   118	| 2 | 2026-08-26 | update | Repairs: closed token set; a status column (evidenced / hypothesis) on every kind with the screen's three undecidable verdicts; variations' reason stands in for source; "see glossary" for glossary terms; owner approves every change; Checks cite document and number. |
+===== basis/roles/lead-product-designer.md =====
+     1	---
+     2	name: lead-product-designer
+     3	description: The product-design role of the lead shop. Owns the experience guidance corpus and conformance to it; answers for usability across every interaction type — command line, terminal, graphical, API and SDK, conversational, voice, documents — so that the product is one experience wherever it is reached.
+     4	tools: Read, Edit, Write, Grep, Glob
+     5	maxTurns: 60
+     6	type: role-definition
+     7	id: lead-product-designer
+     8	owner: product-authority
+     9	status: approved
+    10	approved: 2026-08-25
+    11	version: 2
+    12	created: 2026-08-25
+    13	updated: 2026-08-25
+    14	---
+    15	
+    16	# Lead Product Designer
+    17	
+    18	You hold the role that owns the product's experience: whether people
+    19	and agents can use what the product offers, through whichever
+    20	*interaction type* they reach it by — command line (CLI), full-screen
+    21	terminal (TUI), graphical or web (GUI), API and SDK, conversational,
+    22	voice, or a generated document or notification. The product is one
+    23	experience; you are the role that makes it so. The four product risks
+    24	are value, usability, feasibility, and viability; usability is yours.
+    25	
+    26	**Standard of judgment:** consistent, not uniform — the same
+    27	vocabulary, the same core tasks, and the same rules everywhere, with
+    28	each interaction type honouring its own conventions. Evidence from
+    29	people using the product, never opinion. An interface an agent uses
+    30	is an interface you design.
+    31	
+    32	**Accountable for:**
+    33	- The experience guidance corpus, a principle set with guidelines in
+    34	  the definition-chain form: design principles as decision rules; one
+    35	  vocabulary and voice; the rule that every interaction type supports
+    36	  the same core tasks — the tasks a person must be able to complete
+    37	  wherever the product is reached; interaction patterns per interaction type; the
+    38	  accessibility target (WCAG 2.2 AA, with its non-web application for
+    39	  terminal and document interfaces).
+    40	- Conformance: every delivered interaction screened against the
+    41	  corpus, a finding recorded for each departure and its resolution.
+    42	- The information architecture and task flows of every interaction
+    43	  type, readable from artifacts without asking their author.
+    44	- Usability evidence on every candidate (a framed problem or a design
+    45	  solution under consideration): what users were observed
+    46	  doing, in a user test, a tested prototype, or measured task
+    47	  completion, recorded with the framing it bears on.
+    48	- Usability acceptance criteria supplied to the PO role for each
+    49	  behavior, and the scenarios a usability test invalidates named.
+    50	- Agent-facing ergonomics: the naming, predictability, and structure
+    51	  of tool definitions, CLIs, and API contracts screened as interfaces,
+    52	  with findings to the solutions architect.
+    53	
+    54	**Domain (exclusive):** the experience guidance corpus — this role
+    55	alone decides what it says; conformance is that corpus applied to a
+    56	delivered interaction.
+    57	
+    58	**Decision rights.**
+    59	- *Decides:* the corpus and conformance (exclusive); and, as the
+    60	  accountable role, the information architecture and task flows of
+    61	  each interaction type; which interaction type a capability is
+    62	  offered through first — an experience question; the capability's
+    63	  worth is the PM role's decision, not this one's; what user research runs and how
+    64	  usability is evaluated — each recorded with reasons and open to
+    65	  another role's evidence.
+    66	- *Recommends:* to the [PM role](lead-pm.md), observed user needs and
+    67	  usability findings that bear on value; to the [PO role](lead-po.md),
+    68	  usability acceptance criteria and the scenarios a test invalidates;
+    69	  to the [solutions architect](lead-solutions-architect.md), the
+    70	  ergonomics of contracts, CLIs, and agent tool definitions.
+    71	- *Escalates to the PM role:* a value judgment and a usability finding
+    72	  that cannot both stand; an experience rule the
+    73	  [architecture principle set](../architecture-principles.md) cannot
+    74	  accommodate.
+    75	- *Never decides:* what problem is worth solving (the PM's); acceptance
+    76	  of the PO's output (the PM's check); the stack and the contracts
+    77	  themselves (the solutions architect's); how a Bounded Context builds
+    78	  a behavior (the BC-shop's).
+    79	
+    80	**Admissible evidence:** user tests and trials; prototypes tested with
+    81	users; expert review against the corpus; context-of-use analysis;
+    82	measured task completion; the accessibility standard's success
+    83	criteria. Not authoritative: a stakeholder's preference; a wireframe
+    84	supplied by another role as a requirement; this role's own taste
+    85	unrecorded; "it looks fine" from anyone.
+    86	
+    87	**Interfaces:**
+    88	- The PM role: framed problems and outcomes in; usability evidence,
+    89	  prototypes, and opportunities — user needs observed that no framed
+    90	  problem yet serves — out.
+    91	- The PO role: scenarios in for usability criteria; criteria and test
+    92	  results out.
+    93	- The solutions architect role: contracts, CLIs, and tool definitions
+    94	  in for ergonomic review; feasibility and non-functional constraints
+    95	  in; findings out.
+    96	- Bounded Context shops: the corpus and its patterns out; conformance
+    97	  findings out; clarify questions on the experience in, answers out.
+    98	- Asks out, to the PM role: an ask is a question the corpus and the
+    99	  framing cannot answer, sent with a proposed default.
+   100	
+   101	**Knowledge and skills:** user experience analysis, design,
+   102	evaluation, and research at the level that sets the approach and
+   103	advises across the product (SFIA 9 UNAN, HCEV, USEV, URCH, level 5);
+   104	human-centred design as the ISO 9241-210 activities — context of use,
+   105	user requirements, design solutions, evaluation; the accessibility
+   106	standard WCAG 2.2 and its non-web guidance WCAG2ICT; command-line
+   107	interface conventions (the Command Line Interface Guidelines at
+   108	clig.dev; the Heroku CLI style guide); Microsoft's 18 Guidelines for
+   109	Human-AI Interaction for any agent-facing interaction; Grice's
+   110	cooperative principle for conversational interfaces; the
+   111	[architecture principle set](../architecture-principles.md) as it
+   112	bears on interfaces and the [working principle set](../principles.md)
+   113	every activity runs under.
+   114	
+   115	**Anti-rationalization:**
+   116	- "It's a CLI, developers don't need design." → The command-line
+   117	  guidelines exist because they do; a CLI is an interaction type like
+   118	  any other.
+   119	- "We'll make it consistent later." → Every departure from the corpus
+   120	  is recorded; deferring consistency is itself a departure.
+   121	- "The PM already sketched it." → A sketch from another role is input,
+   122	  not a requirement; the evidence is what users do with it.
+   123	- "An agent doesn't care about ergonomics." → An agent is a user; a
+   124	  tool definition it misreads is a usability failure.
+   125	- "It looks fine to me." → This role's own preference is not
+   126	  admissible evidence.
+   127	
+   128	## Document History
+   129	
+   130	| Version | Date | Kind | Entry |
+   131	|---|---|---|---|
+   132	| 1 | 2026-08-25 | update | Authored through the approved role-definition chain from the research report on the product designer role (on the `research` branch: `research/product-designer-role-2026-08.md`, proposal item 7) by owner decision: the experience guidance corpus takes the existing chain form (a principle set plus guidelines), usability accountability is single and sits here, and the role is named product designer. Written in the six-section role form. The corpus itself is not yet authored — a filed gap this role owns. |
+   133	| 1 | 2026-08-25 | review | Screened against the role-definition fitness set: findings — three sequencing sentences (scenario 2 fail); candidate undefined; the exclusive domain phrased as two decisions. |
+   134	| 2 | 2026-08-25 | update | Repairs: sequencing removed from an anti-rationalization stop, a decision right, and an escalation; candidate, core task, opportunity, and ask defined inline; the exclusive domain phrased as one decision with conformance as its application. |
+   135	| 2 | 2026-08-25 | review | Re-screened: clean — all five scenarios pass, five rules hold; two stumbles (a dash-colon aside; a residual timing word) polished in place. |
+   136	| 2 | 2026-08-25 | state | draft → approved by the owner. |
+===== basis/processes/po-output-check.md =====
+     1	---
+     2	type: process-definition
+     3	id: po-output-check-process
+     4	owner: product-authority
+     5	status: approved
+     6	approved: 2026-08-26
+     7	version: 3
+     8	created: 2026-08-25
+     9	updated: 2026-08-25
+    10	produces: []
+    11	carried-by: po-output-check-skill
+    12	condition-language: cel
+    13	hold-after: P7D
+    14	ask-cap: P1D
+    15	annotations:
+    16	  claude-code:
+    17	    activation: model-judged
+    18	    promotion: experiment-local
+    19	    use-when: "the PO role submits a brief, product decision record, acceptance scenarios, or a backlog order for the PM role's check against the framing"
+    20	---
+    21	
+    22	# Process: PO output check
+    23	
+    24	**Purpose:** Check a piece of the PO role's output against the PM
+    25	role's framing under criteria the definitions state, so that the PM
+    26	role decides from a screen verdict — pass, fail with the criterion
+    27	named, or a definition change — and never by reading every artifact.
+    28	
+    29	**Guiding statement:** The check is the criteria applied, not the
+    30	checker's reading. A finding the criteria cannot name is a missing
+    31	criterion, and the decision that follows is a definition change, not a
+    32	verdict on the maker.
+    33	
+    34	**Outcomes:**
+    35	- O1. The output is screened against a named criteria set and the
+    36	  framing it claims to serve — witnessed by `screen`'s inputs and the
+    37	  `screen-review` it returns.
+    38	- O2. The PM role decides from the review and round log; the artifact
+    39	  reaches the PM role only through the findings' quotes — witnessed by
+    40	  `decide`'s inputs, which exclude the artifact.
+    41	- O3. Every screen round is recorded and the loop exits on a clean
+    42	  verdict, on findings no criterion names, or at the round cap —
+    43	  witnessed by `log-round` and `route-screen`.
+    44	- O4. A fail names the criterion missed; a definition change names the
+    45	  gap, and the gap is filed in the named definition's Document History
+    46	  — witnessed by the `check-decision` fields and `record`'s
+    47	  `definition` and `gap_entry` outputs.
+    48	- O5. A question the framing cannot answer leaves the run as an ask to
+    49	  the PM role, with a default, and the run resumes — witnessed by
+    50	  `revise`'s `asks` and the `ask` value.
+    51	
+    52	**Roles:** maker — [`../roles/lead-po.md`](../roles/lead-po.md)
+    53	(submits and revises; never decides its own pass). screener —
+    54	[`../roles/cold-reviewer.md`](../roles/cold-reviewer.md) (fresh
+    55	context every round; judges against the criteria). the PM role —
+    56	[`../roles/lead-pm.md`](../roles/lead-pm.md) (accountable for the
+    57	decision; a human-held role that decides from the verdict; its
+    58	assisting agent prepares the record and the gap entry).
+    59	
+    60	**Carried by:**
+    61	[`../skills/po-output-check/SKILL.md`](../skills/po-output-check/SKILL.md)
+    62	— generated from this definition by
+    63	[`../tools/compile_process.py`](../tools/compile_process.py), never
+    64	edited by hand.
+    65	
+    66	## Flow (compiled)
+    67	
+    68	Generated from the steps below by `tools/compile_process.py`; do not
+    69	edit by hand.
+    70	
+    71	```mermaid
+    72	flowchart TD
+    73	  screen(["Screen against the criteria — agent: cold-reviewer<br/>in — artifact: string, framing: string, criteria_path: string<br/>out — review: screen-review"])
+    74	  log_round["Record the round — runtime<br/>in — review: screen-review, round_log: screen-review[]<br/>sets — round_log: screen-review[]"]
+    75	  route_screen{"Route on the screen<br/>in — review: screen-review, round: integer, round_cap: integer"}
+    76	  revise(["Revise the output — agent: lead-po<br/>in — artifact: string, review: screen-review, framing: string, ask: ask<br/>out — artifact: string"])
+    77	  advance_round["Advance the round — runtime<br/>in — round: integer<br/>sets — round: integer"]
+    78	  decide[["Decide on the verdict — human: lead-pm<br/>in — review: screen-review, round_log: screen-review[], framing: string<br/>out — decision: check-decision"]]
+    79	  record(["Record the decision — agent: lead-pm<br/>in — decision: check-decision, artifact: string, round_log: screen-review[]<br/>out — artifact: string, gap_entry: string, definition: string"])
+    80	  __end(("end<br/>result — decision: check-decision"))
+    81	  __start(("start")) --> screen
+    82	  screen --> log_round
+    83	  log_round --> route_screen
+    84	  route_screen -->|success exit: clean| decide
+    85	  route_screen -->|definition exit: every finding is uncovered — nothing the maker can repair| decide
+    86	  route_screen -->|failsafe exit: round >= round_cap — decide with findings open| decide
+    87	  route_screen -->|else| revise
+    88	  revise --> advance_round
+    89	  advance_round --> screen
+    90	  decide --> record
+    91	  record --> __end
+    92	```
+    93	
+    94	
+    95	## Data
+    96	
+    97	Each entry names a process-local value. Simple types use JSON Schema
+    98	names inline; every structured shape is a `$ref` to a defined type with
+    99	an explicit source. Conditions are CEL expressions over these names. A
+   100	*criteria set* is the approved fitness set or guideline for the
+   101	artifact's type. The framing is always a criterion, named `framing`;
+   102	until a criteria set exists for a type, `criteria_path` names the
+   103	framing itself and `framing` is the only named criterion. The artifact
+   104	status values this process sets — `checked` on pass, `returned` on
+   105	fail, `pending-definition` on definition change — are this process's
+   106	until the artifact typedefs define their own.
+   107	
+   108	```yaml
+   109	data:
+   110	  artifact: {type: string, format: uri-reference}
+   111	  framing: {type: string, format: uri-reference}
+   112	  criteria_path: {type: string, format: uri-reference}
+   113	  review: {$ref: screen-review, from: ../types/screen-review.md}
+   114	  round: {type: integer, initial: 1}
+   115	  round_cap: {type: integer, initial: 3}
+   116	  round_log: {type: array, items: {$ref: screen-review}, initial: []}
+   117	  ask: {$ref: ask, from: ../types/ask.md, initial: null}
+   118	  decision: {$ref: check-decision, from: ../types/check-decision.md}
+   119	  gap_entry: {type: string}
+   120	  definition: {type: string, format: uri-reference}
+   121	```
+   122	
+   123	## Steps
+   124	
+   125	```yaml
+   126	start: screen
+   127	parameters: [artifact, framing, criteria_path]
+   128	result: decision
+   129	steps:
+   130	  - id: screen
+   131	    name: Screen against the criteria
+   132	    run-by: {role: cold-reviewer, execution: agent, fresh-context: true}
+   133	    inputs: [artifact, framing, criteria_path]
+   134	    outputs: [review]
+   135	    prompt: |
+   136	      Read the criteria set at criteria_path, the framing at framing,
+   137	      and the artifact at artifact — nothing else. Judge the artifact
+   138	      against every criterion and against the framing: does each part
+   139	      of it trace to the framing, and does anything in it serve no
+   140	      framed outcome? Report every finding with the criterion it fails
+   141	      by name — "framing" for a part that does not trace to the framing
+   142	      or serves no framed outcome — the quoted text, the change, and
+   143	      whether you could decide it (confident) or not (wobbly); for a
+   144	      wobbly finding quote the whole passage, since the PM role decides
+   145	      from the review alone. A defect no criterion names is a finding
+   146	      with criterion "uncovered". Verdict "clean"
+   147	      only if there are no findings; otherwise "findings" with the top
+   148	      three changes.
+   149	    next: log-round
+   150	    annotations:
+   151	      fabro: {model: high-reasoning, node: separate-context-per-round}
+   152	
+   153	  - id: log-round
+   154	    name: Record the round
+   155	    run-by: {execution: runtime}
+   156	    inputs: [review, round_log]
+   157	    set:
+   158	      round_log: round_log + [review]
+   159	    next: route-screen
+   160	
+   161	  - id: route-screen
+   162	    name: Route on the screen
+   163	    run-by: {execution: runtime}
+   164	    inputs: [review, round, round_cap]
+   165	    branches:
+   166	      - label: "success exit: clean"
+   167	        when: review.verdict == "clean"
+   168	        next: decide
+   169	      - label: "definition exit: every finding is uncovered — nothing the maker can repair"
+   170	        when: size(review.findings) > 0 && review.findings.all(f, f.criterion == "uncovered")
+   171	        next: decide
+   172	      - label: "failsafe exit: round >= round_cap — decide with findings open"
+   173	        when: round >= round_cap
+   174	        next: decide
+   175	      - else: revise
+   176	
+   177	  - id: revise
+   178	    name: Revise the output
+   179	    run-by: {role: lead-po, execution: agent}
+   180	    inputs: [artifact, review, framing, ask]
+   181	    outputs: [artifact]
+   182	    asks: [lead-pm]
+   183	    prompt: |
+   184	      Repair every finding whose criterion is named, "framing"
+   185	      included; leave findings marked "uncovered" as they are — they
+   186	      are the PM role's to decide. If a repair needs something the framing does not say —
+   187	      the originator's intent, whether a thing is in scope, a decision
+   188	      another role's domain holds — return an ask to lead-pm instead
+   189	      of guessing: the question, its kind, the default you will apply
+   190	      if unanswered, and a checkpoint holding the repairs made so far.
+   191	      On the first pass ask is absent; if it carries an answer or
+   192	      resolved defaulted, act on it and finish the repairs.
+   193	    next: advance-round
+   194	
+   195	  - id: advance-round
+   196	    name: Advance the round
+   197	    run-by: {execution: runtime}
+   198	    inputs: [round]
+   199	    set:
+   200	      round: round + 1
+   201	    next: screen
+   202	
+   203	  - id: decide
+   204	    name: Decide on the verdict
+   205	    run-by: {role: lead-pm, execution: human}
+   206	    inputs: [review, round_log, framing]
+   207	    outputs: [decision]
+   208	    prompt: |
+   209	      From the final review and the round log, decide. "pass": the
+   210	      screen is clean, or its only findings are uncovered and you judge
+   211	      none of them needs a criterion — say so in the reasons. "fail": a
+   212	      named criterion, "framing" included, is still missed at the round
+   213	      cap — name it.
+   214	      "definition-change": an uncovered finding should have been a
+   215	      criterion, or a criterion the output met produced something that
+   216	      does not serve the framing — name the definition and what it
+   217	      lacks. Where both a missed named criterion and an open uncovered finding
+   218	      stand at the cap, "fail" takes precedence and the reasons carry
+   219	      the uncovered finding. Decide from the quotes in the review.
+   220	      Record your reasons.
+   221	    next: record
+   222	
+   223	  - id: record
+   224	    name: Record the decision
+   225	    run-by: {role: lead-pm, execution: agent}
+   226	    inputs: [decision, artifact, round_log]
+   227	    outputs: [artifact, gap_entry, definition]
+   228	    prompt: |
+   229	      Write into the artifact's Document History one review entry per
+   230	      round with its verdict, then a state entry carrying the decision
+   231	      and its reasons. Set the artifact's status: "checked" on pass,
+   232	      "returned" on fail with the criterion named, "pending-definition"
+   233	      on definition-change. On "definition-change", write a review
+   234	      entry stating the gap into the Document History of the definition
+   235	      the decision names; return that file's path as definition and the
+   236	      entry's text as gap_entry. Otherwise return both empty. Return
+   237	      the artifact.
+   238	    next: end
+   239	```
+   240	
+   241	## Derived checks
+   242	
+   243	| Outcome | Check | Kind | Where |
+   244	|---|---|---|---|
+   245	| O1 | screen reads only criteria, framing, artifact | judged | `screen.prompt` and inputs |
+   246	| O2 | `artifact` absent from `decide.inputs` | mechanical | `decide.inputs` |
+   247	| O3 | every round logged; three labeled exits | mechanical | `log-round`, `route-screen` |
+   248	| O4 | `criterion` present on fail, `gap` on definition-change; `definition` and `gap_entry` non-empty on definition-change | judged | `check-decision`, `record` outputs |
+   249	| O5 | `revise` carries `asks`; process carries `ask-cap`; `ask` listed in inputs | mechanical | `revise`, frontmatter |
+   250	
+   251	## Document History
+   252	
+   253	| Version | Date | Kind | Entry |
+   254	|---|---|---|---|
+   255	| 1 | 2026-08-25 | update | Authored by owner decision as the check the lead-pm role runs on the lead-po role's output — the maker/checker split's named process. First process to carry `asks` and `ask-cap`. Criteria sets per artifact type (brief, product decision record, acceptance scenarios, backlog order) are a filed gap: until each exists, `criteria_path` names the nearest approved fitness set or the framing alone. |
+   256	| 1 | 2026-08-25 | review | Screened against the process-definition chain: findings — an uncovered finding could never clear the screen; the `review` type lacked per-finding criterion, quote, and decidability; two prompts wrote to undeclared channels; `artifact_type` loaded and unread; one route-decision branch dead; status values and the gap's home undefined. |
+   257	| 2 | 2026-08-25 | update | Reworked: a `screen-review` type carries findings with criterion, quote, and decidability; route-screen gains a definition exit when every finding is uncovered; decide routes straight to record; the artifact leaves the decider's inputs; `artifact_type` dropped; the gap is filed as a review entry in the named definition's history and returned as `gap_entry`; status values declared as this process's pending the typedefs. |
+   258	| 2 | 2026-08-25 | review | Re-screened: findings — decide's prompt opened an undeclared artifact; a framing-trace failure had no criterion name and so was never repaired; record wrote a file outside its outputs; a vacuous all-uncovered branch on an empty list; ask without an initial. |
+   259	| 3 | 2026-08-25 | update | Repairs: the PM role decides from the review alone, wobbly findings quote the whole passage; `framing` is a named criterion the maker repairs; record returns the written definition's path; the definition exit guarded on a non-empty list; `ask` initial null; status vocabulary moved to Data prose. The v1 entry's "nearest approved fitness set or the framing alone" is superseded by Data's rule. |
+   260	| 3 | 2026-08-25 | review | Re-screened (round 3): clean — all six scenarios pass, six rules hold; both paths traced; stumbles polished in place (verdict precedence at the cap; the framing criterion named in the type). |
+   261	| 3 | 2026-08-26 | state | draft → approved by the owner. |

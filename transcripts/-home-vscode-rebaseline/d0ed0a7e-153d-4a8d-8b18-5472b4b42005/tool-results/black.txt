@@ -1,0 +1,1813 @@
+© Julia Black. Users may download and/or print one copy to facilitate their private study or 
+for non-commercial research. Users may not engage in further distribution of this material or 
+use it for any profit-making activities or any other form of commercial gain. 
+ 
+ 
+ 
+ 
+Forms and Paradoxes of Principles  
+Based Regulation  
+ 
+ 
+ 
+ 
+Julia Black 
+ 
+ 
+ 
+LSE Law, Society and Economy Working Papers 13/2008 
+London School of Economics and Political Science 
+Law Department  
+ 
+This paper can be downloaded without charge from LSE Law, Society and Economy Working 
+Papers at: www.lse.ac.uk/collections/law/wps/wps.htm and the Social Sciences Research 
+Network electronic library at: http://ssrn.com/abstract=1267722. 
+ 
+ 
+Julia Black                                                    Forms and Paradoxes of Principles Based Regulation  
+ 
+ 1 
+ 
+ 
+Forms and Paradoxes of Principles Based Regulation 
+ 
+ 
+ 
+Julia Black * 
+ 
+ 
+ 
+ 
+Abstract:  Principles-based regulation is high on the regulatory agenda in a number of 
+regulatory domains, most particularly financial regulation.  Its supporters argue that it provides 
+a flexible regulatory regime which can facilitate innovation; its detractors argue that it is simply 
+lax regulation.  This article explores the political rhetoric surrounding principles-based 
+regulation.  It identifies four forms of principles-based regulation: formal, substantive, full and 
+polycentric principles-based regulation. It also identifies and explores seven paradoxes which 
+principles-based regulation may encounter in its various forms.  These relate to interpretation, 
+communication, compliance, enforcement, internal management, ethics, and above all trust.  
+PBR, in its full form, can provide an effective, durable, resilient and goal based regulatory 
+regime; but at the same time its paradoxical nature means that it is vulnerable in many respects.   
+Unfortunately for the detractors of principles-based regulation, many of these paradoxes are 
+not necessarily avoided by using detailed rules instead of principles.  Rather their resolution lies 
+in trust.  Yet, it is argued, trust is the ultimate paradox.  Principles-based regulation can help to 
+create trust, but the core elements of that trust have to already exist if principles-based 
+regulation is ever to operate effectively, if indeed at all.   
+ 
+ 
+ 
+ 
+INTRODUCTION 
+ 
+Only a year ago it seemed that ‘principles-based’ regulation was the answer that all 
+policy makers and those running financial institutions had been looking for. 
+1  The 
+                                                      
+* Professor of Law and Research Associate, Centre for the Analysis of Risk and Regulation, London 
+School of Economics and Political Science.  I am grateful to the participants in the workshops on PBR 
+and compliance and legal risk management run by the LSE Law and Financial Markets Project in 
+conjunction with Herbert Smith LLP, and funded by Herbert Smith LLP in February and March 2007 
+and March 2008 for discussions which have informed many aspects of this paper.  I am also grateful to 
+Joanna Benjamin, Sharon Gilad and David Kershaw for providing insightful comments.  Responsibility 
+for all views, errors and omissions remains my own. Any comments can be addressed to me at 
+j.black@lse.ac.uk. This paper will appear in Capital Markets Law Journal  3(4) 2008. 
+1 FSA, Principles Based Regulation: Focusing on the Outcomes that Matter (FSA, April 2007) (hereafter FSA, PBR ); 
+for a representation of industry views, see the report of the British Bankers’ Association Annual 
+           13/2008 
+ 
+ 2 
+Financial Services Authority had just issued its paper on how it would 
+operationalise its approach to principles based regulation and the challenges that 
+the FSA, firms and their advisers would have to meet to make the approach work. 2  
+The EU Commission was trumpeting the benefits of a principles based approach, 3  
+although the FSA was arguing the EU still had a long way to go in this direction. 4  
+Politicians in the US were looking askance at the impact of Sarbanes-Oxley and 
+extolling the virtues of principles based regulation.  A report by McKinsey & Co, 
+commissioned by the Mayor of New York, Michael Bloomberg and Senator 
+Charles Schumer, recommended that the US adopt a ‘two-tier’ principles based 
+approach, developing a set of principles to guide the regulators in performing their 
+roles and a set of principles to guide firms. 5  US Treasury Secretary Hank Paulson 
+echoed these recommendations in his suggestion that the US should move to a 
+UK style approach to regulating capital markets, relying on principles rather than 
+detailed rules. 6   This has now been formalized in the US Treasury’s Blueprint for a 
+Modernized Financial Regulatory Structure .7  Combined with parallel debates on the 
+role of principles in accounting regulation 8 and tax law in particular,  9  the issue of 
+‘principles based regulation’ was, and to an extent still is, high on the regulatory 
+agenda in a number of regulatory domains, ranging from the familiar ones of tax, 
+                                                                                                                                       
+Conference, 4 th  July 2007 available at http://www.bba.org.uk/bba/jsp/polopoly.jsp?d=145&a=9936 
+(accessed 19 th  June 2008). 
+2  FSA, PBR . 
+3 Commissioner McCreevy, ‘Capital Market Place’ Wall Street Journal 5 th  March 2007, available at 
+http://www.eurunion.org/newsweb/EUInMedia/cmcWSJoped030507.htm; see also his speech to the 
+European Parliament ECON Committee (Committee on Economic and Monetary Affairs), Brussels, 11 
+September 2007: ‘We believe that a "light touch", principle-based regulation is the best approach for the 
+financial sector.’  Available at http://europa.eu/rapid/pressReleasesAction.do?reference=SPEECH/07/ 
+520&format=HTML&aged=1&language=EN&guiLanguage=en. 
+4 FSA, PBR  at 20-21. 
+5 McKinsey & Co, Sustaining New York’s and the US’s Global Financial Services Leadership  (2007), available at 
+http://www.senate.gov/~schumer/SchumerWebsite/pressroom/special_reports/2007/NY_REPORT 
+%20_FINAL.pdf. 
+6  Accounting Today  16 th  April 2007. 
+7 Available at  http://www.treas.gov/press/releases/reports/Blueprint.pdf. 
+8 See eg the US Financial Accounting Standards Board, Proposal – Principles Based Approach to US Standard 
+Setting (File Reference No 1125-003, January 2003) available at http://www.fasb.org/proposals/ 
+principles-based_approach.pdf. 
+9  The issue of whether tax law should move to a more principles-based approach has been actively 
+debated for some time: see eg  J.F. Avery Jones in ‘Tax Law: Rules or Principles?’ (1996) 38 British Tax 
+Review  580; J. Braithwaite, ‘Making Tax Law More Certain: a Theory’ (2003) 31 Australian Business Law 
+Review  72; D. Weisbach, ‘Formalism in the Tax Law’ (1999) 66 U.Chi.L.R. 860; J.Freedman, ‘Defining 
+Taxpayer Responsibility: In Support of a General Anti-Avoidance Principle’ [2004] British Tax Review 
+332; S. Picciotto, ‘Constructing Compliance: Game-playing, Tax Law and the Regulatory State’ (2007) 29 
+Law and Policy  11; J. Freedman, ‘Interpreting Tax Statutes: Tax Avoidance and the Intention of 
+Parliament’ (2007) 123 Law Quarterly Review 53. Principles-based drafting of tax law is the subject of an 
+experiment in Australia; see G. Pinder, The Coherent Principles Approach to Tax Law Design  (Australian 
+Treasury, 2005), http://tofa.treasury.gov.au/content/downloads/coherent principles.pdf. 
+ 
+ 
+Julia Black                                                    Forms and Paradoxes of Principles Based Regulation  
+ 
+ 3 
+takeovers, accounting and corporate governance regulation 10  to the 
+decommissioning of nuclear power stations.11  
+A year on, the credit crisis has moved the debate on principles based 
+regulation out of the political spotlight, and indeed it has become peripheral to the 
+immediate fire-fighting tasks of dealing with the acute financial crisis.  But once 
+that immediate task has been addressed, at least in the short term, the debate will 
+turn again as to how best to regulate the financial markets.  Principles-based 
+regulation is bound once again to come onto the agenda, though the political 
+context is likely to be very different from that prevailing just a year ago.  The 
+arguments in favour of principles based regulation are familiar.  For firms, 
+principles-based regulation can provide flexibility, facilitate innovation and so 
+enhance competitiveness.  Principles based regulation can be beneficial for 
+regulators too: it can provide them with flexibility, facilitate regulatory innovation 
+in the methods of supervision adopted; enable the regulatory regime to have some 
+durability in a rapidly changing market environment; and enhance regulatory 
+competitiveness.  Other stakeholders can benefit from the improved conduct of 
+firms as they focus more on improving substantive compliance and achieving 
+outcomes and less on simply following procedures, box-ticking or on working out 
+how to avoid the rule in substance whilst complying with its form: ‘creative 
+compliance’.   
+But, as we all know, life is never that simple, and in the wake of the credit 
+crunch and Northern Rock, both principles based regulation and its UK regulatory 
+counterpart, risk based regulation, have lost their allure, at least for some. 12   
+Principles based regulation is criticized, particularly by lawyers, for failing to 
+provide certainty and predictability, and for creating a regulatory regime in which 
+regulators can act retrospectively.  Principles are also criticized for allowing firms 
+to ‘backslide’, and get away with the minimum level of conduct possible; and thus 
+for providing inadequate protection to consumers and others. 13  
+Principles based regulation has the potential to live up to the expectations of 
+both its supporters and its critics.  Whether it does depends on how it is 
+implemented and on the institutional context which surrounds it.  Critically, that 
+institutional context has to be characterized by the presence of a high degree of 
+mutual trust between participants within the regulatory regime.   Principles may be 
+                                                      
+10  DTI, Promoting Competitiveness: The UK Approach to EU Company Law and Corporate Governance (HMSO, 
+undated), 6. 
+11  DBERR, Consultation on Funded Decommissioning Programme Guidance for New Nuclear Power Stations , 
+presentation March 2008, available at http://www.berr.gov.uk/files/file46258.pdf (accessed 13th June 
+2008). 
+12  The Treasury Select Committee’s report, Run on the Rock  (Fifth Report 2007-8) severely criticized the 
+FSA’s operation of its risk based model, stating there had been a ‘substantial failure of regulation’ (para. 
+42), and that the FSA appeared to have ‘systematically failed in its duty as a regulator to ensure that 
+Northern Rock would not pose such a systemic risk’ (para. 66). 
+13  For example in the US the National Association of Insurance Commissioners blamed the Savings and 
+Loans crisis on a move to principles based regulation, and has argued that where principles are applied in 
+the courts, their ambiguities may be argued to the disadvantage of consumers and firms consumers may 
+lose out:  NAIC Response to Treas-DO-2007-0018 28 th  November 2007, available at 
+http://www.naic.org/documents/topics_federal_regulator_treasury_response_0711.pdf. 
+           13/2008 
+ 
+ 4 
+necessary for principles based regulation (PBR) to be work in some form, but they 
+are by no means sufficient. 14   If principles based regulation in its full form 
+(explained below) is to be effective, there needs to be close engagement between 
+regulator and regulatee based on mutual trust; firms need to be concerned to go 
+beyond minimal compliance with the regulatory requirements; outcomes and goals 
+have to be clearly communicated by the regulator, the enforcement regime has to 
+be predictable, and, most relevant for the US, the culture of litigation needs to be 
+restrained. 15    
+However, it is possible, and indeed likely, that even if these institutional pre-
+conditions are met, that PBR lives up to the expectations of both its detractors 
+and its supporters, but in different parts of the regulatory regime. The benefits and 
+drawbacks of PBR are not a zero-sum game; they may be simultaneously realized 
+in different parts of the regulatory regime.  This is partly because how one 
+experiences PBR depends in part on where one sits in the regime: in compliance, 
+in senior management, in the regulator, as an investor.  But it is also, and perhaps 
+more fundamentally, because there are a number of paradoxes of PBR.  These 
+paradoxes may be embedded within it; or they may come from the broader 
+institutional context in which the PBR may be situated.   
+This article identifies seven key paradoxes of PBR in its various forms.  These 
+paradoxes relate in part to the nature of principles, and in part to the way that 
+PBR is put into practice by regulators, regulated firms and others.  The first, the 
+interpretive paradox, is that although principles may facilitate interpretation of the 
+regulatory objectives and responsibilities of firms more clearly for some, they can 
+also impede interpretation for others, particularly lawyers.  The second, the 
+communicative paradox, is that although principles can facilitate communication 
+by expressing the purpose of the rule, they can hinder communication for a 
+number of reasons. The third paradox concerns compliance.  It is that although 
+PBR can provide flexibility to firms, allowing them to innovate in the ways that 
+they comply, in practice a lack of certainty as to what enforcers will accept as 
+compliance can lead firms to adopt quite conservative behaviour. 16   The fourth 
+paradox concerns supervision and enforcement.  Although principles can provide 
+flexibility to regulators in the way that they monitor and enforce the regulatory 
+requirements, and can save them from their own lack of foresight in the way 
+detailed rules cannot, regulators too can in practice develop quite conservative 
+interpretations and practices, particularly where there is little political support for 
+tough enforcement action.  The fifth paradox relates to internal management.  It is 
+that although principles based regulation in its substantive form relies in part on 
+internal compliance systems and can give them scope for expansion and 
+innovation, it can also overload them.  Compliance systems can be empowered 
+                                                      
+14   J. Black, M. Hopper and C. Band, ‘Making a Success of Principles Based Regulation’ (2007) 1 (3) Law 
+and Financial Markets Review  191. 
+15  On the latter point see the discussion in both the McKinsey report and the Blueprint . 
+16  This is Schwarz’s principles paradox: S.L. Schwarcz, ‘The “Principles” Paradox’ (March 1, 2008), Duke 
+Law School Legal Studies Paper No. 205 Available at SSRN: http://ssrn.com/abstract=1121454 .   
+ 
+ 
+Julia Black                                                    Forms and Paradoxes of Principles Based Regulation  
+ 
+ 5 
+under PBR, but only if they are strong already.  Research suggests that compliance 
+systems are the least developed aspect of financial institutions’ internal systems 
+and controls, and are not necessarily in a position to fill the role that PBR gives 
+them.  The sixth, ethical paradox is that although principles based regulation can 
+facilitate the development of an ethical compliance culture, it also requires firms to 
+take a risk-based approach to compliance which can stultify the development of 
+such a culture.  The final, ultimate paradox relates to trust. PBR can lead to the 
+development of the type of relationship invoked by the Utopian vision, of 
+responsibility, mutuality and trust, but these are the very elements of the regulatory 
+relationships that have to be present for it to operate at all.  
+Exploring the complexities of PBR through these paradoxes, it is suggested, 
+can help move the debate beyond that of setting out PBR’s advantages and 
+disadvantages.  Not only have the pros and cons of PBR been well aired, there is a 
+tendency to see them in too stark terms: PBR as either one or the other, whereas 
+in practice it may be both at the same time.  Moreover drawing out the paradoxes 
+of PBR illustrates the complexities of PBR.  Some of these paradoxes can be 
+enhanced or mitigated by the institutional context; others are an inherent feature 
+which those who advocate or work in a PBR regime need to recognize in order 
+either to exploit the tensions that are created, where this is positive, or to minimize 
+them.    
+However, before we can explore the paradoxes, we need to be clear what we 
+mean by PBR.  PBR is a complex form of regulation and it takes different forms 
+in different contexts, countries and regulatory domains (tax, securities, accounting, 
+health).  The article identifies four forms of PBR: formal PBR, substantive PBR, 
+full PBR and polycentric PBR.  PBR can be formal, in the sense that there are 
+principles in the rule books (including legislation, codes of practice and so on) but 
+it may not be substantive.  In contrast, a regime may have some of the operational 
+characteristics of a PBR regime, but not have principles in the rule books.  Where 
+it is both, it is described as full PBR.  Polycentric PBR is full PBR with the 
+additional element that it is characterized by the enrolment of others, beyond 
+regulators and firms, in the elaboration of the meaning and application of 
+principles.  The paradoxes can relate to the formal and / or the substantive 
+element; and polycentricity can introduce a further set of paradoxes.  These labels 
+are not intended to have normative overtones; they are simply useful shorthand 
+descriptions. 
+The particular context in which these issues will be discussed is the UK 
+Financial Services Authority’s (FSA’s) recent move to a ‘more principles-based 
+approach’ to regulation.   The FSA is not the only financial regulator to emphasis 
+the role of principles in its regulatory regime.  Despite the common perception of 
+US securities regulation as rule-bound, the Commodities and Futures Trading 
+Commission has long operated a principles-based approach, and indeed one of the 
+grounds of its resistance to the US Treasury’s proposal that it be merged with the 
+SEC was that it would have to sacrifice this at the altar of the SEC’s rule-based 
+           13/2008 
+ 
+ 6  
+approach. 17   In Canada, the British Columbia Securities Commission (BCSC) had 
+re-written its securities law into plain language, using a principles-based approach, 
+in 2004. 18   The Bill received Royal Assent but has never been brought into force, 
+pending the outcome of the endless debates on the reform of Canada’s system of 
+securities regulation. 19   Notwithstanding this setback, the BCSC has changed its 
+approach to implementation – delivering principles-based regulation but without 
+the principles.   
+Thus despite its prominence in recent debates, the FSA is by no means the 
+only financial regulator which is regulating the ‘principles-based way’ and financial 
+regulation is not the only area of regulation in which PBR is being debated.  There 
+are therefore risks in using it too heavily as an example of what PBR ‘is’.  In 
+particular, there are certain peculiarities of the FSA regime which mean there are 
+some issues of translation, as it were, to other regulatory regimes.  Most relevant in 
+this regard are the FSA’s extensive enforcement powers and consequently the 
+minimal role played by the courts in the enforcement process. 20   This is a key 
+difference in the institutional context between the UK and the US, where the 
+courts are heavily engaged in the enforcement process both through public 
+prosecutions and through class actions. 21  The FSA enforcement regime is also 
+distinct from many other regulatory regimes in the UK, where prosecution in 
+magistrates’ courts has until very recently often been the only route to the 
+imposition of a formal sanction for breach of a regulatory rule, notably in health 
+and safety and environmental regulation.  Nonetheless, despite its institutional 
+peculiarities, the FSA’s pursuit of PBR is potentially relevant for other regulatory 
+regimes, albeit with that important caveat in mind.   
+Even in the FSA context, however, in talking about the ‘move’ to PBR we 
+should not get too carried away.  The rhetoric of principles-based regulation may 
+be beguiling, but principles based regulation does not necessarily mean the end of 
+detailed rules.  We are a long way from seeing blazing bonfires of rulebooks.  
+Despite pruning back the rules on money laundering, training for wholesale firms 
+and, to an extent, provisions on bundling and soft commissions, and the revisions 
+                                                      
+17  Blueprint, 11. 
+18  Bill 38, 5 th  Session, 37 th  Parl., Nos 72 and 73. 
+19  For discussion see C. Ford, ‘New Governance, Compliance and Principles-Based Securities Regulation’ 
+(2008) 45(1) Am Bus Law Jnl  1-60. 
+20  The Financial Services and Markets Tribunal, however, which is the appellate body with respect to the 
+FSA’s enforcement decisions, does play a significant role.  How sympathetic it will be to the FSA’s shift 
+in approach remains to be seen, but early indications suggest it may demand a significant degree of 
+precision from the FSA in its communications with firms as to what conduct is required in particular 
+circumstances, even in the absence of detailed provisions: see Fox  v Hayes  FSMT Case 047 September 
+2007. 
+21  For detailed comparison of the two enforcement regimes see H.E. Jackson, ‘Variation in the Intensity 
+of Financial Regulation: Preliminary Evidence and Potential Implications’ (John M. Olin Center for Law 
+Economics, and Business Discussion Paper No. 521) (August, 2005) available at 
+http://ssrn.com/abstract=839250; J. Coffee, ‘Law and the Market: The Impact of Enforcement’, Centre 
+for Law and Economic Studies, Columbia University Working Paper No. 304, available at 
+http://papers.ssrn.com/paper.taf?abstract_id=967482. 
+ 
+ 
+Julia Black                                                    Forms and Paradoxes of Principles Based Regulation  
+ 
+ 7 
+made in the new Conduct of Business rules, 22  the FSA Handbook still runs to 
+several thousand pages.  Moreover the extent to which it can dispense with many 
+of its rules is increasingly constrained by EU law, where the idea of ‘principles 
+based regulation’ has still to take hold, despite Commissioner McCreevey’s 
+rhetoric.  Nor should detailed rules be banished from principles-based regulatory 
+regimes.  There are strong arguments for saying that a tiered approach to rule 
+design should be adopted.  Principles need an under-pinning of detailed rules in 
+some areas, and detailed rules in turn need the support and coverage of principles 
+to thwart strategies which seek to exploit gaps and inconsistencies in those 
+detailed provisions. 23   However, the shift in the FSA’s approach to regulating 
+which is occurring under the banner of PBR, particularly with respect to those 
+firms engaged in the retail markets, is striking and marks a shift in approach which 
+is as important as the FSA’s move to risk-based regulation, two or three years 
+earlier. 24   Indeed, before turning to the different forms of PBR and the seven 
+paradoxes, it is worth asking first why PBR has moved onto centre stage recently: 
+in short, why have PBR?  
+ 
+ 
+ 
+WHY HAVE PRINCIPLES-BASED REGULATION? 
+ 
+Regulation has been described as ‘low politics’ – the world of mundane 
+technicalities far below the ‘high’ politics of international diplomacy or national 
+party politics. 
+25   Yet regulation has recently taken political centre stage, not least as 
+the credit crunch has exposed the contradictory demands of regulated firms and 
+others for both less and more regulation, and the limits of governmental capacity 
+to provide either, or at least not in the right places and in the right ways.   
+So why is there currently such prominent political attention being paid to the 
+design and operation of regulatory regimes in general, and a favouring of PBR in 
+particular?  As noted above, the recent events in the financial markets have made 
+the issue of PBR rather peripheral to the immediate concerns of rescuing the 
+financial system from collapse.  But prior to the deepening of the financial crisis, 
+and in other regulatory domains, the political attraction of principles-based 
+regulation, it is suggested, lies in its rhetorical invocation of a Utopian world.  In 
+this regulatory Utopia, regulation is targeted and focused, and preferably 
+harmonized across jurisdictions, regulated firms are given the flexibility they need 
+to get on with running their businesses, and consequently regulatory outcomes are 
+achieved with no undue cost to business.   It is a world in which regulators have 
+                                                      
+22  For details see FSA, PBR . 
+23  See J. Black, Rules and Regulators ( Oxford: Oxford University Press 1997); id, ‘Using Rules Effectively’ in 
+C. McCrudden (ed), Regulation and De-Regulation  (Oxford: Oxford University Press, 1999) 95-121;  J. 
+Braithwaite, ‘A Theory of Legal Certainty’ (2002) 27 Australian Journal of Legal Philosophy 38. 
+24  On which see J. Black, ‘The Emergence of Risk Based Regulation and the New Public Risk 
+Management in the UK’ [2005] Public Law  512. 
+25  M. Moran, The British Regulatory State, (Oxford: Oxford University Press, 2003) 33. 
+           13/2008 
+ 
+ 8 
+sufficient perspective on and understanding of the problems and issues that they 
+confront to be selective and to identify the key issues on which regulation should 
+focus, in which there is sufficient agreement on principles and purposes to be able 
+to agree with firms a common framework, and in which regulated firms are given 
+the flexibility and responsibility to develop their own systems for ensuring that the 
+regulatory principles are adhered to, but in a way which means their businesses can 
+operate efficiently and innovatively in a stable regulatory environment.    
+The rhetoric of PBR thus invokes, not deregulation, but a re-framing of the 
+regulatory relationship from one of directing and controlling to one based on 
+responsibility, mutuality and trust.  Regulators and regulatees move from a 
+directing relationship of telling and doing, to a relationship in which regulators 
+communicate their goals and expectations clearly in principles and apply those 
+principles predictably, regulatees adopt a self-reflective approach to the 
+development of  processes and practices to ensure that these goals are 
+substantively met, and, critically, both trust each other to fulfil their side of this 
+new regulatory bargain.  
+The rhetorical invocation of such a world under the moniker of PBR is 
+beguiling not only to policy makers and business, but to academics as well.  The 
+world invoked by the rhetoric of PBR is one which accords with the strategies of 
+the ‘new governance’ 26  or ‘decentred regulation’. 27   The decentred, or polycentric, 
+analysis of regulation has three dimensions: organisational, conceptual and 
+strategic. 28   Organisationally, it draws attention away from individual regulatory 
+bodies, be they at the national or global level, and emphasises instead the 
+multitude of actors which constitute a regulatory regime in a particular domain.  
+Conceptually, the decentring analysis has a particular understanding both of the 
+nature of the regulatory problem and the nature of state-society and intra-state and 
+intra-society relationships.  It emphasizes the existence and complexity of 
+interactions and interdependencies between social actors, and between social 
+actors and government in the process of regulation.  It has a dialectical conception 
+of the regulatory relationships, in which regulator and regulatee are at once 
+autonomous of and dependent on each other.  It is also rejects the distinction 
+between public and private: both state and non-state actors engage in the function 
+of regulation, both separately and in different types of interrelationship, and 
+indeed state actors may be regulated by non-state actors. 29   The third dimension is 
+                                                      
+26  See n 19 above. 
+27  J. Black, ‘Decentring Regulation: Understanding the Role of Regulation and Self Regulation in a “Post-
+Regulatory” World’ (2001) 54 Current Legal Problems 103; id., ‘Critical Reflections on Regulation’ (2002) 27 
+Australian Journal of Legal Philosophy 1. 
+28  J. Black, ‘Constructing and Constesting Legitimacy and Accountability in Polycentric Regulatory 
+Regimes’ (2008) 2 Regulation and Governance 1. 
+29  E. Meidinger, ‘Look Who’s Making the Rules: International Environmental Standard Setting by Non-
+State Organisations’ (1997) 4 Human Ecology Review 52-54; B. Cashore, ‘Legitimacy and the Privatization of 
+Environmental Governance: How Non-State Market Driven (NSDM) Governance Systems Gain Rule 
+Making Authority’ (2002) 15(4) Governance 503; M.E. Keck and K. Sikkink, Activists Beyond Borders: Advocacy 
+Networks in International Politics (Ithaca, NY: Cornell University Press, 1998); T. Risse-Kappen (ed), Non-
+State Actors, Domestic Structures and International Institutions (Cambridge: Cambridge University Press, 1995); 
+ 
+ 
+Julia Black                                                    Forms and Paradoxes of Principles Based Regulation  
+ 
+ 9  
+strategic or functional. The hallmarks of the regulatory strategies which are 
+engaged in decentred regulation are that they are hybrid: combining governmental 
+and non-governmental actors;  multi-faceted: using a number of different 
+strategies simultaneously or sequentially), and indirect:  co-ordinating, steering, 
+influencing and balancing interactions between actors and creating new patterns of 
+interaction which enable social actors to organise themselves. Decentred 
+regulation thus engages the strategies of ‘smart regulation’ or ‘new governance’ 
+which have been described in a wide range of writings on regulation, 30  though 
+does not see these as the sole preserve of the state.  
+Principles-based regulation fits well with the ‘smart’ regulatory strategies or 
+those of ‘new governance’ associated with the decentred analysis. 31   Principles 
+provide the framework in which firms can organize their own processes to achieve 
+the outcomes the regulator seeks; the regulator in turn depends on firms to adopt 
+an attitude to the regulatory regime which is one which aims to go beyond 
+minimal compliance with the rules.  PBR thus both relies on and reinforces the 
+image of the self-observing, responsible organization which is a central feature of 
+governance strategies. 32   Regulatory conversations as to the meaning and 
+application of the rules take centre stage as their meaning and application is 
+elaborated on in iterated communications between regulator and regulated. 33   
+Rigid divisions of responsibility for producing rules between public and private 
+actors are eschewed as third parties to the regulator-regulatee relationship, such as 
+trade associations, are brought in to develop interpretations and guidance on their 
+meaning.  The strategy links with another key ‘new governance’ strategy, that of 
+‘meta-regulation’ or management based regulation, in which regulators focus not 
+on detailed compliance but on whether the firm’s internal systems and processes 
+can deliver the outcomes which the regulator seeks. 34   Principles impose outcomes 
+to be achieved, not detailed processes for achieving them, thus allowing room for 
+local or ‘bottom up’ elaboration and customization.  They can thus help to 
+overcome the problems of scale which all regulatory systems face: the move from 
+                                                                                                                                       
+C. Scott, ‘Private Regulation of the Public Sector: A Neglected Facet of Contemporary Governance’ 
+(2002) 29 Jnl of Law and Society  56.  
+30  See for example G. Teubner, ‘Substantive and Reflexive Elements in Modern Law’ (1983) 17 Law & 
+Soc Rev 239; id., ‘Juridification - Concepts, Aspects, Limits, Solutions’ in G. Teubner (ed), Juridification of 
+the Social Spheres  (Berlin: Walter de Gruyter, 1987); N. Gunningham and P. Grabosky, Smart Regulation: 
+Designing Environmental Policy  (Oxford: Clarendon Press, 1998), 38-50; J. Braithwaite, ‘The New Regulatory 
+State and the Transformation of Criminology’ (2000) 40 British Jnl of Criminology 222; C. Parker, 
+‘Reinventing Regulation within the Corporation: Compliance Oriented Regulatory Innovation’ (2000) 
+35(2) Administration & Society  529); D. O’Rourke, ‘Outsourcing Regulation: Analyzing Non-Governmental 
+Systems of Labor Standards Monitoring’ (2003) 31 Policy Studies Journal 1; J. Freeman, ‘The Private Role in 
+Public Governance’ (2000) 75(3) New York University Law Review  543. 
+31  See also n 19 above. 
+32  See e.g. C. Parker, The Open Corporation  (Cambridge: Cambridge University Press, 2002), chapter 9; M. 
+Power, Organized Uncertainty: Designing a World of Risk Management (Oxford: Oxford University Press, 2007) 
+41-42. 
+33  See further J. Black, ‘Talking about Regulation’ [1998] Public Law  77. 
+34  Parker, n 32 above; C. Coglianese and D. Lazer, ‘Management Based Regulation: Prescribing Private 
+Management to Achieve Public Goals’ (2003) 37(4) Law and Society Review 691. 
+           13/2008 
+ 
+ 10  
+the aggregate and the general, which is the level at which rules and principles 
+operate, 35  to the local and the particular, which is the site of their application. 36    
+In invoking this regulatory Utopia, PBR portrays a world, if not of harmony, 
+then of trust, responsibility and mutuality in which conflicts of interests and 
+contests of power are glossed over, if not completely omitted from view.   This is 
+a powerful vision with obvious political appeal for politicians, regulators and firms 
+alike.  In the less Utopian vision, of course, the argument is that PBR is simply a 
+licence for backsliding; for allowing regulatees to do what they want with 
+regulators’ pandering not kept in check by detailed rules which they have to 
+enforce.   
+The FSA itself puts forward cogent reasons for adopting PBR which accord 
+with the advantages of principles often noted in academic commentaries.  It offers 
+four main reasons for adopting a more principles based approach.  Firstly, 
+effectiveness: detailed rules, it argues, have been incapable of preventing 
+misconduct in a range of areas, such as misselling of retail financial products.  
+Secondly, durability: regulation that a focus on outcomes is more able to adapt to a 
+rapidly changing market environment than one which is based on prescriptive 
+rules.  Thirdly, accessibility: principles are far more accessible to senior 
+management and smaller firms in particular others than a bewildering mass of 
+detailed requirements.  Fourthly: fostering substantive compliance: a large volume 
+of detailed provisions can divert attention towards adhering to the letter rather 
+than the spirit of the rules, making it less likely that the FSA will achieve its 
+regulatory objectives. 37  
+The FSA itself may genuinely hold these reasons, but elsewhere, beyond the 
+official rhetoric, there is also a clear sub-text to much of the political debate.  In 
+the US-UK context, and to an extent in the EU-UK contest, PBR is intimately 
+embroiled in a competition between regulators (and their governments) for 
+business.  There is no doubt that, at least at the rhetorical level, PBR is a weapon 
+in the fierce battle for business between London and New York. 38   Against the 
+plaudits of the McKinsey report and the US Treasury for the FSA’s approach 
+should be set Roel Campos’s criticisms that the London Stock Exchange’s 
+regulation of its junior market, AIM, was too lax and that AIM was like a 
+‘casino’. 39   Although he subsequently argued his words had been taken out of 
+                                                      
+35  As do policy makers. 
+36  J. Black, Rules and Regulators , n 23 above, chapter 1. 
+37  FSA, PBR, p.6. 
+38  The rhetorical battle has led Cunningham to argue that the debate should be abandoned and refocused 
+on fundamentals: L. Cunningham, ‘A Prescription to Retire the Rhetoric of ‘Principles Based Systems’ in 
+Corporate Law, Securities Law and Accounting’, Boston College Law School Research Paper no. 127, 
+available at http://ssrn.com/abstract=970646. 
+39  Roel Campos, a member of the Securities and Exchange Commission, was quoted on a Dow Jones 
+newswire in March 2007 as deploring the trend whereby companies simply chose their listing venue based 
+on the lowest level of oversight available. Referring to AIM, he said: ‘I’m concerned that 30 per cent of 
+issuers that list on AIM are gone in a year. That feels like a casino to me, and I believe investors will treat 
+it as such’.  Mr Campos subsequently said that his remarks had been taken out of context and that he did 
+not regard AIM as a casino.  ‘What I was referring to’, he said, ‘was a generalised situation in which if 
+ 
+ 
+Julia Black                                                    Forms and Paradoxes of Principles Based Regulation  
+ 
+ 11  
+context, the barb clearly stung the Exchange, which offered a swift repost that 
+Campos had misunderstood its principles-based approach. 40   The deployment of 
+PBR to fight political battles is not confined to securities regulation.  In the 
+context of accounting regulation, Kershaw has argued that in the wake of Enron’s 
+collapse, it was in part the ability of the UK accounting regulators to portray their 
+approach as ‘principles-based’ which saved them  from the political fallout which 
+hit accounting regulation in the US.  This was despite the fact that the relevant 
+accounting provisions themselves in the UK and the US were almost identical. 41  
+Using PBR as a weapon in a wider battle for institutional position is not new.  
+An often forgotten fact is that the FSA’s eleven Principles for Business, now taken 
+as one of the hallmarks of a PBR regime, were themselves rooted in the ten 
+Principles created by its predecessor (the Securities and Investments Board).  
+These ten Principles were developed by SIB to mark out its institutional turf in a 
+power battle with the self-regulatory organizations (SROs) in the pre-FSA 
+regulatory regime. 42   When the initial regulatory regime was created under the 1986 
+Financial Services Act, the Act was deliberately vague as to which should be the 
+dominant regulator, the Securities and Investments Board (named in the Act and 
+in receipt of powers to recognize self regulatory organizations) or the SROs 
+themselves.  SIB could recognize SROs but had no powers to direct them.  Both 
+organizations were responsible for directly regulating firms themselves, and the 
+SRO’s rulebooks had to provide ‘equivalent’ levels of protection to those provided 
+by SIB’s rules.  However the SIB could not require SROs to amend their rules 
+post-authorisation; the only sanction was the nuclear option of derecognition.  
+After lengthy battles as to the relative power, authority and roles of SIB and the 
+SROs, the Government agreed to amend the legislation to permit SIB to issue 
+principles which were applicable to all authorized firms, and so which had to be 
+recognized by the SROs.  In addition, SIB was given powers to designate a 
+number of its own rules as ‘core rules’, SIB rules which the SROs were required to 
+incorporate into their own rulebooks. 43   The ten Principles which SIB issued in 
+1992 were thus created only in part to achieve all the benefits of the Utopian 
+vision; their primary motivation was to resolve SIB’s institutional position and 
+power with respect to the SROs. 
+So the Utopian vision can be a mask for a more gritty power battle.  Yet, 
+however unrealistic it may be for some, the Utopian vision is still attractive and 
+strongly held by many.  However its realization is by no means simple.  This is in 
+                                                                                                                                       
+(regulatory) standards are ignored and you have a spiral downward you could get into a situation where an 
+exchange could be nothing more than a casino’ (Financial Times, March 8, 2007).   
+40  The LSE has long sought to explain that principles do not equate to soft regulation: see eg D. 
+Cruickshank, Chairman of the London Stock Exchange, ‘The Same but Different: Hard Rules or Soft 
+Principles – Perspectives on the US and EU Capital Markets’, available at 
+http://www.londonstockexchange.com/en-gb/about/Newsroom/Media+Resources/Speeches/ 
+speech18.htm. 
+41  R.D. Kershaw, ‘Evading Enron: Taking Principles Too Seriously in Accounting Regulation’ (2005) 68 
+Modern Law Review 594. 
+42  Black, Rules and Regulators , n 23 above; id., ‘Talking About Regulation’, n 33 above, 77. 
+43  SIB designated 40 core rules; for discussion see Black, Rules and Regulators, n 23 above, ch 3. 
+           13/2008 
+ 
+ 12  
+part for the normal, pragmatic reasons relating to the imperfections of human and 
+organisational behaviour, the dangers of bureaucratic sclerosis in both firms and 
+regulators, the tendency for regulators to, as Schauer puts it, ‘round off’ the hard 
+corners of rules and ‘sharpen’ the soft edges of principles, 44  and the fickle nature 
+of political sentiment.  Particularly in times of crisis, the pendulum of political 
+support can swing away from principles and in favour of detail and prescription, as 
+the current tone of the debate on financial regulation post-Northern Rock 
+illustrates.  However its realization is also problematic because of its paradoxical 
+nature, explored further below.   
+ 
+ 
+ 
+THREE FORMS OF PBR 
+ 
+The political dimension to the debate obscures the different forms that PBR can 
+take.  The FSA’s version of PBR contains three elements: a particular type of rule; 
+a focus on outcomes; and a focus on senior management responsibility in ensuring 
+these outcomes are achieved. 
+45   That is only one form of PBR, however.  In order 
+for us to be clear as to what we are talking about, we need to distinguish different 
+forms of PBR.  First, formal PBR  – it is possible, analytically and in practice, for a 
+regulatory regime to have principles as part of its written norms, but for other 
+aspects of the FSA’s version, for example, to be absent.  Secondly, there is 
+substantive PBR.   In substantive PBR, the principles present in the rule books 
+are put into practice in one or more particular ways.  It is important to note that 
+these practices may also operate in the absence of principles being present in the 
+rule books, for example through the flexible implementation and enforcement of a 
+highly detailed set of rules.  In other words, it can be delivered in a regime of 
+detailed rules but in which regulators do not ‘go by the book’, in Bardach and 
+Kagan’s memorable phrase. 46   Where both exist then there is full PBR .  Finally, 
+PBR can also be characterized by the engagement of a range of actors other than 
+the regulator or regulated firm to develop interpretations of the principles: 
+networked or polycentric PBR .  This could be, for example, through the 
+development of guidance or codes of practice, which could be approved by the 
+regulator (as in the FSA’s system of confirmed guidance) or not; or through 
+interactions with consultants and others who assist firms in developing systems to 
+ensure compliance. 
+ 
+ 
+ 
+                                                      
+44  F. Schauer, ‘The Tyranny of Choice and the Rulification of Standards’, (2005) 14 Jnl Contemp. Legal 
+Issues 803. 
+45  n 14 above; FSA, PBR . 
+46  E. Bardach and R. Kagan, Going By the Book: The Problem of Regulatory Unreasonableness (Philadelphia, 
+Temple University Press, 1982). 
+ 
+ 
+Julia Black                                                    Forms and Paradoxes of Principles Based Regulation  
+ 
+ 13  
+FORMAL PBR 
+ 
+At the formal level, principles-based regulation means the presence of general, 
+broadly stated rules, or ‘principles’, to set the standards by which regulated firms 
+must conduct business. 47  The term ‘principles’ can be used simply to refer to 
+general rules, or also to suggest that these rules are higher in the implicit or explicit 
+hierarchy of norms than more detailed rules: they express the fundamental 
+obligations that all should observe.  Principles are used in both these senses in the 
+FSA context.  The eleven Principles for Business are general rules, which set out 
+the main obligations on firms, and are the provisions from which the other rules 
+and guidance in the FSA Handbook flow. 48    
+The use of broadly stated standards, rather than reliance solely on more 
+detailed and prescriptive rules, has been a feature of the regulatory regime for 
+financial services since 1992.  The FSA’s Principles for Business have a number of 
+characteristics: 49  
+ 
+• they are drafted at a high level of generality,  
+• they contain terms which are qualitative not quantitative 
+•  they are purposive, expressing the reason behind the rule. 
+• they are mainly behavioural standards, focusing on, for example, the 
+“integrity”, “skill care and diligence” and “reasonable care” with which 
+authorised firms or approved persons conduct and organise their 
+businesses and the fairness with which they treat customers and manage 
+conflicts of interest. 
+ 
+Similar examples of rule design can be seen in the Combined Code on Corporate 
+Governance, the BCSC’s Bill 38; the ‘true and fair view’ principle in accounting; in 
+the Listing Rules and in the London Stock Exchange’s rules for those admitted to 
+its junior market, the Alternative Investment Market (AIM) and their nominated 
+advisors (Nomads). 
+50  
+ It is however sometimes argued that there is no real difference between 
+principles and rules. 51   In strictly legal terms this is true; and indeed some rules in 
+the FSA Handbook are as general as some of the Principles for Business, for 
+example the provision on suitability.   But principles are not necessarily 
+distinguished from other types of rules on the basis of their legal status.  
+Cunningham also argues that even if rules can be distinguished from principles 
+                                                      
+47  There is a vast literature on the distinction between rules and standards or principles – for review see J. 
+Black, Rules and Regulators , n 23 above. 
+48  It is worth noting that there are other broadly based rules in the FSA handbook which have the same 
+structure as principles, but have the status of rules, for example the provisions on suitability. 
+49  n 14 above. 
+50  On which see further below. 
+51  L. Cunningham, A Prescription to Retire the Rhetoric of ‘‘Principles-Based Systems’’ in Corporate 
+Law, Securities Regulation and Accounting (Mar. 13, 2007), (Boston College Law School Research Paper 
+No. 127), available at http://ssrn.com/abstract=970646. 
+           13/2008 
+ 
+ 14  
+this tells us little about the character of the regulatory regime.  This is also true, 
+and it is the reason for suggesting the distinction between different types of PBR.  
+As the characterization presented here of ‘formal’ PBR indicates, the mere 
+presence of principles does not mean that the modes of implementation and 
+enforcement will take any particular form. 52  Further, it is also the case that the 
+rules versus  principles debate, particularly as played out in the context of judicial 
+interpretation, is a less a debate about the technical form and linguistic structure of 
+written norms and more a political debate on the role of the judiciary.53  In the 
+regulatory context the debate on interpretation of principles and their ‘uncertainty’ 
+is also often at base a political debate on the proper role of the regulator. 
+With these caveats in mind, it is nonetheless worth stepping back and 
+analyzing the different dimensions of rules to clarify just what distinguishes a 
+principle from a detailed rule: in other words what characterizes PBR at the formal 
+level.  A rule, any rule - legal or non-legal, issued by a regulator or formed within a 
+firm - has a number of different dimensions. 54   These are first its substance: what it 
+concerns.  Second, its status: whether it is legally binding or not, and the sanction, if 
+any, which attaches to its breach.  Third, its character, whether it prohibits, permits, 
+discourages or mandates certain behaviour.  Fourth, its linguistic structure: whether 
+the language which the rule uses is vague or precise, whether the rule is simple or 
+complex in its requirements, whether its language is clear and easily understood, or 
+opaque.   
+These dimensions constitute decision points for anyone writing a rule or 
+principle: what legal status should the rule have: binding, evidential, guidance only, 
+or a safe harbour (status); should it seek to encourage behaviour or mandate it 
+(character); should there be any consequences flowing from its breach, if so of what 
+sort (sanction); should the rule use terms which are vague in that they are evaluative 
+("suitable", "reasonable") or lack specification as to the manner in which an action is 
+to be performed ("inform" or "publish", act "promptly"), or should compliance with 
+it require the existence of a complex set of facts or criteria, or should the rule be a 
+simple and precise "bright line" rule, like a speed limit (eg notification to the 
+regulator to be made ‘within one working day’) (structure). 
+Any combination of the different dimensions is possible, whatever the 
+institutional context in which the rule is being formed (with the obvious exception 
+that only certain rules will be recognised by the courts as having legal status). 55   It is 
+                                                      
+52  So dealing with Cunningham’s opposition to the use of the term ‘PBR’: Cunningham, ibid . 
+53  D. Kennedy, ‘Form and Substance in Private Law Adjudication’ (1976) 89 Harvard LR 1685. 
+54   Dimensional analyses are fairly common in the literature on the use of rules in regulation, although they 
+vary slightly.  That set out here is developed more fully in Black, Rules and Regulators , n 23 above, chapter 1; 
+see also R. Baldwin, Rules and Government  (Oxford: Clarendon Press, 1995); C.S. Diver, ‘Regulatory Precision’, 
+in K. Hawkins and J.M. Thomas (eds), Making Regulatory Policy  (Pittsburgh: University of Pittsburgh Press, 
+1989); C.S. Diver, ‘The Optimal Precision of Administrative Rules’ (1983) 93 Yale LJ 65. 
+55   The analysis proposed is one of rules, and thus is relevant wherever rules (defined as norms governing 
+behaviour) are used, be that internally within organisations, as systems of private ordering in self regulatory 
+or other ‘soft law’ regulatory regimes either nationally or globally, or as public or statutory systems of 
+regulation.  The particular context of rule use which is being examined here, however, is that of a national 
+system of regulation, and so the discussion of examples and implications will operate within that context. 
+ 
+ 
+Julia Black                                                    Forms and Paradoxes of Principles Based Regulation  
+ 
+ 15  
+the dimension of structure which is relevant in characterising a norm as a principle.  
+A rule’s structure has three elements: precision, complexity; and clarity.  Each of 
+these elements is a spectrum: at one end the rule may be extremely precise (30 days), 
+at the other end it may be very general (in a reasonable time).  It may range from 
+being very simple (no entry) or highly complex (no admission for the following 
+under the following circumstances).  Varying the choices as to these elements of 
+structure produces rules of three broad types: bright line rules, principles or detailed 
+and complex rules.  Table 1 illustrates how these different types could be used 
+hypothetically (and in approximate terms) to communicate the requirements with 
+respect to timely execution.56  
+ 
+Table 1: Rule types illustrated 
+ 
+Type 1: Bright line 
+rule 
+Type 2: Principle Type 3: Complex / 
+detailed rule 
+A firm must execute 
+all orders of under 
+10,000 securities within 
+one business day. 
+A firm must pay 
+due regard to the 
+interests of its customers 
+and treat them fairly. 
+A firm must execute 
+all orders for customers 
+within one business day in 
+the following 
+circumstances [definition 
+of customer; definition of 
+order; restriction as to 
+whether discretionary 
+dealing or execution only; 
+circumstances where 
+orders may be worked 
+over a longer period etc] 
+ 
+The Type 1 rule is a “bright line” rule: it sets out a single criterion which has to be 
+satisfied for the rule to apply, expressed as a quantitative measure. It is clear and 
+straightforward to apply, but as is well recognised, can fail to achieve its purpose 
+(fair treatment of customers) as there may be circumstances in which customers’ 
+interests would be better served by executing orders of under 10,000 securities 
+over a longer period. It is easy to manipulate or “creatively comply” with (orders 
+could be aggregated to avoid the rule) and indeed the rule may be missing the 
+point completely as volume amount is not necessarily a good measure on which to 
+identify which customers are in need of this requirement of firms. 
+The Type 2 rule, the “Principle”, is quite different in nature. It expresses the 
+aim of the rule and speaks to those who are in practice exercising control within 
+the firm. It is focused on the substantive objective. However, whether or not it is 
+certain depends on whether both regulated firms and the regulator agree on what 
+constitutes “paying due regard” and “treating customers fairly”. Moreover, whilst 
+                                                      
+56  Taken from n 14 above.  
+           13/2008 
+ 
+ 16  
+it looks simple to apply (there is just one condition to meet), in practice a whole 
+range of factors will have to be considered, which may make it as complex to 
+apply as a Type 3 rule. 
+Type 3 is a detailed or complex rule. The list of conditions that have to be 
+met for the rule to apply or be complied with can mean it has a higher congruence 
+than a Type 1, bright line rule, but only if they are the appropriate criteria. It can 
+thus potentially have the congruence of a Principle but provide more certainty 
+than a Principle as it elaborates on what the conditions/factors are that have to be 
+taken into account. That elaboration makes it complex to apply, however (more 
+information is necessary, more factors have to be taken into account), and the 
+creation of a list inevitably will leave gaps and again give scope for manipulation or 
+creative compliance. 
+Principles thus have the benefit of congruence: of communicating the 
+regulatory objectives and promoting behaviour which will achieve those 
+objectives.  Moreover, as far as regulators are concerned, they have the benefit of 
+minimising the scope for “creative compliance”. Whether they are simple to apply 
+depends on the number and type of factors to be considered in assessing their 
+application.   
+But the third, most contested element of principles, the degree to which 
+principles are clear or opaque and thus whether their application is certain or 
+uncertain, cannot be read off the face of the rule.  Rather that depends on the extent 
+to which the rule is clear in practice to those who are reading it.  Contrary to 
+lawyers’ dearly held beliefs, there is no necessary correlation between precision and 
+certainty, or at least not after a certain point.  The more precise the rules, the more 
+complex they become, the greater the number of ‘gaps’ that are created, the greater 
+the potential for internal inconsistencies in their application, the more uncertain 
+their application becomes in any particular circumstance.  Certainty does not come 
+from the structure of the rule or principle per se, but from the interpretation it 
+receives.  Whether a rule, principle, or any written norm is certain depends on the 
+extent to which there is a shared understanding as to their meaning and 
+application within and between regulator, regulated and any organization 
+(regulatory decisions committee, court or tribunal) called upon to make a 
+determination. 57    Developing that shared understanding can be facilitated by using 
+fairly precise rules, but once rules become overly precise and complex then it can 
+be significantly hindered. 
+The presence of such fundamental tradeoffs means that the optimal use of 
+rules is to have rules of each different type, and to aim for achieving the benefits of 
+compensatory effects between them.  In other words, to have a tiered rule structure, 
+with principles supported in particular instances by detailed rules. 58   However, 
+simply in terms of defining PBR at the formal level, we can say that a regulatory 
+regime is principle-based at the level of form if it contains norms which use simple, 
+                                                      
+57  Black, ‘Talking about Regulation’, n 33 above. 
+58  Black, ‘Using Rules Effectively’, n 23 above; Braithwaite, ‘A Theory of Legal Certainty’, n 23 above. 
+ 
+ 
+Julia Black                                                    Forms and Paradoxes of Principles Based Regulation  
+ 
+ 17  
+general terms and which express the reason for the rule, and if the norms are seen as 
+expressing the fundamental obligations that all subject to them should observe.   
+ 
+SUBSTANTIVE PBR 
+ 
+As noted above, however, there can be more to PBR than just the presence of 
+principles.  The regulatory Utopia invoked by PBR is not one of a perfectly 
+designed rulebook, but of a regulatory regime based on mutuality, trust and 
+responsibility.  The debate is not on issues of legal form for their own sake, but on 
+the type of behaviour of both regulator and regulated firms that it is hoped that 
+the use of principles will elicit.  Contrary to the implicit assumptions behind much 
+of the rhetoric of PBR, however, this behaviour does not automatically follow 
+from the presence of principles.  Kershaw’s analysis of the relevant accounting 
+provisions applying to Enron shows that both the US and the comparable UK 
+requirements contained almost identical principles and rules.  59   What distinguishes 
+the two systems is, amongst other things, not so much what their rules looked like, 
+but how they are applied. It is this difference in implementation and application 
+which marks out the substantive difference between the US and the UK regimes 
+which politicians are increasingly commenting on.   
+This is not to say that legal form is irrelevant.  Principles are necessary for full 
+PBR (formal plus substantive PBR) to exist.  However, it is to argue that a regime 
+can still have the substantive character associated with PBR without having 
+principles.  So what are the main elements of substantive PBR?  Both the debates 
+that are occurring and the approaches being used by regulators who are held up as 
+‘doing’ PBR suggest that there are five sets of regulatory practices, the presence of 
+all or any of which can characterize substantive PBR.  These are a particular mode 
+of interpretation, a particular enforcement style, an orientation to outcomes, a 
+reallocation of responsibilities for working out the practical application of the 
+provisions, and an explicit and developed reliance on management based 
+regulation. 
+The first characteristic is the approach taken to interpretation.  In substantive 
+PBR, the application of principles is characterized by three things.  First, a dense 
+network of ‘regulatory conversations’: dialogic, iterative and reflexive 
+communications between regulator, regulatee and others as to the purpose and 
+application of the principle. In other words, a series of repeated and reasoned 
+interchanges, conversations, between regulator and regulated as to the meaning 
+and application of the principles in particular circumstances. Secondly, 
+responsibility for developing interpretations and applications is shared between 
+regulator and regulatee, though each have somewhat different roles.   Firms have 
+to take responsibility for thinking through the application of the principle to 
+specific circumstances; regulators have the responsibility to give clear guidance.  
+Thirdly disputes over their application are resolved through purposive 
+                                                      
+59  n 41 above. 
+           13/2008 
+ 
+ 18  
+interpretations and consequentialist reasoning.  The mode of interpretation 
+adopted in substantive PBR, at least in the regulatory context, is thus at odds with 
+the formal canons of traditional contractual interpretation, at least at common law, 
+where interpretation has historically been formal, literal and non-
+consequentialist. 60   As will be suggested below, this difference in interpretive 
+approach is probably one of the main reasons lawyers resist PBR, at least as 
+practised by regulators, but probably one of the main reasons politicians, 
+regulators and senior managers are attracted to it. 61  
+The second element of substantive PBR is enforcement.  The nature of the 
+enforcement regime is a critical element of PBR.  Under PBR, firms are required 
+to think through the application of the provisions to particular situations to a far 
+greater degree than they are with respect to a detailed rule.  There is thus a greater 
+risk that they will make the wrong assessment, ie one with which the regulator 
+does not agree.  We can call this interpretive risk.  They will seek to minimize this 
+risk by calling for greater prescription from the regulator.  In the absence of that 
+prescription, the enforcement approach is critical.  In a regime with a tough, 
+punitive approach in which every infraction is met with a sanction, PBR will not 
+survive.  It will transform into a system of detailed requirements, as that is what 
+firms will need.  They will demand rules to provide them, and the regulator, with 
+clear boundaries.   
+Here the political aspects of the debate become relevant.  Enforcement is a 
+key part of the story being told as to the relative strengths and weaknesses of the 
+US and UK regulatory regimes, at least in the context of securities regulation.  
+Howell Jackson’s work on the resources spent on enforcement in the US and the 
+UK show a striking disparity between the two countries, with the US spending 
+significantly more than the UK, allowing for the relative size of their markets. 62   
+These figures have in turn been used by Coffee to suggest that high levels of 
+formal enforcement action produce an optimal level of regulation with respect to 
+certain types of firms, measured by cost of equity capital. 63   
+The debate taps into a long standing debate in the regulatory literature 
+between the ‘deterrence’ and ‘compliance’ models of enforcement: do you go hard 
+after every infraction, or adopt a more negotiating stance.  For those in favour of 
+negotiative approaches, formal enforcement action provides clear evidence of 
+enforcement styles, but it does not on its own provide evidence of compliance.  
+Instead it can promote increased non-compliance as it raises the regulated firms’ 
+hostility to the regulatory regime as a whole.  For those in favour of deterrence 
+based approaches, only tough, formal enforcement actions will ensure that 
+calculating firms obey the rules; negotiated approaches lead to non-compliance 
+                                                      
+60  Albeit with exceptions.  See eg ICS  v West Bromwich  [1998] All ER 97 (interpretation can be purposive 
+where evident mistake).  I am grateful to Joanna Benjamin for this point.  
+61  On the support given by senior management see Norton Rose, Insuring the Future  (London, 2007). 
+62  Jackson, n 21 above. 
+63  J.C. Coffee, ‘Law and the Market: The Impact of Enforcement’  Working Paper no 304, April 2007, 
+available at http://papers.ssrn.com/paper.taf?abstract_id=967482. 
+ 
+ 
+Julia Black                                                    Forms and Paradoxes of Principles Based Regulation  
+ 
+ 19  
+persisting and offenders going unpunished. The conventional wisdom is that 
+neither extreme is an effective approach to take; instead regulators should do both: 
+first negotiate, then if the firm still does not deliver substantive compliance 
+regulators should gradually move up the enforcement pyramid, applying sanctions 
+of increasing severity until they do. 64    
+This ‘responsive’ enforcement approach is not contingent on any particular 
+rule design, however. It can operate in systems of highly detailed rules, or where 
+the rules are mainly principles, or where there is a combination of the two.  That 
+said, different rule types make it easier for regulatory officials to deal with certain 
+types of regulated firm, as Baldwin has pointed out.  Those who know what they 
+are meant to be doing and are generally inclined to do it (the well intentioned and 
+well informed) are best dealt with using a negotiating strategy, which is easier to do 
+using principles.  In contrast, those who do not know what they are meant to be 
+doing and even if they did would not be inclined to do it (the ill intentioned and ill 
+informed) are best dealt with using a strategy that escalates quickly up the 
+enforcement pyramid, for which bright line rules are more effective.  A supervisor 
+can simply tell them: just do this because that is what the rule says. 65    
+The point here is not what rule type is most effective for which type of 
+regulated firm, though that is relevant, but the enforcement approach used.  
+Substantive PBR requires a broadly ‘responsive’ mode of supervision and 
+enforcement, in which negotiation as to the meaning, application and purpose of 
+the rule plays a central role, and in which the focus is on the outcome that is to be 
+achieved. 66   However, whilst a ‘responsive’ approach to enforcement may be 
+facilitated by rules of certain types, it is not contingent on them.  So in the area of 
+enforcement there can be, at least in this sense, substantive PBR without the form.  
+The British Columbia Securities Commission provides a good example.  As noted 
+above, even though the BCSC has not been able to introduce principles, it has 
+introduced the substantive aspect of PBR through changes to the manner in which 
+it monitors and enforces its regulatory requirements. 67    
+That is not to say that formal enforcement action is absent in PBR.  
+Significantly, having initially said it would not use Principles alone as a basis for 
+enforcement action, the FSA has recently shifted to doing just that.  A number of 
+high profile enforcement actions have been taken based on breach of a principle 
+or principles alone.  A good example is the action taken by the FSA against 
+Citigroup with respect to a trading strategy adopted by five traders in its London 
+office: the ‘Dr Evil’ trades. 68   The traders developed an electronic trading 
+                                                      
+64  I. Ayres and J. Braithwaite, Responsive Regulation (Oxford: Oxford University Press, 1992). 
+65  R. Baldwin, n 54 above. 
+66  What ‘responsive’ can consist of is elaborated in R. Baldwin and J. Black, ‘Really Responsive 
+Regulation’ (2008) 71(1) Modern Law Review  59. 
+67  n 19 above. 
+68  Breach of a Principle must involve an element of fault for a sanction to be imposed: FSA Handbook 
+PRIN 1.1.7G where it states that ‘Under each of the Principles the onus will be on the FSA to show that 
+a firm has been at fault in some way.’  .  It should be emphasized that there is no right of private civil 
+action against a firm for breach of a Principle: s.150 Financial Services and Markets Act 2000 (although it 
+           13/2008 
+ 
+ 20  
+programme that would place sell orders simultaneously for a particular German 
+government bond across a number of European markets.  The strategy resulted in 
+orders being sent for more bonds than existed, the closure of at least one market 
+and the disruption of a number of markets for several days.  They sold 
+EUR12.9bn of European government bonds within seconds, and then bought 
+back EUR3.8bn at lower prices, giving the bank a significant profit. The trades 
+triggered several regulatory investigations and angered European governments.  
+No rule was breached, but the FSA brought enforcement action on the basis of 
+two Principles alone.  It fined Citigroup £4m and required it to disgorge its profits 
+of £9.96m for breach of Principle 2, failing to conduct its business with due care 
+and diligence, and Principle 3, failure to organise its affairs responsibly and 
+effectively and to implement adequate risk management systems. 69   The episode 
+showed one of the key advantages, for regulators, of principles: it saved them 
+from the limited foresight of rule makers.  This particular trading strategy had 
+never been envisaged by the rule makers, or indeed anyone else in the market, and 
+so there was no particular rule against it.  Yet clearly some form of regulatory 
+action was appropriate.  The Principles for Business provided the FSA with the 
+means to take this action, which had the rule book consisted only of particularised 
+rules it would not have been able to take. 
+A third characteristic of substantive PBR is a focus on outcomes.  Again, 
+there is no analytical correlation between using rules of a particular type 
+(principles) and outcome based regulation.  Targets are outcomes, and they can be 
+extremely precisely defined, and as such as open to gaming and ‘creative 
+compliance’ as detailed rules. Studies of how hospitals and other public service 
+providers ‘game’ the performance targets set for them by central government 
+illustrate this very clearly. 70  However, in substantive PBR outcomes are defined in 
+qualitative and / or behavioural terms: for example to act ‘with integrity’, ‘fairly’, 
+‘in the best interests of the client’. 71    It is hard to game purposive provisions of 
+this nature. 
+It can also be difficult to understand what they mean in any one set of 
+circumstances, however – the usual complaint that PBR is too uncertain.  But 
+there are various strategies that can be used to provide certainty and to build 
+‘interpretive communities’ as to the meaning and application of the rule.  
+Developing guidance is the most obvious strategy, but the FSA’s Treating 
+Customers Fairly (TCF) initiative is an alternative example of how this meaning 
+can be built.  In contrast to both the supporters and detractors of PBR who 
+consider it to be ‘light touch’ regulation, the FSA’s TCF initiative, which it holds 
+                                                                                                                                       
+should be noted that there are rules of a similar character in the Handbook to which the private right of 
+action does attach, for example the rule on suitability).  See n 14 above for discussion. 
+69  FSA, Final Notice to Citigroup Global Markets Limited, 28 th  June 2005. 
+70  C. Hood, ‘Gaming in Targetworld: The Targets Approach to Managing British Public Services’ (2006) 
+66(4) Public Administration Review 515. 
+71  Outcomes are usually distinguished from outputs in performance evaluations: outputs are easier to 
+game than outcomes. 
+ 
+ 
+Julia Black                                                    Forms and Paradoxes of Principles Based Regulation  
+ 
+ 21  
+up as a key example of PBR, is a long way from being a hallmark of unintrusive 
+regulation.  The TCF initiative is underpinned by Principle 6 which requires firms 
+to treat customers fairly. There are six TCF goals:    
+ 
+• Consumers can be confident that they are dealing with firms where the 
+fair treatment of customers is central to the corporate culture 
+• Products and services marketed and sold in the retail market are designed 
+to meet the needs of identified consumer groups and are targeted 
+accordingly 
+• Consumers are provided with clear information and are kept appropriately 
+informed before, during and after the point of sale 
+• Where consumers receive advice, the advice is suitable and takes account 
+of their circumstances 
+• Consumers are provided with products that perform as firms have led 
+them to expect, and the associated service is both of an acceptable 
+standard and as they have been led to expect 
+• Consumers do not face unreasonable post-sale barriers imposed by firms 
+to change product, switch provider, submit a claim or make a complaint. 
+ 
+The implementation of TCF has focused on providing firms with flexibility to 
+devise their own systems for ensuring these goals are met.   The FSA has 
+published implementation reviews including case studies and examples of good 
+and poor practices. 72   But the intensity with which it has reviewed firms’ internal 
+operations is significant.  The whole product cycle has been investigated from 
+cradle to sale and then to post-sale.  Firms are required to demonstrate that at each 
+stage of product development, marketing and sale the interests of the customer are 
+of central concern.   TCF is still in the throes of implementation and we have yet 
+to see whether it has an impact on reducing misselling, or what enforcement 
+action will follow from failure to achieve the FSA’s outcomes.  However the point 
+here is not its effectiveness, but its substantive nature: in this case the very close 
+engagement of regulator and regulated firm in elaborating on the meaning and 
+application of just one FSA Principle using a supervisory strategy which goes well 
+beyond that of more familiar supervision and inspection regimes.     
+The fourth characteristic of substantive PBR is that the responsibility for 
+ensuring that the objectives of the principles are met is shifted, in part, from the 
+regulator to the regulated.  More general rules (principles) allow firms greater 
+discretion as to what to do.  With that discretion comes the need, and 
+responsibility, for working out what they should do.  Where the balance should be 
+struck between firms thinking for themselves and the regulators providing 
+guidance is endlessly contested, and each thinks the other should be doing more.  
+Firms want more specific guidance; regulators think firms should work it out.  
+                                                      
+72  These are published as ‘cluster reports’ and are available at http://www.fsa.gov.uk/Pages/Doing/ 
+Regulated/tcf/ cluster/index.shtml. 
+           13/2008 
+ 
+ 22  
+Firms do not want to do the regulators’ job for them; regulators do not want to 
+become unpaid consultants.  This tension in their relationship, as to what the 
+regulatory compact entails, is not unique to PBR regimes.  Regulators 
+implementing detailed rules face the same tension, as the National Audit Office’s 
+recent review of the five largest regulators in the UK illustrates. 73   But PBR 
+involves a significant shift in responsibility to firms, and requires a substantially 
+different set of skills on the part of inspectors and compliance staff to engage in 
+the negotiations and qualitative judgements that are entailed. 
+The final element which can characterise substantive PBR is a focus by the 
+regulator on the firm’s internal systems of management and controls – referred to 
+in the regulatory literature as ‘meta-regulation’ or management based regulation. 74  
+As with enforcement, meta-regulation can and does operate in systems where 
+there are detailed rules.  Given that any regulatory regime requires firms to 
+internalize the regulatory requirements into their own systems and processes for it 
+to be complied with, meta-regulation could be argued to be not so much a radical 
+new strategy as regulators making a virtue out of a necessity, or at least recognizing 
+that necessity.  In management-based or meta-regulatory regimes, the regulator 
+focuses its attention on ensuring that the firms’ own internal rules, systems and 
+processes are such that they will ensure compliance. As Power comments, internal 
+management systems become the critical interface between regulatory and 
+business values, and hence between society’s and the organisation’s goals and 
+operations. 75  Again the emphasis is on substance not form, under the substantive 
+model.  Regulators and firms should be focused on the outcomes those systems 
+and processes deliver, not just on the form they take.  
+Meta-regulation has its limitations, not least that firms’ own processes will be 
+geared towards the firms’ own ends, notably the production of profit, and not the 
+regulators’ ends, and the two do not always coincide.  If they were the same, there 
+would be no reason for firms to be regulated in the first place.  Firms, and their 
+legal advisors, may complain that they are being required to deliver on the 
+regulator’s wider social objectives, but that is the point of regulation, to ensure 
+that firms do so deliver (at least under anything resembling a public interest model 
+of regulation).  However the gap between the systems required by the firm for its 
+own purposes and those required by the regulator may be significant, not 
+withstanding the perennial cry that compliance can be good for business, that 
+reputation is critical and that firms lose their social licence to operate at their 
+peril. 76   Meta-regulation, like any regulatory strategy, has its limitations, but again 
+                                                      
+73  NAO, Regulatory Quality: How Regulators are Implementing the Hampton Vision (London, 2008), para. 4.5 
+notes that ‘’Regulators with direct inspection responsibilities face [the] challenge ... of determining where 
+to draw the line between their preferred stance of neutral guidance provider and educator of business and 
+the more hands on consultant-cum-management role many businesses seem to want.’   
+74  Parker, n 32 above, chapter 9. 
+75  Power, n 32 above, 42. 
+76  On social licence see N. Gunningham, R. Kagan and D. Thornton, ‘Social License and Environmental 
+Protection: Why Businesses Go Beyond Compliance” (2004) 29 Law and Social Inquiry 307.    
+ 
+ 
+Julia Black                                                    Forms and Paradoxes of Principles Based Regulation  
+ 
+ 23  
+the point being made here not necessarily the effectiveness of meta-regulation, but 
+its presence as an  element of substantive PBR. 
+So in short, substantive PBR has five characteristics, all or any of which may 
+be present in the operation of the regulatory regime.  These are a purposive 
+approach to interpretation worked out through iterated regulatory conversations; a 
+broadly ‘responsive’ approach to enforcement; a focus on outcomes, a greater 
+requirement on firms to think through the application of the principles, and the 
+adoption of meta-regulatory techniques.  With the possibly exception of the shift 
+in responsibilities, none of these regulatory practices which can characterize 
+substantive PBR needs to be accompanied by formal PBR; i.e. principles do not 
+have to be present in the rulebooks for them to operate, as the example of BCSC 
+demonstrates, 77  though they can be facilitated by the presence of principles.  On 
+the other hand, formal PBR does not necessarily entail substantive PBR, as the 
+example of the implementation of the US GAAP illustrates. 78   Where the two are 
+combined, as to an extent in the FSA context, we can talk of full PBR.  
+ 
+POLYCENTRIC / NETWORKED PBR 
+ 
+Finally, full PBR can be characterized by the interaction of a number of actors, not 
+just regulator and regulated firm, who develop interpretations of the principles and 
+their applications in particular circumstances.   One example is the use of trade 
+associations and others to produce guidance on the meaning and application of 
+the principles.  This is a strategy which the FSA has been using to an increasing 
+degree.  In the area of money laundering, it has reduced its rules to two pages, 
+preferring to rely instead on the provisions of the Joint Money Laundering 
+Steering Group.  Reducing the amount of rules in the area of money laundering 
+was worthwhile, but the equivalent of picking low hanging fruit – the rules as they 
+were mainly reiterated the provisions of either the statutory instruments or the 
+JMSLG’s guidance.  There are other examples where the FSA has actively 
+facilitated the production of guidance by requiring representatives from different 
+parts of the industry to agree on the contested issue of soft commissions.   As part 
+of its PBR initiative, the FSA has also introduced a system of ‘confirmed’ 
+guidance, whereby it will ‘confirm’ industry guidance on the application of the 
+principles.  The status of such guidance, the FSA has stated, is that it will act as a 
+‘shield’ not a ‘sword’.  In other words, conduct in accordance with the guidance 
+can be used as a ‘shield’ against enforcement action (though it does not have the 
+formal status of a safe harbour), but non-conformity with the guidance will not be 
+used as a ‘sword’ by the FSA with which to impale firms. 79  
+However, there are other examples of polycentric PBR which rely on more 
+than guidance; they include third parties as active interpreters, monitors and 
+enforcers of rules.  An example here is of the role played by NOMADs in the 
+                                                      
+77  n 19 above. 
+78  n 41 above. 
+79  FSA, PBR . 
+           13/2008 
+ 
+ 24  
+regulation of the London Stock Exchange’s junior market, the Alternative 
+Investment Market (AIM). 80   Nomads, or ‘nominated advisors’, have to be 
+appointed by any firm seeking admission to AIM, and significantly firms have to 
+retain a Nomad during the course of their admission.   The role of the Nomads is 
+essentially to guide firms on the meaning and application of the AIM rules, which 
+themselves often take the form of principles.  Thus they are to ensure that firms 
+have ‘appropriate’ systems of corporate governance, for example.  Those who 
+participate in AIM, their regulators and advisors all talk of the ‘AIM community’, 
+and it provides a good example of an interpretive community.  Through numerous 
+interactions between Nomads, advisors, firms and regulators, understandings as to 
+appropriate standards of conduct and courses of action have developed over time.  
+And like other interpretive communities, it is vulnerable to the introduction of 
+outsiders who upset this homogeneity of implicit understandings.  The intrusion 
+requires the production of ‘clarifications’ to render explicit some of those implicit 
+understandings, as occurred in AIM’s restatement of its rules in 2007.   But the 
+dense network of actors and interactions which supports PBR remains more or 
+less intact.   
+Finally, consultants and voluntarily appointed advisors, including legal 
+advisors, can play a key role in shaping the form that PBR takes within 
+organizations. They can play a critical role in elaborating on the meaning of the 
+principles and in developing those internal systems and controls on which 
+regulation relies.  This example of the potential polycentricity of PBR is not one 
+which is designed or officially sanctioned by the regulator.  It can be vital, 
+however, and is a role which is explored further below. 
+  
+ 
+ 
+PARADOXES OF PBR  
+ 
+Analysing the different forms of PBR is useful for clarifying the debate on PBR 
+and providing some way through the rhetoric.  However, in order to understand 
+better the nature of PBR in its different forms, we need to move beyond the 
+rather stale debate on its advantages and disadvantages, and recognize that PBR in 
+its various forms contains certain paradoxes or self contradictory elements.  The 
+presence of these paradoxes does not necessarily suggest that PBR should not be 
+attempted; there are still strong arguments for full, and indeed polycentric, PBR. 
+However they illustrate the complexities involved in such an attempt, and thus 
+exploring their nature can help move both the academic and policy debate on 
+from both rhetorical flourishes and detailed lists of pros and cons.   Here seven 
+key paradoxes are identified and briefly outlined. 
+ 
+                                                      
+80  For fuller discussion of the Nomad system see S. Arcot, J. Black and G. Owen, From Local to Global 
+(London, 2007). 
+ 
+ 
+Julia Black                                                    Forms and Paradoxes of Principles Based Regulation  
+ 
+ 25  
+PARADOX 1:  THE INTERPRETIVE PARADOX : PRINCIPLES CAN BE GENERAL YET 
+PRECISE  
+ 
+Principles, as explained above, are formally characterized by general, imprecise 
+terms.  This is meant to give flexibility.  However, in practice principles can 
+receive very specific interpretations.  There can be benefits: certainty is produced 
+through the development of an interpretive community which gives particular 
+content and meaning to the principles.  However, interpretive communities can 
+fracture, and the regulatory regime may contain several interpretive communities, 
+each with a different interpretation.    
+In particular, the interpretation which develops within the regulator may in 
+practice be quite specific but not necessarily well understood.  For example, the 
+AIM rules do not specify the proportion of shares which should be made available 
+on admission, but the LSE’s rule of thumb is that at least 10% of the share capital 
+has to be made available to the public. 81    In AIM’s case, the AIM community is 
+aware of this interpretation, but where interpretive communities are not as strong, 
+this may not be the case.  The tendency for rules to become formalized in practice 
+is well-observed, to the extent that a significant gap can grow between the written 
+word and the bureaucratic interpretation it receives.  Dan-Cohen talked of this in 
+terms of the ‘acoustic separation’ of law. 82   Specific interpretations may develop 
+for reasons of bureaucratic ease (it saves supervisors having to think every time 
+what conduct they should allow, enables consistent application), or because the 
+regulator has taken a clear policy decision, not communicated in the rules 
+themselves, that this is the interpretation that should be given.  Whichever the 
+reason, the operation of this interpretative paradox means that PBR exists only at 
+the formal level, and in practice can be almost indistinguishable in places from a 
+regime characterized by detailed rules. 83  
+ 
+PARADOX 2:  THE COMMUNICATIVE PARADOX : PRINCIPLES CAN FACILITATE 
+COMMUNICATION BUT CAN ALSO HINDER IT  
+ 
+In using relatively straightforward language in expressing the purpose of the rule, 
+PBR can facilitate communication.  Indeed that is often one of the rationales for 
+its introduction – to communicate better to regulated firms what their 
+responsibilities are under the regulatory regime, as noted with respect to the FSA 
+above. 84    However, PBR can hinder communication in practice: a communicative 
+paradox.  In part, this can arise if there is a proliferation of guidance, and 
+particularly if regulators are undisciplined in their provision of guidance.  This lack 
+                                                      
+81  ibid . 
+82  M. Dan-Cohen, ‘Decision Rules and Conduct Rules: On Acoustic Separation in Criminal Law’ (1984) 
+97 Harvard L.R. 625.; see further Black, ‘Talking about Regulation’, n 33 above. 
+83  See eg Schauer, n 44 above; F. Schauer, The Convergence of Rules and Standards, (2003) 34 N.Z. L. 
+Rev  303. 
+84  FSA, PBR. 
+           13/2008 
+ 
+ 26  
+of discipline is a significant issue with the FSA’s own development of PBR, where 
+elaboration on the scope and implementation of TCF, for example, comes in a 
+plethora of speeches, policy documents and miscellaneous communication 
+documents.  This verbal outpouring by the FSA makes it hard for regulated firms 
+to know just what the FSA is requiring of them, raises fears that they have ‘missed 
+something’ in this miscellany of communications, and in turn produces uncertainty 
+and an atmosphere of concern and trepidation, as every speech by an FSA official 
+is poured over by compliance officials and their legal advisors for the slightest hint 
+of changes to the FSA’s approach.    
+But there is a more fundamental source of the communicative paradox, which 
+is that regulators and lawyers have a different interpretive schema, even though 
+both are interpreting legal norms.  The paradox arises because legal use of 
+language is distinct from ordinary use of language, such that it requires training to 
+understand it. 85   The extent of the difference is highlighed by formal linguistic 
+analyses, which study the abstract rules that govern language use. 86   Such analyses 
+draw attention to the particular lexicality of law (its use of words which are unique 
+to it), the greater instance of mononyms (using words with only one accepted 
+meaning), a high incidence of ‘restricted connotations’(the deprivation of words of 
+their ordinary language connotations when transformed into legal discourse), and 
+the particular syntactical structures of legal documents including statutes, all of 
+which serve to distance ‘legalese’ from the ordinary language on which it otherwise 
+draws. 87   Law tries to cope with the problem of interpretation through what 
+Goodrich terms the ‘isolation of the code’. 88   Control over the interpretation of 
+legal instruments lies normally in the preserve of lawyers and ultimately the courts 
+and occurs in accordance with strict rules of interpretation.   
+However regulatory practices, understandings and reasoning can be very 
+different from those of the legal interpretive community, even though the rules in 
+question have legal status.  Enforcement actions are taken in part with a view to 
+‘making an example’ of someone as part of a strategic use of enforcement action.  
+Regulatory enforcement decisions are messages to the wider regulatory 
+community, they are not just concerned with the disposal of a dispute between 
+two parties.  Regulators adopt a purposive, teleological and consequentialist mode 
+of reasoning. Moreover, they do not necessarily consider themselves bound by 
+precedent; rather each case may be decided on its merits. 89    
+                                                      
+85  For discussion see J. Black, ‘Regulatory Conversations’ (2002) 29 Jnl Law and Society 163. 
+86  B. Jackson, Law, Fact and Narrative Coherence (Merseyside: Deborah Charles, 1988), 29-31. 
+87  B. Jackson, Semiotics and Legal Theory  (London: Routledge Kegan Paul, 1985) 41-43, 306-308; Y. Maley,  
+‘The Language of the Law’ and V. Bhatia, ‘Cognitive Structuring in Legislative Provisions’ in G. Gibbons 
+(ed); Language and the Law (London: Longman, 1994); P. Goodrich, Reading the Law (Oxford: Blackwell, 
+1986) 105-121. 
+88  Goodrich, ibid , 123-4. 
+89  When talking of a ‘regulatory mode’ here I’m constructing a Weberian ideal type – clearly not all 
+regulators adopt this mode, and some lawyers in private practice do so with ease, and moreover as many 
+regulators are lawyers the two social groups overlap.  But the point is to characterize particular modes of 
+reasoning. 
+ 
+ 
+Julia Black                                                    Forms and Paradoxes of Principles Based Regulation  
+ 
+ 27  
+Each of these elements of regulatory reasoning and interpretation is an 
+anathema to a lawyer.   This is not to say they cannot engage in it: law firms have 
+built lucrative businesses advising firms on how regulators will or will not respond 
+in different situations.  But it is rather that it is contrary to their training and one 
+which some at least resist.  In Luhmann’s terms, the problem lawyers may have 
+with regulatory interpretations of principles is principally that the ‘programme’ 
+used by regulators for applying law is not one that they recognize 90  – hence, their 
+heavy criticism of PBR and all who sail in her.  How many times do we hear it said 
+in relation to the FSA’s principles based approach that managers like PBR; but 
+lawyers and compliance do not.  This resistance may be because PBR exposes 
+lawyers and requires them to make judgements about what will constitute 
+compliance (be lawful) and what will not.  This vulnerability may lie at the root of 
+some of the resistance, and may be exacerbated in particular organizational 
+structures where heavy blame may be placed on those who turn out to have made 
+the wrong call.  But lawyers are frequently asked to advise on matters where the 
+application of the law is uncertain; so why should uncertainty itself pose such an 
+issue?   
+The answer, at least in part, it is suggested, is twofold.  First, albeit at the risk 
+of caricature, PBR introduces an uncertainty which is of a different nature to that 
+which lawyers encounter when considering how courts will interpret contractual 
+terms.  Lawyers are used to uncertainty, but the canons of legal interpretation are 
+well understood.  They do not eliminate uncertainty, but lawyers can hope to 
+minimize it through their legal drafting.  However, the regulatory interpretive 
+approach is far less constrained by canons of interpretation built up over centuries 
+and communicated through legal education and practice.  As a result, for some 
+participants at least, PBR does not facilitate communication but impedes it.  
+However, the second reason for the concern over the uncertainty of PBR lies less 
+in the niceties of interpretive practices, and more in the political acceptability of 
+regulators. The debate on the uncertainty of principles, at least where the 
+principles are being primarily enforced by a regulator, is at base often a political 
+debate on the appropriate role of the regulator and / or any associated tribunal, 
+rather than on interpretive practices per se, just as, as noted above, the debates on 
+the practices of judicial interpretation are debates on the role of the judges. 91   
+However lawyers may not be so opposed to the idea of a principles based regime 
+if it were enforced by the courts, though regulators or senior management would 
+be. 
+ 
+ 
+                                                      
+90  On programmes for applying the legal code see N. Luhmann, Social Systems  (Stanford: Stanford UP, 
+1995.  
+91  On the complexities of lawyers’ responses to the New Deal see R. Shamir, Managing Legal Uncertainty: 
+Elite Lawyers in the New Deal (Durham, NC: Duke University Press, 1995). 
+           13/2008 
+ 
+ 28  
+PARADOX 3:  THE COMPLIANCE PARADOX: PRINCIPLES PROVIDE SCOPE FOR 
+FLEXIBILITY IN COMPLIANCE YET CAN LEAD TO CONSERVATIVE AND / OR 
+UNIFORM BEHAVIOUR BY REGULATED FIRMS   
+ 
+Principles can provide flexibility for regulatees as to how they reach the outcome 
+that is expressed by the Principle.  However uncertainty as to the interpretation of 
+principles that enforcers will adopt can result in firms adopting conservative 
+behaviour, as if they were bound by detailed rules.  This paradox is Schwarz’s 
+‘principles paradox’: that principles in practice operate in a manner akin to that 
+prompted by detailed rules. 92  Schwarz’s examples are drawn from common law 
+contexts, where the courts are the arbiters of interpretation, but there is no reason 
+that the paradox is avoided if the principles are applied by regulators, indeed the 
+second paradox of principles (the communicative paradox outlined above) 
+suggests that it may be exacerbated. 
+In this third paradox, which we may term the compliance paradox, 
+compliance may be either uniform or conservative or both.  So although PBR 
+provides flexibility in modes of compliance, in practice firms’ systems may be 
+quite homogenous.  This may arise because the regulator only accepts certain 
+practices as complying; or because firms treat guidance on practices as if it were 
+detailed rules.  But even where neither of these conditions obtain, close similarity 
+can still arise, particularly where PBR is polycentric or networked.  In polycentric 
+PBR, the practices of different firms are diffused (anonymously) throughout the 
+industry through consultants and advisors.  In sociological terms, institutional 
+isomorphism is transmitted and mediated through these actors.  There is no doubt 
+that TCF has brought considerable business for consultancy firms, ranging from 
+Deloittes and PwC to smaller, industry specialists and training firms, and to law 
+firms as well.  Indeed there is anecdotal evidence that TCF has prompted an ‘arms 
+race’ between financial institutions, each ‘tooling up’ with the latest, and most 
+costly, compliance models that consultants can provide.     
+Although there is as yet no detailed research on the implementation of TCF 
+within firms, it is reasonable to suggest that the role of consultants can be acting as 
+a force for convergence on a set of broadly common practices.  The fairly 
+substantial consultancy industry which has grown up around the TCF initiative is 
+characterized by a comparatively small group of consultants plying their wares to 
+firms keen to develop systems that can demonstrate their TCF compliance. 93   As 
+noted above, the effect of consultants in producing isomorphism – the 
+development of similar systems and structures in a range of organizations – has 
+been noted in different contexts by others.  Power, for example, illustrates how 
+                                                      
+92  n 16 above. 
+93  A quick internet search reveals a number of advertisements for ‘practical user friendly guidance’ on 
+TCF; ‘top tips’; services in which firms will externally verify a firm’s TCF compliance and tailored MI 
+systems to capture data on customer focus and communication on performance progress from firms such 
+as Deloittes, PwC, Brunswick MCL Ltd, Frank Eve Consulting; and training on TCF from the IFS 
+School of Finance. 
+ 
+ 
+Julia Black                                                    Forms and Paradoxes of Principles Based Regulation  
+ 
+ 29  
+the role of consultants in reconstructing the conceptual architecture of risk 
+management and exploiting opportunities arising from the perceived need for 
+change led to the development and diffusion of risk management practices in areas 
+ranging from corporate governance to the definition and management of 
+operational risk.  94   Consultants ensure easy diffusion of their models by 
+abstracting from specific practices, framing management issues in process terms 
+which can then be aligned with the broader values being espoused, for example of 
+corporate governance. 95  Power uses the example of COSO to show how 
+consultants effectively adapted the risk based model for internal controls proposed 
+by COSO in 1991 and disseminated it to such a degree that it became the defining 
+method for risk management in both private sector and public sector 
+organisations. 96   In the regulatory context, Braithwaite and Drahos show how 
+consultants act as ‘model mercenaries’, touting their wares to different regulators, 
+who then either picked them up and used them unmodified (model misers) or in 
+refined form (model mongers), resulting in a noticeably homogenised approach to 
+defining and addressing regulatory problems. 97    The TCF process is providing a 
+further example of how practices develop through the activities of consultants.   
+Thus it is not only through regulatory pronouncements and successive rounds 
+of guidance that practices can become concretized but through the homogeneizing 
+practices of consultants and advisors.  Although the systems that consultants 
+provide vary in their detail – each is after all trying to differentiate itself from the 
+other – they are united in their fundamentals, for consultants also sell their 
+products on the basis that their core elements are familiar.  In this case they are 
+united, as Power argues, by a combination of values of control, accountability and 
+audit.  Indeed, as he argues, it is in combining new solutions to deep seated fears 
+with a conservation of deeper aspirations, values and world views that the 
+purveyors of risk management practices ensure their dissemination. 98    
+ 
+PARADOX 4:  THE SUPERVISORY AND ENFORCEMENT PARADOX : PRINCIPLES 
+NEED ENFORCEMENT TO GIVE THEM CREDIBILITY BUT OVER -ENFORCEMENT 
+CAN LEAD TO THEIR DEMISE  
+ 
+The place of enforcement in a PBR regime was discussed above.  If the 
+enforcement regime is on the tough, punitive end of the spectrum, then PBR is 
+likely to transform as firms seek the comfort of detailed rules.  Principles can 
+however provide significant flexibility for regulators in the way they monitor and 
+enforce the regulatory regime.  The TCF initiative is again an example of a 
+                                                      
+94  Power, n 32 above, 160 and discussion at 48-53. 
+95  On the relationship between abstraction and diffusion see D. Strang and J. Meyer, ‘Institutional 
+Conditions for Diffusion’  (1993) 22 Theory and Society  22, 487-511. 
+96  Power, n 32 above.  COSO is a framework produced by the Committee of Sponsoring Organisations 
+of th e Treadway Committee published in 1991 ( Internal Control – Integrated Framework ) following a 
+Congressional inquiry into fraudulent financial reporting. 
+97  J. Braithwaite and P. Drahos, Global Business Regulation (Oxford: Oxford University Press, 2000). 
+98  Power, n 32 above, 161. 
+           13/2008 
+ 
+ 30  
+substantial change in supervisory strategies which has been facilitated by principles 
+(though it pre-dated the FSA’s self-characterised move to its ‘more principles-
+based approach).   The close engagement with firm’s internal systems and 
+processes which the FSA has adopted as part of the TCF initiative is a significant 
+development of compliance and inspection strategies.  The FSA is also leveraging 
+its position as the holder of aggregate information of practices in a range of firms 
+by disseminating examples of good and poor practices to help firms change their 
+systems and benchmark themselves against industry norms. 99  
+However, although principles can facilitate this negotiated mode of 
+compliance, in which meaning and application can be negotiated through iterated 
+regulatory conversations, PBR is also commonly criticized for facilitating 
+retrospective interpretations of the norms.  In the pensions misselling scandal, for 
+example, the SIB relied on the suitability and know your customer requirements 
+(technically classified as rules in the SIB rule book but with the form of principles) 
+to require firms to engage in the pensions review, notwithstanding that pensions 
+had been missold for years prior to the review without any regulatory action 
+having been taken. 100   The SIB was accused of retrospectivity, but it had the will, 
+and to an extent the political backing, to withstand those criticisms and order the 
+review nevertheless.  However in a different political climate, or with a different, 
+less robust attitude amongst the regulators’ senior management, regulators may be 
+wary of taking enforcement action against firms’ conduct, even if it could be 
+interpreted as a breach of the principle.  This is particularly likely where firms 
+argue that enforcement action would be retrospective as the regulator had not 
+mentioned any problems with their conduct before.    
+The significance of political support for tough enforcement action stems 
+from the moral ambiguity of much regulation.  Regulation has long been described 
+as the prohibition of conduct which is ‘mala prohibita’ not ‘mala in se’: wrong 
+because it is prohibited, not wrong because it is inherently immoral or contrary to 
+human rights.  Hawkins has illustrated how this moral ambiguity can lead to 
+regulators being reluctant to take formal enforcement action. 101   However it 
+should be emphasized that this reluctance is independent of the presence or 
+absence of principles; the same has been said of regulators in other systems 
+characterised by detailed rules, for example in Canadian securities regulation. 102   
+PBR will not of itself turn ‘soft’ regulators into hard enforcers, but neither will 
+detailed rules.  On the other hand, regulators can ‘toughen’ their approach to 
+                                                      
+99  See the TCF cluster reports, available at http://www.fsa.gov.uk/Pages/Doing/Regulated/tcf/cluster/ 
+index.shtml. 
+100  J. Black and R. Nobles, ‘Personal Pension Misselling: The Causes and Lessons of Regulatory Failure’ 
+(1998) 61 Modern Law Review  789. 
+101  K. Hawkins, Environment and Enforcement (Oxford: Oxford University Press, 1984). 
+102  There have been a number of reports criticising the lax enforcement of Canadian securities regulators; 
+see for example P. Puri, Enforcement Effectiveness in the Canadian Capital Markets  (Commissioned by the 
+Capital Markets Institute, June 2005); P. Puri and M. Condon, ‘The Role of Compliance in Securities 
+Regulatory Enforcement’ Canada Steps Up  Research Study Commissioned by the Task Force to 
+Modernize Securities Legislation in Canada, Toronto, 2006.  
+ 
+ 
+Julia Black                                                    Forms and Paradoxes of Principles Based Regulation  
+ 
+ 31  
+enforcement and supervision independently of any changes in the rules or 
+sanctions available. 103  
+However, regulators under a PBR system may be more prone to encounter 
+what we may term the supervisory and enforcement paradox if there is little 
+internal appetite or little external political support for strong enforcement 
+action. 104   Principles have to be enforced to give the regime some credibility, 
+particularly in the face of criticisms that they signify a ‘weak’ regulatory regime.  
+However, tough enforcement has its drawbacks.  Its effect on principles was noted 
+above.  But it can raise hostility to the regulatory regime.  This can be politically 
+significant, irrespective of the effect it has on firms’ behaviour.   Parker, for 
+example, argues that regulators can fall into a ‘compliance trap’ where tough 
+enforcement action is contested by firms if regulators lack political support for the 
+moral seriousness of the law they must enforce.  In these circumstances, regulators 
+prefer to avoid conflict by adopting a softer approach to enforcement.  Parker’s 
+focus was on political support from the political institutions of the legislature and 
+executive, but it is suggested that other sources of support can also be relevant – 
+notably from the media and from senior management and board members within 
+the regulatory organization itself.   
+PBR is vulnerable to tough enforcement, but may also be particularly 
+susceptible to the compliance trap.  Principles, as noted, are open to a range of 
+interpretations; in negotiating compliance with a principle, even more so than with 
+a detailed rule, the regulator has to rely on the firm according to it an interpretive 
+authority to determine the final meaning of the rule (even if in formal terms this 
+authority may lie elsewhere, for example with the courts).  In other words the 
+regulator has to rely on the firm accepting that what the regulator says, goes.  
+Firms, as we know, may contest this.  For this reason, detailed rules have been 
+found to be used more effectively than Principles to persuade recalcitrant or 
+sceptical firms to comply. 105   The conversation between official and firm is then 
+not ‘but this is what we (the regulator) thinks “a safe system of work” requires’  
+but ‘the rule says your fire doors have to be this size’.  The scope for debate is 
+clearly quite different; as is the relative certainty of the outcome of any 
+enforcement action.   
+The enforcement paradox is thus that taking enforcement action on the basis 
+of breach of the principles is necessary to maintain the credibility of the regime 
+and to gain the benefits of principles, from the regulators and potentially broader 
+stakeholders’ viewpoint, but enforcement may be under- or over-provided.  
+Enforcement action may be compromised if the regulator lacks political support 
+needed to impose sanctions for a breach of a principle.  On the other hand, a 
+                                                      
+103  An example is the change in APRA’s approach to supervision and compliance post HIH, 
+notwithstanding the absence of any legislative changes: see J. Black, ‘Managing Regulatory Risks and 
+Defining the Parameters of Blame: the Case of the Australian Prudential Regulation Authority’ (2006) 28 
+Law and Policy 1. 
+104  C. Parker. ‘The Compliance Trap – The Moral Message in Regulatory Enforcement’ (2006) 40(3) Law 
+and Society Review 591. 
+105  Baldwin, n 54 above. 
+           13/2008 
+ 
+ 32  
+highly punitive enforcement regime is likely to result in the transformation of PBR 
+into a system of detailed rules.  
+ 
+PARADOX 5:  THE INTERNAL MANAGEMENT PARADOX : PBR  CAN PROVIDE 
+FLEXIBILITY FOR INTERNAL CONTROL SYSTEMS TO DEVELOP BUT CAN 
+OVERLOAD THEM  
+ 
+Just as different types of rules can help or hinder the supervision and compliance 
+activities of regulators, they can help or hinder the activities of compliance officers 
+and others charged with compliance functions, including ‘gatekeepers’ such as 
+auditors and legal advisors.  Detailed, precise rules can help discourage non-
+compliant behaviour: they can help regulators, compliance officers and 
+gatekeepers say ‘no’ to firms, at least when the opportunities for creative 
+compliance are not available or clients are unaware of the precise rules. 106   
+Detailed rules can potentially be used more effectively than Principles to persuade 
+recalcitrant or sceptical firms (or internal management) that they should change 
+their behaviour.  Detailed rules can thus empower supervisors, and indeed internal 
+compliance officers, in certain circumstances, whereas Principles will not, as 
+debates can always be had about their interpretation. 107    
+Again, the issue of weak internal compliance cannot be itself resolved by the 
+use of detailed rules. Having detailed rules does not mean that internal compliance 
+is more effective; indeed the extensive studies which have been done of internal 
+compliance find the form of the rules within the regulatory regime irrelevant to 
+the development of effective internal compliance systems. 108    
+So whether there are principles or detailed rules does not of itself mean 
+internal compliance will be strong or weak.  However PBR puts a different type of 
+strain on compliance systems than a system of detailed rules.  One consequence of 
+moving to a more principles-based approach is that compliance is called upon to 
+make more judgements as to what has to be done in order to comply.  This has 
+been increasingly well recognized by the FSA.  In its April 2007 paper, the FSA 
+emphasized the changing role for compliance that the move to PBR entailed. 109   
+The compliance function becomes central, and requires a different mind set and 
+skill set from that required to ensure compliance with detailed rules – from box 
+ticking to exercises of judgement and the development of strategic vision. 
+PBR can, in this respect, empower compliance functions, but arguably only if 
+they are already strong within the organisation.  There is evidence that many 
+compliance functions are not ready to take on this role, however.  As a result, PBR 
+may not stimulate and strengthen those functions but will rather overload them.  
+                                                      
+106  M.W. Nelson, “Behavioural Evidence on the Effects of Principles- and Rules-Based Standards”  (2003) 17 (1) 
+American Accounting Association  91. 
+107  ibid  for examples. 
+108  At least implicitly, for they never figure in the discussions.  For review and discussion see Parker, n 32 
+above.  
+109  FSA, PBR , 17-18. 
+ 
+ 
+Julia Black                                                    Forms and Paradoxes of Principles Based Regulation  
+ 
+ 33  
+A recent survey by PwC, Protecting the Brand , found that 30% of financial 
+institutions stated that their boards’ incomplete acceptance or understanding of 
+the role of compliance was a significant hurdle to achieving compliance. 110   
+Moreover, over 40% of financial institutions said that their systems for managing 
+operational risk, including compliance and legal risk, were significantly more 
+underdeveloped than their systems for managing quantitative risks such as market 
+or credit risk.   Thus PBR, at least full PBR, is fundamentally reliant on the 
+development of sophisticated and judgement-based compliance systems.  It can 
+enhance the role of those that are already strong, but at the same time may 
+overload functions which are already underdeveloped and in a relatively weak 
+position within their own firms: the internal management paradox. 
+ 
+PARADOX 6:  THE ETHICAL PARADOX : PBR  CAN FACILITATE A MORE ETHICAL 
+APPROACH BUT IT COULD RESULT IN AN EROSION OF ETHICS  
+ 
+The ethical paradox lies partly in full PBR itself and partly in its co-junction with 
+risk management strategies within firms on the one hand, and with risk based 
+approaches to supervision by the regulator on the other.   The ethical paradox is 
+that PBR can enhance the role of ethics in business decisions, but in requiring 
+firms to make a judgement on what they have to do to comply, PBR requires firms 
+to run the risk that they may make the wrong call.  PBR thus requires compliance 
+to become risk managers – in this case managers of interpretive risk, the risk of a 
+wrong interpretation, and any associated risk to the firm stemming from 
+enforcement action, such as financial loss or reputational damage.  But when 
+compliance becomes a matter of risk management, non-compliance becomes an 
+option.  In becoming risk managers, compliance personnel have to accept that 
+there is a risk of non-compliance.  Someone within the firm then has to assess 
+whether the level of risk in any particular instance is one the firm is prepared to 
+run.  .Indeed, performing risk / cost trade offs with respect to compliance is 
+advocated by leading consulting firms as a key stage in the compliance risk 
+management process. Firms are told to decide on the regulatory outcomes that 
+they wish to deliver, and the risk / cost trade off in doing so 111 .  In other words, 
+they should assess what level of non-compliance they are prepared to risk, and 
+what the potential cost of enforcement action and reputational damage may be of 
+(detected) non-compliance.  Firms are warned that adopting a low appetite for 
+compliance risk could mean that the firm ends up with an internal compliance 
+manual which is longer than the FSA’s rule book. 112   The FSA is itself urging firms 
+to take a ‘risk based approach’ to compliance in certain areas, notably money 
+                                                      
+110  PwC, Protecting the Brand . 
+111  E.g. Deloitte, Principles Based Regulation: What Firms Need to do Now (July 2007) available at 
+http://www.deloitte.com/dtt/cda/doc/content/UK_FS_PrinciplesBasedRegulation.pdf (accessed 18th 
+June 2008).  See also A. Whittaker, ‘Lawyers as Risk Managers’ (2003) 18(1) BJIBFL 5 (Andrew Whittaker 
+is the FSA’s General Counsel). 
+112  ibid . 
+           13/2008 
+ 
+ 34  
+laundering, and under the TCF initiative, where firms have been advised to adopt 
+a risk based approach to the compliance monitoring of their sales advisors. 113  
+The potential ethical paradox is thus that PBR can facilitate the development 
+of ethical approaches to compliance, but the greater interpretive risk that it 
+imposes on firms can mean that ethics become compromised.  To reiterate, 
+interpretive risk is the risk that their interpretation and application of the 
+principles will not be approved by the regulator.   To the extent that compliance is 
+associated in practice within firms with risk management methodologies, as it 
+increasingly is in financial firms, 114  this may run counter to one of the potential 
+advantages of PBR, which is its ability to foster a more ethical culture within firms.  
+For one of the potential positive effects of PBR is to prevent game playing and 
+thus foster an approach which seeks, if not to ‘go beyond’ compliance, at least to 
+go beyond minimal compliance.  In other words, to develop a responsible and 
+ethical culture focused on achieving certain outcomes.   Yet there is a significant 
+argument that risk management approaches effectively kill ethics, for two reasons.  
+First, they mechanise them, reducing them to processes to be followed rather than 
+judgements to be made.  Secondly in making non-compliance an option, the 
+decision of what to do becomes based on whether or not one will be caught for 
+non-compliance and if so, whether the firm can manage the consequences in such 
+a way as to minimize the reputational or financial damage that may result.   
+There is a growing body of literature on ethics and risk management within 
+law firms, for example, which argues that risk management systems imperil 
+lawyers’ ethical judgement and moral reasoning.115  When lawyers become risk 
+managers, they approach the task of managing compliance risks with non-
+compliance as a viable option. 116   The phenomenon is not necessarily confined to 
+lawyers.  Rosen, writing about the role of auditors in Enron, argued that ‘as 
+compliance decisions are understood as risk management decisions, serious 
+conflicts of interest emerge between the normative idea of auditors and the reality 
+of their business, in which compliance partners sell risky compliance’. 117   Risk 
+management systems themselves are sold on the rhetoric of opportunity, 
+enterprise and value creation. 118   When based on assessments of risk, compliance 
+decisions are no longer based on a wider consideration of what would be the 
+course of action that would best uphold the relevant principles of conduct in the 
+circumstances.  In other words, in deciding on a course of action, the question that 
+                                                      
+113  FSA, Quality of Advice Process in Firms Offering Financial Advice: Considerations for Treating Customers Fairly  
+(FSA, July 2006). 
+114  And indeed as it is required to be within banks and EU insurance companies under the Basle II and 
+Solvency II regimes. 
+115   A useful review is provided by A. Alfieri, ‘The Fall of Legal Ethics and the Rise of Risk Management’ 
+(2008) 93(5) Georgetown Law Jnl  1; for a more optimistic picture however see C. Parker. ‘The Ethics of 
+Advising on Regulatory Compliance: Autonomy or Interdepencence?’ (2000 ) Jnl Business Ethics 339. 
+116  R. Rosen, ‘“We're All Consultants Now”: How Change in Client Organizational Strategies Influences 
+Change in the Organization of Corporate Legal Services’  (2002) 44 Ariz. L. Rev. 637, 638. 
+117  R. Rosen, Risk Management and Organizational Governance: The Case of Enron  (2003)  35 Conn. L. 
+Rev.  1157, 1180, also available at  http://papers.ssrn.com/sol3/papers.cfm?abstract_id=468168, 1180. 
+118  Power, n 32 above, 23. 
+ 
+ 
+Julia Black                                                    Forms and Paradoxes of Principles Based Regulation  
+ 
+ 35  
+is asked is not ‘is this the right thing to do?’ but instead, ‘are we likely to be able to 
+get away with it?’    
+Can using detailed rules avoid this paradox?  It does not appear so.  The 
+debate on the tension between ethics and risk management occurs in regimes in 
+which there are detailed rules as well as those in which there are principles.  Yet 
+although this phenomenon is not unique to PBR regimes, it may be enhanced by 
+them, though whether and how it does is still unclear.  Under a PBR regime, there 
+becomes greater reliance on the compliance and / or legal divisions to make 
+judgement calls, and because of uncertainties surrounding the interpretation and 
+enforcement of the principles, the risks of being found to be non-compliant may 
+be higher.  The question then is who takes the decision to take this risk (assuming 
+that a conscious decision is made)?  Frequently compliance and / or legal divisions 
+argue that it is not they that ‘own’ the risk of non-compliance but the business.  
+They can advise on the likely outcome under the regulatory regime, but it is for the 
+business to determine whether or not it wants to take this course of action or not.  
+Whether or not ‘ownership’ of the risk can really be displaced in this way is a moot 
+point.  But the issue here is that in this situation, the more that lawyers or 
+compliance managers take this approach to ‘ownership’ of that liability risk, the 
+more they shift responsibility for normative and ethical judgements to others 
+within the firm.  As Regan has argued, this shifting of ownership can induce a kind 
+of moral apathy, where the responsibility is taken by noone. 119  
+The combination of PBR and risk management may thus have the effect, at 
+the very least, of neutralizing the ethical dimension of principles based regulation 
+if not negating it.  Whether the purposive nature of principles, combined with the 
+other dimensions of substantive PBR, means that PBR can withstand these effects 
+remains to be seen. 
+ 
+PARADOX 7:  THE TRUST PARADOX – PBR  CAN GIVE RISE TO RELATIONSHIPS 
+OF TRUST , MUTUALITY AND RESPONSIBILITY BUT THESE ARE THE VERY 
+RELATIONSHIPS WHICH HAVE TO EXIST FOR IT TO BE EFFECTIVE  
+ 
+The Utopian vision invoked by PBR outlined above is one in which the regulatory 
+compact between the regulator and the regulated is re-framed.  The relationship 
+moves from one of directing and controlling to one based on responsibility, 
+mutuality and trust.  Regulators and regulatees move from a directing relationship 
+of telling and doing, to a relationship in which regulators communicate their goals 
+and expectations clearly in principles and apply those principles predictably, 
+regulatees adopt a self-reflective approach to the development of processes and 
+practices to ensure that these goals are substantively met, and, critically, both trust 
+each other to fulfil their side of this new regulatory bargain.    
+The trust paradox is that there has to be a high level of trust between all the 
+participants in the regulatory regime for PBR, in both its formal and substantive 
+                                                      
+119  See also Alfieri, n 114 above, 27; Milton C. Regan, Jr., ‘Risky Business’ (2006)  93 Georgetown LJ 8.  
+           13/2008 
+ 
+ 36  
+forms, to operate at all.  PBR can help this relationship develop; but it needs it to 
+exist before PBR can even begin to work.  The final paradox is possibly the 
+ultimate paradox of PBR.  PBR is based on trust that it alone cannot create, 
+though it can facilitate its development.  Trust in turn can help to resolve many of 
+the paradoxes identified above.  Without trust, PBR will never be operationalised; 
+it will exist only in the text of the rule books, not in the way they are implemented. 
+ 
+ 
+ 
+SUMMARY AND CONCLUSIONS 
+ 
+PBR is thus a highly complex form of regulation, belying its rhetoric of simplicity.  
+Its attractiveness to politicians lies in its malleability and in the vision it evokes; for 
+academics it accords with all the messages of the ‘new governance’ paradigm(s).  
+The rhetoric of PBR masks, or deliberately confuses, its various forms.  PBR can 
+exist in form only; can exist in substance without the form; or where both are 
+present can exist in its full form.  Moreover, PBR may be polycentric where a 
+range of actors other than the regulator and regulated firm are enrolled in the 
+production of meanings and interpretations.   
+However PBR in its various forms is beset with a number of paradoxes, some 
+of which are inherent within it, some of which arise from its juxtaposition or 
+association with other practices, such as risk management.  Delineating the nature 
+of these paradoxes both within financial services regulation and in other regulatory 
+regimes which could be characterized as PBR regimes requires further 
+investigation.  However, in delineating the different forms of PBR and identifying 
+its paradoxes, this paper hopes to move the debate on both from the sweeping 
+rhetoric of the political debates and the relatively stagnated policy and academic 
+debate on advantages and disadvantages of principles over detailed rules.  PBR, in 
+its full form, can provide an effective, durable, resilient and goal based regulatory 
+regime; but at the same time its paradoxical nature means that it is vulnerable. 
+However, as many of these paradoxes are not necessarily avoided by using detailed 
+rules instead of principles, it is only through recognizing and exploring the 
+dynamics of these paradoxes that we can be fully aware of the potentials and 
+limitations of the use of rules in any regulatory regime, whether it is principles-
+based or not. But the ultimate paradox is that which can hold the key to resolving 
+many of the others, but which is the hardest itself to resolve.  It is that PBR can 
+help create trust, but it itself has to be founded on trust if it is ever to operate 
+effectively, if indeed at all. 
+ 

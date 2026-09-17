@@ -1,0 +1,728 @@
+=================== basis/artifacts/experience-record.md
+---
+type: artifact-typedef
+id: experience-record-typedef
+defines: experience-record
+owner: product-authority
+status: draft
+version: 3
+created: 2026-08-26
+updated: 2026-08-26
+ancestry: [definition, experience-record]
+---
+
+# Artifact type: experience-record
+
+## Identity and ancestry
+
+- **Type:** `experience-record` — one of the seven records of the
+  experience guidance corpus that the experience guidelines and the
+  interaction fitness set judge against: the vocabulary and its
+  platform mappings, the core-task list, the interaction patterns, the
+  design tokens, the hard-to-reverse classification, the persona and
+  voice, and the variations record. A record is a definition of good
+  for interactions — a table the product designer role maintains and
+  a screen (a judged check against a criteria set) reads — not prose.
+- **Produced by:** the product designer role, from user research and
+  the product's own definitions; every change is approved by the owner
+  named in the frontmatter, as for any definition. **Consumed by:** the
+  [interaction fitness set](../fitness/interaction.fitness.md)'s judge;
+  the experience guidelines' rules; Bounded Context shops building an
+  interaction; the PO role, for acceptance criteria.
+
+## Required frontmatter
+
+`type: experience-record`, `id`, `record` (one of `vocabulary`,
+`core-tasks`, `patterns`, `tokens`, `hard-to-reverse`, `persona-voice`,
+`variations` — a closed set), `owner`, `status`, `version`, `created`,
+`updated`; `maintained-by: lead-product-designer`. Wherever a record
+names interaction types it uses the closed token set `cli`, `tui`,
+`gui`, `api` (API and SDK), `conversational`, `voice`, `document` —
+the glossary's interaction types, one token each, or `every type`
+where a column admits it.
+
+## Required sections
+
+1. An **opening** stating which record this is, what reads it, and
+   what an entry means.
+2. **Entries** — one table, columns fixed per record kind, every kind
+   ending in `status` (`evidenced` — the source is a user test,
+   measured use, or a platform guideline; for `variations`, a recorded
+   reason — or `hypothesis` — the entry is proposed from a product
+   definition or by design judgment and awaits evidence) and, except `variations`, `source`:
+   - `vocabulary`: term · meaning ("see glossary" for a glossary term)
+     · platform mappings (type: word, only where the platform's word
+     differs) · source · status.
+   - `core-tasks`: task · what a person or agent accomplishes ·
+     interaction types it holds on (every type, unless the next column
+     gives a reason) · types it is removed from, with the reason ·
+     options every type must offer · source · status.
+   - `patterns`: pattern · where it applies · the shape (in words) ·
+     platform guideline it follows, by name · source · status.
+   - `tokens`: token · value · used for · source · status.
+   - `hard-to-reverse`: a product action · why it is hard to reverse ·
+     what the assistant states before it · source · status.
+   - `persona-voice`: dimension or trait · setting · when it varies ·
+     source · status.
+   - `variations`: rule varied · interaction type · the variation · the
+     reason · recorded by (the guideline or the role; this record's
+     evidence is the reason, so it carries no source column) · status.
+   A record with no entries yet says so in one sentence under the
+   heading. The screen's verdicts: a record that does not exist —
+   "undecidable: record absent"; a record with no entry for what the
+   rule needs — "undecidable: record empty"; an entry marked
+   `hypothesis` — "undecidable: entry is a hypothesis". Each is a
+   finding against the corpus, never a pass and never a finding
+   against the delivery.
+3. **Checks** — which guideline rules and fitness scenarios read this
+   record: the document linked and the rule or scenario number.
+
+## Rules
+
+- An entry's `source` names the evidence for an `evidenced` entry (a
+  user test, measured use, a platform guideline) or the origin of a
+  `hypothesis` entry (a product definition, or "design judgment");
+  never a stakeholder's or maker's preference presented as evidence
+  (`evidence-not-opinion`).
+- A term in the vocabulary that is also in the
+  [glossary](../glossary.md) carries the glossary's meaning, written
+  "see glossary"; the vocabulary adds the platform mappings.
+- The variations record is the one home for a per-type departure from
+  a corpus rule (`consistent-not-uniform` bullet 4).
+
+## Commitment (Definition of Done)
+
+A record is done when the screen that reads it can decide every rule
+that names it without asking the product designer role — every entry
+the rule needs present and `evidenced`. **Consequence
+on failure:** the rules that name it return the applicable
+undecidable verdict — record absent, record empty, or entry is a
+hypothesis — and every interaction they screen carries that finding.
+
+## Sources
+
+Design-system practice (Atlassian's tokens as "the single source of
+truth"; GOV.UK's design system contribution model); Nielsen Norman
+Group's tone-of-voice dimensions (persona-voice); the experience
+principle set; the experience guidelines that name each record.
+
+## Derived review checklist
+
+- `record` is one of the seven; `maintained-by` present. *(§Required frontmatter)*
+- The table's columns match the record kind. *(§Required sections 2)*
+- Every entry carries a status, and a source that is evidence or a `hypothesis` mark; variations carry a reason instead of a source. *(§Required sections 2; §Rules)*
+- Interaction types use the closed token set. *(§Required frontmatter)*
+- The Checks section names at least one rule or scenario. *(§Required sections 3)*
+
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+| 1 | 2026-08-26 | update | Authored by owner direction so the corpus records the experience guidelines judge against have a definition before their instances; seven record kinds, one table shape each. |
+| 1 | 2026-08-26 | review | Screened with the seven instances: findings — interaction-type tokens undefined; evidence-not-opinion not applied to the records (seeds enforceable as evidence); no verdict for a present-but-empty record; variations had no source column for the checklist to read; rule 2 contradicted the meaning column; who approves amendments unclear. |
+| 2 | 2026-08-26 | update | Repairs: closed token set; a status column (evidenced / hypothesis) on every kind with the screen's three undecidable verdicts; variations' reason stands in for source; "see glossary" for glossary terms; owner approves every change; Checks cite document and number. |
+| 2 | 2026-08-26 | review | Re-screened: findings — the commitment named one of three verdicts; variations could not be evidenced under the status definition; rule 1 and the status definition disagreed on source; "every type" not admitted by the token rule. |
+| 3 | 2026-08-26 | update | all four aligned; screen introduced. |
+=================== basis/experience/vocabulary.md
+---
+type: experience-record
+id: experience-vocabulary
+record: vocabulary
+owner: product-authority
+status: draft
+version: 2
+created: 2026-08-26
+updated: 2026-08-26
+maintained-by: lead-product-designer
+---
+
+# Experience record: vocabulary
+
+The product's one vocabulary — the word every interaction type uses
+for each thing and action — with the platform mappings the
+`consistent-not-uniform` principle allows. Read by the
+[common experience guideline](../guidelines/experience-common.md)
+rule 1 and the
+[interaction fitness set](../fitness/interaction.fitness.md) scenario
+1. An entry means: this is the word; an interaction using another is a
+finding unless the mapping column records the platform's word for that
+type. Glossary terms carry the glossary's meaning. Every entry is a
+hypothesis until user research confirms the person-facing word; the
+screen returns "undecidable: entry is a hypothesis" for it until then.
+
+## Entries
+
+| Term | Meaning | Platform mappings (type: word) | Source | Status |
+|---|---|---|---|---|
+| Bounded Context | see glossary | none recorded | glossary | hypothesis |
+| shop | see glossary | none recorded | glossary | hypothesis |
+| run | see glossary | none recorded | glossary | hypothesis |
+| hold, resume, cancel | the actions that move a run between its states (see glossary: hold) | none recorded | glossary | hypothesis |
+| ask | see glossary | none recorded | glossary | hypothesis |
+| clarify | see glossary | none recorded | glossary | hypothesis |
+| acceptance scenario | see glossary | none recorded | glossary | hypothesis |
+| brief | a bounded statement of a problem and its scope for a shop | none recorded | brief typedef | hypothesis |
+| decision record | the record of one product-level decision | none recorded | product-decision-record typedef | hypothesis |
+| backlog | the ordered list of requirements within the framing | none recorded | backlog-order typedef | hypothesis |
+| framing | see glossary | none recorded | glossary | hypothesis |
+| contract | see glossary | none recorded | glossary | hypothesis |
+| check | the screen of an output against its criteria and the decision on it | none recorded | po-output-check process | hypothesis |
+
+## Checks
+
+[Common experience guideline](../guidelines/experience-common.md)
+rule 1; [interaction fitness set](../fitness/interaction.fitness.md)
+scenario 1.
+
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+| 1 | 2026-08-26 | update | Seeded from the glossary and the approved definitions. |
+| 1 | 2026-08-26 | review | Screened: findings — invented CLI mappings for a command line that does not exist; meanings drifting from the glossary; "scenario" not the defined term; a person-facing column promised and absent. |
+| 2 | 2026-08-26 | update | Repairs: mappings removed; glossary terms say "see glossary"; acceptance scenario used; every entry marked hypothesis pending user research. |
+| 2 | 2026-08-26 | review | Re-screened: clean. |
+=================== basis/experience/core-tasks.md
+---
+type: experience-record
+id: experience-core-tasks
+record: core-tasks
+owner: product-authority
+status: draft
+version: 3
+created: 2026-08-26
+updated: 2026-08-26
+maintained-by: lead-product-designer
+---
+
+# Experience record: core-task list
+
+The tasks a person or an agent must be able to complete wherever the
+product is reached, and the options every interaction type offering a
+task must present. Read by the
+[common experience guideline](../guidelines/experience-common.md)
+rule 4, the [interaction fitness set](../fitness/interaction.fitness.md)
+scenario 4, and the
+[acceptance-scenarios fitness set](../fitness/acceptance-scenarios.fitness.md)
+scenario 5. An entry means: every interaction type must complete the
+task with every option named, except a type the removal column names
+with its reason. Every entry is a hypothesis seeded from what the basis
+processes have a person or agent do; user research is to confirm the
+tasks, and the product designer role settles the removals.
+
+## Entries
+
+| Task | What is accomplished | Interaction types it holds on | Removed from, with reason | Options every type must offer | Source | Status |
+|---|---|---|---|---|---|---|
+| start a run | a process begins against a work item with its parameters | every type | document: a document cannot start a run; it links to an interaction that can | choose the process; supply parameters; see the run's id | process-definition typedef §Run lifecycle | hypothesis |
+| hold, resume, or cancel a run | a run pauses with its state kept, continues, or ends with a reason | every type | document: as above | name the run; give a reason on cancel | process-definition typedef §Run lifecycle | hypothesis |
+| answer an ask | a question a run put to a role is answered or its default accepted | every type | document: the notification carries the question and links to the interaction that answers | see the question, kind, and default; answer or accept the default | ask type | hypothesis |
+| submit output for a check | a PO artifact enters the PO output check | every type | document: as above | name the artifact and its framing | po-output-check process | hypothesis |
+| read a decision | the result of a check is read with its reasons | every type | none | see verdict, criterion or gap, reasons | check-decision type | hypothesis |
+| raise a clarify | a shop asks the lead shop a scope, vocabulary, structure, or contract question | every type | document: as above | state the question and its kind | glossary: clarify | hypothesis |
+| deliver work for reconciliation | a shop returns work against its assignment | every type | document: as above | name the assignment; attach the scenario register | reconcile-and-close process | hypothesis |
+
+## Checks
+
+[Common experience guideline](../guidelines/experience-common.md)
+rule 4; [interaction fitness set](../fitness/interaction.fitness.md)
+scenario 4;
+[acceptance-scenarios fitness set](../fitness/acceptance-scenarios.fitness.md)
+scenario 5.
+
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+| 1 | 2026-08-26 | update | Seeded from the basis processes. |
+| 1 | 2026-08-26 | review | Screened: findings — tasks removed from types with no reason, against core-task-parity; a document contradiction; every cell an unlabeled design assertion. |
+| 2 | 2026-08-26 | update | Repairs: every task holds on every type unless the removal column gives the reason; the document type's removals reasoned; every entry marked hypothesis. |
+| 2 | 2026-08-26 | review | Re-screened: findings — the document row for answering an ask contradicted the removal reasoning. |
+| 3 | 2026-08-26 | update | document removed from that task with the notification's role stated. |
+=================== basis/experience/patterns.md
+---
+type: experience-record
+id: experience-patterns
+record: patterns
+owner: product-authority
+status: draft
+version: 2
+created: 2026-08-26
+updated: 2026-08-26
+maintained-by: lead-product-designer
+---
+
+# Experience record: interaction patterns
+
+The recurring shapes an interaction takes, per interaction type, and
+the platform guideline each follows. Read by the
+[common experience guideline](../guidelines/experience-common.md)
+rule 2, the [graphical guideline](../guidelines/experience-gui.md)
+rule 1, and the
+[interaction fitness set](../fitness/interaction.fitness.md) scenario
+2. An entry means: an interaction of that type with that need takes
+this shape, or records a variation. Seeded with the patterns the
+approved guidelines already name; each is a hypothesis until an
+interaction of the type exists and the shape is tested.
+
+## Entries
+
+| Pattern | Where it applies | The shape | Platform guideline it follows | Source | Status |
+|---|---|---|---|---|---|
+| error message | every type | what happened, in the vocabulary; the cause; one next step; identifiers alongside | Command Line Interface Guidelines (clig.dev) "Errors"; WCAG 2.2 success criteria 3.3.1 and 3.3.3 for gui | common guideline rule 3 | hypothesis |
+| confirmation before the hard-to-reverse | conversational, voice; gui; cli when interactive | state the action and its irreversibility; ask; proceed only on yes; a flag or setting to pre-answer | Microsoft's Guidelines for Human-AI Interaction, G16; clig.dev "Interactivity" | assistant guideline rule 2; cli guideline rule 2 | hypothesis |
+| help | cli, tui; conversational, voice | purpose in one line; the common path with an example; where the rest is | clig.dev "Help"; Microsoft's Guidelines for Human-AI Interaction, G1 | cli guideline rule 3; assistant guideline rule 1 | hypothesis |
+| structured output on request | cli; api | a `--json` or equivalent form beside the human-readable one | clig.dev "Output" | cli guideline rule 1 | hypothesis |
+| primary action placement | gui | one primary action per screen, placed where the platform's guideline puts it | the platform's published interface guidelines — to be named per platform when a graphical interaction exists | gui guideline rule 1 | hypothesis |
+
+## Checks
+
+[Common experience guideline](../guidelines/experience-common.md)
+rule 2; [graphical guideline](../guidelines/experience-gui.md) rule 1;
+[interaction fitness set](../fitness/interaction.fitness.md) scenario
+2.
+
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+| 1 | 2026-08-26 | update | Seeded with the five patterns the approved guidelines name. |
+| 1 | 2026-08-26 | review | Screened: findings — the GUI pattern named no guideline; HAX unexplained; commitments for interactions that do not exist unlabeled. |
+| 2 | 2026-08-26 | update | Repairs: the GUI guideline marked to be named per platform; the human-AI guidelines named in full; every entry marked hypothesis; tokens from the closed set. |
+| 2 | 2026-08-26 | review | Re-screened: clean. |
+=================== basis/experience/tokens.md
+---
+type: experience-record
+id: experience-tokens
+record: tokens
+owner: product-authority
+status: draft
+version: 2
+created: 2026-08-26
+updated: 2026-08-26
+maintained-by: lead-product-designer
+---
+
+# Experience record: design tokens
+
+The named values every visual decision in a graphical interaction
+references — color, spacing, type — the single source of those
+decisions. Read by the [graphical guideline](../guidelines/experience-gui.md)
+rule 2 and the [interaction fitness set](../fitness/interaction.fitness.md)
+scenario 6. An entry means: a component uses the token, never the
+literal value.
+
+## Entries
+
+No entries yet: the product has no graphical interaction, so no token
+has been decided. The rule that reads this record returns
+"undecidable: record empty" — a finding against the corpus — until the
+product designer role authors the first tokens with the first graphical
+interaction.
+
+| Token | Value | Used for | Source | Status |
+|---|---|---|---|---|
+
+## Checks
+
+[Graphical guideline](../guidelines/experience-gui.md) rule 2;
+[interaction fitness set](../fitness/interaction.fitness.md) scenario
+6.
+
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+| 1 | 2026-08-26 | update | Created empty by design: no graphical interaction exists. |
+| 1 | 2026-08-26 | review | Screened: the rationale claimed the "record absent" verdict for a record that is present. |
+| 2 | 2026-08-26 | update | Repair: the typedef's "record empty" verdict named. |
+| 2 | 2026-08-26 | review | Re-screened: clean. |
+=================== basis/experience/hard-to-reverse.md
+---
+type: experience-record
+id: experience-hard-to-reverse
+record: hard-to-reverse
+owner: product-authority
+status: draft
+version: 3
+created: 2026-08-26
+updated: 2026-08-26
+maintained-by: lead-product-designer
+---
+
+# Experience record: hard-to-reverse actions
+
+The product actions an assistant interaction must state and confirm
+before taking, and what it states. Read by the
+[experience principles](../experience-principles.md)
+`control-stays-with-the-person` bullet 2, the
+[assistant guideline](../guidelines/experience-assistant.md) rule 2,
+the patterns record's confirmation pattern, and the
+[interaction fitness set](../fitness/interaction.fitness.md) scenario
+6. An entry means: an assistant that takes this action without first
+stating it and receiving confirmation fails the screen. Seeded from
+the product actions the basis defines as terminal or externally
+visible; each is a hypothesis until the product designer role, who
+keeps this record under the principle's implication, confirms it with
+the solutions architect role's account of the product's shape.
+
+## Entries
+
+| Action | Why it is hard to reverse | What the assistant states before it | Source | Status |
+|---|---|---|---|---|
+| cancel a run | cancelled is a terminal run state; continuing means a new run | the run, its state, and that it will not resume | glossary: run, hold | hypothesis |
+| publish a contract change | a contract is a named, versioned promise; consumers may already depend on it | the contract, its version, and who consumes it | glossary: contract; architecture principles `contracts-between-contexts` | hypothesis |
+| apply an authority decision to governed artifacts | the change is recorded in Document History and read by every later activity | the artifacts changed and the entry to be written | review-conversation process, apply step | hypothesis |
+| resolve an ask by default | the asking run proceeds on the default without an answer | the question, the default, and that the run resumes on it | ask type | hypothesis |
+
+## Checks
+
+[Assistant guideline](../guidelines/experience-assistant.md) rule 2;
+[interaction fitness set](../fitness/interaction.fitness.md) scenario
+6; the [patterns record](patterns.md)'s confirmation pattern.
+
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+| 1 | 2026-08-26 | update | Seeded from the basis's terminal and externally visible actions. |
+| 1 | 2026-08-26 | review | Screened: findings — two shop operating actions (push, close-out) listed as product actions; the cancel cell unsourced; the record's keeper misassigned to the architect. |
+| 2 | 2026-08-26 | update | Repairs: shop actions removed; cancel grounded in the glossary's run states; the designer role keeps the record with the architect's input; every entry marked hypothesis. |
+| 2 | 2026-08-26 | review | Re-screened: findings — "with a reason" attributed to the glossary, which does not carry it. |
+| 3 | 2026-08-26 | update | the cancel cell reduced to what the glossary says. |
+=================== basis/experience/persona-voice.md
+---
+type: experience-record
+id: experience-persona-voice
+record: persona-voice
+owner: product-authority
+status: draft
+version: 2
+created: 2026-08-26
+updated: 2026-08-26
+maintained-by: lead-product-designer
+---
+
+# Experience record: persona and voice
+
+The one personality the product speaks with and the tone it varies
+within it, on Nielsen Norman Group's four dimensions of tone of voice.
+Read by the [assistant guideline](../guidelines/experience-assistant.md)
+rule 6, the [document guideline](../guidelines/experience-document.md)
+rule 3, and the [interaction fitness set](../fitness/interaction.fitness.md)
+scenario 6. An entry means: text in any interaction type is written at
+this setting, varied only as the "when it varies" column allows. The
+dimensions are NN/g's; every setting is a hypothesis proposed by design
+judgment until user research confirms it.
+
+## Entries
+
+| Dimension or trait | Setting | When it varies | Source | Status |
+|---|---|---|---|---|
+| persona | the product speaks as itself — "I" for the assistant, never presenting as a person | never | assistant guideline rule 6; Google's conversation design guidelines (persona) | hypothesis |
+| formal – casual | plain and direct, neither formal nor casual | never | design judgment | hypothesis |
+| serious – funny | serious | never | design judgment | hypothesis |
+| respectful – irreverent | respectful | never | design judgment | hypothesis |
+| matter-of-fact – enthusiastic | matter-of-fact | a completed task may be acknowledged in one clause, never celebrated | design judgment | hypothesis |
+| on error (trait) | the same voice, shorter: what happened, the cause, the next step | never | common guideline rule 3 | hypothesis |
+
+## Checks
+
+[Assistant guideline](../guidelines/experience-assistant.md) rule 6;
+[document guideline](../guidelines/experience-document.md) rule 3;
+[interaction fitness set](../fitness/interaction.fitness.md) scenario
+6.
+
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+| 1 | 2026-08-26 | update | Seeded on NN/g's four tone dimensions. |
+| 1 | 2026-08-26 | review | Screened: findings — settings sourced to the base writing style, which carries no tone position, and to NN/g, which defines the axis not the setting; the error trait reversed rule 3's order. |
+| 2 | 2026-08-26 | update | Repairs: settings sourced as design judgment and marked hypothesis; the error trait follows rule 3's order. |
+| 2 | 2026-08-26 | review | Re-screened: clean. |
+=================== basis/experience/variations.md
+---
+type: experience-record
+id: experience-variations
+record: variations
+owner: product-authority
+status: draft
+version: 2
+created: 2026-08-26
+updated: 2026-08-26
+maintained-by: lead-product-designer
+---
+
+# Experience record: variations
+
+The one home for a per-type departure from a corpus rule, as
+`consistent-not-uniform` bullet 4 allows. Read by the
+[common experience guideline](../guidelines/experience-common.md)
+rule 2, the [interaction fitness set](../fitness/interaction.fitness.md)
+scenario 2, and every rule that says "or a recorded variation". An
+entry means: for that interaction type, the rule reads as varied, for
+the reason given; an unrecorded departure is a finding. This record's
+evidence is the reason, so it carries no source column.
+
+## Entries
+
+One variation stands, carried from the API guideline: a stable error
+code is required where the principle permits one alongside.
+
+| Rule varied | Interaction type | The variation | The reason | Recorded by | Status |
+|---|---|---|---|---|---|
+| `errors-guide-recovery` bullet 2 (an identifier MAY stand alongside) | api | a stable, documented code is required beside the explanation | an agent plans on the code, not the prose; a tightening the principle allows | [API guideline](../guidelines/experience-api.md) rule 3 | evidenced |
+
+## Checks
+
+[Common experience guideline](../guidelines/experience-common.md)
+rule 2; [interaction fitness set](../fitness/interaction.fitness.md)
+scenario 2.
+
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+| 1 | 2026-08-26 | update | Created with the one variation the approved guidelines already record. |
+| 1 | 2026-08-26 | review | Screened: clean. |
+| 2 | 2026-08-26 | update | Status column added per the typedef's amendment; the variation is evidenced by its recorded reason. |
+| 2 | 2026-08-26 | review | Re-screened: clean. |
+=================== basis/guidelines/experience-common.md
+---
+type: quality-guideline
+id: experience-common-guideline
+target-type: interaction
+interaction-type: all
+owner: product-authority
+status: approved
+approved: 2026-08-26
+version: 3
+created: 2026-08-26
+updated: 2026-08-26
+---
+
+# Guideline: every interaction
+
+**Voice principle.** Design every interaction for the person or agent
+who arrives from another part of the product and expects the same
+words, the same tasks, an error that helps, and an interface they can
+use — whichever way they reached it.
+
+**Highlights (the layer compiled into generating context):** the
+vocabulary's word, or a recorded platform mapping · the platform's
+idiom for form, departures recorded · every error: what happened, in
+the vocabulary, and what next; identifiers alongside · every core task
+and every option offered elsewhere · the accessibility target met and
+attached before delivery.
+
+**Layers:** this guideline applies the
+[experience principles](../experience-principles.md) to every
+interaction type; the per-type experience guidelines (command line,
+API, graphical, assistant, document) layer their idiom on it and never
+override it, as every prose guideline layers on the
+[base writing style](base-writing-style.md), which governs every
+string an interaction shows. Precedence when rules conflict: an
+approved principle beats the
+[quality-guideline typedef](../artifacts/quality-guideline.md), which
+beats this guideline, which beats a per-type guideline; the platform
+guideline the corpus names for a type governs that type's form, and
+the platform's word governs a name where `consistent-not-uniform`
+bullet 3 says so. Every rule feeds the
+[interaction fitness set](../fitness/interaction.fitness.md), judged by
+the product designer role. The rules here and in the per-type
+guidelines judge against corpus records the product designer role
+maintains — the vocabulary and its platform mappings, the
+variations record, the core-task list, the interaction patterns, the
+design tokens, the hard-to-reverse classification, the persona and
+voice. The records exist under
+`basis/experience/`, seeded as hypotheses; a rule whose record is
+absent, whose record lacks the entry, or whose entry is a hypothesis
+returns "undecidable" with that reason — a finding against the corpus,
+never a pass — as the experience-record typedef and the fitness set
+state.
+
+---
+
+## Rules
+
+**1. The vocabulary's word, or a recorded platform mapping.**
+Before: the web interface says "Remove", the command is `delete`, the
+assistant says "drop".
+After: the vocabulary names the action once; each interaction type uses
+that name unless the platform guideline the corpus names for it uses
+another, and the mapping is recorded in the vocabulary.
+*Test:* list every noun and verb the interaction shows or accepts
+against the vocabulary and its recorded mappings. *Criterion:* every
+term is the vocabulary's or a recorded mapping. *Decision:* yes/no per
+interaction, or undecidable per Layers.
+*Derived check:* judged — interaction fitness scenario 1;
+`consistent-not-uniform` bullets 1 and 3.
+
+**2. The platform's idiom for form; departures recorded.**
+Before: a command line whose subcommands mimic the web navigation; a
+native app whose dialogs follow the web page instead of the operating
+system.
+After: form follows the platform guideline the corpus names for the
+type; the product designer role records a departure in the corpus
+with its reason.
+*Test:* compare the interaction's form with the named platform
+guideline. *Criterion:* every departure is a recorded variation.
+*Decision:* yes/no per interaction.
+*Derived check:* judged — interaction fitness scenario 2;
+`consistent-not-uniform` bullets 2 and 4.
+
+**3. Every error: what happened, in the vocabulary, and what next.**
+Before: `Error: ENOENT`; a red banner "Invalid input"; "Sorry, I didn't
+get that."
+After: the thing named in the vocabulary, the cause, and at least one
+next step; an internal identifier alongside — in a log, a verbose
+mode, or a field beside the message — never in place.
+*Test:* trigger each error path. *Criterion:* the message names what
+happened in the vocabulary and gives a next step; identifiers stand
+alongside only. *Decision:* yes/no per error.
+*Derived check:* judged — interaction fitness scenario 3;
+`errors-guide-recovery` bullets 1 and 2. Per-type guidelines say where
+the message goes (at the field; in the response body; as a repair
+turn — the assistant guideline's rule 5).
+
+**4. Every core task, and every option offered elsewhere.**
+Before: an export only the command line offers; a chat assistant with
+three choices of which the screen shows one.
+After: every task on the corpus's core-task list completes in the
+interaction, and every option another interaction type offers for the
+task is present.
+*Test:* walk the core-task list and the options other types offer.
+*Criterion:* every task on the list completes; every option is
+present. A task the type cannot carry is removed from the list for
+that type by the product designer role, with the reason recorded — the
+principle's own implication — never waived here.
+*Decision:* yes/no per interaction.
+*Derived check:* judged — interaction fitness scenario 4;
+`core-task-parity` bullets 1 and 2.
+
+**5. The accessibility target, met and attached, before delivery.**
+Before: an interaction delivered with accessibility "to follow".
+After: the delivery carries the accessibility result at the target the
+corpus names for the type — WCAG 2.2 AA for web, graphical, and
+document types; the WCAG2ICT application with its applicability record
+for command line, terminal, voice, and assistant types.
+*Test:* read the delivery's attached accessibility result. *Criterion:*
+it exists, meets the target, and carries the applicability record for
+a non-web type; the BC-shop that delivered the interaction attached it.
+*Decision:* yes/no per delivery.
+*Derived check:* judged — interaction fitness scenario 5;
+`accessible-by-standard` bullets 1–3.
+
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+| 1 | 2026-08-26 | update | Authored after the first screen of the five per-type experience guidelines found the vocabulary, error, accessibility, and core-task rules written five times with drifting criteria: the common rules now have one home, the per-type guidelines layer their idiom on it, and every derived check names the interaction fitness set. |
+| 1 | 2026-08-26 | review | Screened: rule 4's escape let a guideline waive a principle's MUST; the corpus records the rules depend on were unstated; a passive without actor. |
+| 2 | 2026-08-26 | update | rule 4 defers to the principle's implication (the role edits the list); the dependent corpus records listed once with the absent-record verdict; actor named. |
+| 2 | 2026-08-26 | review | Final screen (round 3): clean — every rule decidable with a named scenario and derivation; two line edits and three optional stumbles polished in place. |
+| 2 | 2026-08-26 | state | draft → approved by the owner. |
+| 3 | 2026-08-26 | update | The corpus records now exist as seeded hypotheses (basis/experience/); the dependency sentence in Layers stands for the entries, and the fitness set's verdicts now distinguish absent, empty, and hypothesis. |
+| 3 | 2026-08-26 | review | Re-screened: clean; the optional undecidable clause added to rule 1 as the pattern for the rest. |
+=================== basis/fitness/interaction.fitness.md
+---
+type: fitness-set
+id: interaction-fitness
+owner: product-authority
+status: approved
+approved: 2026-08-26
+version: 5
+created: 2026-08-26
+updated: 2026-08-26
+target-type: interaction
+judged: true
+executable: false
+judged-by: lead-product-designer
+---
+
+# Fitness set: interaction
+
+These scenarios are the conformance screen the product designer role
+runs on a delivered interaction of any interaction type against the
+experience guidance corpus — the [experience principles](../experience-principles.md),
+the [common experience guideline](../guidelines/experience-common.md),
+and the per-type guideline for the interaction's type. They are judged
+by the `lead-product-designer` role, never executed. The judge's model
+and prompt version (or the person's name) are recorded with each
+verdict. The
+[interaction conformance check](../processes/interaction-conformance-check.md)
+runs this screen at delivery. Where a
+scenario judges against a corpus record (under `basis/experience/`)
+that is absent, lacks the entry, or whose entry is marked
+`hypothesis`, the verdict is "undecidable" with that reason — record
+absent, record empty, or entry is a hypothesis — recorded as a finding
+against the corpus, never a pass.
+
+## Scenarios
+
+Scenario 1: one vocabulary, recorded mappings
+  Given every noun and verb the interaction shows or accepts
+  When each is compared with the corpus vocabulary
+  Then it is the vocabulary's word or a platform mapping the vocabulary
+  records
+
+Scenario 2: the platform's idiom
+  Given the platform guideline the corpus names for the interaction
+  type
+  When the interaction's form is compared with it
+  Then each departure is a variation the corpus records with a reason
+
+Scenario 3: errors guide recovery
+  Given each error the interaction can show
+  When it is read
+  Then it says what happened in the vocabulary and what to do next,
+  and any internal identifier stands alongside, not in place
+
+Scenario 4: core tasks and options hold
+  Given the corpus's core-task list and the options other interaction
+  types offer for those tasks
+  When the interaction is walked
+  Then every core task completes and every option offered elsewhere for
+  the task is present
+
+Scenario 5: accessible before delivery
+  Given the accessibility target the corpus names for the interaction
+  type
+  When the delivery's attached accessibility result is read
+  Then it exists, meets the target, and for a non-web type carries the
+  WCAG2ICT applicability record
+
+Scenario 6: the per-type rules hold
+  Given the per-type experience guideline for the interaction's type
+  When each of its rules' tests is run
+  Then each rule's criterion is met
+
+## Compile mapping (each Then → one judge-rubric assertion)
+
+An assertion whose corpus record is absent, empty, or whose entry is
+marked `hypothesis` returns "undecidable" with that reason, per the
+intro, in place of pass or fail.
+
+| Scenario Then | Judge-rubric assertion |
+|---|---|
+| 1 — vocabulary | "List every term that is neither the vocabulary's nor a recorded platform mapping. Empty list = pass." |
+| 2 — platform idiom | "List every departure from the named platform guideline without a recorded variation. Empty list = pass." |
+| 3 — errors | "For each error: what happened, in the vocabulary? what next? identifier alongside only? Cite any error failing one." |
+| 4 — core tasks and options | "For each core task: does it complete? For each option offered elsewhere: present? Cite any missing." |
+| 5 — accessibility | "Is the accessibility result attached, at target, with the WCAG2ICT record for a non-web type? Cite the result or its absence." |
+| 6 — per-type rules | "For each rule of the type's guideline: run its test; cite each criterion not met, or the record it needs that is absent, empty, or a hypothesis." |
+
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+| 1 | 2026-08-26 | update | Authored with the experience guidelines so that their derived checks name a check that exists: scenarios 1–5 carry the common guideline's rules, scenario 6 defers to the per-type guideline. The process that runs this screen at delivery is a filed gap owned by the product designer role. |
+| 1 | 2026-08-26 | review | Screened: the PO output check unlinked; the process gap 'filed' nowhere; scenario 6 carried a variation escape with no meaning for a per-type rule; no verdict for an absent corpus record. |
+| 2 | 2026-08-26 | update | process linked and marked not yet filed; escape removed from scenario 6; the absent-record verdict defined. |
+| 2 | 2026-08-26 | review | Final screen (round 3): clean — every rule decidable with a named scenario and derivation; two line edits and three optional stumbles polished in place. |
+| 2 | 2026-08-26 | state | draft → approved by the owner. |
+| 3 | 2026-08-26 | update | The corpus records now exist; the intro's absent-record verdict is joined by the experience-record typedef's "record empty" and "entry is a hypothesis" verdicts, each a finding against the corpus. |
+| 3 | 2026-08-26 | review | Re-screened: findings — the compile mapping carried only the absent verdict. |
+| 4 | 2026-08-26 | update | the undecidable branch stated over the table and in row 6. |
+| 5 | 2026-08-26 | update | The process that runs the screen now exists and is linked. |

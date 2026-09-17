@@ -1,0 +1,250 @@
+# Notes-2 — SQ2 (consistency across interaction types) and SQ3 (CLI / developer-facing UX as design)
+
+Gathered 2026-08-25. Status legend: **full** = opened and read in full via WebFetch (or `gh api` raw content); **partial** = only navigation/index or a sub-page opened; **unopened** = could not be opened (status given); all quotes verbatim from the opened text. Nothing below is from memory. Banned-word note: sources use "surface"/"seat" occasionally; quotes are verbatim, our own prose uses "interaction type"/"role".
+
+---
+
+## SQ2 — How consistency across interaction types is achieved
+
+### S2.1 NN/g — Design Systems 101 (Therese Fessenden, 11 Apr 2021) — **full**
+URL: https://www.nngroup.com/articles/design-systems-101/
+- "A design system is a complete set of standards intended to manage design at scale using reusable components and patterns."
+- "It creates a unified language within and between crossfunctional teams."
+- "It creates visual consistency across products, channels, and (potentially siloed) departments."
+- Style guides "contain specific implementation guidelines, visual references, and design principles for creating interfaces."
+- "Creating and maintaining a design system is a time-intensive activity which requires a dedicated team."
+- "A design system is only as effective as the team that manages it."
+- Pitfall: design systems "can become unwieldly collections of components and code" when poorly implemented.
+Relevance: the mechanism is standards + a *dedicated owning team*; consistency is explicitly cross-channel.
+
+### S2.2 NN/g — Consistency and Standards (Heuristic 4) (Rachel Krause, 10 Jan 2021) — **full**
+URL: https://www.nngroup.com/articles/consistency-and-standards/
+- "Users should not have to wonder whether different words, situations, or actions mean the same thing."
+- "Systems should adhere to both internal and external consistency — they should use the same patterns everywhere inside the system and should also follow web-, platform-, and domain-specific conventions."
+- Jakob's law: "People spend most of their time on sites other than yours, which means that they bring their expectations from other sites when they visit your site."
+- "Most application suites will list menu components in the same order or will use consistent icons for the same functions across applications."
+- "Creating a design system for your application or family of applications can help teams maintain consistency across products and services."
+- "Designing something against conventions will add to your users' cognitive load. You'll want to do this only if absolutely necessary."
+- "In most cases, maintaining consistency and meeting user expectations will outweigh breaking a convention."
+Relevance: gives the two-axis test (internal vs external consistency) — for a CLI, "external" means POSIX/GNU/terminal conventions (cf. clig.dev S3.1), not the GUI's conventions.
+
+### S2.3 NN/g — Design Principles (Maria Rosala, 2 Aug 2020) — **full**
+URL: https://www.nngroup.com/articles/design-principles/
+- "Product design principles are value statements that frame design decisions and support consistency in decision making across teams."
+- "These principles support consistency in the way decisions are being made across teams, build confidence in the decision, and eliminate fruitless debates."
+- "Each principle should be clear on what value it advocates and why. If the principle is ambiguous about what it recommends, then it could be interpreted differently."
+- "A design principle should mention why that value is important to users. By doing so it helps designers keep users at the heart of their design decisions."
+- "When you make a trade-off decision, don't just say, 'we're doing it this way because I say so'...Say that we're doing it because principle #3 tips the balance in favor of one of the options."
+- "Be careful that your principles don't conflict. For example, if there was a principle about consistency and another one about adaptability, then it would be difficult to understand how these values should be prioritized."
+Relevance: principles as the decision instrument that carries consistency *across interaction types* where no shared component library can (CLI vs GUI vs API). Matches this shop's principle-set form.
+
+### S2.4 NN/g — Seamless cross-channel / omnichannel UX (Kim Flaherty, 19 Mar 2017) — **full**
+URL: https://www.nngroup.com/articles/seamless-cross-channel/
+- "Users interact with companies and organizations through many channels, including the web, mobile and tablet applications, email, kiosks, online chat, and by speaking with customer representatives."
+- "Often users don't complete an activity in one sitting or through a single channel."
+- "Seamlessness is a quality of any crosschannel customer journey where the transitions (or handoffs) from one channel to the next involve zero or minimal overhead for the users."
+- "Five key elements of a usable omnichannel experience: Consistent, Optimized for context, Seamless, Orchestrated, and Collaborative."
+- "A truly seamless experience often requires investment in integrating backend systems to prevent roadblocks stemming back to system constraints."
+- "If the interaction cost of doing an activity overcomes its perceived value, users will abandon the task or the brand."
+Relevance: "Consistent" and "Optimized for context" are listed side by side — consistency is not sameness (cf. GOV.UK "consistent, not uniform"). Handoffs between interaction types (CLI → browser, cf. GitHub CLI S3.4) are a design object in their own right.
+
+### S2.5 NN/g — Four Dimensions of Tone of Voice (Kate Moran, Jul 2016) — **full**
+URL: https://www.nngroup.com/articles/tone-of-voice-dimensions/
+- Dimensions: "Formal vs. casual, serious vs. funny, respectful vs. irreverent, matter-of-fact vs. enthusiastic."
+- "Tone of voice is the way we tell our users how we feel about our message, and it will influence how they'll feel about our message, too."
+- "Keep your brand personality consistent, but vary the tone to fit the user's emotional state and the topic."
+- "Your tone of voice should be part of your omnichannel strategy... used when creating writing and other communications for all channels."
+- "All members of the digital product team need to think about how their piece fits within the whole."
+Relevance: voice is an interaction-type-independent consistency carrier (error messages in a CLI, API error strings, chat replies).
+
+### S2.6 GOV.UK — Government Design Principles — **full**
+URL: https://www.gov.uk/guidance/government-design-principles
+- 1 Start with user needs: "Service design starts with identifying user needs. If you don't know what the user needs are, you won't build the right thing."
+- 3 Design with data: "Let data drive decision-making, not hunches or guesswork. Keep doing that after taking your service live, prototyping and testing with users."
+- 4 Do the hard work to make it simple: "Making something look simple is easy. Making something simple to use is much harder - especially when the underlying systems are complex."
+- 6 This is for everyone: "Accessible design is good design. Everything we build should be as inclusive, legible and readable as possible."
+- 7 Understand context: "We're not designing for a screen, we're designing for people. We need to think hard about the context in which they're using our services."
+- 9 Be consistent, not uniform: "We should use the same language and the same design patterns wherever possible. This isn't a straitjacket or a rule book."
+- 10 Make things open: "We should share what we're doing whenever we can. With colleagues, with users, with the world. Share code, share designs, share ideas."
+Relevance: an external, mature principle set; #9 is the canonical phrasing of cross-interaction-type consistency; #7 justifies per-interaction-type optimisation.
+
+### S2.7 GOV.UK Design System — Contribution criteria — **full**
+URL: https://design-system.service.gov.uk/community/contribution-criteria/
+- Proposal — useful: "There is evidence that this component or pattern would be useful for many teams or services."
+- Proposal — unique: "It does not replicate something already in the Design System."
+- Publication — usable: "It has been tested in user research and shown to work with a representative sample of users, including those with disabilities."
+- Publication — consistent: "It reuses existing styles and components in the Design System where relevant."
+- Publication — "Both the guidance and any content included in examples must follow the GOV.UK style guide."
+- Publication — versatile: "The implementation is versatile enough that the component or pattern can be used in a range of different services."
+- Community — "The component or pattern must also have been tested and shown to work with a range of browsers, assistive technologies and devices."; "it has a clear owner".
+Relevance: a design system's governance is a *gate with stated criteria* (usefulness, uniqueness, evidence of usability incl. disabled users, consistency, ownership) — directly reusable as a fitness set.
+
+### S2.8 GOV.UK Design System — Community page — **full**; Working group page — **unopened (HTTP 410 Gone at both URL variants)**; GDS blog "Iterating the contribution model" (Chris Ballantine-Thomas, 31 May 2023) — **full**
+URLs: https://design-system.service.gov.uk/community/ ; https://design-system.service.gov.uk/community/design-system-working-group/ (410) ; https://designnotes.blog.gov.uk/2023/05/31/iterating-the-gov-uk-design-system-contribution-model/
+- Community page: "We depend on a strong cross-government community to ensure the Design System includes the latest research, design and development to represent and be relevant for its users."
+- Community page: the team "reviews and approves components and patterns to confirm they meet the contribution criteria."
+- Community page: "Anyone can suggest an improvement, report a bug or correct an error on our pages."
+- Blog: "In the past, we often waited for teams to approach us for proposals for patterns and components, which did not always match with the community's needs."
+- Blog: "The new prioritisation process will change that dynamic: we'll communicate what the next focus is, then ask the community to get involved."
+- Blog: "We want to take the successes of the community collaborations and make them structurally part of how we work."
+- Working-group description (secondhand, from WebSearch snippet of the 410'd page, not opened): "a multidisciplinary panel of representatives from across government" that "reviews proposals and contributions against the contribution criteria". Treat as secondhand.
+- Home Office design-system working group (opened in full, https://design.homeoffice.gov.uk/design-system/contribute/working-group): "The Home Office design system working group is a cross-functional team. It's made up of interaction and content design, user research, accessibility, and front-end development." They "decide when a discussion is ready to become a pattern or component in the design system" and "publish and update the Home Office design system".
+Relevance: governance = a central team with approval rights + criteria + a multidisciplinary review panel; the 2023 change moved from passive intake to central prioritisation (demand-pull with a stated focus).
+
+### S2.9 GOV.UK — Content design / writing guidelines — **full** (two pages)
+URLs: https://guidance.publishing.service.gov.uk/writing-to-gov-uk-standards/plan-manage-content/understand-content-design/ ; https://guidance.publishing.service.gov.uk/writing-to-gov-uk-standards/writing-guidelines/
+- "Content design starts by taking a user need and meeting it on GOV.UK in the best way possible."
+- "Good content design helps people quickly find out what they need to know or do."
+- "Good GOV.UK content is clear, written in plain English and optimised for the web."
+- "It must be accessible to anybody who needs to use it."
+- "Your GOV.UK content needs to be written to certain guidelines. This will make it easy for users to find what they need and understand it." (with an A-to-Z style guide and a "Use the right tone" section)
+Relevance: content design is a named discipline with its own style guide and sits inside the design-system working group (S2.8).
+
+### S2.10 Atlassian Design System — Foundations, Accessibility, About — **full** (three pages); Medium "Co-creating our ADS values and principles" — **unopened (HTTP 403)**
+URLs: https://atlassian.design/foundations/ ; https://atlassian.design/foundations/accessibility/ ; https://atlassian.design/get-started/about-atlassian-design-system ; https://medium.com/designing-atlassian/co-creating-our-atlassian-design-system-values-and-principles-2547a0981923 (403)
+- "The Atlassian Design System is a collection of design guidelines, foundations, tools, and components."
+- "It is built and supported by Atlassian developers, designers, and content designers."
+- "Our building blocks work together to create apps that feel familiar, cohesive, and part of a family."
+- "Design tokens are the single source of truth to name and store decisions about the user interface."
+- "Use design system components as the basis of every experience. They have inbuilt accessibility features and create consistency across apps."
+- "Use a color contrast ratio of 4.5:1 for regular text and 3:1 for large text and graphics." (= WCAG AA numbers; the page does not name a WCAG level explicitly)
+- "Test apps with people with disabilities and across different levels of technical experience."
+- "Documentation, support, tooling, and maintenance are part of a harmonious experience."
+Relevance: tokens as single-source-of-truth for UI decisions (maps to this shop's `single-source-of-truth`); accessibility folded into components rather than checked afterwards.
+
+### S2.11 Material Design 3 — **unopened** (m3.material.io/foundations, /foundations/overview, /foundations/accessible-design/overview, m2.material.io/design/introduction all returned title-only pages; JS-rendered). Nothing recorded.
+
+### S2.12 W3C WAI — WCAG 2 Overview — **full**
+URL: https://www.w3.org/WAI/standards-guidelines/wcag/
+- "Web Content Accessibility Guidelines (WCAG) 2 is developed through the W3C process in cooperation with individuals and organizations around the world, with a goal of providing a single shared standard for web content accessibility."
+- "The guidelines are organized under 4 principles: perceivable, operable, understandable, and robust."
+- "The success criteria are at three levels: A, AA, and AAA."
+- "WCAG 2.2 was published on 5 October 2023, and an update was published on 12 December 2024."
+- "WCAG can also be applied to non-web information and communications technologies (ICT) such as native apps, software, and documents."
+- "WCAG 2.2 is an approved International Organization for Standardization (ISO) standard: ISO/IEC 40500:2025."
+- "EN 301 549: Accessibility requirements for ICT products and services. EN 301 549 currently uses WCAG 2.1."
+- "Content that conforms to WCAG 2.2 also conforms to WCAG 2.1 and WCAG 2.0."
+
+### S2.13 W3C — WCAG2ICT (Guidance on Applying WCAG 2.2 to Non-Web ICT) — **full (abstract/introduction)**
+URL: https://www.w3.org/TR/wcag2ict-22/
+- "This document describes how the Web Content Accessibility Guidelines (WCAG) versions 2.0, 2.1, and 2.2 principles, guidelines, and success criteria can be applied to non-web Information and Communications Technologies (ICT)."
+- "This document provides informative guidance (guidance that is not normative and does not set requirements)..."
+- "WCAG2ICT is not a standard, so it is not possible to conform to WCAG2ICT."
+- "The majority of WCAG 2 success criteria can be applied to non-web documents and software with either no or minimal changes."
+- "This document is not sufficient by itself to ensure accessibility in non-web documents and software because this document does not address accessibility requirements beyond those covered by WCAG."
+Relevance: WCAG 2.2 AA can be adopted as the cross-cutting constraint for GUI/web/documents; for non-web software (CLI, TUI) WCAG2ICT is guidance only, and EN 301 549 is the conformable standard (per S2.12 it still references 2.1 — a version conflict to note).
+
+---
+
+## SQ3 — CLI and developer-facing UX as design
+
+### S3.1 clig.dev — Command Line Interface Guidelines (Aanand Prasad, Ben Firshman, Carl Tashian, Eva Parish) — **full**
+URL: https://clig.dev/
+- "If a command is going to be used primarily by humans, it should be designed for humans first."
+- "Whatever software you're building, people will use it in ways you didn't anticipate. Your software will become a part in a larger system."
+- Consistency: "The terminal's conventions are hardwired into our fingers...that's what makes CLIs intuitive and guessable; that's what makes users efficient."
+- "The efficiency of using the command-line comes from remembering commands, but there's no reason the commands can't help you learn."
+- "Beyond the most utterly simple commands, running a program usually involves more than one invocation...like a conversation the user is having with the program."
+- "Software should be robust: unexpected input should be handled gracefully, operations should be idempotent where possible."
+- "Command-line tools are a programmer's creative toolkit, so they should be enjoyable to use...delighting the user means exceeding their expectations."
+- "Human-readable output is paramount. Humans come first, machines second...whether an output stream is being read by a human is whether or not it's a TTY."
+- "Catch errors and rewrite them for humans...the user has done something wrong and the program is guiding them in the right direction."
+- "Prefer flags to args...it makes much clearer what is going on and easier to make changes to how you accept input."
+- "Only use prompts or interactive elements if stdin is an interactive terminal (a TTY)...a prompt won't work in a script."
+- On GUI vs CLI: "The original Macintosh Human Interface Guidelines recommend 'See-and-point (instead of remember-and-type),' as if you could only choose one or the other. These things needn't be mutually exclusive."
+Relevance: the most complete public CLI design guideline; explicitly frames CLI as *design* borrowing GUI concepts (discoverability, conversation) while honouring terminal conventions (external consistency, cf. S2.2).
+
+### S3.2 Heroku Dev Center — CLI Style Guide — **full**
+URL: https://devcenter.heroku.com/articles/cli-style-guide
+- "Heroku CLI plugins should provide a clear user experience, targeted primarily for human readability and usability, which delights the user, while at the same time supporting advanced users and output formats."
+- "The Heroku CLI is for humans before machines. The primary goal of anyone developing CLI plugins should always be usability."
+- "Input and output should be consistent across commands to allow the user to easily learn how to interact with new commands."
+- "Flags are preferred to args. They involve a bit more typing, but make the use of the CLI clearer."
+- "However, if prompting is required to complete a command, this means the user will not be able to script the command. Ensure that args or flags can always be provided to bypass the prompt."
+- "Human-readable output should be grep-parseable, but not necessarily awk-parseable."
+- "Terse, machine-readable output formats can also be useful but shouldn't get in the way of making beautiful CLI output. When needed, commands should offer a `--json` and/or a `--terse` flag when valuable."
+- "Stdout should be used for all output and stderr for warning, errors and out of band information..."
+- "Topic and command descriptions should be provided for all topics and commands. They should fit on 80 character width screens, begin with a lowercase character, and should not end in a period."
+
+### S3.3 Jeff Dickey — "12 Factor CLI Apps" — **original Medium URL unopened (HTTP 403)**; read in full from an English mirror
+URLs: https://medium.com/@jdxcode/12-factor-cli-apps-dd3c227a0e46 (403) ; mirror opened in full: https://panlw.github.io/15394417631263.html (English original text)
+- Factors (verbatim headings): 1 "Great help is essential"; 2 "Prefer flags to args"; 3 "What version am I on?"; 4 "Mind the streams"; 5 "Handle things going wrong"; 6 "Be fancy!"; 7 "Prompt if you can"; 8 "Use tables"; 9 "Be speedy"; 10 "Encourage contributions"; 11 "Be clear about subcommands"; 12 "Follow XDG-spec".
+- "Having good help documentation for a CLI is extremely important. It's far more important than when building a web application as you can't guide the user with a UI."
+- "Things go wrong in CLIs much more often than in web apps. Without a UI to guide the user, the only thing we can do is display an error to the user."
+- "For accepting input, if stdin is a tty then prompt rather than forcing the user to specify a flag."
+- "Following these principles will offer CLI UX that users will love."
+Conflict noted: Dickey factor 7 says *prompt* when stdin is a TTY; Heroku and clig.dev agree but insist a flag must always bypass the prompt — same position, Dickey's headline is looser.
+
+### S3.4 GitHub — Primer CLI design guidelines (archived repo primer/cli; live site primer.style/cli redirects to the archived repo) — **full (source .mdx read via `gh api`)**
+URLs: https://primer.style/cli/ (308 → https://github.com/primer/cli/, archived 3 Jul 2024, "This repo is not maintained anymore. Please raise pull requests in primer.style/design"); content files read: content/getting-started/principles.mdx, process.mdx, foundations/index.mdx, language.mdx, scriptability.mdx. Section list: Getting started (Principles, Process, Prototyping); Foundations (Color, Customizability, Iconography, Language, Scriptability, Spacing, Typography); Components (Detail, Empty, Headers, Help, Lists, Progress, Prompts, State, Syntax).
+- Principle "Reasonable defaults, easy overrides": "Optimize for what most people will need to do most of the time, but make it easy for people to adjust it to their needs."
+- Principle "Make it feel like GitHub": "Using this tool, it should be obvious that it's GitHub and not anything else. Use details that are specific to GitHub, such as language or color. When designing output, reflect the GitHub.com interface as much as possible and appropriate."
+- Principle "Reduce cognitive load": "Command line interfaces are not as visually intuitive as graphical interfaces. They have very few affordances (indicators of use), rely on memory, and are often unforgiving of mistakes. We do our best to design our commands to mitigate this."; "Ensure consistent command language to make memorizing easier"; "Ensure similar commands are visually and behaviorally parallel."
+- Principle "Bias towards terminal, but make it easy to get to the browser": "We want to help people stay in the terminal wherever they might want to maintain focus and reduce context switching, but when it's necessary to jump to GitHub.com make it obvious, fast, and easy. Certain actions are probably better to do in a visual interface."
+- Foundations: "These are the foundational design concepts and constraints that can help inform design decisions."
+- Language: "Language is the most important tool at our disposal for creating a clear, understandable product. Having clear language helps us create memorable commands that are clear in what they will do."
+- Scriptability: "Make choices that ensure that creating automations or scripts with GitHub commands is obvious and frictionless. Practically, this means: Create flags for anything interactive; Ensure flags have clear language and defaults; Consider what should be different for terminal vs machine output."
+- Process (design questions per command): "What makes sense to do from a terminal? What doesn't?"; "How can you align the language of the new command with the existing commands?"; "What can you do to make the CLI version feel like the GitHub.com version, using color, language, spacing, info shown, etc?"; "Are there ways to integrate CLI into the feature where it exists on other platforms?"
+Relevance: the clearest example of a *design-system treatment of a CLI* (principles, foundations, components) and of cross-interaction-type consistency as a stated principle ("make it feel like GitHub", handoff to browser). Note it lives under Primer, GitHub's design system — i.e. CLI design is owned by the design-system function.
+
+### S3.5 Docker docs — CLI reference (`docker` command) — **full**
+URL: https://docs.docker.com/engine/reference/commandline/cli/
+- "When set, Docker hides "legacy" top-level commands (such as `docker rm`, and `docker pull`) in `docker help` output, and only `Management commands` per object-type (e.g., `docker container`) are printed."
+- "Single character command line options can be combined, so rather than typing `docker run -i -t --name test busybox sh`, you can write `docker run -it --name test busybox sh`."
+- "Boolean options take the form `-d=false`. The value you see in the help text is the default value which is set if you do **not** specify that flag."
+- "Command line options override environment variables and environment variables override properties you specify in a `config.json` file."
+- "These fields lets you customize the default output format for some commands if no `--format` flag is provided."
+No design-rationale page for the management-command restructuring was found (WebSearch returned only cheat-sheets). Treat Docker as conventions evidence (object/verb grammar; precedence order), not as design guidance.
+
+### S3.6 Google — AIP-1 (AIP Purpose and Guidelines) — **full**; AIP general index — **partial (navigation only)**
+URLs: https://google.aip.dev/1 ; https://google.aip.dev/general
+- "AIP stands for **API Improvement Proposal**, which is a design document providing high-level, concise documentation for API development."
+- "As the corpus of Google APIs has grown...it is increasingly necessary to have a corpus of documentation for API producers, reviewers, and other interested parties to reference."
+- "They are to serve as the source of truth for API-related documentation at Google and the means by which API teams discuss and come to consensus on API guidance."
+- "These AIPs describe guidance on API design...and are used by API reviewers as a basis for review comments."
+- "The editors are the set of people who make decisions on AIPs...a limited number of designated approvers is necessary."
+- "Two AIP approvers (other than the author) **must** provide formal signoff to advance an AIP to the approved state."
+- "In general, API producers should rely primarily on AIPs in the 'approved' state."
+- Index topics: Resource-oriented design (AIP-121); Standard methods Get/List/Create/Update/Delete (131–135); Long-running operations (151); Pagination (158); Backwards compatibility (180).
+Relevance: API consistency is governed like a design system — a numbered, versioned guidance corpus with editors, approvers, states, and reviewers who cite it. Structurally identical to a design-system governance model (S2.7/S2.8).
+
+### S3.7 Microsoft — Azure REST API Guidelines — **full**; the older Microsoft REST API Guidelines (vNext/Guidelines.md) — **opened, deprecation notice only**
+URLs: https://github.com/microsoft/api-guidelines/blob/vNext/azure/Guidelines.md ; https://github.com/microsoft/api-guidelines/blob/vNext/Guidelines.md (now only points to Azure / Graph / deprecated guidelines)
+- "These guidelines apply to Azure service teams implementing _data plane_ APIs... ensuring that customers have a great experience by designing APIs meeting these goals"
+- Goal: "Developer friendly via consistent patterns & web standards (HTTP, REST, JSON)"
+- "When designing your service, it is important to optimize for the developer using your API."
+- "DO adopt this pattern. If you feel you need an exception, contact the Azure HTTP/REST Stewardship Board **prior** to implementation."
+- "Already-running customer workloads must not break due to a service change"; "DO NOT introduce any breaking changes into the service."
+- "All service operations (including POST) **must** be idempotent."
+- "x-ms-error-code values are part of your API contract (because customer code is likely to do comparisons against them)"
+Relevance: named governance body (Stewardship Board) with exception-before-implementation rule; error codes treated as UX contract.
+
+### S3.8 Stripe — "Designing APIs for humans"-era essay: "Payment API design" (Michelle Bu, 15 Dec 2020) — **full**; "APIs as infrastructure: future-proofing Stripe with versioning" (Brandur Leach, 5 Aug 2017) — **full**
+URLs: https://stripe.dev/blog/payment-api-design (301 from stripe.com/blog/payment-api-design) ; https://stripe.com/blog/api-versioning
+- Bu: "A great API product stays out of the developer's way for as long as possible."
+- Bu: "The states and guarantees of our APIs had to be extremely predictable and consistent. There shouldn't be an array of caveats and exceptions scattered throughout our docs."
+- Bu: "Keeping things simple doesn't just mean reducing the number of resources or parameters. Keeping things simple means making sure your APIs are consistent and predictable."
+- Bu: "Keeping things simple means...creating the right packages to gradually reveal the power of your API as your users need it." (progressive disclosure, in API form)
+- Bu: "Focus on enabling real user integrations...it's common to get caught up with pursuing perfect invariants, airtight theories, or intellectually pure solutions, but none of that is useful if it doesn't enable a real user integration."
+- Bu: "Early on, lean on simple representations for complex, nascent concepts, rather than try to give them concrete names..."
+- Leach: "Like a connected power grid or water supply, after hooking it up, an API should run without interruption for as long as possible."
+- Leach: "An API represents a contract for communication that can't be changed without considerable cooperation and effort."
+- Leach: "Even with our versioning system available, we do as much as we can to avoid using it by trying to get the design of our APIs right the first time."
+Relevance: developer experience framed as product design: predictability, progressive disclosure, evidence from real integrations over theory.
+
+### S3.9 TUI guidance — thin primary evidence
+- Textual (Textualize) design guide — **full**: https://textual.textualize.io/guide/design/ — "A theme provides variables which can be used in the CSS of your app."; "The default color of text in a theme is `$foreground`. This color should be legible on `$background`, `$surface`, and `$panel` backgrounds."; "Textual aims to ensure that the colored text it generates is legible against the corresponding muted color." (Framework-level theming; no interaction-design guidance.)
+- "The Complete Guide to Terminal User Interfaces" (MangaD gist, Aug 2026, compiled with ChatGPT attribution — **secondhand/low authority**): https://gist.github.com/MangaD/cd8b8ab9b4f119ac5214fa4f3424ccd7 — "A CLI usually behaves like sequential commands; A TUI might instead display interactive screen-oriented widgets."; "Accessible TUI design should avoid making color or exotic glyphs the only representation of meaning."; "Full-screen dynamically redrawn interfaces aren't automatically accessible".
+- WebSearch found no authoritative TUI design guideline comparable to clig.dev; Charm (bubbletea) results were library docs and third-party skill packs, not opened.
+Gap: TUI design guidance has no primary authority; the designer would have to derive it from clig.dev + WCAG2ICT + keyboard-first GUI patterns.
+
+---
+
+## Cross-source conflicts and observations
+
+1. **Consistency vs context.** GOV.UK #9 ("consistent, not uniform"), #7 ("understand context"), NN/g omnichannel ("Consistent" and "Optimized for context" as separate elements), and Primer CLI ("Certain actions are probably better to do in a visual interface") all agree that cross-interaction-type consistency is of language, patterns and identity, not of form. NN/g heuristic 4 adds the external axis: each interaction type has its own platform conventions (terminal conventions per clig.dev; HTTP/REST per Azure) that must also be honoured. No source claims a single component library can span CLI/GUI/API.
+2. **What carries consistency across interaction types**, per the opened sources: (a) principles (NN/g Rosala; GOV.UK; Primer CLI principles), (b) language/vocabulary and voice (Primer "Make it feel like GitHub"/Language; NN/g tone; GOV.UK style guide; Heroku naming rules), (c) tokens as single source of truth (Atlassian), (d) accessibility standard (WCAG 2.2 AA; WCAG2ICT for non-web), (e) a governed guidance corpus with approvers and criteria (GOV.UK contribution criteria and working group; Google AIP editors/approvers; Azure Stewardship Board).
+3. **Governance form is the same across design systems and API guidelines**: criteria + review body + approval state + reviewers citing the corpus. This is external-standards evidence for shaping a designer role's decision rights as "owner of the guidance corpus and its approval gate" rather than "author of every screen".
+4. **Prompting**: Dickey ("prompt if you can") vs Heroku/clig.dev (prompt only on TTY, always provide a flag bypass) — compatible in substance, different emphasis; clig.dev/Heroku are stricter and later.
+5. **WCAG versions**: WCAG 2.2 is ISO/IEC 40500:2025 but EN 301 549 "currently uses WCAG 2.1" (S2.12) — pick 2.2 AA as the shop's target and note EN 301 549 lag.
+6. **Unopened / thin**: Material Design 3 (JS-rendered, nothing readable); Medium originals (Dickey 403 — read via mirror; Atlassian values post 403); GOV.UK working-group page 410 (secondhand only; Home Office analogue opened); older Microsoft REST guidelines deprecated in place; no primary TUI guideline exists.

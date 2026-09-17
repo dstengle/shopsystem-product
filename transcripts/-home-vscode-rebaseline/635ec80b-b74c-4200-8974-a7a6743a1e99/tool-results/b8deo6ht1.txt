@@ -1,0 +1,630 @@
+=================== basis/roles/cold-reviewer.md
+---
+name: cold-reviewer
+description: Fresh-context reviewer simulating the product authority reading cold. Each fill of this role starts with fresh context and reads only the material under review — no supporting documents, no earlier drafts.
+tools: Read
+maxTurns: 8
+type: role-definition
+id: cold-reviewer
+owner: product-authority
+status: approved
+approved: 2026-08-23
+version: 5
+created: 2026-08-10
+updated: 2026-08-25
+---
+
+# Cold reviewer
+
+You simulate the product authority reading cold: technically expert,
+~5 minutes of attention, no knowledge of the author's context. You
+treat an unintroduced term or anything you cannot decide as a defect.
+
+**Accountable for:**
+- Reading the material under review exactly once, top to bottom,
+  alone — nothing else.
+- Reporting stumbles in reading order, with quotes.
+- Listing every term that arrives before the material explains it.
+- A per-item decidability verdict — the items being whatever units the
+  material carries: asks, principles, scenarios — confident / wobbly /
+  cannot decide, with what is missing.
+- An overload verdict: right-sized for one reading, or what to defer.
+- Findings that quote text present in the material; a section with no
+  findings reported clean.
+
+**Domain (exclusive):** the round's verdict — what this round found is
+decided by this role alone.
+
+**Competencies:** software-architecture literacy (reads standards
+citations without glosses); stakeholder empathy (limited-attention
+reading); the fitness set of the artifact type under review, named by
+the invoking process, which this role judges.
+
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+| 1 | 2026-08-10 | update | Authored for stakeholder presentations. |
+| 1 | 2026-08-19 | state | draft → approved. |
+| 2 | 2026-08-23 | update | Competencies generalized to the fitness set of the artifact type under review by owner direction. |
+| 3 | 2026-08-23 | update | Owner direction: decision-ledger references removed — changes stand on their own; history entries and text no longer cite numbered decisions. |
+| 3 | 2026-08-23 | review | Screened against the drafted role-definition fitness set: findings — invocation cadence is sequencing text; the competency list embeds mutable state ("currently ..."); the honesty bullet is a character trait; "annex" undefined. Repairs await the owner's decision at the meta-chain review. |
+| 4 | 2026-08-23 | update | Owner-directed repairs through the approved role-definition guideline: invocation cadence removed (the invoking processes own it via fresh-context steps); description restated actor-neutrally; the honesty bullet recast as a verifiable output (findings quote present text; clean sections reported clean); "annex"/"presentation" generalized to the material under review; the mutable competency list replaced with "named by the invoking process". |
+| 4 | 2026-08-23 | state | Repairs approved by the owner with the meta-chain approval. |
+| 4 | 2026-08-23 | review | Re-screened against the role-definition fitness set after repairs: clean — all five scenarios pass; one stumble (the term "round" inferred from the invoking process), not a fail. |
+| 5 | 2026-08-25 | update | Owner direction: a near-synonym of "role" retired and banned. |
+=================== basis/artifacts/process-definition.md
+---
+type: artifact-typedef
+id: process-definition-typedef
+defines: process-definition
+owner: product-authority
+status: approved
+approved: 2026-08-22
+version: 4
+created: 2026-08-19
+updated: 2026-08-25
+ancestry: [definition, process-definition]
+---
+
+# Artifact type: process-definition
+
+## Identity and ancestry
+
+- **Type:** `process-definition` — the single source of truth for a
+  process: what it is for, what a run produces, and every step in a form
+  a runtime can construct a workflow from. Skills, flow
+  diagrams, and fabro graphs (fabro is the fleet's workflow-orchestrator
+  runtime) are its renderings.
+- **Produced by:** seed drafting or governed evolution. **Consumed by:**
+  the compiler (renderings), agents (via the rendered skill), reviewers
+  (conformance and loop-exit review), fabro (via annotations).
+
+## Required frontmatter
+
+`type: process-definition`, `id`, `owner`, `status`, `created`,
+`updated`; `produces` (artifact
+types a run creates; the generic root `definition` covers runs creating
+definition documents; empty when the run's value is state change);
+`condition-language: cel`; optional: `carried-by` (the rendered skill's
+id), `condition-functions` (declared extensions, name and signature),
+`annotations` (process-level rendering metadata, keyed by rendering
+target); `hold-after` (ISO 8601 duration — the inactivity window after
+which the runtime holds a run; required for any process that carries a
+conversation); `ask-cap` (ISO 8601 duration — how long an ask may stand
+unanswered before its default applies; required for any process whose
+steps carry `asks`).
+
+## Required sections
+
+1. **Purpose** — one short paragraph.
+2. **Guiding statement** (optional) — directs judgment across the whole
+   process; the compiler copies it into every rendering.
+3. **Outcomes** — each names the step or check that witnesses it.
+4. **Roles** — roles and their accountability; role files carry identity,
+   never sequencing.
+5. **Flow (compiled)** — the diagram generated from the steps; never
+   edited by hand.
+6. **Data** — process-local value names. Simple types (JSON Schema
+   primitives) inline; every structured shape is a `$ref` to a defined
+   type with an explicit source: `from:` is a relative link to the
+   defining file, or `pkg:<package>/<type>` when the type lives in
+   another package and is fetched through that package's contract tool
+   (e.g. `shop-knowledge schema session-record`). Every distinct `$ref`
+   carries `from:` at least once; the linter verifies local sources
+   define the referenced type. No structured shape is ever defined here.
+   A value may declare `initial` — its value at run start.
+7. **Steps** — the executable part (shape below).
+8. **Derived checks** — a table: outcome, check, kind, where; every row
+   cites its clause or is deleted.
+
+Header elements 1–4 are bolded labels before the first heading; 5–8 are
+markdown headings in order (a section is a heading, per the
+artifact-typedef rule).
+
+## The steps section
+
+Top-level keys: `start` (first step id); optional `parameters` (data
+values supplied at instantiation rather than produced by any step);
+optional `result` (the data value a run returns — the artifact, not a
+status record; omit only when the outcomes pin the run's value). `end`
+is the reserved terminator id for `next`. Each step:
+
+- `id`, `name`; `run-by` — `{role, execution: agent}`,
+  `{role, execution: human}` (a role a person holds, e.g. an authority review), or `{execution: runtime}`; `fresh-context: true` where a role
+  must not carry memory between runs.
+- `inputs` / `outputs` — lists of declared data names; the typed contract
+  is the isolation mechanism (a step reads only what it lists).
+- Agent and human steps carry `prompt` — **the only prose allowed in a
+  step** (for a human step it is the question the review puts).
+- Runtime steps carry `set` (CEL assignments to data values or their
+  fields), `run` (command templates
+  with `${...}` interpolation from typed inputs; `atomic: true` binds the
+  lines into one all-or-nothing act), or `branches`.
+- `checks` — CEL expressions over declared data.
+- Routing: `next`, or `branches` of `{label, when (CEL), next}` rows plus
+  one `else`. **Every loop declares its exits as labeled branch rows** —
+  a reached-state success exit, a round or budget cap, or both.
+- `asks` — optional list of role ids the step may put an ask to (the
+  [`ask`](../types/ask.md) data type). An agent or human step listed
+  with `asks` may return an ask in place of its outputs; a step without
+  `asks` may not ask. A process with asking steps declares an `ask` data
+  value (`$ref: ask`) and lists it in each asking step's inputs. Every
+  ask names a `default` and a `checkpoint`; the step's prompt states
+  what kind of information it may ask for — never a judgment the step's
+  role owes. A step returns at most one ask per run — the loop's exit —
+  and a second resolves `defaulted` at once. Early steps ask cheaply;
+  an ask from a late step wastes the work not in its checkpoint.
+- `annotations` — per-step rendering metadata keyed by target (e.g.
+  `fabro: {model, max_attempts}`); the definition itself ignores them.
+- `run-by: {execution: sub-process, process: <process-id>, from: <source>}`
+  runs another process definition as one step: the step's inputs map to
+  the child's parameters and its outputs receive the child's result. A
+  conversation invoked this way is a branched conversation: the child's
+  anchor records the parent run.
+
+## Run lifecycle
+
+A run is one execution of a process, anchored to a work item in the
+registry. Run states: `running`, `held`, `done`, `cancelled`.
+
+- **Hold** pauses a run: the current step and every data value persist in
+  the run's anchor, and the work item records the state. A held run is
+  resumed at its recorded step or cancelled with a reason — never
+  silently dropped.
+- The `hold-after` window makes parking automatic: a run with no activity
+  inside the window is held by the runtime. Unfinished work parks itself
+  with a named resume point; nothing dangles in the lead repo.
+- **Ask** holds a run the same way, with the ask recorded on the anchor
+  and routed to whoever fills the role it names — a person or an agent;
+  the answer is written to the ask and the run resumes at the asking
+  step with the ask in its inputs, in a fresh context loaded from the
+  step's declared inputs and the checkpoint. There is no synchronous
+  form: no step waits in place for an answer. An unanswered ask resolves
+  to its `default` at the process's `ask-cap` (an ISO 8601 duration,
+  required for any process whose steps carry `asks`), and the run
+  resumes on the default with the ask marked `defaulted`; cancelling a
+  held run marks its ask `cancelled`. Answering is an activity of the
+  answering role: a human step for a human-held role, or a step the
+  answering role's process names — those steps are defined in the
+  processes that answer, not here. The registry that anchors runs
+  records every ask; asks per run, per role, and per kind are read from
+  it. An ask that recurs across runs is a gap in a definition; the
+  answering role files the definition change, and the ask stops.
+- **Cancel** closes the run's work item with a reason and files the
+  resulting actions the outcomes demand.
+
+## Rendering contract
+
+The compiler generates: the in-document flow diagram (typed inputs and
+outputs on every node; the result on the end node) and the skill —
+front-matter (`generated: true`, `generated-by`, `derived-from`,
+`source`, `source-digest`) and body (purpose, guiding statement, result,
+diagram, one section per step with the prompt verbatim). Conformance
+check: re-run the compiler and diff.
+
+## Commitment (Definition of Done)
+
+A process definition is done when it compiles — every `$ref` resolves,
+the diagram and renderings generate, `result` (if declared) names a data
+value — and every loop declares its exit. **Consequence on failure:** it
+cannot be dispatched, carried by a skill, or cited by a check.
+
+## Sources
+
+ISO/IEC/IEEE 24774 (name/purpose/outcomes header); GitHub Actions (step
+records with typed inputs/outputs); CNCF Serverless Workflow
+(data-condition transitions); CEL — Common Expression Language
+(mechanically translatable conditions); Essence-style state exits plus a
+round cap (the dual-exit rule).
+
+## Derived review checklist
+
+- Compiles clean: refs resolve, diagram and renderings regenerate
+  byte-stable. *(Commitment)*
+- No prose inside step records outside `prompt` fields; section
+  introduction prose is body text, not step content. *(§The steps section)*
+- Every loop has labeled success and/or cap exits. *(§The steps section)*
+- Every step with `asks` belongs to a process with `ask-cap` and lists
+  the `ask` value in its inputs; every ask names a default and a
+  checkpoint, and its `to` is in the step's `asks`; one ask per step per
+  run. *(§The steps section, §Run lifecycle)*
+- Outcomes each name a witness. *(§Required sections 3)*
+- `result`, if absent, is justified by outcomes that pin the run's value.
+  *(§The steps section)*
+
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+| 1 | 2026-08-19 | update | Authored (seed layer); earlier history, if any, in the repository history. |
+| 1 | 2026-08-22 | state | draft → approved. |
+| 2 | 2026-08-23 | update | Owner direction: decision-ledger references removed — changes stand on their own; history entries and text no longer cite numbered decisions. |
+| 3 | 2026-08-25 | update | Owner direction: a near-synonym of "role" retired and banned. |
+| 4 | 2026-08-25 | update | Owner decision: the ask mechanism defined, held-and-resumed only — a step may carry `asks` (role ids) and return an `ask` data value in place of its outputs; the run holds, the role answers, the step resumes in a fresh context from its inputs and the ask's checkpoint; `ask-cap` bounds an unanswered ask with its default; a recurring ask is a definition gap. No synchronous form. |
+| 4 | 2026-08-25 | review | Screened with the ask data type: findings — the ask loop lacked an exit; the resumed ask had no data name; answering had no named activity; the recurrence measure had no channel; an old use of "ask" collided. Repaired in place: one ask per step per run, the `ask` value declared and listed, answering placed in the answering role's process, the registry named as the count's home, wording fixed. |
+=================== basis/guidelines/process-definition.md
+---
+type: quality-guideline
+id: process-definition-guideline
+target-type: process-definition
+owner: product-authority
+status: approved
+approved: 2026-08-23
+version: 1
+created: 2026-08-23
+updated: 2026-08-23
+---
+
+# Guideline: process definition
+
+**Voice principle.** Write for the runtime that must construct a
+workflow from the steps and the reviewer who must connect every
+outcome to its witness: every element either executes, routes,
+witnesses, or declares a contract — explanation lives in body prose,
+never inside a step.
+
+**Highlights (the layer compiled into generating context):** every
+outcome names its witness · prose inside a step only in `prompt` ·
+every loop declares a labeled success exit, a cap, or both · a step
+reads only what it lists — the declared list is the context load list ·
+the result is the artifact, not a status.
+
+**Layers:** this guideline adds process-definition rules on top of the
+[base writing style](base-writing-style.md); the base always applies
+and is never overridden. When rules conflict, an approved principle
+beats the
+[process-definition typedef](../artifacts/process-definition.md),
+which beats this guideline.
+
+---
+
+## Rules
+
+**1. Give every outcome a witness.**
+Before: "O1. The review is high-quality."
+After: "O1. Every decision is applied before the next exchange —
+witnessed by the check on `apply`."
+*Test:* read each outcome. *Criterion:* it names the step, check, or
+branch that witnesses it, and that witness exists in the steps
+section. *Decision:* yes/no per outcome.
+*Derived check:* judged — scenario 2 of
+[process-definition.fitness.md](../fitness/process-definition.fitness.md).
+
+**2. Keep prose out of steps.**
+Before: a step record carrying "This step is important because
+reviewers often forget to check the register."
+After: the sentence moved to body text before the steps section, or
+into the step's `prompt` if the agent needs it.
+*Test:* scan every step record. *Criterion:* prose appears only in
+`prompt` fields; runtime steps carry `set`, `run`, or `branches` and
+no sentences. *Decision:* yes/no per step.
+*Derived check:* mechanical — the no-prose row of the typedef's
+derived review checklist.
+
+**3. Declare every loop's exits, labeled.**
+Before: revise → review → revise with no cap and an unlabeled edge.
+After: "failsafe exit: round >= 3 → park" and "success exit: clean →
+approve" as labeled branch rows.
+*Test:* trace every cycle in the flow. *Criterion:* each cycle carries
+a labeled reached-state success exit, a round or budget cap, or both.
+*Decision:* yes/no per cycle.
+*Derived check:* judged — fitness scenario 3; mechanical presence in
+the loop-exit row of the typedef checklist.
+
+**4. Let a step read only what it lists.**
+Before: a prompt telling the agent to "check the register and any
+related records you find useful."
+After: the register declared as an input; the prompt references only
+declared inputs.
+*Test:* compare each step's prompt, checks, and run template to its
+declared inputs and outputs. *Criterion:* every reference resolves to
+a declared name; the declared list is the step's context load list —
+an undeclared load is a defect. *Decision:* yes/no per step.
+*Derived check:* judged — fitness scenario 4.
+
+**5. Return the artifact, not a status.**
+Before: "result: report — a summary of what the run did."
+After: "result: set — the principle-set the run produced."
+*Test:* read the `result` declaration against the purpose. *Criterion:*
+the run returns the artifact it exists to produce, or omits `result`
+with outcomes that pin the run's value. *Decision:* yes/no per
+process.
+*Derived check:* judged — fitness scenario 5.
+
+**6. Direct judgment with the guiding statement, not instructions.**
+Before: "Guiding statement: first draft, then review, then ship."
+After: "Guiding statement: everything binding lands in the governed
+artifacts it changes; nothing binding lives only in the transcript."
+*Test:* read the guiding statement. *Criterion:* it states a judgment
+that applies across every step, never a sequence — sequences are
+steps. *Decision:* yes/no per statement (vacuously pass when absent).
+*Derived check:* judged — fitness scenario 6.
+
+## Sources
+
+Style-guide anatomy per the quality-guideline typedef; Deming's
+operational definitions (test, criterion, decision per rule); the
+external forms the process-definition typedef adopts (ISO/IEC/IEEE
+24774 header, GitHub-Actions-shaped steps, CEL conditions, dual-exit
+loops) — this guideline projects them into authoring rules; the before
+examples are generic counter-examples, never drawn from this product's
+history.
+
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+| 1 | 2026-08-23 | update | Authored as the process-definition meta-chain's guideline, with the existing basis processes as exemplars. |
+| 1 | 2026-08-23 | state | draft → approved by the owner, with the exemplar screens' findings accepted as valid and their repairs directed. |
+=================== basis/fitness/process-definition.fitness.md
+---
+type: fitness-set
+id: process-definition-fitness
+owner: product-authority
+status: approved
+approved: 2026-08-23
+version: 1
+created: 2026-08-23
+updated: 2026-08-23
+target-type: process-definition
+judged: true
+executable: false
+judged-by: cold-reviewer
+---
+
+# Fitness set: process-definition
+
+These scenarios are evaluated by the `cold-reviewer` role, never
+executed; the compiler and linter carry the mechanical half of the
+same requirements. The mapping table compiles each Then into the
+judge-rubric assertion the reviewer scores. The scenarios project the
+[process-definition typedef](../artifacts/process-definition.md)'s
+requirements and the
+[process-definition guideline](../guidelines/process-definition.md)'s
+rules into a judge's rubric.
+
+## Scenarios
+
+Scenario 1: the definition is the single source its renderings claim
+  Given the process definition, its flow diagram, and its rendered
+  skill
+  When the diagram and skill are compared to the steps section
+  Then both correspond to the steps exactly — every step, prompt, and
+  branch present, nothing added — and both declare themselves
+  generated, never hand-edited
+
+Scenario 2: every outcome has a live witness
+  Given the outcomes list and the steps section
+  When each outcome's named witness is looked up
+  Then every outcome names a step, check, or branch that exists, and a
+  reader can say from the witness alone whether the outcome held for a
+  run
+
+Scenario 3: every loop declares its exits
+  Given every cycle in the flow
+  When its branch rows are read
+  Then each cycle carries a labeled reached-state success exit, a
+  round or budget cap, or both — no loop can run unbounded
+
+Scenario 4: steps read only what they list
+  Given each step's prompt, checks, and run template
+  When every reference in them is resolved
+  Then each resolves to a declared input or output of that step, and
+  no prompt directs the agent to load undeclared context
+
+Scenario 5: the run returns the artifact
+  Given the result declaration and the purpose
+  When they are compared
+  Then the run returns the artifact it exists to produce, or result is
+  absent and the outcomes pin the run's value
+
+Scenario 6: prose sits where prose belongs
+  Given every step record and the guiding statement
+  When each is read
+  Then step prose appears only in prompt fields, and the guiding
+  statement (when present) states a cross-step judgment, never a
+  sequence
+
+## Compile mapping (each Then/And → one judge-rubric assertion)
+
+| Scenario Then | Judge-rubric assertion |
+|---|---|
+| 1 — renderings correspond | "Walk the diagram and skill against the steps: name any step, prompt, or branch missing or added, and any rendering not marked generated. Empty list = pass." |
+| 2 — outcomes witnessed | "For each outcome, name the witnessing step/check/branch and confirm it exists. Any outcome with a missing or unverifiable witness = fail, cite it." |
+| 3 — loop exits declared | "List every cycle and its labeled exits. Any cycle without a success exit or cap = fail, cite it." |
+| 4 — declared reads only | "For each step, quote any reference in prompt/checks/run that is not a declared input or output, and any prompt directing undeclared context loads. Empty list = pass." |
+| 5 — artifact result | "Name the result value and what the purpose says the run produces. Mismatch, or a status-shaped result = fail; absent result justified by value-pinning outcomes = pass." |
+| 6 — prose placement | "Quote any prose in a step outside prompt, and quote the guiding statement if it sequences steps. Empty list = pass." |
+
+## Sources
+
+Gherkin syntax (readable G/W/T frame — syntax only, no runner);
+G-Eval–style rubric decomposition for the mapping table; the tests
+project the process-definition typedef's checklist and Commitment and
+the guideline's rules, per the definition-chain shape the
+principle-set chain established.
+
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+| 1 | 2026-08-23 | update | Authored as the process-definition meta-chain's fitness set. |
+| 1 | 2026-08-23 | state | draft → approved by the owner, with the exemplar screens' findings accepted as valid and their repairs directed. |
+=================== basis/types/ask.md
+---
+type: data-type
+id: ask
+defines: ask
+owner: product-authority
+status: approved
+approved: 2026-08-25
+version: 2
+created: 2026-08-25
+updated: 2026-08-25
+---
+
+# Data type: ask
+
+## Purpose
+
+A question one activity puts to another role, returned by an agent or
+human step in place of its outputs. Produced by any step that carries
+`asks`; routed by the runtime to whoever fills the role
+named in `to`; consumed by that role, which writes `answer`, and by the
+asking step, which resumes with the ask in its inputs. The process
+declares an `ask` data value (`$ref: ask`) and lists it in each asking
+step's inputs. Two resume paths: *answered* — the step acts on
+`answer`; *defaulted* — the step acts on `default`, because the
+process's `ask-cap` passed unanswered or because the step returned a
+second ask in the same run (at most one is allowed). See the
+[process-definition typedef](../artifacts/process-definition.md), §The
+steps section and §Run lifecycle. A `clarify` — a Bounded Context
+shop's question to the lead shop — conforms to this shape.
+
+## Schema
+
+```yaml
+schema:
+  type: object
+  fields:
+    to: {type: string}            # asker writes: the role asked; a derived check confirms it is in the step's `asks`
+    kind:                         # asker writes: what the asker lacks
+      type: string
+      enum: [pre-state, intent, reserved-decision, scope, vocabulary, structure, contract]
+      # pre-state: what a thing is before a change; intent: what the originator wanted;
+      # reserved-decision: a decision another role's domain holds; scope: whether
+      # something is in or out; vocabulary: what a term means; structure: which
+      # Bounded Context owns something; contract: what is promised across a boundary
+    question: {type: string}      # asker writes
+    default: {type: string}       # asker writes: what the step will do if the ask resolves defaulted
+    checkpoint: {type: string}    # asker writes: partial output sufficient to resume from
+    answer: {type: string, optional: true}       # answering role writes
+    answered_by: {type: string, optional: true}  # runtime writes: the role that answered
+    resolution:                                  # runtime writes
+      type: string
+      enum: [answered, defaulted, cancelled]     # cancelled: the held run was cancelled
+      optional: true
+```
+
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+| 1 | 2026-08-25 | update | Authored by owner decision: the ask mechanism is held-and-resumed only — a step returns an ask instead of an output, the run holds, the role answers, the step resumes with the answer; asks carry a default and a checkpoint; clarify becomes a specialization. |
+| 1 | 2026-08-25 | review | Screened: findings — the ask-resume loop had no exit; the resumed ask had no declared data name; only the answered path was described; three fields had no writer; the kind enum did not cover clarify. |
+| 2 | 2026-08-25 | update | Repairs: one ask per step per run; the process declares an `ask` value listed in asking steps' inputs; both resume paths stated; a writer per field; kind enum aligned to clarify's four subjects plus pre-state, intent, and reserved-decision, each explained. |
+| 2 | 2026-08-25 | review | Re-screened with the typedef: clean — all eight repairs confirmed, no synchronous form survives; three wording stumbles polished in place. |
+| 2 | 2026-08-25 | state | draft → approved by the owner. |
+=================== basis/types/screen-review.md
+---
+type: data-type
+id: screen-review
+defines: screen-review
+owner: product-authority
+status: approved
+approved: 2026-08-26
+version: 3
+created: 2026-08-25
+updated: 2026-08-26
+---
+
+# Data type: screen-review
+
+## Purpose
+
+One screen round's verdict and findings against a named criteria set.
+Produced by the `screen` step of
+[`../processes/po-output-check.md`](../processes/po-output-check.md)
+and of
+[`../processes/interaction-conformance-check.md`](../processes/interaction-conformance-check.md);
+consumed by their decision steps and, in the first, by its routing
+and revision steps and the round log. Each finding names the criterion it fails — or
+`uncovered`, for a defect no criterion names — carries the quoted text,
+and states whether the screener could decide it (`confident`) or not
+(`wobbly`) — a wobbly finding quotes the whole passage, since the deciding
+role decides from the review alone. `change` is the repair the screener
+proposes for that finding; `top_changes` the three the screener would
+make first. The `screen` step writes every field.
+
+## Schema
+
+```yaml
+schema:
+  type: object
+  fields:
+    verdict: {type: string, enum: [clean, findings]}
+    findings:
+      type: array
+      items:
+        type: object
+        fields:
+          criterion: {type: string}          # the criterion's name (in the PO check "framing" is always one), or the literal "uncovered"; a criterion the corpus cannot decide keeps its name and says "record absent:" in change
+          quote: {type: string}
+          change: {type: string}
+          decidability: {type: string, enum: [confident, wobbly]}
+    top_changes: {type: array, items: {type: string}, maxItems: 3}
+```
+
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+| 1 | 2026-08-25 | update | Authored with the po-output-check process: the `review` type carries no per-finding criterion, quote, or decidability, which the check's routing and decision read. |
+| 2 | 2026-08-25 | update | Screen repairs: the artifact is not opened by the decider; change and top_changes explained; writer stated. |
+| 2 | 2026-08-26 | state | draft → approved by the owner. |
+| 3 | 2026-08-26 | update | Second producer named (interaction-conformance-check); the record-absent form defined in the criterion comment. |
+=================== basis/types/check-decision.md
+---
+type: data-type
+id: check-decision
+defines: check-decision
+owner: product-authority
+status: approved
+approved: 2026-08-26
+version: 4
+created: 2026-08-25
+updated: 2026-08-26
+---
+
+# Data type: check-decision
+
+## Purpose
+
+A checking role's decision on a checked thing, taken from a screen
+verdict: the PM role's on the PO role's output, or the product designer
+role's on a delivered interaction. Produced by the `decide` step of
+[`../processes/po-output-check.md`](../processes/po-output-check.md)
+and of
+[`../processes/interaction-conformance-check.md`](../processes/interaction-conformance-check.md);
+consumed by their `record` steps and written into the checked
+artifact's Document History. `pass` accepts the checked thing against
+its criteria; `fail` names the criterion the output missed;
+`definition-change` says the criteria themselves were insufficient and
+names the gap to file. The `decide` step writes every field; that
+`criterion` accompanies `fail` and `gap` accompanies
+`definition-change` is a judged check on the decision, not a schema
+constraint.
+
+## Schema
+
+```yaml
+schema:
+  type: object
+  fields:
+    verdict: {type: string, enum: [pass, fail, definition-change]}
+    criterion: {type: string, optional: true}   # required when verdict is fail: the criterion missed, by name
+    gap: {type: string, optional: true}         # required when verdict is definition-change: the definition and what it lacks
+    reasons: {type: string}
+```
+
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+| 1 | 2026-08-25 | update | Authored with the po-output-check process by owner decision: the PM role decides from a screen verdict, never from reading every artifact. |
+| 1 | 2026-08-25 | review | Screened with the process: the conditional fields are judged, not mechanical; a line-broken token. |
+| 2 | 2026-08-25 | update | Writer and the judged nature of the conditional fields stated; token repaired. |
+| 3 | 2026-08-25 | update | Consumer corrected: the record step only. |
+| 3 | 2026-08-26 | state | draft → approved by the owner. |
+| 4 | 2026-08-26 | update | Generalized to both checking processes. |

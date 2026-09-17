@@ -1,0 +1,637 @@
+---
+type: request
+id: req-2026-09-09-usage-report-shape
+status: done
+version: 7
+date: 2026-09-09
+reader: lead-pm
+owner: lead-pm
+created: 2026-09-09
+updated: 2026-09-09
+originator: lead-pm
+received-through: operational-contract
+arose-in: init-run-measurement
+route: small-change
+route-reason: "the shop's own definitions and tool, no Bounded Context; the lane's definition settles four things: the usage report as a data type — the fields the harness gives, and to whom (one tokens figure with tool uses and duration per agent, to the starter; nothing per turn to the router); the exact comment forms the router writes on the bead for a step and for usage, in the router definition, and the form of a starter's report of what the harness gave it; the tool as a reader of those two definitions and nothing else; and a verifying observation that is a row with a figure on it, produced from a real anchor of this repository, not a check passing"
+routed-to: "requests/req-2026-09-09-usage-report-shape.md#result"
+work-item: lead-ctl8c
+---
+
+# Request: the cost rows read what the harness now reports
+
+## 1. What is requested
+
+Found on the first cost reading after the run-efficiency work
+(2026-09-09, anchors lead-lv37s, lead-ipi60, lead-jsqmr, lead-r86dp):
+`write_cost_rows.py` reads a `context` comment carrying an
+input/cache-creation/cache-read/output quad; the router (v10) writes a
+`usage` comment, and the harness now reports to the starter one
+figure per agent step — `subagent_tokens`, with `tool_uses` and
+`duration_ms` — and reports nothing per turn to the router itself,
+which once wrote the remaining budget as if it were consumption
+(lead-lv37s) and otherwise leaves the field blank. So the rows carry
+no token figure for any step, and the initiative rollup sums blanks.
+The figures the harness does report reach only the starter, who
+records them on the anchor by hand.
+
+The product authority, 2026-09-09, on why the information was lost:
+"The detail of execution cost changed between tool implementations,
+so there was not a good contract in place." The feature contract
+(feat-run-measurement) names "the harness's usage report" and defines
+it nowhere; the form lived only in the tool's parser, copied from one
+haiku run (lead-5wzgl); the router-usage change (v10) named no form
+and was verified as a rendering check, not a row; the harness's
+report changed shape between 2026-09-08 and 09-09 with no description
+beside it. Today's anchors carry what stands to be read: the router's
+`step: <id>` and `usage | context tokens: | output tokens: | model:`
+comments, and the starter's `report` comments naming
+subagent_tokens, tool_uses, and duration_ms per step, as received
+(lead-lv37s, lead-r86dp, lead-ipi60, lead-o0bkh, lead-6p8xu,
+lead-lgkmh, lead-jynwa).
+Run on lead-lv37s, the tool also writes no step row at all: it reads
+a step event as `step <id>` and the router writes `step: <id>`, so
+the rows table came out empty (sessions/sess-2026-09-09-a-cost.md).
+
+## 2. From whom
+
+Reader: the lead-pm role. Originator: the lead-pm role, as the starter
+of the four executions. Received through the lead shop's operational
+contract (lead-4kymc).
+
+## 3. Route
+
+Route said by the lead-pm role, 2026-09-09: **the small-change lane**.
+Why: the tool, the router definition, and the run-cost typedef are the
+lead shop's own. The definition settles the four things the
+route-reason names — the usage report as a data type, the router's
+comment forms and the starter's report form, the tool as their
+reader, and a row with a figure from a real anchor as the proof — so
+that the next change to any one of them has a contract to be checked
+against; no figure is computed by a model. Accepted by the
+product authority, 2026-09-09, with the words above; run now.
+
+Originator's answer: **accepted** — the lead-pm role, 2026-09-09.
+The register item the lane runs on is lead-ctl8c; it points at this
+request and carries nothing of what was asked.
+
+## 4. Result
+
+### Definition
+
+req-2026-09-09-usage-report-shape: when done, the cost-row tool reads
+the anchor comment forms the router and the starter actually write
+today — not the retired context-comment quad — and a session close on
+a real anchor produces a populated row for each agent step, its
+tokens, tool-uses, and duration read from the harness's own report to
+the starter, never estimated; a router turn, for which the harness
+reports no per-turn usage to the router itself, carries a blank
+tokens field, never a computed or remembered value.
+
+- Given an anchor whose comments record an agent or human step in the
+  router's own written form, when write_cost_rows.py reads that
+  anchor, then a cost row is opened for every such step — none
+  silently dropped for not matching the tool's step pattern.
+- Given an agent step for which the starter recorded, on the anchor,
+  the harness's own report of that step's tokens, tool uses, and
+  duration, in the form the router's definition names for it, when
+  the cost row for that step is written, then the row carries that
+  tokens figure, that tool-uses figure, and that duration, each read
+  from the report and none of them estimated or computed by a model.
+- Given a router's own top-level turn, for which the harness reports
+  no usage figure to the router, when the cost row for that turn is
+  written, then its tokens field is blank — never the router's own
+  remaining budget or any other value the harness did not report for
+  that turn.
+- Given the run-cost typedef's Required sections, when a row is
+  written, then its fields match exactly what the router's comment
+  forms and the starter's report make available for that step — no
+  field invented, no field silently dropped.
+- Given the real, already-closed anchor lead-lv37s (the
+  feature-authoring execution of feat-plain-voice-sections,
+  sessions/sess-2026-09-09-a.md), when `write_cost_rows.py
+  sess-2026-09-09-a --anchor lead-lv37s` is run, then the cost row
+  for step `draft` carries a non-blank tokens figure — the row the
+  first reading of this anchor could not produce
+  (sessions/sess-2026-09-09-a-cost.md's Rows table, empty).
+
+Artifacts touched, by path: basis/roles/router.md (the exact comment
+forms the router writes for a step and for usage; the usage report's
+shape as a data type — what reaches the router itself, and what
+reaches the starter, one tokens figure with tool uses and duration
+per agent step; and the form in which the starter records that
+report on the anchor); its rendering .claude/agents/router.md,
+source basis/roles/router.md, rendering tool
+basis/tools/compile_role.py; basis/artifacts/run-cost.md (the row's
+Required sections, brought to name only the fields the router's
+comment forms and the starter's report actually make available);
+basis/tools/write_cost_rows.py (the reader of the two definitions
+above — parses the router's actual step and usage comment forms and
+the starter's report form, and writes rows matching the run-cost
+typedef's fields, nothing estimated); its rendering
+.claude/skills/write-cost-rows/SKILL.md, source
+basis/tools/write_cost_rows.py, rendering tool
+basis/tools/compile_tool.py.
+
+Maker role: lead-solutions-architect.
+
+Verifying observation: `python3 basis/tools/write_cost_rows.py
+sess-2026-09-09-a --anchor lead-lv37s && grep -E '^\| draft \|.*[0-9]'
+sessions/sess-2026-09-09-a-cost.md`, exit 0.
+
+Defined by the lead-po role at the define step, against the
+glossary's simple-change entry and the request's Route: the change
+stays within the lead shop's own definitions — the router role, the
+run-cost typedef, and the tool that reads them, each with its
+rendering re-produced, never hand-edited — touches no Bounded
+Context, and its effect is demonstrable in one session by a populated
+row read from a real anchor; simple.
+
+### Change made
+
+Round 1. Maker: lead-solutions-architect.
+
+- `basis/roles/router.md` — v10 → v11: the `usage` comment's exact
+  form fixed to `usage: tokens=<value>; model=<model>` with `tokens`
+  always blank (the harness reports no per-turn usage to the router
+  itself — no more the remaining budget lead-lv37s carried); the
+  `step` comment's exact form named; the harness's usage report
+  defined as a data type — nothing per turn to the router, one
+  `subagent_tokens`/`tool_uses`/`duration_ms` figure per agent step
+  and for the router's own whole execution, to the starter — and the
+  starter's `report` comment form named; the Interfaces entry for the
+  starter pointed at it.
+- `.claude/agents/router.md` — re-rendered from `basis/roles/router.md`
+  v11 by `basis/tools/compile_role.py`, never hand-edited;
+  source-digest sha256:c7d991fc0953 → sha256:97ee6fcd765f.
+- `basis/artifacts/run-cost.md` — v4 → v5: the Identity bullet and
+  Required sections item 1 brought to name only the fields the
+  router's `usage` comment and the starter's `report` comment actually
+  make available — `tokens` and `tool uses` replacing the retired
+  input/cache-creation/cache-read/output quad, `duration` added for
+  `duration_ms` where the harness gives one, "and one per router turn"
+  added so the router's own blank-tokens rows are named; the Derived
+  review checklist's field list updated to match; the blank-field rule
+  unchanged.
+- `basis/tools/write_cost_rows.py` — unversioned tool script, edited
+  directly (it carries no Document History of its own): `STEP_RE`
+  fixed to match the router's actual `step: <id>` form (the retired
+  `step <id>` form matched nothing, so the rows table came out empty
+  on lead-lv37s); the retired `QUAD_RE`/`context`-comment reading
+  dropped; a `usage` comment now opens a blank-tokens router-turn row;
+  a `report` comment's lines (`<label>: subagent_tokens <n>, tool_uses
+  <n>[, duration_ms <n>]`) fill the matching step's row or, for
+  `router (whole execution)`, open a new one — every figure read from
+  the report, none estimated or computed; the docstring, `DESCRIPTION`
+  dict, and the Rows table's header and writer brought to the same
+  fields.
+- `.claude/skills/write-cost-rows/SKILL.md` — re-rendered from
+  `basis/tools/write_cost_rows.py` by `basis/tools/compile_tool.py`,
+  never hand-edited; source-digest sha256:d32b2af40cc8 →
+  sha256:08adf3c8b85b.
+
+Verifying observation run: `python3 basis/tools/write_cost_rows.py
+sess-2026-09-09-a --anchor lead-lv37s && grep -E '^\| draft \|.*[0-9]'
+sessions/sess-2026-09-09-a-cost.md` — exit 0; the `draft` row reads
+`| draft | lead-po | 0.3 | 62398 | 19 |  |`, its tokens and tool-uses
+figures read from the starter's `report` comment on lead-lv37s, none
+estimated. The full table also shows the fix's other two edges on the
+same anchor: a `router turn` row for each `usage` comment, tokens
+blank throughout (the anchor's remaining-budget figures never read as
+consumption), and a `router (whole execution)` row carrying the
+report's totals (tokens 42107, tool uses 34, duration 554493).
+
+Round 2. Maker: lead-solutions-architect. Repair of the round-1
+check's finding: the Definition names one tokens figure with tool
+uses and duration per agent step to the starter, and no figure for
+the router's own whole execution; the run-cost typedef v5 (unchanged
+this round) names a row as one per step and one per router turn, no
+other kind — so the clause `basis/roles/router.md` v11 added, and the
+row `basis/tools/write_cost_rows.py` opened from it, are dropped
+rather than the typedef widened to cover them.
+
+- `basis/roles/router.md` — v11 → v12: the "plus the same three for
+  the router's own whole execution, labeled `router (whole
+  execution)`" clause removed from the harness's-usage-report data
+  type; the `report` comment form now one line per step only, with a
+  sentence that a total the harness gives the starter for something
+  other than a step is not part of this form; a Document History row
+  added citing this request and round.
+- `.claude/agents/router.md` — re-rendered from `basis/roles/router.md`
+  v12 by `basis/tools/compile_role.py`, never hand-edited;
+  source-digest sha256:97ee6fcd765f → sha256:5df79b349662;
+  `compile_role.py --check` reads `ok router`.
+- `basis/tools/write_cost_rows.py` — unversioned tool script, edited
+  directly: the docstring's and `DESCRIPTION`'s "(or the router's own
+  whole execution)" phrasing dropped; the `report`-comment loop's
+  `else` branch, which opened a new row for any label not already
+  matching a step's row, replaced with `continue` — a label naming no
+  step the anchor recorded (the `router (whole execution)` line the
+  real anchor's `report` comment carries) is read and not written, so
+  it opens no row the run-cost typedef does not name; the dead
+  `role = "router" if label.startswith("router") else label` line
+  removed with it.
+- `.claude/skills/write-cost-rows/SKILL.md` — re-rendered from
+  `basis/tools/write_cost_rows.py` by `basis/tools/compile_tool.py`,
+  never hand-edited; source-digest sha256:08adf3c8b85b →
+  sha256:effe9dbf9c42.
+
+Verifying observation run: `python3 basis/tools/write_cost_rows.py
+sess-2026-09-09-a --anchor lead-lv37s && grep -E '^\| draft \|.*[0-9]'
+sessions/sess-2026-09-09-a-cost.md` — exit 0; the `draft` row reads
+`| draft | lead-po | 0.3 | 62398 | 19 |  |`, unchanged from round 1.
+The full table now carries only the two row kinds the Definition and
+the run-cost typedef name — four agent-step rows, each with a
+non-blank tokens and tool-uses figure, and five `router turn` rows,
+tokens blank throughout; no `router (whole execution)` row.
+
+### Check
+
+Round 1. Verdict: **fail**. Checker: lead-pm.
+
+Finding — the producing rule "nothing made that the definition does not
+cover" fails. The Definition names the harness's report to the starter
+as "one tokens figure with tool uses and duration per agent step" and
+names no figure for the router's own whole execution; the run-cost
+typedef v5, changed in this round, names a row as "one table row per
+step the anchor records, and one per router turn" and no other kind.
+Yet `basis/roles/router.md` v11 adds to the data type "the same three
+for the router's own whole execution, labeled `router (whole
+execution)`", and `basis/tools/write_cost_rows.py` opens a row for it
+— the verifying observation's instance carries `| router (whole
+execution) | router | 11.5 | 42107 | 34 | 554493 |`, a row the typedef
+it is an instance of does not name. Two changed definitions and the
+tool disagree on what a row is, the gap this request exists to close.
+
+What holds, so round 2 is narrow: statements 1–3 and 5 pass on
+lead-lv37s (`| draft | lead-po | 0.3 | 62398 | 19 |  |`, exit 0; four
+agent-step rows opened; every `router turn` row's tokens blank);
+statement 4 passes for the row fields; `basis/roles/router.md` v10 →
+v11 and `basis/artifacts/run-cost.md` v4 → v5 each carry a history row
+citing this request; `.claude/agents/router.md` checks `ok` through
+`compile_role.py --check`; `.claude/skills/write-cost-rows/SKILL.md`
+is byte-equal to a fresh `compile_tool.py` render (digest
+08adf3c8b85b); every path in `changed` is in the Definition's paths.
+
+Round 2. Verdict: **pass**. Checker: lead-pm. Finding: none.
+
+The round-1 finding is closed: `basis/roles/router.md` v12's data type
+names one figure per agent step to the starter and states that a total
+for anything other than a step is not part of the `report` form; the
+run-cost typedef v5 stands unchanged, one row per step and one per
+router turn; `basis/tools/write_cost_rows.py` reads the anchor's
+`router (whole execution)` line and writes no row for it. The three
+definitions and the tool now agree on what a row is.
+
+Statements re-checked fresh on lead-lv37s, the verifying observation
+run by the checker (exit 0): 1 — all four steps in the router's
+`step: <id>` form open rows (draft, add-usability, add-constraints,
+self-check), none dropped; 2 — each carries the tokens and tool-uses
+figures the starter's `report` comment gives it (62398/19, 25332/4,
+35996/11, 69065/13), duration blank where the report gives none; 3 —
+five `router turn` rows, tokens blank throughout, the anchor's
+`~14975000 remaining` figures never read; 4 — the table's six fields
+are exactly the typedef's Required sections 1, no other; 5 — `| draft
+| lead-po | 0.3 | 62398 | 19 |  |`. Producing rules: router v10 → v12
+with history rows 11 and 12 citing this request, rendering
+byte-equal to a fresh `compile_role.py` render (`ok router`, digest
+5df79b349662); run-cost v4 → v5 with its history row citing this
+request; the skill byte-equal to a fresh `compile_tool.py` render
+(digest effe9dbf9c42); the tool script unversioned, as the Definition
+lists it; every path in `changed` is in `paths`; the cost file's
+rewrite is the Definition's own verifying observation. The six `stale`
+rows `compile_role.py --check` printed beside `ok router` are the
+tool's answer for renderings whose source was not among the one
+definition the check was given, not a finding about those roles; none
+is in `paths`, none is modified in the working tree.
+
+### Verified result
+
+Verifying observation, as the Definition named it: `python3
+basis/tools/write_cost_rows.py sess-2026-09-09-a --anchor lead-lv37s
+&& grep -E '^\| draft \|.*[0-9]' sessions/sess-2026-09-09-a-cost.md`.
+
+Evidence — the output lines and the closing exit:
+
+```
+sessions/sess-2026-09-09-a-cost.md
+| draft | lead-po | 0.3 | 62398 | 19 |  |
+exit 0
+```
+
+The `draft` row of the real, already-closed anchor lead-lv37s carries
+a non-blank tokens figure (62398) and tool-uses figure (19), each read
+from the starter's `report` comment on the anchor, none estimated —
+the row the first reading of this anchor could not produce. The effect
+is shown in the running system, on the repository's own anchor, not by
+a check passing.
+
+Date: 2026-09-09. Role: lead-pm.
+
+The Definition, the Check's verdict by the lead-pm role (round 1 fail,
+round 2 pass, finding none), and this result stand. Between the
+request and this result no bet was taken and no check of record was
+run.
+
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+| 1 | 2026-09-09 | update | Recorded by the lead-pm at the request-intake process's record step from the starter's reading of the four anchors; routed to the lane, accepted, not started. |
+| 2 | 2026-09-09 | update | Second finding added: the tool's step-line form differs from the router's, so the rows table is empty on a real anchor. |
+| 3 | 2026-09-09 | update | The authority's words recorded; the route-reason widened to the four things the lane's definition settles and to a row with a figure as the proof; accepted, run now. |
+| 4 | 2026-09-09 | update | Originator's answer recorded at the request-intake process's record-answer step: accepted; work item lead-ctl8c opened for the small-change lane and written in `work-item`. |
+| 5 | 2026-09-09 | update | Defined by the lead-po role at the define step: judged simple against the glossary's simple-change entry; Definition added to the Result section, naming five acceptance statements, the seven artifacts touched (the router role and its rendering with its rendering tool, the run-cost typedef, the cost-row tool and its skill rendering with its rendering tool), the maker role, and the verifying observation — a populated row read from the real anchor lead-lv37s. |
+| 6 | 2026-09-09 | update | Verified result recorded by the lead-pm role at the small-change process's record step: the Definition's verifying observation run on lead-lv37s, the `draft` row populated from the starter's report (tokens 62398, tool uses 19), exit 0; status set to done; no bet taken and no check of record run between the request and this result. |
+| 7 | 2026-09-09 | update | Where the route led recorded by the lead-pm role at the request-intake process's land-result step: `routed-to` written from the lane's returned `change` — this request's own Result section by fragment, where the Definition, the Check (round 1 fail, round 2 pass), and the verified result stand. Nothing the lane wrote is written twice; status done stands as the lane left it. |
+=====ROUTER-USAGE=====
+---
+type: request
+id: req-2026-09-09-router-usage
+status: done
+version: 2
+date: 2026-09-09
+reader: lead-pm
+owner: lead-pm
+created: 2026-09-09
+updated: 2026-09-09
+originator: product-authority
+received-through: operational-contract
+arose-in: init-run-measurement
+route: small-change
+route-reason: "one accountability on the router's definition and its rendering; within the lead shop's own definitions, demonstrable in one session"
+routed-to: "requests/req-2026-09-09-router-usage.md#result"
+work-item: lead-1pe9i
+---
+
+# Request: the router records usage on the bead
+
+## 1. What is requested
+
+From req-2026-09-08-initiative-cost-rollup: "the router records usage
+per segment on every anchor." The rollup sums minutes only, because
+the router on sonnet writes no usage comment; the one on haiku did.
+
+## 2. From whom
+
+Reader: the lead-pm role. Originator: the product authority. Received
+through the lead shop's operational contract (lead-4kymc).
+
+## 3. Route
+
+The small-change lane. Accepted.
+
+## 4. Result
+
+### Definition
+
+req-2026-09-09-router-usage: when done, every router turn ends by
+writing the harness's usage for that turn on the bead.
+
+- Given basis/roles/router.md, when read, then an accountability says
+  the router writes, at the end of each of its turns, one comment on
+  the bead: context tokens, output tokens, and model, as the harness
+  reports them, blank where it does not.
+- Given .claude/agents/router.md, when the role check runs, then the
+  rendering is current and reports no finding.
+
+Artifacts touched: basis/roles/router.md and its rendering by
+basis/tools/compile_role.py. Maker role: lead-solutions-architect.
+Verifying observation: `python3 basis/tools/compile_role.py --check --findings`,
+exit 0. Defined by the lead-pm.
+
+### Change made
+
+Round 1, made by the lead-solutions-architect role: basis/roles/router.md
+(version 9 → 10, an accountability line added for the per-turn usage
+comment); .claude/agents/router.md re-rendered by
+`basis/tools/compile_role.py` (digest unset → `c7d991fc0953`). The check
+(`--check --findings`) exits 0.
+
+### Check
+
+Round 1 — pass; checker: lead-pm, 2026-09-09. The accountability stands in the definition; the rendering is current; the role check reports no finding.
+
+### Verified result
+
+Observation: `python3 basis/tools/compile_role.py --check --findings` — no finding, exit 0, 2026-09-09, by the lead-pm role. No bet taken, no check of record run.
+
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+| 1 | 2026-09-09 | update | Recorded and defined by the lead-pm; route lane, accepted; work item lead-1pe9i. |
+| 2 | 2026-09-09 | update | Checked and verified by the lead-pm; done; work item lead-1pe9i closed. |
+=====BD SKILL=====
+---
+name: bd
+description: 'The work register: the shop''s issue database, opened, commented, and
+  closed one work item at a time by the command `bd`, its Dolt history pushed to the
+  register''s remote at session close. Use it wherever a process step opens, comments
+  on, or closes a work item, and to push the register when a session closes. Tool:
+  `bd`, owned by no shop named — the tool''s provenance as shown whoever runs it (`bd
+  version 1.1.0 (8e4e59d39)` and its help) names none; the lead shop holds the gap
+  as its own until an owner is found; it does not answer the standard question, so
+  this skill is produced from the description beside it, `basis/tools/descriptions/bd.json`.
+  Uses, each with its exact invocation below: `create`, `comment`, `close`, `dolt-push`.'
+type: skill
+id: bd-skill
+generated: true
+generated-by: basis/tools/compile_tool.py
+derived-from: bd
+source: basis/tools/descriptions/bd.json
+source-digest: sha256:770e50fadb57
+stands-beside: bd
+tool-owner: no shop named — the tool's provenance as shown whoever runs it (`bd version
+  1.1.0 (8e4e59d39)` and its help) names none; the lead shop holds the gap as its
+  own until an owner is found
+---
+
+# bd (produced from the description beside `bd`, `basis/tools/descriptions/bd.json`)
+
+The work register: the shop's issue database, opened, commented, and closed one work item at a time by the command `bd`, its Dolt history pushed to the register's remote at session close. Use it wherever a process step opens, comments on, or closes a work item, and to push the register when a session closes.
+
+Uses: [create](#create), [comment](#comment), [close](#close), [dolt-push](#dolt-push).
+
+## create
+
+Opens one work item in the register with the given title and prints its id. Does not close, assign, or link anything; with <dry_run> it prints what would be created and creates nothing.
+
+Invocation:
+
+```sh
+bd create --title <title> [--type <type>] [--priority <priority>] [--description <description>] [--dry-run]
+```
+
+Takes:
+- `<title>` — the work item's title, one line (required)
+- `<type>` — the issue type: bug, feature, task, epic, chore, or decision (omitted: `"task"` is taken)
+- `<priority>` — the priority, 0 (highest) to 4, or P0 to P4 (omitted: `"2"` is taken)
+- `<description>` — the work item's description; omitted, the item has none (optional)
+- `<dry_run>` — preview only: print what would be created and create nothing (omitted: `false` is taken)
+
+Returns (text): on standard output, `✓ Created issue: <id> — <title>` then ` Priority: P<n>` and ` Status: open`, <id> the new item's id, `lead-` and five characters; with <dry_run>, `⚠ [DRY RUN] Would create issue:` and the fields, nothing created; exit status 0
+
+Fails:
+
+| code | exit status | condition | next step |
+|---|---|---|---|
+| `usage` | 1 | no title was given; one line on standard error, `Error: title required (or use --file to create from markdown)`; nothing is created | give `--title <title>` and run the invocation again |
+| `usage` | 1 | the arguments are not an invocation this tool states — an unknown command or flag, a flag without its value; one line on standard error beginning `Error:` says which, then the tool's usage sheet | run the invocation the use states, as written |
+
+## comment
+
+Appends one comment to the work item <id>, open or closed. Changes nothing else on the item.
+
+Invocation:
+
+```sh
+bd comment <id> <text>
+```
+
+Takes:
+- `<id>` — the work item's id, for example lead-176ti (required)
+- `<text>` — the comment's text, quoted as one argument (required)
+
+Returns (text): one line on standard output, `✓ Comment added to <id> — <title>`; exit status 0
+
+Fails:
+
+| code | exit status | condition | next step |
+|---|---|---|---|
+| `unreadable` | 1 | no work item with <id> exists in the register; one line on standard error, `Error: resolving ID <id>: no issue found matching "<id>"` (`Error: resolving <id>: ...` for comment); nothing changes | give the id of an existing work item (`lead-` and five characters, as `bd create` returned it) and run the invocation again |
+| `usage` | 1 | no text was given; one line on standard error, `Error: no comment text provided (use positional args, --stdin, or --file)`; nothing is added | give the comment's text after the id and run the invocation again |
+| `usage` | 1 | the arguments are not an invocation this tool states — an unknown command or flag, a flag without its value; one line on standard error beginning `Error:` says which, then the tool's usage sheet | run the invocation the use states, as written |
+
+## close
+
+Closes the work item <id> with the given reason, which the item keeps as its close reason. Closing an item already closed records the new reason and exits 0 as well.
+
+Invocation:
+
+```sh
+bd close <id> --reason <reason>
+```
+
+Takes:
+- `<id>` — the work item's id, for example lead-176ti (required)
+- `<reason>` — why the item closes, one line, kept on the item as its close reason (required)
+
+Returns (text): one line on standard output, `✓ Closed <id> — <title>: <reason>`; exit status 0
+
+Fails:
+
+| code | exit status | condition | next step |
+|---|---|---|---|
+| `unreadable` | 1 | no work item with <id> exists in the register; one line on standard error, `Error: resolving ID <id>: no issue found matching "<id>"` (`Error: resolving <id>: ...` for comment); nothing changes | give the id of an existing work item (`lead-` and five characters, as `bd create` returned it) and run the invocation again |
+| `usage` | 1 | the arguments are not an invocation this tool states — an unknown command or flag, a flag without its value; one line on standard error beginning `Error:` says which, then the tool's usage sheet | run the invocation the use states, as written |
+
+## dolt-push
+
+Pushes the register's local Dolt commits to its configured remote (`origin`, per `bd dolt remote list`), as the session-handoff process's land step does. Pushes nothing but the register; needs a remote configured and, for a hosted remote, DOLT_REMOTE_USER and DOLT_REMOTE_PASSWORD in the environment.
+
+Invocation:
+
+```sh
+bd dolt push
+```
+
+Takes: nothing — the use has no input.
+
+Returns (text): the push's report on standard output; exit status 0 — the form of the report is what the tool's help states for the push, not yet observed by this shop on this branch
+
+Fails:
+
+| code | exit status | condition | next step |
+|---|---|---|---|
+| `unwritable` | 1 | the remote could not be written: none is configured, the credentials are missing, or the remote refuses the push; the reason on standard error — the tool's help names `--force` for a remote whose working set has uncommitted changes | configure the remote (`bd dolt remote add <name> <url>`) or set the credentials, then run the invocation again; do not force without the lead-pm's say |
+| `usage` | 1 | the arguments are not an invocation this tool states — an unknown command or flag, a flag without its value; one line on standard error beginning `Error:` says which, then the tool's usage sheet | run the invocation the use states, as written |
+=====REQUEST TYPEDEF (work-item lines)=====
+68-  change definition, or a decline's decision record; empty while the
+69-  route is `awaiting`.
+70:- `work-item` — optional: the register item opened for the routed
+71-  ask. The item points at the request by id; the request may name the
+72-  item, and never depends on it.
+73-
+74-Status values and their writers, for a received ask:
+75-
+76-- `recorded` — any lead-shop role, on meeting the ask; `route` is
+--
+104-
+105-3. **Route** — the route said, its reason, and the originator's
+106:   answer: accepted, objected — with the route standing after the
+107-   objection and the reason that answers it — or not yet answered. A
+108-   route is acted on only after it was said; a route not yet answered
+109-   is recorded as said, with no action taken on it.
+110-4. **Result** — where the route led. For a simple change: the change's
+111-   definition (written by the lead-po role, referencing this request),
+112-   the check's verdict recorded by a role other than the maker, and
+--
+183-| 1 | 2026-08-19 | state | draft → approved. |
+184-| 2 | 2026-08-23 | update | Owner direction: decision-ledger references removed — changes stand on their own; history entries and text no longer cite numbered decisions. |
+185:| 3 | 2026-09-04 | update | The received-ask path added, under init-request-routing / feat-request-routing (constraint C1: the existing root amended, no new type) on the authority's standing direction of 2026-09-04, per adr-2026-09-04-request-front-end §2–3: a received ask's request is the durable record of an ask, made on arrival by any lead-shop role and routed by the lead-pm role. Added: the second producing path with the request-intake process named as pending (authored alongside); instances in `requests/`, id `req-YYYY-MM-DD-<slug>`; the received field set (`id`, `version`, `owner`, `created`, `updated`, `originator`, `received-through`, `arose-in`, `route`, `route-reason`, `routed-to`, `work-item`) closed over the root set; status values `recorded`, `routed`, `declined`, `done` with their writers; sections 3 Route and 4 Result; Rules (one home for the ask's words, no record in a register item or transcript, decline only with the authority, the contract stated, `intent-provenance`'s exception carried through lead-4kymc); Sources and Commitment extended; the checklist re-derived. The emitted path — the root sense `decision-brief` declares — stands unchanged. |
+186-| 4 | 2026-09-09 | update | `run` propagated to `execution` as the noun for a process instance, under req-2026-09-08-definition-vs-instance / feat-execution-vocabulary (shopsystem-product): mechanical, determiner-adjacent occurrences only (`a/the/this/one/another/each/no/any run(s)`); `run-by`, `run` as a schema field or step key, and compound/heading uses (e.g. `run-cost`, `run list`, `Run lifecycle`) left unchanged, that residue disclosed as not done in this pass. Self-check against define-good-up-front: diffed against the file's pre-edit text; no requirement, field name, or heading changed. Made by the lead-solutions-architect role. |
+=====INTAKE (answer step)=====
+195-  route_decided -->|held exit: the decline awaits the authority's ruling — the request stays recorded, its route awaiting| __end
+196-  route_decided -->|else| observe
+197-  observe --> route_answer
+198:  route_answer -->|success exit: accepted — land the answer and act on the route| land
+199-  route_answer -->|failsafe exit: round >= round_cap — the route stands, the objection recorded| land
+200:  route_answer -->|objected — decide again with the objection| advance_round
+201-  route_answer -->|held exit — hold-after caps the wait| observe
+202-  route_answer -->|else| observe
+203-  advance_round --> decide_route
+204-  land --> dispatch
+205-  dispatch -->|discovery — open the conversation on the request| open_discovery
+206-  dispatch -->|small-change — the lane takes the request| open_lane
+207-  dispatch -->|else| decline
+208-  open_discovery --> land_outcome
+209-  land_outcome --> __end
+210-  open_lane --> read_route
+211-  read_route --> read_reason
+212-  read_reason --> route_after_lane
+--
+519-    run-by: {execution: runtime}
+520-    inputs: [answer, round, round_cap]
+521-    branches:
+522:      - label: "success exit: accepted — land the answer and act on the route"
+523-        when: answer == "accept"
+524-        next: land
+525-      - label: "failsafe exit: round >= round_cap — the route stands, the objection recorded"
+526-        when: answer == "object" && round >= round_cap
+527-        next: land
+528:      - label: "objected — decide again with the objection"
+529-        when: answer == "object"
+530-        next: advance-round
+531-      - label: "held exit — hold-after caps the wait"
+532-        when: answer == "not-answered"
+533-        next: observe
+534-      - else: observe
+535-
+536-  - id: advance-round
+537-    name: Advance the round
+538-    run-by: {execution: runtime}
+539-    inputs: [round]
+540-    set:
+--
+550-      - route != "small-change" || work_item != ""
+551-    prompt: |
+552-      Write the originator's answer in the request's section 3: when
+553:      answer is accept, "accepted"; when it is object — the objection
+554:      loop reached its cap — "objected", with objection as the answer
+555-      given and the route standing as said with reason, and say to the
+556-      originator in natural language that the route stands, why, and
+557-      what they can do next — bring the question to the product
+558-      authority. A history row. When route is small-change, open the
+559:      register work item the lane runs on — run `bd create --title
+560-      "Request <id>: <slug>"` with the request's id and slug — and
+561-      write the item's id in the request's work-item field, replacing
+562-      the id of an item an earlier run closed; the item points at the
+563-      request and carries nothing of what was asked. Return the
+564-      request and, on the small-change route, the item's id; otherwise
+565-      an empty work_item.
+566-    next: dispatch
+567-
+568-  - id: dispatch
+569-    name: Dispatch to the route's destination
+570-    run-by: {execution: runtime}
+571-    inputs: [route]

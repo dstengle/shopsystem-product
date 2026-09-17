@@ -1,0 +1,613 @@
+=== basis/glossary.md
+---
+type: glossary
+id: glossary
+owner: product-authority
+status: approved
+approved: 2026-08-19
+version: 16
+created: 2026-08-19
+updated: 2026-08-28
+---
+
+# Glossary
+
+## How the list combines
+
+The defined-term list is this glossary combined with every schema element
+name. Per the `use-defined-terms` principle, a writer choosing between
+terms uses one of these when one fits.
+
+## Terms
+
+- **artifact type** — a named, schema-defined document type (e.g.
+  `decision-brief`); the term the schema registry uses. Not "kind".
+- **data type** — a named, schema-defined structure that is not a
+  human-readable document (e.g. `review`); passed between process steps.
+- **simple type** — a JSON Schema primitive (`string`, `integer`,
+  `boolean`, `array`, `object`), usable inline without registration.
+- **typedef** — the single source a type is generated from; templates and
+  schema fragments are its renderings (owned by shopsystem-knowledge).
+- **schema** — the machine-checkable shape of a type: fields, types,
+  enums, required sections.
+- **process definition** — the source of truth for a process: header
+  (purpose, outcomes, roles), data section, steps section.
+- **step** — one unit of a process: an agent step (carries a prompt) or a
+  runtime step (carries `set`, `run`, or `branches`; no prose).
+- **rendering** — a generated output of a definition (a skill, a
+  diagram, a template); never edited by hand, never the source of truth.
+- **guiding statement** — an optional header element of a process
+  definition that directs judgment across the whole process; compiled
+  into every rendering.
+- **fitness set** — judged (never executed) Given/When/Then scenarios
+  scoring an artifact type's quality.
+- **guideline** — prose quality rules for an artifact type, each with a
+  test, a criterion, and a yes/no decision.
+- **role** — a named capability contract and set of accountabilities,
+  assigned by process steps to whoever fills it; sequencing lives in
+  process definitions, not roles.
+- **principle** — a standing rule about how we work: name, statement,
+  rationale, implications (see the principles document's opening
+  definition).
+- **seed layer** — the hand-approved definitions the regress terminates
+  at: the principle set plus one typedef per definition document type.
+- **owner** — the role that approves changes to a definition; named in
+  every definition's frontmatter.
+- **definition chain** — the six linked definitions of good for one
+  artifact type; required before instances are authored or rewritten.
+- **keeper** — a corpus record whose action is keep-rewrite; rewritten
+  forward through its type's approved chain, never used as-is.
+- **rewrite-forward** — the default for keepers: re-author to the
+  approved standard; repair-in-place only for records already at the bar.
+- **rebaseline** — Phase 1 of the re-founding arc: the active tree comes
+  to hold only chain-conforming records; retired mass moves to the
+  archive.
+- **scope** (of a principle set) — the level the set governs and whose
+  context it loads into: working (every activity), architecture (the
+  designed system), or experience (the product's interactions).
+- **transcript** — the runtime log of turns; unscoped, not a governed
+  artifact, never loaded into context.
+- **conversation** — a scoped, bounded discussion attached to exactly one
+  anchor; every conversation belongs to a process.
+- **anchor** — the governed record a conversation attaches to: a session
+  record, a review record, or a work item; carries the conversation's
+  state across transcript boundaries.
+- **conversation type** — discovery (anchor: a session record), review
+  (anchor: a review record and its outcomes), or work (anchor: a work
+  item).
+- **session record** — the anchor record of a discovery conversation:
+  outcome, produced and revised lists, open threads, select quotes.
+- **review** — one bounded conversation in which the authority decides
+  on presented material. Replaces "sitting".
+- **review record** — the anchor record of a review: the material
+  presented and the outcomes applied; each decision traces in the
+  changed artifacts' Document History, never in a standing ledger.
+- **park** — the failsafe for work that cannot pass review within its
+  round cap: set aside with a filed finding.
+- **round cap** — the declared maximum review rounds before a loop's
+  failsafe exit fires.
+- **action** — the approved choice for one record: keep-rewrite, keep,
+  retire, or terminal, with its target.
+- **authority-call** — a row marker on a migration-plan row awaiting a
+  decision from the authority; not an action — the row has no effect and
+  is out of scope for any run until ruled.
+- **action table** — the table of records and their actions; approved row
+  by row or in blocks at a review. Drives any bulk record change.
+- **close-out** — the mechanical execution of the migration plan's
+  pre-decided retire and terminal actions: snapshot, delete, archive
+  move, a loud post-check, and the branch promotion; no review loop.
+  All stages run consecutively at cut-over.
+- **snapshot tag** — the annotated git tag (`pre-migration`) on `main`'s
+  pre-execution commit, preserving the full corpus for terminal-recovery;
+  after close-out a terminal record exists only there.
+- **migration plan** — the rebaseline's action table plus the order of
+  the per-type migration runs. Replaces "rebaseline bill".
+- **run** — one execution of a process, anchored to a work item; states:
+  running, held, done, cancelled.
+- **hold** — a run state: paused with its step and data preserved in its
+  anchor, by inactivity or by an ask; a held run is resumed or
+  cancelled, never dropped.
+- **checkpoint** — updating a conversation's anchor when a transcript
+  ends mid-conversation; a checkpoint is not a close.
+- **branched conversation** — a conversation run as a sub-process of
+  another run; its anchor records the parent (`branched-from`).
+- **Bounded Context** — a deliberately drawn region of the product with
+  one internal language, one model, and one set of contracts to other
+  regions; drawn by design, never discovered after the fact (Evans,
+  *Domain-Driven Design*).
+- **shop** — the entity that builds, operates, and evolves part of the
+  product. Two types: the lead shop (the system-level coordinator; owns
+  product-level artifacts and no Bounded Context) and the BC-shop (owns
+  and produces exactly one Bounded Context). By the owner's decision a
+  BC-shop is a component team in the product literature's sense: it
+  receives bounded work for its context and does not own a feature end
+  to end; a request that crosses contexts is decomposed above it, in
+  the initiative, never by the shops between themselves.
+- **activity** — a discrete unit of work performed inside a shop,
+  following a contract or process, with inputs, outcomes, and provenance
+  recorded. What an actor is stays unconstrained; the activity has the
+  same shape whoever performs it.
+- **contract** — a named, versioned statement of what one entity
+  promises another: the schemas exchanged, the meaning of each
+  operation, the error behavior, and the relationship kind. Offered as a
+  product contract (on a Bounded Context) or an operational contract (on
+  a shop); nothing outside a contract is promised.
+- **relationship kind** — the named pattern a contract declares for how
+  two Bounded Contexts relate, drawn from the context-mapping catalogue
+  (Evans, *Domain-Driven Design*): customer–supplier, conformist,
+  anti-corruption layer, open host service, published language, shared
+  kernel, or separate ways.
+- **vehicle** — the message type a request to a Bounded Context shop
+  travels in; chosen from the pre-state, never from the request's
+  wording.
+- **pre-state** — what a Bounded Context actually is before a change,
+  read from its contracts and its scenario register, never from its
+  internals.
+- **framing** — the PM role's recorded statement of what a request is
+  about: the originator, the problem taken to be worth solving, the
+  outcome it serves, and the contract it entered through; the
+  exclusive decision of `lead-pm`; written as the first section of an
+  initiative and nowhere else.
+- **initiative** — the product-level problem artifact: one problem
+  worth solving, stated for the product, with its framing, one
+  measured outcome, an appetite and no-gos, the feasibility and
+  usability attachments, and the solutions architect's decomposition;
+  made by the PM role, screened by the cold reviewer, bet on by the
+  authority; features are made from it.
+- **acceptance scenario** — a Gherkin scenario in a feature that
+  states, as a requirement, what counts as done for one behavior;
+  co-produced by the PO role and the owning Bounded Context shop;
+  assigned to that context by a `@bounded-context:<name>` tag the
+  solutions architect writes; held in that shop's scenario register.
+- **scenario register** — a Bounded Context shop's own list of the
+  acceptance scenarios tagged to it across all features, with their
+  hashes and states; read in full across every context when a claim
+  spans contexts.
+- **ask** — a question one activity puts to another role in place of
+  its output, carrying a default and a checkpoint; the run holds, the
+  role answers, the step resumes — never a wait in place (data type
+  `ask`; process-definition typedef §Run lifecycle).
+- **clarify** — an ask from a Bounded Context shop to the lead shop on
+  scope, vocabulary, structure, or contract; answered by the role whose
+  domain the question falls in.
+- **decomposition** — the solutions architect's record of which Bounded
+  Context owns which capability, and the relationship kind of each
+  contract between contexts.
+- **enabler work** — technical work that makes a feature possible;
+  recommended by the solutions architect, placed in the backlog by the
+  PO role.
+- **interaction type** — one way a person or an agent reaches the
+  product: command line (CLI), full-screen terminal (TUI), graphical or
+  web (GUI), API and SDK, conversational, voice, or a generated document
+  or notification; each honours its own conventions within one
+  experience. The experience guidelines cover conversational and voice
+  together as the `assistant` guideline.
+- **experience guidance corpus** — the product designer role's
+  principle set and guidelines for the experience: design principles,
+  vocabulary and voice, core-task parity across interaction types,
+  interaction patterns per type, and the accessibility target; the
+  role's exclusive domain.
+- **originator** — whoever expresses intent at the product's edge: a
+  person, a shop, or a system outside the product.
+- **generated interface** — an interface whose form the product composes
+  at run time from the person's context, within constraints the
+  experience guidance corpus states; a form, not an interaction type.
+- **assistant interaction** — an interaction in which the product acts on
+  an intent the person stated rather than on a command — conversational,
+  voice, or an assistant acting for the person (a closed set); the locus
+  of control is the product's, so the experience principles bound it.
+- **feature** — a Gherkin Feature: one capability from the user's or
+  agent's point of view — a narrative saying who, what, and the outcome
+  — with the acceptance scenarios that state what counts as done for
+  it; product-level, belonging to its framing or initiative; its
+  scenarios may be owned by several Bounded Contexts. The PO role's
+  artifact. (The per-shop *brief* was retired 2026-08-28; the
+  `decision-brief` to the authority is unrelated.)
+- **check of record** — the check whose verdict the definitions rely
+  on for an artifact when the role that makes it also holds the
+  authority that approves it; for the initiative, the cold reviewer's
+  screen.
+- **bet** — the authority's decision to spend an initiative's appetite:
+  the go/no-go, taken in a review, moving it from `proposed` to
+  `planned`.
+- **product decision record** — the PO role's record of one
+  product-level decision — decision, alternatives, consequences,
+  decider and right, reversibility; ADR and MADR forms; checked as PO
+  output.
+- **intent** — a desired outcome expressed by an originator at the
+  product's edge; enters the product through a contract and keeps its
+  provenance through every translation and delegation.
+
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+| 1 | 2026-08-19 | update | Seed term list authored. |
+| 1 | 2026-08-19 | state | draft → approved. |
+| 2 | 2026-08-22 | update | Conversation-model terms added; action extended to four values, authority-call and action-table amended, close-out and snapshot tag added. |
+| 3 | 2026-08-23 | update | Architecture terms added, riding the architecture-principle-set approval: Bounded Context, shop, activity, contract, relationship kind, intent. |
+| 3 | 2026-08-23 | state | The six architecture terms approved with the architecture principle set; pending markers removed. |
+| 4 | 2026-08-23 | update | Owner direction: ruling and experiment-index entries removed with the ledger practice; review and review-record entries rewritten to the outcomes model. |
+| 5 | 2026-08-23 | update | Anchor entry added — the term recurred as an unintroduced-term stumble across three screens. |
+| 6 | 2026-08-23 | update | vehicle and pre-state added — terms the lead-solutions-architect role turns on. |
+| 7 | 2026-08-25 | update | Owner direction: a near-synonym of "role" retired and banned. |
+| 8 | 2026-08-25 | update | framing, acceptance scenario, scenario register, clarify, decomposition, enabler work added — each arrived undefined in the PM and PO role screens. |
+| 9 | 2026-08-25 | update | interaction type and experience guidance corpus added with the lead-product-designer role. |
+| 10 | 2026-08-25 | update | ask added; clarify re-based as an ask; hold now names the ask as a cause. |
+| 10 | 2026-08-25 | update | originator added — used by the PM role and the ask type without a definition. |
+| 11 | 2026-08-26 | update | scope gains the experience level with the experience principle set. |
+| 11 | 2026-08-26 | update | generated interface and assistant interaction added with the experience principle set. |
+| 12 | 2026-08-26 | update | interaction type: the guidelines' `assistant` coverage of conversational and voice noted. |
+| 13 | 2026-08-27 | update | Owner decision, from the system-read report: BC-shops are component teams by design; stated in the shop entry. |
+| 14 | 2026-08-28 | update | Owner decision: feature added; acceptance scenario and scenario register carry the `@bounded-context:` assignment; the per-shop brief retired. |
+| 15 | 2026-08-28 | update | initiative added; framing stated to live in the initiative's first section. |
+| 16 | 2026-08-28 | update | framing carries the contract; check of record, bet, and product decision record added — each arrived undefined in the initiative chain's screen. |
+=== basis/roles/lead-pm.md
+---
+name: lead-pm
+description: The product-management role of the lead shop. Frames intent, holds the product's outcome, judges value and viability, orders the roadmap, and checks the PO's output against the framing.
+tools: Read, Edit, Write, Bash, Grep, Glob
+maxTurns: 100
+type: role-definition
+id: lead-pm
+owner: product-authority
+status: approved
+approved: 2026-08-25
+version: 9
+created: 2026-08-23
+updated: 2026-08-28
+---
+
+# Lead PM
+
+You hold the role where intent enters the shop and where the product's
+outcome is answered for. You turn what an originator — whoever expresses intent at the
+product's edge — asks for into a recorded *framing* — the problem the shop takes the request to be
+about and the outcome it serves — and you check what the PO role makes
+from that framing against it. The product authority holds this role in
+person; that is the role's authority. Agents assist the role's
+activities (see Interfaces); the frontmatter contracts those agents,
+and the person holding the role is bound by the definitions, not by
+the tool list.
+
+**Standard of judgment:** outcomes, not outputs — you frame a problem
+to solve, never a feature to build. You engage an originator's
+statements as an interlocutor and record convergence rather than
+inferring it. Material reaches you decidable — a screen verdict, a decision brief,
+or an ask (a question a definition cannot answer, sent with a
+proposed default) — or it goes back to the role that sent it with the
+missing criterion named.
+
+**Accountable for:**
+- The initiative for each problem worth solving, opening with the
+  framing of its intent: the originator, the expressed outcome, the
+  problem taken to be worth solving, and the contract — product or
+  operational — it entered through; the rest of the initiative — one
+  measured outcome, appetite and no-gos — drafted by the assisting
+  agent and decided here; screened by the cold reviewer as the check
+  of record.
+- The value and viability judgment on every candidate problem: whether
+  it is worth solving and whether the product can sustain the solution.
+- The check on the product-owner (PO) role's output — features,
+  decision records, backlog order — against the framing, under criteria the definitions state: a
+  pass, a fail with the criterion named, or a definition change where
+  the criteria proved insufficient.
+- Roadmap priority: which framed problems come first, recorded with
+  reasons.
+- Convergence of each discovery conversation recorded on its anchor
+  (see the [glossary](../glossary.md)).
+- The provenance chain: any activity traceable to its originating
+  expression without ambiguity, and every decision applied to the
+  governed artifacts it changes with a Document History entry.
+
+**Domain (exclusive):** the framing of intent — what the shop takes an
+expression to be asking for is decided by this role alone.
+
+**Decision rights.**
+- *Decides:* the framing (exclusive); and, as the accountable role,
+  value and viability, roadmap priority, and whether the PO's output
+  passes its check — each recorded with its reasons and open to another
+  role's evidence.
+- *Recommends:* scope changes to the PO with reasons; the outcome a
+  shape must serve to the solutions architect.
+- *Resolves:* a conflict between this role's framing and another
+  role's domain, recorded on the affected artifacts; no role overrides this
+  one's framing.
+- *Never decides:* feasibility and the stack (the
+  [solutions architect](lead-solutions-architect.md)'s);
+  authorship of acceptance scenarios and backlog order within the
+  framing (the PO's); usability (the
+  [product designer](lead-product-designer.md)'s); how a
+  Bounded Context builds a behavior (the BC-shop's).
+
+**Admissible evidence:** the originator's own words, recorded;
+discovery-conversation anchors; measured outcomes of shipped work; a
+screen verdict — a cold reviewer's judgment against a named criteria
+set (a fitness set, a guideline, or the framing itself). Not authoritative: a stakeholder's feature list read as a
+requirement; the PO's backlog read as the product's intent; the
+role's own reading of every artifact in place of a stated criterion.
+
+**Interfaces:**
+- Originators: intent in; the recorded framing back.
+- The PO role: framed intent and its outcome out; features, decision
+  records, backlog order, and scope questions in for the check.
+- The solutions architect role: framed problem and outcome out;
+  feasibility verdict, technical risks, and questions in.
+- The product designer role: framed problems and outcomes out;
+  usability evidence, prototypes, and observed user needs in.
+- Assisting agents: each assisted activity's process names what the
+  agent prepares and what this role decides.
+- Asks from any role: answered here, and a recurring ask becomes a
+  definition change.
+
+**Knowledge and skills:** product discovery and interviewing; the
+four product risks — value, usability, feasibility, viability — and
+which role answers for each (value and viability here; feasibility
+with the solutions architect; usability with the product designer); the shop's
+definition corpus (every activity run through the basis); the
+[stakeholder-presentation](../processes/stakeholder-presentation.md)
+and [discovery-conversation](../processes/discovery-conversation.md)
+processes; the [working principle set](../principles.md) every
+activity runs under.
+
+**Anti-rationalization:**
+- "I'll just read the scenarios myself." → A check without a stated
+  criterion is a read, not a check; the criterion is the missing
+  definition.
+- "The PO knows what I meant." → A framing is recorded or it does not
+  exist.
+- "This feature is obviously worth it." → Value is a judgment with
+  evidence named; the feature list is not the evidence.
+- "It's infeasible, so the framing is wrong." → Infeasible returns the
+  problem for re-framing; it does not decide what is worth solving.
+- "I'll decide the how while I'm here." → The how belongs to the
+  architect and the shops; deciding it here removes their check.
+
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+| 1 | 2026-08-23 | update | Authored through the approved role-definition chain. The role is new to the system: it carries the discovery-interview and intent-provenance duties the migration's execution model assigns to product management. |
+| 1 | 2026-08-23 | review | Screened against the role-definition fitness set: clean — all five scenarios pass; three stumbles (unlinked process and glossary allusions; "anchor" undefined), none a fail. |
+| 2 | 2026-08-23 | update | Stumble polish: the presenting process named and linked; glossary linked; the anchor term pointed at its new glossary entry. |
+| 3 | 2026-08-25 | update | Owner direction: a near-synonym of "role" retired and banned. |
+| 4 | 2026-08-25 | update | Re-authored to the six-section form from the research reports on the PM/PO roles (on the `research` branch: `research/pm-po-roles-2026-08.md` item 8 and `research/pm-po-one-role-2026-08.md` item 7) by owner decision: the authority fills the role in person, agent-assisted; the role holds the product's outcome, value and viability, roadmap priority, and the check on the PO's output — the maker/checker split that justifies two roles. Assist skills and the ask mechanism are named as interfaces; their processes are a filed gap. |
+| 4 | 2026-08-25 | review | Screened against the role-definition fitness set: findings — five sequencing sentences; the human requirement stated twice plus an actor-kind working instruction; a second sole-decision claim in Escalates; the frontmatter's relation to a human holder unstated; undefined terms (framing, originator, ask, screen, four-risks). |
+| 5 | 2026-08-25 | update | Repairs: sequencing removed; human requirement stated once as the role's authority; frontmatter said to contract the assisting agents; exclusive domain kept to the framing, other decisions marked accountable-not-exclusive, Escalates recast as Resolves; framing and screen defined inline, the four risks listed; interfaces one per line; usability marked unassigned rather than tied to an undefined role. |
+| 5 | 2026-08-25 | review | Re-screened: clean — all five scenarios pass, five rules hold; stumbles (originator, PO, ask introduced late; a spatial metaphor; research references) polished in place. |
+| 5 | 2026-08-25 | state | draft → approved by the owner. |
+| 6 | 2026-08-25 | update | Usability now assigned: the never-decides list and the four-risks note point at the approved lead-product-designer role; the designer added as an interface. |
+| 7 | 2026-08-25 | update | Admissible evidence widened from "fitness set" to the criteria set the po-output-check process defines. |
+| 8 | 2026-08-28 | update | Owner decision: acceptance-scenarios re-formed as feature (product-level, scenarios assigned per Bounded Context by tag); the brief retired — shops receive their assigned scenarios. |
+| 9 | 2026-08-28 | update | The initiative typedef exists: the framing accountability becomes the initiative, with the cold reviewer's screen named as its check of record. |
+=== basis/artifacts/product-decision-record.md
+---
+type: artifact-typedef
+id: product-decision-record-typedef
+defines: product-decision-record
+owner: product-authority
+status: draft
+version: 4
+created: 2026-08-26
+updated: 2026-08-28
+ancestry: [product-decision-record]
+---
+
+# Artifact type: product-decision-record
+
+## Identity and ancestry
+
+- **Type:** `product-decision-record` — the record of one product-level
+  decision and its reasons: what was decided, by which role under which
+  right, against which alternatives, with what consequences, and how
+  hard it is to reverse. The product-side counterpart of the
+  architecture decision record.
+- **Produced by:** the [PO role](../roles/lead-po.md), for a decision the
+  PM role or the PO role has taken; checked by the
+  [PO output check](../processes/po-output-check.md) against the
+  [product-decision-record fitness set](../fitness/product-decision-record.fitness.md).
+  **Consumed by:** every role whose later decision the record bounds;
+  Bounded Context shops; the PM role at the check.
+
+## Required frontmatter
+
+`type: product-decision-record`, `id`, `status` (draft | checked |
+returned | pending-definition | superseded — replaces `checked` when the PO role
+files a later record naming this one as superseded), `version`, `date`,
+`decided-by` (the role, or `product-authority`), `right` (the decision
+right exercised — for the authority's bet on an initiative, `bet` — or
+`escalation`, in which case §1 names the escalation that settled it), `owner`, `created`, `updated`.
+
+## Required sections
+
+1. **Decision** — exactly one decision, as a sentence a reader can act
+   on.
+2. **Alternatives** — at least one the deciding role could have chosen,
+   with the reason it was not.
+3. **Consequences** — each: what changes, for whom, and what it costs or
+   forecloses.
+4. **Reversibility** — how hard the decision is to reverse and, if hard,
+   what would trigger revisiting it.
+
+## Rules
+
+- Whether the named role held the right it exercised is the PM role's
+  ruling at the check, not the record's claim; a record whose decider
+  is the authority is checked for form only.
+- A superseding record links the one it supersedes.
+
+## Commitment (Definition of Done)
+
+A record is done when it has passed the PO output check against its
+fitness set and the framing. **Consequence on failure:** it is returned with the
+criterion named and binds nothing.
+
+## Sources
+
+Nygard's architecture decision record (decision, consequences); MADR
+(considered alternatives); decider and reversibility as the shop's own
+additions, from the roles' decision rights; the
+[product-decision-record fitness set](../fitness/product-decision-record.fitness.md).
+
+## Derived review checklist
+
+- One decision, actionable. *(§Required sections 1; fitness 1)*
+- A real alternative with its reason. *(§Required sections 2; fitness 2)*
+- Decider and right, or the escalation, named. *(§Required frontmatter; fitness 3)*
+- Each consequence names what changes, for whom, at what cost. *(§Required sections 3; fitness 4)*
+- Reversibility and its trigger stated. *(§Required sections 4; fitness 5)*
+
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+| 1 | 2026-08-26 | update | Authored by owner direction from the approved fitness set; the ADR and MADR forms adopted for decision, consequences, and alternatives, with decider and reversibility as the shop's own additions. |
+| 1 | 2026-08-26 | review | Screened: findings — definition wrongly in the ancestry; a PM-agent producer path ungrounded; the framing missing from the commitment; the escalation branch under-carried; an unverifiable Fowler attribution; checklist cited another document. |
+| 2 | 2026-08-26 | update | Repairs: ancestry corrected; PO role sole producer; framing added; escalation named when right is escalation; attribution dropped; superseded's setter named; checklist cites this typedef's clauses. |
+| 2 | 2026-08-26 | review | Re-screened: clean; two stumbles. |
+| 3 | 2026-08-26 | update | the escalation's home named; superseded's transition from checked stated. |
+| 3 | 2026-08-26 | review | Re-screened (round 3): clean — every round-2 change and stumble addressed; checklist citations resolve after renumbering. |
+| 4 | 2026-08-28 | update | From the initiative chain's screen: the authority admitted as decider with the `bet` right, so the go/no-go on an initiative can be recorded; such a record is checked for form only. |
+=== basis/artifacts/feature.md
+---
+type: artifact-typedef
+id: feature-typedef
+defines: feature
+owner: product-authority
+status: draft
+version: 7
+created: 2026-08-26
+updated: 2026-08-28
+ancestry: [feature]
+---
+
+# Artifact type: feature
+
+## Identity and ancestry
+
+- **Type:** `feature` — a Gherkin Feature: one capability described
+  from the user's or agent's point of view, with the scenarios that
+  state, as requirements, what counts as done for it. A product-level
+  artifact: it belongs to the [initiative](initiative.md) it is made
+  from and may hold scenarios owned by
+  several Bounded Contexts. The scenario is the atom; the feature is
+  its grouping; a Bounded Context's scenario register is the subset of
+  scenarios, across all features, tagged to it. The instance is a
+  markdown document with frontmatter whose Scenarios section holds one
+  fenced Gherkin block — the executable unit the shops receive; the
+  other sections are the document's, not Gherkin's. Scenarios are
+  executed by the owning shops; the feature as a document is judged by
+  the [feature fitness set](../fitness/feature.fitness.md), never
+  executed there. `ancestry` names no generic root: a feature is
+  neither a request nor a definition.
+- **Produced by:** the [PO role](../roles/lead-po.md), with the shops
+  that own the behaviors (scope and wording from the PO; steps and edge
+  cases from each owning shop; usability and accessibility criteria
+  from the product designer role); checked by the
+  [PO output check](../processes/po-output-check.md); its scenarios
+  assigned to Bounded Contexts by the solutions architect role in the
+  [scenario assignment](../processes/scenario-assignment.md) process.
+  **Consumed by:** the shops, each receiving the scenarios tagged to it;
+  the [interaction conformance check](../processes/interaction-conformance-check.md)
+  for the interaction types named; the changelog rendering the same report proposes, when the
+  [reconcile-and-close](../processes/reconcile-and-close.md) process
+  closes the work that delivered its scenarios.
+
+## Required frontmatter
+
+`type: feature`, `id`, `status`, `version`, `name` (the Feature's
+name), `initiative` (link to the initiative it is made from; its
+framing is that document's first section), `owner`, `created`,
+`updated`. `approved` does not apply: a feature's terminal state is
+`assigned`. Status values and their writers: `draft` (the PO role);
+`checked`, `returned`, `pending-definition` (the PO output check's
+record step, replacing `draft`); a returned or pending feature the PO
+role resubmits goes back to `draft`; `assigned` (the scenario
+assignment process's record step, replacing `checked` when every
+scenario carries its tag); a feature the assignment process returns
+goes to `returned`.
+
+## Required sections
+
+1. **Feature** — the Gherkin `Feature:` line with its name, and the
+   narrative beneath it: who the capability is for, what they can do,
+   and the outcome it serves, in the framing's words.
+2. **Contributors** — for every scenario, the shop named as the source
+   of its steps and edge cases — the shop the solutions architect's
+   decomposition places the behavior in; where the capability has an
+   interaction, the product designer role's usability acceptance
+   criteria and the accessibility criteria.
+3. **Interaction types** — always present: the interaction types the
+   capability must be available on, from the
+   [core-task list](../experience/core-tasks.md), or "none" with the
+   reason when the capability has no interaction.
+4. **Scenarios** — one fenced `gherkin` block, the executable unit:
+   it opens with the `Feature:` line and narrative of §1 verbatim (§1
+   is the document's reading of the block's head; the block is the
+   source, and the repeat is accepted so the document reads without
+   the block), then an optional `Background:` (its Given steps judged as any
+   step), then each `Scenario:` carrying the tags `@feature:<id>` (so a
+   scenario travels alone to a register and still names its feature —
+   the reason the Feature line's tag inheritance is not relied on),
+   `@hash:<sha>` (a hash of the scenario's text), and, once assigned,
+   `@bounded-context:<name>`; Given/When/Then with one action or event
+   in the When and an outcome observable in the running system in the
+   Then; no step names an implementation detail.
+5. **Edges** — a table of every failure and boundary case the framing
+   or a contributing shop named: case · who named it · the `Scenario:`
+   name that covers it, or "out of scope" with the reason.
+
+## Rules
+
+- A scenario's `@bounded-context:` tag is written by the solutions
+  architect role at assignment, never by the PO role — a writer rule
+  the assignment process enforces; the check does not judge the tag's
+  presence, since a re-verified or resubmitted feature may carry it. In
+  the assignment process, a scenario whose owning context differs from
+  its Contributors' shop is treated as unowned with that reason, so the
+  feature returns (`returned`) for co-production with the newly named
+  shop.
+- A changed scenario text is a new scenario with a new `@hash:`.
+  Whether the hash matches the text is a mechanical check, to be filed
+  as a lint.
+- A scenario written without the shop named as its source is not
+  co-produced and fails the check.
+
+## Commitment (Definition of Done)
+
+A feature is done when it has passed the PO output check against its
+fitness set and the framing, and every scenario carries a
+`@bounded-context:` tag. **Consequence on failure:** it is returned
+with the criterion named and no scenario enters a register.
+
+## Sources
+
+Gherkin (Feature, narrative, Background, Scenario, tags — the block's
+form); Cucumber's guidance on the three amigos (co-production); the
+experience principles `core-task-parity` and `accessible-by-standard`.
+
+## Derived review checklist
+
+- Feature line and narrative present, tied to the framing. *(§Required sections 1; fitness 6)*
+- Each scenario one observable behavior, no how. *(§Required sections 4; fitness 1)*
+- Every scenario has a named source shop; designer criteria where there is an interaction. *(§Required sections 2; fitness 2)*
+- `@feature:` and `@hash:` on every scenario. *(§Required sections 4; fitness 3)*
+- Every listed edge covered or excluded with reason. *(§Required sections 5; fitness 4)*
+- Interaction types section present, named or "none" with reason. *(§Required sections 3; fitness 5)*
+
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+| 1 | 2026-08-26 | update | Authored as `acceptance-scenarios` from the approved fitness set; carried the co-production statement and the tag's content the set asked the typedef to carry. |
+| 1 | 2026-08-26 | review | Screened: findings — definition wrongly in the ancestry; fitness 2's two criteria collapsed; an undefined consumer; the tag's content in two homes. |
+| 2 | 2026-08-26 | update | Repairs: ancestry corrected; both criteria named; the conformance check linked; the tag carries the frontmatter values. |
+| 3 | 2026-08-26 | update | assigned's transition stated; edges bound to §1's stated contribution; core-task list linked. |
+| 3 | 2026-08-26 | review | Re-screened (round 3): clean. |
+| 4 | 2026-08-28 | update | Owner decision: re-formed as `feature` on Gherkin's own unit — the type was grouped per behavior and pre-assigned to one context, a dispatch convenience carried from `main`. A feature is product-level, belongs to its framing or initiative, holds scenarios owned by several contexts; assignment moves to the solutions architect's scenario-assignment process and lives on `@bounded-context:` tags; `context` leaves the frontmatter; a Feature line and narrative are required. File renamed from `acceptance-scenarios.md`. |
+| 4 | 2026-08-28 | review | Screened with the chain: findings — the instance form unstated and the hash not Gherkin-legal; pre-assignment ownership undefined; the edge list required by nothing; status transitions incomplete; `date` undefined; consumers unlinked. |
+| 5 | 2026-08-28 | update | Repairs: markdown instance with one fenced Gherkin block; `@feature:` and `@hash:` tags; ownership from the decomposition, confirmed or corrected at assignment; an edge table; every transition with its writer; `date` dropped; consumers linked; interaction types always present. |
+| 5 | 2026-08-28 | review | Re-screened: findings — the "no bounded-context tag at the check" clause failed re-verified and resubmitted features; the correction path had no deciding step or status; the Edges reference form unstated; two insider references. |
+| 6 | 2026-08-28 | update | Repairs: the clause removed, the writer rule kept and enforced by the assignment process, which returns a feature whose tag differs from its Contributors' shop; Edges rows reference the Scenario name; the block's head stated as the source; references located. |
+| 6 | 2026-08-28 | review | Final screen (round 3): clean — no absence clause survives in any check; the correction path carried by the assignment process; two stumbles polished in place. |
+| 7 | 2026-08-28 | update | The initiative typedef now exists: the feature links its initiative, whose first section is the framing. |

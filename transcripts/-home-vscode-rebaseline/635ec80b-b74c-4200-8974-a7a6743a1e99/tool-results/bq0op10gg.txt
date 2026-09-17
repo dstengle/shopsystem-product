@@ -1,0 +1,484 @@
+=== basis/artifacts/initiative.md
+---
+type: artifact-typedef
+id: initiative-typedef
+defines: initiative
+owner: product-authority
+status: draft
+version: 3
+created: 2026-08-28
+updated: 2026-08-28
+ancestry: [initiative]
+---
+
+# Artifact type: initiative
+
+## Identity and ancestry
+
+- **Type:** `initiative` — the product-level problem artifact: one
+  problem worth solving, stated for the product, not for any Bounded
+  Context. It carries the outcome the problem serves and how that
+  outcome is measured, the appetite the product will spend, what it
+  will not do, and — once attached — the feasibility verdict and the
+  decomposition. It is the home of the framing: the PM role's recorded
+  statement of what a request is about is its first section and lives
+  nowhere else. Features are made from it and link it. It is bounded
+  to 500 words by rule, so its check reads the whole of it and there
+  is no second document to keep in step. `ancestry` names no generic root: an initiative is
+  neither a request nor a definition, as the feature typedef also
+  states.
+- **Produced by:** the [PM role](../roles/lead-pm.md), in the
+  [discovery conversation](../processes/discovery-conversation.md) —
+  the role's assisting agent drafts, the PM decides its content.
+- **Attached and screened in** the `initiative-check` process (pending
+  — not yet authored): it mirrors the PO output check with maker
+  `lead-pm`; before the screen, a step in which the solutions
+  architect role attaches the decomposition and its feasibility verdict
+  and the product designer role attaches its usability evidence or
+  hypothesis; then the cold reviewer's screen against the
+  [initiative fitness set](../fitness/initiative.fitness.md); then the
+  authority's decision. That screen is the *check of record*:
+  the check whose verdict the definitions rely on, since the authority
+  holds the PM role in person and no other role checks the PM's
+  framing. What it checks is completeness and form — originator
+  quoted, one measure, a bound, no solution, attachments present. It
+  does not check whether the problem is worth solving; that value
+  judgment stands unchecked by design and rests on the recorded
+  originator's words and the measure. The authority *bets* on a
+  screened initiative — decides to spend the appetite — in a review.
+- **Consumed by:** the PO role, which makes features from it; the
+  solutions architect role; the PO output check, where a feature's
+  `framing` input names this document's first section.
+
+## Required frontmatter
+
+`type: initiative`, `id`, `status`, `version`, `name`, `owner`
+(`lead-pm`), `created`, `updated`. `approved` does not apply; the
+lifecycle stands in. Status values and their writers:
+- `proposed` — the PM role, when the discovery conversation records it
+  (an amendment to that process, pending): the framed-but-unbet state.
+- `planned` — the authority's go/no-go, recorded as an outcome of the
+  [review conversation](../processes/review-conversation.md) (amendment
+  pending), replacing `proposed`.
+- `active` — the PO output check's record step, when the first feature
+  made from it passes (amendment pending: the step reads the feature's
+  `initiative` link).
+- `completed` — the [reconcile-and-close](../processes/reconcile-and-close.md)
+  process, when the last delivery under it is reconciled — read from
+  §6 and each feature's state — and the measure is recorded against
+  its target (amendment pending).
+- `cancelled` — with the reason recorded, from `proposed`, `planned`,
+  or `active`: a request declined at discovery is recorded `proposed`
+  and cancelled in the same discovery conversation (the same pending
+  amendment), so the record of what was declined survives; a later
+  cancellation is the PM role's decision recorded as an outcome of the
+  review conversation (amendment pending).
+
+## Required sections
+
+1. **Framing** — the originator (who expressed the intent, quoted in
+   their own words), the problem taken to be worth solving, the outcome
+   it serves, and the contract — product or operational — it entered
+   through. The PM role's exclusive decision.
+2. **For whom** — who has the problem; one measure with its current
+   condition, quantified, and its target; and the interaction types the
+   outcome must hold on, from the
+   [core-task list](../experience/core-tasks.md), or "none" with the
+   reason.
+3. **Appetite** — the bound the product will spend — time or capacity
+   — that the features stay within; and the no-gos: what this
+   initiative will not do, each with its reason.
+4. **Feasibility and usability** — the solutions architect role's
+   feasibility verdict with its reasons, present; and, where §2 names
+   an interaction type, the product designer role's usability evidence
+   or the hypothesis it stands on, or "not yet" with the text of the
+   ask that requests it.
+5. **Decomposition** — attached by the solutions architect role: the
+   Bounded Contexts the initiative touches, the relationship kind of
+   each contract between them it relies on, and the cross-context flow
+   in one place — the saga or process manager (the one component that
+   routes the flow between contexts) that will carry it, or "none" when
+   the contexts need no flow between them. "Not yet" until attached.
+6. **Features** — the features made from it, by id, as they are made;
+   empty until the first.
+
+## Rules
+
+- The framing is written here and nowhere else; a check that names the
+  framing as a criterion reads §1.
+- Sections 1–3 name no technology, structure, or interface form; an
+  interaction type named in §2 is a what.
+- At most 500 words outside the Document History; the bet — what is
+  spent on what, for which outcome — must be statable from §1–3 alone.
+- The go/no-go and a cancellation are each carried by a
+  [product decision record](product-decision-record.md) the PO role
+  makes for the decision and the PO output check screens, linked from
+  the Document History state entry; for the go/no-go, `decided-by` is
+  `product-authority` and `right` is `bet`, values the decision-record
+  typedef admits.
+- The count of initiatives whose §5 names more than one Bounded
+  Context, per quarter, is a report the solutions architect role
+  reads through its interface with the PO role; a rising count is its
+  signal to review the decomposition, recorded as an architecture
+  decision record.
+
+## Commitment (Definition of Done)
+
+An initiative is done — able to be bet on — when it has passed the
+cold reviewer's screen against its fitness set, which requires the
+feasibility verdict present and the measure with a current condition
+and a target. **Consequence on failure:** it stays `proposed` with the
+criterion named; no feature is made from it.
+
+## Sources
+
+Cagan's product opportunity assessment (the problem, for whom, how
+big); Torres's opportunity as distinct from any solution; Perri's
+target condition with a measured current condition; Basecamp's pitch
+(appetite, no-gos); Linear's initiative statuses; the CQRS Journey's
+process manager and saga for the cross-context flow; all as the
+research report `product-process-2026-08` on the `research` branch
+carries them; the shop's `define-good-up-front` principle for the check
+of record.
+
+## Derived review checklist
+
+- Framing carries originator quoted, problem, outcome, contract. *(§Required sections 1; fitness 1)*
+- Who; one measure with current condition and target; interaction types or "none". *(§Required sections 2; fitness 2)*
+- Appetite bounded; every no-go reasoned. *(§Required sections 3; fitness 3)*
+- Sections 1–3 name no solution or interface form. *(§Rules; fitness 4)*
+- Feasibility present; usability present or asked where §2 names a type. *(§Required sections 4; fitness 5)*
+- Decomposition attached or "not yet"; flow named or "none". *(§Required sections 5; fitness 6)*
+- At most 500 words; the bet statable from §1–3. *(§Rules; fitness 7)*
+
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+| 1 | 2026-08-28 | update | Authored by owner direction as the product-level artifact the brief's retirement left missing — the system-read report's 13(a): the framing absorbed as its first section, made by the PM role, screened by the cold reviewer as the check of record, bet by the authority; lifecycle from Linear, appetite and no-gos from Shape Up, the measured condition from Perri, the decomposition from the product-process report. |
+| 1 | 2026-08-28 | review | Screened with the chain: findings — the screen's carrying process unnamed; three status transitions with no carrying process and one misattributed; feasibility "not yet" admitted against the commitment; the no-solution rule unscoped; the one-page bound with no authoritative home; the boundary signal without consumer or action; product decision record's writer in conflict; insider references and undefined terms. |
+| 2 | 2026-08-28 | update | Repairs: `initiative-check` named as pending; every transition's writer named, existing or pending amendment; feasibility mandatory, usability may be asked; no-solution scoped to §1–3; the 500-word rule; the signal's consumer and action named; the decision record's maker and check stated; check of record and bet defined in place; the research consumer cut. |
+| 2 | 2026-08-28 | review | Re-screened: findings — the bet not statable from §1–2 when it spends §3; the decision record could not carry the authority as decider; `cancelled` with two writers and no process; the attachments in no process. |
+| 3 | 2026-08-28 | update | Repairs: statable from §1–3; `decided-by: product-authority`, `right: bet` admitted by the decision-record typedef; both cancellation paths named with their pending amendments; the attachment step placed in `initiative-check`; Produced-by split; a count is a report, not a rendering. |
+=== basis/fitness/initiative.fitness.md
+---
+type: fitness-set
+id: initiative-fitness
+owner: product-authority
+status: draft
+version: 3
+created: 2026-08-28
+updated: 2026-08-28
+target-type: initiative
+judged: true
+executable: false
+judged-by: cold-reviewer
+---
+
+# Fitness set: initiative
+
+An initiative is the product-level problem artifact the PM role makes:
+the framing, the measure, the appetite and no-gos, the feasibility and
+usability attachments, and the decomposition. These scenarios are the
+criteria set the `initiative-check` process (pending — not yet
+authored) screens an initiative against; the typedef says why that
+screen is the check of record. Evaluated by the `cold-reviewer` role,
+never executed.
+The judge reads only the criteria set and the initiative; every fact a
+scenario judges is one the initiative must carry. The judge's model
+and prompt version are recorded with each round verdict.
+
+## Scenarios
+
+Scenario 1: the framing is complete and in the originator's words
+  Given the Framing section
+  When it is read
+  Then it quotes the originator's own expression, states the problem
+  taken to be worth solving and the outcome it serves, and names the
+  contract the intent entered through
+
+Scenario 2: the outcome has a measure, a current condition, and a target
+  Given the For whom section
+  When it is read
+  Then it names who has the problem, one measure with its current
+  condition, quantified, and its target, and the interaction types the
+  outcome must hold on or "none" with a reason
+
+Scenario 3: appetite bounded, no-gos reasoned
+  Given the Appetite section
+  When it is read
+  Then it states a bound in time or capacity, and every no-go carries
+  its reason
+
+Scenario 4: the problem, not the solution
+  Given the Framing, For whom, and Appetite sections
+  When they are parsed for design or implementation choices
+  Then no technology, structure, or interface form is named; an
+  interaction type named is a what
+
+Scenario 5: feasibility and usability attached or asked
+  Given the Feasibility and usability section
+  When it is read
+  Then the solutions architect's verdict is present with reasons, and,
+  where the For whom section names an interaction type, the designer's
+  evidence or hypothesis is present or marked "not yet" with the ask
+  that requests it
+
+Scenario 6: decomposition attached or not yet
+  Given the Decomposition section
+  When it is read
+  Then it names the Bounded Contexts touched, each relied-on
+  contract's relationship kind, and the cross-context flow or "none"
+  — or it is marked "not yet"
+
+Scenario 7: one page
+  Given the initiative alone
+  When it is read in one sitting
+  Then it holds at most 500 words outside the Document History (the
+  typedef's rule) and a reader can say what the bet is — what is
+  spent, on what, for which outcome — from the Framing, For whom, and
+  Appetite sections alone
+
+## Compile mapping (each Then → one judge-rubric assertion)
+
+| Scenario Then | Judge-rubric assertion |
+|---|---|
+| 1 — framing complete | "Is the originator quoted? Are problem, outcome, and contract each stated? Cite any missing." |
+| 2 — measured outcome | "Who has the problem? Quote the one measure, its quantified current condition, its target, and the interaction types or 'none' with a reason; any absent = fail." |
+| 3 — appetite and no-gos | "Is a bound in time or capacity stated? For each no-go, is a reason given? Cite any without." |
+| 4 — no solution | "In the Framing, For whom, and Appetite sections, list every sentence that names a technology, structure, or interface form (an interaction type is not a form). Empty list = pass." |
+| 5 — attachments | "Feasibility verdict present with reasons (absent = fail)? Where an interaction type is named, usability evidence or hypothesis present, or 'not yet' with an ask? Cite." |
+| 6 — decomposition | "Contexts, relationship kinds, and flow-or-none present, or 'not yet'? Cite." |
+| 7 — one page | "Word count outside the Document History at most 500? Can the bet — spend, problem, outcome — be stated from the Framing, For whom, and Appetite sections alone? Cite." |
+
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+| 1 | 2026-08-28 | update | Authored with the initiative typedef as the check of record on the PM role's framing; one scenario per required section plus the no-solution and one-page rules. |
+| 1 | 2026-08-28 | review | Screened: findings — scenario 4 failed every initiative with a decomposition; scenario 5 judged a fact the initiative did not carry; the carrying process unnamed. |
+| 2 | 2026-08-28 | update | Repairs: scenario 4 scoped to §1–3; interaction types carried in §2 and read by scenarios 2 and 5; feasibility mandatory; the 500-word bound taken from the typedef; the pending process named. |
+| 2 | 2026-08-28 | review | Re-screened: one finding — scenario 7's bound excluded the appetite the bet spends. |
+| 3 | 2026-08-28 | update | Scenario 7 reads §1–3. |
+=== basis/guidelines/initiative.md
+---
+type: quality-guideline
+id: initiative-guideline
+target-type: initiative
+owner: product-authority
+status: draft
+version: 3
+created: 2026-08-28
+updated: 2026-08-28
+---
+
+# Guideline: initiative
+
+**Voice principle.** Write the initiative for the authority who must
+bet on it in one reading and for the PO role who must make features
+from it with no one to ask: the problem in the originator's words, one
+measure, a bound, what it will not do — and nothing about how.
+
+**Highlights (the layer compiled into generating context):** the
+originator quoted, the problem and outcome stated, the contract named
+· one measure, its current condition quantified, its target · an
+appetite in time or capacity; every no-go with a reason · no
+technology, structure, or form · feasibility attached; usability attached or
+asked · contexts, relationship kinds, and the cross-context flow, or
+"not yet" · one page.
+
+**Layers:** this guideline adds initiative rules on top of the
+[base writing style](base-writing-style.md); the base always applies
+and is never overridden. When rules conflict, an approved principle
+beats the [initiative typedef](../artifacts/initiative.md), which beats
+this guideline. Every rule feeds the
+[initiative fitness set](../fitness/initiative.fitness.md), scored by
+the cold reviewer in the `initiative-check` process (pending).
+
+---
+
+## Rules
+
+**1. Quote the originator; state the problem, the outcome, the contract.**
+Before: "Operators have asked for better visibility into failures."
+After: "Originator (operator, 2026-08-20, through the operational
+contract): 'I open every run to find the one that failed.' Problem:
+failed runs are not distinguishable from the run list. Outcome: a
+failed run is noticed within one glance."
+*Test:* read the Framing section. *Criterion:* the originator's words
+are quoted; the problem, the outcome, and the contract are each
+stated. *Decision:* yes/no per initiative.
+*Derived check:* judged — initiative fitness scenario 1.
+
+**2. Who, one measure, a current condition, a target, the types.**
+Before: "Success: operators are happier with the run list."
+After: "For: operators. Measure: time from a run's failure to an
+operator noticing it. Now: median 40 minutes. Target: under one
+minute. Interaction types: cli, gui."
+*Test:* read the For whom section. *Criterion:* who; exactly one
+measure, its current condition quantified, its target stated; the
+interaction types or "none" with a reason.
+*Decision:* yes/no per initiative.
+*Derived check:* judged — initiative fitness scenario 2.
+
+**3. Bound the appetite; reason every no-go.**
+Before: "We'll do what it takes; notifications are out of scope."
+After: "Appetite: two weeks of the reporting shop. No-gos: notifying
+on failure — a separate initiative (alerting) serves it; historical
+failure analysis — no originator has asked."
+*Test:* read the Appetite section. *Criterion:* a bound in time or
+capacity is stated; every no-go carries its reason. *Decision:* yes/no
+per initiative.
+*Derived check:* judged — initiative fitness scenario 3.
+
+**4. No solution.**
+Before: "Add a status column backed by the failures table and a `--failed`
+flag."
+After: "The outcome holds on the command line and the graphical
+interaction; how a failure becomes visible is the shops'."
+*Test:* in the Framing, For whom, and Appetite sections, list every
+sentence naming a technology, structure, or interface form.
+*Criterion:* the list is empty; an interaction type named is a what. *Decision:* yes/no per initiative.
+*Derived check:* judged — initiative fitness scenario 4.
+
+**5. Attach feasibility; attach usability or ask.**
+Before: "Feasibility: to be confirmed."
+After: "Feasibility (architect, 2026-08-21): feasible within the
+current stack; the run log already records failure. Usability: not yet
+— ask to the product designer role, default 'a hypothesis stands until
+the first user test'."
+*Test:* read the Feasibility and usability section. *Criterion:* the
+verdict with reasons is present; where §2 names an interaction type,
+the usability evidence or hypothesis is present or marked "not yet"
+with the ask that requests it. *Decision:* yes/no per
+initiative.
+*Derived check:* judged — initiative fitness scenario 5.
+
+**6. Name the contexts and the flow, or "not yet".**
+Before: "Touches reporting and maybe export."
+After: "Decomposition (architect): reporting, export; contract
+reporting → export: customer–supplier; cross-context flow: none — each
+context reads the run log directly." or "Decomposition: not yet."
+*Test:* read the Decomposition section. *Criterion:* contexts,
+relationship kinds, and the flow or "none" are stated, or the section
+says "not yet". *Decision:* yes/no per initiative.
+*Derived check:* judged — initiative fitness scenario 6.
+
+**7. One page.**
+Before: "Background. The reporting area has grown over three years,
+first as a nightly batch, then as an on-demand list; operators have
+raised its failures in four retrospectives…" (four hundred words
+before the problem).
+After: "Operators cannot tell which of last night's runs failed
+without opening each one." — the history cut; the whole initiative
+within 500 words.
+*Test:* count words outside the Document History; read the Framing,
+For whom, and Appetite sections alone. *Criterion:* at most 500 words
+(the typedef's rule); the bet — spend, problem, outcome — is statable
+from those three sections. *Decision:*
+yes/no per initiative.
+*Derived check:* judged — initiative fitness scenario 7.
+
+## Document History
+
+| Version | Date | Kind | Entry |
+|---|---|---|---|
+| 1 | 2026-08-28 | update | Authored with the initiative typedef; one rule per fitness scenario. |
+| 1 | 2026-08-28 | review | Screened: findings — rule 2 stricter than its scenario (a source); rules 5 and 7 out of step with the repaired typedef; two stumbles. |
+| 2 | 2026-08-28 | update | Repairs aligned to the typedef v2 and fitness v2. |
+| 2 | 2026-08-28 | review | Re-screened: one finding — rule 7's bound; a description in place of a before/after. |
+| 3 | 2026-08-28 | update | Rule 7 reads §1–3 with a prose before/after. |
+=== /tmp/claude-1000/-home-vscode-rebaseline/635ec80b-b74c-4200-8974-a7a6743a1e99/scratchpad/screen-init-2.md
+# Cold-read screen — initiative chain, round 2
+
+Material: `basis/artifacts/initiative.md` v2, `basis/fitness/initiative.fitness.md` v2, `basis/guidelines/initiative.md` v2. Context as instructed (glossary v16, lead-pm v9, lead-solutions-architect v7, feature v7, product-decision-record v3, po-output-check v4). Banned words ("load-bearing", "surface", "seam", "scar tissue", "seat"): none in any of the three (grep). Word counts outside Document History: typedef 1113, fitness 648, guideline 765.
+
+## Verdicts
+
+| File | Verdict |
+|---|---|
+| `basis/artifacts/initiative.md` | **findings** (4 required changes) |
+| `basis/fitness/initiative.fitness.md` | **findings** (1 required change, shared with the typedef) |
+| `basis/guidelines/initiative.md` | **findings** (1 required change, shared with the typedef) |
+
+## Round-1 required changes — confirmation
+
+| # | Change | Status |
+|---|---|---|
+| 1 | Name the process carrying the screen | **Made.** Typedef Produced-by: "`initiative-check` process (pending — not yet authored; it mirrors the PO output check with maker `lead-pm`, screener `cold-reviewer`, and the authority deciding)". Fitness preamble names it. Guideline Layers names it. |
+| 2 | Every transition a named writer; fix `active`; bound `cancelled` | **Made, with one residue.** `proposed` → discovery conversation (amendment pending); `planned` → review conversation (amendment pending); `active` → PO output check record step (amendment pending, reads the feature's link); `completed` → reconcile-and-close (linked, amendment pending); `cancelled` bounded to `proposed`, `planned`, `active`. Residue: `cancelled` still names no process ("the PM role's decision in a review") and now has a second writer — see finding 1. |
+| 3 | Feasibility mandatory; usability may be "not yet" | **Made** in all three: typedef §4 "present", commitment "requires the feasibility verdict present"; fitness 5 "present with reasons (absent = fail)"; rule 5 criterion "the verdict with reasons is present". "Before the go/no-go" sequencing dropped. |
+| 4 | Scope no-solution to §1–3 | **Made**: typedef Rules "Sections 1–3 name no technology, structure, or interface form"; fitness 4 Given the three sections; rubric 4 and rule 4 follow. |
+| 5 | Make "has an interaction" a carried fact | **Made**: §2 carries "the interaction types the outcome must hold on … or 'none' with the reason"; scenario 2 reads it, scenario 5 conditions on it; rule 2 and rule 5 follow. |
+| 6 | Define or drop "product decision record"; resolve the writer conflict | **Made in form, with a residue.** The term is defined (glossary v16; PDR typedef v3); the rule now says the PO role makes it and the PO output check screens it. Residue: the PDR typedef does not admit the authority as decider — see finding 2. |
+| 7 | One-page bound in a typedef Rule | **Made**: Rules "At most 500 words outside the Document History"; fitness 7 and rule 7 say "(the typedef's rule)"; checklist cites §Rules. |
+| 8 | Boundary signal: consumer and action | **Made**: "The count of initiatives whose §5 names more than one Bounded Context, per quarter … the solutions architect role reads through its interface with the PO role; a rising count is its signal to review the decomposition, recorded as an architecture decision record." Architect v7 Interfaces carries the count. One term stumble (below). |
+| 9 | Align rule 2 (source) and rule 1 (one statement) | **Made**: rule 2 criterion drops "with its source"; rule 1 criterion reads "each stated". |
+| 10 | Cut the research consumer; define "check of record" and "bet"; reconcile glossary `framing` | **Made**: Consumed-by lists PO role, architect role, PO output check only; both terms defined inline at first use and in glossary v16; glossary `framing` carries the contract. Round-1 stumbles also fixed: "operational contract" in rule 1; rule 5 Before is now text; "saga or process manager" glossed inline; ancestry's missing root explained; "a feature with no initiative is a finding" gone. |
+
+## `basis/artifacts/initiative.md` — findings
+
+**1. `cancelled` has two writers and no carrying process.** (§Required frontmatter)
+
+- Under `proposed`: "A request declined here becomes `cancelled`, so the record survives" — written by the PM role in the discovery conversation, on a request that never reached `proposed`.
+- Under `cancelled`: "the PM role's decision in a review, with the reason recorded, from `proposed`, `planned`, or `active`" — a review conversation writer, no process named or linked, and a from-set that excludes the declined-at-discovery case the first sentence describes.
+
+Every other value names its process and marks the amendment pending; this one does neither. Required: name the process for each path (discovery conversation for the declined request — and then "from" must admit it; review conversation for the later cancellation), each "amendment pending" like the rest.
+
+**2. The bet cannot be recorded in a product decision record as that type is defined.** (§Rules, fourth bullet)
+
+"The go/no-go and a cancellation are each carried by a product decision record the PO role makes for the decision." PDR typedef v3, Produced-by: "for a decision the PM role or the PO role has taken"; frontmatter `decided-by` "(the role)" and `right` "(the decision right exercised, or `escalation`)"; Rule: "whether the named role held the right it exercised is the PM role's ruling at the check." The glossary defines the bet as "the authority's decision"; lead-pm v9 lists no bet among its Decides. So for the go/no-go there is no admissible `decided-by` value and no `right` to name, and the PM role would be ruling on whether the authority held its right. Required: say what `decided-by` and `right` carry for a bet — either the PDR typedef admits the authority as decider (its own amendment, pending), or this rule states that the bet is recorded as the PM role's decision under a named right (and lead-pm then carries that right). The cancellation path is fine as written: it is the PM role's decision.
+
+**3. "The bet must be statable from §1 and §2 alone" contradicts the definition of the bet.** (§Rules third bullet; §Derived review checklist last entry; fitness 7; guideline rule 7)
+
+Identity: the authority "*bets* on a screened initiative — decides to spend the appetite". The appetite is §3. A reader of §1–2 knows the problem, the measure, and the target, and cannot say what is being spent — so the bet is not statable from those two sections under this document's own definition. Confident: a judge applying rubric 7 to a conforming instance would have to fail every one, or silently read §3. Required: either "from §1–3 alone" (typedef rule, checklist, fitness 7 and rubric 7, guideline rule 7 test and After — "the bet readable from the first two"), or define what "statable" asks for without the appetite.
+
+**4. The activity that attaches §4 and §5 belongs to no process.** (§Identity Produced-by; §Required sections 4–5) — wobbly
+
+"The solutions architect role attaches the decomposition and its feasibility verdict; the product designer role attaches its usability evidence." The commitment requires the feasibility verdict present before the screen can pass, so attaching happens between the discovery conversation (the PM's, records `proposed`) and `initiative-check` (pending) — and nothing is named that carries it: not a step of either, not a process of its own. The architect role holds the accountability but, as its own history says, "the consuming process orders it". Under `no-orphan-activities` this is the same defect round 1 found for the screen. Required: name the carrying process, existing or pending (a step in `initiative-check` before the screen, or a discovery-conversation amendment), so the pending process has its specification. Marked wobbly because the pending `initiative-check` may be intended to carry it — if so, say so in the one sentence that names that process.
+
+Clean: artifact-typedef form — required sections present and in order (Rules sits between Required sections and Commitment, as permitted); frontmatter field set closed and listed; commitment states a consequence; Sources carry provenance; no pinned example links; all seven checklist entries cite a clause and a scenario. Check-of-record statement is now honest: "What it checks is completeness and form … It does not check whether the problem is worth solving; that value judgment stands unchecked by design" — that is exactly what the fitness set covers, and `define-good-up-front` is met for what the definition of good defines. `active`, `planned`, `completed` each name their writer with a pending amendment.
+
+## `basis/fitness/initiative.fitness.md` — findings
+
+**1. Scenario 7's second Then is not satisfiable** — shared with typedef finding 3: "a reader can say what the bet is from the Framing and For whom sections alone" while the bet is to spend the appetite in §3. Required: follow the typedef's repair; rubric row 7 with it.
+
+Otherwise clean. Thens 1–6 each falsifiable from the criteria set and the initiative: 1 (quote, problem, outcome, contract — each present or absent), 2 (who, one measure, quantified current condition, target, types-or-none), 3 (bound; each no-go reasoned), 4 (empty list over §1–3; the interaction-type exception is stated), 5 (verdict present or fail; usability conditioned on a fact §2 carries), 6 (three items or "not yet"). Scenario 7's first Then is a count against the typedef's number. Compile mapping one for one, seven rows; frontmatter guardrails present; not under `features/`; the preamble states the judge reads only the criteria set and the initiative, and every judged fact is now one the initiative carries.
+
+## `basis/guidelines/initiative.md` — findings
+
+**1. Rule 7 follows the same unsatisfiable bound** — After: "the bet readable from the first two"; test: "read the first two sections alone"; criterion: "the bet is statable from the Framing and For whom sections". Required: align with the typedef's repair of finding 3.
+
+Otherwise clean. Voice principle one sentence; Highlights present and shorter than the rules; Layers state the precedence in the typedef's order and name the base style as never overridden; each of rules 1–6 carries before/after on real text, a test, a criterion, a yes/no decision, and a named judged check, and each criterion now matches its scenario word for word where it matters (rule 2 no longer asks for a source; rule 5 fails an absent verdict; rule 4's scope is §1–3).
+
+Stumble, polish in place: rule 7's Before/After ("a twelve-section document with a history of the reporting area" / "six sections within 500 words") are descriptions, not prose — the same defect round 1 asked rule 5 to fix. Quote a sentence from an overlong §1 and its cut, so the pair is a before/after on text.
+
+## Consistency with the neighbours
+
+- **lead-pm v9:** Accountable ("the initiative … opening with the framing … screened by the cold reviewer as the check of record") matches Produced-by and §1; Never-decides (feasibility, usability) matches §4–5's attachers. `cancelled` "the PM role's decision" has no matching Decides entry — covered by value and viability, a stumble not a fail. The bet is absent from lead-pm's rights — see typedef finding 2.
+- **lead-solutions-architect v7:** feasibility verdict and decomposition accountabilities match §4–5; the cross-context count in its PO interface matches the typedef's rule, and the resulting action (review the decomposition, recorded as an ADR) is named here and consistent with its Decides. Consistent.
+- **feature v7:** `initiative` link with "its framing is that document's first section" ↔ initiative §6 by id, Consumed-by "the PO output check, where a feature's `framing` input names this document's first section". Both typedefs state ancestry names no generic root, in the same words. Consistent; the round-1 "criteria source beside the framing" wording is gone.
+- **product-decision-record v3:** the writer conflict is resolved (PO makes, PO output check screens); the decider gap remains — typedef finding 2.
+- **po-output-check v4:** `active`'s writer is stated as a pending amendment reading the feature's `initiative` link; consistent with the process not yet doing it. Its Data says status values are the process's "until the artifact typedefs define their own" — the initiative typedef now defines its own, but `active` would be the first status the process writes on a document other than the artifact under check; the pending amendment should say so. Stumble, not a finding.
+
+## Undefined terms and stumbles, in reading order
+
+- Typedef Identity: "It is one page by rule, so its check is real" — "real" is an assertion; the rule is the 500-word bound, say that.
+- Typedef §4: "or 'not yet' with the ask that requests it" — an ask is a data type carried on a run's anchor; whether the section holds a reference to that ask or its text is unstated. Rule 5's After writes the ask's text into the section; say that is the form.
+- Typedef §5: "'Not yet' until attached" — attached by what activity, see finding 4.
+- Typedef Rules: "is a rendering the solutions architect role reads" — the glossary defines rendering as "a generated output of a definition"; a count over instances is a report or a query, not a rendering. Use a plain word.
+- Typedef `completed`: "when the last delivery under it is reconciled" — "last" is decidable only if reconcile-and-close can read §6 and each feature's state; the pending amendment should name that read.
+- Typedef Produced-by is a 200-word bullet carrying five separate facts (producer, screen, honesty of the screen, bet, attachers). Readable, but the one dense passage in the file; five bullets would read better.
+- Fitness preamble: "the typedef says why that screen is the check of record" — a pointer the judge does not need; harmless.
+- No term arrives before the material explains it: check of record, bet, appetite, no-gos, saga/process manager, core-task list (linked) are each glossed at first use.
+
+## Overload
+
+Each file reads in one sitting. The typedef grew ~190 words in repair, all in Produced-by and the lifecycle list; nothing to defer.
+
+## Summary of required changes, most important first
+
+1. Repair the bet's statability bound: "from §1 and §2 alone" cannot hold when the bet is spending §3's appetite — fix the typedef rule and checklist, fitness 7 and rubric 7, guideline rule 7 (all three).
+2. Make the product decision record able to carry the bet: name what `decided-by` and `right` hold for the authority's go/no-go, or amend the PDR typedef to admit the authority (typedef; PDR amendment pending).
+3. Give `cancelled` its carrying process on both paths (declined at discovery; cancelled in review) and a from-set that admits both (typedef).
+4. Name the process, existing or pending, that carries the architect's and designer's attachment of §4–5 (typedef) — wobbly; a sentence in the `initiative-check` description may suffice.
