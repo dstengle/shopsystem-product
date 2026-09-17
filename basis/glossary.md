@@ -4,9 +4,9 @@ id: glossary
 owner: product-authority
 status: approved
 approved: 2026-08-19
-version: 26
+version: 27
 created: 2026-08-19
-updated: 2026-09-09
+updated: 2026-09-17
 ---
 
 # Glossary
@@ -65,7 +65,8 @@ terms uses one of these when one fits.
   archive.
 - **scope** (of a principle set) — the level the set governs and whose
   context it loads into: working (every activity), architecture (the
-  designed system), or experience (the product's interactions).
+  designed system), experience (the product's interactions), or
+  implementation (what counts as good engineering when work is built).
 - **transcript** — the runtime log of turns; unscoped, not a governed
   artifact, never loaded into context.
 - **conversation** — a scoped, bounded discussion attached to exactly one
@@ -298,6 +299,21 @@ terms uses one of these when one fits.
   and decides nothing a step decides — no verdict, route, or bet
   (role definition `roles/router.md`). Not the lead-pm role reading a
   request's route, which feat-request-routing calls by the same word.
+- **implementation** — the built result of taking the acceptance
+  scenarios assigned to a shop to a holding state in what that shop
+  owns — code, configuration, or definition documents; judged against
+  the implementation principle set (`implementation-principles.md`).
+- **maker role** — the implementation role accountable for making an
+  implementation and producing its evidence; holds no accountability
+  for checking its own work. A role definition under `roles/`.
+- **checking role** — the implementation role accountable for the
+  pass/fail verdict on an implementation against the implementation
+  principle set; never the maker of the work it checks. A role
+  definition under `roles/`.
+- **evidence** (of an implementation) — a record the checking role
+  reads to see that a scenario's effect occurred, independent of the
+  maker's own account; the form per scenario kind is set by the
+  product's recorded decisions, never by the maker.
 
 ## Document History
 
@@ -333,3 +349,4 @@ terms uses one of these when one fits.
 | 24 | 2026-09-07 | update | sub-initiative added under req-2026-09-07-sub-initiative at the small-change process's make step, on the authority's words the request records ("I prefer subinitiative"; "one type with parent link") — the term the initiative typedef v12 and the initiative-check process v10 use. Made by the lead-solutions-architect role. |
 | 25 | 2026-09-07 | update | router added, in the role sense, under init-process-runner / feat-process-runner (adr-2026-09-07-coordinator-role §3) — the term the router role definition, session-handoff, and reconcile-and-close use; feat-request-routing's use of the word for the lead-pm's route reading told apart. Made by the lead-solutions-architect role. |
 | 26 | 2026-09-09 | update | execution and bead added, run's instance sense and anchor's identifier use dropped, under req-2026-09-08-definition-vs-instance / feat-execution-vocabulary (shopsystem-product): execution is the instance noun (execution:<process>:<bead>), run stands only as a verb, bead names the work register's identifier (never the record itself, which keeps the anchor sense), anchor keeps its governed-record sense unchanged including for a run's own work item; the checkpoint, branched conversation, ask, and router entries and the authority-call and migration-plan entries carry run's execution replacement, anchor untouched in each; the process definition entry gains the reference convention — full id, never bare or shortened. Self-check against define-good-up-front: every changed entry read against the authority's decision (req-2026-09-08-definition-vs-instance) before this edit; the `§Run lifecycle` heading citation in the ask entry left unchanged, that heading itself not renamed in this pass. Made by the lead-solutions-architect role. |
+| 27 | 2026-09-17 | update | implementation, maker role, checking role, and evidence added, and scope gains the implementation level (principle-set typedef v7), at principle-set-authoring's `draft` step for `implementation-principles.md` under init-implementation-process / feat-implementation-good — the terms that set's statements turn on. Made by the lead-pm role. |
