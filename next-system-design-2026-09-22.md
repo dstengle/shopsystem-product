@@ -212,9 +212,12 @@ The rule the last system's record supports is not "shorter." It is:
 - The serialization format on disk: YAML with block scalars, or a strict
   markdown profile the shop's own parser accepts. Same tree, two
   serializations; the choice is diff readability against parser ownership.
-- The API's transport for agents — MCP is the natural fit, since each
-  operation becomes a tool with a schema the harness loads natively — and
-  whether anything but MCP is needed.
+- The API's transport. The authority's preference is **gRPC as the primary
+  API layer**: the contract is a `.proto` file, typed and versioned, and the
+  same service definition serves every client. For agents, MCP is the
+  presentation of that API to the harness — each operation exposed as a tool
+  with a schema — not a second API. What remains open is the shape of that
+  MCP layer over gRPC, and whether any client needs anything else.
 - Which existing code survives as firmware: `shop-msg` yes; `agent-vault`,
   `bc-launcher`, `fabro` to be judged; `bd` retired into the knowledge base;
   the 4,461 lines of regex tooling retired.
